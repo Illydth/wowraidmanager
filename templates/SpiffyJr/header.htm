@@ -1,0 +1,44 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+		<title>phpRaid :: {title_guild_name} of {title_guild_server} :: {title_guild_description}</title>
+		<script src="templates/SpiffyJr/scripts/cal2.js" language="javascript"></script>
+		<script src="templates/SpiffyJr/scripts/cal2_conf.js" language="javascript"></script>
+		<script src="templates/SpiffyJr/scripts/phpRaid.js" language="javascript"></script>
+		<link rel="shortcut icon" href="templates/SpiffyJr/images/favicon.ico">
+		<link rel="icon" href="templates/SpiffyJr/images/favicon.ico" type="image/x-icon">
+		<link rel="alternate" title="{title_guild_name} of {title_guild_server} Raid signups RSS feed" type="application/rss+xml" href="rss.php">
+		<link rel="stylesheet" type="text/css" href="templates/SpiffyJr/style/calendar.css">
+		<link rel="stylesheet" type="text/css" href="templates/SpiffyJr/style/stylesheet.css">
+	</head>
+	<body>
+		<!-- DO NOT REMOVE OR YOU RISK BREAKING TOOLTIPS -->
+		<div id="dhtmltooltip"></div>
+		<script src="templates/SpiffyJr/scripts/tooltips.js" language="javascript"></script>
+		<!-- END TOOLTIP CODE -->
+		<div align="center">
+			<div id="container">
+				<table width="100%" cellpadding="0" cellspacing="0">
+					<tr id="banner">
+						<td width="50%"><a href="{header_link}"><img src="./templates/SpiffyJr/images/logo_phpRaid.jpg" border="0"></a></td>
+						<td width="50%" valign="top"><div align="right" style="margin-right:3px; font-size:10px; color:#ffffff">{login_form_open} <strong>{login_username}</strong> {login_password} {login_remember_hidden} {login_button} {login_form_close}</div></td>
+					</tr>
+				</table>
+				<div id="topHeader">
+					<table width="100%" cellpadding="0" cellspacing="0">
+						<tr valign="top">
+							<td width="50%"><div align="left" style="margin-left:10px"><strong>Guild Time:</strong> {guild_date} - {guild_time}</div></td>
+							<td width="50%"><div align="right" style="margin-right:10px"></div></td>
+						</tr>
+					</table>
+				</div>
+				<table width="100%" cellpadding="0" cellspacing="0" align="center">
+					<tr valign="top">
+						<td id="leftMenuBackground" width="150px">
+							<div class="menuHeader">phpraid menu</div>
+							{menu}
+						</td>
+						<td id="leftMenuBorder" width="5px">&nbsp;</td>
+						<td width="845px" id="contentContainer">
+						{site_disabled_warning}

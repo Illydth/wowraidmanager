@@ -1,0 +1,13 @@
+User-agent: *
+Disallow: /auth/
+Disallow: /db/
+Disallow: /docs/
+Disallow: /includes/
+Disallow: /language/
+Disallow: /template/
+Disallow: /raid_lua/
+Disallow: /templates/
+Disallow: /common.php
+Disallow: /config.php
+Disallow: /password.php
+Disallow: /version.php

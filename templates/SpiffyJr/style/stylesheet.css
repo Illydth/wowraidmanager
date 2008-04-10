@@ -1,0 +1,313 @@
+/******************************
+* PHPRAID REQUIRED CSS STYLES *
+******************************/
+/* General page style. */
+body {
+	background-color: #1E1C34;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	margin:0px;
+}
+
+hr {
+	background-color:#000000;
+	border:0px;
+	height:1px;
+}
+
+/* The text input fields background colour */
+/* And all button looks */
+input.post, textarea.post, select {
+	background-color : #38374A;
+	border: 1px solid #000000;
+	color:#ffffff;
+	font-size: 11px;
+}
+input { text-indent : 2px; }
+
+input.mainoption {
+	background-color: #38374A;
+	border: 1px solid #000000;
+	color : #ffffff;
+	font-size: 11px; font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-weight:bolder;
+}
+
+input.liteoption {
+	background-color: #38374A;
+	border: 1px solid #000000;
+	color : #ffffff;
+	font-size: 11px; font-family: Verdana, Arial, Helvetica, sans-serif;
+}
+
+/* Formatting for the hover tooltips */
+#dhtmltooltip{
+	position: absolute;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	font-size:10px;
+	border: 1px solid white;
+	padding: 3px;
+	background-color: black;
+	visibility: hidden;
+	z-index: 100;
+	opacity: .80;
+	color: white;
+}
+
+.navContainer ul {
+	font-size:10px;
+	list-style-type:none;
+	margin:0;
+	padding:0;
+	text-align:left;
+}
+
+.navContainer li {
+	margin: 0 0 0 0;
+}
+
+.navContainer a {
+	border-bottom:1px solid #4E4E50;
+	color:#AFBFDD;
+	display:block;
+	font-weight:normal;
+	height:20px;
+	padding-top:3px;
+	text-decoration:none;
+	text-indent:10px;
+}
+
+.navContainer a:hover {
+	color:#ffffff;
+	text-decoration:none;
+}
+
+.contentHeader {
+	background-image:url('../images/top_bg.gif');
+	color:#ffffff;
+	font-size:10px;
+	font-weight:bolder;
+	height:17px;
+	padding-top:3px;
+	text-align:center;
+	text-transform:uppercase;
+}
+
+.contentBody {
+	margin-left:10px;
+	margin-right:10px;
+}
+
+/* border color for data */
+.dataOutline {
+	border:1px solid #000000;
+}
+
+.dataOutline a:link {
+	color:#2F608B;
+	font-weight:bolder;
+	text-decoration:none;
+}
+
+.dataOutline a:visited {
+	color:#2F608B;
+	font-weight:bolder;
+	text-decoration:none;
+}
+
+.dataOutline a:active {
+	color:#2F608B;
+	font-weight:bolder;
+	text-decoration:none;
+}
+
+.dataOutline a:hover {
+	color:#000000;
+	text-decoration:none;
+}
+
+.errorHeader {
+	background-color:#660000;
+	border: 1px #ff0000 solid;
+	border-bottom: 0px;
+	color: #FFFFFF; 
+	font-size: 10px;
+	font-weight: bold;
+	padding: 3px;
+	text-align:left;
+	text-transform:uppercase;
+	width:450px;
+}
+
+.errorBody {
+	background-color:#FFD5D5;
+	color:#CC0000;
+	border:1px solid #ff0000;
+	border-top:0px;
+	font-size:10px;
+	font-weight:normal;
+	padding:3px;
+	text-align:center;
+	width:450px;
+}
+
+/* header for data output */
+.listHeader {
+	background-image:url('../images/banner_bg.jpg');
+	border: 1px solid #000000;
+	color:#ffffff;
+	font-size:10px;
+	text-align:left;
+}
+
+.listHeader a:link {
+	color:#AFBFDD;
+	text-decoration:none;
+}
+
+.listHeader a:active {
+	color:#AFBFDD;
+	text-decoration:none;
+}
+
+.listHeader a:visited {
+	color:#AFBFDD;
+	text-decoration:none;
+}
+
+.listHeader a:hover {
+	color:#ffffff;
+	text-decoration:none;
+}
+
+/* Tooltip title color */
+.tooltip_title {
+	color: #FFFFFF;
+	font-weight: bolder;
+}
+
+/* row colors for data output and hover color */
+.row1 {
+	background-color: #B6B6BA;
+}
+
+.row2 {
+	background-color: #A3A2A8;
+}
+
+.rowHover {
+	background-color: #CAC9CF;
+}
+/**********************
+* TEMPLATE CSS STYLES *
+***********************/
+#container {
+	border:1px solid #000000;
+	width:1000px;
+}
+
+#banner {
+	background-image:url('../images/banner_bg.jpg');
+	text-align:left;
+}
+
+#topHeader {
+	background-image:url('../images/top_bg.gif');
+	color:#ffffff;
+	font-size:10px;
+	height:20px;
+	padding-top:5px;
+	text-align:right;
+}
+
+#topHeader a:link, a:visited, a:active {
+}
+
+#topHeader a:hover {
+	color:#ffffff;
+	text-decoration:none;
+}
+
+#leftMenuBackground {
+	background-image:url('../images/leftMenu_bg.gif');
+}
+
+#leftMenuBorder {
+	background-image:url('../images/leftMenuBorder_bg.gif');
+}
+
+#contentContainer {
+	background-color:#CAC9CF;
+	color:#000000;
+	font-size:10px;
+	font-weight:normal;
+	line-height:1.5em;
+	text-align:left;
+}
+
+#footer {
+	background-image:url('../images/banner_bg.jpg');
+	border-top:1px solid #000000;
+	color:#ffffff;
+	font-size:10px;
+	font-weight:normal;
+}
+
+#footer a {
+	color:#AFBFDD;
+	font-weight:normal;
+	text-decoration:none;
+}
+
+#footer a:hover {
+	color:#ffffff;
+	font-weight:normal;
+	text-decoration:none;
+}
+
+.menuHeader {
+	background-image:url('../images/leftMenuHeader_bg.gif');
+	color:#ffffff;
+	height:17px;
+	font-size:10px;
+	font-weight:bolder;
+	padding-top:3px;
+	text-indent:10px;
+	text-transform:uppercase;
+}
+
+.announceHeader {
+	color:#000000;
+	font-size:12px;
+	font-weight:bolder;
+}
+
+.announceSubHeader {
+	color:#666666;
+	font-size:10px;
+	font-weight:normal;
+}
+
+.announceText {
+	color:#000000;
+	font-size:10px;
+	font-weight:normal;
+}
+
+.button {
+	background-color:#A3A2A8;
+	border: 1px solid #000000;
+	padding:5px;
+}
+
+.infoBar {
+	color:#ffffff;
+	font-size:10px;
+	line-height:1.5em;
+	padding:10px;
+	text-align:justify
+}
+
+.topHeaderMargin {
+	margin-left:10px;
+	margin-right:10px;
+}

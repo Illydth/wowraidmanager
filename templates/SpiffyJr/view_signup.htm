@@ -1,0 +1,38 @@
+<a name="signup"></a>
+<div class="contentHeader">{view_signup_header}</div>
+<br>
+<div class="contentBody">
+<form name="signup" method="post" action="{signup_action}">
+  <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+    <tr>
+      <td valign="top"> 
+        <table width="100%" border="0" align="center" cellpadding="3" cellspacing="1" class="dataOutline">
+          <tr> 
+            <td width="30%" height="28" align="center" valign="middle" class="row1"><div align="left" class="headmed"> 
+                <div align="left"><b>{username_text}</b></div>
+              </div></td>
+            <td width="70%" align="center" valign="middle" class="row2"><div align="left"><span class="genmed">{username} 
+                </span></div></td>
+          </tr>
+          <tr> 
+            <td height="28" align="center" valign="middle" class="row1"><div align="left" class="headmed"> 
+                <div align="left"><b>{character_text}</b></div>
+              </div></td>
+            <td align="center" valign="middle" class="row2"><div align="left"><span class="genmed">{character}</span></div></td>
+          </tr>
+          <tr> 
+            <td height="28" align="center" valign="middle" class="row1"><div align="left"><b><span class="headmed">{queue_text}</span></b></div></td>
+            <td align="center" valign="middle" class="row2"><div align="left"><span class="genmed">{queue}</span></div></td>
+          </tr>
+          <tr> 
+            <td height="28" align="center" valign="middle" class="row1"><div align="left"><b>{comments_text}</b></div></td>
+            <td align="center" valign="middle" class="row2"><div align="left"><span class="genmed">{comments}</span></div></td>
+          </tr>
+        </table></td></tr>
+  </table>
+  <br>
+  <div class="button" style="text-align:center">{hidden_vars} 
+          <input name="submit" type="submit" value="Signup" class="mainoption">
+          <input name="reset" type="reset" value="Reset" class="liteoption">
+  </div>
+</form>
