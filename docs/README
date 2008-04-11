@@ -1,0 +1,56 @@
+Welcome to PHPRaid!
+
+Forward
+-----------
+Open Source software is one of the greatest ideas of the 21st centuary.  The concept that
+you can turn open a piece of software to the world at large and have a community to support
+it has produced amazing things.  Apache, Sendmail, Bind, the list goes on and on.  This 
+project is no different.  Although much smaller in scope, the open source concept has
+produced another great piece of software in phpRaid.  
+
+Unfortuantly there is a downside to open source, when a project changes hands it also 
+often changes direction, particulary in the case where the project changes hands through
+a loss of focus, as it has here.  In this case, the original developer went a different 
+direction and is maintaining a new piece of software...one a bit more generic than phpRaid.
+
+While I, as the new maintainer, endevor to keep the basics of this software as close to
+the original idea behind phpRaid, I also see a need to advance the software with some
+new ideas and concepts of my own.  Hopefully in the end this application will be just as,
+if not more, useful than it has been to you in the past.
+
+As always, I, like most other open source maintainers, appreciate the constructive 
+feedback of the community at large.  Open source is only as good as the community that 
+supports it and uses it, and i'm not developing software in a vacuum.  Please let me
+know of the changes you want and i'll do what I can to make them happen.
+
+douglasw at wagnerweb dot org
+
+Acknowledgements
+-----------------
+As stated in the release notes, phpRaid is under new management.
+
+For the last several versions, the original designer of the software has turned over the 
+code to the community to maintain.  It has passed through several hands to reach mine.
+
+I would like to thank everyone in the phpRaid community who has taken the time to update
+and keep this application living till this point, hopefully under my management we can
+see some new features and updates without things going really wrong. :)
+
+Please take the time (after installation or using a web browser now) to view the
+credits.htm file for information on the prior maintainers of phpRaid.  Again, my
+thanks to them for bringing the project to where it is today.
+
+Installation/Upgrade
+---------------------
+Please see docs/INSTALL for information on both installing the 3.1.0 version of phpRaid 
+as well as upgrading a current installation of phpRaid.  
+
+The old phpRaid_install_doc.pdf is still there and is a very useful resource for setup
+and installation of phpRaid, however it HAS NOT been updated to reflect 3.1.0.  Where
+information in the installation pdf and the INSTALL text file conflict, please note that
+the INSTALL file is correct.
+
+Also: ** Please take the time to read through the INSTALL file, *especially* if you are 
+upgrading from a prior version and ESPECIALLY the "errata" section for information on 
+what's broken by this release.**
+

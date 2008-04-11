@@ -1,0 +1,50 @@
+Enable Groups Help<br>
+-------------------<br>
+The enable groups option changes the way phpRaid works with regards to raids and groups.  At the base installation, phpRaid supports raids only.<br>
+What this means is that you have a raid leader(s) for the guild and the raid leader(s) are responsibile for posting raids and managing signups.<br>
+The RL(s) are the only ones posting raids for the guild, and the rest of the guild members are only able to create profiles (characters) in <br>
+phpRaid and signup for raids posted by those users of phpRaid with "Raids" permission (as set in the permissions area).<br>
+<br>
+The typical use of phpRaid in this circumstance is to create and manage guild raids.  Raid Leaders are limited in number and normally function<br>
+somewhat in an "officer" capacity for the guild.  They are trusted to create raids and templates and to post the raids for the rest of the guild<br>
+to sign up on.<br>
+<br>
+However, in this situation it is hard or impossible to use phpRaid to track GROUP signups as well.  At the base installation, phpRaid doesn't<br>
+function well for use as a small group signup system.  In most guilds, groups are not posted by a "leader" or officer, instead a group is posted<br>
+by a guild member who needs something.  For instance, a guild member may need a piece for a key and will try to get people together to obtain that<br>
+piece.  Obviously it would be a ROYAL pain for that guild member to have to contact a raid leader to get an entry posted on the phpRaid page just<br>
+to get 5 people together to get a key piece.  But conversely, you don't want that guild member able to post offical 25 man raids for the guild<br>
+either.  <br>
+<br>
+The problem is there really is no good web based application to manage groups.  While phpRaid has everything built in to it to manage groups<br>
+for a guild, the default permissions don't differentiate between raid leaders and group leaders.  <br>
+<br>
+What this option does is fixes that.  It will cause phpRaid to display different options and configurations on various pages to make phpRaid more<br>
+"group friendly."  A small (but non-all inclusive) list of the changes to the system are below.<br>
+<br>
+* The "Raids" Menu option is now available to users with the "profile" permission instead of just those with the "Raids" Permission.<br>
+This allows users of phpRaid to create "groups" in phpRaid (Normally the option to post new raids is only available to people with the "raids"<br>
+permission, this allows users with the "Profile" permission to view and create raids.<br>
+<br>
+* Templates now have a "raid leader only" check box assigned to them.  For those templates that users should not be able to post (say Gruul's<br>
+Lair or Molten Core for example) raids for, this additional flag on a raid tells the system not to display those templates to people without<br>
+the "raids" Permission.  Templates without this flag are available to people without the "Raids" Permission.<br>
+<br>
+* Templates are still in the control of the members with "raids" permissions.  Raid Leaders/Officers would be expected to create proper<br>
+templates for each grouping instance for users to be able to follow.  This allows the users to be able to post raids, but with the knowledge<br>
+that the group requirements are setup correctly by knowledgeable people.<br>
+<br>
+With this change the concept of "Raid Administrators", "Raid Leaders", and "Raid Attenders" is introduced.  The code at it's base has been<br>
+modified (outside of this checkbox) to now support 3 different permission levels.  Please see docs/User_Signup_Flow.txt for more information.<br>
+<br>
+The end result with properly administered templates should be a phpRaid that works identically to how it did before but with the added <br>
+flexability of allowing a guild to use this to schedule small group instances as well as large guild wide raids.<br>
+<br>
+With a proper LUA GUI application, this system could be used to replace in game systems like GEM.<br>
+<br>
+If you wish to use phpRaid to manage your guild's small groups and allow your guild members to post small groups for others to sign up<br>
+in, turn this option on by checking the box.  If you do not wish to manage small groups with phpRaid or your guild does not allow<br>
+general members to schedule small groups, keep this box unchecked (or turn it off) to disable the various grouping features of phpRaid.<br>
+<br>
+Also remember that if you do turn this option on in an existing installation your raid administrators will need to go back to the<br>
+already created raid templates and turn on the option to disable those templates from general phpRaid user use.<br>

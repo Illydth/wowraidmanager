@@ -1,0 +1,89 @@
+Quick Installation
+-------------------
+* Unpackage the files from this archive into a directory on your local machine.
+* Open your FTP program and upload the entire contents of this archive to your web host,
+	including the phpRaid directory.
+* Change the Ownership of all files to match that of your web server.  
+* Change the permissions on config.php to be writeable by your web server.
+* Change the permissions on raid_lua to be writeable by your web server.
+* Open a web browser and go to http://www.yourdomain.com/phpRaid
+* Choose your installation methiod and follow the steps to install your phpRaid server.
+* At the end of the installation please remove your Install directory (delete it completely)
+* Change the permissions on your config.php file back to read only to the world (you can 
+	leave it writeable by your web server if you so choose, but it is recommended that
+	you make it read only...(444 permissions in Unix).
+	
+Please see phpRaid_install_doc.php for more information.
+
+
+Quick Upgrade
+-------------------
+* Unpackage the files from this archive into a directory on your local machine.
+* Open your FTP program and upload the entire contents of this archive to your web host,
+	including the phpRaid directory.
+* Change the Ownership of all files to match that of your web server.  
+* Go to "install/database_schema/upgrade" 
+* Log in to your MySQL server installation and into your phpRaid database
+* Run either 3.1.0.Aliance.sql or 3.1.0.Horde.sql to make the appropriate changes to your
+	database for the 3.1.0 version of phpRaid.  
+	
+*** NOTE *** 
+
+The SQL in these files assumes you are using the default table names for phpRaid.  If
+in your original installation you chose to use a table prefix other than phpraid_ you
+will need to modify the SQL you are applying to include your table prefix.  You should
+be able to use a search and replace on phpraid_ and change that to your table prefix
+(in my case that would be phpraid_TC_)
+
+
+Installing phpRaid into a supported CMS system
+-----------------------------------------------
+At the time of this writing 3.1.0 supports the following CMS systems:
+
+* e107 from http://www.e107.org
+* phpBB from http://www.phpbb.com
+
+Also supported, if you do not have a supported CMS system, is "phpRaid" installation,
+which is the default non-CMS supported installation.  
+
+If you do intend to install this application into a CMS please note that it is a
+REQUIREMENT that you install your phpRaid database INTO your CMS database, at the
+moment you CANNOT seperate the databases and have everything work.  
+
+When entering the database information to install to, please ensure that you install
+into your CMS database to get CMS integration to work.
+
+
+Eratta
+-----------------
+Unfortunately this release has broken some things, most noteably any custom templates you 
+may have installed.  More information as follows:
+
+* Raid Signup Flow Change: Due to the change in the code surrounding raid signups
+and the flow surrounding signing up for and being accepted into a raid, it may be the 
+case that your users have more or less "buttons" (priviliges) than they used to.  
+Unfortunately, the configuration section to manage this didn't make it into this release
+and that means modifying the code by hand.  THIS IS NOT DIFFICULT, I have taken great
+pains to document the file (signup_flow.php) to make it human readable and modifyable
+by people WITHOUT a degree in computer science, but if this is an issue for you I
+recommend waiting for the next dot release which will include the signup permissions
+configuration in the config area of phpRaid.
+
+* Custom Templates Broken: Due to the additions of SEVERAL sections of code in phpRaid and
+some pretty major functionality changes (5 man group support, Teams, 3 levels of
+permissions, etc.) there have been several html changes to the templates used by 
+phpRaid.  This, likely, will have broken every template that is not "SpiffyJr".
+Again in the next release I will try to capture and document html changes to ensure
+template maintainers have information on the changes to their templates to ensure
+an easy template migration, unfortunately this is not included with this release.
+To modify your custom templates you will need to download the "updates" package
+(update from 3.0.9.2 to 3.1.0) and check the files under the "Templates" area.  
+Use a DIFF tool (I recommend CompareIt! or KDiff3 in windows or any of the numerious
+tools in Unix/Linux) to check the modifications between the files included in the
+update package against the files in your custom template.  Merge the changes and you
+should be all set.
+
+* Missing Documentation: I havn't made an extensive check yet, but i'm betting i'm 
+missing a referred to documentation file or two somewhere in the installation.  If
+you happen to run across some missing documentation on a feature you know NOTHING 
+about, please let me know and i'll get a patch out quickly with it.

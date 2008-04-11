@@ -1,0 +1,199 @@
+<?php
+/***************************************************************************
+ *                                 calendar_raids.php
+ *                            -------------------
+ *   begin                : Feb 20, 2006
+ *   copyright            : Keldrak
+ *   email                : keldrak@gmail.com
+ *
+ ***************************************************************************/
+
+// This is the number of rows (ie, weeks.. current week included) the calendar shows
+$num_rows=4;
+
+// commons
+        define("IN_PHPRAID", true);        
+        include("./common.php");
+        
+// page authentication
+if($phpraid_config['anon_view'] == 1)
+	define("PAGE_LVL","anonymous");
+else
+	define("PAGE_LVL","profile");
+	
+require_once($phpraid_dir.'includes/authentication.php');
+
+        include("includes/page_header.php");
+
+// now for announcements
+// get announcements
+$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "announcements";
+$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+if($db_raid->sql_numrows($result) > 0)
+{
+	$page->set_file('announceFile',$phpraid_config['template'] . '/announcements_msg.htm');
+	$page->set_block('announceFile','announcement_row','ARow');
+	
+	/* fetch rows in reverse order */
+	$i = $db_raid->sql_numrows($result) - 1;
+	while($i >= 0) 
+	{
+		$db_raid->sql_rowseek($i, $result);
+		$data = $db_raid->sql_fetchrow($result);
+		$time = new_date($phpraid_config['time_format'], $data['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+		$date = new_date($phpraid_config['date_format'], $data['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+		
+		$page->set_var(
+			array(
+				'announcement_author'=>$data['posted_by'],
+				'announcement_date'=>$date,
+				'announcement_time'=>$time,
+				'announcement_msg'=>$data['message'],
+				'announcement_title'=>$data['title'],
+			)
+		);
+		
+		$page->parse('ARow','announcement_row',true);
+		
+		$i--;
+	}
+	$page->parse('body','announceFile',true);
+}
+$page->parse('body','body_file',true);
+
+$page->p('body');
+
+
+?>
+
+<center>
+<hr>
+</center>
+<div align=\"left\">
+
+<p>
+<table border="4" width="100%" id="table1" align="center" cellspacing="3">
+        <tr height="18">
+<?php
+print "                <th colspan=\"7\"><font color=\"#0000FF\"><div align=\"center\">" . date("F",mktime(0, 0, 0, date("m") , date("d") , date("Y"))) . " " . date("Y",mktime(0, 0, 0, date("m") , date("d") , date("Y")))  . "</div></font></th>";
+?>
+        </tr>
+        <tr height="18">
+                <th width=14% align="center"><b>Sunday</b></td>
+                <th width=14% align="center"><b>Monday</b></td>
+                <th width=14% align="center"><b>Tuesday</b></td>
+                <th width=14% align="center"><b>Wednesday</b></td>
+                <th width=14% align="center"><b>Thursday</b></td>
+                <th width=14% align="center"><b>Friday</b></td>
+                <th width=14% align="center"><b>Saturday</b></td>
+        </tr>
+
+<?php
+
+$today = mktime(0, 0, 0, date("m") , date("d"), date("Y"));
+$start = mktime(0, 0, 0, date("m") , date("d") - date("w"), date("Y"));
+
+print "        <tr height=\"100\"> \n";
+
+for ($i = 1; $i <= ($num_rows*7); $i++)   {
+
+    $txt_color = "";
+
+  if( (mktime(0, 0, 0, date("m",$start ) , date("d",$start ) +$i-1 , date("Y",$start ))) == $today) {
+    $txt_color = "#FF0000";  
+  }
+
+  if( (mktime(0, 0, 0, date("m",$start ) , date("d",$start ) +$i-1 , date("Y",$start ))) < $today) {
+    $txt_color = "#FFFFFF";  
+  }
+
+  if(($i==1) or (date("d",mktime(0, 0, 0, date("m",$start ) , date("d",$start ) +$i-1 , date("Y",$start ))) == "01")){ 
+    print "                <td valign=\"top\"><div align=\"right\"><b><font size=\"4\" color=\"{$txt_color}\">" . date("M",mktime(0, 0, 0, date("m",$start ) , date("d",$start ) +$i-1 , date("Y",$start ))) . " " . date("d",mktime(0, 0, 0, date("m",$start ) , date("d",$start ) +$i-1 , date("Y",$start ))) . "&nbsp;</font></b></div>";
+  } else { 
+    print "                <td valign=\"top\"><div align=\"right\"><b><font size=\"4\" color=\"{$txt_color}\">" . date("d",mktime(0, 0, 0, date("m",$start ) , date("d",$start ) +$i-1 , date("Y",$start ))) . "&nbsp;</font></b></div>";
+  }
+
+print "<div align=\"left\"><font size=\"1\" color=\"#FFFFFF\">";
+
+$current_date = date("m-d-Y",mktime(0, 0, 0, date("m",$start ) , date("d",$start ) +$i-1 , date("Y",$start )));
+
+$dayfirst =  mktime(0, 0, 0, date("m",$start ) , date("d",$start ) +$i-1 , date("Y",$start ));
+$daylast = mktime(23, 59, 59, date("m",$start ) , date("d",$start ) +$i-1 , date("Y",$start ));
+
+$result = $db_raid->sql_query("SELECT * FROM " . $phpraid_config['db_prefix'] . "raids WHERE start_time > '" . $dayfirst . "' AND start_time <= '" . $daylast . "' ORDER BY start_time");
+$bob = "a";
+
+while($data = $db_raid->sql_fetchrow($result)) {
+	$invitetime = new_date($phpraid_config['time_format'], $data['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+	$starttime = new_date($phpraid_config['time_format'], $data['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+
+//	$starttime = date($config['time_format'],$data['start_time']);
+//	$invitetime = date($config['time_format'],$data['invite_time']);
+
+	$desc = strip_tags($data['description']);
+	$desc = str_replace("\n","<br>",$desc);
+	$desc = str_replace("'","\'",$desc);
+	$desc = str_replace("\r","",$desc);
+	$uid = $_SESSION['profile_id'];
+	$issignedup = "";
+	$resultz = $db_raid->sql_query("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id='" . $data['raid_id']. "' AND profile_id='{$_SESSION['profile_id']}'");
+	if($db_raid->sql_numrows($resultz) > 0)
+	{
+		$data2 =  $db_raid->sql_fetchrow($resultz);
+		if (($data2['queue'] == '0') and ($data2['cancel'] == '0')) {
+			$issignedup = "*";
+		} else {
+			$issignedup = "#";
+		}
+	}
+	$resultz2 = $db_raid->sql_query("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id='" . $data['raid_id']. "' AND profile_id='{$_SESSION['profile_id']}' AND queue = '0' AND cancel = '0'");
+	if ($db_raid->sql_numrows($resultz2) > 0) {
+		$issignedup = "*";
+	}
+
+		
+	$location = '<a href="view.php?mode=view&raid_id='.$data['raid_id'].'" onMouseover="ddrivetip(\'<span class=tooltip_title>Description</span><br>' . $desc . '\')" onMouseout="hideddrivetip()">'.$data['location'].'</a> <font color="#0000ff" size=+1>' . $issignedup . '</font></font>';
+	$result_total = $db_raid->sql_query("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id='".$data['raid_id']."' AND queue='0'");
+	$total = $db_raid->sql_numrows($result_total);
+
+//	$location = '<a href="view.php?mode=view&raid_id=' . $data['raid_id'] . '">' . $data['location'] . '</a>';
+
+	if ($bob <> "a") {
+		print "<hr>";
+	} else {
+		$bob="b";
+	}
+
+	print $location;
+	print "<br>";
+	print "Invites: " . $invitetime;
+	print "<br>";
+	print "Start: " . $starttime;
+	print "<br>";
+
+}
+print "&nbsp;</font></div></td> \n";
+
+
+
+  if ( ($i % 7 == 0) and ($i < ($num_rows*7)) ) {
+    print "        </tr> \n";
+    print "        <tr height=\"100\"> \n";
+  }
+}
+    print "        </tr> \n";
+
+?>
+	<tr>
+             <td colspan="7"><font size="1"><div align="left">Key:<br>(*) = Signed up & On Roster<br>(#) = Signed up, Not (yet) on roster (or cancelled)<br>White dates have past, Red date is today, Black dates are future.</div></font></td>
+	</tr>
+
+</table>
+
+<p>&nbsp;</p></div>
+
+<?php
+
+        include("includes/page_footer.php");
+
+?>

@@ -23,7 +23,14 @@ define("IN_PHPRAID", true);
 require_once('./common.php');
 
 // page authentication
-define("PAGE_LVL","raids");
+if ($phpraid_config['enable_five_man'])
+{ 
+	define("PAGE_LVL","profile");
+}
+else
+{
+	define("PAGE_LVL","raids");
+}
 require_once($phpraid_dir.'includes/authentication.php');
 
 if($_GET['mode'] == 'view')
@@ -38,20 +45,26 @@ if($_GET['mode'] == 'view')
 	// Get information for current raids
 	// And push into current array so that we can output it with our report class
 	while($data = $db_raid->sql_fetchrow($result)) {
-		$edit = '<a href="raids.php?mode=edit&id='.$data['raid_id'].'"><img src="templates/' . $phpraid_config['template'] . 
-				'/images/icons/icon_edit.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['edit'].'\')"; onMouseout="hideddrivetip()"></a>';
+		if ($_SESSION['priv_raids'] or $_SESSION['username'] == $data['officer'])
+		{
+			$edit = '<a href="raids.php?mode=edit&id='.$data['raid_id'].'"><img src="templates/' . $phpraid_config['template'] . 
+					'/images/icons/icon_edit.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['edit'].'\')"; onMouseout="hideddrivetip()"></a>';
+	
+			$delete = '<a href="raids.php?mode=delete&n='.$data['location'].'&id='.$data['raid_id'].'"><img src="templates/' . 
+						$phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['delete'].'\')"; 
+						onMouseout="hideddrivetip()"></a><a href="lua_output.php?raid_id=' . $data['raid_id'] . '">
+						
+						<img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_minipost.gif" border="0" 
+						onMouseover="ddrivetip(\''.$phprlang['lua'].'\')"; onMouseout="hideddrivetip()"></a>
+						
+						<a href="raids.php?mode=mark&id='.$data['raid_id'].'"><img src="templates/' . $phpraid_config['template'] . 
+						'/images/icons/icon_latest_reply.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['mark'].'\')"; 
+						onMouseout="hideddrivetip()"></a>';
+	
+			$old_delete = '<a href="raids.php?mode=delete&id='.$data['raid_id'].'"><img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['delete'].'\')"; onMouseout="hideddrivetip()"></a>';
 
-		$delete = '<a href="raids.php?mode=delete&n='.$data['location'].'&id='.$data['raid_id'].'"><img src="templates/' . 
-					$phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['delete'].'\')"; 
-					onMouseout="hideddrivetip()"></a><a href="lua_output.php?raid_id=' . $data['raid_id'] . '">
-					
-					<img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_minipost.gif" border="0" 
-					onMouseover="ddrivetip(\''.$phprlang['lua'].'\')"; onMouseout="hideddrivetip()"></a>
-					
-					<a href="raids.php?mode=mark&id='.$data['raid_id'].'"><img src="templates/' . $phpraid_config['template'] . 
-					'/images/icons/icon_latest_reply.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['mark'].'\')"; 
-					onMouseout="hideddrivetip()"></a>';
-					
+			$mark_new = '<a href="raids.php?mode=mark&id='.$data['raid_id'].'"><img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_latest_reply.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['new'].'\')"; onMouseout="hideddrivetip()"></a>'; 
+		}			
 		// setup the count array
 		$count = array('dr'=>'0','hu'=>'0','ma'=>'0','pa'=>'0','pr'=>'0','ro'=>'0','sh'=>'0','wk'=>'0','wa'=>'0');
 		
@@ -111,9 +124,12 @@ if($_GET['mode'] == 'view')
 					'Mag'=>$count['ma'] . "/" . $data['ma_lmt'],'Pal'=>$count['pa'] . "/" . $data['pa_lmt'],
 					'Pri'=>$count['pr'] . "/" . $data['pr_lmt'],'Rog'=>$count['ro'] . "/" . $data['ro_lmt'],
 					'Sha'=>$count['sh'] . "/" . $data['sh_lmt'],'Wlk'=>$count['wk'] . "/" . $data['wk_lmt'],'War'=>$count['wa'] . "/" . $data['wa_lmt'],
-					''=>'<a href="raids.php?mode=mark&id='.$data['raid_id'].'"><img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_latest_reply.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['new'].'\')"; onMouseout="hideddrivetip()"></a>
-						<a href="raids.php?mode=delete&id='.$data['raid_id'].'"><img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['delete'].'\')"; onMouseout="hideddrivetip()"></a>'));
+					''=> $mark_new . $old_delete));
 		}
+		$edit = "";
+		$delete= "";
+		$old_delete="";
+		$mark_new="";
 	}
 	
 	// setup formatting for report class (THANKS to www.thecalico.com)
@@ -195,7 +211,14 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 		$wk = $_POST['wk'];
 		$wa = $_POST['wa'];
 		
-		if($location == "" || $date == "" || $description == "" || $max == "" || $min_lvl == "" || $max_lvl == "" ||$dr == "" || 
+		//~@@**** Change - Douglas Wagner, 6/23/2007 ****
+		//Allowing for a Blank Raid Description.  This shouldn't be a required field.  The field is still checked but if it isn't there
+		//   the descripton is manually set to "None" and we move on.
+//		if($location == "" || $date == "" || $description == "" || $max == "" || $min_lvl == "" || $max_lvl == "" ||$dr == "" || 
+//		   $hu == "" || $ma == "" || $pa == "" || $pr == "" || $ro == "" || $sh == "" || $wk == "" || $wa == "" || !is_numeric($max) || !is_numeric($min_lvl) ||
+//		   !is_numeric($max_lvl) || !is_numeric($dr) || !is_numeric($hu) || !is_numeric($ma) || !is_numeric($pa) || !is_numeric($pr) || !is_numeric($ro) || !is_numeric($sh) ||
+//		   !is_numeric($wk) || !is_numeric($wa))
+		if($location == "" || $date == "" || $max == "" || $min_lvl == "" || $max_lvl == "" ||$dr == "" || 
 		   $hu == "" || $ma == "" || $pa == "" || $pr == "" || $ro == "" || $sh == "" || $wk == "" || $wa == "" || !is_numeric($max) || !is_numeric($min_lvl) ||
 		   !is_numeric($max_lvl) || !is_numeric($dr) || !is_numeric($hu) || !is_numeric($ma) || !is_numeric($pa) || !is_numeric($pr) || !is_numeric($ro) || !is_numeric($sh) ||
 		   !is_numeric($wk) || !is_numeric($wa))
@@ -203,42 +226,58 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 			$errorTitle = $phprlang['form_error'];
 			$errorSpace = 1;
 			$errorMsg = '<ul>';
-				if($location == "")
+			if($location == "")
 				$errorMsg .= '<li>' . $phprlang['raid_error_location'] . '</li>';
 				
 			if($date == "")
 				$errorMsg .= '<li>' . $phprlang['raid_error_date'] . '</li>';
-				
-			if($description == "")
-				$errorMsg .= '<li>' . $phprlang['raid_error_description'] . '</li>';
-				
+
+            //if($description == "")  													//Commented
+            //	$errorMsg .= '<li>' . $phprlang['raid_error_description'] . '</li>';	//Commented
+
 			if($max == "" || $min_lvl == "" || $max_lvl == "" ||$dr == "" || $hu == "" || $ma == "" || $pa == "" || $pr == "" || $ro == "" || $sh == ""  || $wk == "" || $wa == "" || !is_numeric($max) || !is_numeric($min_lvl) ||
 		   	!is_numeric($max_lvl) || !is_numeric($dr) || !is_numeric($hu) || !is_numeric($ma) || !is_numeric($pa) ||!is_numeric($pr) || !is_numeric($ro) ||
 		   	!is_numeric($sh) || !is_numeric($wk) || !is_numeric($wa))
 				$errorMsg .= '<li>' . $phprlang['raid_error_limits'] . '</li>';
 		}
+		if($description == "")				//Moved
+		{									//Added
+        	$description="None";			//Change
+        	$_POST['description']="None";	//Added
+		}
+		
 	}
-		//Normal fetch location
-		if(isset($_GET['location']))
+	
+	//Normal fetch location
+	if(isset($_GET['location']))
+	{
+		if ($_SESSION['priv_raids'] == 1)
 		{
 			$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "locations WHERE name='{$_GET['location']}'";
 			$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 			$data = $db_raid->sql_fetchrow($result);
-			
-			$max = $data['max'];
-			$dr = $data['dr'];
-			$hu = $data['hu'];
-			$ma = $data['ma'];
-			$pa = $data['pa'];
-			$pr = $data['pr'];
-			$ro = $data['ro'];
-			$sh = $data['sh'];
-			$wk = $data['wk'];
-			$wa = $data['wa'];
-			$min_lvl_value = $data['min_lvl'];
-			$max_lvl_value = $data['max_lvl'];
-			$location_value = $data['location'];
 		}
+		else
+		{
+			$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "locations WHERE name='{$_GET['location']}' and locked='0'";
+			$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+			$data = $db_raid->sql_fetchrow($result);			
+		}
+			
+		$max = $data['max'];
+		$dr = $data['dr'];
+		$hu = $data['hu'];
+		$ma = $data['ma'];
+		$pa = $data['pa'];
+		$pr = $data['pr'];
+		$ro = $data['ro'];
+		$sh = $data['sh'];
+		$wk = $data['wk'];
+		$wa = $data['wa'];
+		$min_lvl_value = $data['min_lvl'];
+		$max_lvl_value = $data['max_lvl'];
+		$location_value = $data['location'];
+	}
 	
 	if(!isset($_POST['submit']) || isset($errorTitle))
 	{
@@ -258,20 +297,29 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
          // if so, grab values from database
          if(isset($_GET['location']))
          {
-            $sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "locations WHERE name='{$_GET['location']}'";
-            $result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-            $data = $db_raid->sql_fetchrow($result);
-            
+			if ($_SESSION['priv_raids'] == 1)
+			{
+				$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "locations WHERE name='{$_GET['location']}'";
+				$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+				$data = $db_raid->sql_fetchrow($result);
+			}
+			else
+			{
+				$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "locations WHERE name='{$_GET['location']}' and locked='0'";
+				$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+				$data = $db_raid->sql_fetchrow($result);			
+			}
+
             $max = $data['max'];
-	    $dr = $data['dr'];
-	    $hu = $data['hu'];
-	    $ma = $data['ma'];
-	    $pa = $data['pa'];
-	    $pr = $data['pr'];
-	    $ro = $data['ro'];
-	    $sh = $data['sh'];
-	    $wk = $data['wk'];
-	    $wa = $data['wa'];
+		    $dr = $data['dr'];
+		    $hu = $data['hu'];
+		    $ma = $data['ma'];
+		    $pa = $data['pa'];
+		    $pr = $data['pr'];
+		    $ro = $data['ro'];
+		    $sh = $data['sh'];
+		    $wk = $data['wk'];
+		    $wa = $data['wa'];
             $min_lvl_value = $data['min_lvl'];
             $max_lvl_value = $data['max_lvl'];
             $location_value = UBB2($data['location']);
@@ -300,7 +348,7 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
             $dr = $data['dr_lmt'];
             $hu = $data['hu_lmt'];
             $ma = $data['ma_lmt'];
-	    $pa = $data['pa_lmt'];
+		    $pa = $data['pa_lmt'];
             $pr = $data['pr_lmt'];
             $ro = $data['ro_lmt'];
             $sh = $data['sh_lmt'];
@@ -369,18 +417,24 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 		}
 		$i_time_hour .= '</select>';
 		
+		//~@@Change: Douglas Wagner - 6/23/2007
+		// This code reduces the selections in the "minute" selection boxes.  We want a 15 minute granularity, not a 1 minute granularity.
 		$i_time_minute = '<select name="i_time_minute" class="post">';
 		for($i = 0; $i <= 60; $i++)
 		{
-			if($i < 10)
-				$i_string = '0' . $i;
-			else
-				$i_string = $i;
-				
-			if(isset($i_time_minute_value) && $i_string == $i_time_minute_value)
-				$i_time_minute .= '<option value="' . $i_string . '" selected>' . $i_string . '</option>';
-			else
-				$i_time_minute .= '<option value="' . $i_string . '">' . $i_string . '</option>';
+			$ifloor=$i/15;					//Added
+			if(($ifloor) == floor($ifloor)) //Added
+			{								//Added
+				if($i < 10)
+					$i_string = '0' . $i;
+				else
+					$i_string = $i;
+					
+				if(isset($i_time_minute_value) && $i_string == $i_time_minute_value)
+					$i_time_minute .= '<option value="' . $i_string . '" selected>' . $i_string . '</option>';
+				else
+					$i_time_minute .= '<option value="' . $i_string . '">' . $i_string . '</option>';
+			} 								//Added
 		}
 		$i_time_minute .= '</select>';
 		
@@ -415,19 +469,25 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 				$s_time_hour .= '<option value="' . $s_string . '">' . $s_string . '</option>';
 		}
 		$s_time_hour .= '</select>';
-		
+
+		//~@@Change: Douglas Wagner - 6/23/2007
+		// This code reduces the selections in the "minute" selection boxes.  We want a 15 minute granularity, not a 1 minute granularity.		
 		$s_time_minute = '<select name="s_time_minute" class="post">';
 		for($i = 0; $i <= 60; $i++)
 		{
-			if($i < 10)
-				$s_string = '0' . $i;
-			else
-				$s_string = $i;
-				
-			if(isset($s_time_minute_value) && $s_string == $s_time_minute_value)
-				$s_time_minute .= '<option value="' . $s_string . '" selected>' . $s_string . '</option>';
-			else
-				$s_time_minute .= '<option value="' . $s_string . '">' . $s_string . '</option>';
+			$ifloor=$i/15;					//Added
+			if(($ifloor) == floor($ifloor)) //Added
+			{								//Added
+				if($i < 10)
+					$s_string = '0' . $i;
+				else
+					$s_string = $i;
+					
+				if(isset($s_time_minute_value) && $s_string == $s_time_minute_value)
+					$s_time_minute .= '<option value="' . $s_string . '" selected>' . $s_string . '</option>';
+				else
+					$s_time_minute .= '<option value="' . $s_string . '">' . $s_string . '</option>';
+			} 								//Added
 		}
 		$s_time_minute .= '</select>';
 			$s_time_ampm = '<select name="s_time_ampm" class="post">';
@@ -466,9 +526,17 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 		// setup vars for raid templates
 		$raid_name = '<select name="name" id="name" class="post" onChange="MM_jumpMenu(\'parent\',this,0)">
 					<option value=""></option>';
-					
-		$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "locations ORDER BY name";
-		$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+
+		if ($_SESSION['priv_raids'] == 1)
+		{
+			$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "locations ORDER BY name";
+			$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		}
+		else
+		{
+			$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "locations WHERE locked='0' ORDER BY name";
+			$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		}			
 		while($data = $db_raid->sql_fetchrow($result))
 		{
 			if (isset($_GET['location'])) {

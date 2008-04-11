@@ -62,7 +62,7 @@ if(($phpraid_config['disable'] == '1') AND ($_SESSION['priv_configuration'] == 1
 	<div align=\"center\">
 	<div class=\"errorHeader\">Site disabled notice</div>
 	<div class=\"errorBody\">Please note, your site is disabled. Visitors can't use the system right now!<br>
-	Go to <u>Configuration</u> and then disable <u>Disable phpRaid</u></div>
+	Go to <u>Configuration</u> and then uncheck <u>Disable phpRaid</u></div>
 	</div>
 	";
 }
@@ -93,6 +93,7 @@ require_once($phpraid_dir.'templates/' . $phpraid_config['template'] . '/theme_c
 // links useable for everyone
 $index_link = '<a href="' . $phpraid_config['header_link'] . '">' . $theme_index_link . '</a>';
 $home_link = '<a href="index.php">' . $theme_home_link . '</a>';
+$calendar_link = '<a href="calendar_raids.php">' . $theme_calendar_link . '</a>';
 $roster_link = '<a href="roster.php">' . $theme_roster_link . '</a>';
 
 // these links need special permissions
@@ -100,17 +101,27 @@ $_SESSION['priv_announcements'] ? $announce_link = '<a href="announcements.php?m
 $_SESSION['priv_configuration'] ? $phpraid_configure_link = '<a href="configuration.php">' . $theme_configure_link . '</a>' : $phpraid_configure_link = '';
 $_SESSION['priv_permissions'] ? $permissions_link = '<a href="permissions.php?mode=view">' . $theme_permissions_link . '</a>' : $permissions_link = '';
 $_SESSION['priv_guilds'] ?	$guild_link = '<a href="guilds.php?mode=view">' . $theme_guild_link . '</a>' : $guild_link = '';
-$_SESSION['priv_raids'] ? $raids_link = '<a href="raids.php?mode=view">' . $theme_raids_link . '</a>' : $raids_link = '';
-$_SESSION['priv_raids'] ? $lua_output_link = '<a href="lua_output.php">' . $theme_lua_output_link . '</a>' : $lua_output_link = '';
 $_SESSION['priv_locations'] ? $locations_link = '<a href="locations.php?mode=view">' . $theme_locations_link . '</a>' : $locations_link = '';
 $_SESSION['priv_logs']? $logs_link = '<a href="logs.php?mode=view">' . $theme_logs_link . '</a>' : $logs_link = '';
 $_SESSION['priv_profile'] ? $profile_link = '<a href="profile.php?mode=view">' . $theme_profile_link . '</a>' : $profile_link = '';
 $_SESSION['priv_users'] ? $users_link = '<a href="users.php?mode=view">' . $theme_users_link . '</a>' : $users_link = '';
 $_SESSION['session_logged_in'] != '1' ? $register_link = '<a href="' . $phpraid_config['register_url'] . '">' . $theme_register_link . '</a>' : $register_link = '';
+if ( $_SESSION['priv_raids'] OR ($phpraid_config['enable_five_man'] AND $_SESSION['priv_profile']) )
+{ 
+	$raids_link = '<a href="raids.php?mode=view">' . $theme_raids_link . '</a>';
+	$lua_output_link = '<a href="lua_output.php">' . $theme_lua_output_link . '</a>'; 
+}
+else
+{
+	$raids_link = '';
+	$lua_output_link = '';
+}
+
 // setup menu
 $menu = '<div align="left" class="navContainer"><ul class="navList">
 <li>' . $index_link . '</li>
-<li>' . $home_link . '</li>';
+<li>' . $home_link . '</li>
+<li>' . $calendar_link . '</li>';
 
 // setup permission based links
 if($_SESSION['priv_announcements'] == 1)
@@ -133,12 +144,12 @@ if($_SESSION['priv_permissions'] == 1)
 	
 if($_SESSION['priv_profile'] == 1)
 	$menu .= '<li>' . $profile_link . '</li>';
-	
-if($_SESSION['priv_raids'] == 1)
+
+if ( $_SESSION['priv_raids'] OR ($phpraid_config['enable_five_man'] AND $_SESSION['priv_profile']) )
+{ 	
 	$menu .= '<li>' . $raids_link . '</li>';
-	
-if($_SESSION['priv_raids'] == 1)
 	$menu .= '<li>' . $lua_output_link . '</li>';
+}
 	
 if($_SESSION['priv_users'] == 1)
 	$menu .= '<li>' . $users_link . '</li>';

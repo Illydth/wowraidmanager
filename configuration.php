@@ -152,6 +152,12 @@ if($phpraid_config['showphpraid_addon'] == '0')
 else
 	$showphpraid_addon = '<input type="checkbox" name="showphpraid_addon" value="1" checked>';
 	
+if($phpraid_config['enable_five_man'] == '0')
+	$enable_five_man = '<input type="checkbox" name="enable_five_man" value="1">';
+else
+	$enable_five_man = '<input type="checkbox" name="enable_five_man" value="1" checked>';
+	
+	
 // now the faction
 $faction = '<select name="faction">';
 if($phpraid_config['faction'] == 'alliance')
@@ -278,6 +284,7 @@ $page->set_var(
 		'allow_multiple_signups' => $allow_multiple_signups,
 		'allow_anonymous_viewing' => $allow_anonymous_viewing,
 		'allow_putonqueue' => $allow_putonqueue,
+		'enable_five_man' => $enable_five_man, 
 		'allow_resop' => $allow_resop,
 		'faction' => $faction,
 		'language' => $language,
@@ -291,6 +298,7 @@ $page->set_var(
 		'dst'=>$dst,
 		'roster' => $roster,
 		'register' => $register,
+		'enable_five_man_text' => $phprlang['configuration_enable_five_man'],
 		'dst_text' => $phprlang['configuration_dst_text'],
 		'timezone_text' => $phprlang['configuration_timezone_text'],
 		'guild_configure' => $phprlang['configuration_guild_header'],
@@ -368,7 +376,12 @@ else
  		$showphpraid_addon = 1;
  	else
  		$showphpraid_addon = 0;
-		
+
+ 	if(isset($_POST['enable_five_man']))
+ 		$enable_five_man = 1;
+ 	else
+ 		$enable_five_man = 0;
+
 	$h_logo = $_POST['header_logo'];
  	$h_link = $_POST['header_link'];
  	$p_link = $_POST['phpraid_addon_link'];
@@ -445,6 +458,7 @@ else
 	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$t_format' WHERE `config_name`= 'time_format';") or print_error($sql,mysql_error(),1);
 	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$t_zone' WHERE `config_name`= 'timezone';") or print_error($sql,mysql_error(),1);
 	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$default' WHERE `config_name`= 'default_group';") or print_error($sql,mysql_error(),1);
+	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$enable_five_man' WHERE `config_name`= 'enable_five_man';") or print_error($sql,mysql_error(),1);
 																
 	header("Location: configuration.php");
 }

@@ -53,6 +53,15 @@ input.liteoption {
 	color: white;
 }
 
+#fixedtipdiv{
+	position: absolute;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	font-size:10px;
+	border: 1px solid white;
+	padding: 3px;
+	color: white;
+}
+
 .navContainer ul {
 	font-size:10px;
 	list-style-type:none;

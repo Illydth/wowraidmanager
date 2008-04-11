@@ -42,7 +42,6 @@ if($_GET['mode'] == 'view')
 		$delete = '<a href="locations.php?mode=delete&n='.$data['name'].'&id='.$data['location_id'].'"><img src="templates/' . 
 					$phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\'' . $phprlang['delete'] . '\')"; 
 					onMouseout="hideddrivetip()"></a>';
-
 		
 		array_push($loc, 
 			array(
@@ -61,6 +60,7 @@ if($_GET['mode'] == 'view')
 				'sh'=>$data['sh'],
 				'wk'=>$data['wk'],
 				'wa'=>$data['wa'],
+				'locked'=>$data['locked'],
 				''=>$edit . $delete,
 			)
 		);
@@ -99,6 +99,7 @@ if($_GET['mode'] == 'view')
 	$report->addOutputColumn('wk', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/warlock_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['warlock'] . '\')"; onMouseout="hideddrivetip()">', '', 'center');
 	$report->addOutputColumn('wa', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/warrior_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['warrior'] . '\')"; onMouseout="hideddrivetip()">', '', 'center');
 	$report->addOutputColumn('max_chars',$phprlang['max_raiders'],'','center');
+	$report->addOutputColumn('locked',$phprlang['locked_header'],'','center');
 	$report->addOutputColumn('','','','right');
 	$loc = $report->getListFromArray($loc);
 	
@@ -132,14 +133,18 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 	$sh = $_POST['sh'];
 	$wk = $_POST['wk'];
 	$wa = $_POST['wa'];
+ 	if(isset($_POST['lock_template']))
+ 		$locked = 1;
+ 	else
+ 		$locked = 0;
 	$max = $_POST['max'];
 	
 	if($_GET['mode'] == 'new')
 	{
 		$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "locations (`location`,`min_lvl`,`max_lvl`,
-		`name`,`dr`,`hu`,`ma`,`pa`,`pr`,`ro`,`sh`,`wk`,`wa`,`max`) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
+		`name`,`dr`,`hu`,`ma`,`pa`,`pr`,`ro`,`sh`,`wk`,`wa`,`max`,`locked`) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
 		quote_smart($loc),quote_smart($min_lvl),quote_smart($max_lvl),quote_smart($name),quote_smart($dr),quote_smart($hu),
-		quote_smart($ma),quote_smart($pa),quote_smart($pr),quote_smart($ro),quote_smart($sh),quote_smart($wk),quote_smart($wa),quote_smart($max));
+		quote_smart($ma),quote_smart($pa),quote_smart($pr),quote_smart($ro),quote_smart($sh),quote_smart($wk),quote_smart($wa),quote_smart($max),quote_smart($locked));
 		
 		$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
 		
@@ -153,9 +158,9 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 			$id = '';
 		
 		$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "locations SET name=%s,max=%s,dr=%s,hu=%s,ma=%s,pa=%s,pr=%s,ro=%s,sh=%s,wk=%s,
-		wa=%s,min_lvl=%s,max_lvl=%s,location=%s WHERE location_id=%s",quote_smart($name),quote_smart($max),quote_smart($dr),
+		wa=%s,min_lvl=%s,max_lvl=%s,location=%s,locked=%s WHERE location_id=%s",quote_smart($name),quote_smart($max),quote_smart($dr),
 		quote_smart($hu),quote_smart($ma),quote_smart($pa),quote_smart($pr),quote_smart($ro),quote_smart($sh),quote_smart($wk),quote_smart($wa),quote_smart($min_lvl),
-		quote_smart($max_lvl),quote_smart($loc),quote_smart($id));
+		quote_smart($max_lvl),quote_smart($loc),quote_smart($locked),quote_smart($id));
 		
 		$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 	}
@@ -218,6 +223,7 @@ if($_GET['mode'] != 'delete')
 		$sh = '<input name="sh" type="text" class="post" style="width:20px" maxlength="2">';
 		$wk = '<input name="wk" type="text" class="post" style="width:20px" maxlength="2">';
 		$wa = '<input name="wa" type="text" class="post" style="width:20px" maxlength="2">';
+		$locked = '<input name="lock_template" type="checkbox" value="1" class="post">';
 		$max = '<input name="max" type="text" class="post" style="width:20px" maxlength="2">';
 		$buttons = '<input type="submit" value="Submit" name="submit" class="mainoption"> <input type="reset" value="Reset" name="reset" class="liteoption">';
 	}
@@ -244,6 +250,10 @@ if($_GET['mode'] != 'delete')
 		$sh = '<input name="sh" type="text" value="' . $data['sh'] . '"  class="post" style="width:20px" maxlength="2">';
 		$wk = '<input name="wk" type="text" value="' . $data['wk'] . '"  class="post" style="width:20px" maxlength="2">';
 		$wa = '<input name="wa" type="text" value="' . $data['wa'] . '"  class="post" style="width:20px" maxlength="2">';
+		if($data['locked'] == '0')
+			$locked = '<input type="checkbox" name="lock_template" value="' . $data['locked'] . '"  class="post">';
+		else
+			$locked = '<input type="checkbox" name="lock_template" value="' . $data['locked'] . '"  class="post" checked>';
 		$max = '<input name="max" type="text" value="' . $data['max'] . '"  class="post" style="width:20px" maxlength="2">';
 		$buttons = '<input type="submit" value="Update" name="submit" class="mainoption"> <input type="reset" value="Reset" name="reset" class="liteoption">';			
 	}
@@ -266,6 +276,7 @@ if($_GET['mode'] != 'delete')
 			'wk'=>$wk,
 			'wa'=>$wa,
 			'max'=>$max,
+			'locked'=>$locked,
 			'buttons'=>$buttons,
 			'druid_name'=>$phprlang['druid'],
 			'hunter_name'=>$phprlang['hunter'],
@@ -276,6 +287,7 @@ if($_GET['mode'] != 'delete')
 			'shaman_name'=>$phprlang['shaman'],
 			'warlock_name'=>$phprlang['warlock'],
 			'warrior_name'=>$phprlang['warrior'],
+			'locked_text'=>$phprlang['lock_template'],
 			'newlocation_header'=>$phprlang['locations_new'],
 			'shortname_text'=>$phprlang['locations_short'],
 			'location_text'=>$phprlang['locations_long'],

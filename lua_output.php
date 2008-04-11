@@ -25,7 +25,16 @@ define("IN_PHPRAID", true);
 require_once('./common.php');
 
 // page authentication
-define("PAGE_LVL","raids");
+// page authentication
+if ($phpraid_config['enable_five_man'])
+{ 
+	define("PAGE_LVL","profile");
+}
+else
+{
+	define("PAGE_LVL","raids");
+}
+
 require_once($phpraid_dir.'includes/authentication.php');
 require_once('./lua_output_data.php');
 

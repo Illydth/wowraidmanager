@@ -58,6 +58,7 @@ CREATE TABLE  `phpraid_locations` (
   `wk` int(2) NOT NULL default '0',
   `wa` int(2) NOT NULL default '0',
   `max` int(2) NOT NULL default '0',
+  `locked` tinyint(1) NOT NULL default '0',
   PRIMARY KEY  (`location_id`)
 );
 
@@ -170,6 +171,15 @@ CREATE TABLE  `phpraid_signups` (
   PRIMARY KEY  (`signup_id`)
 );
 
+DROP TABLE IF EXISTS `phpraid_teams`;
+CREATE TABLE  `phpraid_teams` (
+  `team_id` int(10) NOT NULL auto_increment,
+  `raid_id` int(10) NOT NULL default '0',
+  `team_name` varchar(255) NOT NULL default '',
+  `char_id` int(10) NOT NULL default '0',
+  PRIMARY KEY  (`team_id`)
+);
+
 INSERT INTO `phpraid_config` VALUES ('admin_email','webmaster@yourdomain.com');
 INSERT INTO `phpraid_config` VALUES ('anon_view', '1');
 INSERT INTO `phpraid_config` VALUES ('auto_queue','0');
@@ -198,5 +208,6 @@ INSERT INTO `phpraid_config` VALUES ('time_format','h:i a');
 INSERT INTO `phpraid_config` VALUES ('timezone','-0600');
 INSERT INTO `phpraid_config` VALUES ('putonqueue', '0');
 INSERT INTO `phpraid_config` VALUES ('resop', '0');
+INSERT INTO `phpraid_config` VALUES ('enable_five_man', '0');
 
 INSERT INTO `phpraid_permissions` (`name`,`description`,`announcements`,`configuration`,`guilds`,`locations`,`permissions`,`profile`,`raids`,`logs`,`users`) VALUES ('phpRaid Superadmin','Full access','1','1','1','1','1','1','1','1','1');

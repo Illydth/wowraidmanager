@@ -1,0 +1,90 @@
+Release 3.1.0 of phpRaid.
+----------------------------
+phpRaid has new "management".  As phpRaider from SpiffyJr had replaced phpRaid
+as the raid scheduling system he was putting his time into, the phpRaid code
+was considered dead.  Since phpRaid still has an online community, and since
+the code for phpRaid was accessable at the time of this writing, I have decided 
+to carry it along.
+
+This update contains some basic changes that make it more functional for my
+guild.  Where appropriate i've tried to include options to get the system to 
+work as it always has in the past.  In the few instances where i've changed 
+functionality to make it different from the 3.0.9.2 system I have tried to 
+document those areas, both in code as well as here in the notes.
+
+If there are changes that have made the system unliveable to the users for your 
+specific guild please let me know and i'll be happy to try to get a release out
+that manages those areas better.  The intent of 3.1.0 is as a drop in replacement
+update of all prior versions of code, not as a system written specifically for
+my needs or a handfull of guilds.
+
+Modifications for 3.1.0 are listed below:
+-------------------------------------
+* New Extensible Authentication System.  While writing new authentication modules
+is still a codeing project, the concepts behind writing a module to link in with
+another system have been made easier.  There are now 4 functions that need to be
+written to install a new authentication system.  There is no need to touch any
+of the base phpRaid code to add a new system to authenticate against.  See
+authenticating_against_new_cms.txt in the docs directory for more information.
+
+* Support for the e107 CMS system.  e107 is now a natively supported system for 
+user authentication.  Please see the documentation in the install/auth/
+directory in the install_e107.php file.  This is in addition to the phpBB and
+phpRaid authentication that already existed.
+
+* Support for three distinct classes of users.  Raid Administrators (those with
+the raids permission set in the permissions area), Raid Leaders (the user who
+started and thus owns a raid, displayed as "Leader" (used to be officer) on the
+raid list, and "Users", those people signing up for a raid who are not Admins 
+or the RL.  This change allows those with "Raids" permissions to be granted
+enhanced permissions for raid signups or to administrate multiple raids at once.
+This change helps support the phpRaid system being used for 5 man group signup
+as well.
+
+* Group Support.  phpRaid has been changed at a fundamental level to support
+being used as a signup system for 5 man groups as well as raids.  Please see
+the online documentation "enable_groups.htm" in the docs folder for more
+information, you can access this documentation through the "help" link on the
+phpRaid configuration page under the "Enable Groups" checkbox.
+
+* New more easily modified user signup flow.  For those guilds who have a
+slightly different process for signing up users for their raids, the phpRaid
+system now supports an easier method of changing what buttons users have access
+to.  In the "signup_flow.php" file are 3 functions, one controls user access
+when they're in the queue, one controls access when they're in the "signed up"
+area, and one controls the access for users in the cancelled area.  Simply 
+turning on and off buttons in the documented "if" statements will change the
+process flow to allow more or less access or even completely changed process 
+flows.  
+
+Note: this is a temporary solution till I can get a fully functional
+configuration based system up and running for this.  Look for it in the next
+version of the software.
+
+Note: The default signup flow (what buttons users have access to) may have 
+changed in this version.  If you are finding that your users aren't able
+to do things they're used to doing, or can do more than they should, you 
+can easily edit signup_flow.php (read the comments) to modify the behavior.
+
+* Granularity for time dropdowns (Signup Time, Raid Time, etc.) has been changed
+to 15 minute intervals.  Users will no longer be able to schedule a raid for 
+8:07 pm with a signup time of 7:32 pm.  Instead your "Minute" options are: 00,
+15,30,45.  While this is a basic change to the system, I simply don't see the
+need to populate the dropdown with (and thus force people to scroll through) 60 
+options when 4 is really sufficient.  I could be convinced to go to 10 minute
+granularity instead of 15, but really i've never encounterd a guild that is so
+punctual as to be able to make an 8:05 raid start time as opposed to 8:06.
+
+* To support the 3 levels of raid access introduced in 3.1.0 (see above) and 
+the 5 man group support added for phpRaid in this version, the name "officer"
+in the header of the raids listing has been changed to "Leader", the underlaying
+database and code has NOT been changed to reflect the new name, only the display.
+
+Fixes for 3.1.0
+-----------------
+* Locations with a ' in them (For instance "Gruul's Lair" or "Onyxia's Lair"
+were failing to load properly when creating new raids or editing raids.  The 
+problem with the underlaying java code is now fixed.
+
+* Install addendum.txt file mistakenly named "Install addendum..txt" (two dots)
+this has been renamed.

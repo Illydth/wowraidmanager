@@ -35,7 +35,14 @@ if($_SESSION['session_logged_in'] == 0) {
 			$errorTitle = $phprlang['login_title'];
 			$errorMsg = $phprlang['login_msg'];
 			$errorDie = 1;
-		} else { 
+		}
+		else if ($logged_in == -1)
+		{
+			$errorTitle = $phprlang['login_title'];
+			$errorMsg = $phprlang['userclass_msg'];
+			$errorDie = 1;			
+		} 
+		else { 
 			header("Location: index.php");
 		}
 	}

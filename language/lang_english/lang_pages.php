@@ -18,6 +18,7 @@ $phprlang['configuration_disable'] = 'Disable phpRaid';
 $phprlang['configuration_dst_text'] = 'Daylight saving time?';
 $phprlang['configuration_email_header'] = 'E-mail configuration';
 $phprlang['configuration_email_sig'] = 'E-mail signature';
+$phprlang['configuration_enable_five_man'] = 'Enable groups<br><a href="docs/enable_groups.htm" target="_blank">help?</a>';
 $phprlang['configuration_faction'] = 'Faction';
 $phprlang['configuration_freeze'] = 'Disable freeze checking';
 $phprlang['configuration_guild_header'] = 'Guild configuration';
@@ -26,7 +27,7 @@ $phprlang['configuration_id'] = 'Show id in tables';
 $phprlang['configuration_language'] = 'Language';
 $phprlang['configuration_logo'] = 'Path to header image';
 $phprlang['configuration_multiple'] = 'Allow multiple signups';
-$phprlang['configuration_putonqueue'] = 'Users can put themselves on queue when on signup and put themselves on signup when cancelt or queued';
+$phprlang['configuration_putonqueue'] = 'Users can put themselves on queue when on signup and put themselves on signup when cancelled or queued';
 $phprlang['configuration_resop'] = 'Make resistance optional';
 
 $phprlang['configuration_register_text'] = 'Registration URL';
@@ -57,7 +58,8 @@ $phprlang['locations_limits_header'] = 'Raid limitations';
 $phprlang['locations_long'] = 'Raid dungeon';
 $phprlang['locations_new'] = 'Create a new location';
 $phprlang['locations_raid_max'] = 'Raid Max';
-$phprlang['locations_short'] = 'Identifier';	
+$phprlang['locations_short'] = 'Identifier';
+$phprlang['lock_template'] = 'Locked Raid Template?';
 
 // lua_output
 $phprlang['lua_download'] = 'Download phpRaidViewer';
@@ -160,7 +162,7 @@ $phprlang['view_new'] = 'Signup for this raid';
 $phprlang['view_max'] = 'Raid max';
 $phprlang['view_max_lvl'] = 'Maximum level';
 $phprlang['view_min_lvl'] = 'Minimum level';
-$phprlang['view_officer'] = 'Officer';
+$phprlang['view_officer'] = 'Creator';
 $phprlang['view_ok'] = 'Open for signups';
 $phprlang['view_queue'] = 'How do you want to signup?';
 $phprlang['view_queue_header'] = 'Queued signups';
@@ -170,10 +172,19 @@ $phprlang['view_signed'] = 'Already signed up';
 $phprlang['view_signup'] = 'Signup information';
 $phprlang['view_start'] = 'Start time';
 $phprlang['view_statistics_header'] = 'Statistics';
+$phprlang['view_teams_link_text'] = 'Create and Assign Teams for This Raid';
 $phprlang['view_total'] = 'Total signups';
 $phprlang['view_username'] = 'Username';
 
 // main page
 $phprlang['main_previous_raids'] = 'Previous events';
 $phprlang['main_upcoming_raids'] = 'Upcoming events';
+
+// teams
+$phprlang['team_new_header'] = 'Create New Team';
+$phprlang['team_add_header'] = 'Add Members to Team';
+$phprlang['team_remove_header'] = 'Remove Members from Team';
+$phprlang['teams_raid_view_text'] = 'Return to Raid View';
+$phprlang['team_cur_teams_header'] = 'Created Teams';
+$phprlang['team_page_header'] = 'Teams';
 ?>

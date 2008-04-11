@@ -47,6 +47,28 @@ if($raid_id == '' || !is_numeric($raid_id))
 	
 $profile_id = $_SESSION['profile_id'];
 
+isset($_GET['Sort']) ? $sort_mode = $_GET['Sort'] : $sort_mode = 'name';
+isset($_GET['SortDescending']) ? $sort_descending = $_GET['SortDescending'] : $sort_descending = 0;
+
+// This require sets up the flow control surrounding queueing, cancelling and drafting of users.
+require_once('./signup_flow.php');
+
+// Determine Advanced Profile Permisions to this Raid - Note: "user" doesn't need to be checked, it's
+//	 a default permission that will be checked within the signup flow.
+$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id='$raid_id'";
+$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+$data = $db_raid->sql_fetchrow($result);
+
+if ($_SESSION['priv_raids'] == 1)
+	$user_perm_group['admin'] = 1;
+elseif ($_SESSION['username'] == $data['officer'])
+	$user_perm_group['RL'] = 1;
+else
+{
+	$user_perm_group['admin'] = 0;
+	$user_perm_group['RL'] = 0;
+}
+
 if($mode == 'view')
 {
 	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id='$raid_id'";
@@ -84,7 +106,7 @@ if($mode == 'view')
 	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id='$raid_id'";
 	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 	$raid_total = $db_raid->sql_numrows($result);
-	
+
 	// calculate percentages
 	if($raid_total != 0)
 	{
@@ -135,59 +157,55 @@ if($mode == 'view')
 	{
 		$race = '';
 		$name = '';
+		$team_name = '';
 		
-		// okay, push the value into the array after we 
+		// okay, push the value into the array after we
 		// get all the character information from the database
 		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id=%s",quote_smart($signups['char_id']));
 		$data_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 		$data = $db_raid->sql_fetchrow($data_result);
 		
+		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "teams WHERE char_id=%s and raid_id=%s",quote_smart($signups['char_id']),quote_smart($raid_id));
+		$teams_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$teamrow = $db_raid->sql_fetchrow($teams_result);
+		
+		if ($db_raid->sql_numrows($teams_result) > 0)
+		{
+			$team_name=$teamrow['team_name'];
+		}
+		
+		// okay, push the value into the array after we 
+		// get all the character and team information from the database.
+		//$sql = sprintf("SELECT " . $phpraid_config['db_prefix'] . "chars.*, " . $phpraid_config['db_prefix'] . "teams.team_name " .
+		//				"LEFT JOIN " . $phpraid_config['db_prefix'] . "chars, " . $phpraid_config['db_prefix'] . "teams " .  
+		//				"WHERE " .$phpraid_config['db_prefix'] . "chars.char_id=%s " .
+		//				"and " .$phpraid_config['db_prefix'] . "chars.char_id=" .$phpraid_config['db_prefix'] . "teams.char_id " .
+		//				"and " .$phpraid_config['db_prefix'] . "teams.raid_id=%s",quote_smart($signups['char_id']),quote_smart($raid_id));
+		//$data_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		//$data = $db_raid->sql_fetchrow($data_result);
+		
+		//$team_name=$data['team_name'];
+		
+		/**********************
+		 * Buttons applicable to users who are Signed Up (drafted) for a raid.  Buttons for Queued and Cancelled 
+		 * Character signups are below.
+		 *   
+		 * This goes to Flow control, see signup_flow.php.
+		 * 
+		 * The function below controls the logic of what users, admins and raid leaders can do
+		 * to a character that is signed up for a raid.  The default flow control for this 
+		 * application is documented in the docs directory under "User_Signup_Flow.txt", if
+		 * you wish to change the Signup Flow, please read that document and modify what buttons
+		 * are available to each class of user ($user_perm_group) by commenting and uncommenting
+		 * the available buttons in signup_flow.php.
+		 **********************/
 		// allow queue swapping
 		$actions = '';
-		
-		//Signed up buttons
-		
-		//Put on queued allowed when signed up?
-		if($phpraid_config['putonqueue'] == 1)
-		{
-			//Demote
-			if(($_SESSION['priv_raids'] == 1) OR ($_SESSION['profile_id'] == $data['profile_id'])) {
-				$actions .= '<a href="view.php?mode=queue&raid_id=' . $raid_id . '&char_id=' . $data['char_id'] . '">
-							<img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_demote.gif" border="0" 
-							onMouseover="ddrivetip(\''.$phprlang['in_queue'].'\')"; onMouseout="hideddrivetip()"></a>';
-			}
-		}
-		else
-		{
-			if($_SESSION['priv_raids'] == 1) {
-			$actions .= '<a href="view.php?mode=queue&raid_id=' . $raid_id . '&char_id=' . $data['char_id'] . '">
-						<img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_demote.gif" border="0" 
-						onMouseover="ddrivetip(\''.$phprlang['in_queue'].'\')"; onMouseout="hideddrivetip()"></a>';
-			}
-		}
-			
-			//Edit comment
-		if($_SESSION['profile_id'] == $data['profile_id']) {
-			$actions .= '<a href="view.php?mode=edit_comment&raid_id='.$raid_id.'&signup_id='.$signups['signup_id'].'">
-						<img src="templates/'.$phpraid_config['template'].'/images/icons/icon_edit.gif" border="0" 
-						onMouseover="ddrivetip(\''.$phprlang['edit_comment'].'\')"; onMouseout="hideddrivetip()">';
-			
-			// allow users to cancel
-			$actions .= '<a href="view.php?mode=cancel&profile_id='.$data['profile_id'].'&raid_id=' . $raid_id . '&char_id='.$data['char_id'].'">
-						<img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_cancel.gif" border="0" 
-						onMouseover="ddrivetip(\''.$phprlang['cancel'].'\')"; onMouseout="hideddrivetip()"></a>';
-		}
-		
-		// allow character deletion
-		if($_SESSION['priv_raids'] == 1) {
-			$actions .= '<a href="view.php?mode=delete&raid_id=' . $raid_id . '&char_id='.$data['char_id'].'">
-						<img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" 
-						onMouseover="ddrivetip(\''.$phprlang['signup_delete'].'\')"; onMouseout="hideddrivetip()"></a>';
-		}
+		$actions = signedUpFlow($user_perm_group, $phpraid_config, $data, $raid_id, $phprlang, $sort_mode, $sort_descending, $signups);
 		
 		$date = new_date($phpraid_config['date_format'],$signups['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']);
 		$time = new_date($phpraid_config['time_format'],$signups['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']);
-			switch($data['race'])
+		switch($data['race'])
 		{
 			case $phprlang['draenei']:
 				if(strtolower($data['gender']) == 'male')
@@ -254,7 +272,7 @@ if($mode == 'view')
 		$comments = DEUBB2(htmlspecialchars($signups['comments']));
 
 		if(strlen($signups['comments']) > 25)
-			$comments = "<a href=\"#\" onMouseover=\"ddrivetip('<span class=\'tooltip_title\'>".$phprlang['comments']."<br></span>$comments','','150')\"; onMouseout=\"hideddrivetip()\">" . substr($signups['comments'], 0, 22) . "...</a>";
+			$comments = '<a href="#" onMouseover="ddrivetip(\'<span class=tooltip_title>'.$phprlang['comments'].'</span><br>'.$comments.'\',\'\',\'150\')" onMouseout="hideddrivetip()">' . substr($signups['comments'], 0, 22) . '...</a>';
 		else
 			$comments = UBB(htmlspecialchars($signups['comments']));
 			
@@ -275,63 +293,63 @@ if($mode == 'view')
 				array_push($druid, 
 					array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,
 						  'race'=>$race,'name'=>$data['name'],'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
-						  'date'=>$date,'time'=>$time));
+						  'date'=>$date,'time'=>$time,'team_name'=>$team_name));
 				break;
 			case $phprlang['hunter']:
 				$hunter_count++;
 				array_push($hunter, 
 					array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,
 						  'race'=>$race,'name'=>$data['name'],'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
-						  'date'=>$date,'time'=>$time));
+						  'date'=>$date,'time'=>$time,'team_name'=>$team_name));
 				break;
 			case $phprlang['mage']:
 				$mage_count++;
 				array_push($mage, 
 					array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,
 						  'race'=>$race,'name'=>$data['name'],'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
-						  'date'=>$date,'time'=>$time));
+						  'date'=>$date,'time'=>$time,'team_name'=>$team_name));
 				break;
 			case $phprlang['paladin']:
 				$paladin_count++;
 				array_push($paladin, 
 					array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,
 						  'race'=>$race,'name'=>$data['name'],'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
-						  'date'=>$date,'time'=>$time));
+						  'date'=>$date,'time'=>$time,'team_name'=>$team_name));
 				break;
 			case $phprlang['priest']:
 				$priest_count++;
 				array_push($priest, 
 					array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,
 						  'race'=>$race,'name'=>$data['name'],'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
-						  'date'=>$date,'time'=>$time));
+						  'date'=>$date,'time'=>$time,'team_name'=>$team_name));
 				break;
 			case $phprlang['rogue']:
 				$rogue_count++;
 				array_push($rogue, 
 					array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,
 						  'race'=>$race,'name'=>$data['name'],'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
-						  'date'=>$date,'time'=>$time));
+						  'date'=>$date,'time'=>$time,'team_name'=>$team_name));
 				break;
 			case $phprlang['shaman']:
 				$shaman_count++;
 				array_push($shaman, 
 					array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,
 						  'race'=>$race,'name'=>$data['name'],'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
-						  'date'=>$date,'time'=>$time));
+						  'date'=>$date,'time'=>$time,'team_name'=>$team_name));
 				break;
 			case $phprlang['warlock']:
 				$warlock_count++;
 				array_push($warlock, 
 					array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,
 						  'race'=>$race,'name'=>$data['name'],'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
-						  'date'=>$date,'time'=>$time));
+						  'date'=>$date,'time'=>$time,'team_name'=>$team_name));
 				break;
 			case $phprlang['warrior']:
 				$warrior_count++;
 				array_push($warrior, 
 					array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,
 						  'race'=>$race,'name'=>$data['name'],'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
-						  'date'=>$date,'time'=>$time));
+						  'date'=>$date,'time'=>$time,'team_name'=>$team_name));
 				break;
 		}
 	}
@@ -346,11 +364,11 @@ if($mode == 'view')
 		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id=%s",quote_smart($signups['char_id']));
 		$data_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 		$data = $db_raid->sql_fetchrow($data_result);
-		
+
 		$comments = DEUBB2(htmlspecialchars($signups['comments']));
 		
 		if(strlen($signups['comments']) > 25)
-			$comments = "<a href=\"#\" onMouseover=\"ddrivetip('<span class=\'tooltip_title\'>".$phprlang['comments']."<br></span>$comments','','150')\"; onMouseout=\"hideddrivetip()\">" . substr($signups['comments'], 0, 22) . "...</a>";
+			$comments = '<a href="#" onMouseover="fixedtooltip(\'<span class=tooltip_title>'.$phprlang['comments'].'</span><br>'.$comments.'\',this,event,\'150\')" onMouseout="delayhidetip()">' . substr($signups['comments'], 0, 22) . '...</a>';
 		else
 			$comments = UBB(htmlspecialchars($signups['comments']));
 			
@@ -457,50 +475,22 @@ if($mode == 'view')
 				break;
 		}
 		
+		/**********************
+		 * Buttons applicable to users who are Queued to be Drafted for a raid.  Buttons for Drafted Characters 
+		 * are set above and buttons for Cancelled Character signups are below.
+		 *   
+		 * This goes to Flow control, see signup_flow.php.
+		 * 
+		 * The function below controls the logic of what users, admins and raid leaders can do
+		 * to a character that is queued to be drafted for a raid.  The default flow control for this 
+		 * application is documented in the docs directory under "User_Signup_Flow.txt", if
+		 * you wish to change the Signup Flow, please read that document and modify what buttons
+		 * are available to each class of user ($user_perm_group) by commenting and uncommenting
+		 * the available buttons in signup_flow.php.
+		 **********************/
+		// allow queue swapping
 		$actions = '';
-		
-		//Queued button
-		
-		//Put on signup allowed when cancel?
-		if($phpraid_config['putonqueue'] == 1)
-		{		
-			//Promote to signup
-			if(($_SESSION['priv_raids'] == 1) OR ($_SESSION['profile_id'] == $data['profile_id'])) {
-				$actions .= '<a href="view.php?mode=queue&raid_id=' . $raid_id . '&char_id=' . $data['char_id'] . '">
-							<img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_promote.gif" border="0" 
-							onMouseover="ddrivetip(\''.$phprlang['out_queue'].'\')"; onMouseout="hideddrivetip()"></a>';
-			}
-		}
-		else
-		{
-			if($_SESSION['priv_raids'] == 1) {
-			$actions .= '<a href="view.php?mode=queue&raid_id=' . $raid_id . '&char_id=' . $data['char_id'] . '">
-						<img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_promote.gif" border="0" 
-						onMouseover="ddrivetip(\''.$phprlang['out_queue'].'\')"; onMouseout="hideddrivetip()"></a>';
-			}
-		}
-		
-		//Edit comment
-		if($_SESSION['profile_id'] == $data['profile_id']) {
-			$actions .= '<a href="view.php?mode=edit_comment&raid_id='.$raid_id.'&signup_id='.$signups['signup_id'].'">
-						<img src="templates/'.$phpraid_config['template'].'/images/icons/icon_edit.gif" border="0" 
-						onMouseover="ddrivetip(\''.$phprlang['edit_comment'].'\')"; onMouseout="hideddrivetip()">';
-		}
-		
-		//Cancel
-		if($_SESSION['profile_id'] == $data['profile_id']) {
-			$actions .= '<a href="view.php?mode=cancel&profile_id='.$data['profile_id'].'&raid_id=' . $raid_id . '&char_id='.$data['char_id'].'">
-						<img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_cancel.gif" border="0" 
-						onMouseover="ddrivetip(\''.$phprlang['cancel'].'\')"; onMouseout="hideddrivetip()"></a>';
-		}
-		
-		// allow character deletion
-		if($_SESSION['priv_raids'] == 1) {
-			$actions .= '<a href="view.php?mode=delete&raid_id=' . $raid_id . '&char_id='.$data['char_id'].'">
-						<img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" 
-						onMouseover="ddrivetip(\''.$phprlang['signup_delete'].'\')"; onMouseout="hideddrivetip()"></a>';
-		}
-			
+		$actions=queuedFlow($user_perm_group, $phpraid_config, $data, $raid_id, $phprlang, $sort_mode, $sort_descending, $signups);			
 		array_push($raid_queue, array('id'=>$data['char_id'],'race'=>$race,'class'=>$class,'name'=>$name,'lvl'=>$data['lvl'],'actions'=>$actions,'date'=>$date,'time'=>$time,'comments'=>$comments));
 	}
 	
@@ -518,7 +508,7 @@ if($mode == 'view')
 		$comments = DEUBB2(htmlspecialchars($signups['comments']));
 		
 		if(strlen($signups['comments']) > 25)
-			$comments = "<a href=\"#\" onMouseover=\"ddrivetip('<span class=\'tooltip_title\'>".$phprlang['comments']."<br></span>$comments','','150')\"; onMouseout=\"hideddrivetip()\">" . substr($signups['comments'], 0, 22) . "...</a>";
+			$comments = '<a href="#" onMouseover="ddrivetip(\'<span class=tooltip_title>'.$phprlang['comments'].'</span><br>'.$comments.'\',\'\',\'150\')" onMouseout="hideddrivetip()">' . substr($signups['comments'], 0, 22) . '...</a>';
 		else
 			$comments = UBB(htmlspecialchars($signups['comments']));
 			
@@ -624,44 +614,23 @@ if($mode == 'view')
 				$class = ' <img src="templates/' . $phpraid_config['template'] . '/images/classes/warrior_icon.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['warlock'].'\')"; onMouseout="hideddrivetip()">';
 				break;
 		}
+
+		/**********************
+		 * Buttons applicable to users who have canceled their signup for the Raid.  Buttons for Drafted 
+		 * Characters and Queued Characters are above.
+		 *   
+		 * This goes to Flow control, see signup_flow.php.
+		 * 
+		 * The function below controls the logic of what users, admins and raid leaders can do
+		 * to a character who has cancelled their signup from a raid.  The default flow control for this 
+		 * application is documented in the docs directory under "User_Signup_Flow.txt", if
+		 * you wish to change the Signup Flow, please read that document and modify what buttons
+		 * are available to each class of user ($user_perm_group) by commenting and uncommenting
+		 * the available buttons in signup_flow.php.
+		 **********************/
 		// allow queue swapping
 		$actions = '';
-		
-		//Cancel buttons
-		
-		//Put on signup allowed when cancel?
-		if($phpraid_config['putonqueue'] == 1)
-		{
-			//Promote
-			if(($_SESSION['priv_raids'] == 1) OR ($_SESSION['profile_id'] == $data['profile_id'])) {
-				$actions .= '<a href="view.php?mode=queue&profile_id='.$data['profile_id'].'&raid_id=' . $raid_id . '&char_id=' . $data['char_id'] . '">
-							<img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_promote.gif" border="0" 
-							onMouseover="ddrivetip(\''.$phprlang['signup_add'].'\')"; onMouseout="hideddrivetip()"></a>';
-			}
-		}
-		else
-		{
-			if($_SESSION['priv_raids'] == 1) {
-			$actions .= '<a href="view.php?mode=cancel&profile_id='.$data['profile_id'].'&raid_id=' . $raid_id . '&char_id=' . $data['char_id'] . '">
-						<img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_promote.gif" border="0" 
-						onMouseover="ddrivetip(\''.$phprlang['signup_add'].'\')"; onMouseout="hideddrivetip()"></a>';
-			}
-		}
-		
-		//Edit comment
-		if($_SESSION['profile_id'] == $data['profile_id']) {
-			$actions .= '<a href="view.php?mode=edit_comment&raid_id='.$raid_id.'&signup_id='.$signups['signup_id'].'">
-						<img src="templates/'.$phpraid_config['template'].'/images/icons/icon_edit.gif" border="0" 
-						onMouseover="ddrivetip(\''.$phprlang['edit_comment'].'\')"; onMouseout="hideddrivetip()">';
-		}
-		
-		//Delete
-		if($_SESSION['priv_raids'] == 1) {
-			$actions .= '<a href="view.php?mode=delete&raid_id=' . $raid_id . '&char_id='.$data['char_id'].'">
-						<img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" 
-						onMouseover="ddrivetip(\''.$phprlang['signup_delete'].'\')"; onMouseout="hideddrivetip()"></a>';
-		}
-			
+		$actions=canceledFlow($user_perm_group, $phpraid_config, $data, $raid_id, $phprlang, $sort_mode, $sort_descending, $signups);	
 		array_push($raid_cancel, array('id'=>$data['char_id'],'race'=>$race,'class'=>$class,'name'=>$name,'lvl'=>$data['lvl'],'actions'=>$actions,'date'=>$date,'time'=>$time,'comments'=>$comments));
 	}
 	
@@ -686,6 +655,7 @@ if($mode == 'view')
 		$report->addOutputColumn('id',$phprlang['id'],'','center');
 	$report->addOutputColumn('name',$phprlang['name'],'','left');
 	$report->addOutputColumn('comments',$phprlang['comments'],'','left');
+	$report->addOutputColumn('team_name',$phprlang['team_name'],'','left');
 	$report->addOutputColumn('lvl',$phprlang['level'],'','center');
 	$report->addOutputColumn('race',$phprlang['race'],'','center');
 	$report->addOutputColumn('arcane','<img border="0" src="templates/' . $phpraid_config['template'] . 
@@ -824,10 +794,17 @@ if($mode == 'view')
 	$warlock_icon = '<a href="#warlocks" onMouseover="ddrivetip(\''.$phprlang['warlock_icon'].'\')"; onMouseout="hideddrivetip()"><img src="templates/'.$phpraid_config['template'].'/images/classes/warlock_icon.gif" width="24" height="24" border="0"></a>';
 	$warrior_icon = '<a href="#warriors" onMouseover="ddrivetip(\''.$phprlang['warrior_icon'].'\')"; onMouseout="hideddrivetip()"><img src="templates/'.$phpraid_config['template'].'/images/classes/warrior_icon.gif" width="24" height="24" border="0"></a>';
 	
+	// And now create the link to the team assignment/creation form but only if RL or RA.
+	if ($user_perm_group['admin'] OR $user_perm_group['RL'])
+		$team_link = '<a href="teams.php?mode=view&raid_id=' . $raid_id . '">' . $phprlang['view_teams_link_text'] . '</a>';
+	else
+		$team_link="";
+		
 	// output		
 	$page->set_file('output',$phpraid_config['template'] . '/view_raid.htm');
 	$page->set_var(
 		array(
+			'team_link'=>$team_link,
 			'raid_location'=>$raid_location,
 			'raid_officer'=>$raid_officer,
 			'raid_date'=>$raid_date,
@@ -1140,7 +1117,7 @@ elseif($mode == 'delete')
 	$raid_id = $_GET['raid_id'];
 	$profile_id = $_GET['profile_id'];
 	
-	if($_SESSION['priv_raids'] == 1) {
+	if($_SESSION['priv_raids'] == 1 or $_SESSION['profile_id'] == $profile_id) {
 		// they have permission to delete
 		if(!isset($_POST['submit'])) {			
 			$form_action = 'view.php?mode=delete&profile_id=' . $profile_id . '&raid_id=' . $raid_id . '&char_id=' . $char_id;
@@ -1312,7 +1289,7 @@ elseif($mode == 'queue')
 	else
 	{
 		// verify user is editing own data
-		if($_SESSION['priv_raids'] != 1)
+		if($_SESSION['priv_raids'] != 1 && $user_perm_group['RL'] != 1)
 			log_hack();
 	
 		$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id='$raid_id' AND char_id='$char_id'";
@@ -1333,7 +1310,7 @@ elseif($mode == 'queue')
 			log_raid($char_id, $raid_id, 'queue_out');
 		}
 	}
-	header("Location: view.php?mode=view&raid_id=$raid_id");
+	header("Location: view.php?mode=view&raid_id=$raid_id&Sort=$sort_mode&SortDescending=$sort_descending");
 }
 
 elseif($mode == 'cancel')
@@ -1346,7 +1323,7 @@ elseif($mode == 'cancel')
 		log_hack();
 		
 	// verify user is editing own data
-	if($_SESSION['priv_raids'] != 1)
+	if($_SESSION['priv_raids'] != 1 && $user_perm_group['RL'] != 1)
 	{
 		if($_SESSION['profile_id'] != $_GET['profile_id'])
 			log_hack();
@@ -1388,9 +1365,11 @@ else if($mode == 'edit_comment')
 	$data = $db_raid->sql_fetchrow($result);
 
 	// verify user
-	if($_SESSION['profile_id'] != $data['profile_id'])
+	if($_SESSION['profile_id'] != $data['profile_id'] AND
+						$user_perm_group['admin'] == 0 AND 
+						$user_perm_group['RL'] == 0)
 		log_hack();
-	
+
 	if(!isset($_POST['submit']))
 	{
 		$edit_comment = $data['comments'];
@@ -1464,7 +1443,7 @@ if($show_signup == 1 && $_SESSION['priv_profile'] == 1)
 		$queue = '
 				<select name="queue">
 				<option value="queue" selected>Signup as queued</option>
-				<option value="cancel">Signup as cancelt</option>
+				<option value="cancel">Signup as cancelled</option>
 				</select>
 				';
 	}
@@ -1474,7 +1453,7 @@ if($show_signup == 1 && $_SESSION['priv_profile'] == 1)
 				<select name="queue">
 				<option value="signup" selected>Signup as available</option>
 				<option value="queue">Signup as queued</option>
-				<option value="cancel">Signup as cancelt</option>
+				<option value="cancel">Signup as cancelled</option>
 				</select>
 				';
 	}	

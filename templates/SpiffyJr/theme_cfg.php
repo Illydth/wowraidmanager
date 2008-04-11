@@ -29,6 +29,7 @@ if($use_images == 0) {
 	$theme_guild_link = $phprlang['guilds_link'];
 	$theme_permissions_link = $phprlang['permissions_link'];
 	$theme_home_link = $phprlang['home_link'];
+	$theme_calendar_link = $phprlang['calendar_link'];
 	$theme_announcement_link = $phprlang['announcements_link'];
 	$theme_raids_link = $phprlang['raids_link'];
 	$theme_locations_link = $phprlang['locations_link'];
