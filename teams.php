@@ -29,7 +29,7 @@ if ($phpraid_config['enable_five_man'])
 }
 else
 {
-define("PAGE_LVL","raids");
+	define("PAGE_LVL","raids");
 }
 require_once($phpraid_dir.'includes/authentication.php');
 
