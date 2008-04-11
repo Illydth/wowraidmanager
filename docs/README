@@ -9,11 +9,11 @@ project is no different.  Although much smaller in scope, the open source concep
 produced another great piece of software in phpRaid.  
 
 Unfortuantly there is a downside to open source, when a project changes hands it also 
-often changes direction, particulary in the case where the project changes hands through
+often changes direction, particularly in the case where the project changes hands through
 a loss of focus, as it has here.  In this case, the original developer went a different 
 direction and is maintaining a new piece of software...one a bit more generic than phpRaid.
 
-While I, as the new maintainer, endevor to keep the basics of this software as close to
+While I, as the new maintainer, endeavor to keep the basics of this software as close to
 the original idea behind phpRaid, I also see a need to advance the software with some
 new ideas and concepts of my own.  Hopefully in the end this application will be just as,
 if not more, useful than it has been to you in the past.
@@ -42,11 +42,11 @@ thanks to them for bringing the project to where it is today.
 
 Installation/Upgrade
 ---------------------
-Please see docs/INSTALL for information on both installing the 3.1.0 version of phpRaid 
+Please see docs/INSTALL for information on both installing the 3.1.1 version of phpRaid 
 as well as upgrading a current installation of phpRaid.  
 
 The old phpRaid_install_doc.pdf is still there and is a very useful resource for setup
-and installation of phpRaid, however it HAS NOT been updated to reflect 3.1.0.  Where
+and installation of phpRaid, however it HAS NOT been updated to reflect 3.1.1.  Where
 information in the installation pdf and the INSTALL text file conflict, please note that
 the INSTALL file is correct.
 
@@ -54,3 +54,19 @@ Also: ** Please take the time to read through the INSTALL file, *especially* if 
 upgrading from a prior version and ESPECIALLY the "errata" section for information on 
 what's broken by this release.**
 
+Where'd 3.1.0 Go?
+------------------
+I was fully intending to release 3.1.0 to the community at large a week or two ago, however 
+there were several things (like the signup flow for one) that simply weren't done.  Trying 
+to release a piece of software with an interface that forced you to modify code to get a 
+particular result isn't proper software development to me.  As such, I decided to hold the
+release till I got a valid version of the software that I felt comfortable with the community
+being able to use together.
+
+Unfortunately, I did "release" 3.1.0 to a couple of users who were setting up new systems.
+Due to the database changes in both 3.1.0 and 3.1.1 it was easier for me to rev the software
+to split the upgrade path to provide a clean upgrade for my test users for this version than
+it was to try to get some very dedicated testers to bend over backwards to get 3.1.1
+installed.
+
+3.1.0 is basically an unreleased testing version.

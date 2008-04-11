@@ -77,7 +77,8 @@ while($raids = $db_raid->sql_fetchrow($raids_result)) {
 		else if(check_frozen($raids['raid_id']) && $phpraid_config['disable_freeze'] == 0)
 			$info = '<img src="templates/' . $phpraid_config['template'] . '/images/icons/frozen.gif" border="0" height="14" width="14" onMouseover="ddrivetip(\'' . $phprlang['frozen_msg'] . '\')"; onMouseout="hideddrivetip()">';
 		else
-			$info = '<a href="view.php?mode=view&raid_id=' . $raids['raid_id'] . '#signup"><img src="templates/' . $phpraid_config['template'] . '/images/icons/signup.gif" border="0" height="14" width="14" onMouseover="ddrivetip(\'' . $phprlang['not_signed_up'] . '\')"; onMouseout="hideddrivetip()"></a>';
+			$info = '<a href="view.php?mode=view&raid_id=' . $raids['raid_id'] . '#signup">Sign Up</a>';
+		//	$info = '<a href="view.php?mode=view&raid_id=' . $raids['raid_id'] . '#signup"><img src="templates/' . $phpraid_config['template'] . '/images/icons/signup.gif" border="0" height="14" width="14" onMouseover="ddrivetip(\'' . $phprlang['not_signed_up'] . '\')"; onMouseout="hideddrivetip()"></a>';
 	}
 	
 	$location = '<a href="view.php?mode=view&raid_id=' . $raids['raid_id'] . '">' . $raids['location'] . '</a>';

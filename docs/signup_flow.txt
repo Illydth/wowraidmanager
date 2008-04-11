@@ -1,0 +1,173 @@
+Raid Signup Flow Changes
+==============================
+
+Introduction:
+--------------
+So one of the first limitations, and actually one of the major reasons I first started
+getting into changing phpRaid to begin with was the fact that, I guess, my guild uses a 
+different way of signing up for raids.  A way that, initially, phpRaid didn't support.
+
+As I got into using the software it surprised me that there was no way, outside of modifying
+the underlying code, to tell phpRaid that I wanted users to be able to move to cancel from 
+Drafted state, or move to Queued from Cancel, or that I didn't want administrators to 
+be able to delete people out of a raid that had signed up.
+
+3.1.1 finalizes my modifications for a flexible and extendible system for managing the
+user signup flow.  Administrators now have full ability to modify what buttons each user type
+sees in which states.
+
+A word on Enable Groups
+-----------------------
+Enable Groups turns phpRaid into not only a raid scheduling system but a 5 man group
+scheduling system as well.  The "enable raids" check box in the config area fundamentally 
+changes the way PHPRaid works.  In the old phpRaid system, this software allows a raid leader
+or raid leaders to schedule raids for the guild and administer raids through the interface
+(marking as old, signing people up, etc.).  Without "enable groups" checked ONLY those people
+with raid privilege can create raids.
+
+Enable Groups then changes the system to allow EVERYONE with PROFILE access to create their
+own raids (i.e. anyone who can signup to a raid can also create a raid).  This allows pretty
+much anyone in your guild to create a "raid".  The benefit of this is that you can use this 
+system to schedule 5 man / heroic / etc. runs as well as raids.  With Enable Groups on, your
+raid leaders become "administrators" of the raid system. 
+
+What keeps normal users from creating large, 25 or 40 man raids is locked templates.  Raid 
+Admins (those with the Raids permission) can create templates that can only be selected by
+those people with Raids permission.  This allows normal users to select templates that are 
+5 man (heroic or normal) while allowing only the raid administrators (your Guild Raid 
+Leader(s) and officers) to schedule big complicated raids.
+    
+User Types
+------------- 
+There are 3 defined user types in the phpRaid system.  Two of them are available by default
+(admin and users), one is logically created when you set the "Enable Groups" configuration
+option in the configuration section.
+
+Administrators: Those people given "raids" permissions on the permissions tab.  Anybody in
+a group that is marked with "raids" permissions is now considered a raid administrator.  Raid
+Administrators are allowed access to create locked templates, administrate all raids, use
+locked templates in scheduling raids, etc.  Without "Enable Groups" set, people in this group 
+are the only ones who can create raids for others to sign up to.
+
+Raid Leaders: This is a category of user which is created by turning on "Enable Groups".  The
+"raid leader" is the person who created the "raid".  In the case of a 5 man group, the person
+who scheduled the 5 man run is considered the "raid leader" for that raid only and has
+full administrative permissions to THAT RAID ONLY.  It's like creating a limited Administrator
+on a raid by raid basis.  "Raid Leaders" cannot use locked templates to create their raids.
+
+Users: These are the normal, unpriviledged users.  Users can signup for raids but cannot 
+modify or edit the raids in any way.  "Users" become "Raid Leaders" for a specific raid by 
+creating and scheduling a raid if "Enable Groups" is set.
+
+Raid Statuses
+---------------
+Raids also have 3 defined statuses a user can be in:
+
+Canceled: Users who have signed up for a raid but know they cannot attend.  Canceled status
+is typically used by phpRaid users who want to identify that they know a raid exists, but
+cannot make it.  It is also used by those who initially sign up for a raid but find that they
+have prior commitments that have "come up" between the time they've signed up for the raid
+and the time the raid starts.  
+
+Queued: Users in "queued" status are there because they are waiting for a spot in the raid.
+The "queue" is where the raid leader picks from when he or she determines the list of
+available cantidates for who will be on the raid.  A queued user is identified as one who is 
+intending to be available at raid invite time and will be capable of attending the scheduled
+raid.
+
+Drafted: Users in "Drafted" status are those who have been selected by the raid leader or 
+raid administrator as required to attend the raid.  The RL or RA will draft users from the
+queued status into the Drafted area to tell them that they have a spot in the raid.
+
+Permissions
+--------------
+Signup Flow Permissions is defined as what options each user type has in each raid status. 
+
+To start setting permissions, log in as an administrator and select the "configuration"
+option on the starting screen.  Scroll down to the "Signup Rights" section.
+
+This is implemented as a table of rights.  Each row is a user type (User, Raid Leader, 
+Administrator) each column is a right (Draft, Comments, etc.) and each section is a status.
+
+Within each status there are 4 columns of rights.  The rights are explained below the table.
+
+Lets assume you wanted to allow the Administrator Users to Draft people who are in queued
+status.  Find the administrator user line, find the queued status (the status the user is
+in) and select the "Draft" checkbox to give the administrator the right to draft the user
+from the queued status.
+
+To allow users to re-queue themselves after canceling their signup, find the Users line, 
+follow it to the "canceled" status area and check the "queue" box.
+
+Default Permissions
+---------------------
+The Default permissions that phpRaid now ships with are as follows:
+
+Users in Queued status can Edit their own comments, move themselves to canceled status, 
+and remove their signups completely.
+
+Users in Canceled status can Move to Queued Status and Edit their own Comments.
+
+Users in Drafted status can move to Queued Status (un-draft themselves), Edit their own
+comments and cancel their signup (move to canceled status).
+
+Raid Leaders and Admins in Can affect Users in Queued status by promoting them to 
+drafted status and editing the users comments.
+
+Raid Leaders and Admins can affect users in Canceled status by editing users comments and
+deleting users signups completely.
+
+Raid Leaders and Admins can affect users in Drafted status by demoting them to the queued
+area and editing Users comments.
+
+Note that the raid leader and admin permissions are defined as identical in all situations
+by default.  The difference is that admins have the ability to affect ALL raids while Raid 
+Leaders have the ability to affect ONLY the raids they create.
+
+Lastly, please note that Raid Leader and Adminstrator permissions affect ALL USERS in a raid
+or raids.  If you select "Draft from Queue" as a right for the administrator he or she has
+the ability to draft ALL USERS in the raids (or in all raids for the admin rights) from queue.
+This is different from User rights where a user can ONLY work on him or herself.
+
+Setting "edit comments" in a user's rights means the user can edit his or her own comments.
+Setting "edit comments" in RL or RA rights means the RL or RA can edit ALL users comments.
+
+A Final Note on combining permissions groups
+---------------------------------------------
+Please note that "User" Permissions are additive while "Raid Leader"/"Administrator"
+permissions do not combine.  A user is identified as EITHER an administrator OR a Raid Leader.
+
+The code will check for the "Raids" Permission for the groups the user belongs to.  If a user
+has the "Raids" permission set in their group, they are considered an Administrator.  The
+underlaying code WILL NOT tag the person as a Raid Leader, EVEN IF he or she starts a raid.
+
+This means that Administrator permissions ALWAYS override Raid Leader permissions EVEN in the 
+case where the Raid Leader would have more permissions than the Admin would.
+
+The concept is that raid administrators are "raid leaders" to every raid that is created. 
+
+Again, if someone comes up with a valid senario where they'd want the raid leader to have 
+more permissions on a raid than an Administrator, I can re-write a few things to allow for
+all three permissions to be distinctive.
+
+Note also that all phpRaid users have "user" permissions to a raid.  If you set a case where
+the user can do something while the administrator cannot, then the user will have access to 
+the privilege even if he or she is noted as an administrator.  A good example of this is the
+cancel status in the default permissions.  Users are allowed to cancel their signups while 
+administrators and raid leaders are not allowed to send a user to canceled.  
+
+So using the example above, if an admin or Raid Leader signs up for a raid he or she will 
+NOT be allowed to cancel other users from the drafted or queued status but WILL be able to 
+cancel him or herself from the drafted or queued area.  The "cancel" rights are given to the
+admin from the user rights in addition to any rights he or she has from the administrator
+rights.
+
+Please note that user rights are truly ADDITIVE and not Hierarchical.  Giving an administrator
+the permission to draft from queued status but not cancel from queue, and giving users the 
+ability to cancel from queue but not draft from queue, gives an administrative user the
+ability to draft all members of the raid from queue AND cancel him or herself from the raid.
+
+Reversing this, giving an administrator the rights to cancel from queue but not draft from 
+queue and giving users the ability to draft from queue but not cancel from queue leaves you 
+in a situation where the admin can remove anyone from the queued status to canceled but 
+can only draft him or herself for the raid.

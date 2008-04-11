@@ -138,10 +138,6 @@
           <td class="row2">{allow_anonymous_viewing}</td>
         </tr>
         <tr>
-          <td class="row1"><strong>{putonqueue_text}</strong></td>
-          <td class="row2">{allow_putonqueue}</td>
-        </tr>
-        <tr>
           <td class="row1"><strong>{resop_text}</strong></td>
           <td class="row2">{allow_resop}</td>
         </tr>
@@ -150,6 +146,85 @@
 </table>
 <br>
 </div>
+<div class="contentHeader">Signup Rights</div><br>
+<div class="contentBody">
+  <table width="100%" border="2" align="center" cellpadding="0" cellspacing="0">
+  <tr>
+  	<td class="row1" valign="top"></td>
+  	<td class="row2" valign="top" colspan="4"><strong>On Queue</strong></td>
+  	<td class="row1" valign="top" colspan="4"><strong>Cancelled Status</strong></td>
+  	<td class="row2" valign="top" colspan="4"><strong>Drafted (In Raid)</strong></td>
+  </tr>
+  <tr>
+  	<td class="row1" valign="top"></td>
+  	<td class="row2" valign="top">Draft</td>
+  	<td class="row2" valign="top">Comments</td>
+  	<td class="row2" valign="top">Cancel</td>
+  	<td class="row2" valign="top">Delete</td>
+  	<td class="row1" valign="top">Queue</td>
+  	<td class="row1" valign="top">Draft</td>
+  	<td class="row1" valign="top">Comments</td>
+  	<td class="row1" valign="top">Delete</td>
+  	<td class="row2" valign="top">Queue</td>
+  	<td class="row2" valign="top">Comments</td>
+  	<td class="row2" valign="top">Cancel</td>
+  	<td class="row2" valign="top">Delete</td>
+  </tr>
+  <tr>
+	<td class="row1" valign="top"><strong>{user_text}</strong></td>
+    <td class="row2" align="center" valign="top">{user_queue_promote}</td>
+    <td class="row2" align="center" valign="top">{user_queue_comments}</td>
+    <td class="row2" align="center" valign="top">{user_queue_cancel}</td>
+    <td class="row2" align="center" valign="top">{user_queue_delete}</td>
+    <td class="row1" align="center" valign="top">{user_cancel_queue}</td>
+    <td class="row1" align="center" valign="top">{user_cancel_promote}</td>
+    <td class="row1" align="center" valign="top">{user_cancel_comments}</td>
+    <td class="row1" align="center" valign="top">{user_cancel_delete}</td>
+    <td class="row2" align="center" valign="top">{user_drafted_queue}</td>
+    <td class="row2" align="center" valign="top">{user_drafted_comments}</td>
+    <td class="row2" align="center" valign="top">{user_drafted_cancel}</td>
+    <td class="row2" align="center" valign="top">{user_drafted_delete}</td>
+  </tr>
+  <tr>
+    <td class="row1"><strong>{raidlead_text}</strong></td>
+    <td class="row2" align="center" valign="top">{rl_queue_promote}</td>
+    <td class="row2" align="center" valign="top">{rl_queue_comments}</td>
+    <td class="row2" align="center" valign="top">{rl_queue_cancel}</td>
+    <td class="row2" align="center" valign="top">{rl_queue_delete}</td>
+    <td class="row1" align="center" valign="top">{rl_cancel_queue}</td>
+    <td class="row1" align="center" valign="top">{rl_cancel_promote}</td>
+    <td class="row1" align="center" valign="top">{rl_cancel_comments}</td>
+    <td class="row1" align="center" valign="top">{rl_cancel_delete}</td>
+    <td class="row2" align="center" valign="top">{rl_drafted_queue}</td>
+    <td class="row2" align="center" valign="top">{rl_drafted_comments}</td>
+    <td class="row2" align="center" valign="top">{rl_drafted_cancel}</td>
+    <td class="row2" align="center" valign="top">{rl_drafted_delete}</td>
+  </tr>
+  <tr>
+    <td class="row1"><strong>{admin_text}</strong></td>
+    <td class="row2" align="center" valign="top">{admin_queue_promote}</td>
+    <td class="row2" align="center" valign="top">{admin_queue_comments}</td>
+    <td class="row2" align="center" valign="top">{admin_queue_cancel}</td>
+    <td class="row2" align="center" valign="top">{admin_queue_delete}</td>
+    <td class="row1" align="center" valign="top">{admin_cancel_queue}</td>
+    <td class="row1" align="center" valign="top">{admin_cancel_promote}</td>
+    <td class="row1" align="center" valign="top">{admin_cancel_comments}</td>
+    <td class="row1" align="center" valign="top">{admin_cancel_delete}</td>
+    <td class="row2" align="center" valign="top">{admin_drafted_queue}</td>
+    <td class="row2" align="center" valign="top">{admin_drafted_comments}</td>
+    <td class="row2" align="center" valign="top">{admin_drafted_cancel}</td>
+    <td class="row2" align="center" valign="top">{admin_drafted_delete}</td>
+  </tr>
+</table>
+</div>
+<center>
+{cancel_def}<br/>
+{comments_def}<br/>
+{delete_def}<br/>
+{draft_def}<br/>
+{queue_def}<br/>
+</center>
+<br/>
 <div class="contentHeader">E-mail Configuration</div><br>
 <div class="contentBody">
 <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">

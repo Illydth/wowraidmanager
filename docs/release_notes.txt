@@ -1,3 +1,83 @@
+Release 3.1.2 of phpRaid
+-------------------------
+This is a bugfix release that fixes the following errors:
+
+* BUG Fix: Fixed an issue where Raid Leaders could not create teams for their own raids.  
+The raid leader could click on the "create teams" link in the "details" page of a raid 
+but would get an "insufficient privileges" message returned to them.
+
+* BUG Fix: When a User or Raid Leader clicks the "delete" button next to a user in the 
+cancelled status on the raid information page, the user is taken back to the front page 
+(index) without deleting the cancelled signup.
+
+* BUG Fix: Accidental changes to the LUA Output files rendered the phpRaidViewer UI Mod
+in game inoperable with 3.1.1 of phpRaid.
+
+Open Issues: 
+
+* Possible open issue of raid leaders not being able to promote members from queued status.
+* Possible open issue of not being able to use a port to connect to an SQL server.
+
+
+Release 3.1.1 of phpRaid.
+--------------------------
+* Added signup flow control to config area.  There are now Check boxes for each button seen
+by a user in the raid signup area.  For each state, each of the three user groups (users, 
+Raid Leaders and Administrators) can now be given access to each of the 4 actions available
+to that state.  This is the new signup flow overhaul that is mentioned below in 3.1.0.  It
+is no longer necessary (nor wanted) to modify the code to get the proper sign up control.
+Each phpRaid admin can now set their own signup flow through the config options.
+
+* Deprecated "PutOnQueue" option, this is now controlled by the Raid Signup Flow checkboxes
+in the config area.  To get the same thing as "put on queue" used to give you, in the 
+canceled and drafted area for the "User" set the "Queue" checkbox for both.  
+
+* Due to complaints of a confusing front page interface, the "signup" graphic that used to
+be used on the front page to indicate the user has the ability to sign up for the raid
+(the white U shaped arrow pointing up) has been removed and changed to a link saying 
+"Sign Up" for clarity sakes.  The Green Check mark and red Circle with Slash still remain 
+the same.  If anyone has a strong preference one way or the other please let me know.  You 
+can re-enable the U shaped arrow by uncommenting the appropriate line in the index.php file.
+If there's enough issue with this i'll make a configuration option for text information or
+graphical information in that area. 
+
+* Due to confusing language the "Auto-Queue" option in the configuration section has now
+changed to "Disallow Signup to Drafted Status".  The effect of this option is the same as 
+before.  It forces the user to sign up to the "queued" status instead of
+allowing signups to the drafted status...more practically it removes the "Signup as Available"
+selection in the "How do you want to Signup?" dropdown box.
+
+* BUG Fix: Fixed issue with installation of phpraid and phpbb auth types: They weren't using
+the right hidden field names for the auth_type which caused installation to take you to the
+wrong step and as such the installation would never finish.
+
+* BUG Fix: When you queue from cancel as a normal user you get a hacking attempt.  This has
+been fixed.
+
+Up Comming Changes
+-------------------
+* To DO: Fix link that points in installation to Spiffy JR site, doesn't work.  Point to
+local documentation or wiki.
+
+* New Feature: Allow admin/RL to add people to queued area.  May need special highlight/note 
+to ensure that players know they were admin added.
+
+* New Feature: Allow Admin to select start page (either calendar or Top Down)?
+
+* New Feature: Impliment Signup to Drafted, Signup To Queued, Signup To Cancel configuration
+options.  This allows the admin to select the dropdown values available to the user when they
+signup.  This will replace "auto queue" flag.  Should work in conjunction with signup flow
+to allow users to queue themselves in various statuses.  Check the "users can put themselves
+on queue" configuration option to verify what this does and how this works with the "auto
+queue" option here.
+
+* New Feature: Add a configuration option to change the authentication type from XXX to
+phpraid.  Maybe add an ability to switch between any of the chosen authentication types.
+
+* New Feature: Complete Security Overhaul for all of phpRaid, including a new function 
+to determine the state you're in, what your rights are, and to return a "true/false" 
+to check a hacking attempt.
+
 Release 3.1.0 of phpRaid.
 ----------------------------
 phpRaid has new "management".  As phpRaider from SpiffyJr had replaced phpRaid

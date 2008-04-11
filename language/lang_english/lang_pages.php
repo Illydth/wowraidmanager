@@ -7,14 +7,19 @@ $phprlang['announcements_title_txt'] = 'Title';
 
 // configuration
 $phprlang['configuration_addon'] = 'Addon URL';
+$phprlang['configuraiton_admin'] = 'Administrator';
 $phprlang['configuration_admin_email'] = 'Admin e-mail';
 $phprlang['configuration_anonymous'] = 'Allow anonymous viewing';
-$phprlang['configuration_autoqueue'] = 'Auto queue signups';
+$phprlang['configuration_autoqueue'] = 'Disallow Signup to Drafted Status';
+$phprlang['configuration_cancel_def'] = 'Cancel = Place User Into Cancelled Area';
+$phprlang['configuration_comments_def'] = 'Comments = Allow User to Edit Their Comments';
 $phprlang['configuration_date'] = 'Date format<br><a href="http://www.php.net/date/" target="_blank">help?</a>';
 $phprlang['configuration_description'] = 'Description';
 $phprlang['configuration_debug'] = 'Debug mode';
 $phprlang['configuration_default'] = 'Default Group';
+$phprlang['configuration_delete_def'] = 'Delete = Remove User Signup Completely';
 $phprlang['configuration_disable'] = 'Disable phpRaid';
+$phprlang['configuration_draft_def'] = 'Draft = Place User into Attending Raid Area';
 $phprlang['configuration_dst_text'] = 'Daylight saving time?';
 $phprlang['configuration_email_header'] = 'E-mail configuration';
 $phprlang['configuration_email_sig'] = 'E-mail signature';
@@ -27,9 +32,9 @@ $phprlang['configuration_id'] = 'Show id in tables';
 $phprlang['configuration_language'] = 'Language';
 $phprlang['configuration_logo'] = 'Path to header image';
 $phprlang['configuration_multiple'] = 'Allow multiple signups';
-$phprlang['configuration_putonqueue'] = 'Users can put themselves on queue when on signup and put themselves on signup when cancelled or queued';
+$phprlang['configuration_queue_def'] = 'Queue = Place User In Queued Area';
+$phprlang['configuration_raidlead'] = 'Raid Leader';
 $phprlang['configuration_resop'] = 'Make resistance optional';
-
 $phprlang['configuration_register_text'] = 'Registration URL';
 $phprlang['configuration_roster_text'] = 'Integrate with WoW Roster';
 $phprlang['configuration_show_addon'] = 'Show addon link';
@@ -38,6 +43,7 @@ $phprlang['configuration_server'] = 'Server';
 $phprlang['configuration_template'] = 'Template';
 $phprlang['configuration_time'] = 'Time format<br><a href="http://www.php.net/date/" target="_blank">help?</a>';
 $phprlang['configuration_timezone_text'] = 'Timezone';
+$phprlang['configuration_user'] = 'User';
 $phprlang['configuration_version_current'] = 'You are running the latest version of phpRaid';
 $phprlang['configuration_version_outdated_header'] = 'phpRaid update available!';
 $phprlang['configuration_version_outdated_message'] = 'Your version of phpRaid is out of date. Updating is strongly recommended.<br>

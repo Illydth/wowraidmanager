@@ -13,7 +13,7 @@ Quick Installation
 	leave it writeable by your web server if you so choose, but it is recommended that
 	you make it read only...(444 permissions in Unix).
 	
-Please see phpRaid_install_doc.php for more information.
+Please see phpRaid_install_doc.pdf for more information.
 
 
 Quick Upgrade
@@ -24,8 +24,8 @@ Quick Upgrade
 * Change the Ownership of all files to match that of your web server.  
 * Go to "install/database_schema/upgrade" 
 * Log in to your MySQL server installation and into your phpRaid database
-* Run either 3.1.0.Aliance.sql or 3.1.0.Horde.sql to make the appropriate changes to your
-	database for the 3.1.0 version of phpRaid.  
+* Run 3.1.0.sql and 3.1.1.sql to make the appropriate changes to your
+	database for the 3.1.0 and 3.1.1 version of phpRaid.  
 	
 *** NOTE *** 
 
@@ -38,7 +38,7 @@ be able to use a search and replace on phpraid_ and change that to your table pr
 
 Installing phpRaid into a supported CMS system
 -----------------------------------------------
-At the time of this writing 3.1.0 supports the following CMS systems:
+At the time of this writing 3.1.1 supports the following CMS systems:
 
 * e107 from http://www.e107.org
 * phpBB from http://www.phpbb.com
@@ -48,7 +48,7 @@ which is the default non-CMS supported installation.
 
 If you do intend to install this application into a CMS please note that it is a
 REQUIREMENT that you install your phpRaid database INTO your CMS database, at the
-moment you CANNOT seperate the databases and have everything work.  
+moment you CANNOT separate the databases and have everything work.  
 
 When entering the database information to install to, please ensure that you install
 into your CMS database to get CMS integration to work.
@@ -56,18 +56,14 @@ into your CMS database to get CMS integration to work.
 
 Eratta
 -----------------
-Unfortunately this release has broken some things, most noteably any custom templates you 
+Unfortunately this release has broken some things, most notably any custom templates you 
 may have installed.  More information as follows:
 
 * Raid Signup Flow Change: Due to the change in the code surrounding raid signups
 and the flow surrounding signing up for and being accepted into a raid, it may be the 
-case that your users have more or less "buttons" (priviliges) than they used to.  
-Unfortunately, the configuration section to manage this didn't make it into this release
-and that means modifying the code by hand.  THIS IS NOT DIFFICULT, I have taken great
-pains to document the file (signup_flow.php) to make it human readable and modifyable
-by people WITHOUT a degree in computer science, but if this is an issue for you I
-recommend waiting for the next dot release which will include the signup permissions
-configuration in the config area of phpRaid.
+case that your users have more or less "buttons" (privileges) than they used to.  
+You will need to go into the configuration section and modify the signup area checkboxes
+to return your signup rights back to the users.  This is documented in docs/signup_flow.txt
 
 * Custom Templates Broken: Due to the additions of SEVERAL sections of code in phpRaid and
 some pretty major functionality changes (5 man group support, Teams, 3 levels of

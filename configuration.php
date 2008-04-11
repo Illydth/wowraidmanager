@@ -112,11 +112,6 @@ if($phpraid_config['resop'] == '0')
 else
 	$allow_resop = '<input type="checkbox" name="resop" value="1" checked>';
 
-if($phpraid_config['putonqueue'] == '0')
-	$allow_putonqueue = '<input type="checkbox" name="putonqueue" value="1">';
-else
-	$allow_putonqueue = '<input type="checkbox" name="putonqueue" value="1" checked>';
-	
 if($phpraid_config['dst'] == '0')
 	$dst = '<input type="checkbox" name="dst" value="1">';
 else
@@ -261,6 +256,191 @@ while($data = $db_raid->sql_fetchrow($result))
 
 $default .= '</select>';
 
+// Setup the Signup Flow Configuration Area - Setup Checkboxes
+// 		User Permissions
+if($phpraid_config['user_queue_promote'] == '0')
+	$user_queue_promote = '<input type="checkbox" name="user_queue_promote" value="1">';
+else
+	$user_queue_promote = '<input type="checkbox" name="user_queue_promote" value="1" checked>';
+
+if($phpraid_config['user_queue_comments'] == '0')
+	$user_queue_comments = '<input type="checkbox" name="user_queue_comments" value="1">';
+else
+	$user_queue_comments = '<input type="checkbox" name="user_queue_comments" value="1" checked>';
+
+if($phpraid_config['user_queue_cancel'] == '0')
+	$user_queue_cancel = '<input type="checkbox" name="user_queue_cancel" value="1">';
+else
+	$user_queue_cancel = '<input type="checkbox" name="user_queue_cancel" value="1" checked>';
+
+if($phpraid_config['user_queue_delete'] == '0')
+	$user_queue_delete = '<input type="checkbox" name="user_queue_delete" value="1">';
+else
+	$user_queue_delete = '<input type="checkbox" name="user_queue_delete" value="1" checked>';
+
+if($phpraid_config['user_cancel_queue'] == '0')
+	$user_cancel_queue = '<input type="checkbox" name="user_cancel_queue" value="1">';
+else
+	$user_cancel_queue = '<input type="checkbox" name="user_cancel_queue" value="1" checked>';
+
+if($phpraid_config['user_cancel_promote'] == '0')
+	$user_cancel_promote = '<input type="checkbox" name="user_cancel_promote" value="1">';
+else
+	$user_cancel_promote = '<input type="checkbox" name="user_cancel_promote" value="1" checked>';
+
+if($phpraid_config['user_cancel_comments'] == '0')
+	$user_cancel_comments = '<input type="checkbox" name="user_cancel_comments" value="1">';
+else
+	$user_cancel_comments = '<input type="checkbox" name="user_cancel_comments" value="1" checked>';
+
+if($phpraid_config['user_cancel_delete'] == '0')
+	$user_cancel_delete = '<input type="checkbox" name="user_cancel_delete" value="1">';
+else
+	$user_cancel_delete = '<input type="checkbox" name="user_cancel_delete" value="1" checked>';
+
+if($phpraid_config['user_drafted_queue'] == '0')
+	$user_drafted_queue = '<input type="checkbox" name="user_drafted_queue" value="1">';
+else
+	$user_drafted_queue = '<input type="checkbox" name="user_drafted_queue" value="1" checked>';
+
+if($phpraid_config['user_drafted_comments'] == '0')
+	$user_drafted_comments = '<input type="checkbox" name="user_drafted_comments" value="1">';
+else
+	$user_drafted_comments = '<input type="checkbox" name="user_drafted_comments" value="1" checked>';
+
+if($phpraid_config['user_drafted_cancel'] == '0')
+	$user_drafted_cancel = '<input type="checkbox" name="user_drafted_cancel" value="1">';
+else
+	$user_drafted_cancel = '<input type="checkbox" name="user_drafted_cancel" value="1" checked>';
+
+if($phpraid_config['user_drafted_delete'] == '0')
+	$user_drafted_delete = '<input type="checkbox" name="user_drafted_delete" value="1">';
+else
+	$user_drafted_delete = '<input type="checkbox" name="user_drafted_delete" value="1" checked>';
+
+// 		Raid Leader Permissions
+if($phpraid_config['rl_queue_promote'] == '0')
+	$rl_queue_promote = '<input type="checkbox" name="rl_queue_promote" value="1">';
+else
+	$rl_queue_promote = '<input type="checkbox" name="rl_queue_promote" value="1" checked>';
+
+if($phpraid_config['rl_queue_comments'] == '0')
+	$rl_queue_comments = '<input type="checkbox" name="rl_queue_comments" value="1">';
+else
+	$rl_queue_comments = '<input type="checkbox" name="rl_queue_comments" value="1" checked>';
+
+if($phpraid_config['rl_queue_cancel'] == '0')
+	$rl_queue_cancel = '<input type="checkbox" name="rl_queue_cancel" value="1">';
+else
+	$rl_queue_cancel = '<input type="checkbox" name="rl_queue_cancel" value="1" checked>';
+
+if($phpraid_config['rl_queue_delete'] == '0')
+	$rl_queue_delete = '<input type="checkbox" name="rl_queue_delete" value="1">';
+else
+	$rl_queue_delete = '<input type="checkbox" name="rl_queue_delete" value="1" checked>';
+
+if($phpraid_config['rl_cancel_queue'] == '0')
+	$rl_cancel_queue = '<input type="checkbox" name="rl_cancel_queue" value="1">';
+else
+	$rl_cancel_queue = '<input type="checkbox" name="rl_cancel_queue" value="1" checked>';
+
+if($phpraid_config['rl_cancel_promote'] == '0')
+	$rl_cancel_promote = '<input type="checkbox" name="rl_cancel_promote" value="1">';
+else
+	$rl_cancel_promote = '<input type="checkbox" name="rl_cancel_promote" value="1" checked>';
+
+if($phpraid_config['rl_cancel_comments'] == '0')
+	$rl_cancel_comments = '<input type="checkbox" name="rl_cancel_comments" value="1">';
+else
+	$rl_cancel_comments = '<input type="checkbox" name="rl_cancel_comments" value="1" checked>';
+
+if($phpraid_config['rl_cancel_delete'] == '0')
+	$rl_cancel_delete = '<input type="checkbox" name="rl_cancel_delete" value="1">';
+else
+	$rl_cancel_delete = '<input type="checkbox" name="rl_cancel_delete" value="1" checked>';
+
+if($phpraid_config['rl_drafted_queue'] == '0')
+	$rl_drafted_queue = '<input type="checkbox" name="rl_drafted_queue" value="1">';
+else
+	$rl_drafted_queue = '<input type="checkbox" name="rl_drafted_queue" value="1" checked>';
+
+if($phpraid_config['rl_drafted_comments'] == '0')
+	$rl_drafted_comments = '<input type="checkbox" name="rl_drafted_comments" value="1">';
+else
+	$rl_drafted_comments = '<input type="checkbox" name="rl_drafted_comments" value="1" checked>';
+
+if($phpraid_config['rl_drafted_cancel'] == '0')
+	$rl_drafted_cancel = '<input type="checkbox" name="rl_drafted_cancel" value="1">';
+else
+	$rl_drafted_cancel = '<input type="checkbox" name="rl_drafted_cancel" value="1" checked>';
+
+if($phpraid_config['rl_drafted_delete'] == '0')
+	$rl_drafted_delete = '<input type="checkbox" name="rl_drafted_delete" value="1">';
+else
+	$rl_drafted_delete = '<input type="checkbox" name="rl_drafted_delete" value="1" checked>';
+
+// 		Administrator Permissions
+if($phpraid_config['admin_queue_promote'] == '0')
+	$admin_queue_promote = '<input type="checkbox" name="admin_queue_promote" value="1">';
+else
+	$admin_queue_promote = '<input type="checkbox" name="admin_queue_promote" value="1" checked>';
+
+if($phpraid_config['admin_queue_comments'] == '0')
+	$admin_queue_comments = '<input type="checkbox" name="admin_queue_comments" value="1">';
+else
+	$admin_queue_comments = '<input type="checkbox" name="admin_queue_comments" value="1" checked>';
+
+if($phpraid_config['admin_queue_cancel'] == '0')
+	$admin_queue_cancel = '<input type="checkbox" name="admin_queue_cancel" value="1">';
+else
+	$admin_queue_cancel = '<input type="checkbox" name="admin_queue_cancel" value="1" checked>';
+
+if($phpraid_config['admin_queue_delete'] == '0')
+	$admin_queue_delete = '<input type="checkbox" name="admin_queue_delete" value="1">';
+else
+	$admin_queue_delete = '<input type="checkbox" name="admin_queue_delete" value="1" checked>';
+
+if($phpraid_config['admin_cancel_queue'] == '0')
+	$admin_cancel_queue = '<input type="checkbox" name="admin_cancel_queue" value="1">';
+else
+	$admin_cancel_queue = '<input type="checkbox" name="admin_cancel_queue" value="1" checked>';
+
+if($phpraid_config['admin_cancel_promote'] == '0')
+	$admin_cancel_promote = '<input type="checkbox" name="admin_cancel_promote" value="1">';
+else
+	$admin_cancel_promote = '<input type="checkbox" name="admin_cancel_promote" value="1" checked>';
+
+if($phpraid_config['admin_cancel_comments'] == '0')
+	$admin_cancel_comments = '<input type="checkbox" name="admin_cancel_comments" value="1">';
+else
+	$admin_cancel_comments = '<input type="checkbox" name="admin_cancel_comments" value="1" checked>';
+
+if($phpraid_config['admin_cancel_delete'] == '0')
+	$admin_cancel_delete = '<input type="checkbox" name="admin_cancel_delete" value="1">';
+else
+	$admin_cancel_delete = '<input type="checkbox" name="admin_cancel_delete" value="1" checked>';
+
+if($phpraid_config['admin_drafted_queue'] == '0')
+	$admin_drafted_queue = '<input type="checkbox" name="admin_drafted_queue" value="1">';
+else
+	$admin_drafted_queue = '<input type="checkbox" name="admin_drafted_queue" value="1" checked>';
+
+if($phpraid_config['admin_drafted_comments'] == '0')
+	$admin_drafted_comments = '<input type="checkbox" name="admin_drafted_comments" value="1">';
+else
+	$admin_drafted_comments = '<input type="checkbox" name="admin_drafted_comments" value="1" checked>';
+
+if($phpraid_config['admin_drafted_cancel'] == '0')
+	$admin_drafted_cancel = '<input type="checkbox" name="admin_drafted_cancel" value="1">';
+else
+	$admin_drafted_cancel = '<input type="checkbox" name="admin_drafted_cancel" value="1" checked>';
+
+if($phpraid_config['admin_drafted_delete'] == '0')
+	$admin_drafted_delete = '<input type="checkbox" name="admin_drafted_delete" value="1">';
+else
+	$admin_drafted_delete = '<input type="checkbox" name="admin_drafted_delete" value="1" checked>';
+
+// Set up the input boxes.
 $header_logo = '<input name="header_logo" size="60" type="text" class="post" value="' . $phpraid_config['header_logo'] . '">';
 $header_link = '<input name="header_link" size="60" type="text" class="post" value="' . $phpraid_config['header_link'] . '">';
 $phpraid_addon_link = '<input name="phpraid_addon_link" size="60" type="text" class="post" value="' . $phpraid_config['phpraid_addon_link'] . '">';
@@ -283,7 +463,6 @@ $page->set_var(
 		'debug_mode' => $debug_mode,
 		'allow_multiple_signups' => $allow_multiple_signups,
 		'allow_anonymous_viewing' => $allow_anonymous_viewing,
-		'allow_putonqueue' => $allow_putonqueue,
 		'enable_five_man' => $enable_five_man, 
 		'allow_resop' => $allow_resop,
 		'faction' => $faction,
@@ -322,7 +501,6 @@ $page->set_var(
 		'date_text' => $phprlang['configuration_date'],
 		'resop_text' => $phprlang['configuration_resop'],
 		'putonsignup_text' => $phprlang['configuration_putonsignup'],
-		'putonqueue_text' => $phprlang['configuration_putonqueue'],
 		'multiple_text' => $phprlang['configuration_multiple'],
 		'anonymous_text' => $phprlang['configuration_anonymous'],
 		'freeze_text' => $phprlang['configuration_freeze'],
@@ -339,6 +517,50 @@ $page->set_var(
 		'version_info' => $version_info,
 		'default'=>$default,
 		'default_text'=>$phprlang['configuration_default'],
+		'admin_text'=>$phprlang['configuraiton_admin'],
+		'raidlead_text'=>$phprlang['configuration_raidlead'],
+		'user_text'=>$phprlang['configuration_user'],
+		'user_queue_promote'=>$user_queue_promote,
+		'user_queue_comments'=>$user_queue_comments,
+		'user_queue_cancel'=>$user_queue_cancel,
+		'user_queue_delete'=>$user_queue_delete,
+		'user_cancel_queue'=>$user_cancel_queue,
+		'user_cancel_promote'=>$user_cancel_promote,
+		'user_cancel_comments'=>$user_cancel_comments,
+		'user_cancel_delete'=>$user_cancel_delete,
+		'user_drafted_queue'=>$user_drafted_queue,
+		'user_drafted_comments'=>$user_drafted_comments,
+		'user_drafted_cancel'=>$user_drafted_cancel,
+		'user_drafted_delete'=>$user_drafted_delete,
+		'rl_queue_promote'=>$rl_queue_promote,
+		'rl_queue_comments'=>$rl_queue_comments,
+		'rl_queue_cancel'=>$rl_queue_cancel,
+		'rl_queue_delete'=>$rl_queue_delete,
+		'rl_cancel_queue'=>$rl_cancel_queue,
+		'rl_cancel_promote'=>$rl_cancel_promote,
+		'rl_cancel_comments'=>$rl_cancel_comments,
+		'rl_cancel_delete'=>$rl_cancel_delete,
+		'rl_drafted_queue'=>$rl_drafted_queue,
+		'rl_drafted_comments'=>$rl_drafted_comments,
+		'rl_drafted_cancel'=>$rl_drafted_cancel,
+		'rl_drafted_delete'=>$rl_drafted_delete,
+		'admin_queue_promote'=>$admin_queue_promote,
+		'admin_queue_comments'=>$admin_queue_comments,
+		'admin_queue_cancel'=>$admin_queue_cancel,
+		'admin_queue_delete'=>$admin_queue_delete,
+		'admin_cancel_queue'=>$admin_cancel_queue,
+		'admin_cancel_promote'=>$admin_cancel_promote,
+		'admin_cancel_comments'=>$admin_cancel_comments,
+		'admin_cancel_delete'=>$admin_cancel_delete,
+		'admin_drafted_queue'=>$admin_drafted_queue,
+		'admin_drafted_comments'=>$admin_drafted_comments,
+		'admin_drafted_cancel'=>$admin_drafted_cancel,
+		'admin_drafted_delete'=>$admin_drafted_delete,		
+		'queue_def'=>$phprlang['configuration_queue_def'],
+		'draft_def'=>$phprlang['configuration_draft_def'],
+		'comments_def'=>$phprlang['configuration_comments_def'],
+		'cancel_def'=>$phprlang['configuration_cancel_def'],
+		'delete_def'=>$phprlang['configuration_delete_def'],
 	)
 );
 
@@ -391,11 +613,6 @@ else
 	else
 		$allow_multiple = 0;
 		
-	if(isset($_POST['putonqueue']))
-		$allow_putonqueue = 1;
-	else
-		$allow_putonqueue = 0;
-		
 	if(isset($_POST['resop']))
 		$allow_resop = 1;
 	else
@@ -416,6 +633,153 @@ else
 	else
 		$d_freeze = 0;
 		
+	// Process Signup Flow Checkboxes
+	if(isset($_POST['user_queue_promote']))
+		$uqp = 1;
+	else
+		$uqp = 0;
+	if(isset($_POST['user_queue_comments']))
+		$uqc = 1;
+	else
+		$uqc = 0;
+	if(isset($_POST['user_queue_cancel']))
+		$uqa = 1;
+	else
+		$uqa = 0;
+	if(isset($_POST['user_queue_delete']))
+		$uqd = 1;
+	else
+		$uqd = 0;
+	if(isset($_POST['user_cancel_queue']))
+		$ucq = 1;
+	else
+		$ucq = 0;
+	if(isset($_POST['user_cancel_promote']))
+		$ucp = 1;
+	else
+		$ucp = 0;
+	if(isset($_POST['user_cancel_comments']))
+		$ucc = 1;
+	else
+		$ucc = 0;
+	if(isset($_POST['user_cancel_delete']))
+		$ucd = 1;
+	else
+		$ucd = 0;
+	if(isset($_POST['user_drafted_queue']))
+		$udq = 1;
+	else
+		$udq = 0;
+	if(isset($_POST['user_drafted_comments']))
+		$udc = 1;
+	else
+		$udc = 0;
+	if(isset($_POST['user_drafted_cancel']))
+		$uda = 1;
+	else
+		$uda = 0;
+	if(isset($_POST['user_drafted_delete']))
+		$udd = 1;
+	else
+		$udd = 0;
+	if(isset($_POST['rl_queue_promote']))
+		$rqp = 1;
+	else
+		$rqp = 0;
+	if(isset($_POST['rl_queue_comments']))
+		$rqc = 1;
+	else
+		$rqc = 0;
+	if(isset($_POST['rl_queue_cancel']))
+		$rqa = 1;
+	else
+		$rqa = 0;
+	if(isset($_POST['rl_queue_delete']))
+		$rqd = 1;
+	else
+		$rqd = 0;
+	if(isset($_POST['rl_cancel_queue']))
+		$rcq = 1;
+	else
+		$rcq = 0;
+	if(isset($_POST['rl_cancel_promote']))
+		$rcp = 1;
+	else
+		$rcp = 0;
+	if(isset($_POST['rl_cancel_comments']))
+		$rcc = 1;
+	else
+		$rcc = 0;
+	if(isset($_POST['rl_cancel_delete']))
+		$rcd = 1;
+	else
+		$rcd = 0;
+	if(isset($_POST['rl_drafted_queue']))
+		$rdq = 1;
+	else
+		$rdq = 0;
+	if(isset($_POST['rl_drafted_comments']))
+		$rdc = 1;
+	else
+		$rdc = 0;
+	if(isset($_POST['rl_drafted_cancel']))
+		$rda = 1;
+	else
+		$rda = 0;
+	if(isset($_POST['rl_drafted_delete']))
+		$rdd = 1;
+	else
+		$rdd = 0;
+	if(isset($_POST['admin_queue_promote']))
+		$aqp = 1;
+	else
+		$aqp = 0;
+	if(isset($_POST['admin_queue_comments']))
+		$aqc = 1;
+	else
+		$aqc = 0;
+	if(isset($_POST['admin_queue_cancel']))
+		$aqa = 1;
+	else
+		$aqa = 0;
+	if(isset($_POST['admin_queue_delete']))
+		$aqd = 1;
+	else
+		$aqd = 0;
+	if(isset($_POST['admin_cancel_queue']))
+		$acq = 1;
+	else
+		$acq = 0;
+	if(isset($_POST['admin_cancel_promote']))
+		$acp = 1;
+	else
+		$acp = 0;
+	if(isset($_POST['admin_cancel_comments']))
+		$acc = 1;
+	else
+		$acc = 0;
+	if(isset($_POST['admin_cancel_delete']))
+		$acd = 1;
+	else
+		$acd = 0;
+	if(isset($_POST['admin_drafted_queue']))
+		$adq = 1;
+	else
+		$adq = 0;
+	if(isset($_POST['admin_drafted_comments']))
+		$adc = 1;
+	else
+		$adc = 0;
+	if(isset($_POST['admin_drafted_cancel']))
+		$ada = 1;
+	else
+		$ada = 0;
+	if(isset($_POST['admin_drafted_delete']))
+		$add = 1;
+	else
+		$add = 0;
+// End of Signup Flow Boxes
+		 		
 	$g_name = DEUBB($_POST['guild_name']);
 	$g_desc =  DEUBB($_POST['guild_description']);
 	$g_server =  DEUBB($_POST['guild_server']);
@@ -434,7 +798,6 @@ else
 	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$a_email' WHERE `config_name`= 'admin_email';") or print_error($sql,mysql_error(),1);
 	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$allow_multiple' WHERE `config_name`= 'multiple_signups';") or print_error($sql,mysql_error(),1);
 	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$allow_resop' WHERE `config_name`= 'resop';") or print_error($sql,mysql_error(),1);
-	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$allow_putonqueue' WHERE `config_name`= 'putonqueue';") or print_error($sql,mysql_error(),1);
 	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$anon' WHERE `config_name`= 'anon_view';") or print_error($sql,mysql_error(),1);
 	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$a_queue' WHERE `config_name`= 'auto_queue';") or print_error($sql,mysql_error(),1);
 	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$d_format' WHERE `config_name`= 'date_format';") or print_error($sql,mysql_error(),1);
@@ -459,6 +822,43 @@ else
 	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$t_zone' WHERE `config_name`= 'timezone';") or print_error($sql,mysql_error(),1);
 	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$default' WHERE `config_name`= 'default_group';") or print_error($sql,mysql_error(),1);
 	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$enable_five_man' WHERE `config_name`= 'enable_five_man';") or print_error($sql,mysql_error(),1);
+	//Signup Flow Config
+	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$uqp' WHERE `config_name`= 'user_queue_promote';") or print_error($sql,mysql_error(),1);
+	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$uqc' WHERE `config_name`= 'user_queue_comments';") or print_error($sql,mysql_error(),1);
+	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$uqa' WHERE `config_name`= 'user_queue_cancel';") or print_error($sql,mysql_error(),1);
+	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$uqd' WHERE `config_name`= 'user_queue_delete';") or print_error($sql,mysql_error(),1);
+	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$ucq' WHERE `config_name`= 'user_cancel_queue';") or print_error($sql,mysql_error(),1);
+	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$ucp' WHERE `config_name`= 'user_cancel_promote';") or print_error($sql,mysql_error(),1);
+	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$ucc' WHERE `config_name`= 'user_cancel_comments';") or print_error($sql,mysql_error(),1);
+	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$ucd' WHERE `config_name`= 'user_cancel_delete';") or print_error($sql,mysql_error(),1);
+	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$udq' WHERE `config_name`= 'user_drafted_queue';") or print_error($sql,mysql_error(),1);
+	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$udc' WHERE `config_name`= 'user_drafted_comments';") or print_error($sql,mysql_error(),1);
+	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$uda' WHERE `config_name`= 'user_drafted_cancel';") or print_error($sql,mysql_error(),1);
+	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$udd' WHERE `config_name`= 'user_drafted_delete';") or print_error($sql,mysql_error(),1);
+	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$rqp' WHERE `config_name`= 'rl_queue_promote';") or print_error($sql,mysql_error(),1);
+	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$rqc' WHERE `config_name`= 'rl_queue_comments';") or print_error($sql,mysql_error(),1);
+	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$rqa' WHERE `config_name`= 'rl_queue_cancel';") or print_error($sql,mysql_error(),1);
+	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$rqd' WHERE `config_name`= 'rl_queue_delete';") or print_error($sql,mysql_error(),1);
+	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$rcq' WHERE `config_name`= 'rl_cancel_queue';") or print_error($sql,mysql_error(),1);
+	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$rcp' WHERE `config_name`= 'rl_cancel_promote';") or print_error($sql,mysql_error(),1);
+	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$rcc' WHERE `config_name`= 'rl_cancel_comments';") or print_error($sql,mysql_error(),1);
+	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$rcd' WHERE `config_name`= 'rl_cancel_delete';") or print_error($sql,mysql_error(),1);
+	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$rdq' WHERE `config_name`= 'rl_drafted_queue';") or print_error($sql,mysql_error(),1);
+	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$rdc' WHERE `config_name`= 'rl_drafted_comments';") or print_error($sql,mysql_error(),1);
+	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$rda' WHERE `config_name`= 'rl_drafted_cancel';") or print_error($sql,mysql_error(),1);
+	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$rdd' WHERE `config_name`= 'rl_drafted_delete';") or print_error($sql,mysql_error(),1);
+	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$aqp' WHERE `config_name`= 'admin_queue_promote';") or print_error($sql,mysql_error(),1);
+	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$aqc' WHERE `config_name`= 'admin_queue_comments';") or print_error($sql,mysql_error(),1);
+	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$aqa' WHERE `config_name`= 'admin_queue_cancel';") or print_error($sql,mysql_error(),1);
+	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$aqd' WHERE `config_name`= 'admin_queue_delete';") or print_error($sql,mysql_error(),1);
+	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$acq' WHERE `config_name`= 'admin_cancel_queue';") or print_error($sql,mysql_error(),1);
+	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$acp' WHERE `config_name`= 'admin_cancel_promote';") or print_error($sql,mysql_error(),1);
+	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$acc' WHERE `config_name`= 'admin_cancel_comments';") or print_error($sql,mysql_error(),1);
+	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$acd' WHERE `config_name`= 'admin_cancel_delete';") or print_error($sql,mysql_error(),1);
+	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$adq' WHERE `config_name`= 'admin_drafted_queue';") or print_error($sql,mysql_error(),1);
+	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$adc' WHERE `config_name`= 'admin_drafted_comments';") or print_error($sql,mysql_error(),1);
+	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$ada' WHERE `config_name`= 'admin_drafted_cancel';") or print_error($sql,mysql_error(),1);
+	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$add' WHERE `config_name`= 'admin_drafted_delete';") or print_error($sql,mysql_error(),1);
 																
 	header("Location: configuration.php");
 }
