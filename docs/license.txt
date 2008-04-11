@@ -1,0 +1,45 @@
+WoW Raid Manager License
+
+The WoW Raid Manager (phpRaid) license has now been fully implemented.
+
+WOW Raid Manager (otherwise known as phpRaid) is licensed via the GNU GPL v3.0 license.
+
+All code headers should now read:
+
+/***************************************************************************
+*
+*    WoW Raid Manager - Raid Management Software for World of Warcraft
+*    Copyright (C) 2007-2008 Douglas Wagner
+*
+*    This program is free software: you can redistribute it and/or modify
+*    it under the terms of the GNU General Public License as published by
+*    the Free Software Foundation, either version 3 of the License, or
+*    (at your option) any later version.
+*
+*    This program is distributed in the hope that it will be useful,
+*    but WITHOUT ANY WARRANTY; without even the implied warranty of
+*    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*    GNU General Public License for more details.
+*
+*    You should have received a copy of the GNU General Public License
+*    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+* 
+****************************************************************************/
+
+As well a copy of the GNU GPL Version 3.0 has been included in Docs/gpl-3.0.txt
+
+Prior versions of phpRaid (3.0.9.x, 3.1.x) are licensed via the GNU GPL v2.0 license, however
+it was brought to my attention that the license was not fully implemented according to the
+requirements of the GPL, that said, the intent was always to license this software via the
+GPL.  For those versions that I maintain (versions 3.1.x), whether I explicitly hold the 
+copyright in the code or not, I maintain the license on the files as the GNU GPL v2 license.   
+
+For version 3.2.x and above the license has changed to the GNU v3.0 license and the software 
+will be released via that license from now on.  The full text of the GNU 3.0 license can be
+be found in the Docs/gpl-3.0.txt file or on www.gnu.org/licenses.
+
+If there are any questions about the above or other license questions, please
+direct them to douglasw at wagnerweb dot org or to the www.wowraidmanager.net website.
+
+Douglas Wagner
+Illydth - phpRaid Maintainer.

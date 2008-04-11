@@ -3,28 +3,39 @@
  *                               locations.php
  *                            -------------------
  *   begin                : Saturday, Jan 16, 2005
- *   copyright            : (C) 2005 Kyle Spraggs
- *   email                : spiffyjr@gmail.com
+ *   copyright            : (C) 2007-2008 Douglas Wagner
+ *   email                : douglasw@wagnerweb.org
  *
- *   $Id: mysql.php,v 1.16 2002/03/19 01:07:36 psotfx Exp $
+ *   $Id: locations.php,v 2.0 2008/03/07 16:46:43 psotfx Exp $
  *
  ***************************************************************************/
 
 /***************************************************************************
- *
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- ***************************************************************************/
+*
+*    WoW Raid Manager - Raid Management Software for World of Warcraft
+*    Copyright (C) 2007-2008 Douglas Wagner
+*
+*    This program is free software: you can redistribute it and/or modify
+*    it under the terms of the GNU General Public License as published by
+*    the Free Software Foundation, either version 3 of the License, or
+*    (at your option) any later version.
+*
+*    This program is distributed in the hope that it will be useful,
+*    but WITHOUT ANY WARRANTY; without even the implied warranty of
+*    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*    GNU General Public License for more details.
+*
+*    You should have received a copy of the GNU General Public License
+*    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*
+****************************************************************************/
 // commons
 define("IN_PHPRAID", true);	
 require_once('./common.php');
 
 // page authentication
 define("PAGE_LVL","locations");
-require_once($phpraid_dir.'includes/authentication.php');
+require_once("includes/authentication.php");
 
 // show the form
 if($_GET['mode'] == 'view')
@@ -119,25 +130,25 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 	$form_error = 0;
 		
 	// slashes
-	$name =$_POST['name'];
-	$loc = $_POST['location'];
+	$name =scrub_input($_POST['name']);
+	$loc = scrub_input($_POST['location']);
 		
-	$min_lvl = $_POST['min_lvl'];
-	$max_lvl = $_POST['max_lvl'];
-	$dr = $_POST['dr'];
-	$hu = $_POST['hu'];
-	$ma = $_POST['ma'];
-	$pa = $_POST['pa'];
-	$pr = $_POST['pr'];
-	$ro = $_POST['ro'];
-	$sh = $_POST['sh'];
-	$wk = $_POST['wk'];
-	$wa = $_POST['wa'];
+	$min_lvl = scrub_input($_POST['min_lvl']);
+	$max_lvl = scrub_input($_POST['max_lvl']);
+	$dr = scrub_input($_POST['dr']);
+	$hu = scrub_input($_POST['hu']);
+	$ma = scrub_input($_POST['ma']);
+	$pa = scrub_input($_POST['pa']);
+	$pr = scrub_input($_POST['pr']);
+	$ro = scrub_input($_POST['ro']);
+	$sh = scrub_input($_POST['sh']);
+	$wk = scrub_input($_POST['wk']);
+	$wa = scrub_input($_POST['wa']);
  	if(isset($_POST['lock_template']))
  		$locked = 1;
  	else
  		$locked = 0;
-	$max = $_POST['max'];
+	$max = scrub_input($_POST['max']);
 	
 	if($_GET['mode'] == 'new')
 	{
@@ -153,7 +164,7 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 	elseif($_GET['mode'] == 'edit');
 	{
 		if(isset($_GET['id']))
-			$id = $_GET['id'];
+			$id = scrub_input($_GET['id']);
 		else
 			$id = '';
 		
@@ -169,8 +180,8 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 }
 elseif($_GET['mode'] == 'delete')
 {
-	$id = $_GET['id'];
-	$n = $_GET['n'];
+	$id = scrub_input($_GET['id']);
+	$n = scrub_input($_GET['n']);
 	
 	if($_SESSION['priv_locations'] == 1) {
 		if(!isset($_POST['submit'])) {			
@@ -229,7 +240,7 @@ if($_GET['mode'] != 'delete')
 	}
 	elseif($_GET['mode'] == 'update')
 	{
-		$id = $_GET['id'];
+		$id = scrub_input($_GET['id']);
 		
 		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "locations WHERE location_id=%s",quote_smart($id));
 		$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);

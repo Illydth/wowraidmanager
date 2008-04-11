@@ -3,32 +3,44 @@
 *                           functions_logging.php
 *                           ---------------------
 *   begin                : Monday, May 22, 2006
-*   copyright            : (C) 2005 Kyle Spraggs
-*   email                : spiffyjr@gmail.com
+*   copyright            : (C) 2007-2008 Douglas Wagner
+*   email                : douglasw@wagnerweb.org
 *
-*   $Id: mysql.php,v 1.16 2002/03/19 01:07:36 psotfx Exp $
+*   $Id: functions_logging.php,v 2.00 2008/03/03 14:49:45 psotfx Exp $
 *
 ***************************************************************************/
 
 /***************************************************************************
 *
-*   This program is free software; you can redistribute it and/or modify
-*   it under the terms of the GNU General Public License as published by
-*   the Free Software Foundation; either version 2 of the License, or
-*   (at your option) any later version.
+*    WoW Raid Manager - Raid Management Software for World of Warcraft
+*    Copyright (C) 2007-2008 Douglas Wagner
 *
-***************************************************************************/
+*    This program is free software: you can redistribute it and/or modify
+*    it under the terms of the GNU General Public License as published by
+*    the Free Software Foundation, either version 3 of the License, or
+*    (at your option) any later version.
+*
+*    This program is distributed in the hope that it will be useful,
+*    but WITHOUT ANY WARRANTY; without even the implied warranty of
+*    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*    GNU General Public License for more details.
+*
+*    You should have received a copy of the GNU General Public License
+*    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*
+****************************************************************************/
+
 function log_create($type, $create_id, $create_name)
 {
 	global $db_raid, $phprlang, $phpraid_config;
 	
-	$profile_id = $_SESSION['profile_id'];
+	$profile_id = scrub_input($_SESSION['profile_id']);
 	
 	// log IP among other information useful
 	if (isset($_SERVER['HTTP_X_FORWARD_FOR'])) {
-		$ip = $_SERVER['HTTP_X_FORWARD_FOR'];
+		$ip = scrub_input($_SERVER['HTTP_X_FORWARD_FOR']);
 	} else {
-		$ip = $_SERVER['REMOTE_ADDR'];
+		$ip = scrub_input($_SERVER['REMOTE_ADDR']);
 	}
 	
 	$timestamp = time();
@@ -47,17 +59,17 @@ function log_delete($type, $delete_name)
 	
 	// log IP among other information useful
 	if (isset($_SERVER['HTTP_X_FORWARD_FOR'])) {
-		$ip = $_SERVER['HTTP_X_FORWARD_FOR'];
+		$ip = scrub_input($_SERVER['HTTP_X_FORWARD_FOR']);
 	} else {
-		$ip = $_SERVER['REMOTE_ADDR'];
+		$ip = scrub_input($_SERVER['REMOTE_ADDR']);
 	}
 	
 	$timestamp = time();
 	
-	$sql = "INSERT INTO " . $phpraid_config['db_prefix'] . "logs_delete
+	$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "logs_delete
 				(`profile_id`,`delete_name`,`ip`,`timestamp`,`type`)
 			VALUES
-				('$profile_id','$delete_name','$ip','$timestamp','$type')";
+				(%s,%s,%s,%s,%s)",quote_smart($profile_id),quote_smart($delete_name),quote_smart($ip),quote_smart($timestamp),quote_smart($type));
 	$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 }
 
@@ -68,9 +80,9 @@ function log_hack()
 	// it's a hacking attempt
 	// log IP among other information useful
 	if (isset($_SERVER['HTTP_X_FORWARD_FOR'])) {
-		$ip = $_SERVER['HTTP_X_FORWARD_FOR'];
+		$ip = scrub_input($_SERVER['HTTP_X_FORWARD_FOR']);
 	} else {
-		$ip = $_SERVER['REMOTE_ADDR'];
+		$ip = scrub_input($_SERVER['REMOTE_ADDR']);
 	}
 		
 	$page = basename($_SERVER['PHP_SELF']);
@@ -105,17 +117,17 @@ function log_raid($char_id, $raid_id, $type)
 	
 	// log IP among other information useful
 	if (isset($_SERVER['HTTP_X_FORWARD_FOR'])) {
-		$ip = $_SERVER['HTTP_X_FORWARD_FOR'];
+		$ip = scrub_input($_SERVER['HTTP_X_FORWARD_FOR']);
 	} else {
-		$ip = $_SERVER['REMOTE_ADDR'];
+		$ip = scrub_input($_SERVER['REMOTE_ADDR']);
 	}
 	
 	$timestamp = time();
 	
-	$sql = "INSERT INTO " . $phpraid_config['db_prefix'] . "logs_raid
+	$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "logs_raid
 				(`char_id`,`profile_id`,`raid_id`,`ip`,`timestamp`,`type`)
 			VALUES
-				('$char_id','$profile_id','$raid_id','$ip','$timestamp','$type')";
+				(%s,%s,%s,%s,%s,%s)", quote_smart($char_id), quote_smart($profile_id), quote_smart($raid_id), quote_smart($ip), quote_smart($timestamp), quote_smart($type));
 	$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 }
 ?>

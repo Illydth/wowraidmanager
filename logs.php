@@ -1,34 +1,45 @@
 <?php
 /***************************************************************************
- *                              roster.php
+ *                              logs.php
  *                            -------------------
  *   begin                : Saturday, Jan 16, 2005
- *   copyright            : (C) 2005 Kyle Spraggs
- *   email                : spiffyjr@gmail.com
+ *   copyright            : (C) 2007-2008 Douglas Wagner
+ *   email                : douglasw@wagnerweb.org
  *
- *   $Id: mysql.php,v 1.16 2002/03/19 01:07:36 psotfx Exp $
+ *   $Id: logs.php,v 2.00 2008/03/07 17:05:18 psotfx Exp $
  *
  ***************************************************************************/
 
 /***************************************************************************
- *
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- ***************************************************************************/
+*
+*    WoW Raid Manager - Raid Management Software for World of Warcraft
+*    Copyright (C) 2007-2008 Douglas Wagner
+*
+*    This program is free software: you can redistribute it and/or modify
+*    it under the terms of the GNU General Public License as published by
+*    the Free Software Foundation, either version 3 of the License, or
+*    (at your option) any later version.
+*
+*    This program is distributed in the hope that it will be useful,
+*    but WITHOUT ANY WARRANTY; without even the implied warranty of
+*    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*    GNU General Public License for more details.
+*
+*    You should have received a copy of the GNU General Public License
+*    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*
+****************************************************************************/
 // commons
 define("IN_PHPRAID", true);	
 require_once('./common.php');
 
 // page authentication
 define("PAGE_LVL","logs");
-require_once($phpraid_dir.'includes/authentication.php');
+require_once("includes/authentication.php");
 
 if($_GET['mode'] == 'delete')
 {
-	$section = $_GET['section'];
+	$section = scrub_input($_GET['section']);
 	
 	if($section == "1")
 	{
@@ -67,7 +78,7 @@ if($_GET['mode'] == 'delete')
 	}
 	else
 	{
-		$sql = "TRUNCATE TABLE " . $phpraid_config['db_prefix'] . "$logtype";
+		$sql = printf("TRUNCATE TABLE " . $phpraid_config['db_prefix'] . "%s", quote_smart($logtype));
 		$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 		header("Location: logs.php");
 	}

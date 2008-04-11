@@ -3,21 +3,32 @@
  *                                index.php
  *                            -------------------
  *   begin                : Saturday, Jan 16, 2005
- *   copyright            : (C) 2005 Kyle Spraggs
- *   email                : spiffyjr@gmail.com
+ *   copyright            : (C) 2007-2008 Douglas Wagner
+ *   email                : douglasw@wagnerweb.org
  *
- *   $Id: mysql.php,v 1.16 2002/03/19 01:07:36 psotfx Exp $
+ *   $Id: index.php,v 2.00 2008/03/04 17:15:50 psotfx Exp $
  *
  ***************************************************************************/
 
 /***************************************************************************
- *
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- ***************************************************************************/
+*
+*    WoW Raid Manager - Raid Management Software for World of Warcraft
+*    Copyright (C) 2007-2008 Douglas Wagner
+*
+*    This program is free software: you can redistribute it and/or modify
+*    it under the terms of the GNU General Public License as published by
+*    the Free Software Foundation, either version 3 of the License, or
+*    (at your option) any later version.
+*
+*    This program is distributed in the hope that it will be useful,
+*    but WITHOUT ANY WARRANTY; without even the implied warranty of
+*    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*    GNU General Public License for more details.
+*
+*    You should have received a copy of the GNU General Public License
+*    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*
+****************************************************************************/
 // commons
 define("IN_PHPRAID", true);	
 require_once('./common.php');
@@ -28,7 +39,7 @@ if($phpraid_config['anon_view'] == 1)
 else
 	define("PAGE_LVL","profile");
 	
-require_once($phpraid_dir.'includes/authentication.php');
+require_once("includes/authentication.php");
 
 // arrays to old raid information
 $current = array();
@@ -66,13 +77,16 @@ while($raids = $db_raid->sql_fetchrow($raids_result)) {
 		$max2 = " (+$max2)";
 	}
 
+	$logged_in=scrub_input($_SESSION['session_logged_in']);
+	$priv_profile=scrub_input($_SESSION['priv_profile']);
+	$profile_id=scrub_input($_SESSION['profile_id']);
 
 	// check if signed up
 	// precendence -> cancelled signup, signed up, raid frozen, open for signup
-	if($_SESSION['session_logged_in'] == 1 && $_SESSION['priv_profile'] == 1) {
-		if(is_char_cancel($_SESSION['profile_id'], $raids['raid_id']))
+	if($logged_in == 1 && $priv_profile == 1) {
+		if(is_char_cancel($profile_id, $raids['raid_id']))
 			$info = '<img src="templates/' . $phpraid_config['template'] . '/images/icons/cancel.gif" border="0" height="14" width="14" onMouseover="ddrivetip(\'' . $phprlang['cancel_msg'] . '\')"; onMouseout="hideddrivetip()">';
-		else if(is_char_signed($_SESSION['profile_id'], $raids['raid_id']))
+		else if(is_char_signed($profile_id, $raids['raid_id']))
 			$info = '<img src="templates/' . $phpraid_config['template'] . '/images/icons/check_mark.gif" border="0" height="14" width="14" onMouseover="ddrivetip(\'' . $phprlang['signed_up'] . '\')"; onMouseout="hideddrivetip()">';
 		else if(check_frozen($raids['raid_id']) && $phpraid_config['disable_freeze'] == 0)
 			$info = '<img src="templates/' . $phpraid_config['template'] . '/images/icons/frozen.gif" border="0" height="14" width="14" onMouseover="ddrivetip(\'' . $phprlang['frozen_msg'] . '\')"; onMouseout="hideddrivetip()">';
@@ -144,13 +158,15 @@ $report->setListRange($_GET['Base'], 25);
 $report->allowLink(ALLOW_HOVER_INDEX,'',array());
 
 //Default sorting
-if(!$_GET['Sort'])
+$sort=scrub_input($_GET['Sort']);
+$sort_desc=scrub_input($_GET['SortDescending']);
+if(!$sort)
 {
 	$report->allowSort(true, 'Date', 'ASC', 'index.php');
 }
 else
 {
-	$report->allowSort(true, $_GET['Sort'], $_GET['SortDescending'], 'index.php');
+	$report->allowSort(true, $sort, $sort_desc, 'index.php');
 }
 
 // and now to format each column output

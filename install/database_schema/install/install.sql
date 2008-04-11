@@ -244,5 +244,8 @@ INSERT INTO `phpraid_config` VALUES ('admin_drafted_queue', '1');
 INSERT INTO `phpraid_config` VALUES ('admin_drafted_comments', '1');
 INSERT INTO `phpraid_config` VALUES ('admin_drafted_cancel', '0');
 INSERT INTO `phpraid_config` VALUES ('admin_drafted_delete', '0');
+INSERT INTO `phpraid_config` VALUES ('rss_site_url', 'http://localhost/phpraid');
+INSERT INTO `phpraid_config` VALUES ('rss_export_url', 'http://localhost/phpraid');
+INSERT INTO `phpraid_config` VALUES ('rss_feed_amt', '5');
 
 INSERT INTO `phpraid_permissions` (`name`,`description`,`announcements`,`configuration`,`guilds`,`locations`,`permissions`,`profile`,`raids`,`logs`,`users`) VALUES ('phpRaid Superadmin','Full access','1','1','1','1','1','1','1','1','1');

@@ -3,21 +3,31 @@
 *                                common.php
 *                            -------------------
 *   begin                : Saturday, Jan 16, 2005
-*   copyright            : (C) 2005 Kyle Spraggs
-*   email                : spiffyjr@gmail.com
+*   copyright            : (C) 2007-2008 Douglas Wagner
+*   email                : douglasw@wagnerweb.org
 *
-*   $Id: mysql.php,v 1.16 2002/03/19 01:07:36 psotfx Exp $
+*   $Id: common.php,v 2.00 2007/11/23 14:45:33 psotfx Exp $
 *
 ***************************************************************************/
 
 /***************************************************************************
 *
-*   This program is free software; you can redistribute it and/or modify
-*   it under the terms of the GNU General Public License as published by
-*   the Free Software Foundation; either version 2 of the License, or
-*   (at your option) any later version.
+*    WoW Raid Manager - Raid Management Software for World of Warcraft
+*    Copyright (C) 2007-2008 Douglas Wagner
 *
-***************************************************************************/
+*    This program is free software: you can redistribute it and/or modify
+*    it under the terms of the GNU General Public License as published by
+*    the Free Software Foundation, either version 3 of the License, or
+*    (at your option) any later version.
+*
+*    This program is distributed in the hope that it will be useful,
+*    but WITHOUT ANY WARRANTY; without even the implied warranty of
+*    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*    GNU General Public License for more details.
+*
+*    You should have received a copy of the GNU General Public License
+* 
+****************************************************************************/
  
 if ( !defined('IN_PHPRAID'))
 	print_error("Hacking Attempt", "Invalid access detected", 1);
@@ -75,7 +85,7 @@ while($data = $db_raid->sql_fetchrow($result))
 }
 
 // templates
-$page = &new Page();
+$page = &new Template();
 $page->set_root($phpraid_dir.'templates');
 
 if(!is_file($phpraid_dir."language/lang_{$phpraid_config['language']}/lang_main.php"))

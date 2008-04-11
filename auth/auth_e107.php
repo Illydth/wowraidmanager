@@ -3,31 +3,42 @@
  *                             auth_e107.php
  *                            -------------------
  *   begin                : Tuesday, June 19, 2007
- *   copyright            : (C) 2007 Douglas Wagner
+ *   copyright            : (C) 2007-2008 Douglas Wagner
  *   email                : douglasw0@yahoo.com
  *
- *   $Id: mysql.php,v 1.16 2002/03/19 01:07:36 psotfx Exp $
+ *   $Id: auth_e107.php,v 2.00 2007/11/18 13:19:00 psotfx Exp $
  *
  ***************************************************************************/
 
 /***************************************************************************
- *
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- ***************************************************************************/
+*
+*    WoW Raid Manager - Raid Management Software for World of Warcraft
+*    Copyright (C) 2007-2008 Douglas Wagner
+*
+*    This program is free software: you can redistribute it and/or modify
+*    it under the terms of the GNU General Public License as published by
+*    the Free Software Foundation, either version 3 of the License, or
+*    (at your option) any later version.
+*
+*    This program is distributed in the hope that it will be useful,
+*    but WITHOUT ANY WARRANTY; without even the implied warranty of
+*    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*    GNU General Public License for more details.
+*
+*    You should have received a copy of the GNU General Public License
+*    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+* 
+****************************************************************************/
 
 function phpraid_login() {
 	global $groups, $db_raid, $phpraid_config;
 
 	if(isset($_POST['username'])) 	{
-		$username = strtolower($_POST['username']);
+		$username = scrub_input(strtolower($_POST['username']));
 		$password = md5($_POST['password']);
 	} elseif(isset($_COOKIE['username']) && isset($_COOKIE['password'])) {
-		$username = strtolower($_COOKIE['username']);
-		$password = $_COOKIE['password'];
+		$username = scrub_input(strtolower($_COOKIE['username']));
+		$password = scrub_input($_COOKIE['password']);
 	} else {
 		phpraid_logout();
 	}
@@ -60,7 +71,8 @@ function phpraid_login() {
 			}
 	
 			// User is properly logged in and is allowed to use phpRaid, go ahead and process his login.
-			if(isset($_POST['autologin'])) {
+			$autologin=scrub_input($_POST['autologin']);
+			if(isset($autologin)) {
 				// they want automatic logins so set the cookie
 				// set to expire in one month
 				setcookie('username', $data['user_loginname'], time() + 2629743);
@@ -87,7 +99,7 @@ function phpraid_login() {
 					//Profile is already created, Update email incase it doesn't match e107. 
 					if($_SESSION['email'] != $data['email'])
 					{
-						$sql = "UPDATE " . $phpraid_config['db_prefix'] . "profile SET email='" . $_SESSION['email'] . "', password='" . $user_password . "' WHERE profile_id=" . $_SESSION['profile_id'];
+						$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "profile SET email=%s,password=%s WHERE profile_id=%s",quote_smart($_SESSION['email']),quote_smart($user_password),quote_smart($_SESSION['profile_id']));
 						$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 					}
 					return 1;
@@ -95,8 +107,10 @@ function phpraid_login() {
 			}
 
 			// At this point, the user is a proper user but we could not find his profile in our raid database.  Time to create it.
-			$sql = "INSERT INTO " . $phpraid_config['db_prefix'] . "profile " .
-					"VALUES ('" . $_SESSION['profile_id'] . "', '" . $_SESSION['email'] . "', '" . $user_password . "', '". $user_priv . "', '" . $_SESSION['username'] . "')";
+			$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "profile VALUES ('$s', '$s', '$s', '$s', '$s')", 
+					quote_smart($_SESSION['profile_id']), quote_smart($_SESSION['email']), quote_smart($user_password), quote_smart($user_priv), quote_smart($_SESSION['username']));
+			//$sql = "INSERT INTO " . $phpraid_config['db_prefix'] . "profile " .
+			//		"VALUES ('" . $_SESSION['profile_id'] . "', '" . $_SESSION['email'] . "', '" . $user_password . "', '". $user_priv . "', '" . $_SESSION['username'] . "')";
 			$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 				
 			return 1;

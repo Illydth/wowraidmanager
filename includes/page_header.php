@@ -23,11 +23,22 @@
 //
 $page->set_file('headerFile',$phpraid_config['template'] . '/header.htm');
 
+// This looks like dead code due to BC making shaman and paladins all on both sides.
 // setup header variables
-if($phpraid_config['faction'] == 'alliance')
-	$page->set_var('other_name',$phprlang['paladin']);
-else
-	$page->set_var('other_name',$phprlang['shaman']);
+//if($phpraid_config['faction'] == 'alliance')
+//	$page->set_var('other_name',$phprlang['paladin']);
+//else
+//	$page->set_var('other_name',$phprlang['shaman']);
+$priv_announcement=scrub_input($_SESSION['priv_announcements']);
+$priv_config=scrub_input($_SESSION['priv_configuration']);
+$priv_guilds=scrub_input($_SESSION['priv_guilds']);
+$priv_locations=scrub_input($_SESSION['priv_locations']);
+$priv_logs=scrub_input($_SESSION['priv_logs']);
+$priv_permissions=scrub_input($_SESSION['priv_permissions']);
+$priv_profile=scrub_input($_SESSION['priv_profile']);
+$priv_raids=scrub_input($_SESSION['priv_raids']);
+$priv_users=scrub_input($_SESSION['priv_users']);
+$logged_in=scrub_input($_SESSION['session_logged_in']);
 
 // time variables
 $guild_time = new_date($phpraid_config['time_format'],time(),$phpraid_config['timezone'] + $phpraid_config['dst']);
@@ -35,7 +46,7 @@ $guild_date = new_date($phpraid_config['date_format'],time(),$phpraid_config['ti
 
 // login stuff
 // now for the links
-if($_SESSION['session_logged_in'] != 1)
+if($logged_in != 1)
 {
 	$login_form_open = '<form action="login.php" method="POST">';
 	$login_username = '<input name="username" type="text" value="username" size="15" maxlength="45" onFocus="if(this.value==\'username\')this.value=\'\';" class="post">';
@@ -48,14 +59,14 @@ if($_SESSION['session_logged_in'] != 1)
 else
 {
 	$login_form_open = '<form action="login.php?logout=true" method="POST">';
-	$login_username = $_SESSION['username'];
+	$login_username = scrub_input($_SESSION['username']);
 	$login_password = '';
 	$login_button = '<input type="submit" name="login" value="Log out" style="font-size:10px" class="mainoption"></form>';
 	$login_remember = '';
 	$login_remember_hidden = '';
 	$login_form_close = '</form>';
 }
-if(($phpraid_config['disable'] == '1') AND ($_SESSION['priv_configuration'] == 1))
+if(($phpraid_config['disable'] == '1') AND ($priv_config == 1))
 {
 	$site_disabled_warning = "
 	<br>
@@ -97,16 +108,16 @@ $calendar_link = '<a href="calendar_raids.php">' . $theme_calendar_link . '</a>'
 $roster_link = '<a href="roster.php">' . $theme_roster_link . '</a>';
 
 // these links need special permissions
-$_SESSION['priv_announcements'] ? $announce_link = '<a href="announcements.php?mode=view">' . $theme_announcement_link . '</a>' : $announce_link = '';
-$_SESSION['priv_configuration'] ? $phpraid_configure_link = '<a href="configuration.php">' . $theme_configure_link . '</a>' : $phpraid_configure_link = '';
-$_SESSION['priv_permissions'] ? $permissions_link = '<a href="permissions.php?mode=view">' . $theme_permissions_link . '</a>' : $permissions_link = '';
-$_SESSION['priv_guilds'] ?	$guild_link = '<a href="guilds.php?mode=view">' . $theme_guild_link . '</a>' : $guild_link = '';
-$_SESSION['priv_locations'] ? $locations_link = '<a href="locations.php?mode=view">' . $theme_locations_link . '</a>' : $locations_link = '';
-$_SESSION['priv_logs']? $logs_link = '<a href="logs.php?mode=view">' . $theme_logs_link . '</a>' : $logs_link = '';
-$_SESSION['priv_profile'] ? $profile_link = '<a href="profile.php?mode=view">' . $theme_profile_link . '</a>' : $profile_link = '';
-$_SESSION['priv_users'] ? $users_link = '<a href="users.php?mode=view">' . $theme_users_link . '</a>' : $users_link = '';
-$_SESSION['session_logged_in'] != '1' ? $register_link = '<a href="' . $phpraid_config['register_url'] . '">' . $theme_register_link . '</a>' : $register_link = '';
-if ( $_SESSION['priv_raids'] OR ($phpraid_config['enable_five_man'] AND $_SESSION['priv_profile']) )
+$priv_announcement ? $announce_link = '<a href="announcements.php?mode=view">' . $theme_announcement_link . '</a>' : $announce_link = '';
+$priv_config ? $phpraid_configure_link = '<a href="configuration.php">' . $theme_configure_link . '</a>' : $phpraid_configure_link = '';
+$priv_permissions ? $permissions_link = '<a href="permissions.php?mode=view">' . $theme_permissions_link . '</a>' : $permissions_link = '';
+$priv_guilds ?	$guild_link = '<a href="guilds.php?mode=view">' . $theme_guild_link . '</a>' : $guild_link = '';
+$priv_locations ? $locations_link = '<a href="locations.php?mode=view">' . $theme_locations_link . '</a>' : $locations_link = '';
+$priv_logs ? $logs_link = '<a href="logs.php?mode=view">' . $theme_logs_link . '</a>' : $logs_link = '';
+$priv_profile ? $profile_link = '<a href="profile.php?mode=view">' . $theme_profile_link . '</a>' : $profile_link = '';
+$priv_users ? $users_link = '<a href="users.php?mode=view">' . $theme_users_link . '</a>' : $users_link = '';
+$logged_in != '1' ? $register_link = '<a href="' . $phpraid_config['register_url'] . '">' . $theme_register_link . '</a>' : $register_link = '';
+if ( $priv_raids OR ($phpraid_config['enable_five_man'] AND $priv_profile) )
 { 
 	$raids_link = '<a href="raids.php?mode=view">' . $theme_raids_link . '</a>';
 	$lua_output_link = '<a href="lua_output.php">' . $theme_lua_output_link . '</a>'; 
@@ -145,16 +156,16 @@ if($_SESSION['priv_permissions'] == 1)
 if($_SESSION['priv_profile'] == 1)
 	$menu .= '<li>' . $profile_link . '</li>';
 
-if ( $_SESSION['priv_raids'] OR ($phpraid_config['enable_five_man'] AND $_SESSION['priv_profile']) )
+if ( $_SESSION['priv_raids'] OR ($phpraid_config['enable_five_man'] AND $priv_profile) )
 { 	
 	$menu .= '<li>' . $raids_link . '</li>';
 	$menu .= '<li>' . $lua_output_link . '</li>';
 }
 	
-if($_SESSION['priv_users'] == 1)
+if($priv_users == 1)
 	$menu .= '<li>' . $users_link . '</li>';
 
-if($_SESSION['session_logged_in'] == 0) {
+if($logged_in == 0) {
 	$menu .= '<li>' . $register_link . '</li>';
 	$page->set_var('register_link',$register_link);
 }

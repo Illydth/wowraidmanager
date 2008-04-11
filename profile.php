@@ -3,34 +3,46 @@
  *                                profile.php
  *                            -------------------
  *   begin                : Saturday, Jan 16, 2005
- *   copyright            : (C) 2005 Kyle Spraggs
- *   email                : spiffyjr@gmail.com
+ *   copyright            : (C) 2007-2008 Douglas Wagner
+ *   email                : douglasw@wagnerweb.org
  *
- *   $Id: mysql.php,v 1.16 2002/03/19 01:07:36 psotfx Exp $
+ *   $Id: profile.php,v 2.00 2008/03/08 14:28:18 psotfx Exp $
  *
  ***************************************************************************/
 
 /***************************************************************************
- *
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- ***************************************************************************/
+*
+*    WoW Raid Manager - Raid Management Software for World of Warcraft
+*    Copyright (C) 2007-2008 Douglas Wagner
+*
+*    This program is free software: you can redistribute it and/or modify
+*    it under the terms of the GNU General Public License as published by
+*    the Free Software Foundation, either version 3 of the License, or
+*    (at your option) any later version.
+*
+*    This program is distributed in the hope that it will be useful,
+*    but WITHOUT ANY WARRANTY; without even the implied warranty of
+*    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*    GNU General Public License for more details.
+*
+*    You should have received a copy of the GNU General Public License
+*    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*
+****************************************************************************/
 // commons
 define("IN_PHPRAID", true);	
 require_once('./common.php');
 
 // page authentication
 define("PAGE_LVL","profile");
-require_once($phpraid_dir.'includes/authentication.php');
+require_once("includes/authentication.php");
 
 if($_GET['mode'] == 'view') {
 	$chars = array();
 		
 	// now that we have their profile_id, let's get a list of all their characters
-	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE profile_id='".$_SESSION['profile_id']."'";
+	$profile_id = scrub_input($_SESSION['profile_id']);
+	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE profile_id=%s",quote_smart($profile_id));
 	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 	while($data = $db_raid->sql_fetchrow($result))
 	{
@@ -91,14 +103,14 @@ if($_GET['mode'] == 'view') {
 	// time to get a list of raids that they've signed up for
 	$raid_list = array();
 	
-	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE profile_id='" . $_SESSION['profile_id'] . "'";
+	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE profile_id=%s", quote_smart($profile_id));
 	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 	while($signups = $db_raid->sql_fetchrow($result))
 	{
 		// setup the count array
 		$count = array('dr'=>'0','hu'=>'0','ma'=>'0','pr'=>'0','pa'=>'0','ro'=>'0','sh'=>'0','wk'=>'0','wa'=>'0');
 		
-		$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id='" . $signups['raid_id'] . "'";
+		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id=%s", quote_smart($signups['raid_id']));
 		$result_raid = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 		$data = $db_raid->sql_fetchrow($result_raid);
 		
@@ -135,12 +147,24 @@ if($_GET['mode'] == 'view') {
 	
 		// current raids
 		if($data['old'] == 0) {
-			array_push($raid_list,array('id'=>$data['raid_id'],'Date'=>$date,'Location'=>$location,'Invite Time'=>$invite,'Start Time'=>$start,'Officer'=>$data['officer'],
-									  'Max'=>$total.'/'.$data['max']  . '' . $total2,'Dru'=>$count['dr'] . "/" . $data['dr_lmt'],'Hun'=>$count['hu'] . "/" . $data['hu_lmt'],
-									  'Mag'=>$count['ma'] . "/" . $data['ma_lmt'],'Pal'=>$count['pa'] . "/" . $data['pa_lmt'],
-									  'Pri'=>$count['pr'] . "/" . $data['pr_lmt'],'Rog'=>$count['ro'] . "/" . $data['ro_lmt'],'Sha'=>$count['sh'] . "/" . $data['sh_lmt'],
-									  'Wlk'=>$count['wk'] . "/" . $data['wk_lmt'],
-									  'War'=>$count['wa'] . "/" . $data['wa_lmt']));
+			array_push($raid_list,
+				array(
+					'id'=>$data['raid_id'],
+					'Date'=>$date,'Location'=>$location,
+					'Invite Time'=>$invite,
+					'Start Time'=>$start,'Officer'=>$data['officer'],
+					'Max'=>$total.'/'.$data['max']  . '' . $total2,
+					'Dru'=>$count['dr'] . "/" . $data['dr_lmt'],
+					'Hun'=>$count['hu'] . "/" . $data['hu_lmt'],
+					'Mag'=>$count['ma'] . "/" . $data['ma_lmt'],
+					'Pal'=>$count['pa'] . "/" . $data['pa_lmt'],
+					'Pri'=>$count['pr'] . "/" . $data['pr_lmt'],
+					'Rog'=>$count['ro'] . "/" . $data['ro_lmt'],
+					'Sha'=>$count['sh'] . "/" . $data['sh_lmt'],
+					'Wlk'=>$count['wk'] . "/" . $data['wk_lmt'],
+					'War'=>$count['wa'] . "/" . $data['wa_lmt'],
+				)
+			);
 		}
 	}
 	
@@ -198,13 +222,14 @@ if($_GET['mode'] == 'view') {
 			'raid_list' => $raid_list,
 			'character_header' => $phprlang['profile_header'],
 			'raid_header' => $phprlang['profile_raid'],
-		)
-	);
+			)
+		);
 	
 	$page->parse('output','output');
 } elseif($_GET['mode'] == 'remove') {
-	$id = $_GET['id'];
-	$n = $_GET['n'];
+	$id = scrub_input($_GET['id']);
+	$n = scrub_input($_GET['n']);
+	$profile_id = scrub_input($_SESSION['profile_id']);
 	
 	if(!isset($_POST['submit']))
 	{
@@ -218,39 +243,39 @@ if($_GET['mode'] == 'view') {
 				'confirm_button'=>$confirm_button,
 				'delete_header'=>$phprlang['delete_header'],
 				'delete_msg'=>$phprlang['delete_msg'],
-			)
-		);
+				)
+			);
 		$page->parse('output','output');
 	}
 	else
 	{
 		log_delete('character',$n);
 		
-		$sql = "DELETE FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id='$id' AND profile_id='".$_SESSION['profile_id']."'";
+		$sql = sprintf("DELETE FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id=%s AND profile_id=%s",quote_smart($id), quote_smart($profile_id));
 		$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 		
-		$sql = "DELETE FROM " . $phpraid_config['db_prefix'] . "signups WHERE char_id='$id' AND profile_id='".$_SESSION['profile_id']."'";
+		$sql = sprintf("DELETE FROM " . $phpraid_config['db_prefix'] . "signups WHERE char_id=%s AND profile_id=%s",quote_smart($id), quote_smart($profile_id));
 		$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 		header("Location: profile.php?mode=view");
 	}
 } elseif(($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')) {
 	if($_GET['mode'] == 'new') {
 		// check for errors
-		$race = $_GET['race'];
-		$class = $_POST['class'];
-		$gender = $_POST['gender'];
-		$name = trim($_POST['name']);
+		$race = scrub_input($_GET['race']);
+		$class = scrub_input($_POST['class']);
+		$gender = scrub_input($_POST['gender']);
+		$name = scrub_input(trim($_POST['name']));
 		$dupeChar = isCharExist($name);
-		$guild = $_POST['guild'];
-		$level = $_POST['level'];
-		$arcane = $_POST['arcane'];
-		$fire = $_POST['fire'];
-		$frost = $_POST['frost'];
-		$nature = $_POST['nature'];
-		$shadow = $_POST['shadow'];
+		$guild = scrub_input($_POST['guild']);
+		$level = scrub_input($_POST['level']);
+		$arcane = scrub_input($_POST['arcane']);
+		$fire = scrub_input($_POST['fire']);
+		$frost = scrub_input($_POST['frost']);
+		$nature = scrub_input($_POST['nature']);
+		$shadow = scrub_input($_POST['shadow']);
 	} else {
 		// edit, grab from database
-		$char_id = $_GET['id'];
+		$char_id = scrub_input($_GET['id']);
 		
 		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id=%s",quote_smart($char_id));
 		$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
@@ -271,17 +296,17 @@ if($_GET['mode'] == 'view') {
 	}
 	
 	if(isset($_POST['submit'])) {
-		$race = $_GET['race'];
-		$class = $_POST['class'];
-		$gender = $_POST['gender'];
-		$name = trim($_POST['name']);
-		$guild = $_POST['guild'];
-		$level = $_POST['level'];
-		$arcane = $_POST['arcane'];
-		$fire = $_POST['fire'];
-		$frost = $_POST['frost'];
-		$nature = $_POST['nature'];
-		$shadow = $_POST['shadow'];
+		$race = scrub_input($_GET['race']);
+		$class = scrub_input($_POST['class']);
+		$gender = scrub_input($_POST['gender']);
+		$name = scrub_input(trim($_POST['name']));
+		$guild = scrub_input($_POST['guild']);
+		$level = scrub_input($_POST['level']);
+		$arcane = scrub_input($_POST['arcane']);
+		$fire = scrub_input($_POST['fire']);
+		$frost = scrub_input($_POST['frost']);
+		$nature = scrub_input($_POST['nature']);
+		$shadow = scrub_input($_POST['shadow']);
 		// check for errors
 		
 			// check for errors + resistance optional
@@ -311,7 +336,7 @@ if($_GET['mode'] == 'view') {
 				$arcane = "0";
 				
 				// all is good add to database
-				$profile = $_SESSION['profile_id'];
+				$profile = scrub_input($_SESSION['profile_id']);
 				
 				if($_GET['mode'] == 'new') {
 					$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "chars (`profile_id`,`name`,`class`,
@@ -323,11 +348,12 @@ if($_GET['mode'] == 'view') {
 					
 					log_create('character',mysql_insert_id(),$name);
 				} elseif($_GET['mode'] == 'edit') {
+					$char_id=scrub_input($_GET['id']);
 					$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "chars SET name=%s,lvl=%s,race=%s,
 					class=%s,gender=%s,guild=%s,arcane=%s,nature=%s,shadow=%s,fire=%s,frost=%s WHERE char_id=%s",
 					quote_smart($name),quote_smart($level),quote_smart($race),quote_smart($class),quote_smart($gender),
 					quote_smart($guild),quote_smart($arcane),quote_smart($nature),quote_smart($shadow),quote_smart($fire),
-					quote_smart($frost),quote_smart($_GET['id']));
+					quote_smart($frost),quote_smart($char_id));
 					
 					$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 				}
@@ -370,7 +396,7 @@ if($_GET['mode'] == 'view') {
 				$errorMsg .= '</ul>';
 		} else {
 			// all is good add to database
-			$profile = $_SESSION['profile_id'];
+			$profile = scrub_input($_SESSION['profile_id']);
 			
 			if($_GET['mode'] == 'new') {
 				$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "chars (`profile_id`,`name`,`class`,
@@ -382,11 +408,12 @@ if($_GET['mode'] == 'view') {
 				
 				log_create('character',mysql_insert_id(),$name);
 			} elseif($_GET['mode'] == 'edit') {
+				$char_id=scrub_input($_GET['id']);
 				$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "chars SET name=%s,lvl=%s,race=%s,
 				class=%s,gender=%s,guild=%s,arcane=%s,nature=%s,shadow=%s,fire=%s,frost=%s WHERE char_id=%s",
 				quote_smart($name),quote_smart($level),quote_smart($race),quote_smart($class),quote_smart($gender),
 				quote_smart($guild),quote_smart($arcane),quote_smart($nature),quote_smart($shadow),quote_smart($fire),
-				quote_smart($frost),quote_smart($_GET['id']));
+				quote_smart($frost),quote_smart($char_id));
 				
 				$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 			}
@@ -411,12 +438,12 @@ if($db_raid->sql_numrows($result) == 0) {
 		// form variables
 		// nothing worse than submitting a form wrong and losing all your input
 		if(isset($_GET['race']))
-			$race = $_GET['race'];
+			$race = scrub_input($_GET['race']);
 		else
 			$race = '';
 			
 		if(isset($_GET['id']))
-			$id = $_GET['id'];
+			$id = scrub_input($_GET['id']);
 		else
 			$id = '';
 			
@@ -458,7 +485,7 @@ if($db_raid->sql_numrows($result) == 0) {
 		
 		if($_GET['mode'] == 'view' || $_GET['mode'] == 'new')
 		$Form_use = "value=\"profile.php?mode=view&race=";
-		Else
+		else
 		$Form_use = "value=\"profile.php?mode=edit&id=".$id."&race=";
 		// only show alliance races
 		if($phpraid_config['faction'] == "alliance")

@@ -1,3 +1,25 @@
+Release 3.2 of WoW Raid Manager
+--------------------------------
+NAME CHANGE: phpRaid is now WOW Raid Manager.  All displayed strings should now note the
+name change.  
+
+SECURITY: This is the security release of WRM.  The whole code base should now be significantly
+more secure than it was in the past.  Please see the www.wowraidmanager.net website for
+information on the security update.
+
+* Updated the template.php file from the phplib release 7.4a.  This changes the class
+name form "Page" to "Template" but other than that everything should function normally.
+See the "template.php" file for release notes for the 7.4a version of template.php.
+
+* BUG: Fixed bug with minutes dropdown.  It was showing 00, 15, 30, 45, 60, it should now be
+showing only 00, 15, 30, 45.
+
+* Feature: Added the configuration of the RSS feed to the configuration area and removed it
+from the rss.php file.  It is no longer necessary (or wanted) to go into the rss.php file
+and change strings to configure RSS.  Go into the configuration area and configure the rss
+feed from there.
+
+
 Release 3.1.2 of phpRaid
 -------------------------
 This is a bugfix release that fixes the following errors:

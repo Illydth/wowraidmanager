@@ -1,18 +1,28 @@
 <?php 
 	// variable declarations
-	// how many feeds do you want to show?
-	$feeds = 5;
 	
-	// url to the site you want to display this information
-	$site_url = 'http://localhost/phpraid';
-	
-	// url to phpRaid installation (no trailing slash)
-	$phpraid_url = 'http://localhost/phpraid';
-
 	define("IN_PHPRAID",true);
 	$rootPath = dirname($_SERVER['PHP_SELF']);
 	
 	require_once('./common.php');
+
+	// url to phpRaid installation (no trailing slash)
+	if (isset($phpraid_config['rss_site_url']))
+		$phpraid_url = $phpraid_config['rss_site_url'];
+	else
+		$phpraid_url = 'http://localhost/phpraid';
+
+	// url to the site you want to display this information
+	if (isset($phpraid_config['rss_export_url']))
+		$site_url = $phpraid_config['rss_export_url'];
+	else
+		$site_url = 'http://localhost/phpraid';
+
+	// how many feeds do you want to show?
+	if (isset($phpraid_config['rss_feed_amt']))
+		$feeds = $phpraid_config['rss_feed_amt'];
+	else
+		$feeds = 5;
 	
 	// get raid information in ascending order
 	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "raids ORDER BY start_time ASC";

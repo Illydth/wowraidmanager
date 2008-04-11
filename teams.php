@@ -3,21 +3,32 @@
  *                              teams.php
  *                            -------------------
  *   begin                : Monday, July 2, 2007
- *   copyright            : (C) 2007 Douglas Wagner
+ *   copyright            : (C) 2007-2008 Douglas Wagner
  *   email                : douglasw@wagnerweb.org
  *
- *   $Id: mysql.php,v 1.16 2002/03/19 01:07:36 psotfx Exp $
+ *   $Id: teams.php,v 2.00 2008/03/08 15:36:47 psotfx Exp $
  *
  ***************************************************************************/
 
 /***************************************************************************
- *
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- ***************************************************************************/
+*
+*    WoW Raid Manager - Raid Management Software for World of Warcraft
+*    Copyright (C) 2007-2008 Douglas Wagner
+*
+*    This program is free software: you can redistribute it and/or modify
+*    it under the terms of the GNU General Public License as published by
+*    the Free Software Foundation, either version 3 of the License, or
+*    (at your option) any later version.
+*
+*    This program is distributed in the hope that it will be useful,
+*    but WITHOUT ANY WARRANTY; without even the implied warranty of
+*    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*    GNU General Public License for more details.
+*
+*    You should have received a copy of the GNU General Public License
+*    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*
+****************************************************************************/
 // commons
 define("IN_PHPRAID", true);
 require_once('./common.php');
@@ -31,7 +42,7 @@ else
 {
 	define("PAGE_LVL","raids");
 }
-require_once($phpraid_dir.'includes/authentication.php');
+require_once("includes/authentication.php");
 
 // check for valid input of raid_id
 if(!isset($_GET['raid_id']) || !is_numeric($_GET['raid_id']))
@@ -44,7 +55,7 @@ if($mode == '')
 	log_hack();
 
 // check for invalid raid passed
-isset($_GET['raid_id']) ? $raid_id = $_GET['raid_id'] : $raid_id = '';
+isset($_GET['raid_id']) ? $raid_id = scrub_input($_GET['raid_id']) : $raid_id = '';
 
 if($raid_id == '' || !is_numeric($raid_id))
 	log_hack();
@@ -65,7 +76,7 @@ if($mode == 'view')
 
 	$team_cur_teams = '<form action="teams.php?mode=delteam&raid_id='.$raid_id.'" method="POST">';
 
-	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "teams WHERE (raid_id='$raid_id' and char_id='-1') or char_id='-2'";
+	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "teams WHERE (raid_id=%s and char_id='-1') or char_id='-2'",quote_smart($raid_id));
 	$teams_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 	while($team = $db_raid->sql_fetchrow($teams_result))
 	{
@@ -88,7 +99,7 @@ if($mode == 'view')
 
 	// get everyone already on a team for this raid, print info from chars table, selection from teams table,
 	//   join is on char_id.
-	$sql = "select " . $phpraid_config['db_prefix'] . "chars.char_id, " .
+	$sql = sprintf("select " . $phpraid_config['db_prefix'] . "chars.char_id, " .
 					   $phpraid_config['db_prefix'] . "chars.name, " .
 					   $phpraid_config['db_prefix'] . "chars.class, " .
 					   $phpraid_config['db_prefix'] . "chars.guild, " .
@@ -97,7 +108,7 @@ if($mode == 'view')
 			"from " . $phpraid_config['db_prefix'] . "teams, " .
 					  $phpraid_config['db_prefix'] . "chars " .
 			"where " . $phpraid_config['db_prefix'] . "teams.char_id = " . $phpraid_config['db_prefix'] . "chars.char_id " .
-			"and " . $phpraid_config['db_prefix'] . "teams.raid_id = '" . $raid_id . "'";
+			"and " . $phpraid_config['db_prefix'] . "teams.raid_id = %s", quote_smart($raid_id));
 	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 	while($team = $db_raid->sql_fetchrow($result))
 	{
@@ -161,7 +172,7 @@ if($mode == 'view')
 	//    that contains the differences between the two.
 	//*************************************************
 	// get everyone signed up for this raid:
-	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id='$raid_id' and cancel='0' and queue='0'";
+	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id=%s and cancel='0' and queue='0'",quote_smart($raid_id));
 	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 
 	$X=0;
@@ -173,7 +184,7 @@ if($mode == 'view')
 	$signups_num=$X;
 
 	// get everyone already on a team for this raid
-	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "teams WHERE raid_id='$raid_id'";
+	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "teams WHERE raid_id=%s",quote_smart($raid_id));
 	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 
 	$X=0;
@@ -211,7 +222,7 @@ if($mode == 'view')
 		$char_id = $unteamed_users[$X]['char_id'];
 
 		// get character data from the characters table.
-		$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id='$char_id'";
+		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id=%s",quote_smart($char_id));
 		$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 		$data = $db_raid->sql_fetchrow($result);
 
@@ -235,7 +246,7 @@ if($mode == 'view')
 	$team_add_body .= '<br><select name="team_drop_name" class="post">';
 
 	// get character data from the teams table.
-	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "teams WHERE (raid_id='$raid_id' and char_id='-1') or char_id='-2'";
+	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "teams WHERE (raid_id=%s and char_id='-1') or char_id='-2'",quote_smart($raid_id));
 	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 	while ($data = $db_raid->sql_fetchrow($result))
 		$team_add_body .= '<option value="' . $data['team_id']. '">' . $data['team_name'] . '</option>';
@@ -266,8 +277,8 @@ if($mode == 'view')
 }
 elseif($mode == 'new')
 {
-	isset($_POST['team_name']) ? $team_name = $_POST['team_name'] : $team_name = '';
-	isset($_POST['global']) ? $global = $_POST['team_name'] : $global = '';
+	isset($_POST['team_name']) ? $team_name = scrub_input($_POST['team_name']) : $team_name = '';
+	isset($_POST['global']) ? $global = scrub_input($_POST['team_name']) : $global = '';
 
 	if ($team_name != "")
 	{
@@ -286,7 +297,7 @@ elseif($mode == 'remove')
 {
 	//We simply need to find the char ID/Raid ID combo in the teams table and delete the row.
 	// check for invalid raid passed
-	isset($_GET['char_id']) ? $char_id = $_GET['char_id'] : $char_id = '';
+	isset($_GET['char_id']) ? $char_id = sprintf($_GET['char_id']) : $char_id = '';
 
 	if($char_id == '' || !is_numeric($char_id))
 		log_hack();
@@ -299,13 +310,13 @@ elseif($mode == 'remove')
 elseif($mode == 'add')
 {
 	//Obtain and Verify the Team_ID from the POST data.
-	isset($_POST['team_drop_name']) ? $team_id = $_POST['team_drop_name'] : $team_id = '';
+	isset($_POST['team_drop_name']) ? $team_id = sprintf($_POST['team_drop_name']) : $team_id = '';
 
 	if($team_id == '' || !is_numeric($team_id))
 		log_hack();
 
 	//get team_name from team_id: Only one team name can be passed at any given time, so only retrieve team once.
-	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "teams WHERE team_id='$team_id'";
+	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "teams WHERE team_id=%s",quote_smart($team_id));
 	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 	$data = $db_raid->sql_fetchrow($result);
 	$team_name = $data['team_name'];

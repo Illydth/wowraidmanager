@@ -1,23 +1,33 @@
 <?php
 /***************************************************************************
- *                                 raids.php
- *                            -------------------
+ *                               raids.php
+ *                            ---------------
  *   begin                : Saturday, Jan 16, 2005
- *   copyright            : (C) 2005 Kyle Spraggs
- *   email                : spiffyjr@gmail.com
+ *   copyright            : (C) 2007 - 2008 Douglas Wagner
+ *   email                : douglasw@wagnerweb.org
  *
- *   $Id: mysql.php,v 1.16 2002/03/19 01:07:36 psotfx Exp $
+ *   $Id: raids.php,v 2.00 2008/03/10 13:26:43 psotfx Exp $
  *
  ***************************************************************************/
-
 /***************************************************************************
- *
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- ***************************************************************************/
+*
+*    WoW Raid Manager - Raid Management Software for World of Warcraft
+*    Copyright (C) 2007-2008 Douglas Wagner
+*
+*    This program is free software: you can redistribute it and/or modify
+*    it under the terms of the GNU General Public License as published by
+*    the Free Software Foundation, either version 3 of the License, or
+*    (at your option) any later version.
+*
+*    This program is distributed in the hope that it will be useful,
+*    but WITHOUT ANY WARRANTY; without even the implied warranty of
+*    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*    GNU General Public License for more details.
+*
+*    You should have received a copy of the GNU General Public License
+*    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*
+****************************************************************************/
 // commons
 define("IN_PHPRAID", true);	
 require_once('./common.php');
@@ -31,7 +41,10 @@ else
 {
 	define("PAGE_LVL","raids");
 }
-require_once($phpraid_dir.'includes/authentication.php');
+require_once("includes/authentication.php");
+
+$priv_raids = scrub_input($_SESSION['priv_raids']);
+$username = scrub_input($_SESSION['username']);
 
 if($_GET['mode'] == 'view')
 {	
@@ -45,7 +58,7 @@ if($_GET['mode'] == 'view')
 	// Get information for current raids
 	// And push into current array so that we can output it with our report class
 	while($data = $db_raid->sql_fetchrow($result)) {
-		if ($_SESSION['priv_raids'] or $_SESSION['username'] == $data['officer'])
+		if ($priv_raids or $username == $data['officer'])
 		{
 			$edit = '<a href="raids.php?mode=edit&id='.$data['raid_id'].'"><img src="templates/' . $phpraid_config['template'] . 
 					'/images/icons/icon_edit.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['edit'].'\')"; onMouseout="hideddrivetip()"></a>';
@@ -195,21 +208,21 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 	// error checking, goes before the output so we can show the error at the top and allow them to fix the errors without pressing back
 	if(isset($_POST['submit']))
 	{
-		$location = $_POST['location'];
-		$date = str_replace(" ", "", $_POST['date']);
-		$description = $_POST['description'];
-		$max = $_POST['max'];
-		$min_lvl = $_POST['min_lvl'];
-		$max_lvl = $_POST['max_lvl'];
-		$dr = $_POST['dr'];
-		$hu = $_POST['hu'];
-		$ma = $_POST['ma'];
-		$pa = $_POST['pa'];
-		$pr = $_POST['pr'];
-		$ro = $_POST['ro'];
-		$sh = $_POST['sh'];
-		$wk = $_POST['wk'];
-		$wa = $_POST['wa'];
+		$location = scrub_input($_POST['location']);
+		$date = str_replace(" ", "", scrub_input($_POST['date']));
+		$description = scrub_input($_POST['description']);
+		$max = scrub_input($_POST['max']);
+		$min_lvl = scrub_input($_POST['min_lvl']);
+		$max_lvl = scrub_input($_POST['max_lvl']);
+		$dr = scrub_input($_POST['dr']);
+		$hu = scrub_input($_POST['hu']);
+		$ma = scrub_input($_POST['ma']);
+		$pa = scrub_input($_POST['pa']);
+		$pr = scrub_input($_POST['pr']);
+		$ro = scrub_input($_POST['ro']);
+		$sh = scrub_input($_POST['sh']);
+		$wk = scrub_input($_POST['wk']);
+		$wa = scrub_input($_POST['wa']);
 		
 		//~@@**** Change - Douglas Wagner, 6/23/2007 ****
 		//Allowing for a Blank Raid Description.  This shouldn't be a required field.  The field is still checked but if it isn't there
@@ -251,15 +264,16 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 	//Normal fetch location
 	if(isset($_GET['location']))
 	{
-		if ($_SESSION['priv_raids'] == 1)
+		$location = scrub_input($_GET['location']);
+		if ($priv_raids == 1)
 		{
-			$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "locations WHERE name='{$_GET['location']}'";
+			$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "locations WHERE name=%s", quote_smart($location));
 			$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 			$data = $db_raid->sql_fetchrow($result);
 		}
 		else
 		{
-			$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "locations WHERE name='{$_GET['location']}' and locked='0'";
+			$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "locations WHERE name=%s and locked='0'", quote_smart($location));
 			$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 			$data = $db_raid->sql_fetchrow($result);			
 		}
@@ -288,7 +302,8 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 		}
 		elseif(isset($_GET['mode']) && $_GET['mode'] == 'edit')
 		{
-			$form_action = 'raids.php?mode=edit&id='. $_GET['id'];
+			$id = scrub_input($_GET['id']);
+			$form_action = 'raids.php?mode=edit&id='. $id;
 		}
 		
  // and if it's an edit, grab straight from the raids database instead
@@ -297,15 +312,16 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
          // if so, grab values from database
          if(isset($_GET['location']))
          {
-			if ($_SESSION['priv_raids'] == 1)
+         	$location = scrub_input($_GET['location']);
+			if ($priv_raids == 1)
 			{
-				$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "locations WHERE name='{$_GET['location']}'";
+				$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "locations WHERE name=%s", quote_smart($location));
 				$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 				$data = $db_raid->sql_fetchrow($result);
 			}
 			else
 			{
-				$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "locations WHERE name='{$_GET['location']}' and locked='0'";
+				$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "locations WHERE name=%s and locked='0'", quote_smart($location));
 				$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 				$data = $db_raid->sql_fetchrow($result);			
 			}
@@ -324,7 +340,8 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
             $max_lvl_value = $data['max_lvl'];
             $location_value = UBB2($data['location']);
             
-            $sql2 = "SELECT * FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id='{$_GET['id']}'";
+            $id = scrub_input($_GET['id']);
+            $sql2 = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id=%s", quote_smart($id));
             $result2 = $db_raid->sql_query($sql2) or print_error($sql2, mysql_error(), 1);
             $data2 = $db_raid->sql_fetchrow($result2);
             
@@ -340,7 +357,8 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
          }
          else
          {
-            $sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id='{$_GET['id']}'";
+         	$id = scrub_input($_GET['id']);
+            $sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id=%s", quote_smart($id));
             $result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
             $data = $db_raid->sql_fetchrow($result);
             
@@ -371,28 +389,28 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 		elseif(isset($_POST['submit']))
 		{
 			// or it could be they screwed up the form, let's put those values back in because we're nice like that
-			$max = $_POST['max'];
-			$dr = $_POST['dr'];
-			$hu = $_POST['hu'];
-			$ma = $_POST['ma'];
-			$pa = $_POST['pa'];
-			$pr = $_POST['pr'];
-			$ro = $_POST['ro'];
-			$sh = $_POST['sh'];
-			$wk = $_POST['wk'];
-			$wa = $_POST['wa'];
-			$min_lvl_value = $_POST['min_lvl'];
-			$max_lvl_value = $_POST['max_lvl'];
-			$location_value = $_POST['location'];
-			$date_value = $_POST['date'];
-			$i_time_hour_value = $_POST['i_time_hour'];
-			$i_time_minute_value = $_POST['i_time_minute'];
-			$i_time_ampm_value = $_POST['i_time_ampm'];
-			$s_time_hour_value = $_POST['s_time_hour'];
-			$s_time_minute_value = $_POST['s_time_minute'];
-			$s_time_ampm_value = $_POST['s_time_ampm'];
-			$freeze_value = $_POST['freeze'];
-			$description_value = $_POST['description'];
+			$max = scrub_input($_POST['max']);
+			$dr = scrub_input($_POST['dr']);
+			$hu = scrub_input($_POST['hu']);
+			$ma = scrub_input($_POST['ma']);
+			$pa = scrub_input($_POST['pa']);
+			$pr = scrub_input($_POST['pr']);
+			$ro = scrub_input($_POST['ro']);
+			$sh = scrub_input($_POST['sh']);
+			$wk = scrub_input($_POST['wk']);
+			$wa = scrub_input($_POST['wa']);
+			$min_lvl_value = scrub_input($_POST['min_lvl']);
+			$max_lvl_value = scrub_input($_POST['max_lvl']);
+			$location_value = scrub_input($_POST['location']);
+			$date_value = scrub_input($_POST['date']);
+			$i_time_hour_value = scrub_input($_POST['i_time_hour']);
+			$i_time_minute_value = scrub_input($_POST['i_time_minute']);
+			$i_time_ampm_value = scrub_input($_POST['i_time_ampm']);
+			$s_time_hour_value = scrub_input($_POST['s_time_hour']);
+			$s_time_minute_value = scrub_input($_POST['s_time_minute']);
+			$s_time_ampm_value = scrub_input($_POST['s_time_ampm']);
+			$freeze_value = scrub_input($_POST['freeze']);
+			$description_value = scrub_input($_POST['description']);
 		}
 		
 		// now for the actual form elements
@@ -420,7 +438,7 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 		//~@@Change: Douglas Wagner - 6/23/2007
 		// This code reduces the selections in the "minute" selection boxes.  We want a 15 minute granularity, not a 1 minute granularity.
 		$i_time_minute = '<select name="i_time_minute" class="post">';
-		for($i = 0; $i <= 60; $i++)
+		for($i = 0; $i < 60; $i++)
 		{
 			$ifloor=$i/15;					//Added
 			if(($ifloor) == floor($ifloor)) //Added
@@ -473,7 +491,7 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 		//~@@Change: Douglas Wagner - 6/23/2007
 		// This code reduces the selections in the "minute" selection boxes.  We want a 15 minute granularity, not a 1 minute granularity.		
 		$s_time_minute = '<select name="s_time_minute" class="post">';
-		for($i = 0; $i <= 60; $i++)
+		for($i = 0; $i < 60; $i++)
 		{
 			$ifloor=$i/15;					//Added
 			if(($ifloor) == floor($ifloor)) //Added
@@ -527,7 +545,7 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 		$raid_name = '<select name="name" id="name" class="post" onChange="MM_jumpMenu(\'parent\',this,0)">
 					<option value=""></option>';
 
-		if ($_SESSION['priv_raids'] == 1)
+		if ($priv_raids == 1)
 		{
 			$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "locations ORDER BY name";
 			$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
@@ -540,17 +558,17 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 		while($data = $db_raid->sql_fetchrow($result))
 		{
 			if (isset($_GET['location'])) {
-			   $raid_location = $_GET['location'];
+			   $raid_location = scrub_input($_GET['location']);
 			} else {
 			   $raid_location = '';
 			}
 			if (isset($_GET['mode'])) {
-			   $raid_mode = $_GET['mode'];
+			   $raid_mode = scrub_input($_GET['mode']);
 			} else {
 			   $raid_mode = '';
 			}
 			if (isset($_GET['id'])) {
-			   $raid_id = $_GET['id'];
+			   $raid_id = scrub_input($_GET['id']);
 			} else {
 			   $raid_id = '';
 			}
@@ -664,32 +682,32 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 	{
 		// holy crap, time to put it into the database
 		// variables first
-		$max = $_POST['max'];
-		$dr = $_POST['dr'];
-		$hu = $_POST['hu'];
-		$ma = $_POST['ma'];
-		$pa = $_POST['pa'];
-		$pr = $_POST['pr'];
-		$ro = $_POST['ro'];
-		$sh = $_POST['sh'];
-		$wk = $_POST['wk'];
-		$wa = $_POST['wa'];
-		$min_lvl = $_POST['min_lvl'];
-		$max_lvl = $_POST['max_lvl'];
+		$max = scrub_input($_POST['max']);
+		$dr = scrub_input($_POST['dr']);
+		$hu = scrub_input($_POST['hu']);
+		$ma = scrub_input($_POST['ma']);
+		$pa = scrub_input($_POST['pa']);
+		$pr = scrub_input($_POST['pr']);
+		$ro = scrub_input($_POST['ro']);
+		$sh = scrub_input($_POST['sh']);
+		$wk = scrub_input($_POST['wk']);
+		$wa = scrub_input($_POST['wa']);
+		$min_lvl = scrub_input($_POST['min_lvl']);
+		$max_lvl = scrub_input($_POST['max_lvl']);
 		
-		$location = DEUBB($_POST['location']);
+		$location = scrub_input(DEUBB($_POST['location']));
 		
-		$date = $_POST['date'];
-		$i_time_hour_value = $_POST['i_time_hour'];
-		$i_time_minute_value = $_POST['i_time_minute'];
-		$i_time_ampm_value = $_POST['i_time_ampm'];
-		$s_time_hour_value = $_POST['s_time_hour'];
-		$s_time_minute_value = $_POST['s_time_minute'];
-		$s_time_ampm_value = $_POST['s_time_ampm'];
-		$freeze = $_POST['freeze'];
-		$description = DEUBB($_POST['description']);
+		$date = scrub_input($_POST['date']);
+		$i_time_hour_value = scrub_input($_POST['i_time_hour']);
+		$i_time_minute_value = scrub_input($_POST['i_time_minute']);
+		$i_time_ampm_value = scrub_input($_POST['i_time_ampm']);
+		$s_time_hour_value = scrub_input($_POST['s_time_hour']);
+		$s_time_minute_value = scrub_input($_POST['s_time_minute']);
+		$s_time_ampm_value = scrub_input($_POST['s_time_ampm']);
+		$freeze = scrub_input($_POST['freeze']);
+		$description = scrub_input(DEUBB($_POST['description']));
 		if(isset($_GET['id']))
-			$id = $_GET['id'];
+			$id = scrub_input($_GET['id']);
 		else
 			$id = '';
 		
@@ -709,11 +727,12 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 		
 		if($_GET['mode'] == 'new')
 		{
+			
 			$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "raids (`description`,`freeze`,`invite_time`,
 			`location`,`officer`,`old`,`start_time`,`dr_lmt`,`hu_lmt`,`ma_lmt`,`pa_lmt`,`pr_lmt`,`ro_lmt`,`sh_lmt`,`wk_lmt`,`wa_lmt`,
 			`min_lvl`,`max_lvl`,`max`)	VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
 			quote_smart($description),quote_smart($freeze),quote_smart($invite_time),quote_smart($location),
-			quote_smart($_SESSION['username']),quote_smart('0'),quote_smart($start_time),quote_smart($dr),
+			quote_smart($username),quote_smart('0'),quote_smart($start_time),quote_smart($dr),
 			quote_smart($hu),quote_smart($ma),quote_smart($pa),quote_smart($pr),quote_smart($ro),quote_smart($sh),quote_smart($wk),quote_smart($wa),
 			quote_smart($min_lvl),quote_smart($max_lvl),quote_smart($max));
 			
@@ -736,8 +755,8 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 }
 elseif($_GET['mode'] == 'delete')
 {
-	$id = $_GET['id'];
-	$n = $_GET['n'];
+	$id = scrub_input($_GET['id']);
+	$n = scrub_input($_GET['n']);
 	
 	if(!isset($_POST['submit']))
 	{
@@ -759,30 +778,30 @@ elseif($_GET['mode'] == 'delete')
 	{
 		log_delete('raid',$n);
 		
-		$sql = "DELETE FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id='$id'";
+		$sql = sprintf("DELETE FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id=%s", quote_smart($id));
 		$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 		
-		$sql = "DELETE FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id='$id'";
+		$sql = sprintf("DELETE FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id=%s", quote_smart($id));
 		$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 		header("Location: raids.php?mode=view");
 	}
 }
 elseif($_GET['mode'] == 'mark')
 {
-	$raid_id = $_GET['id'];
+	$raid_id = scrub_input($_GET['id']);
 	
-	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id='$raid_id'";
+	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id=%s", quote_smart($raid_id));
 	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 	$data = $db_raid->sql_fetchrow($result);
 	
 	if($data['old'] == 1)
 	{
-		$sql = "UPDATE " . $phpraid_config['db_prefix'] . "raids SET old='0' WHERE raid_id='$raid_id'";
+		$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "raids SET old='0' WHERE raid_id=%s", quote_smart($raid_id));
 		$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 	}
 	else
 	{
-		$sql = "UPDATE " . $phpraid_config['db_prefix'] . "raids SET old='1' WHERE raid_id='$raid_id'";
+		$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "raids SET old='1' WHERE raid_id=%s", quote_smart($raid_id));
 		$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 	}
 		

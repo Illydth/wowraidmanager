@@ -3,28 +3,40 @@
  *                               guilds.php
  *                            -------------------
  *   begin                : Saturday, Jan 16, 2005
- *   copyright            : (C) 2005 Kyle Spraggs
- *   email                : spiffyjr@gmail.com
+ *   copyright            : (C) 2007-2008 Douglas Wagner
+ *   email                : douglasw@wagnerweb.org
  *
- *   $Id: mysql.php,v 1.16 2002/03/19 01:07:36 psotfx Exp $
+ *   $Id: guilds.php,v 2.00 2008/02/29 13:25:14 psotfx Exp $
  *
  ***************************************************************************/
 
 /***************************************************************************
- *
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- ***************************************************************************/
+*
+*    WoW Raid Manager - Raid Management Software for World of Warcraft
+*    Copyright (C) 2007-2008 Douglas Wagner
+*
+*    This program is free software: you can redistribute it and/or modify
+*    it under the terms of the GNU General Public License as published by
+*    the Free Software Foundation, either version 3 of the License, or
+*    (at your option) any later version.
+*
+*    This program is distributed in the hope that it will be useful,
+*    but WITHOUT ANY WARRANTY; without even the implied warranty of
+*    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*    GNU General Public License for more details.
+*
+*    You should have received a copy of the GNU General Public License
+*    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+* 
+****************************************************************************/
+
 // commons
 define("IN_PHPRAID", true);	
 require_once('./common.php');
 
 // page authentication
 define("PAGE_LVL","guilds");
-require_once($phpraid_dir.'includes/authentication.php');
+require_once("includes/authentication.php");
 
 // show the form
 if($_GET['mode'] == 'view') {
@@ -89,9 +101,9 @@ if($_GET['mode'] == 'view') {
 	$page->parse('output','output');
 } elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit') {
 	// slashes
-	$name = $_POST['name'];
-	$short = $_POST['short'];
-	$master = $_POST['master'];
+	$name = scrub_input($_POST['name'], false);
+	$short = scrub_input($_POST['short'], false);
+	$master = scrub_input($_POST['master'], false);
 	
 	if($_GET['mode'] == 'new') 	{
 		$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "guilds (`guild_master`,`guild_name`,`guild_tag`) 
@@ -101,7 +113,7 @@ if($_GET['mode'] == 'view') {
 		
 		log_create('guild',mysql_insert_id(),$name);
 	} elseif($_GET['mode'] == 'edit') {
-		$id = $_GET['id'];
+		$id = scrub_input($_GET['id'], false);
 		
 		$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "guilds SET guild_name=%s,guild_tag=%s,guild_master=%s WHERE guild_id=%s",quote_smart($name),quote_smart($short),quote_smart($master),quote_smart($id));
 		$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
@@ -109,8 +121,8 @@ if($_GET['mode'] == 'view') {
 	
 	header("Location: guilds.php?mode=view");
 } elseif($_GET['mode'] == 'delete') {
-	$id = $_GET['id'];
-	$n = $_GET['n'];
+	$id = scrub_input($_GET['id'], false);
+	$n = scrub_input($_GET['n'], false);
 	
 	if($_SESSION['priv_guilds'] == 1) {
 		if(!isset($_POST['submit'])) {			
@@ -154,7 +166,7 @@ if($_GET['mode'] != 'delete') {
 		
 		$buttons = '<input type="submit" value="Submit" name="submit" class="mainoption"> <input type="reset" value="Reset" name="reset" class="liteoption">';
 	} elseif($_GET['mode'] == 'update') {
-		$id = $_GET['id'];
+		$id = scrub_input($_GET['id'], false);
 		
 		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "guilds WHERE guild_id=%s",quote_smart($id));
 		$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);

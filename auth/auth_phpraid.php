@@ -3,30 +3,42 @@
  *                             auth_phpraid.php
  *                            -------------------
  *   begin                : Monday, Jan 18, 2005
- *   copyright            : (C) 2005 Kyle Spraggs
- *   email                : spiffyjr@gmail.com
+ *   copyright            : (C) 2007-2008 Douglas Wagner
+ *   email                : douglasw@wagnerweb.org
  *
- *   $Id: mysql.php,v 1.16 2002/03/19 01:07:36 psotfx Exp $
+ *   $Id: auth_phpraid.php,v 2.00 2007/11/23 14:25:57 psotfx Exp $
  *
  ***************************************************************************/
 
 /***************************************************************************
- *
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- ***************************************************************************/
+*
+*    WoW Raid Manager - Raid Management Software for World of Warcraft
+*    Copyright (C) 2007-2008 Douglas Wagner
+*
+*    This program is free software: you can redistribute it and/or modify
+*    it under the terms of the GNU General Public License as published by
+*    the Free Software Foundation, either version 3 of the License, or
+*    (at your option) any later version.
+*
+*    This program is distributed in the hope that it will be useful,
+*    but WITHOUT ANY WARRANTY; without even the implied warranty of
+*    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*    GNU General Public License for more details.
+*
+*    You should have received a copy of the GNU General Public License
+*    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+* 
+****************************************************************************/
+
 function phpraid_login() {
 	global $groups, $db_raid, $phpraid_config;
 	
 	if(isset($_POST['username'])) 	{
-		$username = strtolower($_POST['username']);
+		$username = strtolower(scrub_input($_POST['username']));
 		$password = md5($_POST['password']);
 	} elseif(isset($_COOKIE['username']) && isset($_COOKIE['password'])) {
-		$username = strtolower($_COOKIE['username']);
-		$password = $_COOKIE['password'];
+		$username = strtolower(scrub_input($_COOKIE['username']));
+		$password = scrub_input($_COOKIE['password']);
 	} else {
 		phpraid_logout();
 	}

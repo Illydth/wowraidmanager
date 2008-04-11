@@ -1,37 +1,49 @@
 <?php
 /***************************************************************************
- *                                permissions.php
+ *                              permissions.php
  *                            -------------------
  *   begin                : Saturday, Mar 04, 2005
- *   copyright            : (C) 2005 Kyle Spraggs
- *   email                : spiffyjr@gmail.com
+ *   copyright            : (C) 2007-2008 Douglas Wagner
+ *   email                : douglasw@wagnerweb.org.
  *
- *   $Id: mysql.php,v 1.16 2002/03/19 01:07:36 psotfx Exp $
+ *   $Id: permissions.php,v 2.00 2008/03/08 14:14:56 psotfx Exp $
  *
  ***************************************************************************/
 
 /***************************************************************************
- *
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- ***************************************************************************/
+*
+*    WoW Raid Manager - Raid Management Software for World of Warcraft
+*    Copyright (C) 2007-2008 Douglas Wagner
+*
+*    This program is free software: you can redistribute it and/or modify
+*    it under the terms of the GNU General Public License as published by
+*    the Free Software Foundation, either version 3 of the License, or
+*    (at your option) any later version.
+*
+*    This program is distributed in the hope that it will be useful,
+*    but WITHOUT ANY WARRANTY; without even the implied warranty of
+*    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*    GNU General Public License for more details.
+*
+*    You should have received a copy of the GNU General Public License
+*    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*
+****************************************************************************/
 // commons
 define("IN_PHPRAID", true);	
 require_once('./common.php');
 
 // page authentication
 define("PAGE_LVL","permissions");
-require_once($phpraid_dir.'includes/authentication.php');
+require_once("includes/authentication.php");
 
 if(isset($_GET['id']))
-	$id = $_GET['id'];
+	$id = scrub_input($_GET['id']);
 else
 	$id = '';
 
-if($_GET['mode'] == 'view') {
+if($_GET['mode'] == 'view') 
+{
 	$perm = array();
 	
 	// get permission sets
@@ -42,12 +54,10 @@ if($_GET['mode'] == 'view') {
 		$edit = '<a href="permissions.php?mode=edit&id='.$data['permission_id'].'"><img src="templates/' . $phpraid_config['template'] . 
 					'/images/icons/icon_edit.gif" border="0" onMouseover="ddrivetip(\'' . $phprlang['edit'] . '\')"; onMouseout="hideddrivetip()"></a>';
 				
-
 		$delete = '<a href="permissions.php?mode=delete&id='.$data['permission_id'].'"><img src="templates/' . 
 					$phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\'' . $phprlang['delete'] . '\')"; 
 					onMouseout="hideddrivetip()"></a>';
 
-		
 		// deny deletion/editing of super account
 		if($data['permission_id'] == 1) {
 			$admin = '';
@@ -117,8 +127,7 @@ if($_GET['mode'] == 'view') {
 							onMouseout="hideddrivetip()">';
 		else
 			$users = '';
-		
-		
+				
 		array_push($perm, 
 			array('id'=>$data['permission_id'],'name'=>'<a href="permissions.php?mode=details&id=' . $data['permission_id'] . '">' . $data['name'] . '</a>','desc'=>$data['description'],
 				  'announcements'=>$announcements,'configuration'=>$phpraid_configuration,'guilds'=>$guilds,
@@ -173,22 +182,25 @@ if($_GET['mode'] == 'view') {
 		)
 	);
 	$page->parse('output','output');
-} elseif(isset($_POST['submit']) && ($_GET['mode'] == 'edit' || $_GET['mode'] == 'new')) {
+} 
+elseif(isset($_POST['submit']) && ($_GET['mode'] == 'edit' || $_GET['mode'] == 'new')) 
+{
 	// grab values
-	$name = $_POST['name'];
-	$description = $_POST['description'];
-	$announcements = $_POST['announcements'];
-	$phpraid_configuration = $_POST['configuration'];
-	$guilds = $_POST['guilds'];
-	$locations = $_POST['locations'];
-	$logs = $_POST['logs'];
-	$permissions = $_POST['permissions'];
-	$profile = $_POST['profile'];
-	$users = $_POST['users'];
-	$raids = $_POST['raids'];
+	$name = scrub_input($_POST['name']);
+	$description = scrub_input($_POST['description']);
+	$announcements = scrub_input($_POST['announcements']);
+	$phpraid_configuration = scrub_input($_POST['configuration']);
+	$guilds = scrub_input($_POST['guilds']);
+	$locations = scrub_input($_POST['locations']);
+	$logs = scrub_input($_POST['logs']);
+	$permissions = scrub_input($_POST['permissions']);
+	$profile = scrub_input($_POST['profile']);
+	$users = scrub_input($_POST['users']);
+	$raids = scrub_input($_POST['raids']);
 
 	// error checking
-	if($name == '' || $description == '') {
+	if($name == '' || $description == '') 
+	{
 		$errorDie = 0;
 		$errorSpace = 1;
 		
@@ -202,8 +214,11 @@ if($_GET['mode'] == 'view') {
 			$errorMsg .= '<li>' . $phprlang['permissions_form_description'] . '</li>';
 				
 		$errorMsg .= '</ul>';
-	} else {
-		if($_GET['mode'] == 'new') {
+	} 
+	else 
+	{
+		if($_GET['mode'] == 'new') 
+		{
 			// new submission
 			$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "permissions (`name`,`description`,`announcements`,`configuration`,`guilds`,`locations`,
 				`permissions`,`profile`,`raids`,`logs`,`users`) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",quote_smart($name),quote_smart($description),quote_smart($announcements),
@@ -215,7 +230,9 @@ if($_GET['mode'] == 'view') {
 			log_create('permission',mysql_insert_id(),$name);
 			
 			header("Location: permissions.php?mode=view");
-		} elseif($_GET['mode'] == 'edit') {
+		} 
+		elseif($_GET['mode'] == 'edit') 
+		{
 			// it's an edit, update entry
 			$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "permissions SET name=%s, description=%s, announcements=%s, configuration=%s, 
 				guilds=%s,	locations=%s, permissions=%s, profile=%s, raids=%s, logs=%s, users=%s WHERE permission_id=%s",	quote_smart($name),quote_smart($description),
@@ -227,13 +244,17 @@ if($_GET['mode'] == 'view') {
 			header("Location: permissions.php?mode=view");
 		}
 	}
-} elseif($_GET['mode'] == 'details') {
+} 
+elseif($_GET['mode'] == 'details')
 	permissions($report);
-} elseif($_GET['mode'] == 'delete') {
-	$id = $_GET['id'];
+elseif($_GET['mode'] == 'delete') 
+{
+	$id = scrub_input($_GET['id']);
 	
-	if($_SESSION['priv_permissions'] == 1) {
-		if(!isset($_POST['submit'])) {			
+	if($_SESSION['priv_permissions'] == 1) 
+	{
+		if(!isset($_POST['submit'])) 
+		{			
 			$form_action = 'permissions.php?mode=delete&id=' . $id;
 			$confirm_button = '<input type="submit" value="Confirm" name="submit" class="post">';
 			
@@ -248,29 +269,35 @@ if($_GET['mode'] == 'view') {
 				)
 			);
 			$page->parse('output','output');
-		} else {
+		} 
+		else 
+		{
 			$sql = sprintf("DELETE FROM " . $phpraid_config['db_prefix'] . "permissions WHERE permission_id=%s",quote_smart($id));
 			$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 			
 			header("Location: permissions.php?mode=view");
 		}
-	} else {
+	} 
+	else 
+	{
 		if($_SESSION['priv_permissions'] == 1)
 			header("Location: permissions.php?mode=view");
 		else
 			header("Location: index.php");
 	}
-
 	delete_permissions();
-} elseif($_GET['mode'] == 'remove_user') {
+} 
+elseif($_GET['mode'] == 'remove_user') {
 	remove_user();
 }
 
 // new/edit details
-if($_GET['mode'] != 'delete' && $_GET['mode'] != 'details') {
+if($_GET['mode'] != 'delete' && $_GET['mode'] != 'details') 
+{
 	$page->set_file('new_file',$phpraid_config['template'] . '/permissions_new.htm');
 
-	if($_GET['mode'] == 'edit') {
+	if($_GET['mode'] == 'edit') 
+	{
 		// grab from DB
 		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "permissions WHERE permission_id=%s",quote_smart($id));
 		$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);

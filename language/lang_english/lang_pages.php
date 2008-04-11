@@ -1,4 +1,34 @@
 <?php
+/***************************************************************************
+ *                             lang_pages.php
+ *                            -------------------
+ *   begin                : Saturday, Jan 16, 2005
+ *   copyright            : (C) 2007-2008 Douglas Wagner
+ *   email                : douglasw@wagnerweb.org
+ *
+ *   $Id: lang_pages.php,v 2.00 2008/03/07 13:49:54 psotfx Exp $
+ *
+ ***************************************************************************/
+
+/***************************************************************************
+*
+*    WoW Raid Manager - Raid Management Software for World of Warcraft
+*    Copyright (C) 2007-2008 Douglas Wagner
+*
+*    This program is free software: you can redistribute it and/or modify
+*    it under the terms of the GNU General Public License as published by
+*    the Free Software Foundation, either version 3 of the License, or
+*    (at your option) any later version.
+*
+*    This program is distributed in the hope that it will be useful,
+*    but WITHOUT ANY WARRANTY; without even the implied warranty of
+*    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*    GNU General Public License for more details.
+*
+*    You should have received a copy of the GNU General Public License
+*    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*
+****************************************************************************/
 // announcements
 $phprlang['announcements_header'] = 'Announcements';
 $phprlang['announcements_new_header'] = 'Create New Announcement';
@@ -38,17 +68,20 @@ $phprlang['configuration_resop'] = 'Make resistance optional';
 $phprlang['configuration_register_text'] = 'Registration URL';
 $phprlang['configuration_roster_text'] = 'Integrate with WoW Roster';
 $phprlang['configuration_show_addon'] = 'Show addon link';
-$phprlang['configuration_sitelink'] = 'Site URL';
+$phprlang['configuration_sitelink'] = '"Home" Link Points To';
 $phprlang['configuration_server'] = 'Server';
 $phprlang['configuration_template'] = 'Template';
 $phprlang['configuration_time'] = 'Time format<br><a href="http://www.php.net/date/" target="_blank">help?</a>';
 $phprlang['configuration_timezone_text'] = 'Timezone';
 $phprlang['configuration_user'] = 'User';
+$phprlang['configuration_rss_site'] = 'RSS: URL to phpRaid Installation (No Trailing /)';
+$phprlang['configuration_rss_export'] = 'RSS: Site to export RSS feed to';
+$phprlang['configuration_rss_feed_amt'] = 'RSS: Number of Raids to Show in Feed';
 $phprlang['configuration_version_current'] = 'You are running the latest version of phpRaid';
 $phprlang['configuration_version_outdated_header'] = 'phpRaid update available!';
 $phprlang['configuration_version_outdated_message'] = 'Your version of phpRaid is out of date. Updating is strongly recommended.<br>
 													   The latest version is %s and you are running version %s.<br>
-													   To download, visit the <a href="http://www.phpraider.com/index.php?option=com_smf&Itemid=2&topic=567.0">phpRaid for BC</a> section.';
+													   To download, visit the <a href="http://www.wowraidmanager.net">phpRaid for BC download</a> section.';
 
 // guilds
 $phprlang['guilds_header'] = 'Guild Listing';
@@ -68,6 +101,7 @@ $phprlang['locations_short'] = 'Identifier';
 $phprlang['lock_template'] = 'Locked Raid Template?';
 
 // lua_output
+$phprlang['rim_download'] = 'Download RIM (Raid Information Manager)';
 $phprlang['lua_download'] = 'Download phpRaidViewer';
 $phprlang['lua_header'] = 'LUA/Macro Output';
 

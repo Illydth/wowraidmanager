@@ -3,21 +3,32 @@
 *                           functions_auth.php
 *                           ---------------------
 *   begin                : Monday, May 26, 2006
-*   copyright            : (C) 2005 Kyle Spraggs
-*   email                : spiffyjr@gmail.com
+*   copyright            : (C) 2007-2008 Douglas Wagner
+*   email                : douglasw@wagnerweb.org
 *
-*   $Id: mysql.php,v 1.16 2002/03/19 01:07:36 psotfx Exp $
+*   $Id: functions_auth.php,v 2.00 2008/03/03 14:22:10 psotfx Exp $
 *
 ***************************************************************************/
 
 /***************************************************************************
 *
-*   This program is free software; you can redistribute it and/or modify
-*   it under the terms of the GNU General Public License as published by
-*   the Free Software Foundation; either version 2 of the License, or
-*   (at your option) any later version.
+*    WoW Raid Manager - Raid Management Software for World of Warcraft
+*    Copyright (C) 2007-2008 Douglas Wagner
 *
-***************************************************************************/
+*    This program is free software: you can redistribute it and/or modify
+*    it under the terms of the GNU General Public License as published by
+*    the Free Software Foundation, either version 3 of the License, or
+*    (at your option) any later version.
+*
+*    This program is distributed in the hope that it will be useful,
+*    but WITHOUT ANY WARRANTY; without even the implied warranty of
+*    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*    GNU General Public License for more details.
+*
+*    You should have received a copy of the GNU General Public License
+*    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*
+****************************************************************************/
 // clears session variables just in case
 function clear_session()
 {
@@ -39,9 +50,9 @@ function get_permissions()
 {
 	global $db_raid, $phpraid_config;
 	
-	$profile_id = $_SESSION['profile_id'];
+	$profile_id = scrub_input($_SESSION['profile_id']);
 
-	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "profile WHERE profile_id='$profile_id'";
+	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "profile WHERE profile_id=%s", quote_smart($profile_id));
 	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(),1);
 	$data = $db_raid->sql_fetchrow($result);
 	
@@ -65,12 +76,12 @@ function get_permissions()
 function delete_permissions() {
 	global $db_raid, $phpraid_config;
 	
-	$id = $_GET['id'];
+	$id = scrub_input($_GET['id']);
 	
-	$sql = "DELETE FROM " . $phpraid_config['db_prefix'] . "permissions WHERE permission_id='$id'";
+	$sql = sprintf("DELETE FROM " . $phpraid_config['db_prefix'] . "permissions WHERE permission_id=%s", quote_smart($id));
 	$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 	
-	$sql = "UPDATE " . $phpraid_config['db_prefix'] . "profile SET priv='0' WHERE priv='$id'";
+	$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "profile SET priv='0' WHERE priv=%s", quote_smart($id));
 	$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 }
 
@@ -79,10 +90,10 @@ function permissions($report) {
 	
 	if(!isset($_POST['submit'])) {
 		$users = array();
-		$id = $_GET['id'];
+		$id = scrub_input($_GET['id']);
 		
 		// display users for phpraid authentication and this permission set
-		$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "profile WHERE priv='$id'";
+		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "profile WHERE priv=%s", quote_smart($id));
 		$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 		
 		while($data = $db_raid->sql_fetchrow($result)) {	
@@ -115,18 +126,18 @@ function permissions($report) {
 		setup_output();
 		
 		$report->showRecordCount(true);
-		$report->allowPaging(true, $_SERVER['PHP_SELF'] . '?mode=details&id='.$_GET['id'].'&Base=');
+		$report->allowPaging(true, $_SERVER['PHP_SELF'] . '?mode=details&id='.$id.'&Base=');
 		$report->setListRange($_GET['Base'], 25);
 		$report->allowLink(ALLOW_HOVER_INDEX,'',array());	
 		
 		//Default sorting
 		if(!$_GET['Sort'])
 		{
-			$report->allowSort(true, 'username', 'ASC', 'permissions.php?mode=details&id=' . $_GET['id']);
+			$report->allowSort(true, 'username', 'ASC', 'permissions.php?mode=details&id=' . $id);
 		}
 		else
 		{
-			$report->allowSort(true, $_GET['Sort'], $_GET['SortDescending'], 'permissions.php?mode=details&id=' . $_GET['id']);
+			$report->allowSort(true, $_GET['Sort'], $_GET['SortDescending'], 'permissions.php?mode=details&id=' . $id);
 		}
 		
 		if($phpraid_config['show_id'] == 1)
@@ -166,11 +177,11 @@ function permissions($report) {
 		//Default sorting
 		if(!$_GET['Sort'])
 		{
-			$report->allowSort(true, 'username', 'ASC', 'permissions.php?mode=details&id=' . $_GET['id']);
+			$report->allowSort(true, 'username', 'ASC', 'permissions.php?mode=details&id=' . $id);
 		}
 		else
 		{
-			$report->allowSort(true, $_GET['Sort'], $_GET['SortDescending'], 'permissions.php?mode=details&id=' . $_GET['id']);
+			$report->allowSort(true, $_GET['Sort'], $_GET['SortDescending'], 'permissions.php?mode=details&id=' . $id);
 		}
 		setup_output();
 		
@@ -199,10 +210,10 @@ function permissions($report) {
 			
 		$page->parse('output','add',true);
 	} else {
-		$priv_id = $_GET['id'];
+		$priv_id = scrub_input($_GET['id']);
 		foreach($_POST as $key=>$value) {
 			if($key != 'submit') {
-					$sql = "UPDATE " . $phpraid_config['db_prefix'] . "profile SET priv='$priv_id' WHERE profile_id='$value'";
+					$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "profile SET priv=%s WHERE profile_id=%s", quote_smart($priv_id), quote_smart($value));
 					$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 			}
 		}
@@ -213,10 +224,10 @@ function permissions($report) {
 function remove_user() {
 	global $db_raid, $phpraid_config;
 	
-	$user_id = $_GET['user_id'];
-	$priv_id = $_GET['priv_id'];
+	$user_id = scrub_input($_GET['user_id']);
+	$priv_id = scrub_input($_GET['priv_id']);
 	
-	$sql = "UPDATE " . $phpraid_config['db_prefix'] . "profile SET priv='0' WHERE profile_id='$user_id'";
+	$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "profile SET priv='0' WHERE profile_id=%s", quote_smart($user_id));
 	$sql = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 	header("Location: permissions.php?mode=details&id=$priv_id");
 }

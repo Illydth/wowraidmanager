@@ -3,28 +3,40 @@
  *                             configuration.php
  *                            -------------------
  *   begin                : Saturday, Jan 16, 2005
- *   copyright            : (C) 2005 Kyle Spraggs
- *   email                : spiffyjr@gmail.com
+ *   copyright            : (C) 2007-2008 Douglas Wagner
+ *   email                : douglasw@wagnerweb.org
  *
- *   $Id: mysql.php,v 1.16 2002/03/19 01:07:36 psotfx Exp $
+ *   $Id: configuration.php,v 2.00 2007/11/23 14:51:03 psotfx Exp $
  *
  ***************************************************************************/
 
 /***************************************************************************
- *
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- ***************************************************************************/
+*
+*    WoW Raid Manager - Raid Management Software for World of Warcraft
+*    Copyright (C) 2007-2008 Douglas Wagner
+*
+*    This program is free software: you can redistribute it and/or modify
+*    it under the terms of the GNU General Public License as published by
+*    the Free Software Foundation, either version 3 of the License, or
+*    (at your option) any later version.
+*
+*    This program is distributed in the hope that it will be useful,
+*    but WITHOUT ANY WARRANTY; without even the implied warranty of
+*    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*    GNU General Public License for more details.
+*
+*    You should have received a copy of the GNU General Public License
+*    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+* 
+****************************************************************************/
+
 // commons
 define("IN_PHPRAID", true);	
 require_once('./common.php');
 
 // page authentication
 define("PAGE_LVL","configuration");
-require_once($phpraid_dir.'includes/authentication.php');
+require_once("includes/authentication.php");
 
 // check for new version
 // primarily stripped from phpBB version checking
@@ -38,10 +50,10 @@ $sub_minor_revision = (int) $current_version[5];
 $errno = 0;
 $errstr = $version_info = '';
 
-if ($fsock = @fsockopen('www.warbandofgrey.net', 80, $errno, $errstr, 10))
+if ($fsock = @fsockopen('www.wowraidmanager.net', 80, $errno, $errstr, 10))
 {
-	@fputs($fsock, "GET /vercheck/309.txt HTTP/1.1\r\n");
-	@fputs($fsock, "HOST: www.warbandofgrey.net\r\n");
+	@fputs($fsock, "GET /vercheck/ver_check.txt HTTP/1.1\r\n");
+	@fputs($fsock, "HOST: www.wowraidmanager.net\r\n");
 	@fputs($fsock, "Connection: close\r\n\r\n");
 
 	$get_info = false;
@@ -151,8 +163,7 @@ if($phpraid_config['enable_five_man'] == '0')
 	$enable_five_man = '<input type="checkbox" name="enable_five_man" value="1">';
 else
 	$enable_five_man = '<input type="checkbox" name="enable_five_man" value="1" checked>';
-	
-	
+		
 // now the faction
 $faction = '<select name="faction">';
 if($phpraid_config['faction'] == 'alliance')
@@ -444,6 +455,9 @@ else
 $header_logo = '<input name="header_logo" size="60" type="text" class="post" value="' . $phpraid_config['header_logo'] . '">';
 $header_link = '<input name="header_link" size="60" type="text" class="post" value="' . $phpraid_config['header_link'] . '">';
 $phpraid_addon_link = '<input name="phpraid_addon_link" size="60" type="text" class="post" value="' . $phpraid_config['phpraid_addon_link'] . '">';
+$rss_site_url = '<input name="rss_site_url" size="60" type="text" class="post" value="' . $phpraid_config['rss_site_url'] . '">';
+$rss_export_url = '<input name="rss_export_url" size="60" type="text" class="post" value="' . $phpraid_config['rss_export_url'] . '">';
+$rss_feed_amt = '<input name="rss_feed_amt" size="10" type="text" class="post" value="' . $phpraid_config['rss_feed_amt'] . '">';
 $guild_name = '<input name="guild_name" type="text" id="guild_name" value="' . $phpraid_config['guild_name'] . '" maxlength="255" class="post">';
 $guild_description = '<input name="guild_description" type="text" id="guild_description" value="' . $phpraid_config['guild_description'] . '" maxlength="255" class="post">';
 $guild_server = '<input name="guild_server" type="text" id="guild_server" value="' . $phpraid_config['guild_server'] . '" maxlength="255" class="post">';
@@ -487,8 +501,14 @@ $page->set_var(
 		'faction_text' =>$phprlang['configuration_faction'],
 		'site_configure' => $phprlang['configuration_site_header'],
 		'template_text' => $phprlang['configuration_template'],
+		'rss_site_text' => $phprlang['configuration_rss_site'],
+		'rss_export_text' => $phprlang['configuration_rss_export'],
+		'rss_feed_amt_txt' => $phprlang['configuration_rss_feed_amt'],
 		'header_logo_path' => $header_logo,
 		'header_link_value' => $header_link,
+		'rss_site_url' => $rss_site_url,
+		'rss_export_url' => $rss_export_url,
+		'rss_feed_amt' => $rss_feed_amt,
 		'header_link_text' => $phprlang['configuration_sitelink'],
 		'header_logo_text' => $phprlang['configuration_logo'],
 		'phpraid_addon_link' => $phpraid_addon_link,
@@ -604,9 +624,12 @@ else
  	else
  		$enable_five_man = 0;
 
-	$h_logo = $_POST['header_logo'];
- 	$h_link = $_POST['header_link'];
- 	$p_link = $_POST['phpraid_addon_link'];
+	$h_logo = scrub_input($_POST['header_logo'], true);
+ 	$h_link = scrub_input($_POST['header_link'], true);
+ 	$p_link = scrub_input($_POST['phpraid_addon_link'], true);
+	$rss_site_url_p = scrub_input($_POST['rss_site_url'], true);
+	$rss_export_url_p = scrub_input($_POST['rss_export_url'], true);
+	$rss_feed_amt_p = scrub_input($_POST['rss_feed_amt']);
 		
 	if(isset($_POST['multiple_signups']))
 		$allow_multiple = 1;
@@ -780,85 +803,154 @@ else
 		$add = 0;
 // End of Signup Flow Boxes
 		 		
-	$g_name = DEUBB($_POST['guild_name']);
-	$g_desc =  DEUBB($_POST['guild_description']);
-	$g_server =  DEUBB($_POST['guild_server']);
-	$faction = $_POST['faction'];
-	$lang = $_POST['language'];
-	$a_email = $_POST['admin_email'];
-	$e_sig = $_POST['email_signature'];
-	$d_format = $_POST['date_format'];
-	$t_format = $_POST['time_format'];
-	$t_type = $_POST['template'];
-	$t_zone = $_POST['timezone'] * 100;
-	$register = $_POST['register'];
-	$default =  DEUBB($_POST['default']);
+	$g_name = scrub_input(DEUBB($_POST['guild_name']));
+	$g_desc =  scrub_input(DEUBB($_POST['guild_description']));
+	$g_server =  scrub_input(DEUBB($_POST['guild_server']));
+	$faction = scrub_input($_POST['faction']);
+	$lang = scrub_input($_POST['language']);
+	$a_email = scrub_input(DEUBB($_POST['admin_email']));
+	$e_sig = scrub_input(DEUBB($_POST['email_signature']));
+	$d_format = scrub_input(DEUBB($_POST['date_format']));
+	$t_format = scrub_input(DEUBB($_POST['time_format']));
+	$t_type = scrub_input(DEUBB($_POST['template']));
+	$t_zone = scrub_input(DEUBB($_POST['timezone'] * 100));
+	$register = scrub_input(DEUBB($_POST['register']), true);
+	$default =  scrub_input(DEUBB($_POST['default']));
 	$dst *= 100;
-	
-	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$a_email' WHERE `config_name`= 'admin_email';") or print_error($sql,mysql_error(),1);
-	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$allow_multiple' WHERE `config_name`= 'multiple_signups';") or print_error($sql,mysql_error(),1);
-	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$allow_resop' WHERE `config_name`= 'resop';") or print_error($sql,mysql_error(),1);
-	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$anon' WHERE `config_name`= 'anon_view';") or print_error($sql,mysql_error(),1);
-	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$a_queue' WHERE `config_name`= 'auto_queue';") or print_error($sql,mysql_error(),1);
-	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$d_format' WHERE `config_name`= 'date_format';") or print_error($sql,mysql_error(),1);
-	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$p_debug' WHERE `config_name`= 'debug';") or print_error($sql,mysql_error(),1);
-	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$disable' WHERE `config_name`= 'disable';") or print_error($sql,mysql_error(),1);
-	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$d_freeze' WHERE `config_name`= 'disable_freeze';") or print_error($sql,mysql_error(),1);
-	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$dst' WHERE `config_name`= 'dst';") or print_error($sql,mysql_error(),1);
-	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$e_sig' WHERE `config_name`= 'email_signature';") or print_error($sql,mysql_error(),1);
-	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$faction' WHERE `config_name`= 'faction';") or print_error($sql,mysql_error(),1);
-	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$g_desc' WHERE `config_name`= 'guild_description';") or print_error($sql,mysql_error(),1);
-	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$g_name' WHERE `config_name`= 'guild_name';") or print_error($sql,mysql_error(),1);
-	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$g_server' WHERE `config_name`= 'guild_server';") or print_error($sql,mysql_error(),1);
-	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$h_link' WHERE `config_name`= 'header_link';") or print_error($sql,mysql_error(),1);
-	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$h_logo' WHERE `config_name`= 'header_logo';") or print_error($sql,mysql_error(),1);
-	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$lang' WHERE `config_name`= 'language';") or print_error($sql,mysql_error(),1);
-	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$p_link' WHERE `config_name`= 'phpraid_addon_link';") or print_error($sql,mysql_error(),1);
-	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$register' WHERE `config_name`= 'register_url';") or print_error($sql,mysql_error(),1);
-	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$show_id' WHERE `config_name`= 'show_id';") or print_error($sql,mysql_error(),1);
-	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$showphpraid_addon' WHERE `config_name`= 'showphpraid_addon';") or print_error($sql,mysql_error(),1);
-	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$t_type' WHERE `config_name`= 'template';") or print_error($sql,mysql_error(),1);
-	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$t_format' WHERE `config_name`= 'time_format';") or print_error($sql,mysql_error(),1);
-	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$t_zone' WHERE `config_name`= 'timezone';") or print_error($sql,mysql_error(),1);
-	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$default' WHERE `config_name`= 'default_group';") or print_error($sql,mysql_error(),1);
-	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$enable_five_man' WHERE `config_name`= 'enable_five_man';") or print_error($sql,mysql_error(),1);
+
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'admin_email';", quote_smart($a_email));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'multiple_signups';", quote_smart($allow_multiple));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'resop';", quote_smart($allow_resop));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'anon_view';", quote_smart($anon));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'auto_queue';", quote_smart($a_queue));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error($sql),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'date_format';", quote_smart($d_format));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error($sql),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'debug';", quote_smart($p_debug));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'disable';", quote_smart($disable));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'disable_freeze';", quote_smart($d_freeze));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'dst';", quote_smart($dst));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'email_signature';", quote_smart($e_sig));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'faction';", quote_smart($faction));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'guild_description';", quote_smart($g_desc));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'guild_name';", quote_smart($g_name));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'guild_server';", quote_smart($g_server));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'header_link';", quote_smart($h_link));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'header_logo';", quote_smart($h_logo));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'language';", quote_smart($lang));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'phpraid_addon_link';", quote_smart($p_link));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'register_url';", quote_smart($register));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'show_id';", quote_smart($show_id));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'showphpraid_addon';", quote_smart($showphpraid_addon));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'template';", quote_smart($t_type));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'time_format';", quote_smart($t_format));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'timezone';", quote_smart($t_zone));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'default_group';", quote_smart($default));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'enable_five_man';", quote_smart($enable_five_man));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'rss_site_url';", quote_smart($rss_site_url_p));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'rss_export_url';", quote_smart($rss_export_url_p));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'rss_feed_amt';", quote_smart($rss_feed_amt_p));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
 	//Signup Flow Config
-	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$uqp' WHERE `config_name`= 'user_queue_promote';") or print_error($sql,mysql_error(),1);
-	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$uqc' WHERE `config_name`= 'user_queue_comments';") or print_error($sql,mysql_error(),1);
-	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$uqa' WHERE `config_name`= 'user_queue_cancel';") or print_error($sql,mysql_error(),1);
-	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$uqd' WHERE `config_name`= 'user_queue_delete';") or print_error($sql,mysql_error(),1);
-	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$ucq' WHERE `config_name`= 'user_cancel_queue';") or print_error($sql,mysql_error(),1);
-	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$ucp' WHERE `config_name`= 'user_cancel_promote';") or print_error($sql,mysql_error(),1);
-	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$ucc' WHERE `config_name`= 'user_cancel_comments';") or print_error($sql,mysql_error(),1);
-	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$ucd' WHERE `config_name`= 'user_cancel_delete';") or print_error($sql,mysql_error(),1);
-	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$udq' WHERE `config_name`= 'user_drafted_queue';") or print_error($sql,mysql_error(),1);
-	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$udc' WHERE `config_name`= 'user_drafted_comments';") or print_error($sql,mysql_error(),1);
-	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$uda' WHERE `config_name`= 'user_drafted_cancel';") or print_error($sql,mysql_error(),1);
-	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$udd' WHERE `config_name`= 'user_drafted_delete';") or print_error($sql,mysql_error(),1);
-	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$rqp' WHERE `config_name`= 'rl_queue_promote';") or print_error($sql,mysql_error(),1);
-	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$rqc' WHERE `config_name`= 'rl_queue_comments';") or print_error($sql,mysql_error(),1);
-	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$rqa' WHERE `config_name`= 'rl_queue_cancel';") or print_error($sql,mysql_error(),1);
-	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$rqd' WHERE `config_name`= 'rl_queue_delete';") or print_error($sql,mysql_error(),1);
-	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$rcq' WHERE `config_name`= 'rl_cancel_queue';") or print_error($sql,mysql_error(),1);
-	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$rcp' WHERE `config_name`= 'rl_cancel_promote';") or print_error($sql,mysql_error(),1);
-	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$rcc' WHERE `config_name`= 'rl_cancel_comments';") or print_error($sql,mysql_error(),1);
-	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$rcd' WHERE `config_name`= 'rl_cancel_delete';") or print_error($sql,mysql_error(),1);
-	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$rdq' WHERE `config_name`= 'rl_drafted_queue';") or print_error($sql,mysql_error(),1);
-	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$rdc' WHERE `config_name`= 'rl_drafted_comments';") or print_error($sql,mysql_error(),1);
-	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$rda' WHERE `config_name`= 'rl_drafted_cancel';") or print_error($sql,mysql_error(),1);
-	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$rdd' WHERE `config_name`= 'rl_drafted_delete';") or print_error($sql,mysql_error(),1);
-	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$aqp' WHERE `config_name`= 'admin_queue_promote';") or print_error($sql,mysql_error(),1);
-	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$aqc' WHERE `config_name`= 'admin_queue_comments';") or print_error($sql,mysql_error(),1);
-	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$aqa' WHERE `config_name`= 'admin_queue_cancel';") or print_error($sql,mysql_error(),1);
-	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$aqd' WHERE `config_name`= 'admin_queue_delete';") or print_error($sql,mysql_error(),1);
-	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$acq' WHERE `config_name`= 'admin_cancel_queue';") or print_error($sql,mysql_error(),1);
-	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$acp' WHERE `config_name`= 'admin_cancel_promote';") or print_error($sql,mysql_error(),1);
-	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$acc' WHERE `config_name`= 'admin_cancel_comments';") or print_error($sql,mysql_error(),1);
-	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$acd' WHERE `config_name`= 'admin_cancel_delete';") or print_error($sql,mysql_error(),1);
-	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$adq' WHERE `config_name`= 'admin_drafted_queue';") or print_error($sql,mysql_error(),1);
-	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$adc' WHERE `config_name`= 'admin_drafted_comments';") or print_error($sql,mysql_error(),1);
-	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$ada' WHERE `config_name`= 'admin_drafted_cancel';") or print_error($sql,mysql_error(),1);
-	$db_raid->sql_query("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = '$add' WHERE `config_name`= 'admin_drafted_delete';") or print_error($sql,mysql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'user_queue_promote';", quote_smart($uqp));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'user_queue_comments';", quote_smart($uqc));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'user_queue_cancel';", quote_smart($uqa));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'user_queue_delete';", quote_smart($uqd));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'user_cancel_queue';", quote_smart($ucq));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'user_cancel_promote';", quote_smart($ucp));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'user_cancel_comments';", quote_smart($ucc));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'user_cancel_delete';", quote_smart($ucd));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'user_drafted_queue';", quote_smart($udq));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'user_drafted_comments';", quote_smart($udc));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'user_drafted_cancel';", quote_smart($uda));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'user_drafted_delete';", quote_smart($udd));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'rl_queue_promote';", quote_smart($rqp));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'rl_queue_comments';", quote_smart($rqc));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'rl_queue_cancel';", quote_smart($rqa));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'rl_queue_delete';", quote_smart($rqd));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'rl_cancel_queue';", quote_smart($rcq));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'rl_cancel_promote';", quote_smart($rcp));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'rl_cancel_comments';", quote_smart($rcc));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'rl_cancel_delete';", quote_smart($rcd));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'rl_drafted_queue';", quote_smart($rdq));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'rl_drafted_comments';", quote_smart($rdc));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'rl_drafted_cancel';", quote_smart($rda));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'rl_drafted_delete';", quote_smart($rdd));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'admin_queue_promote';", quote_smart($aqp));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'admin_queue_comments';", quote_smart($aqc));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'admin_queue_cancel';", quote_smart($aqa));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'admin_queue_delete';", quote_smart($aqd));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'admin_cancel_queue';", quote_smart($acq));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'admin_cancel_promote';", quote_smart($acp));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'admin_cancel_comments';", quote_smart($acc));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'admin_cancel_delete';", quote_smart($acd));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'admin_drafted_queue';", quote_smart($adq));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'admin_drafted_comments';", quote_smart($adc));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'admin_drafted_cancel';", quote_smart($ada));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'admin_drafted_delete';", quote_smart($add));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
 																
 	header("Location: configuration.php");
 }
