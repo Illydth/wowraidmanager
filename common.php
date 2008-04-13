@@ -85,7 +85,7 @@ while($data = $db_raid->sql_fetchrow($result))
 }
 
 // templates
-$page = &new Template();
+$page = &new wrmTemplate();
 $page->set_root($phpraid_dir.'templates');
 
 if(!is_file($phpraid_dir."language/lang_{$phpraid_config['language']}/lang_main.php"))
@@ -100,7 +100,6 @@ else
 
 // get auth type
 require_once($phpraid_dir.'auth/auth_' . $phpraid_config['auth_type'] . '.php');
-
 get_permissions();
 
 if($phpraid_config['disable'] == 1 && $_SESSION['priv_configuration'] == 0)
