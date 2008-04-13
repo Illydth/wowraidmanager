@@ -70,7 +70,7 @@ $result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 $data = $db_raid->sql_fetchrow($result);
 
 $priv_raids = scrub_input($_SESSION['priv_raids']);
-$username = scrub_input($username);
+$username = scrub_input($_SESSION['username']);
 
 if ($priv_raids == 1)
 	$user_perm_group['admin'] = 1;
@@ -221,61 +221,61 @@ if($mode == 'view')
 		switch($data['race'])
 		{
 			case $phprlang['draenei']:
-				if(strtolower($data['gender']) == 'male')
+				if(strtolower($data['gender']) == strtolower($phprlang['male']))
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/dr_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['draenei'].'\')"; onMouseout="hideddrivetip()">';
 				else
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/dr_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['draenei'].'\')"; onMouseout="hideddrivetip()">';
 				break;
 			case $phprlang['dwarf']:
-				if(strtolower($data['gender']) == 'male')
+				if(strtolower($data['gender']) == strtolower($phprlang['male']))
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/dw_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['dwarf'].'\')"; onMouseout="hideddrivetip()">';
 				else
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/dw_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['dwarf'].'\')"; onMouseout="hideddrivetip()">';
 				break;
 			case $phprlang['gnome']:
-				if(strtolower($data['gender']) == 'male')
+				if(strtolower($data['gender']) == strtolower($phprlang['male']))
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/gn_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['gnome'].'\')"; onMouseout="hideddrivetip()">';
 				else
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/gn_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['gnome'].'\')"; onMouseout="hideddrivetip()">';
 				break;
 			case $phprlang['human']:
-				if(strtolower($data['gender']) == 'male')
+				if(strtolower($data['gender']) == strtolower($phprlang['male']))
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/hu_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['human'].'\')"; onMouseout="hideddrivetip()">';
 				else
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/hu_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['human'].'\')"; onMouseout="hideddrivetip()">';
 				break;
 			case $phprlang['night_elf']:
-				if(strtolower($data['gender']) == 'male')
+				if(strtolower($data['gender']) == strtolower($phprlang['male']))
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/ne_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['night_elf'].'\')"; onMouseout="hideddrivetip()">';
 				else
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/ne_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['night_elf'].'\')"; onMouseout="hideddrivetip()">';
 				break;
 			case $phprlang['blood_elf']:
-				if(strtolower($data['gender']) == 'male')
+				if(strtolower($data['gender']) == strtolower($phprlang['male']))
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/be_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['blood_elf'].'\')"; onMouseout="hideddrivetip()">';
 				else
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/be_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['blood_elf'].'\')"; onMouseout="hideddrivetip()">';
 				break;
 			case $phprlang['orc']:
-				if(strtolower($data['gender']) == 'male')
+				if(strtolower($data['gender']) == strtolower($phprlang['male']))
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/or_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['orc'].'\')"; onMouseout="hideddrivetip()">';
 				else
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/or_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['orc'].'\')"; onMouseout="hideddrivetip()">';
 				break;
 			case $phprlang['tauren']:
-				if(strtolower($data['gender']) == 'male')
+				if(strtolower($data['gender']) == strtolower($phprlang['male']))
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/ta_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['tauren'].'\')"; onMouseout="hideddrivetip()">';
 				else
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/ta_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['tauren'].'\')"; onMouseout="hideddrivetip()">';
 				break;
 			case $phprlang['troll']:
-				if(strtolower($data['gender']) == 'male')
+				if(strtolower($data['gender']) == strtolower($phprlang['male']))
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/tr_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['troll'].'\')"; onMouseout="hideddrivetip()">';
 				else
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/tr_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['troll'].'\')"; onMouseout="hideddrivetip()">';
 				break;
 			case $phprlang['undead']:
-				if(strtolower($data['gender']) == 'male')
+				if(strtolower($data['gender']) == strtolower($phprlang['male']))
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/un_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['undead'].'\')"; onMouseout="hideddrivetip()">';
 				else
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/un_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['undead'].'\')"; onMouseout="hideddrivetip()">';
@@ -396,61 +396,61 @@ if($mode == 'view')
 		switch($data['race'])
 		{
 			case $phprlang['draenei']:
-				if(strtolower($data['gender']) == 'male')
+				if(strtolower($data['gender']) == strtolower($phprlang['male']))
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/dr_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['draenei'].'\')"; onMouseout="hideddrivetip()">';
 				else
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/dr_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['draenei'].'\')"; onMouseout="hideddrivetip()">';
 				break;
 			case $phprlang['dwarf']:
-				if(strtolower($data['gender']) == 'male')
+				if(strtolower($data['gender']) == strtolower($phprlang['male']))
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/dw_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['dwarf'].'\')"; onMouseout="hideddrivetip()">';
 				else
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/dw_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['dwarf'].'\')"; onMouseout="hideddrivetip()">';
 				break;
 			case $phprlang['gnome']:
-				if(strtolower($data['gender']) == 'male')
+				if(strtolower($data['gender']) == strtolower($phprlang['male']))
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/gn_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['gnome'].'\')"; onMouseout="hideddrivetip()">';
 				else
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/gn_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['gnome'].'\')"; onMouseout="hideddrivetip()">';
 				break;
 			case $phprlang['human']:
-				if(strtolower($data['gender']) == 'male')
+				if(strtolower($data['gender']) == strtolower($phprlang['male']))
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/hu_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['human'].'\')"; onMouseout="hideddrivetip()">';
 				else
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/hu_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['human'].'\')"; onMouseout="hideddrivetip()">';
 				break;
 			case $phprlang['night_elf']:
-				if(strtolower($data['gender']) == 'male')
+				if(strtolower($data['gender']) == strtolower($phprlang['male']))
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/ne_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['night_elf'].'\')"; onMouseout="hideddrivetip()">';
 				else
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/ne_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['night_elf'].'\')"; onMouseout="hideddrivetip()">';
 				break;
 			case $phprlang['blood_elf']:
-				if(strtolower($data['gender']) == 'male')
+				if(strtolower($data['gender']) == strtolower($phprlang['male']))
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/be_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['blood_elf'].'\')"; onMouseout="hideddrivetip()">';
 				else
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/be_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['blood_elf'].'\')"; onMouseout="hideddrivetip()">';
 				break;
 			case $phprlang['orc']:
-				if(strtolower($data['gender']) == 'male')
+				if(strtolower($data['gender']) == strtolower($phprlang['male']))
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/or_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['orc'].'\')"; onMouseout="hideddrivetip()">';
 				else
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/or_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['orc'].'\')"; onMouseout="hideddrivetip()">';
 				break;
 			case $phprlang['tauren']:
-				if(strtolower($data['gender']) == 'male')
+				if(strtolower($data['gender']) == strtolower($phprlang['male']))
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/ta_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['tauren'].'\')"; onMouseout="hideddrivetip()">';
 				else
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/ta_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['tauren'].'\')"; onMouseout="hideddrivetip()">';
 				break;
 			case $phprlang['troll']:
-				if(strtolower($data['gender']) == 'male')
+				if(strtolower($data['gender']) == strtolower($phprlang['male']))
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/tr_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['troll'].'\')"; onMouseout="hideddrivetip()">';
 				else
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/tr_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['troll'].'\')"; onMouseout="hideddrivetip()">';
 				break;
 			case $phprlang['undead']:
-				if(strtolower($data['gender']) == 'male')
+				if(strtolower($data['gender']) == strtolower($phprlang['male']))
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/un_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['undead'].'\')"; onMouseout="hideddrivetip()">';
 				else
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/un_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['undead'].'\')"; onMouseout="hideddrivetip()">';
@@ -536,61 +536,61 @@ if($mode == 'view')
 		switch($data['race'])
 		{
 			case $phprlang['draenei']:
-				if(strtolower($data['gender']) == 'male')
+				if(strtolower($data['gender']) == strtolower($phprlang['male']))
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/dr_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['draenei'].'\')"; onMouseout="hideddrivetip()">';
 				else
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/dr_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['draenei'].'\')"; onMouseout="hideddrivetip()">';
 				break;
 			case $phprlang['dwarf']:
-				if(strtolower($data['gender']) == 'male')
+				if(strtolower($data['gender']) == strtolower($phprlang['male']))
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/dw_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['dwarf'].'\')"; onMouseout="hideddrivetip()">';
 				else
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/dw_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['dwarf'].'\')"; onMouseout="hideddrivetip()">';
 				break;
 			case $phprlang['gnome']:
-				if(strtolower($data['gender']) == 'male')
+				if(strtolower($data['gender']) == strtolower($phprlang['male']))
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/gn_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['gnome'].'\')"; onMouseout="hideddrivetip()">';
 				else
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/gn_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['gnome'].'\')"; onMouseout="hideddrivetip()">';
 				break;
 			case $phprlang['human']:
-				if(strtolower($data['gender']) == 'male')
+				if(strtolower($data['gender']) == strtolower($phprlang['male']))
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/hu_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['human'].'\')"; onMouseout="hideddrivetip()">';
 				else
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/hu_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['human'].'\')"; onMouseout="hideddrivetip()">';
 				break;
 			case $phprlang['night_elf']:
-				if(strtolower($data['gender']) == 'male')
+				if(strtolower($data['gender']) == strtolower($phprlang['male']))
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/ne_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['night_elf'].'\')"; onMouseout="hideddrivetip()">';
 				else
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/ne_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['night_elf'].'\')"; onMouseout="hideddrivetip()">';
 				break;
 			case $phprlang['blood_elf']:
-				if(strtolower($data['gender']) == 'male')
+				if(strtolower($data['gender']) == strtolower($phprlang['male']))
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/be_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['blood_elf'].'\')"; onMouseout="hideddrivetip()">';
 				else
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/be_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['blood_elf'].'\')"; onMouseout="hideddrivetip()">';
 				break;
 			case $phprlang['orc']:
-				if(strtolower($data['gender']) == 'male')
+				if(strtolower($data['gender']) == strtolower($phprlang['male']))
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/or_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['orc'].'\')"; onMouseout="hideddrivetip()">';
 				else
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/or_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['orc'].'\')"; onMouseout="hideddrivetip()">';
 				break;
 			case $phprlang['tauren']:
-				if(strtolower($data['gender']) == 'male')
+				if(strtolower($data['gender']) == strtolower($phprlang['male']))
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/ta_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['tauren'].'\')"; onMouseout="hideddrivetip()">';
 				else
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/ta_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['tauren'].'\')"; onMouseout="hideddrivetip()">';
 				break;
 			case $phprlang['troll']:
-				if(strtolower($data['gender']) == 'male')
+				if(strtolower($data['gender']) == strtolower($phprlang['male']))
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/tr_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['troll'].'\')"; onMouseout="hideddrivetip()">';
 				else
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/tr_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['troll'].'\')"; onMouseout="hideddrivetip()">';
 				break;
 			case $phprlang['undead']:
-				if(strtolower($data['gender']) == 'male')
+				if(strtolower($data['gender']) == strtolower($phprlang['male']))
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/un_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['undead'].'\')"; onMouseout="hideddrivetip()">';
 				else
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/un_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['undead'].'\')"; onMouseout="hideddrivetip()">';
@@ -931,8 +931,8 @@ elseif($mode == 'signup')
 			$result_char = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 			while($char = $db_raid->sql_fetchrow($result_char))
 			{
-				$char_id = scrub_input($char['char_id']);
-				$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id=%s", quote_smart($char_id));
+				$signup_char_id = scrub_input($char['char_id']);
+				$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id=%s", quote_smart($signup_char_id));
 				$result_count = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 				$tmp = $db_raid->sql_fetchrow($result_count);
 
@@ -1120,7 +1120,7 @@ elseif($mode == 'signup')
 			$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "signups
 						(`char_id`,`profile_id`,`raid_id`,`comments`,`queue`,`timestamp`,`cancel`)
 					VALUES
-						(%s,%s,%s,%s,%s,%s,%s)", quote_smart($char_id), quote_smart($profile_id), quote_smart($raid_id), 
+						(%s,%s,%s,%s,%s,%s,%s)", quote_smart($char_id), quote_smart($profile_id), quote_smart($raid_id),
 						quote_smart($comments), quote_smart($queue), quote_smart($timestamp), quote_smart($cancel));
 			$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 			header("Location: view.php?mode=view&raid_id=$raid_id");
@@ -1235,7 +1235,7 @@ elseif($mode == 'draft')
 	if($user_perm_group['admin'] != 1 && $user_perm_group['RL'] != 1 &&
 		$S_profile_id != $data['profile_id'])
 		log_hack();
-	
+
 	// now check class limits to prevent users cheating the cancel/queue signup
 	// setup the count array
 	$count = array('dr'=>'0','hu'=>'0','ma'=>'0','pa'=>'0','pr'=>'0','ro'=>'0','sh'=>'0','wk'=>'0','wa'=>'0');
@@ -1384,7 +1384,7 @@ elseif($mode == 'cancel')
 {
 	$S_profile_id = scrub_input($_SESSION['profile_id']);
 	$profile_id = scrub_input($_GET['profile_id']);
-	
+
 	// check for hack attempt
 	if(!isset($_GET['char_id']) || !is_numeric($_GET['char_id']))
 		log_hack();
@@ -1425,7 +1425,7 @@ elseif($mode == 'cancel')
 else if($mode == 'edit_comment')
 {
 	$S_profile_id = scrub_input($_SESSION['profile_id']);
-	
+
 	// validate input
 	isset($_GET['signup_id']) ? $signup_id = scrub_input($_GET['signup_id']) : $signup_id = '';
 
