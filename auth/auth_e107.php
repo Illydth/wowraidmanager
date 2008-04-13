@@ -27,7 +27,7 @@
 *
 *    You should have received a copy of the GNU General Public License
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-* 
+*
 ****************************************************************************/
 
 function phpraid_login() {
@@ -47,29 +47,29 @@ function phpraid_login() {
 	$e107_table_prefix = $phpraid_config['e107_table_prefix'];
 	$e107_auth_user_class = $phpraid_config['e107_auth_user_class'];
 	$alt_auth_user_class = $phpraid_config['alt_auth_user_class'];
-	
+
 	// Get the user_loginname and password and the various user classes that the user belongs to.
 	$sql = "SELECT user_id, user_loginname, user_password, user_email, user_class FROM " . $e107_table_prefix . "user";
 	$result = $db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
-	
+
 	while($data = $db_raid->sql_fetchrow($result)) {
-		//echo "Processing: " . $data['username'] . " : " . $data['password'];
+		//echo "<br>Processing: " . $data['user_loginname'] . " : " . $data['user_password'];
 		if($username == strtolower($data['user_loginname']) && $password == $data['user_password']) {
 			// The user has a matching username and proper password in the e107 database.
-			// We need to validate the users class.  If it does not contain the user class that has been set as 
+			// We need to validate the users class.  If it does not contain the user class that has been set as
 			//	authorized to use phpRaid, we need to fail the login with a proper message.
 			$user_class = $data['user_class'];
 			$pos = strpos($user_class, $e107_auth_user_class);
-			$pos2 = strpos($user_class, $alt_auth_user_class); 
+			$pos2 = strpos($user_class, $alt_auth_user_class);
 			if ($pos === false && $e107_auth_user_class != 0)
 			{
 				if ($pos2 === false)
 				{
 					phpraid_logout();
-					return -1;			
+					return -1;
 				}
 			}
-	
+
 			// User is properly logged in and is allowed to use phpRaid, go ahead and process his login.
 			$autologin=scrub_input($_POST['autologin']);
 			if(isset($autologin)) {
@@ -78,7 +78,7 @@ function phpraid_login() {
 				setcookie('username', $data['user_loginname'], time() + 2629743);
 				setcookie('password', $data['user_password'], time() + 2629743);
 			}
-			
+
 			// set user profile variables
 			$_SESSION['username'] = strtolower($data['user_loginname']);
 			$_SESSION['session_logged_in'] = 1;
@@ -86,33 +86,22 @@ function phpraid_login() {
 			$_SESSION['email'] = $data['user_email'];
 			$user_password = $data['user_password'];
 			$user_priv = $phpraid_config['default_group'];
-			
+
 			// User is all logged in and setup, the session is initialized properly.  Now we need to create the users
 			//    profile in the phpRaid database if it does not already exist.
-			$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "profile";
+			$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "profile WHERE profile_id=%s", quote_smart($_SESSION['profile_id']));
 			$result = $db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
-			
-			while($data = $db_raid->sql_fetchrow($result)) 
-			{
-				if($_SESSION['profile_id'] == $data['profile_id']) 
-				{
-					//Profile is already created, Update email incase it doesn't match e107. 
-					if($_SESSION['email'] != $data['email'])
-					{
-						$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "profile SET email=%s,password=%s WHERE profile_id=%s",quote_smart($_SESSION['email']),quote_smart($user_password),quote_smart($_SESSION['profile_id']));
-						$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-					}
-					return 1;
-				}
+			if ($data = $db_raid->sql_fetchrow($result))
+			{ //We found the profile in the database, update.
+				$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "profile SET email=%s,password=%s WHERE profile_id=%s",quote_smart($_SESSION['email']),quote_smart($user_password),quote_smart($_SESSION['profile_id']));
+				$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+			}
+			else
+			{ //Profile not found in the database or DB Error, insert.
+				$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "profile VALUES (%s, %s, %s, %s, %s)", quote_smart($_SESSION['profile_id']), quote_smart($_SESSION['email']), quote_smart($user_password), quote_smart($user_priv), quote_smart($_SESSION['username']));
+				$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 			}
 
-			// At this point, the user is a proper user but we could not find his profile in our raid database.  Time to create it.
-			$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "profile VALUES ('$s', '$s', '$s', '$s', '$s')", 
-					quote_smart($_SESSION['profile_id']), quote_smart($_SESSION['email']), quote_smart($user_password), quote_smart($user_priv), quote_smart($_SESSION['username']));
-			//$sql = "INSERT INTO " . $phpraid_config['db_prefix'] . "profile " .
-			//		"VALUES ('" . $_SESSION['profile_id'] . "', '" . $_SESSION['email'] . "', '" . $user_password . "', '". $user_priv . "', '" . $_SESSION['username'] . "')";
-			$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-				
 			return 1;
 		}
 	}
@@ -126,7 +115,7 @@ function phpraid_logout()
 	setcookie('username', '', time() - 2629743);
 	setcookie('password', '', time() - 2629743);
 }
-	
+
 // good ole authentication
 session_start();
 $_SESSION['name'] = "phpRaid";

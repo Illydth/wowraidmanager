@@ -153,6 +153,9 @@ function done($auth_type)
 {
 	require_once('../config.php');
 
+	$e107_table_prefix = $_POST['e107_table_prefix'];
+	$e107_auth_user_class = $_POST['e107_auth_user_class'];
+	$alt_auth_user_class = $_POST['alt_auth_user_class'];
 	$email = $_POST['email'];
 	$user = $_POST['username'];
 	$pass = "junkpass";
@@ -160,24 +163,29 @@ function done($auth_type)
 	$link = mysql_connect($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass']);
 	mysql_select_db($phpraid_config['db_name']);
 
+	// Get UserID for the e107 Admin User, normally this is 1, but other times it's not.
+	$sql = "SELECT * FROM " . $e107_table_prefix . "user WHERE user_name='" . $user . "' AND user_email='" . $email . "'";
+	$result = mysql_query($sql) or die("Error retrieving user_id from e107: Either Username or Email address doesn't match. " . mysql_error());
+	$data = mysql_fetch_assoc($result);
+
 	// Insert a value for the Admin Profile.
-	mysql_query("INSERT INTO " . $phpraid_config['db_prefix'] . "profile VALUES('0','$email','$pass','1','$user')") or die(mysql_error());
+	mysql_query("INSERT INTO " . $phpraid_config['db_prefix'] . "profile VALUES('" . $data['user_id'] . "','$email','$pass','1','$user')") or die("Error Inserting Profile for Admin. " . mysql_error());
 
 	// Insert the auth_type.
 	$sql = "INSERT INTO " . $phpraid_config['db_prefix'] . "config VALUES('auth_type','e107')";
-	mysql_query($sql) or die("Error inserting auth_type e107 in config table");
+	mysql_query($sql) or die("Error inserting auth_type e107 in config table. " . mysql_error());
 
 	// Insert the e107 table prefix
-	$sql = "INSERT INTO " . $phpraid_config['db_prefix'] . "config VALUES('e107_table_prefix', '" . $_POST['e107_table_prefix'] . "')";
-	mysql_query($sql) or die("Error inserting e107_table_prefix in config table");
+	$sql = "INSERT INTO " . $phpraid_config['db_prefix'] . "config VALUES('e107_table_prefix', '" . $e107_table_prefix . "')";
+	mysql_query($sql) or die("Error inserting e107_table_prefix in config table. " . mysql_error());
 
 	// Insert the e107_auth_user_class
-	$sql = "INSERT INTO " . $phpraid_config['db_prefix'] . "config VALUES('e107_auth_user_class', '" . $_POST['e107_auth_user_class'] . "')";
-	mysql_query($sql) or die("Error inserting e107_auth_user_class in config table");
+	$sql = "INSERT INTO " . $phpraid_config['db_prefix'] . "config VALUES('e107_auth_user_class', '" . $e107_auth_user_class . "')";
+	mysql_query($sql) or die("Error inserting e107_auth_user_class in config table. " . mysql_error());
 
 	// Insert the e107_auth_user_class
-	$sql = "INSERT INTO " . $phpraid_config['db_prefix'] . "config VALUES('alt_auth_user_class', '" . $_POST['alt_auth_user_class'] . "')";
-	mysql_query($sql) or die("Error inserting alt_auth_user_class in config table");
+	$sql = "INSERT INTO " . $phpraid_config['db_prefix'] . "config VALUES('alt_auth_user_class', '" . $alt_auth_user_class . "')";
+	mysql_query($sql) or die("Error inserting alt_auth_user_class in config table. " . mysql_error());
 
 	mysql_close($link);
 
