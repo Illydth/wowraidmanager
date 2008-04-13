@@ -1,13 +1,13 @@
 <?php
 /***************************************************************************
- *                                 calendar_raids.php
+ *                                 calendar.php
  *                            	-------------------
  *   begin                : Monday, Jan 18, 2005
  *   copyright            : (C) 2007-2008 Douglas Wagner
  *   email                : douglasw@wagnerweb.org
  *
- *   $Id: calendar_raids.php,v 2.00 2007/11/23 14:25:57 psotfx Exp $
- * 
+ *   $Id: calendar.php,v 2.00 2007/11/23 14:25:57 psotfx Exp $
+ *
  ****************************************************************************/
 
 /***************************************************************************
@@ -27,22 +27,22 @@
 *
 *    You should have received a copy of the GNU General Public License
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-* 
+*
 ****************************************************************************/
 
 // This is the number of rows (ie, weeks.. current week included) the calendar shows
 $num_rows=4;
 
 // commons
-define("IN_PHPRAID", true);        
+define("IN_PHPRAID", true);
 include("./common.php");
-        
+
 // page authentication
 if($phpraid_config['anon_view'] == 1)
 	define("PAGE_LVL","anonymous");
 else
 	define("PAGE_LVL","profile");
-	
+
 require_once("includes/authentication.php");
 include("includes/page_header.php");
 
@@ -54,16 +54,16 @@ if($db_raid->sql_numrows($result) > 0)
 {
 	$page->set_file('announceFile',$phpraid_config['template'] . '/announcements_msg.htm');
 	$page->set_block('announceFile','announcement_row','ARow');
-	
+
 	/* fetch rows in reverse order */
 	$i = $db_raid->sql_numrows($result) - 1;
-	while($i >= 0) 
+	while($i >= 0)
 	{
 		$db_raid->sql_rowseek($i, $result);
 		$data = $db_raid->sql_fetchrow($result);
 		$time = new_date($phpraid_config['time_format'], $data['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']);
 		$date = new_date($phpraid_config['date_format'], $data['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']);
-		
+
 		$page->set_var(
 			array(
 				'announcement_author'=>$data['posted_by'],
@@ -73,9 +73,9 @@ if($db_raid->sql_numrows($result) > 0)
 				'announcement_title'=>$data['title'],
 			)
 		);
-		
+
 		$page->parse('ARow','announcement_row',true);
-		
+
 		$i--;
 	}
 	$page->parse('body','announceFile',true);
@@ -121,16 +121,16 @@ for ($i = 1; $i <= ($num_rows*7); $i++)   {
     $txt_color = "";
 
   if( (mktime(0, 0, 0, date("m",$start ) , date("d",$start ) +$i-1 , date("Y",$start ))) == $today) {
-    $txt_color = "#FF0000";  
+    $txt_color = "#FF0000";
   }
 
   if( (mktime(0, 0, 0, date("m",$start ) , date("d",$start ) +$i-1 , date("Y",$start ))) < $today) {
-    $txt_color = "#FFFFFF";  
+    $txt_color = "#FFFFFF";
   }
 
-  if(($i==1) or (date("d",mktime(0, 0, 0, date("m",$start ) , date("d",$start ) +$i-1 , date("Y",$start ))) == "01")){ 
+  if(($i==1) or (date("d",mktime(0, 0, 0, date("m",$start ) , date("d",$start ) +$i-1 , date("Y",$start ))) == "01")){
     print "                <td valign=\"top\"><div align=\"right\"><b><font size=\"4\" color=\"{$txt_color}\">" . date("M",mktime(0, 0, 0, date("m",$start ) , date("d",$start ) +$i-1 , date("Y",$start ))) . " " . date("d",mktime(0, 0, 0, date("m",$start ) , date("d",$start ) +$i-1 , date("Y",$start ))) . "&nbsp;</font></b></div>";
-  } else { 
+  } else {
     print "                <td valign=\"top\"><div align=\"right\"><b><font size=\"4\" color=\"{$txt_color}\">" . date("d",mktime(0, 0, 0, date("m",$start ) , date("d",$start ) +$i-1 , date("Y",$start ))) . "&nbsp;</font></b></div>";
   }
 
@@ -172,7 +172,7 @@ while($data = $db_raid->sql_fetchrow($result)) {
 		$issignedup = "*";
 	}
 
-		
+
 	$location = '<a href="view.php?mode=view&raid_id='.$data['raid_id'].'" onMouseover="ddrivetip(\'<span class=tooltip_title>Description</span><br>' . $desc . '\')" onMouseout="hideddrivetip()">'.$data['location'].'</a> <font color="#0000ff" size=+1>' . $issignedup . '</font></font>';
 	$result_total = $db_raid->sql_query("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id='".$data['raid_id']."' AND queue='0'");
 	$total = $db_raid->sql_numrows($result_total);
