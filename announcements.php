@@ -43,7 +43,7 @@ if($_GET['mode'] == 'view')
 	$announcements = array();
 	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "announcements";
 	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-	while($data = $db_raid->sql_fetchrow($result))
+	while($data = $db_raid->sql_fetchrow($result, true))
 	{
 		$id = $data['announcements_id'];
 		$title = $data['title'];
@@ -189,7 +189,7 @@ if($_GET['mode'] != 'delete')
 
 		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "announcements WHERE announcements_id=%s",quote_smart($id));
 		$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-		$data = $db_raid->sql_fetchrow($result);
+		$data = $db_raid->sql_fetchrow($result, true);
 
 		$form_action = 'announcements.php?mode=edit&id=' . $id;
 		$title = '<input type="text" size="69" name="title" class="post" value="' . $data['title'] . '">';

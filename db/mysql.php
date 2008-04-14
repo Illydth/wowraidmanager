@@ -28,6 +28,8 @@
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 * 
 ****************************************************************************/
+require_once($phpraid_dir.'includes/functions.php');
+
 if(!defined("SQL_LAYER"))
 {
 
@@ -206,7 +208,7 @@ class sql_db
 			return false;
 		}
 	}
-	function sql_fetchrow($sql_id = 0)
+	function sql_fetchrow($sql_id = 0, $desanitize = false)
 	{
 		if(!$sql_id)
 		{
@@ -215,7 +217,10 @@ class sql_db
 		if($sql_id)
 		{
 			$this->row[$sql_id] = @mysql_fetch_array($sql_id);
-			return $this->row[$sql_id];
+			if ($desanitize)
+				return desanitize($this->row[$sql_id]);
+			else
+				return $this->row[$sql_id];
 		}
 		else
 		{

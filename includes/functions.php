@@ -130,4 +130,68 @@ function setup_output() {
 	$report->setRowAttributes('class="row1"', 'class="row2"', 'rowHover');
 	$report->setFieldHeadingAttributes('class="listHeader"');
 }
+
+function linebreak_to_br($str) {
+  $str = preg_replace("/(\r\n?)|(\n\r?)/s", "<br />", $str);
+	
+	return $str;
+}
+
+function strip_linebreaks($str) {
+  $str = preg_replace("/(\r\n?)+|(\n\r?)+/s", " ", $str);
+  
+  return $str;
+}
+
+// Sanitizes data for entry into the database. Escapes special
+// characters and encodes html entities.
+function sanitize(&$array) {
+  escape_db_data($array);
+  
+  return $array;
+}
+
+// Reverses database sanitization by removing escape backslashes
+// and decoding html entities.
+function desanitize(&$array) {
+  unescape_db_data($array);
+  
+  return $array;
+}
+
+function escape_db_data(&$array) {
+  foreach($array as &$value) {
+    if (is_string($value)) {
+      escape_data($value);
+    }
+  }
+  unset($value);
+}
+
+function escape_data(&$data) {
+  $data = addslashes($data);
+  $data = htmlspecialchars($data);
+}
+
+function unescape_db_data(&$array) {
+  foreach($array as &$value) {
+    if (is_string($value)) {
+      unescape_data($value);
+    }
+  }
+  unset($value);
+}
+
+function unescape_data(&$data) {
+  $data = stripslashes($data);
+  $data = htmlspecialchars_decode($data);
+}
+
+function magic_quotes_on() {
+  if ((get_magic_quotes_gpc() == '0') OR (strtolower(get_magic_quotes_gpc()) == 'off')) {
+    return false;
+  }
+  
+  return true;
+}
 ?>

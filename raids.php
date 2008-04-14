@@ -57,7 +57,7 @@ if($_GET['mode'] == 'view')
 	
 	// Get information for current raids
 	// And push into current array so that we can output it with our report class
-	while($data = $db_raid->sql_fetchrow($result)) {
+	while($data = $db_raid->sql_fetchrow($result, true)) {
 		if ($priv_raids or $username == $data['officer'])
 		{
 			$edit = '<a href="raids.php?mode=edit&id='.$data['raid_id'].'"><img src="templates/' . $phpraid_config['template'] . 
@@ -269,13 +269,13 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 		{
 			$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "locations WHERE name=%s", quote_smart($location));
 			$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-			$data = $db_raid->sql_fetchrow($result);
+			$data = $db_raid->sql_fetchrow($result, true);
 		}
 		else
 		{
 			$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "locations WHERE name=%s and locked='0'", quote_smart($location));
 			$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-			$data = $db_raid->sql_fetchrow($result);			
+			$data = $db_raid->sql_fetchrow($result, true);			
 		}
 			
 		$max = $data['max'];
@@ -317,13 +317,13 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 			{
 				$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "locations WHERE name=%s", quote_smart($location));
 				$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-				$data = $db_raid->sql_fetchrow($result);
+				$data = $db_raid->sql_fetchrow($result, true);
 			}
 			else
 			{
 				$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "locations WHERE name=%s and locked='0'", quote_smart($location));
 				$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-				$data = $db_raid->sql_fetchrow($result);			
+				$data = $db_raid->sql_fetchrow($result, true);			
 			}
 
             $max = $data['max'];
@@ -343,7 +343,7 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
             $id = scrub_input($_GET['id']);
             $sql2 = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id=%s", quote_smart($id));
             $result2 = $db_raid->sql_query($sql2) or print_error($sql2, mysql_error(), 1);
-            $data2 = $db_raid->sql_fetchrow($result2);
+            $data2 = $db_raid->sql_fetchrow($result2, true);
             
             $date_value = new_date("m/d/Y",$data2['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
             $i_time_hour_value = new_date("h",$data2['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
@@ -360,7 +360,7 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
          	$id = scrub_input($_GET['id']);
             $sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id=%s", quote_smart($id));
             $result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-            $data = $db_raid->sql_fetchrow($result);
+            $data = $db_raid->sql_fetchrow($result, true);
             
             $max = $data['max'];
             $dr = $data['dr_lmt'];
@@ -555,7 +555,7 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 			$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "locations WHERE locked='0' ORDER BY name";
 			$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 		}			
-		while($data = $db_raid->sql_fetchrow($result))
+		while($data = $db_raid->sql_fetchrow($result, true))
 		{
 			if (isset($_GET['location'])) {
 			   $raid_location = scrub_input($_GET['location']);
@@ -792,7 +792,7 @@ elseif($_GET['mode'] == 'mark')
 	
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id=%s", quote_smart($raid_id));
 	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-	$data = $db_raid->sql_fetchrow($result);
+	$data = $db_raid->sql_fetchrow($result, true);
 	
 	if($data['old'] == 1)
 	{

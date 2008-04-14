@@ -257,7 +257,7 @@ $result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 
 $default = '<select name="default" class="post"><option value="nil">'.$phprlang['none'].'</option>';
 
-while($data = $db_raid->sql_fetchrow($result))
+while($data = $db_raid->sql_fetchrow($result, true))
 {
 	if($phpraid_config['default_group'] == $data['permission_id'])
 		$default .= '<option value="'.$data['permission_id'].'" selected>'.$data['name'].'</option>';

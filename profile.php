@@ -44,7 +44,7 @@ if($_GET['mode'] == 'view') {
 	$profile_id = scrub_input($_SESSION['profile_id']);
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE profile_id=%s",quote_smart($profile_id));
 	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-	while($data = $db_raid->sql_fetchrow($result))
+	while($data = $db_raid->sql_fetchrow($result, true))
 	{
 		array_push($chars, 
 			array(
@@ -105,14 +105,14 @@ if($_GET['mode'] == 'view') {
 	
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE profile_id=%s", quote_smart($profile_id));
 	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-	while($signups = $db_raid->sql_fetchrow($result))
+	while($signups = $db_raid->sql_fetchrow($result, true))
 	{
 		// setup the count array
 		$count = array('dr'=>'0','hu'=>'0','ma'=>'0','pr'=>'0','pa'=>'0','ro'=>'0','sh'=>'0','wk'=>'0','wa'=>'0');
 		
 		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id=%s", quote_smart($signups['raid_id']));
 		$result_raid = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-		$data = $db_raid->sql_fetchrow($result_raid);
+		$data = $db_raid->sql_fetchrow($result_raid, true);
 		
 		$desc = strip_tags($data['description']);
 		$desc = UBB($desc);
@@ -279,7 +279,7 @@ if($_GET['mode'] == 'view') {
 		
 		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id=%s",quote_smart($char_id));
 		$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-		$data = $db_raid->sql_fetchrow($result);
+		$data = $db_raid->sql_fetchrow($result, true);
 		
 		$guild = $data['guild'];
 		$race = $data['race'];
@@ -649,7 +649,7 @@ if($db_raid->sql_numrows($result) == 0) {
 			// get guild list
 			$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "guilds";
 			$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-			while($data = $db_raid->sql_fetchrow($result))
+			while($data = $db_raid->sql_fetchrow($result, true))
 			{
 				If($guild == $data['guild_tag'])
 				{

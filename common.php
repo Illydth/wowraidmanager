@@ -68,7 +68,7 @@ $report = &new ReportList;
 global $db_raid, $errorTitle, $errorMsg, $errorDie;
 $db_raid = &new sql_db($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass'],$phpraid_config['db_name']);
 
-if(!$db_raid->db_connect_id) 
+if(!$db_raid->db_connect_id)
 {
 	die('<div align="center"><strong>There appears to be a problem with the database server.<br>We should be back up shortly.</strong></div>');	
 }
@@ -77,9 +77,13 @@ if(!$db_raid->db_connect_id)
 // we won't use it after this point
 unset($phpraid_config['db_pass']);
 
+
+//
+// Populate the $phpraid_config array
+//
 $sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "config";
 $result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-while($data = $db_raid->sql_fetchrow($result))
+while($data = $db_raid->sql_fetchrow($result, true))
 {
 	$phpraid_config["{$data['0']}"] = $data['1'];
 }

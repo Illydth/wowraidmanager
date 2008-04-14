@@ -44,7 +44,7 @@
 			<language>en-us</language>
 		';
 
-	while(($data = $db_raid->sql_fetchrow($result)) && ($i < $feeds))
+	while(($data = $db_raid->sql_fetchrow($result, true)) && ($i < $feeds))
 	{
 		$raid_id = $data['raid_id'];
 

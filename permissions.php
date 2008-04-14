@@ -50,7 +50,7 @@ if($_GET['mode'] == 'view')
 	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "permissions";
 	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 	
-	while($data = $db_raid->sql_fetchrow($result)) {
+	while($data = $db_raid->sql_fetchrow($result, true)) {
 		$edit = '<a href="permissions.php?mode=edit&id='.$data['permission_id'].'"><img src="templates/' . $phpraid_config['template'] . 
 					'/images/icons/icon_edit.gif" border="0" onMouseover="ddrivetip(\'' . $phprlang['edit'] . '\')"; onMouseout="hideddrivetip()"></a>';
 				
@@ -301,7 +301,7 @@ if($_GET['mode'] != 'delete' && $_GET['mode'] != 'details')
 		// grab from DB
 		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "permissions WHERE permission_id=%s",quote_smart($id));
 		$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-		$data = $db_raid->sql_fetchrow($result);
+		$data = $db_raid->sql_fetchrow($result, true);
 		
 		$announcements = '<select name="announcements" class="post">';
 		if($data['announcements'] == 1) {

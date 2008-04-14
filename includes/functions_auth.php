@@ -54,13 +54,13 @@ function get_permissions()
 
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "profile WHERE profile_id=%s", quote_smart($profile_id));
 	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(),1);
-	$data = $db_raid->sql_fetchrow($result);
+	$data = $db_raid->sql_fetchrow($result, true);
 	
 	// check all permissions
 	$sql_priv = "SELECT * FROM " . $phpraid_config['db_prefix'] . "permissions WHERE permission_id='{$data['priv']}'";
 	$result_priv = $db_raid->sql_query($sql_priv) or print_error($sql_priv, mysql_error(),1);
 			
-	$data_priv = $db_raid->sql_fetchrow($result_priv);
+	$data_priv = $db_raid->sql_fetchrow($result_priv, true);
 	
 	$data_priv['announcements'] ? $_SESSION['priv_announcements'] = 1 : $_SESSION['priv_announcements'] = 0;	
 	$data_priv['configuration'] ? $_SESSION['priv_configuration'] = 1 :	$_SESSION['priv_configuration'] = 0;
@@ -96,7 +96,7 @@ function permissions($report) {
 		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "profile WHERE priv=%s", quote_smart($id));
 		$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 		
-		while($data = $db_raid->sql_fetchrow($result)) {	
+		while($data = $db_raid->sql_fetchrow($result, true)) {	
 			// set delete permissions 
 			if($_SESSION['priv_permissions'] == 1) {
 				if($id == 1 && $data['profile_id'] == 1) {
@@ -165,7 +165,7 @@ function permissions($report) {
 		
 		$users = array();
 		
-		while($data = $db_raid->sql_fetchrow($result)) {
+		while($data = $db_raid->sql_fetchrow($result, true)) {
 			$actions = '<input type="checkbox" name="addtolist' . $data['profile_id'] . '" value="' . $data['profile_id'] . '">';
 			array_push($users, array('id'=>$data['profile_id'],'username'=>ucwords(strtolower($data['username'])), 'email'=>$data['email'], 'actions'=>$actions));
 		}

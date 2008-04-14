@@ -52,7 +52,7 @@ function phpraid_login() {
 	$sql = "SELECT user_id, user_loginname, user_password, user_email, user_class FROM " . $e107_table_prefix . "user";
 	$result = $db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
 
-	while($data = $db_raid->sql_fetchrow($result)) {
+	while($data = $db_raid->sql_fetchrow($result, true)) {
 		//echo "<br>Processing: " . $data['user_loginname'] . " : " . $data['user_password'];
 		if($username == strtolower($data['user_loginname']) && $password == $data['user_password']) {
 			// The user has a matching username and proper password in the e107 database.
@@ -99,7 +99,7 @@ function phpraid_login() {
 			else
 			{ //Profile not found in the database or DB Error, insert.
 				$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "profile VALUES (%s, %s, %s, %s, %s)", quote_smart($_SESSION['profile_id']), quote_smart($_SESSION['email']), quote_smart($user_password), quote_smart($user_priv), quote_smart($_SESSION['username']));
-				$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+			$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 			}
 
 			return 1;

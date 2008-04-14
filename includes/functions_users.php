@@ -35,7 +35,7 @@ function check_frozen($raid_id) {
 	
 	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "raids where raid_id='$raid_id'";
 	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-	$data = $db_raid->sql_fetchrow($result);
+	$data = $db_raid->sql_fetchrow($result, true);
 	
  	$raid_date_month = new_date("m",$data['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
 	$raid_date_day = new_date("d",$data['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
@@ -104,10 +104,10 @@ function get_char_count($id, $type) {
 		$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id='$id' AND queue='0' AND cancel='0'"; 
 		$result_signups = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 	}
-	while($signups = $db_raid->sql_fetchrow($result_signups)) {
+	while($signups = $db_raid->sql_fetchrow($result_signups, true)) {
 		$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id='{$signups['char_id']}'";
 		$result_char = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-		$char = $db_raid->sql_fetchrow($result_char);
+		$char = $db_raid->sql_fetchrow($result_char, true);
 
 		switch($char['class']) {
 			case $phprlang['druid']:
@@ -149,7 +149,7 @@ function get_priv_name($id)
 	
 	$sql = "SELECT `name` FROM " . $phpraid_config['db_prefix'] . "permissions WHERE permission_id='$id'";
 	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-	$data = $db_raid->sql_fetchrow($result);
+	$data = $db_raid->sql_fetchrow($result, true);
 	
 	return($data['name']);
 }
@@ -161,7 +161,7 @@ function get_queued($raid_id) {
 	
 	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "queues";
 	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-	while($data = $db_raid->sql_fetchrow($result)) {
+	while($data = $db_raid->sql_fetchrow($result, true)) {
 		if($raid_id == $data['raid_id']) {
 			// match, push onto array
 			array_push($queued, array('pos'=>$data['pos'],'char_id'=>$data['char_id']));
@@ -181,7 +181,7 @@ function get_signups($raid_id) {
 	
 	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "signups";
 	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-	while($data = $db_raid->sql_fetchrow($result)) 	{
+	while($data = $db_raid->sql_fetchrow($result, true)) 	{
 		if($raid_id == $data['raid_id']) {
 			// match, push onto array
 			array_push($signups, array('pos'=>$data['pos'],'char_id'=>$data['char_id']));

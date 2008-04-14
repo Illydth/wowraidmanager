@@ -50,7 +50,7 @@ if($mode == 'view')
 	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "profile";
 	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 	
-	while($data = $db_raid->sql_fetchrow($result))
+	while($data = $db_raid->sql_fetchrow($result, true))
 	{
 		$usersname = '<a href="users.php?mode=details&user_id='.$data['profile_id'].'">'.$data['username'].'</a>';
 		
@@ -126,7 +126,7 @@ else if($mode == 'details')
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE profile_id=%s",quote_smart($user_id));
 	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 	
-	while($data = $db_raid->sql_fetchrow($result))
+	while($data = $db_raid->sql_fetchrow($result, true))
 	{
 		array_push($chars, 
 			array(

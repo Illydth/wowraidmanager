@@ -44,7 +44,7 @@ if($_GET['mode'] == 'view') {
 	
 	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "guilds";
 	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(),1);
-	while($data = $db_raid->sql_fetchrow($result)) {
+	while($data = $db_raid->sql_fetchrow($result, true)) {
 		
 
 	$edit = '<a href="guilds.php?mode=update&id='.$data['guild_id'].'"><img src="templates/' . $phpraid_config['template'] . 
@@ -170,7 +170,7 @@ if($_GET['mode'] != 'delete') {
 		
 		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "guilds WHERE guild_id=%s",quote_smart($id));
 		$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-		$data = $db_raid->sql_fetchrow($result);
+		$data = $db_raid->sql_fetchrow($result, true);
 		
 		// it's an edit... joy
 		$form_action = "guilds.php?mode=edit&id=$id";

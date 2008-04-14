@@ -60,7 +60,7 @@ if($db_raid->sql_numrows($result) > 0)
 	while($i >= 0)
 	{
 		$db_raid->sql_rowseek($i, $result);
-		$data = $db_raid->sql_fetchrow($result);
+		$data = $db_raid->sql_fetchrow($result, true);
 		$time = new_date($phpraid_config['time_format'], $data['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']);
 		$date = new_date($phpraid_config['date_format'], $data['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']);
 
@@ -144,7 +144,7 @@ $daylast = mktime(23, 59, 59, date("m",$start ) , date("d",$start ) +$i-1 , date
 $result = $db_raid->sql_query("SELECT * FROM " . $phpraid_config['db_prefix'] . "raids WHERE start_time > '" . $dayfirst . "' AND start_time <= '" . $daylast . "' ORDER BY start_time");
 $bob = "a";
 
-while($data = $db_raid->sql_fetchrow($result)) {
+while($data = $db_raid->sql_fetchrow($result, true)) {
 	$invitetime = new_date($phpraid_config['time_format'], $data['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
 	$starttime = new_date($phpraid_config['time_format'], $data['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
 
@@ -160,7 +160,7 @@ while($data = $db_raid->sql_fetchrow($result)) {
 	$resultz = $db_raid->sql_query("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id='" . $data['raid_id']. "' AND profile_id='{$_SESSION['profile_id']}'");
 	if($db_raid->sql_numrows($resultz) > 0)
 	{
-		$data2 =  $db_raid->sql_fetchrow($resultz);
+		$data2 =  $db_raid->sql_fetchrow($resultz, true);
 		if (($data2['queue'] == '0') and ($data2['cancel'] == '0')) {
 			$issignedup = "*";
 		} else {

@@ -43,7 +43,7 @@ $chars = array();
 		
 // get all the chars and throw them in that nice array for 
 // output by the report class
-while($data = $db_raid->sql_fetchrow($result)) {
+while($data = $db_raid->sql_fetchrow($result, true)) {
 	array_push($chars,
 		array(
 			'id'=>$data['char_id'],

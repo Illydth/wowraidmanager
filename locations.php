@@ -44,7 +44,7 @@ if($_GET['mode'] == 'view')
 	
 	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "locations";
 	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-	while($data = $db_raid->sql_fetchrow($result))
+	while($data = $db_raid->sql_fetchrow($result, true))
 	{
 		$edit = '<a href="locations.php?mode=update&id='.$data['location_id'].'"><img src="templates/' . $phpraid_config['template'] . 
 				'/images/icons/icon_edit.gif" border="0" onMouseover="ddrivetip(\'' . $phprlang['edit'] . '\')"; onMouseout="hideddrivetip()"></a>';
@@ -244,7 +244,7 @@ if($_GET['mode'] != 'delete')
 		
 		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "locations WHERE location_id=%s",quote_smart($id));
 		$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-		$data = $db_raid->sql_fetchrow($result);
+		$data = $db_raid->sql_fetchrow($result, true);
 		
 		// it's an edit... joy
 		$form_action = "locations.php?mode=edit&id=$id";

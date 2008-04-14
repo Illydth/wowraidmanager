@@ -216,11 +216,11 @@ class Output_Data
 		
 		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id=%s AND queue='0' AND cancel='0'",quote_smart($raid_id));
 		$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-		while($data = $db_raid->sql_fetchrow($result))
+		while($data = $db_raid->sql_fetchrow($result, true))
 		{
 			$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id=%s",quote_smart($data['char_id']));
 			$result2 = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-			$data2 = $db_raid->sql_fetchrow($result2);
+			$data2 = $db_raid->sql_fetchrow($result2, true);
 			$data2['name'] = ucfirst(strtolower($data2['name']));
 			$text .= "/i {$data2['name']}\n";
 		}
@@ -230,11 +230,11 @@ class Output_Data
 		
 		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id=%s AND queue='1' AND cancel='0'",quote_smart($raid_id));
 		$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-		while($data = $db_raid->sql_fetchrow($result))
+		while($data = $db_raid->sql_fetchrow($result, true))
 		{
 			$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id='" . $data['char_id'] . "'";
 			$result2 = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-			$data2 = $db_raid->sql_fetchrow($result2);
+			$data2 = $db_raid->sql_fetchrow($result2, true);
 			$data2['name'] = ucfirst(strtolower($data2['name']));
 			$text .= "/i {$data2['name']}\n";
 		}
@@ -286,7 +286,7 @@ class Output_Data
 		
 		// parse result
 		$count = 0;
-		while($raid_data = $db_raid->sql_fetchrow($raids_result))
+		while($raid_data = $db_raid->sql_fetchrow($raids_result, true))
 		{
 			$lua_output .= "\t\t[{$count}] = {\n";
 			$lua_output .= "\t\t\t[\"location\"] = \"{$raid_data['location']}\",\n";
@@ -335,7 +335,7 @@ class Output_Data
 				$order_by = 'ORDER BY '.$phpraid_config['db_prefix'].'signups.timestamp ASC';
 			$sql1 = $sql."0 ".$order_by.";";
 			$signup_result = $db_raid->sql_query($sql1) or print_error($sql1, mysql_error(), 1);
-			while($signup = $db_raid->sql_fetchrow($signup_result))
+			while($signup = $db_raid->sql_fetchrow($signup_result, true))
 			{
 				if ($format=="1")
 				{
@@ -343,7 +343,7 @@ class Output_Data
 							"FROM ".$phpraid_config['db_prefix']."teams " .
 							"WHERE raid_id=".$raid_data['raid_id']." and char_id=".$signup['ID'];
 					$team_result = $db_raid->sql_query($sql2) or print_error($sql2, mysql_error(), 1);
-					$team = $db_raid->sql_fetchrow($team_result);
+					$team = $db_raid->sql_fetchrow($team_result, true);
 
 					array_push($signups, array(
 						'name'		=> ucfirst(strtolower($signup['name'])),
@@ -351,7 +351,7 @@ class Output_Data
 						'race'		=> $signup['race'],
 						'class'		=> $signup['class'],
 						'team_name' => $team['team_name'],
-						'comment'	=> preg_replace("/\r|\n/s", " ", str_replace('"', '\"', $signup['comment'])),
+						'comment'	=> strip_linebreaks($signup['comment']),
 						'timestamp'	=> new_date($phpraid_config['date_format'],$signup['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']) . ' - ' . new_date($phpraid_config['time_format'],$signup['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']),
 					));
 				}
@@ -362,7 +362,7 @@ class Output_Data
 						'level'		=> $signup['lvl'],
 						'race'		=> $signup['race'],
 						'class'		=> $signup['class'],
-						'comment'	=> preg_replace("/\r|\n/s", " ", str_replace('"', '\"', $signup['comment'])),
+						'comment'	=> strip_linebreaks($signup['comment']),
 						'timestamp'	=> new_date($phpraid_config['date_format'],$signup['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']) . ' - ' . new_date($phpraid_config['time_format'],$signup['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']),
 					));
 				}
@@ -379,7 +379,7 @@ class Output_Data
 				$order_by = 'ORDER BY '.$phpraid_config['db_prefix'].'chars.class ASC';
 			$sql1 = $sql."1 ".$order_by.";";
 			$signup_result = $db_raid->sql_query($sql1) or print_error($sql1, mysql_error(), 1);
-			while($signup = $db_raid->sql_fetchrow($signup_result))
+			while($signup = $db_raid->sql_fetchrow($signup_result, true))
 			{
 				if ($format=="1")
 				{
@@ -387,7 +387,7 @@ class Output_Data
 							"FROM ".$phpraid_config['db_prefix']."teams " .
 							"WHERE raid_id=".$raid_data['raid_id']." and char_id=".$signup['ID'];
 					$team_result = $db_raid->sql_query($sql2) or print_error($sql2, mysql_error(), 1);
-					$team = $db_raid->sql_fetchrow($team_result);
+					$team = $db_raid->sql_fetchrow($team_result, true);
 	
 					array_push($queue, array(
 						'name'		=> ucfirst(strtolower($signup['name'])),
@@ -395,7 +395,7 @@ class Output_Data
 						'race'		=> $signup['race'],
 						'class'		=> $signup['class'],
 						'team_name' => $team['team_name'],
-						'comment'	=> preg_replace("/\r|\n/s", " ", str_replace('"', '\"', $signup['comment'])),
+						'comment'	=> strip_linebreaks($signup['comment']),
 						'timestamp'	=> new_date($phpraid_config['date_format'],$signup['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']) . ' - ' . new_date($phpraid_config['time_format'],$signup['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']),
 					));
 				}
@@ -406,7 +406,7 @@ class Output_Data
 						'level'		=> $signup['lvl'],
 						'race'		=> $signup['race'],
 						'class'		=> $signup['class'],
-						'comment'	=> preg_replace("/\r|\n/s", " ", str_replace('"', '\"', $signup['comment'])),
+						'comment'	=> strip_linebreaks($signup['comment']),
 						'timestamp'	=> new_date($phpraid_config['date_format'],$signup['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']) . ' - ' . new_date($phpraid_config['time_format'],$signup['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']),
 					));					
 				}
