@@ -78,7 +78,7 @@ if($_GET['mode'] == 'delete')
 	}
 	else
 	{
-		$sql = printf("TRUNCATE TABLE " . $phpraid_config['db_prefix'] . "%s", quote_smart($logtype));
+		$sql = printf("TRUNCATE TABLE " . $phpraid_config['db_prefix'] . $logtype);
 		$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 		header("Location: logs.php");
 	}
