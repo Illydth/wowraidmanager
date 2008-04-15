@@ -30,7 +30,7 @@
 *
 ****************************************************************************/
 
-/
+//
 // Parse and show the overall header.
 //
 $page->set_file('headerFile',$phpraid_config['template'] . '/header.htm');
