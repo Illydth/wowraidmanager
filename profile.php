@@ -619,16 +619,16 @@ if($db_raid->sql_numrows($result) == 0) {
 				$class_options .= "<option value=\"".$phprlang['warrior']."\">".$phprlang['warrior']."</option>";
 		}
 		
-		//Gender Selection
-		if(strtolower($gender) == 'male')
-		$gender_options .= "<option value=\"".$phprlang['male']."\" selected>".$phprlang['male']."</option>";
-		else
-		$gender_options .= "<option value=\"".$phprlang['male']."\">".$phprlang['male']."</option>";
-		
-		if(strtolower($gender) == 'female')
-		$gender_options .= "<option value=\"".$phprlang['female']."\" selected>".$phprlang['female']."</option>";
-		else
-		$gender_options .= "<option value=\"".$phprlang['female']."\">".$phprlang['female']."</option>";
+		//Gender Selection (patched for better international support - LuL0r)
+        if(strtolower($gender) == 'male')
+        $gender_options .= "<option value=\"male\" selected>".$phprlang['male']."</option>";
+        else
+        $gender_options .= "<option value=\"male\">".$phprlang['male']."</option>";
+        
+        if(strtolower($gender) == 'female')
+        $gender_options .= "<option value=\"female\" selected>".$phprlang['female']."</option>";
+        else
+        $gender_options .= "<option value=\"female\">".$phprlang['female']."</option>";	
 			
 		// setup output variables for form
 		$race_output = '<select name="race" onChange="MM_jumpMenu(\'parent\',this,0)" class="form" style="width:100px">
