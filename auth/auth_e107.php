@@ -85,7 +85,10 @@ function phpraid_login() {
 			$_SESSION['profile_id'] = $data['user_id'];
 			$_SESSION['email'] = $data['user_email'];
 			$user_password = $data['user_password'];
-			$user_priv = $phpraid_config['default_group'];
+			if($phpraid_config['default_group'] != 'nil')
+				$user_priv = $phpraid_config['default_group'];
+			else
+				$user_priv = '0';
 
 			// User is all logged in and setup, the session is initialized properly.  Now we need to create the users
 			//    profile in the phpRaid database if it does not already exist.
