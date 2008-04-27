@@ -165,8 +165,11 @@ function done($auth_type)
 
 	// Get UserID for the e107 Admin User, normally this is 1, but other times it's not.
 	$sql = "SELECT * FROM " . $e107_table_prefix . "user WHERE user_name='" . $user . "' AND user_email='" . $email . "'";
-	$result = mysql_query($sql) or die("Error retrieving user_id from e107: Either Username or Email address doesn't match. " . mysql_error());
-	$data = mysql_fetch_assoc($result);
+	$result = mysql_query($sql) or die("Something went wrong");
+	if (mysql_num_rows($result) > 0) 
+		$data = mysql_fetch_assoc($result);
+	else 
+		die("Error retrieving user_id from e107: Either Username or Email address doesn't match. ");
 
 	// Insert a value for the Admin Profile.
 	mysql_query("INSERT INTO " . $phpraid_config['db_prefix'] . "profile VALUES('" . $data['user_id'] . "','$email','$pass','1','$user')") or die("Error Inserting Profile for Admin. " . mysql_error());
