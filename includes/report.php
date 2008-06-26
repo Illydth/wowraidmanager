@@ -3,19 +3,19 @@
 * DESCRIPTION:
 * The ReportList class is designed for easy and extremely functional output of array
 * data to HTML and other formats of lists.
-* 
+*
 * AUTHOR(S):
 * David Clark (www.theCalico.com)
-* 
+*
 * IMPORTANT NOTE:
 * There is no warranty, implied or otherwise with this software.
-* 
+*
 * LICENSE:
 * This code has been placed in the Public Domain for all to enjoy.
-* 
+*
 * VERSION FEATURE NOTES:
 * No crosstab support, multi-line list support untested.
-* 
+*
 * @version 1.0.1
 * @access public
 */
@@ -31,9 +31,9 @@ class ReportList
 
     var $_blnRowIsOdd;
     var $_blnDoNoBreaks;
-    
+
     /* --- Public Methods ---  */
-    
+
     /**
 	* Constructor method for the ReportList class.
 	* @param string $strMainAttributes Any global attributes (table attributes, styles, class, etc.) for the overall
@@ -52,7 +52,7 @@ class ReportList
 		$this->_arrCrossTabInfo = array('blnShowSummaryCol'=>true, 'blnShowSummaryRow'=>true);
         return;
     }
-    
+
 	/**
 	* Set the main attributes (table attributes, style, class settings, etc.) for the overall Html table
 	* 	that will be used to build this report list.
@@ -98,7 +98,7 @@ class ReportList
     	$this->_arrTitleInfo['strSubTitleCloseAttributes'] = $strSubTitleCloseAttributes;
         return;
     }
-    
+
     /**
 	* Set whether or not to show the report record count.
 	* @param boolean $blnDoShow True/False for whether or not to show the record count
@@ -121,9 +121,9 @@ class ReportList
     {
     	$this->_arrTitleInfo['strCaptionAttributes'] = $strAttributes;
     	//$this->_strCaptionAttributes = $strAttributes;
-		return;    	
+		return;
     }
-    
+
 	/**
 	* Sets additional attributes (style/class tags, etc.) for the page navigation links of the report
 	* @param string $strAttributes Any additional attributes to use for displaying/formatting the page navigators
@@ -135,7 +135,7 @@ class ReportList
     	$this->_arrTitleInfo['strPageNavigatorAttributes'] = $strAttributes;
     	return;
     }
-    
+
 	/**
 	* Customize the appearance of rows.  This allows you to specify different attributes (appearances)
 	* for odd vs. even rows, and some style attributes to apply on mouse overs.
@@ -150,7 +150,7 @@ class ReportList
     	$this->_arrRowInfo['strOddRowAttributes'] = $strOddRowAttributes;
     	$this->_arrRowInfo['strEvenRowAttributes'] = $strEvenRowAttributes;
     	$this->_arrRowInfo['strHoverRowClassName'] = $strHoverRowClassName;
-    	
+
     	// See if we can parse a class name out of the even and odd row attributes
 		$strLCase = strtolower($strOddRowAttributes);
 		$iPos = strpos($strLCase, 'class');
@@ -162,7 +162,7 @@ class ReportList
 		}
 		else { $strClass = ''; }
 		$this->_arrRowInfo['strOddRowClassName'] = $strClass;
-		
+
 		$strLCase = strtolower($strEvenRowAttributes);
 		$iPos = strpos($strLCase, 'class');
 		if ($iPos !== false) {
@@ -173,10 +173,10 @@ class ReportList
 		}
 		else { $strClass = ''; }
 		$this->_arrRowInfo['strEvenRowClassName'] = $strClass;
-    	
+
         return;
     }
-    
+
 	/**
 	* Sets additional attributes (style/class tags, etc.) for the field/column headings of the report
 	* @param string $strAttributes Any additional attributes to use for displaying/formatting the field headings
@@ -204,7 +204,7 @@ class ReportList
 	* 	require_once the following information: "name" the exact name of the field in the report's data
 	* 	array, and optionally "marker" which is the name to use for this parameter in the row link URL.
 	*	For example: $arrParamFields = array(
-	*																array('name'=>'Id', 'marker'='userId'), 
+	*																array('name'=>'Id', 'marker'='userId'),
 	*																array('name'=>'Type', 'marker'=>'userType')
 	*															) would be a valid argument.
 	* @param string $strLinkAttributes Any additional attributes to be used in constructing the
@@ -220,10 +220,10 @@ class ReportList
     	$this->_arrLinkInfo['arrLinkParamFields'] = $arrParamFields;
     	$this->_arrLinkInfo['strLinkAttributes'] = $strLinkAttributes;
     	$this->_arrLinkInfo['strLinkAnchor'] = $strLinkAnchor;
-    	
+
         return;
     }
-    
+
     /**
 	* Configures pagination for the report list.
 	* @param boolean $blnAllowPaging True/False for whether or not to allow pagination of report results
@@ -239,7 +239,7 @@ class ReportList
         $this->_arrPagingInfo['strPagingAnchor'] = trim($strPagingAnchor);
         return;
     }
-    
+
     /**
 	* Configures column sorting for the report list.
 	* @param boolean $blnAllowSort True/False for whether or not to allow sorting of report results
@@ -249,7 +249,7 @@ class ReportList
 	* @param string $strSortURL The URL to submit GET requests to when a sort "command" is issued
 	* 	by clicking on any of the visible columns
 	* @param boolean $blnUsePathParams True/False for whether or not to use path syntax for parameter
-	* 	values instead of normal ?,&,= syntax (i.e. &Sort=SortField&SortDescending=1 vs. 
+	* 	values instead of normal ?,&,= syntax (i.e. &Sort=SortField&SortDescending=1 vs.
 	*	/Sort-SortField/SortDescending-1)
 	* @param string $strSortAnchor The HREF anchor to use in sort target links
 	* @return void
@@ -263,21 +263,21 @@ class ReportList
 		if (!($iPos === false)) {
 			$jPos = strpos($strSortURL, '&', $iPos + 1);
 			if ($jPos === false) { $jPos = strlen($strSortURL); }
-			
+
 			$strSortURL = substr($strSortURL, 0, $iPos) .
 							substr($strSortURL, $jPos);
 		}
-		
+
 		$iPos = strpos($strSortURL, '&SortDescending=');
 		if ($iPos === false) { $iPos = strpos($strSortURL, '?SortDescending='); }
 		if (!($iPos === false)) {
 			$jPos = strpos($strSortURL, '&', $iPos + 1);
 			if ($jPos === false) { $jPos = strlen($strSortURL); }
-			
+
 			$strSortURL = substr($strSortURL, 0, $iPos) .
 							substr($strSortURL, $jPos);
 		}
-		
+
 		// For later simplicity force the URL to end with Sort= (or Sort- if we're using the path form of parametization)
 		if ($blnUsePathParams) {
     		if (substr($strSortURL, strlen($strSortURL) - 1, 1) === '/') {
@@ -285,13 +285,13 @@ class ReportList
     		}
     		else { $strSortURL .= '/Sort-'; }
 		}
-		else {		
+		else {
     		if (strpos($strSortURL, '?') === false) {
     			$strSortURL .= '?Sort=';
     		}
     		else { $strSortURL .= '&Sort='; }
 		}
-		
+
         $this->_arrSortInfo['blnAllowSort'] = $blnAllowSort;
         $this->_arrSortInfo['strSortField'] = $strSortField;
         $this->_arrSortInfo['blnSortDescending'] = intval($blnSortDescending);
@@ -316,7 +316,7 @@ class ReportList
         $this->_blnDoNoBreaks = $blnAllowNoBreaks;
         return;
     }
-    
+
 	/**
 	* Aids in pagination of report results by setting which record to begin showing results for, and how
 	*	many records to show per page.
@@ -344,7 +344,7 @@ class ReportList
     	$this->_arrColumnInfo['blnShowColumnNames'] = $blnDoShow;
     	return;
     }
-    
+
 	/**
 	* Resets column display information.  Primarily used if the same list object is being used multiple
 	*	times during the same page processing.
@@ -375,7 +375,7 @@ class ReportList
 	* 	information display automatically (in supported browsers) when a link for this column is hovered over
 	* @return void
 	* @access public
-	*/ 
+	*/
     function addOutputColumn($strFieldName, $strColumnTitle, $strFormat = null, $strAlign = null, $intLine = null, $strFieldLink = '__NOLINK__', $strLinkDesc = null)
     {
         // Make sure we track that the user is customizing the output columns
@@ -392,7 +392,7 @@ class ReportList
         array_push($this->_arrColumnInfo['arrColumnsToUse'], $arrColumn);
         return;
     }
-    
+
     /**
 	* Configure which data fields/columns will serve as a "key" value in deciding which records
 	*	belong in which section of the report.
@@ -439,7 +439,7 @@ class ReportList
 	*	downloads), csv (comma separated), and xml.
 	* @return void
 	* @access public
-	*/ 
+	*/
     function downloadListFromSQL($pearDB, $strSQL, $arrParams = null, $strOutputMethod = null)
     {
         // Execute the SQL statement and get an array of the results
@@ -456,19 +456,19 @@ class ReportList
 	* Builds and directly initiates a download of a report list from the specified array of data.  Because this routine
 	* 	controls the headers that are sent to the client browser, no other header information should be sent
 	*	prior to executing this routine (unless output buffering is enabled).
-	* @param array $arrRecords The array of data to build a report list for 
+	* @param array $arrRecords The array of data to build a report list for
 	* @param string $strOutputMethod The desired output format of the report.  Currently supported options
 	*	are: html (default, also works well for MS Word downloads), tab (tab-delimited, as for MS Excel
 	*	downloads), csv (comma separated), and xml.
 	* @return void
 	* @access public
-	*/ 
+	*/
     function downloadListFromArray($arrRecords, $strOutputMethod = null)
     {
     	$strDownloadName = trim($this->_downloadName);
     	if ($strDownloadName == '') { $strDownloadName = 'ReportList_' . rand(1, 9); }
 		$strDownloadType = trim($this->_downloadType);
-		
+
     	// See if any particular download type was specified; if not default to one based on the output method
 		if ($strDownloadType == '') {
 			switch ($strOutputMethod) {
@@ -490,7 +490,7 @@ class ReportList
 					break;
 			}
 		}
-		
+
         // Determine how we should mark the download type
 		switch ($strDownloadType) {
 			case 'txt' :
@@ -537,13 +537,13 @@ class ReportList
 	*	downloads), csv (comma separated), and xml.
 	* @return void
 	* @access public
-	*/ 
+	*/
     function makeListFromSQL($pearDB, $strSQL, $arrParams = null, $strOutputMethod = null)
     {
     	echo $this->getListFromSQL($pearDB, $strSQL, $arrParams, false, $strOutputMethod);
     	return;
     }
-    
+
 	/**
 	* Executes the specified SQL statement against the specified database, and returns a report list
 	*	constructed from the subsequent results.
@@ -558,7 +558,7 @@ class ReportList
 	*	downloads), csv (comma separated), and xml.
 	* @return string The fully formatted list to output
 	* @access public
-	*/ 
+	*/
     function getListFromSQL($pearDB, $strSQL, $arrParams = null, $blnDoForDownload = false, $strOutputMethod = null)
     {
         // Execute the SQL statement and get an array of the results
@@ -570,45 +570,45 @@ class ReportList
         // Return the actual list that gets built from the queried data
         return($this->getListFromArray($arrResult, $blnDoForDownload, $strOutputMethod));
     }
-    
+
 	/**
 	* Builds and directly outputs a report list from the specified array of data.
-	* @param array $arrRecords The array of data to build a report list for 
+	* @param array $arrRecords The array of data to build a report list for
 	* @param string $strOutputMethod The desired output format of the report.  Currently supported options
 	*	are: html (default, also works well for MS Word downloads), tab (tab-delimited, as for MS Excel
 	*	downloads), csv (comma separated), and xml.
 	* @return void
 	* @access public
-	*/ 
+	*/
     function makeListFromArray($arrRecords, $strOutputMethod = null)
     {
         echo $this->getListFromArray($arrRecords, false, $strOutputMethod);
         return;
     }
-    
+
     /**
 	* This is the primary workhorse routine of the entire class, and produces a string (containing the
 	* 	entire report list output) for the given array of data.
 	* @param array $arrRecords The data array for which to build the report list
-	* @param boolean $blnDoForDownload True/False for whether or not the list is intended for 
+	* @param boolean $blnDoForDownload True/False for whether or not the list is intended for
 	*	download (offline) viewing.  This wil affect the availability/use of page navigators, links, etc.
 	* @param string $strOutputMethod The desired output format of the report.  Currently supported options
 	*	are: html (default, also works well for MS Word downloads), tab (tab-delimited, as for MS Excel
 	*	downloads), csv (comma separated), and xml.
 	* @return string The fully formatted list to output
 	* @access public
-	*/ 
+	*/
     function getListFromArray($arrRecords, $blnDoForDownload = false, $strOutputMethod = null)
     {
 		global $phprlang;
-		
+
     	// TODO - Properly re-enable support for multi-line lists
 		$blnDoMultiLineList = false;
-		$this->_blnRowIsOdd = true;		
-		
+		$this->_blnRowIsOdd = true;
+
 		// Default to outputting html
 		if ($strOutputMethod === null) { $strOutputMethod = 'html'; }
-    	
+
     	// Start with an empty list
         $strList = '';
 
@@ -633,15 +633,15 @@ class ReportList
             $intLastRecord = $intFirstRecord + $this->_arrPagingInfo['intNumRecords'];
             if ($intLastRecord > $intTotalRecords) { $intLastRecord = $intTotalRecords; }
         }
-        
+
         // Sort results before displaying, if necessary
         if ($this->_arrSortInfo['blnAllowSort'] && $this->_arrSortInfo['strSortField'] != '') {
         	// Sort the array on the specified value
-			foreach ($arrRecords as $curRecord) { 
+			foreach ($arrRecords as $curRecord) {
 			      $sortarray[] = $curRecord[$this->_arrSortInfo['strSortField']];
-			} 
+			}
 			array_multisort($sortarray, $arrRecords);
-			
+
 			// Sort descending, if necessary
 			if ($this->_arrSortInfo['blnSortDescending']) {
 				$arrRecords = array_reverse($arrRecords);
@@ -670,7 +670,7 @@ class ReportList
             if (trim($this->_arrTitleInfo['strListSubTitle']) != '') { $strCaption .= '<br />' . trim($this->_arrTitleInfo['strSubTitleOpenAttributes'] . $this->_arrTitleInfo['strListSubTitle'] . $this->_arrTitleInfo['strSubTitleCloseAttributes']); }
             if ($this->_arrTitleInfo['blnShowRecordCount']) {
                 if ($strCaption != '') { $strCaption .= '<br />'; }
-    
+
                 // Only show the record counts if we're doing a list w/out section breaks
                 // Otherwise, show the section heading
                 if ((count($this->_arrColumnInfo['arrSectionKeys']) == 0) || (!($blnDoForDownload)) || ($strOutputMethod == 'tab')) {
@@ -680,7 +680,7 @@ class ReportList
             }
             $strList .= $this->_makeListCaption($strCaption, $strOutputMethod);
 		}
-		
+
         // If all the records won't fit on one page, show the necessary
         // navigation controls (if allowed by the caller)
         if (!($blnDoForDownload) && $this->_arrPagingInfo['blnAllowPaging']) {
@@ -696,9 +696,9 @@ class ReportList
                     $strRow .= '<th align="' . $arrCol['align'] . '">';
                 }
                 else { $strRow .= '<th>'; }
-                
+
                 $strColTitle = $arrCol['title'];
-                
+
                 // Show sort order links
                 if ($this->_arrSortInfo['blnAllowSort'] && !($blnDoForDownload)) {
                 	if ($arrCol['name'] == $this->_arrSortInfo['strSortField'] && !($this->_arrSortInfo['blnSortDescending'])) {
@@ -779,28 +779,28 @@ class ReportList
                 	// Enclose each value in the XML tags necessary for this field
                 	$strValue = '<' . $arrCol['name'] . '>' . htmlspecialchars($strValue) . '</' . $arrCol['name'] . '>';
                 }
-                
+
                 if (!($blnDoForDownload)) {
                     // If we allow linking from this page to another, then add the link here
                     if ($strHyperlink != '' && $arrCol['fldlink'] != '__NOLINK__') {
                     	// Show "alt" tags (i.e. descriptions/titles) for links
                     	if ($arrCol['linkdesc'] != '') {
                     		$strTitle = $arrCol['linkdesc'];
-                    		
+
                     		// See if there are any variables to replace in this title
                     		if (strpos($strTitle, '%%') !== false) {
 					            foreach ($arrColumnsToUse as $arrColReplace) {
 					                $strValueReplace = $arrRecords[$iRow][$arrColReplace['name']];
 					                $strValueReplace = $this->_formatListValue($strValueReplace, $arrColReplace['format']);
-					                
+
 					                $strTitle = str_replace('%%' . $arrColReplace['name'] . '%%', $strValueReplace, $strTitle);
-					            }			
+					            }
                     		}
                     		$strTitle = htmlspecialchars($strTitle);
                     		$strTitle = ' title="' . $strTitle . '"';
                     	}
                     	else { $strTitle = ''; }
-                    	
+
                         $strValue = "<a href=$strHyperlink" . $arrCol['fldlink'] . "\"$strTitle " . $this->_arrLinkInfo['strLinkAttributes'] . ">$strValue</a>";
                     }
                 }
@@ -856,9 +856,9 @@ class ReportList
 
         return($strList);
     }
-    
+
     /* --- Private Methods ---  */
-    
+
 	/**
 	* Determines which columns/fields should be used for outputting the report list
 	* results; mainly useful in the case where no particular output columns have been
@@ -958,7 +958,7 @@ class ReportList
         	$strRow = eregi_replace('<th>', '<td>', $strRow);
         	$strRow = eregi_replace('<th ', '<td>', $strRow);
         	$strRow = eregi_replace('<td ', '<td>', $strRow);
-        	
+
         	$arrOut = array();
         	$arrPieces = split('<', $strRow);
         	for ($i = 0; $i < count($arrPieces); $i++) {
@@ -967,11 +967,11 @@ class ReportList
         		}
         	}
         	$strRow = join('<', $arrOut);
-        	
+
             return ("<Table1>\r\n\t$strRow\r\n</Table1>\r\n");
         }
-        else { 
-        	return '<tr ' . $this->_arrTitleInfo['strFieldHeadingAttributes'] . ">$strRow</tr>\r\n"; 
+        else {
+        	return '<tr ' . $this->_arrTitleInfo['strFieldHeadingAttributes'] . ">$strRow</tr>\r\n";
         }
     }
 
@@ -990,9 +990,9 @@ class ReportList
 		if ($strOutputMethod == 'tab' || $strOutputMethod == 'csv' || $strOutputMethod == 'xml') {
 			return($this->_makeListTitles($strCaption, $strOutputMethod));
         }
-        else { 
+        else {
         	if ($this->_arrTitleInfo['strCaptionAttributes'] === null) {
-	        	return "<caption align=\"middle\"><font size='+1'><nobr>$strCaption</nobr></font></caption>\r\n"; 
+	        	return "<caption align=\"middle\"><font size='+1'><nobr>$strCaption</nobr></font></caption>\r\n";
         	}
         	else { return '<caption ' . $this->_arrTitleInfo['strCaptionAttributes'] . ">$strCaption</caption>\r\n"; }
         }
@@ -1016,18 +1016,18 @@ class ReportList
 		        	$strRowAttribs = $this->_arrRowInfo['strOddRowAttributes'];
 		        	$strClassName = $this->_arrRowInfo['strOddRowClassName'];
                 }
-                else { 
-                	$strRowAttribs = $this->_arrRowInfo['strEvenRowAttributes']; 
+                else {
+                	$strRowAttribs = $this->_arrRowInfo['strEvenRowAttributes'];
 		        	$strClassName = $this->_arrRowInfo['strEvenRowClassName'];
                 }
-                
+
                 if ($this->_arrLinkInfo['blnAllowLink']) {
                 	if ($this->_arrRowInfo['strHoverRowClassName'] != '') {
                         $strHoverScript = 'onmouseover="this.className=\'' . $this->_arrRowInfo['strHoverRowClassName'] . '\';" '.
     	                                				'onmouseout="this.className=\'' . $strClassName . '\';"';
                 	}
                 	else { $strHoverScript = ''; }
-                	
+
                     $strResult = "<tr $strRowAttribs $strHoverScript>$strRow</tr>";
                 }
                 else { $strResult = "<tr $strRowAttribs>$strRow</tr>\r\n"; }
@@ -1035,7 +1035,7 @@ class ReportList
 
 		// Track whether we're on an even or odd row
      	$this->_blnRowIsOdd = !($this->_blnRowIsOdd);
-            
+
         return($strResult);
     }
 
@@ -1055,7 +1055,7 @@ class ReportList
         }
         else { return(''); }
     }
-    
+
 	/**
 	* Creates the page navigation section of controls for the report.  This will
 	* 	result in a series of links of the form:
@@ -1106,7 +1106,7 @@ class ReportList
             $blnNeedLessButton = false;
             $blnNeedMoreButton = false;
         }
-        
+
         // DGC 8-8-2003 Handle any sort order options
         if ($this->_arrSortInfo['blnAllowSort'] && $this->_arrSortInfo['strSortField'] != '') {
         	if ($this->_arrSortInfo['blnUsePathParams'] == 1) {
@@ -1117,7 +1117,7 @@ class ReportList
         	}
         }
         else { $strSortOptions = ''; }
-        
+
         // DGC 3-28-2004 While we're at it, if there's an HREF anchor target specified, grab that here
 		if ($this->_arrPagingInfo['strPagingAnchor'] != '') {
 			$strSortOptions .= '#' . $this->_arrPagingInfo['strPagingAnchor'];
@@ -1203,7 +1203,7 @@ class ReportList
     function _buildLinkURLFromRecord($arrRecord, $blnCloseQuotes = true)
     {
         $strURL = '"' . $this->_arrLinkInfo['strLinkURL'];
-        
+
         // See if we need to do dynamic value replacement into the LinkURL target, i.e.
 		// does our link target have variables in the base such as "%%strPageName%%.php"
 		if (strpos($strURL, '%%') !== false) {
@@ -1251,7 +1251,7 @@ class ReportList
 	* @param array $curRecord The current record to examine for section key information
 	* @return string The section "key" for this record
 	* @access private
-	*/ 
+	*/
     function _getSectionKeyValue($curRecord)
     {
         $strValue = '';
@@ -1265,7 +1265,7 @@ class ReportList
 
         return $strValue;
     }
-    
+
     /**
 	* Formats a given string value for display, to the specified format type.  Currently
 	* 	supported formats are: phone, ucase, lcase, pcase, decimal, money, dollars, date,
