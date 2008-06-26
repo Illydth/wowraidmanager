@@ -40,6 +40,8 @@ $phprlang['configuration_addon'] = 'Addon URL';
 $phprlang['configuraiton_admin'] = 'Administrator';
 $phprlang['configuration_admin_email'] = 'Admin e-mail';
 $phprlang['configuration_anonymous'] = 'Allow anonymous viewing';
+$phprlang['configuration_armory_link_text'] = 'Correct Armory Link for Server';
+$phprlang['configuration_armory_language_text'] = 'Language Code for Armory';
 $phprlang['configuration_autoqueue'] = 'Disallow Signup to Drafted Status';
 $phprlang['configuration_cancel_def'] = 'Cancel = Place User Into Cancelled Area';
 $phprlang['configuration_comments_def'] = 'Comments = Allow User to Edit Their Comments';

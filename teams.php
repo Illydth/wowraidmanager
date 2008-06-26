@@ -60,6 +60,9 @@ isset($_GET['raid_id']) ? $raid_id = scrub_input($_GET['raid_id']) : $raid_id = 
 if($raid_id == '' || !is_numeric($raid_id))
 	log_hack();
 
+// Set the Guild Server for the Page.
+$server = $phpraid_config['guild_server'];
+
 //View Mode, display the page with Current Data.
 if($mode == 'view')
 {
@@ -110,6 +113,7 @@ if($mode == 'view')
 			"where " . $phpraid_config['db_prefix'] . "teams.char_id = " . $phpraid_config['db_prefix'] . "chars.char_id " .
 			"and " . $phpraid_config['db_prefix'] . "teams.raid_id = %s", quote_smart($raid_id));
 	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		
 	while($team = $db_raid->sql_fetchrow($result, true))
 	{
 		// set delete permissions
@@ -124,7 +128,7 @@ if($mode == 'view')
 		array_push($team_remove,
 			array(
 				'id'=>$team['char_id'],
-				'name'=>$team['name'],
+				'name'=>get_armorychar($team['name'], $phpraid_config['armory_language'], $server),
 				'class'=>$team['class'],
 				'guild'=>$team['guild'],
 				'level'=>$team['lvl'],
@@ -231,7 +235,7 @@ if($mode == 'view')
 		array_push($team_add,
 			array(
 				'id'=>$data['char_id'],
-				'name'=>$data['name'],
+				'name'=>get_armorychar($data['name'], $phpraid_config['armory_language'], $server),
 				'class'=>$data['class'],
 				'guild'=>$data['guild'],
 				'level'=>$data['lvl'],

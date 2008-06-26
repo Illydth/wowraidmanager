@@ -199,6 +199,8 @@ INSERT INTO `phpraid_config` VALUES ('header_logo','templates/SpiffyJr/images/lo
 INSERT INTO `phpraid_config` VALUES ('language','english');
 INSERT INTO `phpraid_config` VALUES ('multiple_signups','0');
 INSERT INTO `phpraid_config` VALUES ('phpraid_addon_link','http://www.spiffyjr.com/forums/viewtopic.php?t=1073');
+INSERT INTO `phpraid_config` VALUES ('armory_link','http://www.wowarmory.com');
+INSERT INTO `phpraid_config` VALUES ('armory_language','en');
 INSERT INTO `phpraid_config` VALUES ('register_url','register.php');
 INSERT INTO `phpraid_config` VALUES ('roster_integration','0');
 INSERT INTO `phpraid_config` VALUES ('show_id','0');

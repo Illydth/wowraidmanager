@@ -36,6 +36,9 @@ require_once('./common.php');
 define("PAGE_LVL","anonymous");
 require_once("includes/authentication.php");
 
+// Set the Guild Server for the Page.
+$server = $phpraid_config['guild_server'];
+
 // for now, we'll let everyone view the character list
 $sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "chars";
 $result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
@@ -44,10 +47,17 @@ $chars = array();
 // get all the chars and throw them in that nice array for 
 // output by the report class
 while($data = $db_raid->sql_fetchrow($result, true)) {
+	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "profile WHERE profile_id=" . $data['profile_id'];
+	$data_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$data_profdetail = $db_raid->sql_fetchrow($data_result);
+
+	$guildname = get_guild_name($data['name'], $server);
+	
 	array_push($chars,
 		array(
 			'id'=>$data['char_id'],
-			'Name'=>$data['name'],
+			'Name'=>get_armorychar($data['name'], $phpraid_config['armory_language'], $server),
+			'GuildArmory'=>$guildname,
 			'Guild'=>$data['guild'],
 			'Level'=>$data['lvl'],
 			'Race'=>$data['race'],
@@ -56,7 +66,8 @@ while($data = $db_raid->sql_fetchrow($result, true)) {
 			'Fire'=>$data['fire'],
 			'Frost'=>$data['frost'],
 			'Nature'=>$data['nature'],
-			'Shadow'=>$data['shadow']
+			'Shadow'=>$data['shadow'],
+			'Profile'=>'<a href="users.php?mode=details&user_id=' . $data['profile_id'] . '">' . $data_profdetail['username'] . '</a>'
 		)
 	);
 }
@@ -83,6 +94,10 @@ $report->showRecordCount(true);
 if($phpraid_config['show_id'] == 1)
 	$report->addOutputColumn('id',$phprlang['id'],'','center');
 $report->addOutputColumn('Name',$phprlang['name'],'','center');
+if(scrub_input($_SESSION['priv_users']) == 1)
+{
+	$report->addOutputColumn('GuildArmory',$phprlang['guild'],'','center');
+}
 $report->addOutputColumn('Guild',$phprlang['guild'],'','center');
 $report->addOutputColumn('Level',$phprlang['level'],'','center');
 $report->addOutputColumn('Race',$phprlang['race'],'','center');

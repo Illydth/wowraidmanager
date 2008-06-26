@@ -38,9 +38,9 @@ $page->set_file('headerFile',$phpraid_config['template'] . '/header.htm');
 // This looks like dead code due to BC making shaman and paladins all on both sides.
 // setup header variables
 //if($phpraid_config['faction'] == 'alliance')
-//	$page->set_var('other_name',$phprlang['paladin']);
+//    $page->set_var('other_name',$phprlang['paladin']);
 //else
-//	$page->set_var('other_name',$phprlang['shaman']);
+//    $page->set_var('other_name',$phprlang['shaman']);
 $priv_announcement=scrub_input($_SESSION['priv_announcements']);
 $priv_config=scrub_input($_SESSION['priv_configuration']);
 $priv_guilds=scrub_input($_SESSION['priv_guilds']);
