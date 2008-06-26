@@ -1,3 +1,45 @@
+Release 3.2.1 of WoW Raid Manager
+-----------------------------------
+Several updates and fixes to WRM 3.2.0.
+
+* Many permissions fixes made to various files to ensure that the release is packaged correctly (
+things like the .php files are no longer executable, etc.)
+* Much code formatting has been fixed (spacing) for better readability.
+* BUG: Fixed a bug with the template class being mis-declared.  This was fixed in patch 1.
+* BUG: View.php issues (Patches 2, 3, 6).  Fixes to create characters being female only. (Correctly
+fixed by LuL0R [nemo] from wowraidmanager.net)  Fixes to Raid Leaders being able to draft users 
+to raids.  Fixes to cross linking of records from e107 to WRM.
+* BUG: General fixes for e107 / WRM Authentication.  This fixes admins who install WRM with an
+e107 ID that is not ID 1 cannot get admin privileges after install.  It also fixes an issue where
+profiles created after installation of 3.2.0 were created blank.
+* BUG: RSS Feeds Fix.  Old Raids that were showing up under the RSS feeds should no longer show up.
+* Feature: Added a visual navigation hint for WRM.  The button look and feel on the left side
+will now change for the currently accessed page.  It will look differently for the page the user
+is currently on.
+* BUG: Data De-Sanitization.  While the 3.2 release sanitized all data going to the database for
+data security purposes, there were several spots where data was not DE-Sanitized when it came 
+out of the database, thus causing issues.  These de-sanitization issues should now all be fixed.
+* BUG: Deletion of Logs fails.  Log deletions fail due to the single quoting of strings with 
+the printf function.  this has now been fixed. (LuL0R [nemo] Of wowraidmanager.net)
+* BUG: Privilege level is now set correctly when the default group = none.  Originally the default
+privileges provided to users where "default group" in configuration is not set was to provide 
+"null" as the privilege level for the user. (Diska of wowraidmanager.net)
+* BUG: Installation does not fail when admin cannot be validated.  Originally the installation
+code for e107 authentication checked the username/email against the e107 database to verify
+the correct account is being made admin, however due to the way the "or die" statement works
+in php only a syntax error in the SQL statement would cause the error.  This has been fixed
+so that when the username/e-mail address of the admin user doesn't match that of the e107 
+database the installation throws back an error.
+* Feature: WoW Armory Character and Item Tooltips have been added to WRM.  The Character tooltips
+are currently implemented as rollovers to any character name in the profile, roster, raids view,
+teams, etc. sections.  Any time a character name is displayed in WRM it should now be linked
+properly back to the Profile on the WoW Armory and show a small popup with the current character
+information in it.  Major thanks to Nalumis of the wowraidmanager.net boards for doing the initial
+research and code for this.  A large majority of the code in this change was his.
+
+Please go to the "configuration" section of the WRM Application and set the new information under
+the "guild information" section.
+
 Release 3.2 of WoW Raid Manager
 --------------------------------
 NAME CHANGE: phpRaid is now WOW Raid Manager.  All displayed strings should now note the

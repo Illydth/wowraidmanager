@@ -4,14 +4,21 @@ Quick Installation
 * Open your FTP program and upload the entire contents of this archive to your web host,
 	including the phpRaid directory.
 * Change the Ownership of all files to match that of your web server.  
-* Change the permissions on config.php to be writeable by your web server.
-* Change the permissions on raid_lua to be writeable by your web server.
+* Change the permissions of the following directories and files to be writable by your
+	web server user:
+	* config.php
+	* raid_lua
+	* wowchar-tooltip/config.php
+	* wowitem-tooltip/config.php
+	* wowchar-tooltip/cache
+	* wowitem-tooltip/cache
 * Open a web browser and go to http://www.yourdomain.com/phpRaid
-* Choose your installation methiod and follow the steps to install your phpRaid server.
+* Choose your installation method and follow the steps to install your phpRaid server.
 * At the end of the installation please remove your Install directory (delete it completely)
 * Change the permissions on your config.php file back to read only to the world (you can 
-	leave it writeable by your web server if you so choose, but it is recommended that
-	you make it read only...(444 permissions in Unix).
+	leave it writable by your web server if you so choose, but it is recommended that
+	you make it read only...(444 permissions in Unix).  Keep the permisions of the other
+	files and folders listed above writable.
 	
 Please see phpRaid_install_doc.pdf for more information.
 
@@ -21,11 +28,13 @@ Quick Upgrade
 * Unpackage the files from this archive into a directory on your local machine.
 * Open your FTP program and upload the entire contents of this archive to your web host,
 	including the phpRaid directory.
-* Change the Ownership of all files to match that of your web server.  
+* Change the Ownership of all files to match that of your web server.  Check the list above
+	to ensure that everything listed in step 4 above is writable.  
 * Go to "install/database_schema/upgrade" 
 * Log in to your MySQL server installation and into your phpRaid database
-* Run 3.1.0.sql and 3.1.1.sql to make the appropriate changes to your
-	database for the 3.1.0 and 3.1.1 version of phpRaid.  
+* Run appropriate .sql files through a program like phpMyAdmin to move from your version of 
+	WRM to the 3.2.1 version to make sure that the appropriate changes to your database have
+	been made.  
 	
 *** NOTE *** 
 
@@ -38,10 +47,14 @@ be able to use a search and replace on phpraid_ and change that to your table pr
 
 Installing phpRaid into a supported CMS system
 -----------------------------------------------
-At the time of this writing 3.1.1 supports the following CMS systems:
+At the time of this writing 3.2.1 supports the following CMS systems:
 
 * e107 from http://www.e107.org
-* phpBB from http://www.phpbb.com
+* phpBB from http://www.phpbb.com (v2 only)
+
+Note: phpBB Version 3 has support in this version through a patch on www.wowraidmanager.net
+however this code has not been offically merged into the release and is supported by it's
+maintainer for the moment. 
 
 Also supported, if you do not have a supported CMS system, is "phpRaid" installation,
 which is the default non-CMS supported installation.  
@@ -54,32 +67,22 @@ When entering the database information to install to, please ensure that you ins
 into your CMS database to get CMS integration to work.
 
 
-Eratta
------------------
-Unfortunately this release has broken some things, most notably any custom templates you 
-may have installed.  More information as follows:
+Template Changes - v3.2.1
+------------------------------
+This version makes minor changes to the WRM template system.  Particularly there are two
+major changes:
 
-* Raid Signup Flow Change: Due to the change in the code surrounding raid signups
-and the flow surrounding signing up for and being accepted into a raid, it may be the 
-case that your users have more or less "buttons" (privileges) than they used to.  
-You will need to go into the configuration section and modify the signup area checkboxes
-to return your signup rights back to the users.  This is documented in docs/signup_flow.txt
+* header.htm has had several lines loaded at the top in the "script" and "link" area at
+	the top.
+	
+* configuration.htm has had a few lines added in the guild configuration section to support
+	the new armory linking.
+	
+	
+Language Changes - v3.2.1
+------------------------------
+Two new strings were added to the lang_pages.php in the "configuration" section.
+	* $phprlang['configuration_anonymous'] = 'Allow anonymous viewing';
+	* $phprlang['configuration_armory_link_text'] = 'Correct Armory Link for Server';
 
-* Custom Templates Broken: Due to the additions of SEVERAL sections of code in phpRaid and
-some pretty major functionality changes (5 man group support, Teams, 3 levels of
-permissions, etc.) there have been several html changes to the templates used by 
-phpRaid.  This, likely, will have broken every template that is not "SpiffyJr".
-Again in the next release I will try to capture and document html changes to ensure
-template maintainers have information on the changes to their templates to ensure
-an easy template migration, unfortunately this is not included with this release.
-To modify your custom templates you will need to download the "updates" package
-(update from 3.0.9.2 to 3.1.0) and check the files under the "Templates" area.  
-Use a DIFF tool (I recommend CompareIt! or KDiff3 in windows or any of the numerious
-tools in Unix/Linux) to check the modifications between the files included in the
-update package against the files in your custom template.  Merge the changes and you
-should be all set.
-
-* Missing Documentation: I havn't made an extensive check yet, but i'm betting i'm 
-missing a referred to documentation file or two somewhere in the installation.  If
-you happen to run across some missing documentation on a feature you know NOTHING 
-about, please let me know and i'll get a patch out quickly with it.
+These strings have not been translated at this point.
