@@ -46,7 +46,7 @@ function phpraid_login() {
 	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "profile";
 	$result = $db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
 	
-	while($data = $db_raid->sql_fetchrow($result)) {
+	while($data = $db_raid->sql_fetchrow($result, true)) {
 		if($username == strtolower($data['username']) && $password == $data['password']) {
 			if(isset($_POST['autologin'])) {
 				// they want automatic logins so set the cookie

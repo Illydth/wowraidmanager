@@ -30,26 +30,29 @@
 *
 ****************************************************************************/
 // commons
-define("IN_PHPRAID", true);	
+define("IN_PHPRAID", true);
 require_once('./common.php');
 
 // page authentication
 define("PAGE_LVL","profile");
 require_once("includes/authentication.php");
 
+// Set the Guild Server for the Page.
+$server = $phpraid_config['guild_server'];
+
 if($_GET['mode'] == 'view') {
 	$chars = array();
-		
+
 	// now that we have their profile_id, let's get a list of all their characters
 	$profile_id = scrub_input($_SESSION['profile_id']);
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE profile_id=%s",quote_smart($profile_id));
 	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-	while($data = $db_raid->sql_fetchrow($result))
+	while($data = $db_raid->sql_fetchrow($result, true))
 	{
-		array_push($chars, 
+		array_push($chars,
 			array(
 				'ID'=>$data['char_id'],
-				'Name'=>$data['name'],
+				'Name'=>get_armorychar($data['name'], $phpraid_config['armory_language'], $server),
 				'Guild'=>$data['guild'],
 				'Level'=>$data['lvl'],
 				'Race'=>$data['race'],
@@ -63,16 +66,16 @@ if($_GET['mode'] == 'view') {
 					 <a href="profile.php?mode=edit&race='.$data['race'].'&id='.$data['char_id'].'"><img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_edit.gif" border="0" onMouseover="ddrivetip(\'' . $phprlang['edit'] .'\')"; onMouseout="hideddrivetip()"></a>')
 			);
 	}
-	
+
 	// setup formatting for report class (THANKS to www.thecalico.com)
 	// generic settings
 	setup_output();
-	
+
 	$report->showRecordCount(true);
 	$report->allowPaging(true, $_SERVER['PHP_SELF'] . '?mode=view&Base=');
 	$report->setListRange($_GET['Base'], 25);
 	$report->allowLink(ALLOW_HOVER_INDEX,'',array());
-	
+
 	//Default sorting
 	if(!$_GET['Sort'])
 	{
@@ -82,7 +85,7 @@ if($_GET['mode'] == 'view') {
 	{
 		$report->allowSort(true, $_GET['Sort'], $_GET['SortDescending'], 'profile.php?mode=view');
 	}
-	
+
 	$report->showRecordCount(count);
 	// display settings
 	if($phpraid_config['show_id'] == 1)
@@ -99,28 +102,28 @@ if($_GET['mode'] == 'view') {
 	$report->addOutputColumn('Shadow','<img src="templates/' . $phpraid_config['template'] . '/images/resistances/shadow_resistance.gif" onMouseover="ddrivetip(\''.$phprlang['shadow'].'\')"; onMouseout="hideddrivetip()" height="16" width="16" border="0">','','center');
 	$report->addOutputColumn('','','','right');
 	$chars = $report->getListFromArray($chars);
-	
+
 	// time to get a list of raids that they've signed up for
 	$raid_list = array();
-	
+
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE profile_id=%s", quote_smart($profile_id));
 	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-	while($signups = $db_raid->sql_fetchrow($result))
+	while($signups = $db_raid->sql_fetchrow($result, true))
 	{
 		// setup the count array
 		$count = array('dr'=>'0','hu'=>'0','ma'=>'0','pr'=>'0','pa'=>'0','ro'=>'0','sh'=>'0','wk'=>'0','wa'=>'0');
 		
 		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id=%s", quote_smart($signups['raid_id']));
 		$result_raid = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-		$data = $db_raid->sql_fetchrow($result_raid);
+		$data = $db_raid->sql_fetchrow($result_raid, true);
 		
 		$desc = strip_tags($data['description']);
 		$desc = UBB($desc);
-		
-		$location = '<a href="view.php?mode=view&raid_id='.$data['raid_id'].'" 
-					 onMouseover="ddrivetip(\'<span class=tooltip_title>'.$phprlang['description'].'</span><br>' 
+
+		$location = '<a href="view.php?mode=view&raid_id='.$data['raid_id'].'"
+					 onMouseover="ddrivetip(\'<span class=tooltip_title>'.$phprlang['description'].'</span><br>'
 					 . DEUBB($desc) . '\')" onMouseout="hideddrivetip()">'.UBB($data['location']).'</a>';
-			
+
 		// convert unix timestamp to something readable
 		$start = new_date($phpraid_config['time_format'],$data['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
 		$invite = new_date($phpraid_config['time_format'],$data['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
@@ -135,7 +138,7 @@ if($_GET['mode'] == 'view') {
 		if($total == "")
 		{
 			$total = "0";
-		}		
+		}
 		if($total2 == "")
 		{
 			$total2 = "";
@@ -144,7 +147,7 @@ if($_GET['mode'] == 'view') {
 		{
 			$total2 = " (+$total2)";
 		}
-	
+
 		// current raids
 		if($data['old'] == 0) {
 			array_push($raid_list,
@@ -167,17 +170,17 @@ if($_GET['mode'] == 'view') {
 			);
 		}
 	}
-	
+
 	// setup formatting for report class (THANKS to www.thecalico.com)
 	// generic settings
 	$report->clearOutputColumns();
 	setup_output();
-	
+
 	$report->showRecordCount(true);
 	$report->allowPaging(true, $_SERVER['PHP_SELF'] . '?mode=view&Base=');
 	$report->setListRange($_GET['Base'], 25);
 	$report->allowLink(ALLOW_HOVER_INDEX,'',array());
-	
+
 	//Default sorting
 	if(!$_GET['Sort'])
 	{
@@ -187,7 +190,7 @@ if($_GET['mode'] == 'view') {
 	{
 		$report->allowSort(true, $_GET['Sort'], $_GET['SortDescending'], 'profile.php?mode=view');
 	}
-	
+
 	$report->showRecordCount(false);
 	// and now to format each column output
 	// the report class makes it very easy to use icons (or whatever) instead of just text
@@ -208,14 +211,14 @@ if($_GET['mode'] == 'view') {
 	$report->addOutputColumn('Wlk', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/warlock_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['warlock'] . '\')"; onMouseout="hideddrivetip()">', '', 'center');
 	$report->addOutputColumn('War', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/warrior_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['warrior'] . '\')"; onMouseout="hideddrivetip()">', '', 'center');
 	$report->addOutputColumn('Max',$phprlang['totals'],'','center');
-	
+
 	// and finally, put the data into the variables to be read
 	$raid_list = $report->getListFromArray($raid_list);
-	
+
 	$page->set_file(array(
 		'output' => $phpraid_config['template'] . '/profile.htm')
 	);
-	
+
 	$page->set_var(
 		array(
 			'character_list' => $chars,
@@ -224,18 +227,18 @@ if($_GET['mode'] == 'view') {
 			'raid_header' => $phprlang['profile_raid'],
 			)
 		);
-	
+
 	$page->parse('output','output');
 } elseif($_GET['mode'] == 'remove') {
 	$id = scrub_input($_GET['id']);
 	$n = scrub_input($_GET['n']);
 	$profile_id = scrub_input($_SESSION['profile_id']);
-	
+
 	if(!isset($_POST['submit']))
 	{
 		$form_action = "profile.php?mode=remove&n=$n&id=$id";
 		$confirm_button = '<input name="submit" type="submit" id="submit" value="'.$phprlang['confirm_deletion'].'" class="mainoption">';
-		
+
 		$page->set_file('output',$phpraid_config['template'] . '/delete.htm');
 		$page->set_var(
 			array(
@@ -250,10 +253,10 @@ if($_GET['mode'] == 'view') {
 	else
 	{
 		log_delete('character',$n);
-		
+
 		$sql = sprintf("DELETE FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id=%s AND profile_id=%s",quote_smart($id), quote_smart($profile_id));
 		$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-		
+
 		$sql = sprintf("DELETE FROM " . $phpraid_config['db_prefix'] . "signups WHERE char_id=%s AND profile_id=%s",quote_smart($id), quote_smart($profile_id));
 		$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 		header("Location: profile.php?mode=view");
@@ -276,10 +279,10 @@ if($_GET['mode'] == 'view') {
 	} else {
 		// edit, grab from database
 		$char_id = scrub_input($_GET['id']);
-		
+
 		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id=%s",quote_smart($char_id));
 		$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-		$data = $db_raid->sql_fetchrow($result);
+		$data = $db_raid->sql_fetchrow($result, true);
 		
 		$guild = $data['guild'];
 		$race = $data['race'];
@@ -294,12 +297,12 @@ if($_GET['mode'] == 'view') {
 		$nature = $data['nature'];
 		$shadow = $data['shadow'];
 	}
-	
+
 	if(isset($_POST['submit'])) {
 		$race = scrub_input($_GET['race']);
 		$class = scrub_input($_POST['class']);
 		$gender = scrub_input($_POST['gender']);
-		$name = scrub_input(trim($_POST['name']));
+		$name = scrub_input(ucfirst(trim($_POST['name'])));
 		$guild = scrub_input($_POST['guild']);
 		$level = scrub_input($_POST['level']);
 		$arcane = scrub_input($_POST['arcane']);
@@ -334,10 +337,10 @@ if($_GET['mode'] == 'view') {
 				$frost = "0";
 				$nature = "0";
 				$arcane = "0";
-				
+
 				// all is good add to database
 				$profile = scrub_input($_SESSION['profile_id']);
-				
+
 				if($_GET['mode'] == 'new') {
 					$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "chars (`profile_id`,`name`,`class`,
 					`gender`,`guild`,`lvl`,`race`,`arcane`,`fire`,`frost`,`nature`,`shadow`) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,
@@ -345,7 +348,7 @@ if($_GET['mode'] == 'view') {
 					quote_smart($level),quote_smart($race),quote_smart($arcane),quote_smart($fire),quote_smart($frost),quote_smart($nature),quote_smart($shadow));
 					
 					$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-					
+
 					log_create('character',mysql_insert_id(),$name);
 				} elseif($_GET['mode'] == 'edit') {
 					$char_id=scrub_input($_GET['id']);
@@ -368,7 +371,7 @@ if($_GET['mode'] == 'view') {
 				$errorSpace = 1;	
 				$errorTitle = $phprlang['form_error'];
 				$errorMsg = '<ul>';
-				
+
 				if($guild == '')
 					$errorMsg .= '<li>'.$phprlang['profile_error_guild'].'</li>';
 				if($dupeChar)
@@ -392,7 +395,7 @@ if($_GET['mode'] == 'view') {
 				if(!is_numeric($shadow))
 					$errorMsg .= '<li>'.$phprlang['profile_error_shadow'].'</li>';
 				$errorDie = 0;
-				
+
 				$errorMsg .= '</ul>';
 		} else {
 			// all is good add to database
@@ -441,39 +444,39 @@ if($db_raid->sql_numrows($result) == 0) {
 			$race = scrub_input($_GET['race']);
 		else
 			$race = '';
-			
+
 		if(isset($_GET['id']))
 			$id = scrub_input($_GET['id']);
 		else
 			$id = '';
-			
+
 		if(!isset($class))
 			$class = '';
-			
+
 		if(!isset($name))
 			$name = '';
-			
+
 		if(!isset($guild))
 			$guild = '';
-		
+
 		if(!isset($level))
 			$level = '';
-		
+
 		if(!isset($class_options))
 			$class_options = '';
-			
+
 		if(!isset($arcane))
 			$arcane = '';
-			
+
 		if(!isset($fire))
 			$fire = '';
-			
+
 		if(!isset($frost))
 			$frost = '';
-			
+
 		if(!isset($nature))
 			$nature = '';
-			
+
 		if(!isset($shadow))
 			$shadow = '';
 			
@@ -482,7 +485,7 @@ if($db_raid->sql_numrows($result) == 0) {
 			$form_action = 'profile.php?mode=new&race='.$race;
 		else
 			$form_action = 'profile.php?mode=edit&id='.$id.'&race='.$race;
-		
+
 		if($_GET['mode'] == 'view' || $_GET['mode'] == 'new')
 		$Form_use = "value=\"profile.php?mode=view&race=";
 		else
@@ -514,7 +517,7 @@ if($db_raid->sql_numrows($result) == 0) {
 			$race_options .= "<option ";
 			if($race == $phprlang['night_elf'])
 				$race_options .= "SELECTED ";
-			$race_options .= $Form_use.$phprlang['night_elf']."\">".$phprlang['night_elf']."</option>"; 
+			$race_options .= $Form_use.$phprlang['night_elf']."\">".$phprlang['night_elf']."</option>";
 		}
 		// only show horde races
 		if($phpraid_config['faction'] == "horde")
@@ -543,9 +546,9 @@ if($db_raid->sql_numrows($result) == 0) {
 			$race_options .= "<option ";
 			if($race == $phprlang['undead'])
 				$race_options .= "SELECTED ";
-			$race_options .= $Form_use.$phprlang['undead']."\">".$phprlang['undead']."</option>"; 
+			$race_options .= $Form_use.$phprlang['undead']."\">".$phprlang['undead']."</option>";
 		}
-		
+
 		// now that we have the race, let's show them what classes pertain to that race
 		//Druid
 		if($race == $phprlang['night_elf'] || $race == $phprlang['tauren']) {
@@ -554,15 +557,15 @@ if($db_raid->sql_numrows($result) == 0) {
 			else
 				$class_options .= "<option value=\"".$phprlang['druid']."\">".$phprlang['druid']."</option>";
 		}
-		
-		//Hunter				
+
+		//Hunter
 		if($race == $phprlang['draenei'] || $race == $phprlang['dwarf'] || $race == $phprlang['night_elf'] || $race == $phprlang['blood_elf'] || $race == $phprlang['tauren'] || $race == $phprlang['orc'] || $race == $phprlang['troll']) {
 			if($class == $phprlang['hunter'])
 				$class_options .= "<option value=\"".$phprlang['hunter']."\" selected>".$phprlang['hunter']."</option>";
 			else
 				$class_options .= "<option value=\"".$phprlang['hunter']."\">".$phprlang['hunter']."</option>";
 		}
-		
+
 		//Mage
 		if($race == $phprlang['draenei'] || $race == $phprlang['gnome'] || $race == $phprlang['human'] || $race == $phprlang['blood_elf'] || $race == $phprlang['undead'] || $race == $phprlang['troll']) {
 			if($class == $phprlang['mage'])
@@ -570,7 +573,7 @@ if($db_raid->sql_numrows($result) == 0) {
 			else
 				$class_options .= "<option value=\"".$phprlang['mage']."\">".$phprlang['mage']."</option>";
 		}
-								
+
 		//Paladin
 		if($race == $phprlang['blood_elf'] || $race == $phprlang['draenei'] || $race == $phprlang['dwarf'] || $race == $phprlang['human']) {
 			if($class == $phprlang['paladin'])
@@ -578,16 +581,16 @@ if($db_raid->sql_numrows($result) == 0) {
 			else
 				$class_options .= "<option value=\"".$phprlang['paladin']."\">".$phprlang['paladin']."</option>";
 		}
-		
-		//Priest				
+
+		//Priest
 		if($race == $phprlang['blood_elf'] || $race == $phprlang['draenei'] || $race == $phprlang['dwarf'] || $race == $phprlang['human'] || $race == $phprlang['night_elf'] || $race == $phprlang['undead'] || $race == $phprlang['troll']) {
 			if($class == $phprlang['priest'])
 				$class_options .= "<option value=\"".$phprlang['priest']."\" selected>".$phprlang['priest']."</option>";
 			else
 				$class_options .= "<option value=\"".$phprlang['priest']."\">".$phprlang['priest']."</option>";
 		}
-						
-		//Rogue		
+
+		//Rogue
 		if($race != $phprlang['tauren'] && $race != $phprlang['draenei'] && $race != "") {
 			if($class == $phprlang['rogue'])
 				$class_options .= "<option value=\"".$phprlang['rogue']."\" selected>".$phprlang['rogue']."</option>";
@@ -595,22 +598,22 @@ if($db_raid->sql_numrows($result) == 0) {
 				$class_options .= "<option value=\"".$phprlang['rogue']."\">".$phprlang['rogue']."</option>";
 		}
 
-		//Shaman			
+		//Shaman
 		if($race == $phprlang['draenei'] || $race == $phprlang['orc'] || $race == $phprlang['tauren'] || $race == $phprlang['troll']) {
 			if($class == $phprlang['shaman'])
 				$class_options .= "<option value=\"".$phprlang['shaman']."\" selected>".$phprlang['shaman']."</option>";
 			else
 				$class_options .= "<option value=\"".$phprlang['shaman']."\">".$phprlang['shaman']."</option>";
 		}
-		
-		//Warlock	
+
+		//Warlock
 		if($race == $phprlang['blood_elf'] || $race == $phprlang['human'] || $race == $phprlang['gnome'] || $race == $phprlang['orc'] || $race == $phprlang['undead']) {
 			if($class == $phprlang['warlock'])
 				$class_options .= "<option value=\"".$phprlang['warlock']."\" selected>".$phprlang['warlock']."</option>";
 			else
 				$class_options .= "<option value=\"".$phprlang['warlock']."\">".$phprlang['warlock']."</option>";
 		}
-						
+
 		//Warrior
 		if($race != $phprlang['blood_elf'] && $race != "") {
 			if($class == $phprlang['warrior'])
@@ -618,7 +621,7 @@ if($db_raid->sql_numrows($result) == 0) {
 			else
 				$class_options .= "<option value=\"".$phprlang['warrior']."\">".$phprlang['warrior']."</option>";
 		}
-		
+
 		//Gender Selection
 		if(strtolower($gender) == 'male')
 		$gender_options .= "<option value=\"".$phprlang['male']."\" selected>".$phprlang['male']."</option>";
@@ -633,7 +636,7 @@ if($db_raid->sql_numrows($result) == 0) {
 		// setup output variables for form
 		$race_output = '<select name="race" onChange="MM_jumpMenu(\'parent\',this,0)" class="form" style="width:100px">
 						<option value="profile.php?mode=new">'.$phprlang['form_select'].'</option>' . $race_options . '</select>';
-					
+
 		if(!isset($_GET['race'])) {
 			$class = '<select name="class" DISABLED><option></option></select>';
 			$name = '<select name="name" DISABLED><option></option></select>';
@@ -649,7 +652,7 @@ if($db_raid->sql_numrows($result) == 0) {
 			// get guild list
 			$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "guilds";
 			$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-			while($data = $db_raid->sql_fetchrow($result))
+			while($data = $db_raid->sql_fetchrow($result, true))
 			{
 				If($guild == $data['guild_tag'])
 				{
@@ -660,9 +663,9 @@ if($db_raid->sql_numrows($result) == 0) {
 					$guild_options .= '<option value="' . $data['guild_tag'] . '">' . $data['guild_name'] . '</option>';
 				}
 			}
-			
+
 			$guild = '<select name="guild" class="post" style="width:100px">' . $guild_options . '</select>';
-		
+
 			$class = '<select name="class" id="class" class="form" style="width:100px">' . $class_options . '</select>';
 			$name = '<input type="text" name="name" class="post" value="' . $name . '" style="width:100px">';
 			$level = '<input name="level" type="text" class="post" size="2" value="' . $level . '" maxlength="2">';
@@ -673,17 +676,17 @@ if($db_raid->sql_numrows($result) == 0) {
 			$nature =  '<input name="nature" type="text" class="post" size="3" value="' . $nature . '" maxlength="3">';
 			$shadow =  '<input name="shadow" type="text" class="post" size="3" value="' . $shadow . '" maxlength="3">';
 		}
-		
+
 		if($_GET['mode'] == 'view' || $_GET['mode'] == 'new') {
 			$buttons = '<input type="submit" name="submit" value="Add Character" class="mainoption"> <input type="reset" name="Reset" value="Reset" class="liteoption">';
 		} else {
 			$buttons = '<input type="submit" name="submit" value="Update Character" class="mainoption"> <input type="reset" name="Reset" value="Reset" class="liteoption">';
 		}
-		
+
 		$page->set_file(array(
 			'new_file' => $phpraid_config['template'] . '/profile_new.htm')
 		);
-	
+
 		$page->set_var(array(
 			'name' => $name,
 			'form_action' => $form_action,
@@ -712,8 +715,8 @@ if($db_raid->sql_numrows($result) == 0) {
 			'name_text'=>$phprlang['profile_name'],
 			'level_text'=>$phprlang['profile_level']
 			)
-		);	
-				
+		);
+
 		$page->parse('output','new_file',true);
 	}
 }

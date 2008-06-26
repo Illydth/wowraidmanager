@@ -90,7 +90,7 @@ function phpraid_login()
 	if ( !($result = $db->sql_query($sql)) )
 		message_die(GENERAL_ERROR, 'Error in obtaining userdata', '', __LINE__, __FILE__, $sql);
 		
-	if( $row = $db->sql_fetchrow($result) )
+	if( $row = $db->sql_fetchrow($result, true) )
 	{
 		if( md5($password) == $row['user_password'] && $row['user_active'] )
 		{ 

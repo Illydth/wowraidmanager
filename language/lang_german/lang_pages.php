@@ -1,7 +1,7 @@
 <?php
 // announcements
-$phprlang['announcements_header'] = 'Ankündigungen';
-$phprlang['announcements_new_header'] = 'Neue Ankündigung erstellen';
+$phprlang['announcements_header'] = 'Ankï¿½ndigungen';
+$phprlang['announcements_new_header'] = 'Neue Ankï¿½ndigung erstellen';
 $phprlang['announcements_msg_txt'] = 'Nachricht';
 $phprlang['announcements_title_txt'] = 'Titel';
 
@@ -10,6 +10,8 @@ $phprlang['configuration_addon'] = 'Addon-URL';
 $phprlang['configuraiton_admin'] = 'Administrator';
 $phprlang['configuration_admin_email'] = 'Administrator-E-Mail';
 $phprlang['configuration_anonymous'] = 'Anonymes Betrachten erlauben';
+$phprlang['configuration_armory_link_text'] = 'Correct Armory Link for Server';
+$phprlang['configuration_armory_language_text'] = 'Language Code for Armory';
 $phprlang['configuration_autoqueue'] = 'Anmeldungen nur in Warteschlange erlauben';
 $phprlang['configuration_cancel_def'] = 'Abbrechen = Benutzer in Bereich der abgebrochenen Anmeldungen platzieren';
 $phprlang['configuration_comments_def'] = 'Kommentare = Benutzern erlauben, ihre Kommentare zu bearbeiten';
@@ -17,7 +19,7 @@ $phprlang['configuration_date'] = 'Datumsformat<br><a href="http://de.php.net/da
 $phprlang['configuration_description'] = 'Beschreibung';
 $phprlang['configuration_debug'] = 'Debugmodus';
 $phprlang['configuration_default'] = 'Standardgruppe';
-$phprlang['configuration_delete_def'] = 'Löschen = Benutzer aus der Anmeldung komplett entfernen';
+$phprlang['configuration_delete_def'] = 'Lï¿½schen = Benutzer aus der Anmeldung komplett entfernen';
 $phprlang['configuration_disable'] = 'phpRaid deaktivieren';
 $phprlang['configuration_draft_def'] = 'Anmelden = Benutzer in den Bereich der Anmeldungen platzieren';
 $phprlang['configuration_dst_text'] = 'Sommerzeit?';
@@ -25,7 +27,7 @@ $phprlang['configuration_email_header'] = 'E-Mail-Konfiguration';
 $phprlang['configuration_email_sig'] = 'E-Mail-Signatur';
 $phprlang['configuration_enable_five_man'] = 'Gruppen aktivieren<br><a href="docs/enable_groups.htm" target="_blank">Hilfe?</a>';
 $phprlang['configuration_faction'] = 'Fraktion';
-$phprlang['configuration_freeze'] = 'Prüfung auf eingefrorene Raids ausschalten';
+$phprlang['configuration_freeze'] = 'Prï¿½fung auf eingefrorene Raids ausschalten';
 $phprlang['configuration_guild_header'] = 'Gildenkonfiguration';
 $phprlang['configuration_guild_name'] = 'Name';
 $phprlang['configuration_id'] = 'IDs in den Tabellen anzeigen';
@@ -34,7 +36,7 @@ $phprlang['configuration_logo'] = 'Pfad zum Logo';
 $phprlang['configuration_multiple'] = 'Mehrfachanmeldungen erlauben';
 $phprlang['configuration_queue_def'] = 'Warteschlange = Benutzer in Warteschlange platzieren';
 $phprlang['configuration_raidlead'] = 'Raidleiter';
-$phprlang['configuration_resop'] = 'Eingabe der Widerstände optional';
+$phprlang['configuration_resop'] = 'Eingabe der Widerstï¿½nde optional';
 $phprlang['configuration_register_text'] = 'Registrierungs-URL';
 $phprlang['configuration_roster_text'] = 'In WoW-Gildendatenbank integrieren';
 $phprlang['configuration_show_addon'] = 'Addon-Link zeigen';
@@ -44,11 +46,11 @@ $phprlang['configuration_template'] = 'Vorlage';
 $phprlang['configuration_time'] = 'Zeitformat<br><a href="http://www.php.net/date/" target="_blank">Hilfe?</a>';
 $phprlang['configuration_timezone_text'] = 'Zeitzone';
 $phprlang['configuration_user'] = 'Benutzer';
-$phprlang['configuration_rss_site'] = 'RSS: URL zur phpRaid-Installation (ohne abschließenden /)';
+$phprlang['configuration_rss_site'] = 'RSS: URL zur phpRaid-Installation (ohne abschlieï¿½enden /)';
 $phprlang['configuration_rss_export'] = 'RSS: Site to export RSS feed to'; /* FIX */
 $phprlang['configuration_rss_feed_amt'] = 'RSS: Anzahl der Raids, die im Feed angezeigt werden sollen';
 $phprlang['configuration_version_current'] = 'Du benutzt die aktuellste Version von phpRaid';
-$phprlang['configuration_version_outdated_header'] = 'Eine neuere Version von phpRaid ist verfügbar!';
+$phprlang['configuration_version_outdated_header'] = 'Eine neuere Version von phpRaid ist verfï¿½gbar!';
 $phprlang['configuration_version_outdated_message'] = 'Deine Version von phpRaid ist nicht aktuell. Ein Update wird empfohlen.<br>
 													   Die aktuellste Version ist %s, und du benutzt Version %s.<br>
 													   Zum Herunterladen besuche bitte den <a href="hhttp://www.spiffyjr.com/forums/viewtopic.php?t=900">inoffiziellen phpRaid-Downloadbereich</a>.';
@@ -57,7 +59,7 @@ $phprlang['configuration_version_outdated_message'] = 'Deine Version von phpRaid
 $phprlang['guilds_header'] = 'Gildenliste';
 $phprlang['guilds_master'] = 'Gildenmeister';
 $phprlang['guilds_name'] = 'Kompletter Gildenname';
-$phprlang['guilds_tag']	= 'Gildenkürzel';
+$phprlang['guilds_tag']	= 'Gildenkï¿½rzel';
 
 // locations
 $phprlang['locations_header'] = 'Gespeicherte Instanzen';
@@ -67,7 +69,7 @@ $phprlang['locations_limits_header'] = 'Raid-Begrenzungen';
 $phprlang['locations_long'] = 'Name der Instanz';
 $phprlang['locations_new'] = 'Neue Instanz erstellen';
 $phprlang['locations_raid_max'] = 'Maximale Teilnehmerzahl';
-$phprlang['locations_short'] = 'Instanzkürzel';
+$phprlang['locations_short'] = 'Instanzkï¿½rzel';
 $phprlang['lock_template'] = 'Gesperrte Raid-Vorlage?';
 
 // lua_output
@@ -76,8 +78,8 @@ $phprlang['lua_download'] = 'phpRaidViewer herunterladen';
 $phprlang['lua_header'] = 'LUA-/Makroausgabe';
 
 // permissions
-$phprlang['permissions_add'] = 'Benutzer zur Berechtigungsgruppe hinzufügen';
-$phprlang['permissions_announcements'] = 'Ankündigungen';
+$phprlang['permissions_add'] = 'Benutzer zur Berechtigungsgruppe hinzufï¿½gen';
+$phprlang['permissions_announcements'] = 'Ankï¿½ndigungen';
 $phprlang['permissions_configuration'] = 'Konfiguration';
 $phprlang['permissions_details_users_header'] = 'Detaillierte Benutzerrechte';
 $phprlang['permissions_edit_header'] = 'Gruppe bearbeiten';
@@ -98,12 +100,12 @@ $phprlang['permissions_users_header'] = 'Benutzer in dieser Berechtigungsgruppe'
 // profile
 $phprlang['profile_arcane'] = 'Arkanwiderstand';
 $phprlang['profile_class'] = 'Klasse';
-$phprlang['profile_create_header'] = 'Charaktererstellung nicht verfügbar';
+$phprlang['profile_create_header'] = 'Charaktererstellung nicht verfï¿½gbar';
 $phprlang['profile_create_msg'] = 'Die Charaktererstellung bleibt gesperrt, bis ein Administrator eine Gilde erstellt hat.';
 $phprlang['profile_fire'] = 'Feuerwiderstand';
 $phprlang['profile_frost'] = 'Frostwiderstand';
 $phprlang['profile_gender'] = 'Geschlecht';
-$phprlang['profile_guild'] = 'Gildenzugehörigkeit';
+$phprlang['profile_guild'] = 'Gildenzugehï¿½rigkeit';
 $phprlang['profile_header'] = 'Charaktere';
 $phprlang['profile_level'] = 'Stufe';
 $phprlang['profile_name'] = 'Name';
@@ -134,13 +136,13 @@ $phprlang['roster_header'] = 'Mitgliederliste';
 // registration
 $phprlang['register_complete_header'] = 'Registrierung erfolgreich!';
 $phprlang['register_complete_msg'] = 'Du bist nun registriert. Bis ein Administrator dir die entsprechenden Rechte gibt, kannst du keinen Charakter erstellen.';
-$phprlang['register_confirm'] = 'Die Passwörter stimmen nicht überein.';
+$phprlang['register_confirm'] = 'Die Passwï¿½rter stimmen nicht ï¿½berein.';
 $phprlang['register_confirm_text'] = 'Passwort erneut eingeben';
 $phprlang['register_email_header'] = 'Deine Registrierung bei';
-$phprlang['register_email_empty'] = 'Du musst eine (gültige) E-Mail-Adresse eingeben';
+$phprlang['register_email_empty'] = 'Du musst eine (gï¿½ltige) E-Mail-Adresse eingeben';
 $phprlang['register_email_exists'] = 'Diese E-Mail-Adresse wird bereits benutzt';
 $phprlang['register_email_greeting'] = 'Willkommen';
-$phprlang['register_email_subject'] = 'Diese E-Mail dient nur als Registrierungsbestätigung. Bitte antworte nicht darauf.';
+$phprlang['register_email_subject'] = 'Diese E-Mail dient nur als Registrierungsbestï¿½tigung. Bitte antworte nicht darauf.';
 $phprlang['register_email_text'] = 'E-Mail-Adresse';
 $phprlang['register_error'] = 'Fehler bei der Registrierung';
 $phprlang['register_header'] = 'Benutzer-Registrierung';
@@ -156,7 +158,7 @@ $phprlang['users_char_header'] = 'Benutzercharaktere';
 $phprlang['users_header'] = 'Benutzer';
 
 // view
-$phprlang['view_approved'] = 'Bestätigte Mitglieder';
+$phprlang['view_approved'] = 'Bestï¿½tigte Mitglieder';
 $phprlang['view_cancel_header'] = 'Abgebrochene Anmeldungen';
 $phprlang['view_character'] = 'Charakter';
 $phprlang['view_comments'] = 'Kommentare';
@@ -168,21 +170,21 @@ $phprlang['view_information_header'] = 'Information';
 $phprlang['view_invite'] = 'Einladung';
 $phprlang['view_location'] = 'Instanz';
 $phprlang['view_login'] = 'Zum Anmelden bitte einloggen';
-$phprlang['view_new'] = 'Für diesen Raid anmelden';
+$phprlang['view_new'] = 'Fï¿½r diesen Raid anmelden';
 $phprlang['view_max'] = 'Maximale Teilnehmerzahl';
 $phprlang['view_max_lvl'] = 'Maximalstufe';
 $phprlang['view_min_lvl'] = 'Minimalstufe';
 $phprlang['view_officer'] = 'Ersteller';
-$phprlang['view_ok'] = 'Offen für Anmeldungen';
-$phprlang['view_queue'] = 'Wie möchtest du dich anmelden?';
+$phprlang['view_ok'] = 'Offen fï¿½r Anmeldungen';
+$phprlang['view_queue'] = 'Wie mï¿½chtest du dich anmelden?';
 $phprlang['view_queue_header'] = 'Warteliste';
 $phprlang['view_queued'] = 'Mitglieder auf der Warteliste';
-$phprlang['view_raid_cancel_text'] = 'Zurückgezogene Anmeldungen';
+$phprlang['view_raid_cancel_text'] = 'Zurï¿½ckgezogene Anmeldungen';
 $phprlang['view_signed'] = 'Bereits angemeldet';
 $phprlang['view_signup'] = 'Anmeldeinformation';
 $phprlang['view_start'] = 'Startzeit';
 $phprlang['view_statistics_header'] = 'Statistiken';
-$phprlang['view_teams_link_text'] = 'Teams für diesen Raid erzeugen und zuweisen';
+$phprlang['view_teams_link_text'] = 'Teams fï¿½r diesen Raid erzeugen und zuweisen';
 $phprlang['view_total'] = 'Anmeldungen insgesamt';
 $phprlang['view_username'] = 'Benutzername';
 
@@ -192,9 +194,9 @@ $phprlang['main_upcoming_raids'] = 'Aktuelle Raids';
 
 // teams
 $phprlang['team_new_header'] = 'Neues Team erzeugen';
-$phprlang['team_add_header'] = 'Mitglieder zu Team hinzufügen';
+$phprlang['team_add_header'] = 'Mitglieder zu Team hinzufï¿½gen';
 $phprlang['team_remove_header'] = 'Mitglieder aus Team entfernen';
-$phprlang['teams_raid_view_text'] = 'Zurück zur Raidansicht';
+$phprlang['teams_raid_view_text'] = 'Zurï¿½ck zur Raidansicht';
 $phprlang['team_cur_teams_header'] = 'Erzeugte Teams';
 $phprlang['team_page_header'] = 'Teams';
 ?>

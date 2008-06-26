@@ -78,7 +78,7 @@ if(isset($_POST['submit']))
 	// check if username or email already exists
 	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "profile";
 	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-	while($data = $db_raid->sql_fetchrow($result))
+	while($data = $db_raid->sql_fetchrow($result, true))
 	{
 		if($user == $data['username'])
 		{

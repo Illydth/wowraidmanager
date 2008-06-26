@@ -3,21 +3,33 @@
  *                              page_header.php
  *                            -------------------
  *   begin                : Saturday, Jan 16, 2005
- *   copyright            : (C) 2005 Kyle Spraggs
- *   email                : spiffyjr@gmail.com
+ *   copyright            : (C) 2007-2008 Douglas Wagner
+ *   email                : douglasw@wagnerweb.org
  *
- *   $Id: mysql.php,v 1.16 2002/03/19 01:07:36 psotfx Exp $
+ *   $Id: page_header.php,v 2.00 2008/03/04 14:26:10 psotfx Exp $
  *
  ***************************************************************************/
 
 /***************************************************************************
- *
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- ***************************************************************************/
+*
+*    WoW Raid Manager - Raid Management Software for World of Warcraft
+*    Copyright (C) 2007-2008 Douglas Wagner
+*
+*    This program is free software: you can redistribute it and/or modify
+*    it under the terms of the GNU General Public License as published by
+*    the Free Software Foundation, either version 3 of the License, or
+*    (at your option) any later version.
+*
+*    This program is distributed in the hope that it will be useful,
+*    but WITHOUT ANY WARRANTY; without even the implied warranty of
+*    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*    GNU General Public License for more details.
+*
+*    You should have received a copy of the GNU General Public License
+*    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*
+****************************************************************************/
+
 //
 // Parse and show the overall header.
 //
@@ -26,9 +38,9 @@ $page->set_file('headerFile',$phpraid_config['template'] . '/header.htm');
 // This looks like dead code due to BC making shaman and paladins all on both sides.
 // setup header variables
 //if($phpraid_config['faction'] == 'alliance')
-//	$page->set_var('other_name',$phprlang['paladin']);
+//    $page->set_var('other_name',$phprlang['paladin']);
 //else
-//	$page->set_var('other_name',$phprlang['shaman']);
+//    $page->set_var('other_name',$phprlang['shaman']);
 $priv_announcement=scrub_input($_SESSION['priv_announcements']);
 $priv_config=scrub_input($_SESSION['priv_configuration']);
 $priv_guilds=scrub_input($_SESSION['priv_guilds']);
@@ -104,7 +116,7 @@ require_once($phpraid_dir.'templates/' . $phpraid_config['template'] . '/theme_c
 // links useable for everyone
 $index_link = '<a href="' . $phpraid_config['header_link'] . '">' . $theme_index_link . '</a>';
 $home_link = '<a href="index.php">' . $theme_home_link . '</a>';
-$calendar_link = '<a href="calendar_raids.php">' . $theme_calendar_link . '</a>';
+$calendar_link = '<a href="calendar.php">' . $theme_calendar_link . '</a>';
 $roster_link = '<a href="roster.php">' . $theme_roster_link . '</a>';
 
 // these links need special permissions
@@ -118,9 +130,9 @@ $priv_profile ? $profile_link = '<a href="profile.php?mode=view">' . $theme_prof
 $priv_users ? $users_link = '<a href="users.php?mode=view">' . $theme_users_link . '</a>' : $users_link = '';
 $logged_in != '1' ? $register_link = '<a href="' . $phpraid_config['register_url'] . '">' . $theme_register_link . '</a>' : $register_link = '';
 if ( $priv_raids OR ($phpraid_config['enable_five_man'] AND $priv_profile) )
-{ 
+{
 	$raids_link = '<a href="raids.php?mode=view">' . $theme_raids_link . '</a>';
-	$lua_output_link = '<a href="lua_output.php">' . $theme_lua_output_link . '</a>'; 
+	$lua_output_link = '<a href="lua_output.php">' . $theme_lua_output_link . '</a>';
 }
 else
 {
@@ -129,70 +141,142 @@ else
 }
 
 // setup menu
-$menu = '<div align="left" class="navContainer"><ul class="navList">
-<li>' . $index_link . '</li>
-<li>' . $home_link . '</li>
-<li>' . $calendar_link . '</li>';
+$menu = '<div align="left" class="navContainer"><ul class="navList">';
+
+
+//Ingore link to another site
+$menu .= '<li>' . $index_link . '</li>';
+if (preg_match("/(.*)index\.php(.*)/", $_SERVER['PHP_SELF'])) {
+	$menu .= '<li class="active">' . $home_link . '</li>';
+} else {
+    $menu .= '<li class="">' . $home_link . '</li>';
+}
+if (preg_match("/(.*)calendar\.php(.*)/", $_SERVER['PHP_SELF'])) {
+    $menu .= '<li class="active">' . $calendar_link . '</li>';
+} else {
+    $menu .= '<li class="">' . $calendar_link . '</li>';
+}
 
 // setup permission based links
 if($_SESSION['priv_announcements'] == 1)
-	$menu .= '<li>' . $announce_link . '</li>';
-	
+{
+	if (preg_match("/(.*)announcements\.php(.*)/", $_SERVER['PHP_SELF'])) {
+	    $menu .= '<li class="active">' . $announce_link . '</li>';
+	} else {
+	    $menu .= '<li class="">' . $announce_link . '</li>';
+	}
+}
+
 if($_SESSION['priv_configuration'] == 1)
-	$menu .= '<li>' . $phpraid_configure_link . '</li>';
+{
+	if (preg_match("/(.*)configuration\.php(.*)/", $_SERVER['PHP_SELF'])) {
+	    $menu .= '<li class="active">' . $phpraid_configure_link . '</li>';
+	} else {
+	    $menu .= '<li class="">' . $phpraid_configure_link . '</li>';
+	}
+}
 
 if($_SESSION['priv_guilds'] == 1)
-	$menu .= '<li>' . $guild_link . '</li>';
-	
+{
+	if (preg_match("/(.*)guilds\.php(.*)/", $_SERVER['PHP_SELF'])) {
+	    $menu .= '<li class="active">' . $guild_link . '</li>';
+	} else {
+	    $menu .= '<li class="">' . $guild_link . '</li>';
+	}
+}
+
 if($_SESSION['priv_locations'] == 1)
-	$menu .= '<li>' . $locations_link . '</li>';
-	
+{
+	if (preg_match("/(.*)locations\.php(.*)/", $_SERVER['PHP_SELF'])) {
+	    $menu .= '<li class="active">' . $locations_link . '</li>';
+	} else {
+	    $menu .= '<li class="">' . $locations_link . '</li>';
+	}
+}
+
 if($_SESSION['priv_logs'] == 1)
-	$menu .= '<li>' . $logs_link . '</li>';
-	
+{
+	if (preg_match("/(.*)logs\.php(.*)/", $_SERVER['PHP_SELF'])) {
+	    $menu .= '<li class="active">' . $logs_link . '</li>';
+	} else {
+	    $menu .= '<li class="">' . $logs_link . '</li>';
+	}
+}
+
 if($_SESSION['priv_permissions'] == 1)
-	$menu .= '<li>' . $permissions_link . '</li>';
-	
+{
+	if (preg_match("/(.*)permissions\.php(.*)/", $_SERVER['PHP_SELF'])) {
+	    $menu .= '<li class="active">' . $permissions_link . '</li>';
+	} else {
+	    $menu .= '<li class="">' . $permissions_link . '</li>';
+	}
+}
+
 if($_SESSION['priv_profile'] == 1)
-	$menu .= '<li>' . $profile_link . '</li>';
+{
+	if (preg_match("/(.*)profile\.php(.*)/", $_SERVER['PHP_SELF'])) {
+	    $menu .= '<li class="active">' . $profile_link . '</li>';
+	} else {
+	    $menu .= '<li class="">' . $profile_link . '</li>';
+	}
+}
 
 if ( $_SESSION['priv_raids'] OR ($phpraid_config['enable_five_man'] AND $priv_profile) )
-{ 	
-	$menu .= '<li>' . $raids_link . '</li>';
-	$menu .= '<li>' . $lua_output_link . '</li>';
+{
+	if (preg_match("/(.*)raids\.php(.*)/", $_SERVER['PHP_SELF'])) {
+	    $menu .= '<li class="active">' . $raids_link . '</li>';
+	} else {
+	    $menu .= '<li class="">' . $raids_link . '</li>';
+	}
+	if (preg_match("/(.*)lua_output\.php(.*)/", $_SERVER['PHP_SELF'])) {
+	    $menu .= '<li class="active">' . $lua_output_link . '</li>';
+	} else {
+	    $menu .= '<li class="">' . $lua_output_link . '</li>';
+	}
 }
-	
+
 if($priv_users == 1)
-	$menu .= '<li>' . $users_link . '</li>';
+{
+	if (preg_match("/(.*)users\.php(.*)/", $_SERVER['PHP_SELF'])) {
+	    $menu .= '<li class="active">' . $users_link . '</li>';
+	} else {
+	    $menu .= '<li class="">' . $users_link . '</li>';
+	}
+}
 
 if($logged_in == 0) {
 	$menu .= '<li>' . $register_link . '</li>';
 	$page->set_var('register_link',$register_link);
 }
 
-$menu .= '<li>' . $roster_link . '</li></ul></div>';
+if (preg_match("/(.*)roster\.php(.*)/", $_SERVER['PHP_SELF'])) {
+    $menu .= '<li class="active">' . $roster_link . '</li>';
+} else {
+    $menu .= '<li class="">' . $roster_link . '</li></ul></div>';
+}
+
 $page->set_var('menu',$menu);
 
 // finally, output the header information
 $page->parse('header','headerFile');
 
 // display any errors if they exist
-if(isset($errorMsg)) 
+if(isset($errorMsg))
 {
 	if(isset($errorSpace) && $errorSpace == 1) {
 		$errorMsg .= '</div><br>';
 	} else {
 		$errorMsg .= '</div>';
 	}
-		
+
 	$page->set_file('errorFile',$phpraid_config['template'] . '/error.htm');
 	$page->set_var(array(
 		'error_msg' => $errorMsg,
 		'error_title' => $errorTitle)
 	);
-	
+
 	$page->parse('header','errorFile',true);
-	
+
 	// is the error fatal?
 	if($errorDie)
 	{

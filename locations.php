@@ -30,7 +30,7 @@
 *
 ****************************************************************************/
 // commons
-define("IN_PHPRAID", true);	
+define("IN_PHPRAID", true);
 require_once('./common.php');
 
 // page authentication
@@ -41,20 +41,20 @@ require_once("includes/authentication.php");
 if($_GET['mode'] == 'view')
 {
 	$loc = array();
-	
+
 	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "locations";
 	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-	while($data = $db_raid->sql_fetchrow($result))
+	while($data = $db_raid->sql_fetchrow($result, true))
 	{
-		$edit = '<a href="locations.php?mode=update&id='.$data['location_id'].'"><img src="templates/' . $phpraid_config['template'] . 
+		$edit = '<a href="locations.php?mode=update&id='.$data['location_id'].'"><img src="templates/' . $phpraid_config['template'] .
 				'/images/icons/icon_edit.gif" border="0" onMouseover="ddrivetip(\'' . $phprlang['edit'] . '\')"; onMouseout="hideddrivetip()"></a>';
-			
 
-		$delete = '<a href="locations.php?mode=delete&n='.$data['name'].'&id='.$data['location_id'].'"><img src="templates/' . 
-					$phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\'' . $phprlang['delete'] . '\')"; 
+
+		$delete = '<a href="locations.php?mode=delete&n='.$data['name'].'&id='.$data['location_id'].'"><img src="templates/' .
+					$phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\'' . $phprlang['delete'] . '\')";
 					onMouseout="hideddrivetip()"></a>';
-		
-		array_push($loc, 
+
+		array_push($loc,
 			array(
 				'id'=>$data['location_id'],
 				'name'=>$data['name'],
@@ -76,14 +76,14 @@ if($_GET['mode'] == 'view')
 			)
 		);
 	}
-	
+
 	// setup output for data
 	setup_output();
 	$report->showRecordCount(true);
 	$report->allowPaging(true, $_SERVER['PHP_SELF'] . '?mode=view&Base=');
 	$report->setListRange($_GET['Base'], 25);
 	$report->allowLink(ALLOW_HOVER_INDEX,'',array());
-	
+
 	//Default sorting
 	if(!$_GET['Sort'])
 	{
@@ -93,7 +93,7 @@ if($_GET['mode'] == 'view')
 	{
 		$report->allowSort(true, $_GET['Sort'], $_GET['SortDescending'], 'locations.php?mode=view');
 	}
-	
+
 	if($phpraid_config['show_id'] == 1)
 		$report->addOutputColumn('id',$phprlang['id'],'','center');
 	$report->addOutputColumn('name',$phprlang['name'],'','center');
@@ -113,14 +113,14 @@ if($_GET['mode'] == 'view')
 	$report->addOutputColumn('locked',$phprlang['locked_header'],'','center');
 	$report->addOutputColumn('','','','right');
 	$loc = $report->getListFromArray($loc);
-	
+
 	$page->set_file(array(
 		'output' => $phpraid_config['template'] . '/locations.htm')
 	);
-	
+
 	$page->set_var('locs',$loc);
 	$page->set_var('header',$phprlang['locations_header']);
-	
+
 	$page->parse('output','output');
 }
 elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
@@ -128,11 +128,11 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 	// form submitted, check for errors
 	// assume no errors
 	$form_error = 0;
-		
+
 	// slashes
 	$name =scrub_input($_POST['name']);
 	$loc = scrub_input($_POST['location']);
-		
+
 	$min_lvl = scrub_input($_POST['min_lvl']);
 	$max_lvl = scrub_input($_POST['max_lvl']);
 	$dr = scrub_input($_POST['dr']);
@@ -149,7 +149,7 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
  	else
  		$locked = 0;
 	$max = scrub_input($_POST['max']);
-	
+
 	if($_GET['mode'] == 'new')
 	{
 		$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "locations (`location`,`min_lvl`,`max_lvl`,
@@ -158,7 +158,7 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 		quote_smart($ma),quote_smart($pa),quote_smart($pr),quote_smart($ro),quote_smart($sh),quote_smart($wk),quote_smart($wa),quote_smart($max),quote_smart($locked));
 		
 		$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
-		
+
 		log_create('location',mysql_insert_id(),$name);
 	}
 	elseif($_GET['mode'] == 'edit');
@@ -167,29 +167,29 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 			$id = scrub_input($_GET['id']);
 		else
 			$id = '';
-		
+
 		$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "locations SET name=%s,max=%s,dr=%s,hu=%s,ma=%s,pa=%s,pr=%s,ro=%s,sh=%s,wk=%s,
 		wa=%s,min_lvl=%s,max_lvl=%s,location=%s,locked=%s WHERE location_id=%s",quote_smart($name),quote_smart($max),quote_smart($dr),
 		quote_smart($hu),quote_smart($ma),quote_smart($pa),quote_smart($pr),quote_smart($ro),quote_smart($sh),quote_smart($wk),quote_smart($wa),quote_smart($min_lvl),
 		quote_smart($max_lvl),quote_smart($loc),quote_smart($locked),quote_smart($id));
-		
+
 		$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 	}
-	
+
 	header("Location: locations.php?mode=view");
 }
 elseif($_GET['mode'] == 'delete')
 {
 	$id = scrub_input($_GET['id']);
 	$n = scrub_input($_GET['n']);
-	
+
 	if($_SESSION['priv_locations'] == 1) {
-		if(!isset($_POST['submit'])) {			
+		if(!isset($_POST['submit'])) {
 			$form_action = 'locations.php?mode=delete&n='.$n.'&id=' . $id;
 			$confirm_button = '<input type="submit" value="Confirm" name="submit" class="post">';
-			
+
 			$page->set_file('output',$phpraid_config['template'] . '/delete.htm');
-			
+
 			$page->set_var(
 				array(
 					'form_action'=>$form_action,
@@ -201,10 +201,10 @@ elseif($_GET['mode'] == 'delete')
 			$page->parse('output','output');
 		} else {
 			log_delete('location',$n);
-			
+
 			$sql = sprintf("DELETE FROM " . $phpraid_config['db_prefix'] . "locations WHERE location_id=%s",quote_smart($id));
 			$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-			
+
 			header("Location: locations.php?mode=view");
 		}
 	} else {
@@ -241,10 +241,10 @@ if($_GET['mode'] != 'delete')
 	elseif($_GET['mode'] == 'update')
 	{
 		$id = scrub_input($_GET['id']);
-		
+
 		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "locations WHERE location_id=%s",quote_smart($id));
 		$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-		$data = $db_raid->sql_fetchrow($result);
+		$data = $db_raid->sql_fetchrow($result, true);
 		
 		// it's an edit... joy
 		$form_action = "locations.php?mode=edit&id=$id";
@@ -266,9 +266,9 @@ if($_GET['mode'] != 'delete')
 		else
 			$locked = '<input type="checkbox" name="lock_template" value="' . $data['locked'] . '"  class="post" checked>';
 		$max = '<input name="max" type="text" value="' . $data['max'] . '"  class="post" style="width:20px" maxlength="2">';
-		$buttons = '<input type="submit" value="Update" name="submit" class="mainoption"> <input type="reset" value="Reset" name="reset" class="liteoption">';			
+		$buttons = '<input type="submit" value="Update" name="submit" class="mainoption"> <input type="reset" value="Reset" name="reset" class="liteoption">';
 	}
-	
+
 	$page->set_file('new_loc',$phpraid_config['template'] . '/locations_new.htm');
 	$page->set_var(
 		array(
@@ -308,7 +308,7 @@ if($_GET['mode'] != 'delete')
 			'limits_header'=>$phprlang['locations_limits_header'],
 		)
 	);
-		
+
 	$page->parse('output','new_loc',true);
 }
 

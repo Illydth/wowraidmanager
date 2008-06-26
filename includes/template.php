@@ -62,7 +62,7 @@
  *
  */
 
-class Template
+class wrmTemplate
 {
  /**
   * Serialization helper, the name of this class.

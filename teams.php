@@ -60,6 +60,9 @@ isset($_GET['raid_id']) ? $raid_id = scrub_input($_GET['raid_id']) : $raid_id = 
 if($raid_id == '' || !is_numeric($raid_id))
 	log_hack();
 
+// Set the Guild Server for the Page.
+$server = $phpraid_config['guild_server'];
+
 //View Mode, display the page with Current Data.
 if($mode == 'view')
 {
@@ -78,7 +81,7 @@ if($mode == 'view')
 
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "teams WHERE (raid_id=%s and char_id='-1') or char_id='-2'",quote_smart($raid_id));
 	$teams_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-	while($team = $db_raid->sql_fetchrow($teams_result))
+	while($team = $db_raid->sql_fetchrow($teams_result, true))
 	{
 		if ($team['char_id']=="-2")
 			$team_cur_teams .= "<b>" . $team['team_name'] . "</b>  ";
@@ -110,7 +113,8 @@ if($mode == 'view')
 			"where " . $phpraid_config['db_prefix'] . "teams.char_id = " . $phpraid_config['db_prefix'] . "chars.char_id " .
 			"and " . $phpraid_config['db_prefix'] . "teams.raid_id = %s", quote_smart($raid_id));
 	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-	while($team = $db_raid->sql_fetchrow($result))
+		
+	while($team = $db_raid->sql_fetchrow($result, true))
 	{
 		// set delete permissions
 		if($_SESSION['priv_raids'] == 1) {
@@ -124,7 +128,7 @@ if($mode == 'view')
 		array_push($team_remove,
 			array(
 				'id'=>$team['char_id'],
-				'name'=>$team['name'],
+				'name'=>get_armorychar($team['name'], $phpraid_config['armory_language'], $server),
 				'class'=>$team['class'],
 				'guild'=>$team['guild'],
 				'level'=>$team['lvl'],
@@ -176,7 +180,7 @@ if($mode == 'view')
 	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 
 	$X=0;
-	while($data = $db_raid->sql_fetchrow($result))
+	while($data = $db_raid->sql_fetchrow($result, true))
 	{
 		$signups[$X]['char_id'] = $data['char_id'];
 		$X++;
@@ -188,7 +192,7 @@ if($mode == 'view')
 	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 
 	$X=0;
-	while($data = $db_raid->sql_fetchrow($result))
+	while($data = $db_raid->sql_fetchrow($result, true))
 	{
 		$teamed_users[$X]['char_id']=$data['char_id'];
 		$X++;
@@ -224,14 +228,14 @@ if($mode == 'view')
 		// get character data from the characters table.
 		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id=%s",quote_smart($char_id));
 		$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-		$data = $db_raid->sql_fetchrow($result);
+		$data = $db_raid->sql_fetchrow($result, true);
 
 		$action='<input type="checkbox" name="addtolist' . $data['char_id'] . '" value="' . $data['char_id'] . '">';
 
 		array_push($team_add,
 			array(
 				'id'=>$data['char_id'],
-				'name'=>$data['name'],
+				'name'=>get_armorychar($data['name'], $phpraid_config['armory_language'], $server),
 				'class'=>$data['class'],
 				'guild'=>$data['guild'],
 				'level'=>$data['lvl'],
@@ -248,7 +252,7 @@ if($mode == 'view')
 	// get character data from the teams table.
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "teams WHERE (raid_id=%s and char_id='-1') or char_id='-2'",quote_smart($raid_id));
 	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-	while ($data = $db_raid->sql_fetchrow($result))
+	while ($data = $db_raid->sql_fetchrow($result, true))
 		$team_add_body .= '<option value="' . $data['team_id']. '">' . $data['team_name'] . '</option>';
 	$team_add_body .= '</select></center><br>';
 
@@ -318,7 +322,7 @@ elseif($mode == 'add')
 	//get team_name from team_id: Only one team name can be passed at any given time, so only retrieve team once.
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "teams WHERE team_id=%s",quote_smart($team_id));
 	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-	$data = $db_raid->sql_fetchrow($result);
+	$data = $db_raid->sql_fetchrow($result, true);
 	$team_name = $data['team_name'];
 
 	//For each char id on input, we need to add a record to the teams table noteing that that char is now on a team.

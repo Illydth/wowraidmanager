@@ -50,7 +50,7 @@ $raids_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1)
 
 $count = array();
 
-while($raids = $db_raid->sql_fetchrow($raids_result)) {
+while($raids = $db_raid->sql_fetchrow($raids_result, true)) {
 	$date = new_date($phpraid_config['date_format'],$raids['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
 	$invite = new_date($phpraid_config['time_format'], $raids['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
 	$start = new_date($phpraid_config['time_format'], $raids['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
@@ -226,7 +226,7 @@ if($db_raid->sql_numrows($result) > 0)
 	while($i >= 0) 
 	{
 		$db_raid->sql_rowseek($i, $result);
-		$data = $db_raid->sql_fetchrow($result);
+		$data = $db_raid->sql_fetchrow($result, true);
 		$time = new_date($phpraid_config['time_format'], $data['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']);
 		$date = new_date($phpraid_config['date_format'], $data['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']);
 		

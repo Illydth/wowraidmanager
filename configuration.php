@@ -257,7 +257,7 @@ $result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 
 $default = '<select name="default" class="post"><option value="nil">'.$phprlang['none'].'</option>';
 
-while($data = $db_raid->sql_fetchrow($result))
+while($data = $db_raid->sql_fetchrow($result, true))
 {
 	if($phpraid_config['default_group'] == $data['permission_id'])
 		$default .= '<option value="'.$data['permission_id'].'" selected>'.$data['name'].'</option>';
@@ -266,6 +266,26 @@ while($data = $db_raid->sql_fetchrow($result))
 }
 
 $default .= '</select>';
+
+// Selection box for Appropriate Armory.
+$armory_box = '<select name="armory_link" class="post">';
+if ($phpraid_config['armory_link'] == 'http://www.wowarmory.com')
+	$armory_box .=   '<option value="http://www.wowarmory.com" selected>http://www.wowarmory.com</option>';
+else
+	$armory_box .=   '<option value="http://www.wowarmory.com">http://www.wowarmory.com</option>';
+if ($phpraid_config['armory_link'] == 'http://eu.wowarmory.com')
+	$armory_box .=   '<option value="http://eu.wowarmory.com" selected>http://eu.wowarmory.com</option>';
+else
+	$armory_box .=   '<option value="http://eu.wowarmory.com">http://eu.wowarmory.com</option>';
+if ($phpraid_config['armory_link'] == 'http://kr.wowarmory.com')
+	$armory_box .=   '<option value="http://kr.wowarmory.com" selected>http://kr.wowarmory.com</option>';
+else
+	$armory_box .=   '<option value="http://kr.wowarmory.com">http://kr.wowarmory.com</option>';
+if ($phpraid_config['armory_link'] == 'http://tw.wowarmory.com')
+	$armory_box .=   '<option value="http://tw.wowarmory.com" selected>http://tw.wowarmory.com</option>';
+else
+	$armory_box .=   '<option value="http://tw.wowarmory.com">http://tw.wowarmory.com</option>';
+$armory_box .= '</select>';
 
 // Setup the Signup Flow Configuration Area - Setup Checkboxes
 // 		User Permissions
@@ -463,6 +483,7 @@ $guild_description = '<input name="guild_description" type="text" id="guild_desc
 $guild_server = '<input name="guild_server" type="text" id="guild_server" value="' . $phpraid_config['guild_server'] . '" maxlength="255" class="post">';
 $register = '<input name="register" type="text" value="'.$phpraid_config['register_url'].'" size="60" class="post">';
 $buttons = '<input type="submit" name="submit" value="Submit" class="mainoption"> <input type="reset" name="Reset" value="Reset" class="liteoption">';
+$armory_language = '<input name="armory_language" type="text" value="'.$phpraid_config['armory_language'].'" size="4" class="post">';
 
 // put the variables into the template
 $page->set_var(
@@ -471,6 +492,8 @@ $page->set_var(
 		'guild_description' => $guild_description,
 		'show_id' => $show_id,
 		'guild_server' => $guild_server,
+		'armory_link' => $armory_box,
+		'armory_language' => $armory_language,
 		'admin_email' => $admin_email,
 		'email_signature' => $email_signature,
 		'disable_site' => $disable_site,
@@ -491,6 +514,8 @@ $page->set_var(
 		'dst'=>$dst,
 		'roster' => $roster,
 		'register' => $register,
+		'armory_link_text' => $phprlang['configuration_armory_link_text'],
+		'armory_language_text' => $phprlang['configuration_armory_language_text'],
 		'enable_five_man_text' => $phprlang['configuration_enable_five_man'],
 		'dst_text' => $phprlang['configuration_dst_text'],
 		'timezone_text' => $phprlang['configuration_timezone_text'],
@@ -630,6 +655,8 @@ else
 	$rss_site_url_p = scrub_input($_POST['rss_site_url'], true);
 	$rss_export_url_p = scrub_input($_POST['rss_export_url'], true);
 	$rss_feed_amt_p = scrub_input($_POST['rss_feed_amt']);
+	$armory_link = scrub_input($_POST['armory_link']);
+	$armory_language = scrub_input($_POST['armory_language']);
 		
 	if(isset($_POST['multiple_signups']))
 		$allow_multiple = 1;
@@ -828,6 +855,10 @@ else
 	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'auto_queue';", quote_smart($a_queue));
 	$db_raid->sql_query($sql) or print_error($sql,mysql_error($sql),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'armory_link';", quote_smart($armory_link));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error($sql),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'armory_language';", quote_smart($armory_language));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error($sql),1);
 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'date_format';", quote_smart($d_format));
 	$db_raid->sql_query($sql) or print_error($sql,mysql_error($sql),1);
 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'debug';", quote_smart($p_debug));
@@ -951,7 +982,20 @@ else
 	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'admin_drafted_delete';", quote_smart($add));
 	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
-																
+
+	// Now, write out the config files for the armory stuff in both the wowchar-link and wowitem-link directories.
+	$output = "<?php\n// AUTOMATICALLY GENERATED BY WRM CONFIGURATION SECTION, DO NOT CHANGE.\n//     Use the WRM Configuration Section to change this value.\n\n// Set armory http://www.wowarmory.com, http://eu.wowarmory.com,\n// http://kr.wowarmory.com, or http://tw.wowarmory.com\n\ndefine('ARMORY', '".$armory_link."');\n?>";
+	
+	// Write to the character config.php
+	$fd = fopen('wowchar-tooltip/config.php','w+');
+	fwrite($fd, $output);
+	fclose($fd);
+
+	// Write to the item config.php
+	$fd = fopen('wowitem-tooltip/config.php','w+');
+	fwrite($fd, $output);
+	fclose($fd);
+	
 	header("Location: configuration.php");
 }
 

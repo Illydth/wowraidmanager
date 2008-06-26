@@ -57,6 +57,9 @@ if($raid_id == '' || !is_numeric($raid_id))
 
 $profile_id = scrub_input($_SESSION['profile_id']);
 
+// Set the Guild Server for the Page.
+$server = $phpraid_config['guild_server'];
+
 isset($_GET['Sort']) ? $sort_mode = scrub_input($_GET['Sort']) : $sort_mode = 'name';
 isset($_GET['SortDescending']) ? $sort_descending = scrub_input($_GET['SortDescending']) : $sort_descending = 0;
 
@@ -67,10 +70,10 @@ require_once('./signup_flow.php');
 //	 a default permission that will be checked within the signup flow.
 $sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id=%s", quote_smart($raid_id));
 $result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-$data = $db_raid->sql_fetchrow($result);
+$data = $db_raid->sql_fetchrow($result, true);
 
 $priv_raids = scrub_input($_SESSION['priv_raids']);
-$username = scrub_input($username);
+$username = scrub_input($_SESSION['username']);
 
 if ($priv_raids == 1)
 	$user_perm_group['admin'] = 1;
@@ -84,9 +87,11 @@ else
 
 if($mode == 'view')
 {
+  //
+  // Obtain data for the raid
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id=%s", quote_smart($raid_id));
 	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-	$data = $db_raid->sql_fetchrow($result);
+	$data = $db_raid->sql_fetchrow($result, true);
 
 	$raid_location = UBB2($data['location']);
 	$raid_officer = $data['officer'];
@@ -166,7 +171,7 @@ if($mode == 'view')
 	// parse the signup array and seperate to classes
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id=%s AND queue='0' AND cancel='0'", quote_smart($raid_id));
 	$signups_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-	while($signups = $db_raid->sql_fetchrow($signups_result))
+	while($signups = $db_raid->sql_fetchrow($signups_result, true))
 	{
 		$race = '';
 		$name = '';
@@ -176,11 +181,11 @@ if($mode == 'view')
 		// get all the character information from the database
 		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id=%s",quote_smart($signups['char_id']));
 		$data_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-		$data = $db_raid->sql_fetchrow($data_result);
+		$data = $db_raid->sql_fetchrow($data_result, true);
 
 		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "teams WHERE char_id=%s and raid_id=%s",quote_smart($signups['char_id']),quote_smart($raid_id));
 		$teams_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-		$teamrow = $db_raid->sql_fetchrow($teams_result);
+		$teamrow = $db_raid->sql_fetchrow($teams_result, true);
 
 		if ($db_raid->sql_numrows($teams_result) > 0)
 		{
@@ -195,7 +200,7 @@ if($mode == 'view')
 		//				"and " .$phpraid_config['db_prefix'] . "chars.char_id=" .$phpraid_config['db_prefix'] . "teams.char_id " .
 		//				"and " .$phpraid_config['db_prefix'] . "teams.raid_id=%s",quote_smart($signups['char_id']),quote_smart($raid_id));
 		//$data_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-		//$data = $db_raid->sql_fetchrow($data_result);
+		//$data = $db_raid->sql_fetchrow($data_result, true);
 
 		//$team_name=$data['team_name'];
 
@@ -221,61 +226,61 @@ if($mode == 'view')
 		switch($data['race'])
 		{
 			case $phprlang['draenei']:
-				if(strtolower($data['gender']) == 'male')
+				if(strtolower($data['gender']) == strtolower($phprlang['male']))
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/dr_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['draenei'].'\')"; onMouseout="hideddrivetip()">';
 				else
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/dr_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['draenei'].'\')"; onMouseout="hideddrivetip()">';
 				break;
 			case $phprlang['dwarf']:
-				if(strtolower($data['gender']) == 'male')
+				if(strtolower($data['gender']) == strtolower($phprlang['male']))
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/dw_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['dwarf'].'\')"; onMouseout="hideddrivetip()">';
 				else
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/dw_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['dwarf'].'\')"; onMouseout="hideddrivetip()">';
 				break;
 			case $phprlang['gnome']:
-				if(strtolower($data['gender']) == 'male')
+				if(strtolower($data['gender']) == strtolower($phprlang['male']))
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/gn_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['gnome'].'\')"; onMouseout="hideddrivetip()">';
 				else
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/gn_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['gnome'].'\')"; onMouseout="hideddrivetip()">';
 				break;
 			case $phprlang['human']:
-				if(strtolower($data['gender']) == 'male')
+				if(strtolower($data['gender']) == strtolower($phprlang['male']))
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/hu_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['human'].'\')"; onMouseout="hideddrivetip()">';
 				else
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/hu_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['human'].'\')"; onMouseout="hideddrivetip()">';
 				break;
 			case $phprlang['night_elf']:
-				if(strtolower($data['gender']) == 'male')
+				if(strtolower($data['gender']) == strtolower($phprlang['male']))
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/ne_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['night_elf'].'\')"; onMouseout="hideddrivetip()">';
 				else
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/ne_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['night_elf'].'\')"; onMouseout="hideddrivetip()">';
 				break;
 			case $phprlang['blood_elf']:
-				if(strtolower($data['gender']) == 'male')
+				if(strtolower($data['gender']) == strtolower($phprlang['male']))
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/be_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['blood_elf'].'\')"; onMouseout="hideddrivetip()">';
 				else
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/be_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['blood_elf'].'\')"; onMouseout="hideddrivetip()">';
 				break;
 			case $phprlang['orc']:
-				if(strtolower($data['gender']) == 'male')
+				if(strtolower($data['gender']) == strtolower($phprlang['male']))
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/or_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['orc'].'\')"; onMouseout="hideddrivetip()">';
 				else
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/or_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['orc'].'\')"; onMouseout="hideddrivetip()">';
 				break;
 			case $phprlang['tauren']:
-				if(strtolower($data['gender']) == 'male')
+				if(strtolower($data['gender']) == strtolower($phprlang['male']))
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/ta_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['tauren'].'\')"; onMouseout="hideddrivetip()">';
 				else
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/ta_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['tauren'].'\')"; onMouseout="hideddrivetip()">';
 				break;
 			case $phprlang['troll']:
-				if(strtolower($data['gender']) == 'male')
+				if(strtolower($data['gender']) == strtolower($phprlang['male']))
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/tr_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['troll'].'\')"; onMouseout="hideddrivetip()">';
 				else
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/tr_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['troll'].'\')"; onMouseout="hideddrivetip()">';
 				break;
 			case $phprlang['undead']:
-				if(strtolower($data['gender']) == 'male')
+				if(strtolower($data['gender']) == strtolower($phprlang['male']))
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/un_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['undead'].'\')"; onMouseout="hideddrivetip()">';
 				else
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/un_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['undead'].'\')"; onMouseout="hideddrivetip()">';
@@ -298,71 +303,80 @@ if($mode == 'view')
 		$frost = $data['frost'];
 		$shadow = $data['shadow'];
 
+		$name = get_armorychar($data['name'], $phpraid_config['armory_language'], $server);
+		$guildname = '?';
+
+		if($priv_raids == 1 || $user_perm_group['RL'] == 1)
+		{
+			$name .= check_dupe($data['profile_id'], $raid_id);
+			$guildname = get_guild_name($data['name'], $server);
+		}
+
 		// now that we have the row, figure out what class and push into corresponding array
 		switch($data['class'])
 		{
 			case $phprlang['druid']:
 				$druid_count++;
 				array_push($druid,
-					array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,
-						  'race'=>$race,'name'=>$data['name'],'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
-						  'date'=>$date,'time'=>$time,'team_name'=>$team_name));
+					array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,'role'=>$role,
+						  'race'=>$race,'name'=>$name,'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
+						  'date'=>$date,'time'=>$time,'team_name'=>$team_name,'guild'=>$guildname));
 				break;
 			case $phprlang['hunter']:
 				$hunter_count++;
 				array_push($hunter,
-					array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,
-						  'race'=>$race,'name'=>$data['name'],'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
-						  'date'=>$date,'time'=>$time,'team_name'=>$team_name));
+					array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,'role'=>$role,
+						  'race'=>$race,'name'=>$name,'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
+						  'date'=>$date,'time'=>$time,'team_name'=>$team_name,'guild'=>$guildname));
 				break;
 			case $phprlang['mage']:
 				$mage_count++;
 				array_push($mage,
-					array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,
-						  'race'=>$race,'name'=>$data['name'],'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
-						  'date'=>$date,'time'=>$time,'team_name'=>$team_name));
+					array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,'role'=>$role,
+						  'race'=>$race,'name'=>$name,'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
+						  'date'=>$date,'time'=>$time,'team_name'=>$team_name,'guild'=>$guildname));
 				break;
 			case $phprlang['paladin']:
 				$paladin_count++;
 				array_push($paladin,
-					array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,
-						  'race'=>$race,'name'=>$data['name'],'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
-						  'date'=>$date,'time'=>$time,'team_name'=>$team_name));
+					array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,'role'=>$role,
+						  'race'=>$race,'name'=>$name,'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
+						  'date'=>$date,'time'=>$time,'team_name'=>$team_name,'guild'=>$guildname));
 				break;
 			case $phprlang['priest']:
 				$priest_count++;
 				array_push($priest,
-					array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,
-						  'race'=>$race,'name'=>$data['name'],'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
-						  'date'=>$date,'time'=>$time,'team_name'=>$team_name));
+					array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,'role'=>$role,
+						  'race'=>$race,'name'=>$name,'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
+						  'date'=>$date,'time'=>$time,'team_name'=>$team_name,'guild'=>$guildname));
 				break;
 			case $phprlang['rogue']:
 				$rogue_count++;
 				array_push($rogue,
-					array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,
-						  'race'=>$race,'name'=>$data['name'],'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
-						  'date'=>$date,'time'=>$time,'team_name'=>$team_name));
+					array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,'role'=>$role,
+						  'race'=>$race,'name'=>$name,'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
+						  'date'=>$date,'time'=>$time,'team_name'=>$team_name,'guild'=>$guildname));
 				break;
 			case $phprlang['shaman']:
 				$shaman_count++;
 				array_push($shaman,
-					array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,
-						  'race'=>$race,'name'=>$data['name'],'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
-						  'date'=>$date,'time'=>$time,'team_name'=>$team_name));
+					array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,'role'=>$role,
+						  'race'=>$race,'name'=>$name,'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
+						  'date'=>$date,'time'=>$time,'team_name'=>$team_name,'guild'=>$guildname));
 				break;
 			case $phprlang['warlock']:
 				$warlock_count++;
 				array_push($warlock,
-					array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,
-						  'race'=>$race,'name'=>$data['name'],'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
-						  'date'=>$date,'time'=>$time,'team_name'=>$team_name));
+					array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,'role'=>$role,
+						  'race'=>$race,'name'=>$name,'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
+						  'date'=>$date,'time'=>$time,'team_name'=>$team_name,'guild'=>$guildname));
 				break;
 			case $phprlang['warrior']:
 				$warrior_count++;
 				array_push($warrior,
-					array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,
-						  'race'=>$race,'name'=>$data['name'],'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
-						  'date'=>$date,'time'=>$time,'team_name'=>$team_name));
+					array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,'role'=>$role,
+						  'race'=>$race,'name'=>$name,'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
+						  'date'=>$date,'time'=>$time,'team_name'=>$team_name,'guild'=>$guildname));
 				break;
 		}
 	}
@@ -370,13 +384,13 @@ if($mode == 'view')
 	// parse the queue array and seperate to classes
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id=%s AND queue='1' AND cancel='0'",quote_smart($raid_id));
 	$signups_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-	while($signups = $db_raid->sql_fetchrow($signups_result))
+	while($signups = $db_raid->sql_fetchrow($signups_result, true))
 	{
 		// okay, push the value into the array after we
 		// get all the character information from the database
 		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id=%s",quote_smart($signups['char_id']));
 		$data_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-		$data = $db_raid->sql_fetchrow($data_result);
+		$data = $db_raid->sql_fetchrow($data_result, true);
 
 		$comments = DEUBB2(scrub_input($signups['comments']));
 
@@ -396,61 +410,61 @@ if($mode == 'view')
 		switch($data['race'])
 		{
 			case $phprlang['draenei']:
-				if(strtolower($data['gender']) == 'male')
+				if(strtolower($data['gender']) == strtolower($phprlang['male']))
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/dr_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['draenei'].'\')"; onMouseout="hideddrivetip()">';
 				else
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/dr_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['draenei'].'\')"; onMouseout="hideddrivetip()">';
 				break;
 			case $phprlang['dwarf']:
-				if(strtolower($data['gender']) == 'male')
+				if(strtolower($data['gender']) == strtolower($phprlang['male']))
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/dw_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['dwarf'].'\')"; onMouseout="hideddrivetip()">';
 				else
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/dw_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['dwarf'].'\')"; onMouseout="hideddrivetip()">';
 				break;
 			case $phprlang['gnome']:
-				if(strtolower($data['gender']) == 'male')
+				if(strtolower($data['gender']) == strtolower($phprlang['male']))
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/gn_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['gnome'].'\')"; onMouseout="hideddrivetip()">';
 				else
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/gn_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['gnome'].'\')"; onMouseout="hideddrivetip()">';
 				break;
 			case $phprlang['human']:
-				if(strtolower($data['gender']) == 'male')
+				if(strtolower($data['gender']) == strtolower($phprlang['male']))
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/hu_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['human'].'\')"; onMouseout="hideddrivetip()">';
 				else
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/hu_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['human'].'\')"; onMouseout="hideddrivetip()">';
 				break;
 			case $phprlang['night_elf']:
-				if(strtolower($data['gender']) == 'male')
+				if(strtolower($data['gender']) == strtolower($phprlang['male']))
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/ne_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['night_elf'].'\')"; onMouseout="hideddrivetip()">';
 				else
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/ne_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['night_elf'].'\')"; onMouseout="hideddrivetip()">';
 				break;
 			case $phprlang['blood_elf']:
-				if(strtolower($data['gender']) == 'male')
+				if(strtolower($data['gender']) == strtolower($phprlang['male']))
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/be_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['blood_elf'].'\')"; onMouseout="hideddrivetip()">';
 				else
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/be_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['blood_elf'].'\')"; onMouseout="hideddrivetip()">';
 				break;
 			case $phprlang['orc']:
-				if(strtolower($data['gender']) == 'male')
+				if(strtolower($data['gender']) == strtolower($phprlang['male']))
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/or_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['orc'].'\')"; onMouseout="hideddrivetip()">';
 				else
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/or_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['orc'].'\')"; onMouseout="hideddrivetip()">';
 				break;
 			case $phprlang['tauren']:
-				if(strtolower($data['gender']) == 'male')
+				if(strtolower($data['gender']) == strtolower($phprlang['male']))
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/ta_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['tauren'].'\')"; onMouseout="hideddrivetip()">';
 				else
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/ta_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['tauren'].'\')"; onMouseout="hideddrivetip()">';
 				break;
 			case $phprlang['troll']:
-				if(strtolower($data['gender']) == 'male')
+				if(strtolower($data['gender']) == strtolower($phprlang['male']))
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/tr_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['troll'].'\')"; onMouseout="hideddrivetip()">';
 				else
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/tr_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['troll'].'\')"; onMouseout="hideddrivetip()">';
 				break;
 			case $phprlang['undead']:
-				if(strtolower($data['gender']) == 'male')
+				if(strtolower($data['gender']) == strtolower($phprlang['male']))
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/un_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['undead'].'\')"; onMouseout="hideddrivetip()">';
 				else
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/un_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['undead'].'\')"; onMouseout="hideddrivetip()">';
@@ -504,19 +518,28 @@ if($mode == 'view')
 		// allow queue swapping
 		$actions = '';
 		$actions=queuedFlow($user_perm_group, $phpraid_config, $data, $raid_id, $phprlang, $sort_mode, $sort_descending, $signups);
-		array_push($raid_queue, array('id'=>$data['char_id'],'race'=>$race,'class'=>$class,'name'=>$name,'lvl'=>$data['lvl'],'actions'=>$actions,'date'=>$date,'time'=>$time,'comments'=>$comments));
+
+		$name = get_armorychar($name, $phpraid_config['armory_language'], $server);
+
+		if($priv_raids == 1 || $user_perm_group['RL'] == 1)
+		{
+			$name .= check_dupe($data['profile_id'], $raid_id);
+			$guildname = get_guild_name($data['name'], $server);
+		}
+
+		array_push($raid_queue, array('id'=>$data['char_id'],'race'=>$race,'class'=>$class,'name'=>$name,'lvl'=>$data['lvl'],'role'=>$data['role'],'actions'=>$actions,'date'=>$date,'time'=>$time,'comments'=>$comments,'guild'=>$guildname));
 	}
 
 	// parse the cancel array and seperate to classes
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id=%s AND queue='0' AND cancel='1'",quote_smart($raid_id));
 	$signups_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-	while($signups = $db_raid->sql_fetchrow($signups_result))
+	while($signups = $db_raid->sql_fetchrow($signups_result, true))
 	{
 		// okay, push the value into the array after we
 		// get all the character information from the database
 		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id=%s",quote_smart($signups['char_id']));
 		$data_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-		$data = $db_raid->sql_fetchrow($data_result);
+		$data = $db_raid->sql_fetchrow($data_result, true);
 
 		$comments = DEUBB2(scrub_input($signups['comments']));
 
@@ -536,61 +559,61 @@ if($mode == 'view')
 		switch($data['race'])
 		{
 			case $phprlang['draenei']:
-				if(strtolower($data['gender']) == 'male')
+				if(strtolower($data['gender']) == strtolower($phprlang['male']))
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/dr_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['draenei'].'\')"; onMouseout="hideddrivetip()">';
 				else
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/dr_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['draenei'].'\')"; onMouseout="hideddrivetip()">';
 				break;
 			case $phprlang['dwarf']:
-				if(strtolower($data['gender']) == 'male')
+				if(strtolower($data['gender']) == strtolower($phprlang['male']))
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/dw_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['dwarf'].'\')"; onMouseout="hideddrivetip()">';
 				else
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/dw_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['dwarf'].'\')"; onMouseout="hideddrivetip()">';
 				break;
 			case $phprlang['gnome']:
-				if(strtolower($data['gender']) == 'male')
+				if(strtolower($data['gender']) == strtolower($phprlang['male']))
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/gn_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['gnome'].'\')"; onMouseout="hideddrivetip()">';
 				else
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/gn_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['gnome'].'\')"; onMouseout="hideddrivetip()">';
 				break;
 			case $phprlang['human']:
-				if(strtolower($data['gender']) == 'male')
+				if(strtolower($data['gender']) == strtolower($phprlang['male']))
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/hu_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['human'].'\')"; onMouseout="hideddrivetip()">';
 				else
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/hu_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['human'].'\')"; onMouseout="hideddrivetip()">';
 				break;
 			case $phprlang['night_elf']:
-				if(strtolower($data['gender']) == 'male')
+				if(strtolower($data['gender']) == strtolower($phprlang['male']))
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/ne_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['night_elf'].'\')"; onMouseout="hideddrivetip()">';
 				else
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/ne_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['night_elf'].'\')"; onMouseout="hideddrivetip()">';
 				break;
 			case $phprlang['blood_elf']:
-				if(strtolower($data['gender']) == 'male')
+				if(strtolower($data['gender']) == strtolower($phprlang['male']))
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/be_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['blood_elf'].'\')"; onMouseout="hideddrivetip()">';
 				else
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/be_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['blood_elf'].'\')"; onMouseout="hideddrivetip()">';
 				break;
 			case $phprlang['orc']:
-				if(strtolower($data['gender']) == 'male')
+				if(strtolower($data['gender']) == strtolower($phprlang['male']))
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/or_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['orc'].'\')"; onMouseout="hideddrivetip()">';
 				else
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/or_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['orc'].'\')"; onMouseout="hideddrivetip()">';
 				break;
 			case $phprlang['tauren']:
-				if(strtolower($data['gender']) == 'male')
+				if(strtolower($data['gender']) == strtolower($phprlang['male']))
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/ta_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['tauren'].'\')"; onMouseout="hideddrivetip()">';
 				else
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/ta_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['tauren'].'\')"; onMouseout="hideddrivetip()">';
 				break;
 			case $phprlang['troll']:
-				if(strtolower($data['gender']) == 'male')
+				if(strtolower($data['gender']) == strtolower($phprlang['male']))
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/tr_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['troll'].'\')"; onMouseout="hideddrivetip()">';
 				else
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/tr_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['troll'].'\')"; onMouseout="hideddrivetip()">';
 				break;
 			case $phprlang['undead']:
-				if(strtolower($data['gender']) == 'male')
+				if(strtolower($data['gender']) == strtolower($phprlang['male']))
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/un_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['undead'].'\')"; onMouseout="hideddrivetip()">';
 				else
 					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/un_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['undead'].'\')"; onMouseout="hideddrivetip()">';
@@ -644,7 +667,16 @@ if($mode == 'view')
 		// allow queue swapping
 		$actions = '';
 		$actions=canceledFlow($user_perm_group, $phpraid_config, $data, $raid_id, $phprlang, $sort_mode, $sort_descending, $signups);
-		array_push($raid_cancel, array('id'=>$data['char_id'],'race'=>$race,'class'=>$class,'name'=>$name,'lvl'=>$data['lvl'],'actions'=>$actions,'date'=>$date,'time'=>$time,'comments'=>$comments));
+
+		$name = get_armorychar($name, $phpraid_config['armory_language'], $server);
+		
+		if($priv_raids == 1 || $user_perm_group['RL'] == 1)
+		{
+			$name .= check_dupe($data['profile_id'], $raid_id);
+			$guildname = get_guild_name($data['name'], $server);
+		}
+
+		array_push($raid_cancel, array('id'=>$data['char_id'],'race'=>$race,'class'=>$class,'name'=>$name,'lvl'=>$data['lvl'],'role'=>$data['role'],'actions'=>$actions,'date'=>$date,'time'=>$time,'comments'=>$comments,'guild'=>$guildname));
 	}
 
 	// setup formatting for report class (THANKS to www.thecalico.com)
@@ -667,6 +699,10 @@ if($mode == 'view')
 	if($phpraid_config['show_id'] == 1)
 		$report->addOutputColumn('id',$phprlang['id'],'','center');
 	$report->addOutputColumn('name',$phprlang['name'],'','left');
+	if($priv_raids == 1 || $user_perm_group['RL'] == 1)
+	{
+		$report->addOutputColumn('guild',$phprlang['guild'],'','left');
+	}
 	$report->addOutputColumn('comments',$phprlang['comments'],'','left');
 	$report->addOutputColumn('team_name',$phprlang['team_name'],'','left');
 	$report->addOutputColumn('lvl',$phprlang['level'],'','center');
@@ -728,6 +764,10 @@ if($mode == 'view')
 	if($phpraid_config['show_id'] == 1)
 		$report->addOutputColumn('id',$phprlang['id'],'','center');
 	$report->addOutputColumn('name',$phprlang['name'],'','left');
+	if($priv_raids == 1 || $user_perm_group['RL'] == 1)
+	{
+		$report->addOutputColumn('guild',$phprlang['guild'],'','left');
+	}
 	$report->addOutputColumn('comments',$phprlang['comments'],'','left');
 	$report->addOutputColumn('lvl',$phprlang['level'],'','center');
 	$report->addOutputColumn('race',$phprlang['race'],'','center');
@@ -741,7 +781,7 @@ if($mode == 'view')
 	// last but not least, tooltips for class breakdown
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id=%s",quote_smart($raid_id));
 	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-	$data = $db_raid->sql_fetchrow($result);
+	$data = $db_raid->sql_fetchrow($result, true);
 
 	$druid_count = $druid_count . ' of ' . $data['dr_lmt'];
 	$hunter_count = $hunter_count . ' of ' . $data['hu_lmt'];
@@ -929,12 +969,12 @@ elseif($mode == 'signup')
 			$count = array('dr'=>'0','hu'=>'0','ma'=>'0','pa'=>'0','pr'=>'0','ro'=>'0','sh'=>'0','wk'=>'0','wa'=>'0');
 			$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id=%s AND queue='0' AND cancel='0'",quote_smart($raid_id));
 			$result_char = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-			while($char = $db_raid->sql_fetchrow($result_char))
+			while($char = $db_raid->sql_fetchrow($result_char, true))
 			{
-				$char_id = scrub_input($char['char_id']);
-				$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id=%s", quote_smart($char_id));
+				$signup_char_id = scrub_input($char['char_id']);
+				$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id=%s", quote_smart($signup_char_id));
 				$result_count = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-				$tmp = $db_raid->sql_fetchrow($result_count);
+				$tmp = $db_raid->sql_fetchrow($result_count, true);
 
 				switch($tmp['class'])
 				{
@@ -969,11 +1009,11 @@ elseif($mode == 'signup')
 			}
 			$sql = sprintf("SELECT dr_lmt,hu_lmt,ma_lmt,pa_lmt,pr_lmt,ro_lmt,sh_lmt,wk_lmt,wa_lmt FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id=%s", quote_smart($raid_id));
 			$result_raid = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-			$total = $db_raid->sql_fetchrow($result_raid);
+			$total = $db_raid->sql_fetchrow($result_raid, true);
 
 			$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id=%s", quote_smart($char_id));
 			$result_class = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-			$class = $db_raid->sql_fetchrow($result_class);
+			$class = $db_raid->sql_fetchrow($result_class, true);
 
 			$queue = scrub_input($_POST['queue']);
 			switch($class['class'])
@@ -1120,7 +1160,7 @@ elseif($mode == 'signup')
 			$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "signups
 						(`char_id`,`profile_id`,`raid_id`,`comments`,`queue`,`timestamp`,`cancel`)
 					VALUES
-						(%s,%s,%s,%s,%s,%s,%s)", quote_smart($char_id), quote_smart($profile_id), quote_smart($raid_id), 
+						(%s,%s,%s,%s,%s,%s,%s)", quote_smart($char_id), quote_smart($profile_id), quote_smart($raid_id),
 						quote_smart($comments), quote_smart($queue), quote_smart($timestamp), quote_smart($cancel));
 			$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 			header("Location: view.php?mode=view&raid_id=$raid_id");
@@ -1176,7 +1216,7 @@ elseif($mode == 'queue')
 	// Get Profile ID with Char ID to verify user.
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id=%s AND char_id=%s", quote_smart($raid_id), quote_smart($char_id));
 	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-	$data = $db_raid->sql_fetchrow($result);
+	$data = $db_raid->sql_fetchrow($result, true);
 
 	$profile_id = $data['profile_id'];
 
@@ -1189,7 +1229,7 @@ elseif($mode == 'queue')
 
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id=%s AND char_id=%s", quote_smart($raid_id), quote_smart($char_id));
 	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-	$data = $db_raid->sql_fetchrow($result);
+	$data = $db_raid->sql_fetchrow($result, true);
 
 	//Check for a hacking attempt sending in a URL without clicking a button.
 	$hackattempt=1;
@@ -1229,23 +1269,23 @@ elseif($mode == 'draft')
 	// Get Profile ID with Char ID to verify user.
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id=%s AND char_id=%s", quote_smart($raid_id), quote_smart($char_id));
 	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-	$data = $db_raid->sql_fetchrow($result);
+	$data = $db_raid->sql_fetchrow($result, true);
 
 	// verify user is editing own data
 	if($user_perm_group['admin'] != 1 && $user_perm_group['RL'] != 1 &&
 		$S_profile_id != $data['profile_id'])
 		log_hack();
-	
+
 	// now check class limits to prevent users cheating the cancel/queue signup
 	// setup the count array
 	$count = array('dr'=>'0','hu'=>'0','ma'=>'0','pa'=>'0','pr'=>'0','ro'=>'0','sh'=>'0','wk'=>'0','wa'=>'0');
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id=%s AND queue='0' AND cancel='0'",quote_smart($raid_id));
 	$result_char = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-	while($char = $db_raid->sql_fetchrow($result_char))
+	while($char = $db_raid->sql_fetchrow($result_char, true))
 	{
 		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id=%s", quote_smart($char['char_id']));
 		$result_count = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-		$tmp = $db_raid->sql_fetchrow($result_count);
+		$tmp = $db_raid->sql_fetchrow($result_count, true);
 
 		switch($tmp['class'])
 		{
@@ -1280,11 +1320,11 @@ elseif($mode == 'draft')
 	}
 	$sql = sprintf("SELECT dr_lmt,hu_lmt,ma_lmt,pa_lmt,pr_lmt,ro_lmt,sh_lmt,wk_lmt,wa_lmt FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id=%s", quote_smart($raid_id));
 	$result_raid = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-	$total = $db_raid->sql_fetchrow($result_raid);
+	$total = $db_raid->sql_fetchrow($result_raid, true);
 
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id=%s", quote_smart($char_id));
 	$result_class = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-	$class = $db_raid->sql_fetchrow($result_class);
+	$class = $db_raid->sql_fetchrow($result_class, true);
 
 	$queue=0;
 	switch($class['class'])
@@ -1329,7 +1369,7 @@ elseif($mode == 'draft')
 
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id=%s AND char_id=%s", quote_smart($raid_id), quote_smart($char_id));
 	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-	$data = $db_raid->sql_fetchrow($result);
+	$data = $db_raid->sql_fetchrow($result, true);
 
 	//Debug Section
 	//echo "<br>user_perm_group_admin: " . $user_perm_group['admin'];
@@ -1384,7 +1424,7 @@ elseif($mode == 'cancel')
 {
 	$S_profile_id = scrub_input($_SESSION['profile_id']);
 	$profile_id = scrub_input($_GET['profile_id']);
-	
+
 	// check for hack attempt
 	if(!isset($_GET['char_id']) || !is_numeric($_GET['char_id']))
 		log_hack();
@@ -1404,7 +1444,8 @@ elseif($mode == 'cancel')
 
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id=%s AND char_id=%s", quote_smart($raid_id), quote_smart($char_id));
 	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-	$data = $db_raid->sql_fetchrow($result);
+	$data = $db_raid->sql_fetchrow($result, true);
+	
 	if($S_profile_id == $data['profile_id'] || $priv_raids == 1) {
 		if($data['cancel'] == 0) {
 			$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "signups set cancel='1',queue='0' WHERE raid_id=%s AND char_id=%s", quote_smart($raid_id), quote_smart($char_id));
@@ -1425,7 +1466,7 @@ elseif($mode == 'cancel')
 else if($mode == 'edit_comment')
 {
 	$S_profile_id = scrub_input($_SESSION['profile_id']);
-	
+
 	// validate input
 	isset($_GET['signup_id']) ? $signup_id = scrub_input($_GET['signup_id']) : $signup_id = '';
 
@@ -1434,7 +1475,7 @@ else if($mode == 'edit_comment')
 
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE signup_id=%s", quote_smart($signup_id));
 	$result = $db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
-	$data = $db_raid->sql_fetchrow($result);
+	$data = $db_raid->sql_fetchrow($result, true);
 
 	// verify user
 	if($S_profile_id != $data['profile_id'] AND
@@ -1490,7 +1531,7 @@ if($show_signup == 1 && $priv_profile == 1)
 	// setup min/max levels
 	$sql = sprintf("SELECT min_lvl,max_lvl FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id=%s", quote_smart($raid_id));
 	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-	$limit = $db_raid->sql_fetchrow($result);
+	$limit = $db_raid->sql_fetchrow($result, true);
 
 	$signup_action = 'view.php?mode=signup&raid_id=' . $raid_id;
 
@@ -1501,11 +1542,11 @@ if($show_signup == 1 && $priv_profile == 1)
 	$character = '<select name="character" class="post">';
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE profile_id=%s", quote_smart($profile_id));
 	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-	while($data = $db_raid->sql_fetchrow($result))
+	while($data = $db_raid->sql_fetchrow($result, true))
 	{
 		$sql = sprintf("SELECT lvl FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id=%s", quote_smart($data['char_id']));
 		$result_lvl = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-		$lvl = $db_raid->sql_fetchrow($result_lvl);
+		$lvl = $db_raid->sql_fetchrow($result_lvl, true);
 
 		if($lvl['lvl'] >= $limit['min_lvl'] && $lvl['lvl'] <= $limit['max_lvl'])
 			$character .= '<option value="' . $data['char_id'] . '">' . $data['name'] . '</option>';

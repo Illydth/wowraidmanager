@@ -188,6 +188,13 @@ input.liteoption {
 	text-decoration:none;
 }
 
+.active a {
+	background-color: #38374A;
+	border: 1px solid #000000;
+	color : #ffffff;
+	/*font-size: 9px; font-family: Verdana, Arial, Helvetica, sans-serif;*/
+}
+
 /* Tooltip title color */
 .tooltip_title {
 	color: #FFFFFF;
