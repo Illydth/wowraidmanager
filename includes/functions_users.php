@@ -291,8 +291,8 @@ function get_guild_name($char_name, $server)
 
 	if(file_exists($filename) && trim(file_get_contents($filename)) != "")
 	{
-		//return utf8_decode(file_get_contents($filename));
-		return(file_get_contents($filename));
+		return utf8_decode(file_get_contents($filename));
+		//return(file_get_contents($filename));
 	}
 	else
 	{
