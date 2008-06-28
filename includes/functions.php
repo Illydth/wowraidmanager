@@ -174,7 +174,7 @@ function sanitize(&$array) {
 // Reverses database sanitization by removing escape backslashes
 // and decoding html entities.
 function desanitize(&$array) {
-  unescape_db_data($array);
+  @unescape_db_data($array);
   
   return $array;
 }
@@ -194,6 +194,7 @@ function escape_data(&$data) {
 }
 
 function unescape_db_data(&$array) {
+
   foreach($array as &$value) {
     if (is_string($value)) {
       unescape_data($value);

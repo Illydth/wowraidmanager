@@ -211,21 +211,21 @@ class sql_db
 	function sql_fetchrow($sql_id = 0, $desanitize = false)
 	{
 		if(!$sql_id)
-		{
 			$sql_id = $this->query_result;
-		}
+
 		if($sql_id)
 		{
 			$this->row[$sql_id] = @mysql_fetch_array($sql_id);
-			if ($desanitize)
-				return desanitize($this->row[$sql_id]);
+			if ($this->row[$sql_id] != false)
+				if ($desanitize)
+					return desanitize($this->row[$sql_id]);
+				else
+					return $this->row[$sql_id];
 			else
-				return $this->row[$sql_id];
+				return false;
 		}
 		else
-		{
 			return false;
-		}
 	}
 	function sql_fetchrowset($sql_id = 0)
 	{
