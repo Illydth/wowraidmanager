@@ -877,7 +877,7 @@ else
 	}
 	else
 	{
-		echo "<div><table width='100%' border='0' cellspacing='0' cellpadding='0'><tr><td align='left' valign='top'>Charakter nicht gefunden. Arsenal erreichbar?</td></tr></table></div>";
+		echo "<div><table width='100%' border='0' cellspacing='0' cellpadding='0'><tr><td align='left' valign='top'>Character not found.  Armory Available?</td></tr></table></div>";
 	}
 
 	if($arr['characterinfo']['character']['name'] != "")
