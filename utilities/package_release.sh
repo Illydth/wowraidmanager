@@ -107,6 +107,57 @@ cd ..
 cd ..
 cd ..
 
+# wowchar-tooltip
+cd wowchar-tooltip
+chmod a-x *.php
+cd css
+chmod a-x *.css
+cd ..
+cd image
+chmod a-x *.gif
+cd icons
+cd class
+chmod a-x *.png
+cd ..
+cd race
+chmod a-x *.png
+cd ..
+cd ..
+cd portraits
+cd 1-59
+chmod a-x *.gif
+cd ..
+cd 60-69
+chmod a-x *.gif
+cd ..
+cd 70
+chmod a-x *.gif
+cd ..
+cd ..
+cd ..
+cd js
+chmod a-x *.js
+cd ..
+cd lang
+chmod a-x *.php
+cd ..
+cd ..
+
+# wowitem-tooltip
+cd wowitem-tooltip
+chmod a-x *.php
+cd css
+chmod a-x *.css
+cd ..
+cd image
+chmod a-x *.gif
+chmod a-x *.png
+cd ..
+cd js
+chmod a-x *.js
+cd ..
+cd ..
+
 ##################################################
 # File Mods are now set, package up the release.
 ##################################################
