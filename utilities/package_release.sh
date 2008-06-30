@@ -1,5 +1,10 @@
 #!/bin/sh
 
+# Set Directory / File Write permissions.
+chmod 777 raid_lua
+chmod 777 wowchar-tooltips/cache
+chmod 777 wowitem-tooltips/cache
+
 # Remove Prior Package Directory
 rm -rf package
 
