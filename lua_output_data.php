@@ -290,8 +290,9 @@ class Output_Data
 		$count = 0;
 		while($raid_data = $db_raid->sql_fetchrow($raids_result, true))
 		{
+			$location_data=addslashes($raid_data['location']);
 			$lua_output .= "\t\t[{$count}] = {\n";
-			$lua_output .= "\t\t\t[\"location\"] = \"{$raid_data['location']}\",\n";
+			$lua_output .= "\t\t\t[\"location\"] = \"$location_data\",\n";
 			$lua_output .= "\t\t\t[\"date\"] = \"" . new_date($phpraid_config['date_format'],$raid_data['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']) . "\",\n";
 			$lua_output .= "\t\t\t[\"invite_time\"] = \"" . new_date($phpraid_config['time_format'],$raid_data['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']) . "\",\n";
 			$lua_output .= "\t\t\t[\"start_time\"] = \"" . new_date($phpraid_config['time_format'],$raid_data['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']) . "\",\n";
@@ -353,7 +354,7 @@ class Output_Data
 						'race'		=> $signup['race'],
 						'class'		=> $signup['class'],
 						'team_name' => $team['team_name'],
-						'comment'	=> strip_linebreaks($signup['comment']),
+						'comment'	=> strip_linebreaks(addslashes($signup['comment'])),
 						'timestamp'	=> new_date($phpraid_config['date_format'],$signup['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']) . ' - ' . new_date($phpraid_config['time_format'],$signup['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']),
 					));
 				}
@@ -364,7 +365,7 @@ class Output_Data
 						'level'		=> $signup['lvl'],
 						'race'		=> $signup['race'],
 						'class'		=> $signup['class'],
-						'comment'	=> strip_linebreaks($signup['comment']),
+						'comment'	=> strip_linebreaks(addslashes($signup['comment'])),
 						'timestamp'	=> new_date($phpraid_config['date_format'],$signup['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']) . ' - ' . new_date($phpraid_config['time_format'],$signup['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']),
 					));
 				}
@@ -397,7 +398,7 @@ class Output_Data
 						'race'		=> $signup['race'],
 						'class'		=> $signup['class'],
 						'team_name' => $team['team_name'],
-						'comment'	=> strip_linebreaks($signup['comment']),
+						'comment'	=> strip_linebreaks(addslashes($signup['comment'])),
 						'timestamp'	=> new_date($phpraid_config['date_format'],$signup['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']) . ' - ' . new_date($phpraid_config['time_format'],$signup['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']),
 					));
 				}
@@ -408,7 +409,7 @@ class Output_Data
 						'level'		=> $signup['lvl'],
 						'race'		=> $signup['race'],
 						'class'		=> $signup['class'],
-						'comment'	=> strip_linebreaks($signup['comment']),
+						'comment'	=> strip_linebreaks(addslashes($signup['comment'])),
 						'timestamp'	=> new_date($phpraid_config['date_format'],$signup['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']) . ' - ' . new_date($phpraid_config['time_format'],$signup['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']),
 					));					
 				}
