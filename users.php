@@ -66,12 +66,17 @@ if($mode == 'view')
 					<img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0"
 					onMouseover="ddrivetip(\''. $phprlang['delete'] .'\')"; onMouseout="hideddrivetip()"></a>';
 		
+		$date = $data['last_login_time'];
+		$time = !($data['last_login_time'])?'':new_date($phpraid_config['time_format'],$data['last_login_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+		
 		array_push($users, 
 			array(
 				'id'=>$data['profile_id'],
 				'username'=>$usersname,
 				'priv'=>$priv,
 				'email'=>$data['email'],
+				'last_login_date'=>$date,
+				'last_login_time'=>$time,
 				''=>$actions));
 	}
 
@@ -85,7 +90,7 @@ if($mode == 'view')
 	//Default sorting
 	if(!$_GET['Sort'])
 	{
-		$report->allowSort(true, 'username', 'ASC', 'users.php?mode=view');
+		$report->allowSort(true, 'id', '0', 'users.php?mode=view');
 	}
 	else
 	{
@@ -97,6 +102,8 @@ if($mode == 'view')
 	$report->addOutputColumn('username',$phprlang['username'],'','center');
 	$report->addOutputColumn('email',$phprlang['email'],'','center');
 	$report->addOutputColumn('priv',$phprlang['priv'],'','center');
+	$report->addOutputColumn('last_login_date',$phprlang['last_login_date'],'unixtime','center');
+	$report->addOutputColumn('last_login_time',$phprlang['last_login_time'],'','center');
 	$report->addOutputColumn('','','','right');
 	$users = $report->getListFromArray($users);
 

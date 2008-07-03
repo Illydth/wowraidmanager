@@ -1,0 +1,1 @@
+ALTER TABLE `phpraid_profile` ADD `last_login_time` VARCHAR( 25 ) NOT NULL ;

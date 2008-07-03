@@ -98,6 +98,11 @@ function phpraid_login()
 			$autologin = ( isset($_POST['autologin']) ) ? TRUE : 0;
 			$admin = (isset($_POST['admin'])) ? 1 : 0;
 			$session_id = session_begin($row['user_id'], $user_ip, PAGE_INDEX, FALSE, $autologin, $admin);
+			
+			$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "profile SET last_login_time=%s WHERE profile_id=%s",
+							quote_smart(time()),quote_smart($_SESSION['profile_id']));
+			$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+			
 			return 1;
 		}
 		else

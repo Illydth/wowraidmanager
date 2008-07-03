@@ -31,6 +31,7 @@
 ****************************************************************************/
 
 function phpraid_login() {
+	
 	global $groups, $db_raid, $phpraid_config;
 	
 	if(isset($_POST['username'])) 	{
@@ -64,6 +65,11 @@ function phpraid_login() {
 			// get user permissions
 			get_permissions();
 				
+			$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "profile SET last_login_time=%s WHERE profile_id=%s",
+							quote_smart(time()),quote_smart($_SESSION['profile_id']));
+
+			$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+
 			return 1;
 		}
 	}

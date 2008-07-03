@@ -130,6 +130,7 @@ CREATE TABLE  `phpraid_profile` (
   `password` varchar(255) NOT NULL default '',
   `priv` varchar(255) NOT NULL default '',
   `username` varchar(255) NOT NULL default '',
+  `last_login_time` varchar(25) NOT NULL default '',
   PRIMARY KEY  (`profile_id`)
 );
 
