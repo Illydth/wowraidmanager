@@ -107,6 +107,8 @@ $report->addOutputColumn('Fire','<img border="0" src="templates/' . $phpraid_con
 $report->addOutputColumn('Nature','<img border="0" src="templates/' . $phpraid_config['template'] . '/images/resistances/nature_resistance.gif" onMouseover="ddrivetip(\''.$phprlang['nature'].'\')"; onMouseout="hideddrivetip()" height="16" width="16">','','center');
 $report->addOutputColumn('Frost','<img border="0" src="templates/' . $phpraid_config['template'] . '/images/resistances/frost_resistance.gif" onMouseover="ddrivetip(\''.$phprlang['frost'].'\')"; onMouseout="hideddrivetip()" height="16" width="16">','','center');
 $report->addOutputColumn('Shadow','<img border="0" src="templates/' . $phpraid_config['template'] . '/images/resistances/shadow_resistance.gif" onMouseover="ddrivetip(\''.$phprlang['shadow'].'\')"; onMouseout="hideddrivetip()" height="16" width="16">','','center');
+if (scrub_input($_SESSION['priv_users']) == 1)
+	$report->addOutputColumn('Profile', $phprlang['profile'], '', 'center');
 $report->allowPaging(true, $_SERVER['PHP_SELF'] . '?Base=');
 $report->setListRange($_GET['Base'], 25);
 $body = $report->getListFromArray($chars);
