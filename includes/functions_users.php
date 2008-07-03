@@ -220,7 +220,7 @@ function is_char_signed($profile_id, $raid_id) {
 function isCharExist($charName) {
 	global $db_raid, $phpraid_config;
 
-	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE name='".$charName."'";
+	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE name='".ucfirst(trim($charName))."'";
 	$result = $db_raid->sql_query($sql);
 	return $db_raid->sql_numrows($result);
 }
