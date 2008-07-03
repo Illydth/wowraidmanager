@@ -56,7 +56,7 @@ if($_GET['mode'] == 'view')
 			$message = substr($message, 0, 30) . '...';
 
 		$posted_by = $data['posted_by'];
-		$date = new_date($phpraid_config['date_format'],$data['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+		$date = $data['timestamp'];
 		$time = new_date($phpraid_config['time_format'],$data['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']);
 
 		$edit = '<a href="announcements.php?mode=edit&id='.$data['announcements_id'].'"><img src="templates/' . $phpraid_config['template'] .
@@ -101,7 +101,7 @@ if($_GET['mode'] == 'view')
 	$report->addOutputColumn('title',$phprlang['title'],'','center');
 	$report->addOutputColumn('message',$phprlang['message'],'','center');
 	$report->addOutputColumn('posted_by',$phprlang['posted_by'],'','center');
-	$report->addOutputColumn('date',$phprlang['date'],'','center');
+	$report->addOutputColumn('date',$phprlang['date'],'unixtime','center');
 	$report->addOutputColumn('time',$phprlang['time'],'','center');
 	$report->addOutputColumn('','','','right');
 	$announcements = $report->getListFromArray($announcements);

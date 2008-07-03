@@ -221,7 +221,7 @@ if($mode == 'view')
 		$actions = '';
 		$actions = signedUpFlow($user_perm_group, $phpraid_config, $data, $raid_id, $phprlang, $sort_mode, $sort_descending, $signups);
 
-		$date = new_date($phpraid_config['date_format'],$signups['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+		$date = $signups['timestamp'];
 		$time = new_date($phpraid_config['time_format'],$signups['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']);
 		switch($data['race'])
 		{
@@ -404,7 +404,7 @@ if($mode == 'view')
 
 		$name = $data['name'];
 
-		$date = new_date($phpraid_config['date_format'],$signups['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+		$date = $signups['timestamp'];
 		$time = new_date($phpraid_config['time_format'],$signups['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']);
 
 		switch($data['race'])
@@ -553,7 +553,7 @@ if($mode == 'view')
 
 		$name = $data['name'];
 
-		$date = new_date($phpraid_config['date_format'],$signups['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+		$date = $signups['timestamp'];
 		$time = new_date($phpraid_config['time_format'],$signups['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']);
 
 		switch($data['race'])
@@ -727,7 +727,7 @@ if($mode == 'view')
 									  '/images/resistances/shadow_resistance.gif" onMouseover=
 									  "ddrivetip(\''.$phprlang['shadow'].'\')"; onMouseout="hideddrivetip()"
 									  height="16" width="16">','','center');
-	$report->addOutputColumn('date',$phprlang['date'],'','center');
+	$report->addOutputColumn('date',$phprlang['date'],'unixtime','center');
 	$report->addOutputColumn('time',$phprlang['time'],'','center');
 	$report->addOutputColumn('actions','','','right');
 
@@ -772,7 +772,7 @@ if($mode == 'view')
 	$report->addOutputColumn('lvl',$phprlang['level'],'','center');
 	$report->addOutputColumn('race',$phprlang['race'],'','center');
 	$report->addOutputColumn('class',$phprlang['class'],'','center');
-	$report->addOutputColumn('date',$phprlang['date'],'','center');
+	$report->addOutputColumn('date',$phprlang['date'],'unixtime','center');
 	$report->addOutputColumn('time',$phprlang['time'],'','center');
 	$report->addOutputColumn('actions','','','right');
 	$raid_queue = $report->getListFromArray($raid_queue);

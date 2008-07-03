@@ -51,7 +51,7 @@ $raids_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1)
 $count = array();
 
 while($raids = $db_raid->sql_fetchrow($raids_result, true)) {
-	$date = new_date($phpraid_config['date_format'],$raids['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+	$date = $raids['start_time'];
 	$invite = new_date($phpraid_config['time_format'], $raids['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
 	$start = new_date($phpraid_config['time_format'], $raids['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
 	
@@ -174,7 +174,7 @@ else
 $report->addOutputColumn('info','','','left');
 if($phpraid_config['show_id'] == 1)
 	$report->addOutputColumn('id',$phprlang['id'],'','center');
-$report->addOutputColumn('Date',$phprlang['date'],'','center');
+$report->addOutputColumn('Date',$phprlang['date'],'unixtime','center');
 $report->addOutputColumn('Location',$phprlang['location'],'','center');
 $report->addOutputColumn('Invite Time',$phprlang['invite_time'],'','center');
 $report->addOutputColumn('Start Time',$phprlang['start_time'],'','center');

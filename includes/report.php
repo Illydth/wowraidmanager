@@ -1362,7 +1362,10 @@ class ReportList
                     }
                 }
                 break;
-            default :
+			case 'unixtime' :
+				$strValue = ' <script type="text/javascript"> document.write(formatTime(new Date(' . $strValue . ' * 1000))) </script>';
+				break;
+  default :
                 break;
         }
 
