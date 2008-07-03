@@ -43,6 +43,13 @@ $phprlang['log_raid_text'] = 'raid activity';
 $phprlang['log_sort_by'] = 'Sort by ';
 $phprlang['log_type'] = 'type';
 
+$phprlang['log_filter_show'] = 'Show';
+$phprlang['log_filter_all'] = 'All';
+$phprlang['log_filter_2_months'] = 'Two Months';
+$phprlang['log_filter_1_month'] = 'One Month';
+$phprlang['log_filter_1_week'] = 'One Week';
+$phprlang['log_filter_1_day'] = 'One Day';
+
 // cancellation
 $phprlang['log_cancel_message'] = '[USER CANCEL]';
 
@@ -63,8 +70,8 @@ $phprlang['log_raid_header'] = 'Raid Activity Logs';
 $phprlang['log_sort_header'] = 'Choose filter options';
 							
 // output text
-$phprlang['log_create'] = '%s - %s: user [%s (%s)] CREATED %s with ID [%s] and NAME [%s]';
-$phprlang['log_delete'] = '%s - %s: user [%s (%s)] DELETED %s with NAME [%s]';
-$phprlang['log_hack'] = '%s - %s: user with IP [%s] ATTEMPTED hack with [%s]';
-$phprlang['log_raid'] = '%s - %s: user [%s (%s)] altered RAID %s BY %s with CHARACTER %s';
+$phprlang['log_create'] = '%s - %s: User [<a href="users.php?mode=details&user_id=%s">%s</a> (%s)] CREATED %s with ID [%s] and NAME [%s]';
+$phprlang['log_delete'] = '%s - %s: User [<a href="users.php?mode=details&user_id=%s">%s</a> (%s)] DELETED %s with NAME [%s]';
+$phprlang['log_hack'] = '%s - %s: User with IP [%s] ATTEMPTED hack with [%s]';
+$phprlang['log_raid'] = '%s - %s: User [<a href="users.php?mode=details&user_id=%s">%s</a> (%s)] altered RAID <a href="view.php?mode=view&raid_id=%s">%s %s</a> BY %s with CHARACTER %s - %s';
 ?>

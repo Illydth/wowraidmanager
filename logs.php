@@ -96,9 +96,11 @@ else
 		$d_check = 'checked';
 		$h_check = 'checked';
 		$r_check = 'checked';
-		
-		$s_default = 'date';
-		$s_order = 'ascending';
+
+		$d_select = 'selected';
+		$de_select = 'selected';
+
+		$f1_select = 'selected';
 	}
 	else
 	{
@@ -113,6 +115,12 @@ else
 
 		$_POST['order'] == $phprlang['asc'] ? $a_select = 'selected' : $a_select = '';
 		$_POST['order'] == $phprlang['desc'] ? $de_select = 'selected' : $de_select = '';
+
+		$_POST['filter'] == $phprlang['log_filter_all'] ? $fa_select = 'selected' : $fa_select = '';
+		$_POST['filter'] == $phprlang['log_filter_2_months'] ? $f60_select = 'selected' : $f60_select = '';
+		$_POST['filter'] == $phprlang['log_filter_1_month'] ? $f30_select = 'selected' : $f30_select = '';
+		$_POST['filter'] == $phprlang['log_filter_1_week'] ? $f7_select = 'selected' : $f7_select = '';
+		$_POST['filter'] == $phprlang['log_filter_1_day'] ? $f1_select = 'selected' : $f1_select = '';
 	}
 
 	$sort = '<form action="logs.php?mode=view" method="POST">
@@ -144,6 +152,17 @@ else
 				  </div></td>
 			  </tr>
 			  <tr>
+				<td><div align="center">'.$phprlang['log_filter_show'].'
+					  <select name="filter" class="post" class="post">
+						  <option value="'.$phprlang['log_filter_all'].'" '.$fa_select.'>'.$phprlang['log_filter_all'].'</option>
+						  <option value="'.$phprlang['log_filter_2_months'].'" '.$f60_select.'>'.$phprlang['log_filter_2_months'].'</option>
+						  <option value="'.$phprlang['log_filter_1_month'].'" '.$f30_select.'>'.$phprlang['log_filter_1_month'].'</option>
+						  <option value="'.$phprlang['log_filter_1_week'].'" '.$f7_select.'>'.$phprlang['log_filter_1_week'].'</option>
+						  <option value="'.$phprlang['log_filter_1_day'].'" '.$f1_select.'>'.$phprlang['log_filter_1_day'].'</option>
+					  </select>
+				  </div></td>
+			  </tr>
+			  <tr>
 				<td><br><div align="center"><input type="submit" value="Filter" name="submit" class="mainoption"> <input type="reset" value="Reset" name="reset" class="liteoption"></div></td>
 			  </tr>
 			</table>
@@ -153,7 +172,26 @@ else
 	$page->set_var('sort',$sort);
 	$page->set_var('log_sort_header',$phprlang['log_sort_header']);
 	$page->parse('output','sort_file');
-	
+
+	$sql_where = '';
+
+	if($f60_select == 'selected')
+	{
+		$sql_where = 'WHERE timestamp >= ' . quote_smart(time() - 60 * 86400);
+	}
+	else if($f30_select == 'selected')
+	{
+		$sql_where = 'WHERE timestamp >= ' . quote_smart(time() - 30 * 86400);
+	}
+	else if($f7_select == 'selected')
+	{
+		$sql_where = 'WHERE timestamp >= ' . quote_smart(time() - 7 * 86400);
+	}
+	else if($f1_select == 'selected')
+	{
+		$sql_where = 'WHERE timestamp >= ' . quote_smart(time() - 1 * 86400);
+	}
+
 	$sql_order = '';
 
 	if($d_select == 'selected')
@@ -179,7 +217,7 @@ else
 	}
 
 	// creation logs
-	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "logs_create $sql_order $sql_order2";
+	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "logs_create $sql_where $sql_order $sql_order2";
 	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 
 	$create = array();
@@ -188,12 +226,16 @@ else
 	{
 		$date = new_date($phpraid_config['date_format'],$data['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']);
 		$time = new_date($phpraid_config['time_format'],$data['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']);
-		
-		array_push($create, sprintf($phprlang['log_create'],$date,$time,$data['profile_id'],$data['ip'],$data['type'],$data['create_id'],$data['create_name']));
+
+		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "profile WHERE profile_id=%s", quote_smart($data['profile_id']));
+		$data_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$data_profdetail = $db_raid->sql_fetchrow($data_result);
+
+		array_push($create, sprintf($phprlang['log_create'],$date,$time,$data['profile_id'],$data_profdetail['username'],$data['ip'],$data['type'],$data['create_id'],$data['create_name']));
 	}
 
 	// deletion logs
-	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "logs_delete $sql_order $sql_order2";
+	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "logs_delete $sql_where $sql_order $sql_order2";
 	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 
 	$delete = array();
@@ -202,8 +244,12 @@ else
 	{
 		$date = new_date($phpraid_config['date_format'],$data['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']);
 		$time = new_date($phpraid_config['time_format'],$data['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']);
-		
-		array_push($delete, sprintf($phprlang['log_delete'],$date,$time,$data['profile_id'],$data['ip'],$data['type'],$data['delete_name']));
+
+		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "profile WHERE profile_id=%s", quote_smart($data['profile_id']));
+		$data_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$data_profdetail = $db_raid->sql_fetchrow($data_result);
+
+		array_push($delete, sprintf($phprlang['log_delete'],$date,$time,$data['profile_id'],$data_profdetail['username'],$data['ip'],$data['type'],$data['delete_name']));
 	}
 
 	// hack logs
@@ -217,8 +263,8 @@ else
 		$sql_order_hack = $sql_order;
 		$sql_order2_hack = $sql_order2;
 	}
-	
-	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "logs_hack $sql_order_hack $sql_order2_hack";
+
+	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "logs_hack $sql_where $sql_order_hack $sql_order2_hack";
 	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 
 	$hack = array();
@@ -232,7 +278,7 @@ else
 	}
 
 	// raid logs
-	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "logs_raid $sql_order $sql_order2";
+	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "logs_raid $sql_where $sql_order $sql_order2";
 	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 
 	$raid = array();
@@ -241,8 +287,25 @@ else
 	{
 		$date = new_date($phpraid_config['date_format'],$data['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']);
 		$time = new_date($phpraid_config['time_format'],$data['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']);
-		
-		array_push($raid, sprintf($phprlang['log_create'],$date,$time,$data['profile_id'],$data['ip'],$data['raid_id'],$data['type'],$data['char_id']));
+
+		//array_push($raid, sprintf($phprlang['log_create'],$date,$time,$data['profile_id'],$data['ip'],$data['raid_id'],$data['type'],$data['char_id']));
+		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id=%s",quote_smart($data['char_id']));
+		$data_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$data_userdetail = $db_raid->sql_fetchrow($data_result);
+
+		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id=%s", quote_smart($data['raid_id']));
+		$data_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$data_raiddetail = $db_raid->sql_fetchrow($data_result);
+
+		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "profile WHERE profile_id=%s", quote_smart($data['profile_id']));
+		$data_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$data_profdetail = $db_raid->sql_fetchrow($data_result);
+
+		$raiddatum = new_date($phpraid_config['date_format'],$data_raiddetail['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+
+		array_push($raid, sprintf($phprlang['log_raid'],$date,$time,$data['profile_id'],$data_profdetail['username'],$data['ip'],$data['raid_id'],
+			$raiddatum,$data_raiddetail['location'],$data['type'],$data['char_id'],get_armorychar($data_userdetail['name'])));
+
 	}
 
 	if($c_check == 'checked')
