@@ -215,4 +215,10 @@ function magic_quotes_on() {
   
   return true;
 }
+
+function get_dupesignup_symbol()
+{
+	return '<font color="' . '#cc0000' . '"><b>!</b></font>';
+}
+
 ?>
