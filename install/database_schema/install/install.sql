@@ -250,5 +250,7 @@ INSERT INTO `phpraid_config` VALUES ('admin_drafted_delete', '0');
 INSERT INTO `phpraid_config` VALUES ('rss_site_url', 'http://localhost/phpraid');
 INSERT INTO `phpraid_config` VALUES ('rss_export_url', 'http://localhost/phpraid');
 INSERT INTO `phpraid_config` VALUES ('rss_feed_amt', '5');
+INSERT INTO `phpraid_config` VALUES ('armory_link','http://www.wowarmory.com');
+INSERT INTO `phpraid_config` VALUES ('armory_language','en');
 
 INSERT INTO `phpraid_permissions` (`name`,`description`,`announcements`,`configuration`,`guilds`,`locations`,`permissions`,`profile`,`raids`,`logs`,`users`) VALUES ('phpRaid Superadmin','Full access','1','1','1','1','1','1','1','1','1');
