@@ -75,6 +75,27 @@ $phprlang['title'] = 'Title';
 $phprlang['totals'] = 'Totals';
 $phprlang['username'] = 'Username';
 
+// roles
+$phprlang['role'] = 'Role';
+$phprlang['role_none'] = '-';
+$phprlang['role_tank'] = 'Tank';
+$phprlang['role_heal'] = 'Healer';
+$phprlang['role_melee'] = 'Melee';
+$phprlang['role_ranged'] = 'Ranged';
+$phprlang['role_tankmelee'] = 'Tank or Melee';
+
+$phprlang['role_tanks'] = 'Tanks';
+$phprlang['role_heals'] = 'Healers';
+$phprlang['role_melees'] = 'Melee';
+$phprlang['role_ranges'] = 'Ranged';
+$phprlang['role_tankmelees'] = 'Tanks/Melee';
+
+$phprlang['max_tanks'] = 'Max Tanks';
+$phprlang['max_heals'] = 'Max Healers';
+$phprlang['max_melees'] = 'Max Melee';
+$phprlang['max_ranged'] = 'Max Ranged';
+$phprlang['max_tkmels'] = 'Max Tank/Melee';
+
 // errors
 $phprlang['connect_socked_error'] = 'Failed to connect to socket with error %s';
 $phprlang['invalid_group_title'] = 'Group exists';
@@ -116,6 +137,7 @@ $phprlang['profile_error_level'] = 'Level must be numeric from 1-70';
 $phprlang['profile_error_name'] = 'You must enter a name';
 $phprlang['profile_error_nature'] = 'Nature must be numeric';
 $phprlang['profile_error_race'] = 'You must select a race';
+$phprlang['profile_error_role'] = 'You must enter a role';
 $phprlang['profile_error_shadow'] = 'Shadow must be numeric';
 $phprlang['raid_error_date'] = 'You must input a proper date';
 $phprlang['raid_error_description'] = 'Description must be entered';
@@ -123,6 +145,7 @@ $phprlang['raid_error_limits'] = 'All raid limits must be entered and numeric';
 $phprlang['raid_error_location'] = 'Input a raid location';
 $phprlang['reset'] = 'Reset';
 $phprlang['view_error_signed_up'] = 'You have already signed up with this character';
+$phprlang['view_error_role_undef'] = 'Make sure that the Character in <a href="profile.php?mode=view">Profile</a> has a defined Role.';
 $phprlang['yes'] = 'Yes';
 
 // generic information

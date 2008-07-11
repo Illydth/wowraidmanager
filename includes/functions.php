@@ -151,6 +151,69 @@ function get_armorychar($name, $language, $server)
 	return $name;
 }
 
+function get_color($text, $signedup, $onqueue, $wanted, $type, $extracount, $ddsignedup, $ddonqueue, $ddwanted, &$minustkmel)
+{
+        $color = '';
+
+        if($type == 2)
+        {
+                // melee + ranged
+                $count_available = $ddsignedup + $ddonqueue;
+                $count_onqueue = $ddonqueue;
+                $count_wanted = $ddwanted;
+        }
+        else
+        {
+                $count_available = $signedup + $onqueue;
+                $count_onqueue = $onqueue;
+                $count_wanted = $wanted;
+        }
+
+        if($type == 1)
+        {
+                // tank/melee
+                if($minustkmel <= $count_available)
+                {
+                        $count_available = $count_available - $minustkmel;
+                }
+                else
+                {
+                        $count_available = 0;
+                        $extracount = $extracount - $minustkmel;
+                }
+        }
+
+        if($count_available < $count_wanted)
+        {
+                if($count_available + $extracount < $count_wanted)
+                {
+                        if($type != 2 || $signedup + $onqueue < $wanted)
+                        {
+                                $color = '#cc0000';
+                        }
+                        $minustkmel = $minustkmel + $extracount;
+                }
+                else
+                {
+                        $minustkmel = $minustkmel + $count_wanted - $count_available;
+                }
+        }
+        else if($count_available - $count_onqueue > $count_wanted)
+        {
+                if($type != 2 || $signedup > $wanted)
+                {
+                        $color = '#ffff00';
+                }
+        }
+
+        return $color ? '<font color="' . $color . '">' . $text . '</font>' : $text;
+}
+
+function get_coloredcount($signedup, $onqueue, $wanted, $type, $extracount, $ddsignedup, $ddonqueue, $ddwanted, &$minustkmel)
+{
+        return '<!-- ' . $signedup . ' -->' . get_color($signedup . "/" . $wanted . ($onqueue ? '(+' . $onqueue . ')' : ''), $signedup, $onqueue, $wanted, $type, $extracount, $ddsignedup, $ddonqueue, $ddwanted, $minustkmel);
+}
+
 function linebreak_to_br($str) {
   $str = preg_replace("/(\r\n?)|(\n\r?)/s", "<br />", $str);
 	

@@ -484,6 +484,12 @@ $guild_server = '<input name="guild_server" type="text" id="guild_server" value=
 $register = '<input name="register" type="text" value="'.$phpraid_config['register_url'].'" size="60" class="post">';
 $buttons = '<input type="submit" name="submit" value="Submit" class="mainoption"> <input type="reset" name="Reset" value="Reset" class="liteoption">';
 $armory_language = '<input name="armory_language" type="text" value="'.$phpraid_config['armory_language'].'" size="4" class="post">';
+$role1_name='<input name="role1_name" type="text" value="'.$phpraid_config['role1_name'].'" size="25" class="post">';
+$role2_name='<input name="role2_name" type="text" value="'.$phpraid_config['role2_name'].'" size="25" class="post">';
+$role3_name='<input name="role3_name" type="text" value="'.$phpraid_config['role3_name'].'" size="25" class="post">';
+$role4_name='<input name="role4_name" type="text" value="'.$phpraid_config['role4_name'].'" size="25" class="post">';
+$role5_name='<input name="role5_name" type="text" value="'.$phpraid_config['role5_name'].'" size="25" class="post">';
+$role6_name='<input name="role6_name" type="text" value="'.$phpraid_config['role6_name'].'" size="25" class="post">';
 
 // put the variables into the template
 $page->set_var(
@@ -514,6 +520,18 @@ $page->set_var(
 		'dst'=>$dst,
 		'roster' => $roster,
 		'register' => $register,
+		'role1_name' => $role1_name,
+		'role2_name' => $role2_name,
+		'role3_name' => $role3_name,
+		'role4_name' => $role4_name,
+		'role5_name' => $role5_name,
+		'role6_name' => $role6_name,
+		'role1_text' => $phprlang['configuration_role1_text'],
+		'role2_text' => $phprlang['configuration_role2_text'],
+		'role3_text' => $phprlang['configuration_role3_text'],
+		'role4_text' => $phprlang['configuration_role4_text'],
+		'role5_text' => $phprlang['configuration_role5_text'],
+		'role6_text' => $phprlang['configuration_role6_text'],
 		'armory_link_text' => $phprlang['configuration_armory_link_text'],
 		'armory_language_text' => $phprlang['configuration_armory_language_text'],
 		'enable_five_man_text' => $phprlang['configuration_enable_five_man'],
@@ -657,6 +675,12 @@ else
 	$rss_feed_amt_p = scrub_input($_POST['rss_feed_amt']);
 	$armory_link = scrub_input($_POST['armory_link']);
 	$armory_language = scrub_input($_POST['armory_language']);
+	$role1_name = scrub_input($_POST['role1_name']);
+	$role2_name = scrub_input($_POST['role2_name']);
+	$role3_name = scrub_input($_POST['role3_name']);
+	$role4_name = scrub_input($_POST['role4_name']);
+	$role5_name = scrub_input($_POST['role5_name']);
+	$role6_name = scrub_input($_POST['role6_name']);
 		
 	if(isset($_POST['multiple_signups']))
 		$allow_multiple = 1;
@@ -908,6 +932,18 @@ else
 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'rss_export_url';", quote_smart($rss_export_url_p));
 	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'rss_feed_amt';", quote_smart($rss_feed_amt_p));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'role1_name';", quote_smart($role1_name));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'role2_name';", quote_smart($role2_name));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'role3_name';", quote_smart($role3_name));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'role4_name';", quote_smart($role4_name));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'role5_name';", quote_smart($role5_name));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'role6_name';", quote_smart($role6_name));
 	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
 	//Signup Flow Config
 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'user_queue_promote';", quote_smart($uqp));

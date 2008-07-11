@@ -62,6 +62,7 @@ if($_GET['mode'] == 'view') {
 				'Frost'=>$data['frost'],
 				'Nature'=>$data['nature'],
 				'Shadow'=>$data['shadow'],
+				'Role'=>$data['role'],
 				''=>'<a href="profile.php?mode=remove&n='.$data['name'].'&id='.$data['char_id'].'"><img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''. $phprlang['delete'] .'\')"; onMouseout="hideddrivetip()"></a>
 					 <a href="profile.php?mode=edit&race='.$data['race'].'&id='.$data['char_id'].'"><img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_edit.gif" border="0" onMouseover="ddrivetip(\'' . $phprlang['edit'] .'\')"; onMouseout="hideddrivetip()"></a>')
 			);
@@ -95,6 +96,7 @@ if($_GET['mode'] == 'view') {
 	$report->addOutputColumn('Level',$phprlang['level'],'','center');
 	$report->addOutputColumn('Race',$phprlang['race'],'','center');
 	$report->addOutputColumn('Class',$phprlang['class'],'','center');
+	$report->addOutputColumn('Role',$phprlang['role'],'','center');	
 	$report->addOutputColumn('Arcane','<img src="templates/' . $phpraid_config['template'] . '/images/resistances/arcane_resistance.gif" onMouseover="ddrivetip(\''.$phprlang['arcane'].'\')"; onMouseout="hideddrivetip()" height="16" width="16" border="0">','','center');
 	$report->addOutputColumn('Fire','<img src="templates/' . $phpraid_config['template'] . '/images/resistances/fire_resistance.gif" onMouseover="ddrivetip(\''.$phprlang['fire'].'\')"; onMouseout="hideddrivetip()" height="16" width="16" border="0">','','center');
 	$report->addOutputColumn('Nature','<img src="templates/' . $phpraid_config['template'] . '/images/resistances/nature_resistance.gif" onMouseover="ddrivetip(\''.$phprlang['nature'].'\')"; onMouseout="hideddrivetip()" height="16" width="16" border="0">','','center');
@@ -111,8 +113,8 @@ if($_GET['mode'] == 'view') {
 	while($signups = $db_raid->sql_fetchrow($result, true))
 	{
 		// setup the count array
-		$count = array('dr'=>'0','hu'=>'0','ma'=>'0','pr'=>'0','pa'=>'0','ro'=>'0','sh'=>'0','wk'=>'0','wa'=>'0');
-		
+		$count = array('dr'=>'0','hu'=>'0','ma'=>'0','pa'=>'0','pr'=>'0','ro'=>'0','sh'=>'0','wk'=>'0','wa'=>'0','ranged'=>'0','tank'=>'0','heal'=>'0','melee'=>'0','tkmel'=>'0');
+
 		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id=%s", quote_smart($signups['raid_id']));
 		$result_raid = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 		$data = $db_raid->sql_fetchrow($result_raid, true);
@@ -271,6 +273,7 @@ if($_GET['mode'] == 'view') {
 		$dupeChar = isCharExist($name);
 		$guild = scrub_input($_POST['guild']);
 		$level = scrub_input($_POST['level']);
+		$role = scrub_input($_POST['role']);	
 		$arcane = scrub_input($_POST['arcane']);
 		$fire = scrub_input($_POST['fire']);
 		$frost = scrub_input($_POST['frost']);
@@ -291,6 +294,7 @@ if($_GET['mode'] == 'view') {
 		$name = $data['name'];
 		$dupeChar = 0;
 		$level = $data['lvl'];
+		$role = $data['role'];		
 		$arcane = $data['arcane'];
 		$fire = $data['fire'];
 		$frost = $data['frost'];
@@ -305,6 +309,7 @@ if($_GET['mode'] == 'view') {
 		$name = scrub_input(ucfirst(trim($_POST['name'])));
 		$guild = scrub_input($_POST['guild']);
 		$level = scrub_input($_POST['level']);
+		$role = scrub_input($_POST['role']);
 		$arcane = scrub_input($_POST['arcane']);
 		$fire = scrub_input($_POST['fire']);
 		$frost = scrub_input($_POST['frost']);
@@ -331,11 +336,13 @@ if($_GET['mode'] == 'view') {
 				$errorMsg .= '<li>'.$phprlang['profile_error_name'].'</li>';
 			if($level == '' || !is_numeric($level) || $level < 1 || $level > 70)
 				$errorMsg .= '<li>'.$phprlang['profile_error_level'].'</li>';
-				
+			if($role == '' || $role == $phprlang['role_none'])
+				$errorMsg .= '<li>'.$phprlang['profile_error_role'].'</li>';
+
 			$errorDie = 0;
 			$errorMsg .= '</ul>';
-				
-			if ($errorMsg != '<ul></ul>')
+
+			if($errorMsg != '<ul></ul>')
 			{
 				$errorDie = 1;
 			}
@@ -353,21 +360,21 @@ if($_GET['mode'] == 'view') {
 
 				if($_GET['mode'] == 'new') {
 					$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "chars (`profile_id`,`name`,`class`,
-					`gender`,`guild`,`lvl`,`race`,`arcane`,`fire`,`frost`,`nature`,`shadow`) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,
-					%s,%s,%s,%s)",quote_smart($profile),quote_smart($name),quote_smart($class),quote_smart($gender),quote_smart($guild),
-					quote_smart($level),quote_smart($race),quote_smart($arcane),quote_smart($fire),quote_smart($frost),quote_smart($nature),quote_smart($shadow));
-					
+					`gender`,`guild`,`lvl`,`race`,`arcane`,`fire`,`frost`,`nature`,`shadow`,`role`) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,
+					%s,%s,%s,%s,%s)",quote_smart($profile),quote_smart($name),quote_smart($class),quote_smart($gender),quote_smart($guild),
+					quote_smart($level),quote_smart($race),quote_smart($arcane),quote_smart($fire),quote_smart($frost),quote_smart($nature),quote_smart($shadow),quote_smart($role));
+
 					$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 
 					log_create('character',mysql_insert_id(),$name);
 				} elseif($_GET['mode'] == 'edit') {
 					$char_id=scrub_input($_GET['id']);
 					$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "chars SET name=%s,lvl=%s,race=%s,
-					class=%s,gender=%s,guild=%s,arcane=%s,nature=%s,shadow=%s,fire=%s,frost=%s WHERE char_id=%s",
+					class=%s,gender=%s,guild=%s,arcane=%s,nature=%s,shadow=%s,fire=%s,frost=%s,role=%s WHERE char_id=%s",
 					quote_smart($name),quote_smart($level),quote_smart($race),quote_smart($class),quote_smart($gender),
 					quote_smart($guild),quote_smart($arcane),quote_smart($nature),quote_smart($shadow),quote_smart($fire),
-					quote_smart($frost),quote_smart($char_id));
-					
+					quote_smart($frost),quote_smart($role),quote_smart($char_id));
+
 					$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 				}
 				header("Location: profile.php?mode=view");
@@ -375,12 +382,12 @@ if($_GET['mode'] == 'view') {
 		}
 		else
 		{
-			if($dupeChar || $guild == '' || $class == '' || $race == $phprlang['form_select'] || $name == '' || 
-				!is_numeric($arcane) || !is_numeric($fire) || !is_numeric($frost) || 
+			if($dupeChar || $guild == '' || $class == '' || $race == $phprlang['form_select'] || $name == '' ||
+				!is_numeric($arcane) || !is_numeric($fire) || !is_numeric($frost) ||
 				!is_numeric($nature) || !is_numeric($shadow) || !is_numeric($level) ||
-				$level < 1 || $level > 70) 
-			{		
-				$errorSpace = 1;	
+				$level < 1 || $level > 70 || $role == '' || $role == $phprlang['role_none'])
+			{
+				$errorSpace = 1;
 				$errorTitle = $phprlang['form_error'];
 				$errorMsg = '<ul>';
 
@@ -406,10 +413,12 @@ if($_GET['mode'] == 'view') {
 					$errorMsg .= '<li>'.$phprlang['profile_error_nature'].'</li>';
 				if(!is_numeric($shadow))
 					$errorMsg .= '<li>'.$phprlang['profile_error_shadow'].'</li>';
+				if($role == '' || $role == $phprlang['role_none'])
+					$errorMsg .= '<li>'.$phprlang['profile_error_role'].'</li>';
 				$errorDie = 0;
 
 				$errorMsg .= '</ul>';
-				
+
 				if($errorMsg != '<ul></ul>')
 					$errorDie = 1;
 			} 
@@ -417,30 +426,30 @@ if($_GET['mode'] == 'view') {
 			{
 				// all is good add to database
 				$profile = scrub_input($_SESSION['profile_id']);
-				
-				if($_GET['mode'] == 'new') 
+
+				if($_GET['mode'] == 'new')
 				{
 					$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "chars (`profile_id`,`name`,`class`,
-					`gender`,`guild`,`lvl`,`race`,`arcane`,`fire`,`frost`,`nature`,`shadow`) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,
-					%s,%s,%s,%s)",quote_smart($profile),quote_smart($name),quote_smart($class),quote_smart($gender),quote_smart($guild),
-					quote_smart($level),quote_smart($race),quote_smart($arcane),quote_smart($fire),quote_smart($frost),quote_smart($nature),quote_smart($shadow));
-					
+					`gender`,`guild`,`lvl`,`race`,`arcane`,`fire`,`frost`,`nature`,`shadow`,`role`) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,
+					%s,%s,%s,%s,%s)",quote_smart($profile),quote_smart($name),quote_smart($class),quote_smart($gender),quote_smart($guild),
+					quote_smart($level),quote_smart($race),quote_smart($arcane),quote_smart($fire),quote_smart($frost),quote_smart($nature),quote_smart($shadow),quote_smart($role));
+
 					$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-					
+
 					log_create('character',mysql_insert_id(),$name);
-				} 
-				elseif($_GET['mode'] == 'edit') 
+				}
+				elseif($_GET['mode'] == 'edit')
 				{
 					$char_id=scrub_input($_GET['id']);
 					$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "chars SET name=%s,lvl=%s,race=%s,
-					class=%s,gender=%s,guild=%s,arcane=%s,nature=%s,shadow=%s,fire=%s,frost=%s WHERE char_id=%s",
+					class=%s,gender=%s,guild=%s,arcane=%s,nature=%s,shadow=%s,fire=%s,frost=%s,role=%s WHERE char_id=%s",
 					quote_smart($name),quote_smart($level),quote_smart($race),quote_smart($class),quote_smart($gender),
 					quote_smart($guild),quote_smart($arcane),quote_smart($nature),quote_smart($shadow),quote_smart($fire),
-					quote_smart($frost),quote_smart($char_id));
-					
+					quote_smart($frost),quote_smart($role),quote_smart($char_id));
+
 					$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 				}
-				
+
 				header("Location: profile.php?mode=view");
 			}
 		}
@@ -499,7 +508,10 @@ if($db_raid->sql_numrows($result) == 0) {
 
 		if(!isset($shadow))
 			$shadow = '';
-			
+
+		if(!isset($role))
+			$role = '';
+
 		// template variables
 		if($_GET['mode'] == 'view' || $_GET['mode'] == 'new')
 			$form_action = 'profile.php?mode=new&race='.$race;
@@ -652,7 +664,38 @@ if($db_raid->sql_numrows($result) == 0) {
 			$gender_options .= "<option value=\"".$phprlang['female']."\" selected>".$phprlang['female']."</option>";
 		else
 			$gender_options .= "<option value=\"".$phprlang['female']."\">".$phprlang['female']."</option>";
-			
+
+		//Role Selection
+		if($role == $phprlang['role_none'] || $role == '')
+			$role_options .= "<option value=\"".$phprlang['role_none']."\" selected>".$phprlang['role_none']."</option>".$role;
+		else
+			$role_options .= "<option value=\"".$phprlang['role_none']."\">".$phprlang['role_none']."</option>";
+
+		if($role == $phprlang['role_tank'])
+			$role_options .= "<option value=\"".$phprlang['role_tank']."\" selected>".$phprlang['role_tank']."</option>";
+		else
+			$role_options .= "<option value=\"".$phprlang['role_tank']."\">".$phprlang['role_tank']."</option>";
+
+		if($role == $phprlang['role_heal'])
+			$role_options .= "<option value=\"".$phprlang['role_heal']."\" selected>".$phprlang['role_heal']."</option>";
+		else
+			$role_options .= "<option value=\"".$phprlang['role_heal']."\">".$phprlang['role_heal']."</option>";
+
+		if($role == $phprlang['role_melee'])
+			$role_options .= "<option value=\"".$phprlang['role_melee']."\" selected>".$phprlang['role_melee']."</option>";
+		else
+			$role_options .= "<option value=\"".$phprlang['role_melee']."\">".$phprlang['role_melee']."</option>";
+
+		if($role == $phprlang['role_ranged'])
+			$role_options .= "<option value=\"".$phprlang['role_ranged']."\" selected>".$phprlang['role_ranged']."</option>";
+		else
+			$role_options .= "<option value=\"".$phprlang['role_ranged']."\">".$phprlang['role_ranged']."</option>";
+
+		if($role == $phprlang['role_tankmelee'])
+			$role_options .= "<option value=\"".$phprlang['role_tankmelee']."\" selected>".$phprlang['role_tankmelee']."</option>";
+		else
+			$role_options .= "<option value=\"".$phprlang['role_tankmelee']."\">".$phprlang['role_tankmelee']."</option>";
+
 		// setup output variables for form
 		$race_output = '<select name="race" onChange="MM_jumpMenu(\'parent\',this,0)" class="form" style="width:100px">
 						<option value="profile.php?mode=new">'.$phprlang['form_select'].'</option>' . $race_options . '</select>';
@@ -663,6 +706,7 @@ if($db_raid->sql_numrows($result) == 0) {
 			$level = '<select name="level" DISABLED><option></option></select>';
 			$gender = '<select name="gender" DISABLED><option></option></select>';
 			$guild = '<select name="guild" DISABLED><option></option></select>';
+			$role = '<select name="role" DISABLED><option></option></select>';
 			$arcane = '<select name="arcane" DISABLED><option></option></select>';
 			$fire = '<select name="fire" DISABLED><option></option></select>';
 			$frost = '<select name="frost" DISABLED><option></option></select>';
@@ -690,6 +734,7 @@ if($db_raid->sql_numrows($result) == 0) {
 			$name = '<input type="text" name="name" class="post" value="' . $name . '" style="width:100px">';
 			$level = '<input name="level" type="text" class="post" size="2" value="' . $level . '" maxlength="2">';
 			$gender = '<select name="gender" class="form" id="gender" style="width:100px">' .$gender_options. '</select>';
+			$role = '<select name="role" class="form" id="role" style="width:140px">' .$role_options. '</select>';
 			$arcane = '<input name="arcane" type="text" class="post" size="3" value="' . $arcane . '" maxlength="3">';
 			$fire =  '<input name="fire" type="text" class="post" size="3" value="' . $fire . '" maxlength="3">';
 			$frost =  '<input name="frost" type="text" class="post" size="3" value="' . $frost . '" maxlength="3">';
@@ -727,6 +772,8 @@ if($db_raid->sql_numrows($result) == 0) {
 			'shadow'=>$shadow,
 			'guild_text' => $phprlang['profile_guild'],
 			'guild' => $guild,
+			'role_text' => $phprlang['profile_role'],
+			'role' => $role,
 			'level'=>$level,
 			'new_header'=>$phprlang['profile_new'],
 			'race_text'=>$phprlang['profile_race'],

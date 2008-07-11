@@ -71,6 +71,11 @@ if($_GET['mode'] == 'view')
 				'sh'=>$data['sh'],
 				'wk'=>$data['wk'],
 				'wa'=>$data['wa'],
+				'tank'=>$data['tank'],
+				'heal'=>$data['heal'],
+				'melee'=>$data['melee'],
+				'ranged'=>$data['ranged'],
+				'tkmel'=>$data['tkmel'],
 				'locked'=>$data['locked'],
 				''=>$edit . $delete,
 			)
@@ -109,6 +114,11 @@ if($_GET['mode'] == 'view')
 	$report->addOutputColumn('sh', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/shaman_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['shaman'] . '\')"; onMouseout="hideddrivetip()">', '', 'center');
 	$report->addOutputColumn('wk', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/warlock_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['warlock'] . '\')"; onMouseout="hideddrivetip()">', '', 'center');
 	$report->addOutputColumn('wa', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/warrior_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['warrior'] . '\')"; onMouseout="hideddrivetip()">', '', 'center');
+	$report->addOutputColumn('tank',$phprlang['max_tanks'],'','center');
+	$report->addOutputColumn('heal',$phprlang['max_heals'],'','center');
+	$report->addOutputColumn('melee',$phprlang['max_melees'],'','center');
+	$report->addOutputColumn('ranged',$phprlang['max_ranged'],'','center');
+	$report->addOutputColumn('tkmel',$phprlang['max_tkmels'],'','center');
 	$report->addOutputColumn('max_chars',$phprlang['max_raiders'],'','center');
 	$report->addOutputColumn('locked',$phprlang['locked_header'],'','center');
 	$report->addOutputColumn('','','','right');
@@ -144,6 +154,11 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 	$sh = scrub_input($_POST['sh']);
 	$wk = scrub_input($_POST['wk']);
 	$wa = scrub_input($_POST['wa']);
+	$tank = scrub_input($_POST['tank']);
+	$heal = scrub_input($_POST['heal']);
+	$melee = scrub_input($_POST['melee']);
+	$ranged = scrub_input($_POST['ranged']);
+	$tkmel = scrub_input($_POST['tkmel']);
  	if(isset($_POST['lock_template']))
  		$locked = 1;
  	else
@@ -153,10 +168,12 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 	if($_GET['mode'] == 'new')
 	{
 		$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "locations (`location`,`min_lvl`,`max_lvl`,
-		`name`,`dr`,`hu`,`ma`,`pa`,`pr`,`ro`,`sh`,`wk`,`wa`,`max`,`locked`) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
+		`name`,`dr`,`hu`,`ma`,`pa`,`pr`,`ro`,`sh`,`wk`,`wa`,`tank`,`heal`,`melee`,`ranged`,`tkmel`,`max`,`locked`) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
 		quote_smart($loc),quote_smart($min_lvl),quote_smart($max_lvl),quote_smart($name),quote_smart($dr),quote_smart($hu),
-		quote_smart($ma),quote_smart($pa),quote_smart($pr),quote_smart($ro),quote_smart($sh),quote_smart($wk),quote_smart($wa),quote_smart($max),quote_smart($locked));
-		
+		quote_smart($ma),quote_smart($pa),quote_smart($pr),quote_smart($ro),quote_smart($sh),quote_smart($wk),quote_smart($wa),
+		quote_smart($tank),quote_smart($heal),quote_smart($melee),quote_smart($ranged),quote_smart($tkmel),
+		quote_smart($max),quote_smart($locked));
+
 		$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
 
 		log_create('location',mysql_insert_id(),$name);
@@ -169,8 +186,9 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 			$id = '';
 
 		$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "locations SET name=%s,max=%s,dr=%s,hu=%s,ma=%s,pa=%s,pr=%s,ro=%s,sh=%s,wk=%s,
-		wa=%s,min_lvl=%s,max_lvl=%s,location=%s,locked=%s WHERE location_id=%s",quote_smart($name),quote_smart($max),quote_smart($dr),
-		quote_smart($hu),quote_smart($ma),quote_smart($pa),quote_smart($pr),quote_smart($ro),quote_smart($sh),quote_smart($wk),quote_smart($wa),quote_smart($min_lvl),
+		wa=%s,tank=%s,heal=%s,melee=%s,ranged=%s,tkmel=%s,min_lvl=%s,max_lvl=%s,location=%s,locked=%s WHERE location_id=%s",quote_smart($name),quote_smart($max),quote_smart($dr),
+		quote_smart($hu),quote_smart($ma),quote_smart($pa),quote_smart($pr),quote_smart($ro),quote_smart($sh),quote_smart($wk),quote_smart($wa),
+		quote_smart($tank),quote_smart($heal),quote_smart($melee),quote_smart($ranged),quote_smart($tkmel),quote_smart($min_lvl),
 		quote_smart($max_lvl),quote_smart($loc),quote_smart($locked),quote_smart($id));
 
 		$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
@@ -234,6 +252,11 @@ if($_GET['mode'] != 'delete')
 		$sh = '<input name="sh" type="text" class="post" style="width:20px" maxlength="2">';
 		$wk = '<input name="wk" type="text" class="post" style="width:20px" maxlength="2">';
 		$wa = '<input name="wa" type="text" class="post" style="width:20px" maxlength="2">';
+		$tank = '<input name="tank" type="text" class="post" style="width:20px" maxlength="2">';
+		$heal = '<input name="heal" type="text" class="post" style="width:20px" maxlength="2">';
+		$melee = '<input name="melee" type="text" class="post" style="width:20px" maxlength="2">';
+		$ranged = '<input name="ranged" type="text" class="post" style="width:20px" maxlength="2">';
+		$tkmel = '<input name="tkmel" type="text" class="post" style="width:20px" maxlength="2">';
 		$locked = '<input name="lock_template" type="checkbox" value="1" class="post">';
 		$max = '<input name="max" type="text" class="post" style="width:20px" maxlength="2">';
 		$buttons = '<input type="submit" value="Submit" name="submit" class="mainoption"> <input type="reset" value="Reset" name="reset" class="liteoption">';
@@ -261,6 +284,11 @@ if($_GET['mode'] != 'delete')
 		$sh = '<input name="sh" type="text" value="' . $data['sh'] . '"  class="post" style="width:20px" maxlength="2">';
 		$wk = '<input name="wk" type="text" value="' . $data['wk'] . '"  class="post" style="width:20px" maxlength="2">';
 		$wa = '<input name="wa" type="text" value="' . $data['wa'] . '"  class="post" style="width:20px" maxlength="2">';
+		$tank = '<input name="tank" type="text" value="' . $data['tank'] . '"  class="post" style="width:20px" maxlength="2">';
+		$heal = '<input name="heal" type="text" value="' . $data['heal'] . '"  class="post" style="width:20px" maxlength="2">';
+		$melee = '<input name="melee" type="text" value="' . $data['melee'] . '"  class="post" style="width:20px" maxlength="2">';
+		$ranged = '<input name="ranged" type="text" value="' . $data['ranged'] . '"  class="post" style="width:20px" maxlength="2">';
+		$tkmel = '<input name="tkmel" type="text" value="' . $data['tkmel'] . '"  class="post" style="width:20px" maxlength="2">';
 		if($data['locked'] == '0')
 			$locked = '<input type="checkbox" name="lock_template" value="' . $data['locked'] . '"  class="post">';
 		else
@@ -286,6 +314,11 @@ if($_GET['mode'] != 'delete')
 			'sh'=>$sh,
 			'wk'=>$wk,
 			'wa'=>$wa,
+			'tank'=>$tank,
+			'heal'=>$heal,
+			'melee'=>$melee,
+			'ranged'=>$ranged,
+			'tkmel'=>$tkmel,
 			'max'=>$max,
 			'locked'=>$locked,
 			'buttons'=>$buttons,
@@ -298,6 +331,11 @@ if($_GET['mode'] != 'delete')
 			'shaman_name'=>$phprlang['shaman'],
 			'warlock_name'=>$phprlang['warlock'],
 			'warrior_name'=>$phprlang['warrior'],
+			'tank_name'=>$phprlang['max_tanks'],
+			'heal_name'=>$phprlang['max_heals'],
+			'melee_name'=>$phprlang['max_melees'],
+			'ranged_name'=>$phprlang['max_ranged'],
+			'tkmel_name'=>$phprlang['max_tkmels'],
 			'locked_text'=>$phprlang['lock_template'],
 			'newlocation_header'=>$phprlang['locations_new'],
 			'shortname_text'=>$phprlang['locations_short'],

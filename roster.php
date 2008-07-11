@@ -62,6 +62,7 @@ while($data = $db_raid->sql_fetchrow($result, true)) {
 			'Level'=>$data['lvl'],
 			'Race'=>$data['race'],
 			'Class'=>$data['class'],
+			'Role'=>$data['role'],
 			'Arcane'=>$data['arcane'],
 			'Fire'=>$data['fire'],
 			'Frost'=>$data['frost'],
@@ -102,6 +103,7 @@ $report->addOutputColumn('Guild',$phprlang['guild'],'','center');
 $report->addOutputColumn('Level',$phprlang['level'],'','center');
 $report->addOutputColumn('Race',$phprlang['race'],'','center');
 $report->addOutputColumn('Class',$phprlang['class'],'','center');
+$report->addOutputColumn('Role',$phprlang['role'],'','center');
 $report->addOutputColumn('Arcane','<img border="0" src="templates/' . $phpraid_config['template'] . '/images/resistances/arcane_resistance.gif" onMouseover="ddrivetip(\''.$phprlang['arcane'].'\')"; onMouseout="hideddrivetip()" height="16" width="16">','','center');
 $report->addOutputColumn('Fire','<img border="0" src="templates/' . $phpraid_config['template'] . '/images/resistances/fire_resistance.gif" onMouseover="ddrivetip(\''.$phprlang['fire'].'\')"; onMouseout="hideddrivetip()" height="16" width="16">','','center');
 $report->addOutputColumn('Nature','<img border="0" src="templates/' . $phpraid_config['template'] . '/images/resistances/nature_resistance.gif" onMouseover="ddrivetip(\''.$phprlang['nature'].'\')"; onMouseout="hideddrivetip()" height="16" width="16">','','center');

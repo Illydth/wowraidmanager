@@ -56,18 +56,19 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true)) {
 	$start = new_date($phpraid_config['time_format'], $raids['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
 	
 	$count = get_char_count($raids['raid_id'], $type='');
-	$count2 = get_char_count($raids['raid_id'], $type='backup');
+	$count2 = get_char_count($raids['raid_id'], $type='queue');
 
-	//Raid maximum
+	//Drafted maximum
 	$max = $count['dr'] + $count['hu'] + $count['ma'] + $count['pa'] + $count['pr'] + $count['ro'] + $count ['sh'] + $count['wk'] + $count['wa'];
 	
-	//Backup
+	//Queued Additional
 	$max2 = $count2['dr'] + $count2['hu'] + $count2['ma'] + $count2['pa'] + $count2['pr'] + $count2['ro'] + $count2['sh'] + $count2['wk'] + $count2['wa'];
 
 	if($max == "")
 	{
 		$max = "0";
 	}		
+	
 	if($max2 == "")
 	{
 		$max2 = "";
@@ -96,7 +97,17 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true)) {
 	}
 	
 	$location = '<a href="view.php?mode=view&raid_id=' . $raids['raid_id'] . '">' . $raids['location'] . '</a>';
-			
+	
+	//Code Specific to Nalumis	
+	//$minustkmel = 0;
+	//$tank = get_coloredcount($count['tank'], $count2['tank'], $raids['tank_lmt'], 0, $count['tkmel'] + $count2['tkmel'], 0, 0, 0, $minustkmel);
+	//$heal = get_coloredcount($count['heal'], $count2['heal'], $raids['heal_lmt'], 0, 0, 0, 0, 0, $minustkmel);
+	//$merk_minustkmel = $minustkmel;
+	//$melee = get_coloredcount($count['melee'], $count2['melee'], $raids['melee_lmt'], 2, $count['tkmel'] + $count2['tkmel'] - $minustkmel, $count['melee'] + $count['ranged'], $count2['melee'] + $count2['ranged'], $raids['melee_lmt'] + $raids['ranged_lmt'], $minustkmel);
+	//$minustkmel = $merk_minustkmel;
+	//$ranged = get_coloredcount($count['ranged'], $count2['ranged'], $raids['ranged_lmt'], 2, $count['tkmel'] + $count2['tkmel'] - $minustkmel, $count['melee'] + $count['ranged'], $count2['melee'] + $count2['ranged'], $raids['melee_lmt'] + $raids['ranged_lmt'], $minustkmel);
+	//$tkmel = get_coloredcount($count['tkmel'], $count2['tkmel'], $raids['tkmel_lmt'], 1, 0, 0, 0, 0, $minustkmel);
+	
 	// always show current raids
 	if($raids['old'] == 0) {
 		array_push($current,
@@ -117,6 +128,13 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true)) {
 				'sh'=>$count['sh'] . '/' . $raids['sh_lmt'],
 				'wk'=>$count['wk'] . '/' . $raids['wk_lmt'],
 				'wa'=>$count['wa'] . '/' . $raids['wa_lmt'],
+				'role1'=>$count['role1'] . '/' . $raids['role1_lmt'],
+				'role2'=>$count['role2'] . '/' . $raids['role2_lmt'],
+				'role3'=>$count['role3'] . '/' . $raids['role3_lmt'],
+				'role4'=>$count['role4'] . '/' . $raids['role4_lmt'],
+				'role5'=>$count['role5'] . '/' . $raids['role5_lmt'],
+				'role6'=>$count['role6'] . '/' . $raids['role6_lmt'],
+				//'Tank'=>$tank,'Heal'=>$heal,'Melee'=>$melee,'Ranged'=>$ranged,'TkMel'=>$tkmel,
 				'max'=>$max . '/' . $raids['max'] . '' . $max2,
 				'info'=>$info,
 				'raid'=>$raids['raid_id']
@@ -141,6 +159,13 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true)) {
 				'sh'=>$count['sh'] . '/' . $raids['sh_lmt'],
 				'wk'=>$count['wk'] . '/' . $raids['wk_lmt'],
 				'wa'=>$count['wa'] . '/' . $raids['wa_lmt'],
+				'role1'=>$count['role1'] . '/' . $raids['role1_lmt'],
+				'role2'=>$count['role2'] . '/' . $raids['role2_lmt'],
+				'role3'=>$count['role3'] . '/' . $raids['role3_lmt'],
+				'role4'=>$count['role4'] . '/' . $raids['role4_lmt'],
+				'role5'=>$count['role5'] . '/' . $raids['role5_lmt'],
+				'role6'=>$count['role6'] . '/' . $raids['role6_lmt'],
+				//'Tank'=>$tank,'Heal'=>$heal,'Melee'=>$melee,'Ranged'=>$ranged,'TkMel'=>$tkmel,
 				'max'=>$max . '/' . $raids['max'] . '' . $max2,
 				'info'=>$info,
 				'raid'=>$raids['raid_id']
@@ -188,6 +213,18 @@ $report->addOutputColumn('ro', '<img src="templates/' . $phpraid_config['templat
 $report->addOutputColumn('sh', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/shaman_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['shaman'] . '\')"; onMouseout="hideddrivetip()">', '', 'center');
 $report->addOutputColumn('wk', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/warlock_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['warlock'] . '\')"; onMouseout="hideddrivetip()">', '', 'center');
 $report->addOutputColumn('wa', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/warrior_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['warrior'] . '\')"; onMouseout="hideddrivetip()">', '', 'center');
+if ($phpraid_config['role1_name'] != '')
+	$report->addOutputColumn('role1',$phpraid_config['role1_name'],'','center');
+if ($phpraid_config['role2_name'] != '')
+	$report->addOutputColumn('role2',$phpraid_config['role2_name'],'','center');
+if ($phpraid_config['role3_name'] != '')
+	$report->addOutputColumn('role3',$phpraid_config['role3_name'],'','center');
+if ($phpraid_config['role4_name'] != '')
+	$report->addOutputColumn('role4',$phpraid_config['role4_name'],'','center');
+if ($phpraid_config['role5_name'] != '')
+	$report->addOutputColumn('role5',$phpraid_config['role5_name'],'','center');
+if ($phpraid_config['role6_name'] != '')
+	$report->addOutputColumn('role6',$phpraid_config['role6_name'],'','center');
 $report->addOutputColumn('max',$phprlang['totals'],'','center');
 
 // and finally, put the data into the variables to be read

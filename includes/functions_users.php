@@ -92,14 +92,19 @@ function check_frozen($raid_id) {
 function get_char_count($id, $type) {
 	global $db_raid, $phpraid_config, $phprlang;
 
-	$count = array('dr'=>'0','hu'=>'0','ma'=>'0','pa'=>'0','pr'=>'0','ro'=>'0','sh'=>'0','wk'=>'0','wa'=>'0');
+	$count = array('dr'=>'0','hu'=>'0','ma'=>'0','pa'=>'0','pr'=>'0','ro'=>'0','sh'=>'0','wk'=>'0','wa'=>'0','role1'=>'0','role2'=>'0','role3'=>'0','role4'=>'0','role5'=>'0','role6'=>'0');
 
-	if($type == "backup")
+	if($type == "queue") //Count Queued Signups
 	{
 		$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id='$id' AND queue='1' AND cancel='0'";
 		$result_signups = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 	}
-	else
+	elseif($type == "cancel") //Count Cancelled Signups
+	{
+		$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id='$id' AND queue='0' AND cancel='1'";
+		$result_signups = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);		
+	}
+	else //Count Drafted Signups
 	{
 		$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id='$id' AND queue='0' AND cancel='0'";
 		$result_signups = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
@@ -136,6 +141,27 @@ function get_char_count($id, $type) {
 				break;
 			case $phprlang['warrior']:
 				$count['wa']++;
+				break;
+		}
+
+		switch($char['role']) {
+			case $phpraid_config['role1_name']:
+				$count['role1']++;
+				break;
+			case $phpraid_config['role2_name']:
+				$count['role2']++;
+				break;
+			case $phpraid_config['role3_name']:
+				$count['role3']++;
+				break;
+			case $phpraid_config['role4_name']:
+				$count['role4']++;
+				break;
+			case $phpraid_config['role5_name']:
+				$count['role5']++;
+				break;
+			case $phpraid_config['role6_name']:
+				$count['role6']++;
 				break;
 		}
 	}

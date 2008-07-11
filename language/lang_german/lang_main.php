@@ -57,6 +57,27 @@ $phprlang['title'] = 'Titel';
 $phprlang['totals'] = 'Gesamt';
 $phprlang['username'] = 'Benutzername';
 
+// roles
+$phprlang['role'] = 'Rolle';
+$phprlang['role_none'] = '-';
+$phprlang['role_tank'] = 'Tank';
+$phprlang['role_heal'] = 'Heiler';
+$phprlang['role_melee'] = 'Nahkämpfer';
+$phprlang['role_ranged'] = 'Fernkämpfer';
+$phprlang['role_tankmelee'] = 'Tank oder Nahkämpfer';
+
+$phprlang['role_tanks'] = 'Tanks';
+$phprlang['role_heals'] = 'Heiler';
+$phprlang['role_melees'] = 'Nahkämpfer';
+$phprlang['role_ranges'] = 'Fernkämpfer';
+$phprlang['role_tankmelees'] = 'Tanks/Nahkämpfer';
+
+$phprlang['max_tanks'] = 'Erwünschte Tanks';
+$phprlang['max_heals'] = 'Erwünschte Heiler';
+$phprlang['max_melees'] = 'Erwünschte Nahkämpfer';
+$phprlang['max_ranged'] = 'Erwünschte Fernkämpfer';
+$phprlang['max_tkmels'] = 'Erwünschte Tanks oder Nahkämpfer';
+
 // errors
 $phprlang['connect_socked_error'] = 'Fehler beim Aufbau der Socket-Verbindung:  %s';
 // unused: $phprlang['invalid_group_title'] = 'Group exists';
@@ -98,6 +119,7 @@ $phprlang['profile_error_level'] = 'Stufe muss nummerisch und zwischen 1 und 70 
 $phprlang['profile_error_name'] = 'Du musst einen Namen eingeben';
 $phprlang['profile_error_nature'] = 'Naturwiderstand muss nummerisch sein';
 $phprlang['profile_error_race'] = 'Du musst eine Rasse auswählen';
+$phprlang['profile_error_role'] = 'Du musst eine Rolle auswählen';
 $phprlang['profile_error_shadow'] = 'Schattenwiderstand muss nummerisch sein';
 $phprlang['raid_error_date'] = 'Du musst ein gültiges Datum eingeben';
 $phprlang['raid_error_description'] = 'Du musst eine Beschreibung eingeben';
@@ -105,6 +127,7 @@ $phprlang['raid_error_limits'] = 'Alle Raid-Begrenzungen müssen eingegeben werd
 $phprlang['raid_error_location'] = 'Du musst eine Raidinstanz eingeben';
 $phprlang['reset'] = 'Zurücksetzen';
 $phprlang['view_error_signed_up'] = 'Du hast dich bereits mit diesem Charakter angemeldet';
+$phprlang['view_error_role_undef'] = 'Bitte weise deinem Charakter im <a href="profile.php?mode=view">Profil</a> erst eine Rolle zu';
 $phprlang['yes'] = 'Ja';
 
 // generic information

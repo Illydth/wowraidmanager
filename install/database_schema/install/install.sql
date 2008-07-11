@@ -23,6 +23,7 @@ CREATE TABLE  `phpraid_chars` (
   `frost` int(5) NOT NULL default '0',
   `nature` int(5) NOT NULL default '0',
   `shadow` int(5) NOT NULL default '0',
+  `role` varchar(255) NOT NULL default '',
   PRIMARY KEY  (`char_id`)
 );
 
@@ -57,6 +58,12 @@ CREATE TABLE  `phpraid_locations` (
   `sh` int(2) NOT NULL default '0',
   `wk` int(2) NOT NULL default '0',
   `wa` int(2) NOT NULL default '0',
+  `role1` int(2) NOT NULL default '0',
+  `role2` int(2) NOT NULL default '0',
+  `role3` int(2) NOT NULL default '0',
+  `role4` int(2) NOT NULL default '0',
+  `role5` int(2) NOT NULL default '0',
+  `role6` int(2) NOT NULL default '0',
   `max` int(2) NOT NULL default '0',
   `locked` tinyint(1) NOT NULL default '0',
   PRIMARY KEY  (`location_id`)
@@ -153,6 +160,12 @@ CREATE TABLE  `phpraid_raids` (
   `ro_lmt` int(2) NOT NULL default '0',
   `wk_lmt` int(2) NOT NULL default '0',
   `wa_lmt` int(2) NOT NULL default '0',
+  `role1_lmt` int(2) NOT NULL default '0',
+  `role2_lmt` int(2) NOT NULL default '0',
+  `role3_lmt` int(2) NOT NULL default '0',
+  `role4_lmt` int(2) NOT NULL default '0',
+  `role5_lmt` int(2) NOT NULL default '0',
+  `role6_lmt` int(2) NOT NULL default '0',
   `min_lvl` int(2) NOT NULL default '0',
   `max_lvl` int(2) NOT NULL default '0',
   `max` varchar(255) NOT NULL default '',
@@ -252,5 +265,11 @@ INSERT INTO `phpraid_config` VALUES ('rss_export_url', 'http://localhost/phpraid
 INSERT INTO `phpraid_config` VALUES ('rss_feed_amt', '5');
 INSERT INTO `phpraid_config` VALUES ('armory_link','http://www.wowarmory.com');
 INSERT INTO `phpraid_config` VALUES ('armory_language','en');
+INSERT INTO `phpraid_config` VALUES ('role1_name','tank');
+INSERT INTO `phpraid_config` VALUES ('role2_name','melee');
+INSERT INTO `phpraid_config` VALUES ('role3_name','healer');
+INSERT INTO `phpraid_config` VALUES ('role4_name','ranged');
+INSERT INTO `phpraid_config` VALUES ('role5_name','misc1');
+INSERT INTO `phpraid_config` VALUES ('role6_name','misc2');
 
 INSERT INTO `phpraid_permissions` (`name`,`description`,`announcements`,`configuration`,`guilds`,`locations`,`permissions`,`profile`,`raids`,`logs`,`users`) VALUES ('phpRaid Superadmin','Full access','1','1','1','1','1','1','1','1','1');

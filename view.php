@@ -168,6 +168,18 @@ if($mode == 'view')
 	$warlock_count = 0;
 	$warrior_count = 0;
 
+	$tank_count = 0;
+	$heal_count = 0;
+	$melee_count = 0;
+	$ranged_count = 0;
+	$tankmelee_count = 0;
+
+	$ptank_count = 0;
+	$pheal_count = 0;
+	$pmelee_count = 0;
+	$pranged_count = 0;
+	$ptankmelee_count = 0;
+
 	// parse the signup array and seperate to classes
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id=%s AND queue='0' AND cancel='0'", quote_smart($raid_id));
 	$signups_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
@@ -295,13 +307,14 @@ if($mode == 'view')
 			$comments = UBB(scrub_input($signups['comments']));
 
 		if(strlen($comments) == 0)
-			$comments = 'None';
+			$comments = '-';
 
 		$arcane = $data['arcane'];
 		$fire = $data['fire'];
 		$nature = $data['nature'];
 		$frost = $data['frost'];
 		$shadow = $data['shadow'];
+		$role = $data['role'];
 
 		$name = get_armorychar($data['name'], $phpraid_config['armory_language'], $server);
 		$guildname = '?';
@@ -379,6 +392,24 @@ if($mode == 'view')
 						  'date'=>$date,'time'=>$time,'team_name'=>$team_name,'guild'=>$guildname));
 				break;
 		}
+		switch($data['role'])
+		{
+			case $phprlang['role_tank']:
+				$tank_count++;
+				break;
+			case $phprlang['role_heal']:
+				$heal_count++;
+				break;
+			case $phprlang['role_melee']:
+				$melee_count++;
+				break;
+			case $phprlang['role_ranged']:
+				$ranged_count++;
+				break;
+			case $phprlang['role_tankmelee']:
+				$tankmelee_count++;
+				break;
+		}
 	}
 
 	// parse the queue array and seperate to classes
@@ -400,7 +431,7 @@ if($mode == 'view')
 			$comments = UBB(scrub_input($signups['comments']));
 
 		if(strlen($comments) == 0)
-			$comments = 'None';
+			$comments = '-';
 
 		$name = $data['name'];
 
@@ -501,6 +532,24 @@ if($mode == 'view')
 				$class = ' <img src="templates/' . $phpraid_config['template'] . '/images/classes/warrior_icon.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['warrior'].'\')"; onMouseout="hideddrivetip()">';
 				break;
 		}
+		switch($data['role'])
+		{
+			case $phprlang['role_tank']:
+				$ptank_count++;
+				break;
+			case $phprlang['role_heal']:
+				$pheal_count++;
+				break;
+			case $phprlang['role_melee']:
+				$pmelee_count++;
+				break;
+			case $phprlang['role_ranged']:
+				$pranged_count++;
+				break;
+			case $phprlang['role_tankmelee']:
+				$ptankmelee_count++;
+				break;
+		}
 
 		/**********************
 		 * Buttons applicable to users who are Queued to be Drafted for a raid.  Buttons for Drafted Characters
@@ -549,7 +598,7 @@ if($mode == 'view')
 			$comments = UBB(scrub_input($signups['comments']));
 
 		if(strlen($comments) == 0)
-			$comments = 'None';
+			$comments = '-';
 
 		$name = $data['name'];
 
@@ -707,6 +756,7 @@ if($mode == 'view')
 	$report->addOutputColumn('team_name',$phprlang['team_name'],'','left');
 	$report->addOutputColumn('lvl',$phprlang['level'],'','center');
 	$report->addOutputColumn('race',$phprlang['race'],'','center');
+	$report->addOutputColumn('role',$phprlang['role'],'','center');	
 	$report->addOutputColumn('arcane','<img border="0" src="templates/' . $phpraid_config['template'] .
 									  '/images/resistances/arcane_resistance.gif" onMouseover=
 									  "ddrivetip(\''.$phprlang['arcane'].'\')"; onMouseout="hideddrivetip()"
@@ -772,6 +822,7 @@ if($mode == 'view')
 	$report->addOutputColumn('lvl',$phprlang['level'],'','center');
 	$report->addOutputColumn('race',$phprlang['race'],'','center');
 	$report->addOutputColumn('class',$phprlang['class'],'','center');
+	$report->addOutputColumn('role',$phprlang['role'],'','center');
 	$report->addOutputColumn('date',$phprlang['date'],'unixtime','center');
 	$report->addOutputColumn('time',$phprlang['time'],'','center');
 	$report->addOutputColumn('actions','','','right');
@@ -792,6 +843,18 @@ if($mode == 'view')
 	$shaman_count = $shaman_count . ' of ' . $data['sh_lmt'];
 	$warlock_count = $warlock_count . ' of ' . $data['wk_lmt'];
 	$warrior_count = $warrior_count . ' of ' . $data['wa_lmt'];
+
+    $count = array('tank'=>$tank_count,'heal'=>$heal_count,'melee'=>$melee_count,'ranged'=>$ranged_count,'tkmel'=>$tankmelee_count);
+    $count2 = array('tank'=>$ptank_count,'heal'=>$pheal_count,'melee'=>$pmelee_count,'ranged'=>$pranged_count,'tkmel'=>$ptankmelee_count);
+
+    $minustkmel = 0;
+    $tank_count = get_coloredcount($count['tank'], $count2['tank'], $data['tank_lmt'], 0, $count['tkmel'] + $count2['tkmel'], 0, 0, 0, $minustkmel);
+    $heal_count = get_coloredcount($count['heal'], $count2['heal'], $data['heal_lmt'], 0, 0, 0, 0, 0, $minustkmel);
+    $merk_minustkmel = $minustkmel;
+    $melee_count = get_coloredcount($count['melee'], $count2['melee'], $data['melee_lmt'], 2,$count['tkmel'] + $count2['tkmel'] - $minustkmel, $count['melee'] + $count['ranged'], $count2['melee'] + $count2['ranged'], $data['melee_lmt'] + $data['ranged_lmt'], $minustkmel);
+    $minustkmel = $merk_minustkmel;
+    $ranged_count = get_coloredcount($count['ranged'], $count2['ranged'], $data['ranged_lmt'], 2, $count['tkmel'] + $count2['tkmel'] - $minustkmel, $count['melee'] + $count['ranged'], $count2['melee'] + $count2['ranged'], $data['melee_lmt'] + $data['ranged_lmt'], $minustkmel);
+    $tankmelee_count = get_coloredcount($count['tkmel'], $count2['tkmel'], $data['tkmel_lmt'], 1, 0, 0, 0, 0, $minustkmel);
 
 	// check to see if they have permissions to signup
 	$show_signup = 1;
@@ -872,6 +935,11 @@ if($mode == 'view')
 			'shaman_count'=>$shaman_count,
 			'warlock_count'=>$warlock_count,
 			'warrior_count'=>$warrior_count,
+			'tank_count'=>$tank_count,
+			'heal_count'=>$heal_count,
+			'melee_count'=>$melee_count,
+			'ranged_count'=>$ranged_count,
+			'tankmelee_count'=>$tankmelee_count,
 			'raid_cancel'=>$raid_cancel,
 			'raid_max'=>$raid_max,
 			'raid_max_percentage'=>$raid_max_percentage,
@@ -907,6 +975,11 @@ if($mode == 'view')
 			'signup_text'=>$phprlang['view_signup'],
 			'minlvl_text'=>$phprlang['view_min_lvl'],
 			'maxlvl_text'=>$phprlang['view_max_lvl'],
+			'tank_text'=>$phprlang['role_tanks'],
+			'heal_text'=>$phprlang['role_heals'],
+			'melee_text'=>$phprlang['role_melees'],
+			'ranged_text'=>$phprlang['role_ranges'],
+			'tankmelee_text'=>$phprlang['role_tankmelees'],
 			'maxattendees_text'=>$phprlang['view_max'],
 			'approved_text'=>$phprlang['view_approved'],
 			'queued_text'=>$phprlang['view_queued'],
@@ -951,22 +1024,29 @@ elseif($mode == 'signup')
 		$char_id = scrub_input($_POST['character']);
 
 		// Did he/she/it cancel? or queued? or just normal signup...
-		if($_POST['queue'] == "queue")
+		$queue_in = scrub_input($_POST['queue']);
+		
+		if($queue_in == 'queue')
 		{
 			$queue = 1;
 			$cancel = 0;
 		}
+		elseif($queue_in == 'cancel')
+		{
+			$cancel = 1;
+			$queue = 0;
+		}
 		else
 		{
-			$cancel = 0;
 			$queue = 0;
+			$cancel = 0;
 		}
 
 		if($phpraid_config['auto_queue'] == '0')
 		{
 			// now check class limits
 			// setup the count array
-			$count = array('dr'=>'0','hu'=>'0','ma'=>'0','pa'=>'0','pr'=>'0','ro'=>'0','sh'=>'0','wk'=>'0','wa'=>'0');
+			$count = array('dr'=>'0','hu'=>'0','ma'=>'0','pa'=>'0','pr'=>'0','ro'=>'0','sh'=>'0','wk'=>'0','wa'=>'0','tank'=>'0','melee'=>'0','healer'=>'0','ranged'=>'0','tkmel'=>'0');
 			$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id=%s AND queue='0' AND cancel='0'",quote_smart($raid_id));
 			$result_char = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 			while($char = $db_raid->sql_fetchrow($result_char, true))
@@ -975,7 +1055,7 @@ elseif($mode == 'signup')
 				$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id=%s", quote_smart($signup_char_id));
 				$result_count = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 				$tmp = $db_raid->sql_fetchrow($result_count, true);
-
+				
 				switch($tmp['class'])
 				{
 					case $phprlang['druid']:
@@ -1006,8 +1086,27 @@ elseif($mode == 'signup')
 						$count['wa']++;
 						break;
 				}
+				switch($tmp['role'])
+				{
+					case $phprlang['role_tank']:
+						$count['tank']++;
+						break;
+					case $phprlang['role_heal']:
+						$count['healer']++;
+						break;
+					case $phprlang['role_melee']:
+						$count['melee']++;
+						break;
+					case $phprlang['role_ranged']:
+						$count['ranged']++;
+						break;
+					case $phprlang['role_tankmelee']:
+						$count['tkmel']++;
+						break;
+				}				
 			}
-			$sql = sprintf("SELECT dr_lmt,hu_lmt,ma_lmt,pa_lmt,pr_lmt,ro_lmt,sh_lmt,wk_lmt,wa_lmt FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id=%s", quote_smart($raid_id));
+
+			$sql = sprintf("SELECT dr_lmt,hu_lmt,ma_lmt,pa_lmt,pr_lmt,ro_lmt,sh_lmt,wk_lmt,wa_lmt,tank_lmt,heal_lmt,melee_lmt,ranged_lmt,tkmel_lmt FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id=%s", quote_smart($raid_id));
 			$result_raid = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 			$total = $db_raid->sql_fetchrow($result_raid, true);
 
@@ -1015,130 +1114,72 @@ elseif($mode == 'signup')
 			$result_class = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 			$class = $db_raid->sql_fetchrow($result_class, true);
 
-			$queue = scrub_input($_POST['queue']);
-			switch($class['class'])
+			// Check class limits only if the user is signing up as drafted, otherwise skip the checks and just 
+			//     sign the user up in the queued or cancelled status.
+			if (!$cancel && !$queue)  
 			{
-				case $phprlang['druid']:
-					if($queue == "cancel")
-					{
-						$queue = 0;
-						$cancel = 1;
-					}
-					elseif($count['dr'] >= $total['dr_lmt'])
-					{
-						$queue = 1;
-						$cancel = 0;
-					}
-					break;
-				case $phprlang['hunter']:
-					if($queue == "cancel")
-					{
-						$queue = 0;
-						$cancel = 1;
-					}
-					elseif($count['hu'] >= $total['hu_lmt'])
-					{
-						$queue = 1;
-						$cancel = 0;
-					}
-					break;
-				case $phprlang['mage']:
-					if($queue == "cancel")
-					{
-						$queue = 0;
-						$cancel = 1;
-					}
-					elseif($count['ma'] >= $total['ma_lmt'])
-					{
-						$queue = 1;
-						$cancel = 0;
-					}
-					break;
-				case $phprlang['paladin']:
-					if($queue == "cancel")
-					{
-						$queue = 0;
-						$cancel = 1;
-					}
-					elseif($count['pa'] >= $total['pa_lmt'])
-					{
-						$queue = 1;
-						$cancel = 0;
-					}
-					break;
-				case $phprlang['priest']:
-					if($queue == "cancel")
-					{
-						$queue = 0;
-						$cancel = 1;
-					}
-					elseif($count['pr'] >= $total['pr_lmt'])
-					{
-						$queue = 1;
-						$cancel = 0;
-					}
-					break;
-				case $phprlang['rogue']:
-					if($queue == "cancel")
-					{
-						$queue = 0;
-						$cancel = 1;
-					}
-					elseif($count['ro'] >= $total['ro_lmt'])
-					{
-						$queue = 1;
-						$cancel = 0;
-					}
-					break;
-				case $phprlang['shaman']:
-					if($queue == "cancel")
-					{
-						$queue = 0;
-						$cancel = 1;
-					}
-					elseif($count['sh'] >= $total['sh_lmt'])
-					{
-						$queue = 1;
-						$cancel = 0;
-					}
-					break;
-				case $phprlang['warlock']:
-					if($queue == "cancel")
-					{
-						$queue = 0;
-						$cancel = 1;
-					}
-					elseif($count['wk'] >= $total['wk_lmt'])
-					{
-						$queue = 1;
-						$cancel = 0;
-					}
-					break;
-				case $phprlang['warrior']:
-					if($queue == "cancel")
-					{
-						$queue = 0;
-						$cancel = 1;
-					}
-					elseif($count['wa'] >= $total['wa_lmt'])
-					{
-						$queue = 1;
-						$cancel = 0;
-					}
-					break;
-			}
-		}
-		else
-		{
-			if($queue == "cancel")
-			{
-				$queue = 0;
-				$cancel = 1;
-			}
-			else
-			{
-				$cancel = 0;
-				$queue = 1;
+				switch($class['class'])
+				{
+					case $phprlang['druid']:
+						if($count['dr'] >= $total['dr_lmt'])
+							$queue = 1;
+						break;
+					case $phprlang['hunter']:
+						if($count['hu'] >= $total['hu_lmt'])
+							$queue = 1;
+						break;
+					case $phprlang['mage']:
+						if($count['ma'] >= $total['ma_lmt'])
+							$queue = 1;
+						break;
+					case $phprlang['paladin']:
+						if($count['pa'] >= $total['pa_lmt'])
+							$queue = 1;
+						break;
+					case $phprlang['priest']:
+						if($count['pr'] >= $total['pr_lmt'])
+							$queue = 1;
+						break;
+					case $phprlang['rogue']:
+						if($count['ro'] >= $total['ro_lmt'])
+							$queue = 1;
+						break;
+					case $phprlang['shaman']:
+						if($count['sh'] >= $total['sh_lmt'])
+							$queue = 1;
+						break;
+					case $phprlang['warlock']:
+						if($count['wk'] >= $total['wk_lmt'])
+							$queue = 1;
+						break;
+					case $phprlang['warrior']:
+						if($count['wa'] >= $total['wa_lmt'])
+							$queue = 1;
+						break;
+				}
+				switch($class['role'])
+				{
+					case $phprlang['role_tank']:
+						if($count['tank'] >= $total['tank_lmt'])
+							$queue = 1;
+						break;
+					case $phprlang['role_heal']:
+						if($count['healer'] >= $total['heal_lmt'])
+							$queue = 1;
+						break;
+					case $phprlang['role_melee']:
+						if($count['melee'] >= $total['melee_lmt'])
+							$queue = 1;
+						break;
+					case $phprlang['role_ranged']:
+						if($count['ranged'] >= $total['ranged_lmt'])
+							$queue = 1;
+						break;
+					case $phprlang['role_tankmelee']:
+						if($count['tkmel'] >= $total['tkmel_lmt'])
+							$queue = 1;
+						break;
+				}
 			}
 		}
 
@@ -1146,24 +1187,38 @@ elseif($mode == 'signup')
 		$timestamp = scrub_input($_POST['timestamp']);
 		$profile_id = scrub_input($_SESSION['profile_id']);
 
-		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id=%s AND char_id=%s AND profile_id=%s", quote_smart($raid_id), quote_smart($char_id), quote_smart($profile_id));
-		$result_signup = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-		if($db_raid->sql_numrows($result_signup) > 0) {
+		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id=%s", quote_smart($char_id));
+		$result_char = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$char_data = $db_raid->sql_fetchrow($result_char);
+		if($char_data['role'] == $phprlang['role_none'] || $char_data['role'] == '')
+		{
 			$form_error = 1;
 			$errorTitle = $phprlang['form_error'];
-			$errorMsg = $phprlang['view_error_signed_up'];
+			$errorMsg = $phprlang['view_error_role_undef'];
 			$errorDie = 1;
 			$errorSpace = 1;
-		}else{
-			log_raid($char_id, $raid_id, 'signup');
+		}
+		else
+		{
+			$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id=%s AND char_id=%s AND profile_id=%s", quote_smart($raid_id), quote_smart($char_id), quote_smart($profile_id));
+			$result_signup = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+			if($db_raid->sql_numrows($result_signup) > 0) {
+				$form_error = 1;
+				$errorTitle = $phprlang['form_error'];
+				$errorMsg = $phprlang['view_error_signed_up'];
+				$errorDie = 1;
+				$errorSpace = 1;
+			}else{
+				log_raid($char_id, $raid_id, 'signup');
 
-			$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "signups
-						(`char_id`,`profile_id`,`raid_id`,`comments`,`queue`,`timestamp`,`cancel`)
-					VALUES
-						(%s,%s,%s,%s,%s,%s,%s)", quote_smart($char_id), quote_smart($profile_id), quote_smart($raid_id),
-						quote_smart($comments), quote_smart($queue), quote_smart($timestamp), quote_smart($cancel));
-			$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-			header("Location: view.php?mode=view&raid_id=$raid_id");
+				$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "signups
+							(`char_id`,`profile_id`,`raid_id`,`comments`,`queue`,`timestamp`,`cancel`)
+						VALUES
+							(%s,%s,%s,%s,%s,%s,%s)", quote_smart($char_id), quote_smart($profile_id), quote_smart($raid_id),
+							quote_smart($comments), quote_smart($queue), quote_smart($timestamp), quote_smart($cancel));
+				$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+				header("Location: view.php?mode=view&raid_id=$raid_id");
+			}
 		}
 	}
 }
@@ -1278,7 +1333,7 @@ elseif($mode == 'draft')
 
 	// now check class limits to prevent users cheating the cancel/queue signup
 	// setup the count array
-	$count = array('dr'=>'0','hu'=>'0','ma'=>'0','pa'=>'0','pr'=>'0','ro'=>'0','sh'=>'0','wk'=>'0','wa'=>'0');
+	$count = array('dr'=>'0','hu'=>'0','ma'=>'0','pa'=>'0','pr'=>'0','ro'=>'0','sh'=>'0','wk'=>'0','wa'=>'0','tank'=>'0','melee'=>'0','healer'=>'0','ranged'=>'0','tkmel'=>'0');
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id=%s AND queue='0' AND cancel='0'",quote_smart($raid_id));
 	$result_char = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 	while($char = $db_raid->sql_fetchrow($result_char, true))
@@ -1317,8 +1372,26 @@ elseif($mode == 'draft')
 				$count['wa']++;
 				break;
 		}
+		switch($tmp['role'])
+		{
+			case $phprlang['role_tank']:
+				$count['tank']++;
+				break;
+			case $phprlang['role_heal']:
+				$count['healer']++;
+				break;
+			case $phprlang['role_melee']:
+				$count['melee']++;
+				break;
+			case $phprlang['role_ranged']:
+				$count['ranged']++;
+				break;
+			case $phprlang['role_tankmelee']:
+				$count['tkmel']++;
+				break;
+		}				
 	}
-	$sql = sprintf("SELECT dr_lmt,hu_lmt,ma_lmt,pa_lmt,pr_lmt,ro_lmt,sh_lmt,wk_lmt,wa_lmt FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id=%s", quote_smart($raid_id));
+	$sql = sprintf("SELECT dr_lmt,hu_lmt,ma_lmt,pa_lmt,pr_lmt,ro_lmt,sh_lmt,wk_lmt,wa_lmt,tank_lmt,heal_lmt,melee_lmt,ranged_lmt,tkmel_lmt FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id=%s", quote_smart($raid_id));
 	$result_raid = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 	$total = $db_raid->sql_fetchrow($result_raid, true);
 
@@ -1366,7 +1439,29 @@ elseif($mode == 'draft')
 				$queue = 1;
 			break;
 	}
-
+	switch($class['role'])
+	{
+		case $phprlang['role_tank']:
+			if($count['tank'] >= $total['tank_lmt'])
+				$queue = 1;
+			break;
+		case $phprlang['role_heal']:
+			if($count['healer'] >= $total['heal_lmt'])
+				$queue = 1;
+			break;
+		case $phprlang['role_melee']:
+			if($count['melee'] >= $total['melee_lmt'])
+				$queue = 1;
+			break;
+		case $phprlang['role_ranged']:
+			if($count['ranged'] >= $total['ranged_lmt'])
+				$queue = 1;
+			break;
+		case $phprlang['role_tankmelee']:
+			if($count['tkmel'] >= $total['tkmel_lmt'])
+				$queue = 1;
+			break;
+	}
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id=%s AND char_id=%s", quote_smart($raid_id), quote_smart($char_id));
 	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 	$data = $db_raid->sql_fetchrow($result, true);

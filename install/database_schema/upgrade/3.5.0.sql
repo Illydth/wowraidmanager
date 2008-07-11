@@ -1,1 +1,21 @@
+ALTER TABLE `phpraid_chars` ADD `role` VARCHAR(255) NOT NULL default '';
+ALTER TABLE `phpraid_locations` ADD `role1` INT(2) NOT NULL default '0';
+ALTER TABLE `phpraid_locations` ADD `role2` INT(2) NOT NULL default '0';
+ALTER TABLE `phpraid_locations` ADD `role3` INT(2) NOT NULL default '0';
+ALTER TABLE `phpraid_locations` ADD `role4` INT(2) NOT NULL default '0';
+ALTER TABLE `phpraid_locations` ADD `role5` INT(2) NOT NULL default '0';
+ALTER TABLE `phpraid_locations` ADD `role6` INT(2) NOT NULL default '0';
 ALTER TABLE `phpraid_profile` ADD `last_login_time` VARCHAR( 25 ) NOT NULL ;
+ALTER TABLE `phpraid_raids` ADD `role1_lmt` INT(2) NOT NULL default '0';
+ALTER TABLE `phpraid_raids` ADD `role2_lmt` INT(2) NOT NULL default '0';
+ALTER TABLE `phpraid_raids` ADD `role3_lmt` INT(2) NOT NULL default '0';
+ALTER TABLE `phpraid_raids` ADD `role4_lmt` INT(2) NOT NULL default '0';
+ALTER TABLE `phpraid_raids` ADD `role5_lmt` INT(2) NOT NULL default '0';
+ALTER TABLE `phpraid_raids` ADD `role6_lmt` INT(2) NOT NULL default '0';
+
+INSERT INTO `phpraid_config` VALUES ('role1_name','tank');
+INSERT INTO `phpraid_config` VALUES ('role2_name','melee');
+INSERT INTO `phpraid_config` VALUES ('role3_name','healer');
+INSERT INTO `phpraid_config` VALUES ('role4_name','ranged');
+INSERT INTO `phpraid_config` VALUES ('role5_name','misc1');
+INSERT INTO `phpraid_config` VALUES ('role6_name','misc2');

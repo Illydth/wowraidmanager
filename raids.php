@@ -79,8 +79,8 @@ if($_GET['mode'] == 'view')
 			$mark_new = '<a href="raids.php?mode=mark&id='.$data['raid_id'].'"><img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_latest_reply.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['new'].'\')"; onMouseout="hideddrivetip()"></a>';
 		}
 		// setup the count array
-		$count = array('dr'=>'0','hu'=>'0','ma'=>'0','pa'=>'0','pr'=>'0','ro'=>'0','sh'=>'0','wk'=>'0','wa'=>'0');
-		
+		$count = array('dr'=>'0','hu'=>'0','ma'=>'0','pa'=>'0','pr'=>'0','ro'=>'0','sh'=>'0','wk'=>'0','wa'=>'0','ranged'=>'0','tank'=>'0','heal'=>'0','melee'=>'0','tkmel'=>'0');
+
 		$desc = strip_tags($data['description']);
 		$desc = UBB($desc);
 
@@ -113,6 +113,15 @@ if($_GET['mode'] == 'view')
 			$total2 = " (+$total2)";
 		}
 		
+		$minustkmel = 0;
+		$tank = get_coloredcount($count['tank'], $count2['tank'], $data['tank_lmt'], 0, $count['tkmel'] + $count2['tkmel'], 0, 0, 0, $minustkmel);
+		$heal = get_coloredcount($count['heal'], $count2['heal'], $data['heal_lmt'], 0, 0, 0, 0, 0, $minustkmel);
+		$merk_minustkmel = $minustkmel;
+		$melee = get_coloredcount($count['melee'], $count2['melee'], $data['melee_lmt'], 2, $count['tkmel'] + $count2['tkmel'] - $minustkmel, $count['melee'] + $count['ranged'], $count2['melee'] + $count2['ranged'], $data['melee_lmt'] + $data['ranged_lmt'], $minustkmel);
+		$minustkmel = $merk_minustkmel;
+		$ranged = get_coloredcount($count['ranged'], $count2['ranged'], $data['ranged_lmt'], 2, $count['tkmel'] + $count2['tkmel'] - $minustkmel, $count['melee'] + $count['ranged'], $count2['melee'] + $count2['ranged'], $data['melee_lmt'] + $data['ranged_lmt'], $minustkmel);
+		$tkmel = get_coloredcount($count['tkmel'], $count2['tkmel'], $data['tkmel_lmt'], 1, 0, 0, 0, 0, $minustkmel);
+
 		// current raids
 		if($data['old'] == 0) {
 			array_push($current,
@@ -124,6 +133,7 @@ if($_GET['mode'] == 'view')
 					'Pri'=>$count['pr'] . "/" . $data['pr_lmt'],'Rog'=>$count['ro'] . "/" . $data['ro_lmt'],
 					'Sha'=>$count['sh'] . "/" . $data['sh_lmt'],'Wlk'=>$count['wk'] . "/" . $data['wk_lmt'],
 					'War'=>$count['wa'] . "/" . $data['wa_lmt'],
+					'Tank'=>$tank,'Heal'=>$heal,'Melee'=>$melee,'Ranged'=>$ranged,'TkMel'=>$tkmel,
 					''=>$edit . $delete,
 				)
 			);
@@ -136,7 +146,9 @@ if($_GET['mode'] == 'view')
 					'Max'=>$total.'/'.$data['max']  . '' . $total2,'Dru'=>$count['dr'] . "/" . $data['dr_lmt'],'Hun'=>$count['hu'] . "/" . $data['hu_lmt'],
 					'Mag'=>$count['ma'] . "/" . $data['ma_lmt'],'Pal'=>$count['pa'] . "/" . $data['pa_lmt'],
 					'Pri'=>$count['pr'] . "/" . $data['pr_lmt'],'Rog'=>$count['ro'] . "/" . $data['ro_lmt'],
-					'Sha'=>$count['sh'] . "/" . $data['sh_lmt'],'Wlk'=>$count['wk'] . "/" . $data['wk_lmt'],'War'=>$count['wa'] . "/" . $data['wa_lmt'],
+					'Sha'=>$count['sh'] . "/" . $data['sh_lmt'],'Wlk'=>$count['wk'] . "/" . $data['wk_lmt'],
+					'War'=>$count['wa'] . "/" . $data['wa_lmt'],
+					'Tank'=>$tank,'Heal'=>$heal,'Melee'=>$melee,'Ranged'=>$ranged,'TkMel'=>$tkmel,
 					''=> $mark_new . $old_delete));
 		}
 		$edit = "";
@@ -183,6 +195,12 @@ if($_GET['mode'] == 'view')
 	$report->addOutputColumn('Sha', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/shaman_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['shaman'] . '\')"; onMouseout="hideddrivetip()">', '', 'center');
 	$report->addOutputColumn('Wlk', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/warlock_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['warlock'] . '\')"; onMouseout="hideddrivetip()">', '', 'center');
 	$report->addOutputColumn('War', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/warrior_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['warrior'] . '\')"; onMouseout="hideddrivetip()">', '', 'center');
+	//$report->addOutputColumn('Tank',$phprlang['role_tanks'],'','center');
+	$report->addOutputColumn('Tank','<img src="templates/' . $phpraid_config['template'] . '/images/classes/warrior_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['role_tanks'] . '\')"; onMouseout="hideddrivetip()">','','center');
+	$report->addOutputColumn('Heal','<img src="templates/' . $phpraid_config['template'] . '/images/classes/priest_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['role_heals'] . '\')"; onMouseout="hideddrivetip()">','','center');
+	$report->addOutputColumn('Melee','<img src="templates/' . $phpraid_config['template'] . '/images/classes/rogue_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['role_melees'] . '\')"; onMouseout="hideddrivetip()">','','center');
+	$report->addOutputColumn('Ranged','<img src="templates/' . $phpraid_config['template'] . '/images/classes/mage_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['role_ranges'] . '\')"; onMouseout="hideddrivetip()">','','center');
+	$report->addOutputColumn('TkMel','<img src="templates/' . $phpraid_config['template'] . '/images/classes/druid_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['role_tankmelees'] . '\')"; onMouseout="hideddrivetip()">','','center');
 	$report->addOutputColumn('Max',$phprlang['totals'],'','center');
 	$report->addOutputColumn('','','','right');
 
@@ -223,7 +241,12 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 		$sh = scrub_input($_POST['sh']);
 		$wk = scrub_input($_POST['wk']);
 		$wa = scrub_input($_POST['wa']);
-		
+		$tank = scrub_input($_POST['tank']);
+		$heal = scrub_input($_POST['heal']);
+		$melee = scrub_input($_POST['melee']);
+		$ranged = scrub_input($_POST['ranged']);
+		$tkmel = scrub_input($_POST['tkmel']);
+
 		//~@@**** Change - Douglas Wagner, 6/23/2007 ****
 		//Allowing for a Blank Raid Description.  This shouldn't be a required field.  The field is still checked but if it isn't there
 		//   the descripton is manually set to "None" and we move on.
@@ -231,10 +254,11 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 //		   $hu == "" || $ma == "" || $pa == "" || $pr == "" || $ro == "" || $sh == "" || $wk == "" || $wa == "" || !is_numeric($max) || !is_numeric($min_lvl) ||
 //		   !is_numeric($max_lvl) || !is_numeric($dr) || !is_numeric($hu) || !is_numeric($ma) || !is_numeric($pa) || !is_numeric($pr) || !is_numeric($ro) || !is_numeric($sh) ||
 //		   !is_numeric($wk) || !is_numeric($wa))
-		if($location == "" || $date == "" || $max == "" || $min_lvl == "" || $max_lvl == "" ||$dr == "" || 
-		   $hu == "" || $ma == "" || $pa == "" || $pr == "" || $ro == "" || $sh == "" || $wk == "" || $wa == "" || !is_numeric($max) || !is_numeric($min_lvl) ||
-		   !is_numeric($max_lvl) || !is_numeric($dr) || !is_numeric($hu) || !is_numeric($ma) || !is_numeric($pa) || !is_numeric($pr) || !is_numeric($ro) || !is_numeric($sh) ||
-		   !is_numeric($wk) || !is_numeric($wa))
+		if($location == "" || $date == "" || $max == "" || $min_lvl == "" || $max_lvl == "" ||
+		   //$dr == "" || $hu == "" || $ma == "" || $pa == "" || $pr == "" || $ro == "" || $sh == "" || $wk == "" || $wa == "" ||
+		   !is_numeric($max) || !is_numeric($min_lvl) || !is_numeric($max_lvl) ||
+		   //!is_numeric($dr) || !is_numeric($hu) || !is_numeric($ma) || !is_numeric($pa) || !is_numeric($pr) || !is_numeric($ro) || !is_numeric($sh) || !is_numeric($wk) || !is_numeric($wa) ||
+		   !is_numeric($tank) || !is_numeric($heal) || !is_numeric($melee) || !is_numeric($ranged) || !is_numeric($tkmel))
 		{
 			$errorTitle = $phprlang['form_error'];
 			$errorSpace = 1;
@@ -248,9 +272,11 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
             //if($description == "")  													//Commented
             //	$errorMsg .= '<li>' . $phprlang['raid_error_description'] . '</li>';	//Commented
 
-			if($max == "" || $min_lvl == "" || $max_lvl == "" ||$dr == "" || $hu == "" || $ma == "" || $pa == "" || $pr == "" || $ro == "" || $sh == ""  || $wk == "" || $wa == "" || !is_numeric($max) || !is_numeric($min_lvl) ||
-		   	!is_numeric($max_lvl) || !is_numeric($dr) || !is_numeric($hu) || !is_numeric($ma) || !is_numeric($pa) ||!is_numeric($pr) || !is_numeric($ro) ||
-		   	!is_numeric($sh) || !is_numeric($wk) || !is_numeric($wa))
+			if($max == "" || $min_lvl == "" || $max_lvl == "" ||
+			//$dr == "" || $hu == "" || $ma == "" || $pa == "" || $pr == "" || $ro == "" || $sh == ""  || $wk == "" || $wa == "" ||
+			!is_numeric($max) || !is_numeric($min_lvl) || !is_numeric($max_lvl) ||
+			//!is_numeric($dr) || !is_numeric($hu) || !is_numeric($ma) || !is_numeric($pa) ||!is_numeric($pr) || !is_numeric($ro) || !is_numeric($sh) || !is_numeric($wk) || !is_numeric($wa)
+		    !is_numeric($tank) || !is_numeric($heal) || !is_numeric($melee) || !is_numeric($ranged) || !is_numeric($tkmel))
 				$errorMsg .= '<li>' . $phprlang['raid_error_limits'] . '</li>';
 		}
 		if($description == "")				//Moved
@@ -288,6 +314,11 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 		$sh = $data['sh'];
 		$wk = $data['wk'];
 		$wa = $data['wa'];
+		$tank = $data['tank'];
+		$heal = $data['heal'];
+		$melee = $data['melee'];
+		$ranged = $data['ranged'];
+		$tkmel = $data['tkmel'];
 		$min_lvl_value = $data['min_lvl'];
 		$max_lvl_value = $data['max_lvl'];
 		$location_value = $data['location'];
@@ -336,6 +367,11 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 		    $sh = $data['sh'];
 		    $wk = $data['wk'];
 		    $wa = $data['wa'];
+			$tank = $data['tank'];
+			$heal = $data['heal'];
+			$melee = $data['melee'];
+			$ranged = $data['ranged'];
+			$tkmel = $data['tkmel'];
             $min_lvl_value = $data['min_lvl'];
             $max_lvl_value = $data['max_lvl'];
             $location_value = UBB2($data['location']);
@@ -372,6 +408,11 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
             $sh = $data['sh_lmt'];
             $wk = $data['wk_lmt'];
             $wa = $data['wa_lmt'];
+			$tank = $data['tank_lmt'];
+			$heal = $data['heal_lmt'];
+			$melee = $data['melee_lmt'];
+			$ranged = $data['ranged_lmt'];
+			$tkmel = $data['tkmel_lmt'];
             $min_lvl_value = $data['min_lvl'];
             $max_lvl_value = $data['max_lvl'];
             $location_value = UBB2($data['location']);
@@ -399,6 +440,11 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 			$sh = scrub_input($_POST['sh']);
 			$wk = scrub_input($_POST['wk']);
 			$wa = scrub_input($_POST['wa']);
+			$tank = scrub_input($_POST['tank']);
+			$heal = scrub_input($_POST['heal']);
+			$melee = scrub_input($_POST['melee']);
+			$ranged = scrub_input($_POST['ranged']);
+			$tkmel = scrub_input($_POST['tkmel']);
 			$min_lvl_value = scrub_input($_POST['min_lvl']);
 			$max_lvl_value = scrub_input($_POST['max_lvl']);
 			$location_value = scrub_input($_POST['location']);
@@ -609,6 +655,11 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 			$shaman_limit = '<input name="sh" type="text" class="post" style="width:20px" value="' . $sh . '" maxlength="2">';
 			$warlock_limit = '<input name="wk" type="text" class="post" style="width:20px" value="' . $wk . '" maxlength="2">';
 			$warrior_limit = '<input name="wa" type="text" class="post" style="width:20px" value="' . $wa . '" maxlength="2">';
+			$tank_limit = '<input name="tank" type="text" class="post" style="width:20px" value="' . $tank . '" maxlength="2">';
+			$heal_limit = '<input name="heal" type="text" class="post" style="width:20px" value="' . $heal . '" maxlength="2">';
+			$melee_limit = '<input name="melee" type="text" class="post" style="width:20px" value="' . $melee . '" maxlength="2">';
+			$ranged_limit = '<input name="ranged" type="text" class="post" style="width:20px" value="' . $ranged . '" maxlength="2">';
+			$tkmel_limit = '<input name="tkmel" type="text" class="post" style="width:20px" value="' . $tkmel . '" maxlength="2">';
 		} else {
 			$maximum = '<input name="max" type="text" class="post" style="width:20px" maxlength="2">';
 			$minimum_level = '<input name="min_lvl" type="text" class="post" style="width:20px" maxlength="2">';
@@ -622,6 +673,11 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 			$shaman_limit = '<input name="sh" type="text" class="post" style="width:20px" maxlength="2">';
 			$warlock_limit = '<input name="wk" type="text" class="post" style="width:20px" maxlength="2">';
 			$warrior_limit = '<input name="wa" type="text" class="post" style="width:20px" maxlength="2">';
+			$tank_limit = '<input name="tank" type="text" class="post" style="width:20px" maxlength="2">';
+			$heal_limit = '<input name="heal" type="text" class="post" style="width:20px" maxlength="2">';
+			$melee_limit = '<input name="melee" type="text" class="post" style="width:20px" maxlength="2">';
+			$ranged_limit = '<input name="ranged" type="text" class="post" style="width:20px" maxlength="2">';
+			$tkmel_limit = '<input name="tkmel" type="text" class="post" style="width:20px" maxlength="2">';
 		}
 		$buttons = '<input type="submit" name="submit" value="Submit" class="mainoption"> <input type="reset" name="reset" value="Reset" class="liteoption">';			
 		
@@ -653,6 +709,11 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 				'shaman_limit'=>$shaman_limit,
 				'warlock_limit'=>$warlock_limit,
 				'warrior_limit'=>$warrior_limit,
+				'tank_limit'=>$tank_limit,
+				'heal_limit'=>$heal_limit,
+				'melee_limit'=>$melee_limit,
+				'ranged_limit'=>$ranged_limit,
+				'tkmel_limit'=>$tkmel_limit,
 				'dungeon_text'=>$phprlang['raids_dungeon'],
 				'date_text'=>$phprlang['raids_date'],
 				'raids_new'=>$phprlang['raids_new_header'],
@@ -673,7 +734,12 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 				'rogue_text'=>$phprlang['rogue'],
 				'shaman_text'=>$phprlang['shaman'],
 				'warlock_text'=>$phprlang['warlock'],
-				'warrior_text'=>$phprlang['warrior']
+				'warrior_text'=>$phprlang['warrior'],
+				'tank_text'=>$phprlang['max_tanks'],
+				'heal_text'=>$phprlang['max_heals'],
+				'melee_text'=>$phprlang['max_melees'],
+				'ranged_text'=>$phprlang['max_ranged'],
+				'tkmel_text'=>$phprlang['max_tkmels']
 			)
 		);
 
@@ -692,6 +758,11 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 		$sh = scrub_input($_POST['sh']);
 		$wk = scrub_input($_POST['wk']);
 		$wa = scrub_input($_POST['wa']);
+		$tank = scrub_input($_POST['tank']);
+		$heal = scrub_input($_POST['heal']);
+		$melee = scrub_input($_POST['melee']);
+		$ranged = scrub_input($_POST['ranged']);
+		$tkmel = scrub_input($_POST['tkmel']);
 		$min_lvl = scrub_input($_POST['min_lvl']);
 		$max_lvl = scrub_input($_POST['max_lvl']);
 
@@ -730,10 +801,13 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 
 			$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "raids (`description`,`freeze`,`invite_time`,
 			`location`,`officer`,`old`,`start_time`,`dr_lmt`,`hu_lmt`,`ma_lmt`,`pa_lmt`,`pr_lmt`,`ro_lmt`,`sh_lmt`,`wk_lmt`,`wa_lmt`,
-			`min_lvl`,`max_lvl`,`max`)	VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
+			`tank_lmt`,`heal_lmt`,`melee_lmt`,`ranged_lmt`,`tkmel_lmt`,
+			`min_lvl`,`max_lvl`,`max`)	VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
 			quote_smart($description),quote_smart($freeze),quote_smart($invite_time),quote_smart($location),
-			quote_smart($username),quote_smart('0'),quote_smart($start_time),quote_smart($dr),
-			quote_smart($hu),quote_smart($ma),quote_smart($pa),quote_smart($pr),quote_smart($ro),quote_smart($sh),quote_smart($wk),quote_smart($wa),
+			quote_smart($username),quote_smart('0'),quote_smart($start_time),
+			//quote_smart($dr),quote_smart($hu),quote_smart($ma),quote_smart($pa),quote_smart($pr),quote_smart($ro),quote_smart($sh),quote_smart($wk),quote_smart($wa),
+			quote_smart($max),quote_smart($max),quote_smart($max),quote_smart($max),quote_smart($max),quote_smart($max),quote_smart($max),quote_smart($max),quote_smart($max),
+			quote_smart($tank),quote_smart($heal),quote_smart($melee),quote_smart($ranged),quote_smart($tkmel),
 			quote_smart($min_lvl),quote_smart($max_lvl),quote_smart($max));
 
 			$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
@@ -744,8 +818,9 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 		{
 
 		$sql = "UPDATE " . $phpraid_config['db_prefix'] . "raids SET location='$location',description='$description',invite_time='$invite_time',start_time='$start_time',
-													 freeze='$freeze',max='$max',old='0',dr_lmt='$dr',
-													 hu_lmt='$hu',ma_lmt='$ma',pa_lmt='$pa',pr_lmt='$pr',ro_lmt='$ro',sh_lmt='$sh',wk_lmt='$wk',wa_lmt='$wa',
+													 freeze='$freeze',max='$max',old='0',dr_lmt='$max',
+													 hu_lmt='$max',ma_lmt='$max',pa_lmt='$max',pr_lmt='$max',ro_lmt='$max',sh_lmt='$max',wk_lmt='$max',wa_lmt='$max',
+													 tank_lmt='$tank',heal_lmt='$heal',melee_lmt='$melee',ranged_lmt='$ranged',tkmel_lmt='$tkmel',
 													 min_lvl='$min_lvl',max_lvl='$max_lvl' WHERE raid_id='$id'";
 
 		$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
