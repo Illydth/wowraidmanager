@@ -176,13 +176,22 @@ if (typeof XMLHttpRequest != 'undefined') {
 if (!xmlHttp) {
     // Internet Explorer 6 und älter
     try {
-        xmlHttp  = new ActiveXObject("Msxml2.XMLHTTP");
-    } catch(e) {
-        try {
-            xmlHttp  = new ActiveXObject("Microsoft.XMLHTTP");
-        } catch(e) {
-            xmlHttp  = null;
-        }
+    	xmlHttp = new ActiveXObject("Msxml2.XMLHTTP.6.0"); 
+    } catch(e) { 
+    	try {
+    		xmlHttp = new ActiveXObject("Msxml2.XMLHTTP.3.0"); 
+     	} catch(e) { 
+    		try {
+   				xmlHttp = new ActiveXObject("Msxml2.XMLHTTP"); 
+   			} catch(e) { 
+   				try {
+   					xmlHttp = new ActiveXObject("Microsoft.XMLHTTP"); 
+		    	} catch(e) {
+					//throw new Error( "This browser does not support XMLHttpRequest or XMLHTTP." )
+			        xmlHttp  = null;
+			    }
+    		}
+    	}
     }
 }
 if (xmlHttp) {
