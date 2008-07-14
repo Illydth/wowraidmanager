@@ -78,8 +78,9 @@ if($_GET['mode'] == 'view')
 
 			$mark_new = '<a href="raids.php?mode=mark&id='.$data['raid_id'].'"><img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_latest_reply.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['new'].'\')"; onMouseout="hideddrivetip()"></a>';
 		}
-		// setup the count array
-		$count = array('dr'=>'0','hu'=>'0','ma'=>'0','pa'=>'0','pr'=>'0','ro'=>'0','sh'=>'0','wk'=>'0','wa'=>'0','ranged'=>'0','tank'=>'0','heal'=>'0','melee'=>'0','tkmel'=>'0');
+	
+		//setup the count array
+		$count = array('dr'=>'0','hu'=>'0','ma'=>'0','pa'=>'0','pr'=>'0','ro'=>'0','sh'=>'0','wk'=>'0','wa'=>'0','role1'=>'0','role2'=>'0','role3'=>'0','role4'=>'0','role5'=>'0','role6'=>'0');
 
 		$desc = strip_tags($data['description']);
 		$desc = UBB($desc);
@@ -92,7 +93,7 @@ if($_GET['mode'] == 'view')
 		$date = $data['start_time'];
 
 		$count = get_char_count($data['raid_id'], $type='');
-		$count2 = get_char_count($data['raid_id'], $type='backup');
+		$count2 = get_char_count($data['raid_id'], $type='queue');
 
 		//Raid maximum
 		$total = $count['dr'] + $count['hu'] + $count['ma'] + $count['pa'] + $count['pr'] + $count['ro'] + $count['sh'] + $count['wk'] + $count['wa'];
@@ -113,14 +114,15 @@ if($_GET['mode'] == 'view')
 			$total2 = " (+$total2)";
 		}
 		
-		$minustkmel = 0;
-		$tank = get_coloredcount($count['tank'], $count2['tank'], $data['tank_lmt'], 0, $count['tkmel'] + $count2['tkmel'], 0, 0, 0, $minustkmel);
-		$heal = get_coloredcount($count['heal'], $count2['heal'], $data['heal_lmt'], 0, 0, 0, 0, 0, $minustkmel);
-		$merk_minustkmel = $minustkmel;
-		$melee = get_coloredcount($count['melee'], $count2['melee'], $data['melee_lmt'], 2, $count['tkmel'] + $count2['tkmel'] - $minustkmel, $count['melee'] + $count['ranged'], $count2['melee'] + $count2['ranged'], $data['melee_lmt'] + $data['ranged_lmt'], $minustkmel);
-		$minustkmel = $merk_minustkmel;
-		$ranged = get_coloredcount($count['ranged'], $count2['ranged'], $data['ranged_lmt'], 2, $count['tkmel'] + $count2['tkmel'] - $minustkmel, $count['melee'] + $count['ranged'], $count2['melee'] + $count2['ranged'], $data['melee_lmt'] + $data['ranged_lmt'], $minustkmel);
-		$tkmel = get_coloredcount($count['tkmel'], $count2['tkmel'], $data['tkmel_lmt'], 1, 0, 0, 0, 0, $minustkmel);
+		//Code Specific to Nalumis
+		//$minustkmel = 0;
+		//$tank = get_coloredcount($count['tank'], $count2['tank'], $data['tank_lmt'], 0, $count['tkmel'] + $count2['tkmel'], 0, 0, 0, $minustkmel);
+		//$heal = get_coloredcount($count['heal'], $count2['heal'], $data['heal_lmt'], 0, 0, 0, 0, 0, $minustkmel);
+		//$merk_minustkmel = $minustkmel;
+		//$melee = get_coloredcount($count['melee'], $count2['melee'], $data['melee_lmt'], 2, $count['tkmel'] + $count2['tkmel'] - $minustkmel, $count['melee'] + $count['ranged'], $count2['melee'] + $count2['ranged'], $data['melee_lmt'] + $data['ranged_lmt'], $minustkmel);
+		//$minustkmel = $merk_minustkmel;
+		//$ranged = get_coloredcount($count['ranged'], $count2['ranged'], $data['ranged_lmt'], 2, $count['tkmel'] + $count2['tkmel'] - $minustkmel, $count['melee'] + $count['ranged'], $count2['melee'] + $count2['ranged'], $data['melee_lmt'] + $data['ranged_lmt'], $minustkmel);
+		//$tkmel = get_coloredcount($count['tkmel'], $count2['tkmel'], $data['tkmel_lmt'], 1, 0, 0, 0, 0, $minustkmel);
 
 		// current raids
 		if($data['old'] == 0) {
@@ -133,7 +135,13 @@ if($_GET['mode'] == 'view')
 					'Pri'=>$count['pr'] . "/" . $data['pr_lmt'],'Rog'=>$count['ro'] . "/" . $data['ro_lmt'],
 					'Sha'=>$count['sh'] . "/" . $data['sh_lmt'],'Wlk'=>$count['wk'] . "/" . $data['wk_lmt'],
 					'War'=>$count['wa'] . "/" . $data['wa_lmt'],
-					'Tank'=>$tank,'Heal'=>$heal,'Melee'=>$melee,'Ranged'=>$ranged,'TkMel'=>$tkmel,
+					'role1'=>$count['role1'] . '/' . $data['role1_lmt'],
+					'role2'=>$count['role2'] . '/' . $data['role2_lmt'],
+					'role3'=>$count['role3'] . '/' . $data['role3_lmt'],
+					'role4'=>$count['role4'] . '/' . $data['role4_lmt'],
+					'role5'=>$count['role5'] . '/' . $data['role5_lmt'],
+					'role6'=>$count['role6'] . '/' . $data['role6_lmt'],
+					//'Tank'=>$tank,'Heal'=>$heal,'Melee'=>$melee,'Ranged'=>$ranged,'TkMel'=>$tkmel,
 					''=>$edit . $delete,
 				)
 			);
@@ -148,7 +156,13 @@ if($_GET['mode'] == 'view')
 					'Pri'=>$count['pr'] . "/" . $data['pr_lmt'],'Rog'=>$count['ro'] . "/" . $data['ro_lmt'],
 					'Sha'=>$count['sh'] . "/" . $data['sh_lmt'],'Wlk'=>$count['wk'] . "/" . $data['wk_lmt'],
 					'War'=>$count['wa'] . "/" . $data['wa_lmt'],
-					'Tank'=>$tank,'Heal'=>$heal,'Melee'=>$melee,'Ranged'=>$ranged,'TkMel'=>$tkmel,
+					'role1'=>$count['role1'] . '/' . $data['role1_lmt'],
+					'role2'=>$count['role2'] . '/' . $data['role2_lmt'],
+					'role3'=>$count['role3'] . '/' . $data['role3_lmt'],
+					'role4'=>$count['role4'] . '/' . $data['role4_lmt'],
+					'role5'=>$count['role5'] . '/' . $data['role5_lmt'],
+					'role6'=>$count['role6'] . '/' . $data['role6_lmt'],
+					//'Tank'=>$tank,'Heal'=>$heal,'Melee'=>$melee,'Ranged'=>$ranged,'TkMel'=>$tkmel,
 					''=> $mark_new . $old_delete));
 		}
 		$edit = "";
@@ -196,11 +210,23 @@ if($_GET['mode'] == 'view')
 	$report->addOutputColumn('Wlk', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/warlock_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['warlock'] . '\')"; onMouseout="hideddrivetip()">', '', 'center');
 	$report->addOutputColumn('War', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/warrior_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['warrior'] . '\')"; onMouseout="hideddrivetip()">', '', 'center');
 	//$report->addOutputColumn('Tank',$phprlang['role_tanks'],'','center');
-	$report->addOutputColumn('Tank','<img src="templates/' . $phpraid_config['template'] . '/images/classes/warrior_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['role_tanks'] . '\')"; onMouseout="hideddrivetip()">','','center');
-	$report->addOutputColumn('Heal','<img src="templates/' . $phpraid_config['template'] . '/images/classes/priest_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['role_heals'] . '\')"; onMouseout="hideddrivetip()">','','center');
-	$report->addOutputColumn('Melee','<img src="templates/' . $phpraid_config['template'] . '/images/classes/rogue_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['role_melees'] . '\')"; onMouseout="hideddrivetip()">','','center');
-	$report->addOutputColumn('Ranged','<img src="templates/' . $phpraid_config['template'] . '/images/classes/mage_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['role_ranges'] . '\')"; onMouseout="hideddrivetip()">','','center');
-	$report->addOutputColumn('TkMel','<img src="templates/' . $phpraid_config['template'] . '/images/classes/druid_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['role_tankmelees'] . '\')"; onMouseout="hideddrivetip()">','','center');
+	//$report->addOutputColumn('Tank','<img src="templates/' . $phpraid_config['template'] . '/images/classes/warrior_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['role_tanks'] . '\')"; onMouseout="hideddrivetip()">','','center');
+	//$report->addOutputColumn('Heal','<img src="templates/' . $phpraid_config['template'] . '/images/classes/priest_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['role_heals'] . '\')"; onMouseout="hideddrivetip()">','','center');
+	//$report->addOutputColumn('Melee','<img src="templates/' . $phpraid_config['template'] . '/images/classes/rogue_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['role_melees'] . '\')"; onMouseout="hideddrivetip()">','','center');
+	//$report->addOutputColumn('Ranged','<img src="templates/' . $phpraid_config['template'] . '/images/classes/mage_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['role_ranges'] . '\')"; onMouseout="hideddrivetip()">','','center');
+	//$report->addOutputColumn('TkMel','<img src="templates/' . $phpraid_config['template'] . '/images/classes/druid_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['role_tankmelees'] . '\')"; onMouseout="hideddrivetip()">','','center');
+	if ($phpraid_config['role1_name'] != '')
+		$report->addOutputColumn('role1',$phpraid_config['role1_name'],'','center');
+	if ($phpraid_config['role2_name'] != '')
+		$report->addOutputColumn('role2',$phpraid_config['role2_name'],'','center');
+	if ($phpraid_config['role3_name'] != '')
+		$report->addOutputColumn('role3',$phpraid_config['role3_name'],'','center');
+	if ($phpraid_config['role4_name'] != '')
+		$report->addOutputColumn('role4',$phpraid_config['role4_name'],'','center');
+	if ($phpraid_config['role5_name'] != '')
+		$report->addOutputColumn('role5',$phpraid_config['role5_name'],'','center');
+	if ($phpraid_config['role6_name'] != '')
+		$report->addOutputColumn('role6',$phpraid_config['role6_name'],'','center');
 	$report->addOutputColumn('Max',$phprlang['totals'],'','center');
 	$report->addOutputColumn('','','','right');
 
@@ -241,11 +267,12 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 		$sh = scrub_input($_POST['sh']);
 		$wk = scrub_input($_POST['wk']);
 		$wa = scrub_input($_POST['wa']);
-		$tank = scrub_input($_POST['tank']);
-		$heal = scrub_input($_POST['heal']);
-		$melee = scrub_input($_POST['melee']);
-		$ranged = scrub_input($_POST['ranged']);
-		$tkmel = scrub_input($_POST['tkmel']);
+		$role1 = scrub_input($_POST['role1']);
+		$role2 = scrub_input($_POST['role2']);
+		$role3 = scrub_input($_POST['role3']);
+		$role4 = scrub_input($_POST['role4']);
+		$role5 = scrub_input($_POST['role5']);
+		$role6 = scrub_input($_POST['role6']);		
 
 		//~@@**** Change - Douglas Wagner, 6/23/2007 ****
 		//Allowing for a Blank Raid Description.  This shouldn't be a required field.  The field is still checked but if it isn't there
@@ -254,11 +281,32 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 //		   $hu == "" || $ma == "" || $pa == "" || $pr == "" || $ro == "" || $sh == "" || $wk == "" || $wa == "" || !is_numeric($max) || !is_numeric($min_lvl) ||
 //		   !is_numeric($max_lvl) || !is_numeric($dr) || !is_numeric($hu) || !is_numeric($ma) || !is_numeric($pa) || !is_numeric($pr) || !is_numeric($ro) || !is_numeric($sh) ||
 //		   !is_numeric($wk) || !is_numeric($wa))
+
+		// Check Role Numbers
+		$bad_role = FALSE;
+		if($phpraid_config['role1_name'] != '')
+			if (!is_numeric($role1))
+				$bad_role_limit = TRUE;
+		if($phpraid_config['role2_name'] != '')
+			if (!is_numeric($role2))
+				$bad_role_limit = TRUE;
+		if($phpraid_config['role3_name'] != '')
+			if (!is_numeric($role3))
+				$bad_role_limit = TRUE;
+		if($phpraid_config['role4_name'] != '')
+			if (!is_numeric($role4))
+				$bad_role_limit = TRUE;
+		if($phpraid_config['role5_name'] != '')
+			if (!is_numeric($role5))
+				$bad_role_limit = TRUE;
+		if($phpraid_config['role6_name'] != '')
+			if (!is_numeric($role6))
+				$bad_role_limit = TRUE;
 		if($location == "" || $date == "" || $max == "" || $min_lvl == "" || $max_lvl == "" ||
-		   //$dr == "" || $hu == "" || $ma == "" || $pa == "" || $pr == "" || $ro == "" || $sh == "" || $wk == "" || $wa == "" ||
+		   $dr == "" || $hu == "" || $ma == "" || $pa == "" || $pr == "" || $ro == "" || $sh == "" || $wk == "" || $wa == "" ||
 		   !is_numeric($max) || !is_numeric($min_lvl) || !is_numeric($max_lvl) ||
-		   //!is_numeric($dr) || !is_numeric($hu) || !is_numeric($ma) || !is_numeric($pa) || !is_numeric($pr) || !is_numeric($ro) || !is_numeric($sh) || !is_numeric($wk) || !is_numeric($wa) ||
-		   !is_numeric($tank) || !is_numeric($heal) || !is_numeric($melee) || !is_numeric($ranged) || !is_numeric($tkmel))
+		   !is_numeric($dr) || !is_numeric($hu) || !is_numeric($ma) || !is_numeric($pa) || !is_numeric($pr) || !is_numeric($ro) || !is_numeric($sh) || !is_numeric($wk) || !is_numeric($wa) ||
+		   $bad_role_limit)
 		{
 			$errorTitle = $phprlang['form_error'];
 			$errorSpace = 1;
@@ -273,10 +321,10 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
             //	$errorMsg .= '<li>' . $phprlang['raid_error_description'] . '</li>';	//Commented
 
 			if($max == "" || $min_lvl == "" || $max_lvl == "" ||
-			//$dr == "" || $hu == "" || $ma == "" || $pa == "" || $pr == "" || $ro == "" || $sh == ""  || $wk == "" || $wa == "" ||
+			$dr == "" || $hu == "" || $ma == "" || $pa == "" || $pr == "" || $ro == "" || $sh == ""  || $wk == "" || $wa == "" ||
 			!is_numeric($max) || !is_numeric($min_lvl) || !is_numeric($max_lvl) ||
-			//!is_numeric($dr) || !is_numeric($hu) || !is_numeric($ma) || !is_numeric($pa) ||!is_numeric($pr) || !is_numeric($ro) || !is_numeric($sh) || !is_numeric($wk) || !is_numeric($wa)
-		    !is_numeric($tank) || !is_numeric($heal) || !is_numeric($melee) || !is_numeric($ranged) || !is_numeric($tkmel))
+			!is_numeric($dr) || !is_numeric($hu) || !is_numeric($ma) || !is_numeric($pa) ||!is_numeric($pr) || !is_numeric($ro) || !is_numeric($sh) || !is_numeric($wk) || !is_numeric($wa) ||
+			$bad_role)
 				$errorMsg .= '<li>' . $phprlang['raid_error_limits'] . '</li>';
 		}
 		if($description == "")				//Moved
@@ -314,11 +362,12 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 		$sh = $data['sh'];
 		$wk = $data['wk'];
 		$wa = $data['wa'];
-		$tank = $data['tank'];
-		$heal = $data['heal'];
-		$melee = $data['melee'];
-		$ranged = $data['ranged'];
-		$tkmel = $data['tkmel'];
+		$role1 = $data['role1'];
+		$role2 = $data['role2'];
+		$role3 = $data['role3'];
+		$role4 = $data['role4'];
+		$role5 = $data['role5'];
+		$role6 = $data['role6'];
 		$min_lvl_value = $data['min_lvl'];
 		$max_lvl_value = $data['max_lvl'];
 		$location_value = $data['location'];
@@ -337,95 +386,97 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 			$form_action = 'raids.php?mode=edit&id='. $id;
 		}
 
- // and if it's an edit, grab straight from the raids database instead
-      if($_GET['mode'] == 'edit')
-      {
-         // if so, grab values from database
-         if(isset($_GET['location']))
-         {
-         	$location = scrub_input($_GET['location']);
-			if ($priv_raids == 1)
+ 		// and if it's an edit, grab straight from the raids database instead
+		if($_GET['mode'] == 'edit')
+		{
+			// if so, grab values from database
+			if(isset($_GET['location']))
 			{
-				$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "locations WHERE name=%s", quote_smart($location));
-				$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-				$data = $db_raid->sql_fetchrow($result, true);
+				$location = scrub_input($_GET['location']);
+				if ($priv_raids == 1)
+				{
+					$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "locations WHERE name=%s", quote_smart($location));
+					$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+					$data = $db_raid->sql_fetchrow($result, true);
+				}
+				else
+				{
+					$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "locations WHERE name=%s and locked='0'", quote_smart($location));
+					$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+					$data = $db_raid->sql_fetchrow($result, true);
+				}
+
+	            $max = $data['max'];
+			    $dr = $data['dr'];
+			    $hu = $data['hu'];
+			    $ma = $data['ma'];
+			    $pa = $data['pa'];
+			    $pr = $data['pr'];
+			    $ro = $data['ro'];
+			    $sh = $data['sh'];
+			    $wk = $data['wk'];
+			    $wa = $data['wa'];
+				$role1 = $data['role1'];
+				$role2 = $data['role2'];
+				$role3 = $data['role3'];
+				$role4 = $data['role4'];
+				$role5 = $data['role5'];
+				$role6 = $data['role6'];
+	            $min_lvl_value = $data['min_lvl'];
+	            $max_lvl_value = $data['max_lvl'];
+	            $location_value = UBB2($data['location']);
+	
+	            $id = scrub_input($_GET['id']);
+	            $sql2 = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id=%s", quote_smart($id));
+	            $result2 = $db_raid->sql_query($sql2) or print_error($sql2, mysql_error(), 1);
+	            $data2 = $db_raid->sql_fetchrow($result2, true);
+	            
+	            $date_value = new_date("m/d/Y",$data2['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+	            $i_time_hour_value = new_date("h",$data2['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+	            $i_time_minute_value = new_date("i",$data2['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+	            $i_time_ampm_value = new_date("a",$data2['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+	            $s_time_hour_value = new_date("h",$data2['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+	            $s_time_minute_value = new_date("i",$data2['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+	            $s_time_ampm_value = new_date("a",$data2['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+	            $freeze_value = $data2['freeze'];
+	            $description_value = UBB2($data2['description']);
 			}
 			else
 			{
-				$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "locations WHERE name=%s and locked='0'", quote_smart($location));
-				$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-				$data = $db_raid->sql_fetchrow($result, true);
+	         	$id = scrub_input($_GET['id']);
+	            $sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id=%s", quote_smart($id));
+	            $result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	            $data = $db_raid->sql_fetchrow($result, true);
+	            
+	            $max = $data['max'];
+	            $dr = $data['dr_lmt'];
+	            $hu = $data['hu_lmt'];
+	            $ma = $data['ma_lmt'];
+			    $pa = $data['pa_lmt'];
+	            $pr = $data['pr_lmt'];
+	            $ro = $data['ro_lmt'];
+	            $sh = $data['sh_lmt'];
+	            $wk = $data['wk_lmt'];
+	            $wa = $data['wa_lmt'];
+				$role1 = $data['role1_lmt'];
+				$role2 = $data['role2_lmt'];
+				$role3 = $data['role3_lmt'];
+				$role4 = $data['role4_lmt'];
+				$role5 = $data['role5_lmt'];
+				$role6 = $data['role6_lmt'];
+	            $min_lvl_value = $data['min_lvl'];
+	            $max_lvl_value = $data['max_lvl'];
+	            $location_value = UBB2($data['location']);
+	            $date_value = new_date("m/d/Y",$data['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+	            $i_time_hour_value = new_date("h",$data['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+	            $i_time_minute_value = new_date("i",$data['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+	            $i_time_ampm_value = new_date("a",$data['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+	            $s_time_hour_value = new_date("h",$data['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+	            $s_time_minute_value = new_date("i",$data['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+	            $s_time_ampm_value = new_date("a",$data['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+	            $freeze_value = $data['freeze'];
+	            $description_value = UBB2($data['description']);
 			}
-
-            $max = $data['max'];
-		    $dr = $data['dr'];
-		    $hu = $data['hu'];
-		    $ma = $data['ma'];
-		    $pa = $data['pa'];
-		    $pr = $data['pr'];
-		    $ro = $data['ro'];
-		    $sh = $data['sh'];
-		    $wk = $data['wk'];
-		    $wa = $data['wa'];
-			$tank = $data['tank'];
-			$heal = $data['heal'];
-			$melee = $data['melee'];
-			$ranged = $data['ranged'];
-			$tkmel = $data['tkmel'];
-            $min_lvl_value = $data['min_lvl'];
-            $max_lvl_value = $data['max_lvl'];
-            $location_value = UBB2($data['location']);
-
-            $id = scrub_input($_GET['id']);
-            $sql2 = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id=%s", quote_smart($id));
-            $result2 = $db_raid->sql_query($sql2) or print_error($sql2, mysql_error(), 1);
-            $data2 = $db_raid->sql_fetchrow($result2, true);
-            
-            $date_value = new_date("m/d/Y",$data2['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
-            $i_time_hour_value = new_date("h",$data2['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
-            $i_time_minute_value = new_date("i",$data2['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
-            $i_time_ampm_value = new_date("a",$data2['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
-            $s_time_hour_value = new_date("h",$data2['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
-            $s_time_minute_value = new_date("i",$data2['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
-            $s_time_ampm_value = new_date("a",$data2['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
-            $freeze_value = $data2['freeze'];
-            $description_value = UBB2($data2['description']);
-         }
-         else
-         {
-         	$id = scrub_input($_GET['id']);
-            $sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id=%s", quote_smart($id));
-            $result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-            $data = $db_raid->sql_fetchrow($result, true);
-            
-            $max = $data['max'];
-            $dr = $data['dr_lmt'];
-            $hu = $data['hu_lmt'];
-            $ma = $data['ma_lmt'];
-		    $pa = $data['pa_lmt'];
-            $pr = $data['pr_lmt'];
-            $ro = $data['ro_lmt'];
-            $sh = $data['sh_lmt'];
-            $wk = $data['wk_lmt'];
-            $wa = $data['wa_lmt'];
-			$tank = $data['tank_lmt'];
-			$heal = $data['heal_lmt'];
-			$melee = $data['melee_lmt'];
-			$ranged = $data['ranged_lmt'];
-			$tkmel = $data['tkmel_lmt'];
-            $min_lvl_value = $data['min_lvl'];
-            $max_lvl_value = $data['max_lvl'];
-            $location_value = UBB2($data['location']);
-            $date_value = new_date("m/d/Y",$data['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
-            $i_time_hour_value = new_date("h",$data['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
-            $i_time_minute_value = new_date("i",$data['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
-            $i_time_ampm_value = new_date("a",$data['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
-            $s_time_hour_value = new_date("h",$data['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
-            $s_time_minute_value = new_date("i",$data['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
-            $s_time_ampm_value = new_date("a",$data['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
-            $freeze_value = $data['freeze'];
-            $description_value = UBB2($data['description']);
-         }
       	}
 		elseif(isset($_POST['submit']))
 		{
@@ -440,11 +491,12 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 			$sh = scrub_input($_POST['sh']);
 			$wk = scrub_input($_POST['wk']);
 			$wa = scrub_input($_POST['wa']);
-			$tank = scrub_input($_POST['tank']);
-			$heal = scrub_input($_POST['heal']);
-			$melee = scrub_input($_POST['melee']);
-			$ranged = scrub_input($_POST['ranged']);
-			$tkmel = scrub_input($_POST['tkmel']);
+			$role1 = $data['role1'];
+			$role2 = $data['role2'];
+			$role3 = $data['role3'];
+			$role4 = $data['role4'];
+			$role5 = $data['role5'];
+			$role6 = $data['role6'];
 			$min_lvl_value = scrub_input($_POST['min_lvl']);
 			$max_lvl_value = scrub_input($_POST['max_lvl']);
 			$location_value = scrub_input($_POST['location']);
@@ -655,11 +707,30 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 			$shaman_limit = '<input name="sh" type="text" class="post" style="width:20px" value="' . $sh . '" maxlength="2">';
 			$warlock_limit = '<input name="wk" type="text" class="post" style="width:20px" value="' . $wk . '" maxlength="2">';
 			$warrior_limit = '<input name="wa" type="text" class="post" style="width:20px" value="' . $wa . '" maxlength="2">';
-			$tank_limit = '<input name="tank" type="text" class="post" style="width:20px" value="' . $tank . '" maxlength="2">';
-			$heal_limit = '<input name="heal" type="text" class="post" style="width:20px" value="' . $heal . '" maxlength="2">';
-			$melee_limit = '<input name="melee" type="text" class="post" style="width:20px" value="' . $melee . '" maxlength="2">';
-			$ranged_limit = '<input name="ranged" type="text" class="post" style="width:20px" value="' . $ranged . '" maxlength="2">';
-			$tkmel_limit = '<input name="tkmel" type="text" class="post" style="width:20px" value="' . $tkmel . '" maxlength="2">';
+			if ($phpraid_config['role1_name'] != '')
+				$role1_limit = '<input name="role1" type="text" class="post" style="width:20px" value="' . $role1 . '" maxlength="2">';
+			else
+				$role1_limit = '<input name="role1" type="hidden" value="" class="post" style="width:20px" maxlength="2">';
+			if ($phpraid_config['role2_name'] != '')
+				$role2_limit = '<input name="role2" type="text" class="post" style="width:20px" value="' . $role2 . '" maxlength="2">';
+			else
+				$role2_limit = '<input name="role2" type="hidden" value="" class="post" style="width:20px" maxlength="2">';
+			if ($phpraid_config['role3_name'] != '')
+				$role3_limit = '<input name="role3" type="text" class="post" style="width:20px" value="' . $role3 . '" maxlength="2">';
+			else
+				$role3_limit = '<input name="role3" type="hidden" value="" class="post" style="width:20px" maxlength="2">';
+			if ($phpraid_config['role4_name'] != '')
+				$role4_limit = '<input name="role4" type="text" class="post" style="width:20px" value="' . $role4 . '" maxlength="2">';
+			else
+				$role4_limit = '<input name="role4" type="hidden" value="" class="post" style="width:20px" maxlength="2">';
+			if ($phpraid_config['role5_name'] != '')
+				$role5_limit = '<input name="role5" type="text" class="post" style="width:20px" value="' . $role5 . '" maxlength="2">';
+			else
+				$role5_limit = '<input name="role5" type="hidden" value="" class="post" style="width:20px" maxlength="2">';
+			if ($phpraid_config['role6_name'] != '')
+				$role6_limit = '<input name="role6" type="text" class="post" style="width:20px" value="' . $role6 . '" maxlength="2">';
+			else
+				$role6_limit = '<input name="role6" type="hidden" value="" class="post" style="width:20px" maxlength="2">';			$tank_limit = '<input name="tank" type="text" class="post" style="width:20px" value="' . $tank . '" maxlength="2">';
 		} else {
 			$maximum = '<input name="max" type="text" class="post" style="width:20px" maxlength="2">';
 			$minimum_level = '<input name="min_lvl" type="text" class="post" style="width:20px" maxlength="2">';
@@ -673,11 +744,30 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 			$shaman_limit = '<input name="sh" type="text" class="post" style="width:20px" maxlength="2">';
 			$warlock_limit = '<input name="wk" type="text" class="post" style="width:20px" maxlength="2">';
 			$warrior_limit = '<input name="wa" type="text" class="post" style="width:20px" maxlength="2">';
-			$tank_limit = '<input name="tank" type="text" class="post" style="width:20px" maxlength="2">';
-			$heal_limit = '<input name="heal" type="text" class="post" style="width:20px" maxlength="2">';
-			$melee_limit = '<input name="melee" type="text" class="post" style="width:20px" maxlength="2">';
-			$ranged_limit = '<input name="ranged" type="text" class="post" style="width:20px" maxlength="2">';
-			$tkmel_limit = '<input name="tkmel" type="text" class="post" style="width:20px" maxlength="2">';
+			if ($phpraid_config['role1_name'] != '')
+				$role1_limit = '<input name="role1" type="text" class="post" style="width:20px" maxlength="2">';
+			else
+				$role1_limit = '<input name="role1" type="hidden" value="" class="post" style="width:20px" maxlength="2">';
+			if ($phpraid_config['role2_name'] != '')
+				$role2_limit = '<input name="role2" type="text" class="post" style="width:20px" maxlength="2">';
+			else
+				$role2_limit = '<input name="role2" type="hidden" value="" class="post" style="width:20px" maxlength="2">';
+			if ($phpraid_config['role3_name'] != '')
+				$role3_limit = '<input name="role3" type="text" class="post" style="width:20px" maxlength="2">';
+			else
+				$role3_limit = '<input name="role3" type="hidden" value="" class="post" style="width:20px" maxlength="2">';
+			if ($phpraid_config['role4_name'] != '')
+				$role4_limit = '<input name="role4" type="text" class="post" style="width:20px" maxlength="2">';
+			else
+				$role4_limit = '<input name="role4" type="hidden" value="" class="post" style="width:20px" maxlength="2">';
+			if ($phpraid_config['role5_name'] != '')
+				$role5_limit = '<input name="role5" type="text" class="post" style="width:20px" maxlength="2">';
+			else
+				$role5_limit = '<input name="role5" type="hidden" value="" class="post" style="width:20px" maxlength="2">';
+			if ($phpraid_config['role6_name'] != '')
+				$role6_limit = '<input name="role6" type="text" class="post" style="width:20px" maxlength="2">';
+			else
+				$role6_limit = '<input name="role6" type="hidden" value="" class="post" style="width:20px" maxlength="2">';
 		}
 		$buttons = '<input type="submit" name="submit" value="Submit" class="mainoption"> <input type="reset" name="reset" value="Reset" class="liteoption">';			
 		
@@ -709,11 +799,12 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 				'shaman_limit'=>$shaman_limit,
 				'warlock_limit'=>$warlock_limit,
 				'warrior_limit'=>$warrior_limit,
-				'tank_limit'=>$tank_limit,
-				'heal_limit'=>$heal_limit,
-				'melee_limit'=>$melee_limit,
-				'ranged_limit'=>$ranged_limit,
-				'tkmel_limit'=>$tkmel_limit,
+				'role1_limit'=>$role1_limit,
+				'role2_limit'=>$role2_limit,
+				'role3_limit'=>$role3_limit,
+				'role4_limit'=>$role4_limit,
+				'role5_limit'=>$role5_limit,
+				'role6_limit'=>$role6_limit,
 				'dungeon_text'=>$phprlang['raids_dungeon'],
 				'date_text'=>$phprlang['raids_date'],
 				'raids_new'=>$phprlang['raids_new_header'],
@@ -735,11 +826,12 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 				'shaman_text'=>$phprlang['shaman'],
 				'warlock_text'=>$phprlang['warlock'],
 				'warrior_text'=>$phprlang['warrior'],
-				'tank_text'=>$phprlang['max_tanks'],
-				'heal_text'=>$phprlang['max_heals'],
-				'melee_text'=>$phprlang['max_melees'],
-				'ranged_text'=>$phprlang['max_ranged'],
-				'tkmel_text'=>$phprlang['max_tkmels']
+				'role1_text'=>$phpraid_config['role1_name'],
+				'role2_text'=>$phpraid_config['role2_name'],
+				'role3_text'=>$phpraid_config['role3_name'],
+				'role4_text'=>$phpraid_config['role4_name'],
+				'role5_text'=>$phpraid_config['role5_name'],
+				'role6_text'=>$phpraid_config['role6_name']
 			)
 		);
 
@@ -758,11 +850,12 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 		$sh = scrub_input($_POST['sh']);
 		$wk = scrub_input($_POST['wk']);
 		$wa = scrub_input($_POST['wa']);
-		$tank = scrub_input($_POST['tank']);
-		$heal = scrub_input($_POST['heal']);
-		$melee = scrub_input($_POST['melee']);
-		$ranged = scrub_input($_POST['ranged']);
-		$tkmel = scrub_input($_POST['tkmel']);
+		$role1 = scrub_input($_POST['role1']);
+		$role2 = scrub_input($_POST['role2']);
+		$role3 = scrub_input($_POST['role3']);
+		$role4 = scrub_input($_POST['role4']);
+		$role5 = scrub_input($_POST['role5']);
+		$role6 = scrub_input($_POST['role6']);
 		$min_lvl = scrub_input($_POST['min_lvl']);
 		$max_lvl = scrub_input($_POST['max_lvl']);
 
@@ -801,13 +894,12 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 
 			$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "raids (`description`,`freeze`,`invite_time`,
 			`location`,`officer`,`old`,`start_time`,`dr_lmt`,`hu_lmt`,`ma_lmt`,`pa_lmt`,`pr_lmt`,`ro_lmt`,`sh_lmt`,`wk_lmt`,`wa_lmt`,
-			`tank_lmt`,`heal_lmt`,`melee_lmt`,`ranged_lmt`,`tkmel_lmt`,
-			`min_lvl`,`max_lvl`,`max`)	VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
+			`role1_lmt`,`role2_lmt`,`role3_lmt`,`role4_lmt`,`role5_lmt`,`role6_lmt`,
+			`min_lvl`,`max_lvl`,`max`)	VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
 			quote_smart($description),quote_smart($freeze),quote_smart($invite_time),quote_smart($location),
 			quote_smart($username),quote_smart('0'),quote_smart($start_time),
-			//quote_smart($dr),quote_smart($hu),quote_smart($ma),quote_smart($pa),quote_smart($pr),quote_smart($ro),quote_smart($sh),quote_smart($wk),quote_smart($wa),
-			quote_smart($max),quote_smart($max),quote_smart($max),quote_smart($max),quote_smart($max),quote_smart($max),quote_smart($max),quote_smart($max),quote_smart($max),
-			quote_smart($tank),quote_smart($heal),quote_smart($melee),quote_smart($ranged),quote_smart($tkmel),
+			quote_smart($dr),quote_smart($hu),quote_smart($ma),quote_smart($pa),quote_smart($pr),quote_smart($ro),quote_smart($sh),quote_smart($wk),quote_smart($wa),
+			quote_smart($role1),quote_smart($role2),quote_smart($role3),quote_smart($role4),quote_smart($role5),quote_smart($role6),
 			quote_smart($min_lvl),quote_smart($max_lvl),quote_smart($max));
 
 			$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
@@ -818,10 +910,10 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 		{
 
 		$sql = "UPDATE " . $phpraid_config['db_prefix'] . "raids SET location='$location',description='$description',invite_time='$invite_time',start_time='$start_time',
-													 freeze='$freeze',max='$max',old='0',dr_lmt='$max',
-													 hu_lmt='$max',ma_lmt='$max',pa_lmt='$max',pr_lmt='$max',ro_lmt='$max',sh_lmt='$max',wk_lmt='$max',wa_lmt='$max',
-													 tank_lmt='$tank',heal_lmt='$heal',melee_lmt='$melee',ranged_lmt='$ranged',tkmel_lmt='$tkmel',
-													 min_lvl='$min_lvl',max_lvl='$max_lvl' WHERE raid_id='$id'";
+					freeze='$freeze',max='$max',old='0',dr_lmt='$dr',
+					hu_lmt='$hu',ma_lmt='$ma',pa_lmt='$pa',pr_lmt='$pr',ro_lmt='$ro',sh_lmt='$sh',wk_lmt='$wk',wa_lmt='$wa',
+					role1_lmt='$role1',role2_lmt='$role2',role3_lmt='$role3',role4_lmt='$role4',role5_lmt='$role5',role6_lmt='$role6',
+					min_lvl='$min_lvl',max_lvl='$max_lvl' WHERE raid_id='$id'";
 
 		$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 	}

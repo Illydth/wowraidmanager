@@ -113,7 +113,7 @@ if($_GET['mode'] == 'view') {
 	while($signups = $db_raid->sql_fetchrow($result, true))
 	{
 		// setup the count array
-		$count = array('dr'=>'0','hu'=>'0','ma'=>'0','pa'=>'0','pr'=>'0','ro'=>'0','sh'=>'0','wk'=>'0','wa'=>'0','ranged'=>'0','tank'=>'0','heal'=>'0','melee'=>'0','tkmel'=>'0');
+		$count = array('dr'=>'0','hu'=>'0','ma'=>'0','pa'=>'0','pr'=>'0','ro'=>'0','sh'=>'0','wk'=>'0','wa'=>'0','role1'=>'0','role2'=>'0','role3'=>'0','role4'=>'0','role5'=>'0','role6'=>'0');
 
 		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id=%s", quote_smart($signups['raid_id']));
 		$result_raid = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
@@ -132,7 +132,7 @@ if($_GET['mode'] == 'view') {
 		$date = $data['start_time'];
 
 		$count = get_char_count($data['raid_id'], $type='');
-		$count2 = get_char_count($data['raid_id'], $type='backup');
+		$count2 = get_char_count($data['raid_id'], $type='queue');
 
 		$total = $count['dr'] + $count['hu'] + $count['ma'] + $count['pa'] +$count['pr'] + $count['ro'] + $count['sh'] + $count['wk'] + $count['wa'];
 		$total2 = $count2['dr'] + $count2['hu'] + $count2['ma'] + $count2['pa'] + $count2['pr'] + $count2['ro'] + $count2['sh'] + $count2['wk'] + $count2['wa'];
@@ -168,6 +168,12 @@ if($_GET['mode'] == 'view') {
 					'Sha'=>$count['sh'] . "/" . $data['sh_lmt'],
 					'Wlk'=>$count['wk'] . "/" . $data['wk_lmt'],
 					'War'=>$count['wa'] . "/" . $data['wa_lmt'],
+					'role1'=>$count['role1'] . "/" . $data['role1_lmt'],
+					'role2'=>$count['role2'] . "/" . $data['role2_lmt'],
+					'role3'=>$count['role3'] . "/" . $data['role3_lmt'],
+					'role4'=>$count['role4'] . "/" . $data['role4_lmt'],
+					'role5'=>$count['role5'] . "/" . $data['role5_lmt'],
+					'role6'=>$count['role6'] . "/" . $data['role6_lmt'],
 				)
 			);
 		}
@@ -212,6 +218,18 @@ if($_GET['mode'] == 'view') {
 	$report->addOutputColumn('Sha', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/shaman_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['shaman'] . '\')"; onMouseout="hideddrivetip()">', '', 'center');
 	$report->addOutputColumn('Wlk', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/warlock_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['warlock'] . '\')"; onMouseout="hideddrivetip()">', '', 'center');
 	$report->addOutputColumn('War', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/warrior_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['warrior'] . '\')"; onMouseout="hideddrivetip()">', '', 'center');
+	if ($phpraid_config['role1_name'] != '')
+		$report->addOutputColumn('role1',$phpraid_config['role1_name'],'','center');
+	if ($phpraid_config['role2_name'] != '')
+		$report->addOutputColumn('role2',$phpraid_config['role2_name'],'','center');
+	if ($phpraid_config['role3_name'] != '')
+		$report->addOutputColumn('role3',$phpraid_config['role3_name'],'','center');
+	if ($phpraid_config['role4_name'] != '')
+		$report->addOutputColumn('role4',$phpraid_config['role4_name'],'','center');
+	if ($phpraid_config['role5_name'] != '')
+		$report->addOutputColumn('role5',$phpraid_config['role5_name'],'','center');
+	if ($phpraid_config['role6_name'] != '')
+		$report->addOutputColumn('role6',$phpraid_config['role6_name'],'','center');	
 	$report->addOutputColumn('Max',$phprlang['totals'],'','center');
 
 	// and finally, put the data into the variables to be read
@@ -666,35 +684,41 @@ if($db_raid->sql_numrows($result) == 0) {
 			$gender_options .= "<option value=\"".$phprlang['female']."\">".$phprlang['female']."</option>";
 
 		//Role Selection
-		if($role == $phprlang['role_none'] || $role == '')
-			$role_options .= "<option value=\"".$phprlang['role_none']."\" selected>".$phprlang['role_none']."</option>".$role;
-		else
-			$role_options .= "<option value=\"".$phprlang['role_none']."\">".$phprlang['role_none']."</option>";
+		if ($phpraid_config['role1_name'] != '')
+			if($role == $phpraid_config['role1_name'])
+				$role_options .= "<option value=\"".$phpraid_config['role1_name']."\" selected>".$phpraid_config['role1_name']."</option>";
+			else
+				$role_options .= "<option value=\"".$phpraid_config['role1_name']."\">".$phpraid_config['role1_name']."</option>";
 
-		if($role == $phprlang['role_tank'])
-			$role_options .= "<option value=\"".$phprlang['role_tank']."\" selected>".$phprlang['role_tank']."</option>";
-		else
-			$role_options .= "<option value=\"".$phprlang['role_tank']."\">".$phprlang['role_tank']."</option>";
+		if ($phpraid_config['role2_name'] != '')
+			if($role == $phpraid_config['role2_name'])
+				$role_options .= "<option value=\"".$phpraid_config['role2_name']."\" selected>".$phpraid_config['role2_name']."</option>";
+			else
+				$role_options .= "<option value=\"".$phpraid_config['role2_name']."\">".$phpraid_config['role2_name']."</option>";
 
-		if($role == $phprlang['role_heal'])
-			$role_options .= "<option value=\"".$phprlang['role_heal']."\" selected>".$phprlang['role_heal']."</option>";
-		else
-			$role_options .= "<option value=\"".$phprlang['role_heal']."\">".$phprlang['role_heal']."</option>";
+		if ($phpraid_config['role3_name'] != '')
+			if($role == $phpraid_config['role3_name'])
+				$role_options .= "<option value=\"".$phpraid_config['role3_name']."\" selected>".$phpraid_config['role3_name']."</option>";
+			else
+				$role_options .= "<option value=\"".$phpraid_config['role3_name']."\">".$phpraid_config['role3_name']."</option>";
 
-		if($role == $phprlang['role_melee'])
-			$role_options .= "<option value=\"".$phprlang['role_melee']."\" selected>".$phprlang['role_melee']."</option>";
-		else
-			$role_options .= "<option value=\"".$phprlang['role_melee']."\">".$phprlang['role_melee']."</option>";
+		if ($phpraid_config['role4_name'] != '')
+			if($role == $phpraid_config['role4_name'])
+				$role_options .= "<option value=\"".$phpraid_config['role4_name']."\" selected>".$phpraid_config['role4_name']."</option>";
+			else
+				$role_options .= "<option value=\"".$phpraid_config['role4_name']."\">".$phpraid_config['role4_name']."</option>";
 
-		if($role == $phprlang['role_ranged'])
-			$role_options .= "<option value=\"".$phprlang['role_ranged']."\" selected>".$phprlang['role_ranged']."</option>";
-		else
-			$role_options .= "<option value=\"".$phprlang['role_ranged']."\">".$phprlang['role_ranged']."</option>";
+		if ($phpraid_config['role5_name'] != '')
+			if($role == $phpraid_config['role5_name'])
+				$role_options .= "<option value=\"".$phpraid_config['role5_name']."\" selected>".$phpraid_config['role5_name']."</option>";
+			else
+				$role_options .= "<option value=\"".$phpraid_config['role5_name']."\">".$phpraid_config['role5_name']."</option>";
 
-		if($role == $phprlang['role_tankmelee'])
-			$role_options .= "<option value=\"".$phprlang['role_tankmelee']."\" selected>".$phprlang['role_tankmelee']."</option>";
-		else
-			$role_options .= "<option value=\"".$phprlang['role_tankmelee']."\">".$phprlang['role_tankmelee']."</option>";
+		if ($phpraid_config['role6_name'] != '')
+			if($role == $phpraid_config['role6_name'])
+				$role_options .= "<option value=\"".$phpraid_config['role6_name']."\" selected>".$phpraid_config['role6_name']."</option>";
+			else
+				$role_options .= "<option value=\"".$phpraid_config['role6_name']."\">".$phpraid_config['role6_name']."</option>";
 
 		// setup output variables for form
 		$race_output = '<select name="race" onChange="MM_jumpMenu(\'parent\',this,0)" class="form" style="width:100px">
