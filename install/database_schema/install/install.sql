@@ -271,5 +271,8 @@ INSERT INTO `phpraid_config` VALUES ('role3_name','healer');
 INSERT INTO `phpraid_config` VALUES ('role4_name','ranged');
 INSERT INTO `phpraid_config` VALUES ('role5_name','misc1');
 INSERT INTO `phpraid_config` VALUES ('role6_name','misc2');
+INSERT INTO `phpraid_config` VALUES ('enforce_role_limits', '1');
+INSERT INTO `phpraid_config` VALUES ('enforce_class_limits', '0');
+INSERT INTO `phpraid_config` VALUES ('class_as_min', '1');
 
 INSERT INTO `phpraid_permissions` (`name`,`description`,`announcements`,`configuration`,`guilds`,`locations`,`permissions`,`profile`,`raids`,`logs`,`users`) VALUES ('phpRaid Superadmin','Full access','1','1','1','1','1','1','1','1','1');

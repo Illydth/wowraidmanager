@@ -108,6 +108,43 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true)) {
 	//$ranged = get_coloredcount($count['ranged'], $count2['ranged'], $raids['ranged_lmt'], 2, $count['tkmel'] + $count2['tkmel'] - $minustkmel, $count['melee'] + $count['ranged'], $count2['melee'] + $count2['ranged'], $raids['melee_lmt'] + $raids['ranged_lmt'], $minustkmel);
 	//$tkmel = get_coloredcount($count['tkmel'], $count2['tkmel'], $raids['tkmel_lmt'], 1, 0, 0, 0, 0, $minustkmel);
 	
+	if($phpraid_config['class_as_min'])
+	{
+		$dr_text = get_coloredcount('druid', $count['dr'], $raids['dr_lmt'], $count2['dr'], true);
+		$hu_text = get_coloredcount('hunter', $count['hu'], $raids['hu_lmt'], $count2['hu'], true);
+		$ma_text = get_coloredcount('mage', $count['ma'], $raids['ma_lmt'], $count2['ma'], true);
+		$pa_text = get_coloredcount('paladin', $count['pa'], $raids['pa_lmt'], $count2['pa'], true);
+		$pr_text = get_coloredcount('priest', $count['pr'], $raids['pr_lmt'], $count2['pr'], true);
+		$ro_text = get_coloredcount('rogue', $count['ro'], $raids['ro_lmt'], $count2['ro'], true);
+		$sh_text = get_coloredcount('shaman', $count['sh'], $raids['sh_lmt'], $count2['sh'], true);
+		$wk_text = get_coloredcount('warlock', $count['wk'], $raids['wk_lmt'], $count2['wk'], true);
+		$wa_text = get_coloredcount('warrior', $count['wa'], $raids['wa_lmt'], $count2['wa'], true);
+		$role1_text = get_coloredcount('role1', $count['role1'], $raids['role1_lmt'], $count2['role1']);
+		$role2_text = get_coloredcount('role2', $count['role2'], $raids['role2_lmt'], $count2['role2']);
+		$role3_text = get_coloredcount('role3', $count['role3'], $raids['role3_lmt'], $count2['role3']);
+		$role4_text = get_coloredcount('role4', $count['role4'], $raids['role4_lmt'], $count2['role4']);
+		$role5_text = get_coloredcount('role5', $count['role5'], $raids['role5_lmt'], $count2['role5']);
+		$role6_text = get_coloredcount('role6', $count['role6'], $raids['role6_lmt'], $count2['role6']);
+	}
+	else
+	{
+		$dr_text = get_coloredcount('druid', $count['dr'], $raids['dr_lmt'], $count2['dr']);
+		$hu_text = get_coloredcount('hunter', $count['hu'], $raids['hu_lmt'], $count2['hu']);
+		$ma_text = get_coloredcount('mage', $count['ma'], $raids['ma_lmt'], $count2['ma']);
+		$pa_text = get_coloredcount('paladin', $count['pa'], $raids['pa_lmt'], $count2['pa']);
+		$pr_text = get_coloredcount('priest', $count['pr'], $raids['pr_lmt'], $count2['pr']);
+		$ro_text = get_coloredcount('rogue', $count['ro'], $raids['ro_lmt'], $count2['ro']);
+		$sh_text = get_coloredcount('shaman', $count['sh'], $raids['sh_lmt'], $count2['sh']);
+		$wk_text = get_coloredcount('warlock', $count['wk'], $raids['wk_lmt'], $count2['wk']);
+		$wa_text = get_coloredcount('warrior', $count['wa'], $raids['wa_lmt'], $count2['wa']);
+		$role1_text = get_coloredcount('role1', $count['role1'], $raids['role1_lmt'], $count2['role1']);
+		$role2_text = get_coloredcount('role2', $count['role2'], $raids['role2_lmt'], $count2['role2']);
+		$role3_text = get_coloredcount('role3', $count['role3'], $raids['role3_lmt'], $count2['role3']);
+		$role4_text = get_coloredcount('role4', $count['role4'], $raids['role4_lmt'], $count2['role4']);
+		$role5_text = get_coloredcount('role5', $count['role5'], $raids['role5_lmt'], $count2['role5']);
+		$role6_text = get_coloredcount('role6', $count['role6'], $raids['role6_lmt'], $count2['role6']);
+	}
+	
 	// always show current raids
 	if($raids['old'] == 0) {
 		array_push($current,
@@ -119,21 +156,21 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true)) {
 				'Invite Time'=>$invite,
 				'Start Time'=>$start,
 				'Officer'=>$raids['officer'],
-				'dr'=>$count['dr'] . '/' . $raids['dr_lmt'],
-				'hu'=>$count['hu'] . '/' . $raids['hu_lmt'],
-				'ma'=>$count['ma'] . '/' . $raids['ma_lmt'],
-				'pa'=>$count['pa'] . '/' . $raids['pa_lmt'],
-				'pr'=>$count['pr'] . '/' . $raids['pr_lmt'],
-				'ro'=>$count['ro'] . '/' . $raids['ro_lmt'],
-				'sh'=>$count['sh'] . '/' . $raids['sh_lmt'],
-				'wk'=>$count['wk'] . '/' . $raids['wk_lmt'],
-				'wa'=>$count['wa'] . '/' . $raids['wa_lmt'],
-				'role1'=>$count['role1'] . '/' . $raids['role1_lmt'],
-				'role2'=>$count['role2'] . '/' . $raids['role2_lmt'],
-				'role3'=>$count['role3'] . '/' . $raids['role3_lmt'],
-				'role4'=>$count['role4'] . '/' . $raids['role4_lmt'],
-				'role5'=>$count['role5'] . '/' . $raids['role5_lmt'],
-				'role6'=>$count['role6'] . '/' . $raids['role6_lmt'],
+				'dr'=>$dr_text,
+				'hu'=>$hu_text,
+				'ma'=>$ma_text,
+				'pa'=>$pa_text,
+				'pr'=>$pr_text,
+				'ro'=>$ro_text,
+				'sh'=>$sh_text,
+				'wk'=>$wk_text,
+				'wa'=>$wa_text,
+				'role1'=>$role1_text,
+				'role2'=>$role2_text,
+				'role3'=>$role3_text,
+				'role4'=>$role4_text,
+				'role5'=>$role5_text,
+				'role6'=>$role6_text,
 				//'Tank'=>$tank,'Heal'=>$heal,'Melee'=>$melee,'Ranged'=>$ranged,'TkMel'=>$tkmel,
 				'max'=>$max . '/' . $raids['max'] . '' . $max2,
 				'info'=>$info,

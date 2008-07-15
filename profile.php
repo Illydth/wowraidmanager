@@ -150,6 +150,43 @@ if($_GET['mode'] == 'view') {
 			$total2 = " (+$total2)";
 		}
 
+		if($phpraid_config['class_as_min'])
+		{
+			$dr_text = get_coloredcount('druid', $count['dr'], $data['dr_lmt'], $count2['dr'], true);
+			$hu_text = get_coloredcount('hunter', $count['hu'], $data['hu_lmt'], $count2['hu'], true);
+			$ma_text = get_coloredcount('mage', $count['ma'], $data['ma_lmt'], $count2['ma'], true);
+			$pa_text = get_coloredcount('paladin', $count['pa'], $data['pa_lmt'], $count2['pa'], true);
+			$pr_text = get_coloredcount('priest', $count['pr'], $data['pr_lmt'], $count2['pr'], true);
+			$ro_text = get_coloredcount('rogue', $count['ro'], $data['ro_lmt'], $count2['ro'], true);
+			$sh_text = get_coloredcount('shaman', $count['sh'], $data['sh_lmt'], $count2['sh'], true);
+			$wk_text = get_coloredcount('warlock', $count['wk'], $data['wk_lmt'], $count2['wk'], true);
+			$wa_text = get_coloredcount('warrior', $count['wa'], $data['wa_lmt'], $count2['wa'], true);
+			$role1_text = get_coloredcount('role1', $count['role1'], $data['role1_lmt'], $count2['role1']);
+			$role2_text = get_coloredcount('role2', $count['role2'], $data['role2_lmt'], $count2['role2']);
+			$role3_text = get_coloredcount('role3', $count['role3'], $data['role3_lmt'], $count2['role3']);
+			$role4_text = get_coloredcount('role4', $count['role4'], $data['role4_lmt'], $count2['role4']);
+			$role5_text = get_coloredcount('role5', $count['role5'], $data['role5_lmt'], $count2['role5']);
+			$role6_text = get_coloredcount('role6', $count['role6'], $data['role6_lmt'], $count2['role6']);
+		}
+		else
+		{
+			$dr_text = get_coloredcount('druid', $count['dr'], $data['dr_lmt'], $count2['dr']);
+			$hu_text = get_coloredcount('hunter', $count['hu'], $data['hu_lmt'], $count2['hu']);
+			$ma_text = get_coloredcount('mage', $count['ma'], $data['ma_lmt'], $count2['ma']);
+			$pa_text = get_coloredcount('paladin', $count['pa'], $data['pa_lmt'], $count2['pa']);
+			$pr_text = get_coloredcount('priest', $count['pr'], $data['pr_lmt'], $count2['pr']);
+			$ro_text = get_coloredcount('rogue', $count['ro'], $data['ro_lmt'], $count2['ro']);
+			$sh_text = get_coloredcount('shaman', $count['sh'], $data['sh_lmt'], $count2['sh']);
+			$wk_text = get_coloredcount('warlock', $count['wk'], $data['wk_lmt'], $count2['wk']);
+			$wa_text = get_coloredcount('warrior', $count['wa'], $data['wa_lmt'], $count2['wa']);
+			$role1_text = get_coloredcount('role1', $count['role1'], $data['role1_lmt'], $count2['role1']);
+			$role2_text = get_coloredcount('role2', $count['role2'], $data['role2_lmt'], $count2['role2']);
+			$role3_text = get_coloredcount('role3', $count['role3'], $data['role3_lmt'], $count2['role3']);
+			$role4_text = get_coloredcount('role4', $count['role4'], $data['role4_lmt'], $count2['role4']);
+			$role5_text = get_coloredcount('role5', $count['role5'], $data['role5_lmt'], $count2['role5']);
+			$role6_text = get_coloredcount('role6', $count['role6'], $data['role6_lmt'], $count2['role6']);
+		}
+
 		// current raids
 		if($data['old'] == 0) {
 			array_push($raid_list,
@@ -159,21 +196,21 @@ if($_GET['mode'] == 'view') {
 					'Invite Time'=>$invite,
 					'Start Time'=>$start,'Officer'=>$data['officer'],
 					'Max'=>$total.'/'.$data['max']  . '' . $total2,
-					'Dru'=>$count['dr'] . "/" . $data['dr_lmt'],
-					'Hun'=>$count['hu'] . "/" . $data['hu_lmt'],
-					'Mag'=>$count['ma'] . "/" . $data['ma_lmt'],
-					'Pal'=>$count['pa'] . "/" . $data['pa_lmt'],
-					'Pri'=>$count['pr'] . "/" . $data['pr_lmt'],
-					'Rog'=>$count['ro'] . "/" . $data['ro_lmt'],
-					'Sha'=>$count['sh'] . "/" . $data['sh_lmt'],
-					'Wlk'=>$count['wk'] . "/" . $data['wk_lmt'],
-					'War'=>$count['wa'] . "/" . $data['wa_lmt'],
-					'role1'=>$count['role1'] . "/" . $data['role1_lmt'],
-					'role2'=>$count['role2'] . "/" . $data['role2_lmt'],
-					'role3'=>$count['role3'] . "/" . $data['role3_lmt'],
-					'role4'=>$count['role4'] . "/" . $data['role4_lmt'],
-					'role5'=>$count['role5'] . "/" . $data['role5_lmt'],
-					'role6'=>$count['role6'] . "/" . $data['role6_lmt'],
+					'Dru'=>$dr_text,
+					'Hun'=>$hu_text,
+					'Mag'=>$ma_text,
+					'Pal'=>$pa_text,
+					'Pri'=>$pr_text,
+					'Rog'=>$ro_text,
+					'Sha'=>$sh_text,
+					'Wlk'=>$wk_text,
+					'War'=>$wa_text,
+					'role1'=>$role1_text,
+					'role2'=>$role2_text,
+					'role3'=>$role3_text,
+					'role4'=>$role4_text,
+					'role5'=>$role5_text,
+					'role6'=>$role6_text,
 				)
 			);
 		}

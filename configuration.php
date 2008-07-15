@@ -164,6 +164,21 @@ if($phpraid_config['enable_five_man'] == '0')
 else
 	$enable_five_man = '<input type="checkbox" name="enable_five_man" value="1" checked>';
 		
+if($phpraid_config['enforce_role_limits'] == '0')
+	$enforce_role_limits = '<input type="checkbox" name="enforce_role_limits" value="1">';
+else
+	$enforce_role_limits = '<input type="checkbox" name="enforce_role_limits" value="1" checked>';
+
+if($phpraid_config['enforce_class_limits'] == '0')
+	$enforce_class_limits = '<input type="checkbox" name="enforce_class_limits" value="1">';
+else
+	$enforce_class_limits = '<input type="checkbox" name="enforce_class_limits" value="1" checked>';
+
+if($phpraid_config['class_as_min'] == '0')
+	$class_as_min = '<input type="checkbox" name="class_as_min" value="1">';
+else
+	$class_as_min = '<input type="checkbox" name="class_as_min" value="1" checked>';
+
 // now the faction
 $faction = '<select name="faction">';
 if($phpraid_config['faction'] == 'alliance')
@@ -506,6 +521,9 @@ $page->set_var(
 		'debug_mode' => $debug_mode,
 		'allow_multiple_signups' => $allow_multiple_signups,
 		'allow_anonymous_viewing' => $allow_anonymous_viewing,
+		'enforce_role_limits' => $enforce_role_limits,
+		'enforce_class_limits' => $enforce_class_limits,
+		'class_as_min' => $class_as_min,
 		'enable_five_man' => $enable_five_man, 
 		'allow_resop' => $allow_resop,
 		'faction' => $faction,
@@ -532,6 +550,9 @@ $page->set_var(
 		'role4_text' => $phprlang['configuration_role4_text'],
 		'role5_text' => $phprlang['configuration_role5_text'],
 		'role6_text' => $phprlang['configuration_role6_text'],
+		'role_limit_text' => $phprlang['configuration_role_limit_text'],
+		'class_limit_text' => $phprlang['configuration_class_limit_text'],
+		'class_as_min_text' => $phprlang['configuration_class_as_min'],
 		'armory_link_text' => $phprlang['configuration_armory_link_text'],
 		'armory_language_text' => $phprlang['configuration_armory_language_text'],
 		'enable_five_man_text' => $phprlang['configuration_enable_five_man'],
@@ -646,6 +667,21 @@ else
 		$disable = 1;
 	else
 		$disable = 0;
+		
+	if(isset($_POST['enforce_role_limits']))
+		$enforce_role_limits = 1;
+	else
+		$enforce_role_limits = 0;
+	
+	if(isset($_POST['enforce_class_limits']))
+		$enforce_class_limits = 1;
+	else
+		$enforce_class_limits = 0;
+
+	if(isset($_POST['class_as_min']))
+		$class_as_min = 1;
+	else
+		$class_as_min = 0;
 	
 	if(isset($_POST['debug']))
 		$p_debug = 1;
@@ -1017,6 +1053,12 @@ else
 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'admin_drafted_cancel';", quote_smart($ada));
 	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'admin_drafted_delete';", quote_smart($add));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'enforce_role_limits';", quote_smart($enforce_role_limits));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'enforce_class_limits';", quote_smart($enforce_class_limits));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'class_as_min';", quote_smart($class_as_min));
 	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
 
 	// Now, write out the config files for the armory stuff in both the wowchar-link and wowitem-link directories.
