@@ -175,7 +175,7 @@ function get_color($text, $count, $max_count, $reverse)
 	return $color ? '<font color="' . $color . '">' . $text . '</font>' : $text;
 }
 
-function get_coloredcount($signedup, $count, $max_count, $onqueue, $reverse)
+function get_coloredcount($signedup, $count, $max_count, $onqueue, $reverse = false)
 {
 	return '<!-- ' . $signedup . ' -->' . get_color($count . "/" . $max_count . ($onqueue ? '(+' . $onqueue . ')' : ''), $count, $max_count, $reverse);
 }
