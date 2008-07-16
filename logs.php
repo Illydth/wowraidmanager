@@ -61,14 +61,14 @@ if($_GET['mode'] == 'delete')
 	if(!isset($_POST['submit']))
 	{
 		$form_action = "logs.php?mode=delete&section=$section";
-		$confirm_button = '<input name="submit" type="submit" id="submit" value="Confirm Deletion" class="mainoption">';
+		$confirm_button = '<input name="submit" type="submit" id="submit" value="'.$phprlang['confirm_deletion'].'" class="mainoption">';
 
 		$page->set_file('output',$phpraid_config['template'] . '/delete.htm');
 		$page->set_var(
 			array(
 				'form_action'=>$form_action,
 				'confirm_button'=>$confirm_button,
-				'delete_header'=>$phprlang['delete_header'],
+				'delete_header'=>$phprlang['confirm_deletion'],
 				'delete_msg'=>$phprlang['delete_msg'],
 			)
 		);
@@ -163,7 +163,7 @@ else
 				  </div></td>
 			  </tr>
 			  <tr>
-				<td><br><div align="center"><input type="submit" value="Filter" name="submit" class="mainoption"> <input type="reset" value="Reset" name="reset" class="liteoption"></div></td>
+				<td><br><div align="center"><input type="submit" value="'.$phprlang['filter'].'" name="submit" class="mainoption"> <input type="reset" value="'.$phprlang['reset'].'" name="reset" class="liteoption"></div></td>
 			  </tr>
 			</table>
 			</form>

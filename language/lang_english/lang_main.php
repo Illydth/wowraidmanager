@@ -1,6 +1,6 @@
 <?php
 /***************************************************************************
- *                             lang_main.php
+ *                           lang_main.php (English)
  *                            -------------------
  *   begin                : Saturday, Jan 16, 2005
  *   copyright            : (C) 2007-2008 Douglas Wagner
@@ -119,7 +119,6 @@ $phprlang['socket_functions_disabled'] = 'Update checked failed to connect to se
 // forms
 $phprlang['asc'] = 'ascending';
 $phprlang['auth_phpbb_no_groups'] = 'No groups available to add';
-$phprlang['confirm_deletion'] = 'Confirm Deletion';
 $phprlang['desc'] = 'descending';
 $phprlang['form_error'] = 'Error with your form submission';
 $phprlang['form_select'] = 'Select One';
@@ -143,13 +142,21 @@ $phprlang['raid_error_date'] = 'You must input a proper date';
 $phprlang['raid_error_description'] = 'Description must be entered';
 $phprlang['raid_error_limits'] = 'All raid limits must be entered and numeric';
 $phprlang['raid_error_location'] = 'Input a raid location';
-$phprlang['reset'] = 'Reset';
 $phprlang['view_error_signed_up'] = 'You have already signed up with this character';
 $phprlang['view_error_role_undef'] = 'Make sure that the Character in <a href="profile.php?mode=view">Profile</a> has a defined Role.';
 $phprlang['yes'] = 'Yes';
 
+// Buttons
+$phprlang['submit'] = 'Submit';
+$phprlang['reset'] = 'Reset';
+$phprlang['confirm'] = 'Confirm';
+$phprlang['update'] = 'Update';
+$phprlang['confirm_deletion'] = 'Confirm Deletion';
+$phprlang['filter'] = 'Filter';
+$phprlang['addchar'] = 'Add Character';
+$phprlang['updatechar'] = 'Update Character';
+
 // generic information
-$phprlang['delete_header'] = 'Confirm Deletion';
 $phprlang['delete_msg'] = 'NOTICE: Deletion is permanent and cannot be reversed. <br>Click the button below to continue.';
 $phprlang['disable_header'] = 'Site under maintenance';
 $phprlang['disable_message'] = 'phpRaid is currently undergoing maintenance. Please try again later.';
@@ -160,7 +167,16 @@ $phprlang['priv_title'] = 'Insufficient priveleges';
 $phprlang['priv_msg'] = 'You have insufficient priveleges to view this page. If you believe this is an error, please contact the site administrator';
 $phprlang['remember'] = 'Remember me on this computer';
 $phprlang['welcome'] = 'Welcome ';
-									
+
+// Days of the Week
+$phprlang['sunday'] = 'Sunday';
+$phprlang['monday'] = 'Monday';
+$phprlang['tuesday'] = 'Tuesday';
+$phprlang['wednesday'] = 'Wednesday';
+$phprlang['thursday'] = 'Thursday';
+$phprlang['friday'] = 'Friday';
+$phprlang['saturday'] = 'Saturday';
+							
 // links
 $phprlang['announcements_link'] = '&raquo; Announcements';
 $phprlang['configuration_link'] = '&raquo; Configuration';

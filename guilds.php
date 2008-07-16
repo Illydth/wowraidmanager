@@ -127,7 +127,7 @@ if($_GET['mode'] == 'view') {
 	if($_SESSION['priv_guilds'] == 1) {
 		if(!isset($_POST['submit'])) {			
 			$form_action = 'guilds.php?mode=delete&n='.$n.'&id=' . $id;
-			$confirm_button = '<input type="submit" value="Confirm" name="submit" class="post">';
+			$confirm_button = '<input type="submit" value="'.$phprlang['confirm'].'" name="submit" class="post">';
 			
 			$page->set_file('output',$phpraid_config['template'] . '/delete.htm');
 			
@@ -135,7 +135,7 @@ if($_GET['mode'] == 'view') {
 				array(
 					'form_action'=>$form_action,
 					'confirm_button'=>$confirm_button,
-					'delete_header'=>$phprlang['delete_header'],
+					'delete_header'=>$phprlang['confirm_deletion'],
 					'delete_msg'=>$phprlang['delete_msg'],
 				)
 			);
@@ -164,7 +164,7 @@ if($_GET['mode'] != 'delete') {
 		$short = '<input name="short" type="text" id="short" class="post">';
 		$master = '<input name="master" type="text" id="short" class="post">';
 		
-		$buttons = '<input type="submit" value="Submit" name="submit" class="mainoption"> <input type="reset" value="Reset" name="reset" class="liteoption">';
+		$buttons = '<input type="submit" value="'.$phprlang['submit'].'" name="submit" class="mainoption"> <input type="reset" value="'.$phprlang['reset'].'" name="reset" class="liteoption">';
 	} elseif($_GET['mode'] == 'update') {
 		$id = scrub_input($_GET['id'], false);
 		
@@ -178,7 +178,7 @@ if($_GET['mode'] != 'delete') {
 		$short = '<input name="short" type="text" id="short" value="' . $data['guild_tag'] . '" class="post">';
 		$master = '<input name="master" type="text" id="short" value="' . $data['guild_master'] . '" class="post">';
 		
-		$buttons = '<input type="submit" value="Update" name="submit" class="mainoption"> <input type="reset" value="Reset" name="reset" class="liteoption">';			
+		$buttons = '<input type="submit" value="'.$phprlang['update'].'" name="submit" class="mainoption"> <input type="reset" value="'.$phprlang['reset'].'" name="reset" class="liteoption">';			
 	}
 	
 	$page->set_file('new_group',$phpraid_config['template'] . '/guilds_new.htm');

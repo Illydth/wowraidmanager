@@ -213,7 +213,7 @@ elseif($_GET['mode'] == 'delete')
 	if($_SESSION['priv_locations'] == 1) {
 		if(!isset($_POST['submit'])) {
 			$form_action = 'locations.php?mode=delete&n='.$n.'&id=' . $id;
-			$confirm_button = '<input type="submit" value="Confirm" name="submit" class="post">';
+			$confirm_button = '<input type="submit" value="'.$phprlang['confirm'].'" name="submit" class="post">';
 
 			$page->set_file('output',$phpraid_config['template'] . '/delete.htm');
 
@@ -221,7 +221,7 @@ elseif($_GET['mode'] == 'delete')
 				array(
 					'form_action'=>$form_action,
 					'confirm_button'=>$confirm_button,
-					'delete_header'=>$phprlang['delete_header'],
+					'delete_header'=>$phprlang['confirm_deletion'],
 					'delete_msg'=>$phprlang['delete_msg'],
 				)
 			);
@@ -287,7 +287,7 @@ if($_GET['mode'] != 'delete')
 			$role6 = '<input name="role6" type="hidden" value="" class="post" style="width:20px" maxlength="2">';
 		$locked = '<input name="lock_template" type="checkbox" value="1" class="post">';
 		$max = '<input name="max" type="text" class="post" style="width:20px" maxlength="2">';
-		$buttons = '<input type="submit" value="Submit" name="submit" class="mainoption"> <input type="reset" value="Reset" name="reset" class="liteoption">';
+		$buttons = '<input type="submit" value="'.$phprlang['submit'].'" name="submit" class="mainoption"> <input type="reset" value="'.$phprlang['reset'].'" name="reset" class="liteoption">';
 	}
 	elseif($_GET['mode'] == 'update')
 	{
@@ -341,7 +341,7 @@ if($_GET['mode'] != 'delete')
 		else
 			$locked = '<input type="checkbox" name="lock_template" value="' . $data['locked'] . '"  class="post" checked>';
 		$max = '<input name="max" type="text" value="' . $data['max'] . '"  class="post" style="width:20px" maxlength="2">';
-		$buttons = '<input type="submit" value="Update" name="submit" class="mainoption"> <input type="reset" value="Reset" name="reset" class="liteoption">';
+		$buttons = '<input type="submit" value="'.$phprlang['update'].'" name="submit" class="mainoption"> <input type="reset" value="'.$phprlang['reset'].'" name="reset" class="liteoption">';
 	}
 
 	$page->set_file('new_loc',$phpraid_config['template'] . '/locations_new.htm');

@@ -301,7 +301,7 @@ if($_GET['mode'] == 'view') {
 			array(
 				'form_action'=>$form_action,
 				'confirm_button'=>$confirm_button,
-				'delete_header'=>$phprlang['delete_header'],
+				'delete_header'=>$phprlang['confirm_deletion'],
 				'delete_msg'=>$phprlang['delete_msg'],
 				)
 			);
@@ -804,9 +804,9 @@ if($db_raid->sql_numrows($result) == 0) {
 		}
 
 		if($_GET['mode'] == 'view' || $_GET['mode'] == 'new') {
-			$buttons = '<input type="submit" name="submit" value="Add Character" class="mainoption"> <input type="reset" name="Reset" value="Reset" class="liteoption">';
+			$buttons = '<input type="submit" name="submit" value="'.$phprlang['addchar'].'" class="mainoption"> <input type="reset" name="Reset" value="'.$phprlang['reset'].'" class="liteoption">';
 		} else {
-			$buttons = '<input type="submit" name="submit" value="Update Character" class="mainoption"> <input type="reset" name="Reset" value="Reset" class="liteoption">';
+			$buttons = '<input type="submit" name="submit" value="'.$phprlang['updatechar'].'" class="mainoption"> <input type="reset" name="Reset" value="'.$phprlang['reset'].'" class="liteoption">';
 		}
 
 		$page->set_file(array(

@@ -1,6 +1,6 @@
 <?php
 /***************************************************************************
- *                             lang_pages.php
+ *                          lang_pages.php (English)
  *                            -------------------
  *   begin                : Saturday, Jan 16, 2005
  *   copyright            : (C) 2007-2008 Douglas Wagner
@@ -34,6 +34,11 @@ $phprlang['announcements_header'] = 'Announcements';
 $phprlang['announcements_new_header'] = 'Create New Announcement';
 $phprlang['announcements_msg_txt'] = 'Message';
 $phprlang['announcements_title_txt'] = 'Title';
+
+// Calendar
+$phprlang['invites'] = 'Invites';
+$phprlang['start'] = 'Start';
+$phprlang['key'] = 'Key:<br>(*) = Signed Up & Drafted<br>(#) = Signed Up, Not Drafted (queued or cancelled)<br><font color="#FFFFFF">White</font> dates are in the past.<br><font color="#FF0000">Red</font> date is today.<br><font color="#000000">Black</font> dates are in the future.';
 
 // configuration
 $phprlang['configuration_addon'] = 'Addon URL';
@@ -231,6 +236,7 @@ $phprlang['view_username'] = 'Username';
 // main page
 $phprlang['main_previous_raids'] = 'Previous events';
 $phprlang['main_upcoming_raids'] = 'Upcoming events';
+$phprlang['signup'] = 'Sign Up';
 
 // teams
 $phprlang['team_new_header'] = 'Create New Team';

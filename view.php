@@ -1341,7 +1341,7 @@ elseif($mode == 'delete')
 				array(
 					'form_action'=>$form_action,
 					'confirm_button'=>$confirm_button,
-					'delete_header'=>$phprlang['delete_header'],
+					'delete_header'=>$phprlang['confirm_deletion'],
 					'delete_msg'=>$phprlang['delete_msg'],
 				)
 			);

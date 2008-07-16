@@ -122,7 +122,7 @@ elseif($_GET['mode'] == 'delete')
 	if($_SESSION['priv_announcements'] == 1) {
 		if(!isset($_POST['submit'])) {
 			$form_action = 'announcements.php?mode=delete&n='.$delete_name.'&id=' . $id;
-			$confirm_button = '<input type="submit" value="Confirm" name="submit" class="post">';
+			$confirm_button = '<input type="submit" value="'. $phprlang['confirm'] .'" name="submit" class="post">';
 
 			$page->set_file('output',$phpraid_config['template'] . '/delete.htm');
 
@@ -130,7 +130,7 @@ elseif($_GET['mode'] == 'delete')
 				array(
 					'form_action'=>$form_action,
 					'confirm_button'=>$confirm_button,
-					'delete_header'=>$phprlang['delete_header'],
+					'delete_header'=>$phprlang['confirm_deletion'],
 					'delete_msg'=>$phprlang['delete_msg'],
 				)
 			);
@@ -194,14 +194,14 @@ if($_GET['mode'] != 'delete')
 		$form_action = 'announcements.php?mode=edit&id=' . $id;
 		$title = '<input type="text" size="69" name="title" class="post" value="' . $data['title'] . '">';
  		$message = '<textarea name="message" class="post" cols="57" rows="10">' . $data['message'] . '</textarea>';
-		$buttons = '<input type="submit" name="submit" value="Update" class="mainoption"> <input type="reset" name="reset" value="Reset" class="liteoption">';
+		$buttons = '<input type="submit" name="submit" value="'.$phprlang['update'].'" class="mainoption"> <input type="reset" name="reset" value="'.$phprlang['reset'].'" class="liteoption">';
 	}
 	else
 	{
 		$form_action = 'announcements.php?mode=new';
 		$title = '<input type="text" size="69" name="title" class="post">';
 		$message = '<textarea name="message" class="post" cols="57" rows="10"></textarea>';
-		$buttons = '<input type="submit" name="submit" value="Submit" class="mainoption"> <input type="reset" name="reset" value="Reset" class="liteoption">';
+		$buttons = '<input type="submit" name="submit" value="'.$phprlang['submit'].'" class="mainoption"> <input type="reset" name="reset" value="'.$phprlang['reset'].'" class="liteoption">';
 	}
 
 	// set variables

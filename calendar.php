@@ -98,17 +98,18 @@ $page->p('body');
 <?php
 print "                <th colspan=\"7\"><font color=\"#0000FF\"><div align=\"center\">" . date("F",mktime(0, 0, 0, date("m") , date("d") , date("Y"))) . " " . date("Y",mktime(0, 0, 0, date("m") , date("d") , date("Y")))  . "</div></font></th>";
 ?>
-        </tr>
-        <tr height="18">
-                <th width=14% align="center"><b>Sunday</b></td>
-                <th width=14% align="center"><b>Monday</b></td>
-                <th width=14% align="center"><b>Tuesday</b></td>
-                <th width=14% align="center"><b>Wednesday</b></td>
-                <th width=14% align="center"><b>Thursday</b></td>
-                <th width=14% align="center"><b>Friday</b></td>
-                <th width=14% align="center"><b>Saturday</b></td>
-        </tr>
-
+<?php
+        echo "</tr>";
+        echo "<tr height=\"18\">";
+        echo "  <th width=14% align=\"center\"><b>" . $phprlang['sunday'] . "</b></td>";
+        echo "  <th width=14% align=\"center\"><b>" . $phprlang['monday'] . "</b></td>";
+        echo "  <th width=14% align=\"center\"><b>" . $phprlang['tuesday'] . "</b></td>";
+        echo "  <th width=14% align=\"center\"><b>" . $phprlang['wednesday'] . "</b></td>";
+        echo "  <th width=14% align=\"center\"><b>" . $phprlang['thursday'] . "</b></td>";
+        echo "  <th width=14% align=\"center\"><b>" . $phprlang['friday'] . "</b></td>";
+        echo "  <th width=14% align=\"center\"><b>" . $phprlang['saturday'] . "</b></td>";
+        echo "</tr>";
+?>
 <?php
 
 $today = mktime(0, 0, 0, date("m") , date("d"), date("Y"));
@@ -187,9 +188,9 @@ while($data = $db_raid->sql_fetchrow($result, true)) {
 
 	print $location;
 	print "<br>";
-	print "Invites: " . $invitetime;
+	print $phprlang['invites'] . ": " . $invitetime;
 	print "<br>";
-	print "Start: " . $starttime;
+	print $phprlang['start'] . ": " . $starttime;
 	print "<br>";
 
 }
@@ -206,7 +207,9 @@ print "&nbsp;</font></div></td> \n";
 
 ?>
 	<tr>
-             <td colspan="7"><font size="1"><div align="left">Key:<br>(*) = Signed up & On Roster<br>(#) = Signed up, Not (yet) on roster (or cancelled)<br>White dates have past, Red date is today, Black dates are future.</div></font></td>
+<?php
+    print '<td colspan="7"><font size="1"><div align="left">' . $phprlang['key']. '</div></font></td>';
+?>
 	</tr>
 
 </table>

@@ -256,7 +256,7 @@ elseif($_GET['mode'] == 'delete')
 		if(!isset($_POST['submit'])) 
 		{			
 			$form_action = 'permissions.php?mode=delete&id=' . $id;
-			$confirm_button = '<input type="submit" value="Confirm" name="submit" class="post">';
+			$confirm_button = '<input type="submit" value="'.$phprlang['confirm_deletion'].'" name="submit" class="post">';
 			
 			$page->set_file('output',$phpraid_config['template'] . '/delete.htm');
 			
@@ -264,7 +264,7 @@ elseif($_GET['mode'] == 'delete')
 				array(
 					'form_action'=>$form_action,
 					'confirm_button'=>$confirm_button,
-					'delete_header'=>$phprlang['delete_header'],
+					'delete_header'=>$phprlang['confirm_deletion'],
 					'delete_msg'=>$phprlang['delete_msg'],
 				)
 			);
@@ -480,7 +480,7 @@ if($_GET['mode'] != 'delete' && $_GET['mode'] != 'details')
 			'form_action'=>$form_action
 		)
 	);
-	$page->set_var('buttons','<input type="submit" value="Submit" name="submit" class="mainoption"> <input type="reset" value="Reset" name="reset" class="liteoption">');
+	$page->set_var('buttons','<input type="submit" value="'.$phprlang['submit'].'" name="submit" class="mainoption"> <input type="reset" value="'.$phprlang['reset'].'" name="reset" class="liteoption">');
 	$page->parse('output','new_file',true);
 }
 

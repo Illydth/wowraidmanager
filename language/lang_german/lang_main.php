@@ -1,16 +1,34 @@
 <?php
 /***************************************************************************
-*                               lang_main.php
-*								   GERMAN
-***************************************************************************/
+ *                           lang_main.php (German)
+ *                            -------------------
+ *   begin                : Saturday, Jan 16, 2005
+ *   copyright            : (C) 2007-2008 Douglas Wagner
+ *   email                : douglasw@wagnerweb.org
+ *
+ *   $Id: lang_main.php,v 2.00 2008/03/07 13:46:51 psotfx Exp $
+ *
+ ***************************************************************************/
+
 /***************************************************************************
 *
-*   This program is free software; you can redistribute it and/or modify
-*   it under the terms of the GNU General Public License as published by
-*   the Free Software Foundation; either version 2 of the License, or
-*   (at your option) any later version.
+*    WoW Raid Manager - Raid Management Software for World of Warcraft
+*    Copyright (C) 2007-2008 Douglas Wagner
 *
-***************************************************************************/
+*    This program is free software: you can redistribute it and/or modify
+*    it under the terms of the GNU General Public License as published by
+*    the Free Software Foundation, either version 3 of the License, or
+*    (at your option) any later version.
+*
+*    This program is distributed in the hope that it will be useful,
+*    but WITHOUT ANY WARRANTY; without even the implied warranty of
+*    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*    GNU General Public License for more details.
+*
+*    You should have received a copy of the GNU General Public License
+*    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*
+****************************************************************************/
 global $phprlang;
 
 // logging language file
@@ -101,7 +119,6 @@ $phprlang['socket_functions_disabled'] = 'Die Versionsprüfung konnte den Server
 // forms
 $phprlang['asc'] = 'aufsteigender';
 $phprlang['auth_phpbb_no_groups'] = 'Keine Gruppen zum Hinzufügen verfügbar';
-$phprlang['confirm_deletion'] = 'Löschen bestätigen';
 $phprlang['desc'] = 'absteigender';
 $phprlang['form_error'] = 'Fehler beim Abschicken des Formulars';
 $phprlang['form_select'] = 'Bitte wählen';
@@ -125,13 +142,21 @@ $phprlang['raid_error_date'] = 'Du musst ein gültiges Datum eingeben';
 $phprlang['raid_error_description'] = 'Du musst eine Beschreibung eingeben';
 $phprlang['raid_error_limits'] = 'Alle Raid-Begrenzungen müssen eingegeben werden und nummerisch sein';
 $phprlang['raid_error_location'] = 'Du musst eine Raidinstanz eingeben';
-$phprlang['reset'] = 'Zurücksetzen';
 $phprlang['view_error_signed_up'] = 'Du hast dich bereits mit diesem Charakter angemeldet';
 $phprlang['view_error_role_undef'] = 'Bitte weise deinem Charakter im <a href="profile.php?mode=view">Profil</a> erst eine Rolle zu';
 $phprlang['yes'] = 'Ja';
 
+// Buttons
+$phprlang['submit'] = 'Übernehmen';
+$phprlang['reset'] = 'Zurücksetzen';
+$phprlang['confirm'] = 'Confirm';
+$phprlang['update'] = 'Update';
+$phprlang['confirm_deletion'] = 'Löschen bestätigen';
+$phprlang['filter'] = 'Filter';
+$phprlang['addchar'] = 'Add Character';
+$phprlang['updatechar'] = 'Update Character';
+
 // generic information
-$phprlang['delete_header'] = 'Löschung bestätigen';
 $phprlang['delete_msg'] = 'ACHTUNG: Die Löschung ist permanent und kann nicht rückgängig gemacht werden. <br>Klicke auf die Schaltfläche unten, um fortzufahren.';
 $phprlang['disable_header'] = 'Wartungsarbeiten';
 $phprlang['disable_message'] = 'phpRaid wird gerade Wartungsarbeiten unterzogen. Bitte versuche es später noch einmal.';
@@ -142,6 +167,15 @@ $phprlang['priv_title'] = 'Ungenügende Rechte';
 $phprlang['priv_msg'] = 'Du hast nicht die Berechtigung, diese Seite aufzurufen. Wenn du glaubst, dass es sich dabei um einen Fehler handelt, benachrichtige bitte den Administrator.';
 $phprlang['remember'] = 'Mich bei jedem Besuch von diesem Computer automatisch anmelden';
 $phprlang['welcome'] = 'Willkommen ';
+
+// Days of the Week
+$phprlang['sunday'] = 'Sonntag';
+$phprlang['monday'] = 'Montag';
+$phprlang['tuesday'] = 'Dienstag';
+$phprlang['wednesday'] = 'Mittwoch';
+$phprlang['thursday'] = 'Donnerstag';
+$phprlang['friday'] = 'Freitag';
+$phprlang['saturday'] = 'Samstag';
 									
 // links
 $phprlang['announcements_link'] = '&raquo; Ankündigungen';
