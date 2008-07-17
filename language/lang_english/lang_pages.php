@@ -194,7 +194,7 @@ $phprlang['roster_header'] = 'Guild Roster';
 
 // registration
 $phprlang['register_complete_header'] = 'Registration success';
-$phprlang['register_complete_msg'] = 'You are now registered for WRM Use.  On some sites this allows you to immediately use the software, on others you will need to wait for permissions to be set by the system administrator.';
+$phprlang['register_complete_msg'] = 'You are now registered for WRM Use.  On some sites you may now create your profile and characters, on others you will need to wait for permissions to be set by the system administrator.';
 $phprlang['register_confirm'] = 'Your passwords do not match.';
 $phprlang['register_confirm_text'] = 'Enter password again';
 $phprlang['register_email_header'] = 'Registration at';
