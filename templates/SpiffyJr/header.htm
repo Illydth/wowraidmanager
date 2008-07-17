@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-		<title>WoW Raid Manager :: {title_guild_name} of {title_guild_server} :: {title_guild_description}</title>
+		<title>WoW Raid Manager :: {title_guild_name} {of_string} {title_guild_server} :: {title_guild_description}</title>
 		<script src="templates/SpiffyJr/scripts/cal2.js" language="javascript"></script>
 		<script src="templates/SpiffyJr/scripts/cal2_conf.js" language="javascript"></script>
 		<script src="templates/SpiffyJr/scripts/phpRaid.js" language="javascript"></script>
@@ -14,7 +14,7 @@
 		<link rel="stylesheet" href="wowchar-tooltip/css/tooltip.css" type="text/css" />
 		<link rel="shortcut icon" href="templates/SpiffyJr/images/favicon.ico">
 		<link rel="icon" href="templates/SpiffyJr/images/favicon.ico" type="image/x-icon">
-		<link rel="alternate" title="{title_guild_name} of {title_guild_server} Raid signups RSS feed" type="application/rss+xml" href="rss.php">
+		<link rel="alternate" title="{title_guild_name} {of_string} {title_guild_server} {rss_feed_string}" type="application/rss+xml" href="rss.php">
 		<link rel="stylesheet" type="text/css" href="templates/SpiffyJr/style/calendar.css">
 		<link rel="stylesheet" type="text/css" href="templates/SpiffyJr/style/stylesheet.css">
 	</head>
@@ -35,7 +35,7 @@
 				<div id="topHeader">
 					<table width="100%" cellpadding="0" cellspacing="0">
 						<tr valign="top">
-							<td width="50%"><div align="left" style="margin-left:10px"><strong>Guild Time:</strong> {guild_date} - {guild_time}</div></td>
+							<td width="50%"><div align="left" style="margin-left:10px"><strong>{guild_time_string}:</strong> {guild_date} - {guild_time}</div></td>
 							<td width="50%"><div align="right" style="margin-right:10px"></div></td>
 						</tr>
 					</table>
@@ -43,7 +43,7 @@
 				<table width="100%" cellpadding="0" cellspacing="0" align="center">
 					<tr valign="top">
 						<td id="leftMenuBackground" width="150px">
-							<div class="menuHeader">WRM Menu</div>
+							<div class="menuHeader">{menu_header_text}</div>
 							{menu}
 						</td>
 						<td id="leftMenuBorder" width="5px">&nbsp;</td>

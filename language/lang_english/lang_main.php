@@ -40,7 +40,7 @@ require_once('lang_pages.php');
 // world of warcraft language file
 require_once('lang_wow.php');
 
-// data output headers
+// data output headers (Reports.php)
 $phprlang['add_team']='Check to Add To Team';
 $phprlang['add_team_dropdown_text']='Select Team to Add Members To';
 $phprlang['team_global']='Mark Group Available to All Raids';
@@ -74,6 +74,13 @@ $phprlang['time'] = 'Time';
 $phprlang['title'] = 'Title';
 $phprlang['totals'] = 'Totals';
 $phprlang['username'] = 'Username';
+$phprlang['records'] = 'Record(s)';
+$phprlang['to'] = 'to';
+$phprlang['of'] = 'of';
+$phprlang['total'] = 'total';
+$phprlang['section'] = 'Section';
+$phprlang['prev'] = 'Prev';
+$phprlang['next'] = 'Next';
 
 // roles
 $phprlang['role'] = 'Role';
@@ -155,6 +162,10 @@ $phprlang['confirm_deletion'] = 'Confirm Deletion';
 $phprlang['filter'] = 'Filter';
 $phprlang['addchar'] = 'Add Character';
 $phprlang['updatechar'] = 'Update Character';
+$phprlang['login'] = 'Log In';
+$phprlang['logout'] = 'Log Out';
+$phprlang['signup'] = 'Signup';
+
 
 // generic information
 $phprlang['delete_msg'] = 'NOTICE: Deletion is permanent and cannot be reversed. <br>Click the button below to continue.';
@@ -248,4 +259,5 @@ $phprlang['signup_delete'] = 'Remove user from signups (permanent)';
 $phprlang['users'] = 'Users';
 $phprlang['warlock_icon'] = 'Click to see warlocks';
 $phprlang['warrior_icon'] = 'Click to see warriors';
+
 ?>

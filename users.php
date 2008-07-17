@@ -198,7 +198,7 @@ else if($mode == 'remove_user')
 
 	if(!isset($_POST['submit'])) {
 		$form_action = 'users.php?mode=remove_user&user_id='.$user_id.'&n='.$delete_name;
-		$confirm_button = '<input type="submit" value="Confirm" name="submit" class="post">';
+		$confirm_button = '<input type="submit" value="'.$phprlang['confirm'].'" name="submit" class="post">';
 
 		$page->set_file('output',$phpraid_config['template'] . '/delete.htm');
 
@@ -231,7 +231,7 @@ else if($mode == 'remove_char')
 
 	if(!isset($_POST['submit'])) {
 		$form_action = 'users.php?mode=remove_char&char_id='.$char_id.'&user_id='.$user_id.'&n='.$delete_name;
-		$confirm_button = '<input type="submit" value="Confirm" name="submit" class="post">';
+		$confirm_button = '<input type="submit" value="'.$phprlang['confirm'].'" name="submit" class="post">';
 
 		$page->set_file('output',$phpraid_config['template'] . '/delete.htm');
 

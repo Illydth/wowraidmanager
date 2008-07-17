@@ -1092,7 +1092,9 @@ if($mode == 'view')
 			'rogue_icon'=>$rogue_icon,
 			'shaman_icon'=>$shaman_icon,
 			'warlock_icon'=>$warlock_icon,
-			'warrior_icon'=>$warrior_icon
+			'warrior_icon'=>$warrior_icon,
+			'signup_button_text'=>$phprlang['signup'],
+			'reset_button_text'=>$phprlang['reset']
 		)
 	);
 
@@ -1333,7 +1335,7 @@ elseif($mode == 'delete')
 		// they have permission to delete
 		if(!isset($_POST['submit'])) {
 			$form_action = 'view.php?mode=delete&profile_id=' . $profile_id . '&raid_id=' . $raid_id . '&char_id=' . $char_id;
-			$confirm_button = '<input type="submit" value="Confirm" name="submit" class="post">';
+			$confirm_button = '<input type="submit" value="'.$phprlang['confirm'].'" name="submit" class="post">';
 
 			$page->set_file('output',$phpraid_config['template'] . '/delete.htm');
 
@@ -1765,8 +1767,8 @@ if($show_signup == 1 && $priv_profile == 1)
 	{
 		$queue = '
 				<select name="queue">
-				<option value="queue" selected>Signup as queued</option>
-				<option value="cancel">Signup as cancelled</option>
+				<option value="queue" selected>'.$phprlang['view_signup_queue'].'</option>
+				<option value="cancel">'.$phprlang['view_signup_cancel'].'</option>
 				</select>
 				';
 	}
@@ -1774,9 +1776,9 @@ if($show_signup == 1 && $priv_profile == 1)
 	{
 		$queue = '
 				<select name="queue">
-				<option value="signup" selected>Signup as available</option>
-				<option value="queue">Signup as queued</option>
-				<option value="cancel">Signup as cancelled</option>
+				<option value="signup" selected>'.$phprlang['view_signup_draft'].'</option>
+				<option value="queue">'.$phprlang['view_signup_queue'].'</option>
+				<option value="cancel">'.$phprlang['view_signup_cancel'].'</option>
 				</select>
 				';
 	}

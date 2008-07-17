@@ -40,7 +40,7 @@ require_once('lang_pages.php');
 // world of warcraft language file
 require_once('lang_wow.php');
 
-// data output headers
+// data output headers (Reports.php)
 $phprlang['add_team']='Zum Team hinzufügen';
 $phprlang['add_team_dropdown_text']='Team, zu dem Mitglieder hinzugefügt werdensollen';
 $phprlang['team_global']='Team für alle Raids verfügbar machen';
@@ -74,6 +74,13 @@ $phprlang['time'] = 'Zeit';
 $phprlang['title'] = 'Titel';
 $phprlang['totals'] = 'Gesamt';
 $phprlang['username'] = 'Benutzername';
+$phprlang['records'] = 'Datensätze';
+$phprlang['to'] = 'bis';
+$phprlang['of'] = 'von';
+$phprlang['total'] = 'insgesamt';
+$phprlang['section'] = 'Abschnitt';
+$phprlang['prev'] = 'Zurück';
+$phprlang['next'] = 'Weiter';
 
 // roles
 $phprlang['role'] = 'Rolle';
@@ -155,6 +162,9 @@ $phprlang['confirm_deletion'] = 'Löschen bestätigen';
 $phprlang['filter'] = 'Filter';
 $phprlang['addchar'] = 'Add Character';
 $phprlang['updatechar'] = 'Update Character';
+$phprlang['login'] = 'Anmelden';
+$phprlang['logout'] = 'Abmelden';
+$phprlang['signup'] = 'Anmelden';
 
 // generic information
 $phprlang['delete_msg'] = 'ACHTUNG: Die Löschung ist permanent und kann nicht rückgängig gemacht werden. <br>Klicke auf die Schaltfläche unten, um fortzufahren.';

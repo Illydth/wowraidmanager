@@ -63,7 +63,7 @@ if($logged_in != 1)
 	$login_form_open = '<form action="login.php" method="POST">';
 	$login_username = '<input name="username" type="text" value="username" size="15" maxlength="45" onFocus="if(this.value==\'username\')this.value=\'\';" class="post">';
 	$login_password = '<input name="password" type="password" value="password" size="15" onFocus="if(this.value==\'password\')this.value=\'\';" class="post">';
-	$login_button = '<input type="submit" name="login" value="Log in" style="font-size:10px" class="mainoption"></form>';
+	$login_button = '<input type="submit" name="login" value="'.$phprlang['login'].'" style="font-size:10px" class="mainoption"></form>';
 	$login_remember = '<input type="checkbox" checked="checked" name="autologin">';
 	$login_remember_hidden = '<input type="hidden" value="1" name="autologin">';
 	$login_form_close = '</form>';
@@ -73,7 +73,7 @@ else
 	$login_form_open = '<form action="login.php?logout=true" method="POST">';
 	$login_username = scrub_input($_SESSION['username']);
 	$login_password = '';
-	$login_button = '<input type="submit" name="login" value="Log out" style="font-size:10px" class="mainoption"></form>';
+	$login_button = '<input type="submit" name="login" value="'.$phprlang['logout'].'" style="font-size:10px" class="mainoption"></form>';
 	$login_remember = '';
 	$login_remember_hidden = '';
 	$login_form_close = '</form>';
@@ -88,7 +88,7 @@ if(($phpraid_config['disable'] == '1') AND ($priv_config == 1))
 	Go to <u>Configuration</u> and then uncheck <u>Disable phpRaid</u></div>
 	</div>
 	";
-}
+} 
 
 $page->set_var(
 		array(
@@ -106,7 +106,11 @@ $page->set_var(
 			'login_remember' => $login_remember,
 			'login_remember_hidden' => $login_remember_hidden,
 			'login_button' => $login_button,
-			'site_disabled_warning' => $site_disabled_warning
+			'site_disabled_warning' => $site_disabled_warning,
+			'of_string'=>$phprlang['of'],
+			'rss_feed_string'=>$phprlang['rss_feed_text'],
+			'guild_time_string'=>$phprlang['guild_time_string'],
+			'menu_header_text'=>$phprlang['menu_header_text']
 	)
 );
 

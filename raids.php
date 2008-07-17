@@ -78,6 +78,9 @@ if($_GET['mode'] == 'view')
 
 			$mark_new = '<a href="raids.php?mode=mark&id='.$data['raid_id'].'"><img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_latest_reply.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['new'].'\')"; onMouseout="hideddrivetip()"></a>';
 		}
+
+		// Create the "new raid" button.
+		$new_raid_link = '<a href="raids.php?mode=new"><img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_new_raid.gif" border="0"  onMouseover="ddrivetip(\''.$phprlang['raids_new_header'].'\')"; onMouseout="hideddrivetip()"></a>';
 	
 		//setup the count array
 		$count = array('dr'=>'0','hu'=>'0','ma'=>'0','pa'=>'0','pr'=>'0','ro'=>'0','sh'=>'0','wk'=>'0','wa'=>'0','role1'=>'0','role2'=>'0','role3'=>'0','role4'=>'0','role5'=>'0','role6'=>'0');
@@ -376,8 +379,8 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 		}
 		if($description == "")				//Moved
 		{									//Added
-        	$description="None";			//Change
-        	$_POST['description']="None";	//Added
+        	$description="-";			//Change
+        	$_POST['description']="-";	//Added
 		}
 
 	}
@@ -816,7 +819,7 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 			else
 				$role6_limit = '<input name="role6" type="hidden" value="" class="post" style="width:20px" maxlength="2">';
 		}
-		$buttons = '<input type="submit" name="submit" value="Submit" class="mainoption"> <input type="reset" name="reset" value="Reset" class="liteoption">';			
+		$buttons = '<input type="submit" name="submit" value="'.$phprlang['submit'].'" class="mainoption"> <input type="reset" name="reset" value="'.$phprlang['reset'].'" class="liteoption">';			
 		
 		$page->set_file('output',$phpraid_config['template'] . '/raids_new.htm');
 		$page->set_var(
@@ -975,7 +978,7 @@ elseif($_GET['mode'] == 'delete')
 	if(!isset($_POST['submit']))
 	{
 		$form_action = "raids.php?mode=delete&n=$n&id=$id";
-		$confirm_button = '<input name="submit" type="submit" id="submit" value="Confirm Deletion" class="mainoption">';
+		$confirm_button = '<input name="submit" type="submit" id="submit" value="'.$phprlang['confirm_deletion'].'" class="mainoption">';
 
 		$page->set_file('output',$phpraid_config['template'] . '/delete.htm');
 		$page->set_var(

@@ -661,7 +661,7 @@ class ReportList
 								"\t<listTitle>" . trim($this->_arrTitleInfo['strListTitle']) . "</listTitle>\r\n" .
 								"\t<listSubTitle>" . trim($this->_arrTitleInfo['strListSubTitle']) . "</listSubTitle>\r\n";
 			if ($this->_arrTitleInfo['blnShowRecordCount']) {
-				$strList .= "\t<listCaption>Record(s) " . ($intFirstRecord + 1) . " to $intLastRecord of $intTotalRecords total.</listCaption>\r\n";
+				$strList .= "\t<listCaption>". $phprlang['records'] . " " . ($intFirstRecord + 1) . " " . $phprlang['to'] . " " . $intLastRecord . " " . $phprlang['of'] . " " . $intTotalRecords . " " . $phprlang['total'] . ".</listCaption>\r\n";
 			}
 			$strList .= "</ListDescription>\r\n";
 		}
@@ -674,9 +674,9 @@ class ReportList
                 // Only show the record counts if we're doing a list w/out section breaks
                 // Otherwise, show the section heading
                 if ((count($this->_arrColumnInfo['arrSectionKeys']) == 0) || (!($blnDoForDownload)) || ($strOutputMethod == 'tab')) {
-                    $strCaption .= 'Record(s) ' . ($intFirstRecord + 1) . " to $intLastRecord of $intTotalRecords total.";
+                    $strCaption .= $phprlang['records'] . " " . ($intFirstRecord + 1) . " " . $phprlang['to'] . " " . $intLastRecord . " " . $phprlang['of'] . " " . $intTotalRecords . " " . $phprlang['total'] . ".";
                 }
-                else { $strCaption .= 'Section: %%SECTION_KEY%%'; }
+                else { $strCaption .= $phprlang['section'] . ': %%SECTION_KEY%%'; }
             }
             $strList .= $this->_makeListCaption($strCaption, $strOutputMethod);
 		}
@@ -1068,6 +1068,8 @@ class ReportList
 	*/
     function _makePageNavigators($intTotalRecords, $intNumListColumns)
     {
+		global $phprlang;
+    	
     	$intStartRecord = $this->_arrPagingInfo['intStartRecord'];
     	$intNumRecords = $this->_arrPagingInfo['intNumRecords'];
         if ($intTotalRecords <= $intNumRecords || $intNumRecords <= 0) {
@@ -1128,21 +1130,21 @@ class ReportList
             // Not showing the first page; show a link to the prior page
             $intBase = $intStartRecord - $intNumRecords;
             $strLink = '<a href="' . $this->_arrPagingInfo['strPagingURL'] . $intBase . $strSortOptions . '">';
-            $strRow .= "$strLink&lt;&lt; Prev</a> | ";
+            $strRow .= "$strLink&lt;&lt; " . $phprlang['prev'] . "</a> | ";
 
             if ($blnNeedLessButton) {
                 // Show the Back option to move to a different set of pages
                 $intBase = $intSetBaseRecord - (10 * $intNumRecords);
                 $strLink = '<a href="' . $this->_arrPagingInfo['strPagingURL'] . $intBase . $strSortOptions . '">';
-                $strRow .= $strLink . 'Back</a> | ';
+                $strRow .= $strLink . '...</a> | ';
             }
             else {
-                $strRow .= 'Back | ';
+                $strRow .= '... | ';
             }
         }
         else {
-            $strRow .= '&lt;&lt; Prev | ';
-            $strRow .= 'Back | ';
+            $strRow .= '&lt;&lt; ' . $phprlang['prev'] . ' | ';
+            $strRow .= '... | ';
         }
 
         // Show the regular page count navigators
@@ -1170,20 +1172,20 @@ class ReportList
                 // Show the Back option to move to a different set of pages
                 $intBase = $intSetBaseRecord + 10 * $intNumRecords;
                 $strLink = '<a href="' . $this->_arrPagingInfo['strPagingURL'] . $intBase . $strSortOptions . '">';
-                $strRow .= $strLink . 'More</a> | ';
+                $strRow .= $strLink . '...</a> | ';
             }
             else {
-                $strRow .= 'More | ';
+                $strRow .= '... | ';
             }
 
             // Not showing the first page; show a link to the prior page
             $intBase = $intStartRecord + $intNumRecords;
             $strLink = '<a href="' . $this->_arrPagingInfo['strPagingURL'] . $intBase . $strSortOptions . '">';
-            $strRow .= $strLink . 'Next &gt;&gt;</a>';
+            $strRow .= $strLink . $phprlang['next'] . ' &gt;&gt;</a>';
         }
         else {
-            $strRow .= 'More | ';
-            $strRow .= 'Next &gt;&gt;';
+            $strRow .= '... | ';
+            $strRow .= $phprlang['next'] . ' &gt;&gt;';
         }
 
 		$strResult = $this->_makeListTitles($strRow . '</td>');

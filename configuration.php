@@ -102,6 +102,23 @@ else
 	}
 }
 
+// Get Text Strings for Configuration Page setup correctly
+$version_info_header = $phprlang['configuration_version_info_header'];
+$site_configure_header = $phprlang['configuration_site_header'];
+$guild_configure_header = $phprlang['configuration_guild_header'];
+$role_configure_header = $phprlang['configuration_role_header'];
+$user_rights_header = $phprlang['configuration_user_rights_header'];
+$signup_rights_header = $phprlang['configuration_signup_rights_header'];
+$on_queue_text = $phprlang['configuration_on_queue'];
+$cancelled_text = $phprlang['configuration_cancelled'];
+$drafted_text = $phprlang['configuration_drafted'];
+$draft_row_header = $phprlang['configuration_draft'];
+$comments_row_header = $phprlang['configuration_comments'];
+$cancel_row_header = $phprlang['configuration_cancel'];
+$delete_row_header = $phprlang['configuration_delete'];
+$queue_row_header = $phprlang['configuration_queue'];
+
+
 // setup variables based on the forum information
 // start with the checkboxes
 if($phpraid_config['disable'] == '0')
@@ -645,6 +662,22 @@ $page->set_var(
 		'comments_def'=>$phprlang['configuration_comments_def'],
 		'cancel_def'=>$phprlang['configuration_cancel_def'],
 		'delete_def'=>$phprlang['configuration_delete_def'],
+		'version_info_header'=>$phprlang['configuration_version_info_header'],
+		'site_configure_header'=>$phprlang['configuration_site_header'],
+		'guild_configure_header'=>$phprlang['configuration_guild_header'],
+		'role_configure_header'=>$phprlang['configuration_role_header'],
+		'raid_settings_header'=>$phprlang['configuration_raid_settings_header'],
+		'user_rights_header'=>$phprlang['configuration_user_rights_header'],
+		'signup_rights_header'=>$phprlang['configuration_signup_rights_header'],
+		'email_header'=>$phprlang['configuration_email_header'],
+		'on_queue_text'=>$phprlang['configuration_on_queue'],
+		'cancelled_text'=>$phprlang['configuration_cancelled'],
+		'drafted_text'=>$phprlang['configuration_drafted'],
+		'draft_row_header'=>$phprlang['configuration_draft'],
+		'comments_row_header'=>$phprlang['configuration_comments'],
+		'cancel_row_header'=>$phprlang['configuration_cancel'],
+		'delete_row_header'=>$phprlang['configuration_delete'],
+		'queue_row_header'=>$phprlang['configuration_queue'],
 	)
 );
 
