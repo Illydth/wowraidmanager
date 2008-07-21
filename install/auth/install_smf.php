@@ -1,13 +1,13 @@
 <?php
-
 /***************************************************************************
- *                             install_e107.php
+ *                             install_smf.php
  *                            -------------------
- *   begin                : Tuesday, June 20, 2007
- *   copyright            : (C) 2007 Douglas Wagner
- *   email                : douglasw0@yahoo.com
+ *   begin                : June 15, 2008
+ *	 Dev                  : Carsten Hölbing
+ *	 email                : hoelbin@gmx.de
  *
- *   $Id: mysql.php,v 1.16 2002/03/19 01:07:36 psotfx Exp $
+ *   copyright            : (C) 2007-2008 Douglas Wagner
+ *   email                : douglasw0@yahoo.com
  *
  ***************************************************************************/
 
@@ -25,7 +25,7 @@
   *   The functions in this file serve the installer to specifically configure
   * 	the WRM system for WRM's default authentication system.
   *
-  *   Both functions below have a specific use as laid out:
+  *   this functions below have a specific use as laid out:
   *
   *   ---step5----
   *   substep 0 - ..
@@ -53,6 +53,8 @@
   * alt user class restrictions in step 5.
   **************************************************************************/
 
+require_once ('../includes/functions_pwdhash.php');
+
 function step5($auth_type)
 {
 	//multilanguage stuff
@@ -63,45 +65,27 @@ function step5($auth_type)
 			$lang ='english';//en == default language
 		}
 	require_once('./language/locale-'.$lang.'.php');
-
+	
 	global $localstr;
-	$e107_config_name = 'e107_config.php';
-
+	$smf_config_name = 'Settings.php';
+	$pwd_hasher = new PasswordHash(8, FALSE);
+		
 	require_once('../config.php');
 
-	// Step 5 needs to be broken up into at least a couple steps.  First we need to get information
-	//   about the e107 installation (the table prefix, etc.) before we can actually prompt for the
-	//   phpraid information we really need.
-
 	$step5_substep = $_POST['substep'];
-
-	// The "if" block below allows us to add screens to the configuration of phpRaid.  In this case,
-	//   I needed to get the information for the table prefixes so that I could build a dropdown
-	//   of userclasses, however that requires 2 screens, since we don't want to modify install.php
-	//   we have added a mechanism to add additional screens to phpRaid's setup.
-	//
-	// The important value here is the hidden box "substep" which contains value of the **next**
-	//   step in the process.  If we wanted to add another screen (Step 5.3) in 5.2's content we'd
-	//   add another hidden box called substep with the value 3 in it. Form action for all but the
-	//   last step should be install.php?s=5 (i.e. we're recalling step 5 over and over and over
-	//   again and letting the if inside step5 function handle which screen to print based upon
-	//   the value of the "substep" box.)
-	//
-	// Note the first call to "step5" does not have a "substep" and thus the check for the first
-	//   screen is always for a NULL value.
 
 	if ($step5_substep == "")
 	{
 		$content  = '<br>';
-		$content .=  $localstr['step5e107sub1desc'].'.<br>';
+		$content .=  $localstr['step5smfsub1desc'].'.<br>';
 		$content .=  $localstr['step5sub1follval'].'.<br>';
 		$content .= '<br>------------------------------------------------------------------<br><br>';
 		$content .= '<br><br>';
 		$content .= '<form action="install.php?s=5&lang='.$lang.'" method="POST">';
 		$content .= '<input type="hidden" name="auth_type" value="' . $auth_type . '" class="post">';
 		$content .= '<input type="hidden" name="substep" value="2" class="post">';
-		$content .= $localstr['step5e107sub1inputdir'].'.<br><br>';
-		$content .= '<input type="text" name="e107_base_path" size="20" class="post" value="../e107/"><br><br>';
+		$content .= $localstr['step5smfsub1inputdir'].'.<br><br>';
+		$content .= '<input type="text" name="smf_base_path" size="20" class="post" value="../smf/"><br><br>';
 		$content .= '<br><br><br>';
 		$content .= '<br>------------------------------------------------------------------<br>';	
 		$content .= $localstr['hittingsubmit'].'.<br><br>';
@@ -110,45 +94,45 @@ function step5($auth_type)
 	}
 	else if ($step5_substep == 2)
 	{
-		$e107_base_path = $_POST['e107_base_path'];
+		$smf_base_path = $_POST['smf_base_path'];
 			
-		// check for valid entry of previous form
-		if(!is_file('../'.$e107_base_path . $e107_config_name))
+			// check for valid entry of previous form
+		if(!is_file('../'.$smf_base_path.$smf_config_name))
 		{
-			echo '<font color=red>'.$localstr['step5sub2failfindfile'].' ("../'.$e107_base_path.$e107_config_name.'").<br>';
+			echo '<font color=red>'.$localstr['step5sub2failfindfile'].' ("../'.$smf_root_path.$smf_config_name.'").<br>';
 			echo $localstr['step5sub2checkdir'].'<br>';
 			echo $localstr['pressbrowserpack'].'</font>';
 			exit;
 		}
 		
-		require('../'.$e107_base_path.$e107_config_name);
+		require('../'.$smf_base_path.$smf_config_name);
 		
-		$e107_prefix = $mySQLprefix;
+		$smf_prefix = $db_prefix;
 		
 		//check if db available
-		$linkDB = mysql_connect($mySQLserver,$mySQLuser,$mySQLpassword);
+		$linkDB = mysql_connect($db_server,$db_user,$db_passwd);
 		if (!$linkDB) {
-			echo '<font color=red>'.$localstr['step5e107failcone107'].'<br>';
+			echo '<font color=red>'.$localstr['step5esmffailconesmf'].'<br>';
 			echo $localstr['problem']. mysql_error().'<br>';
 			echo $localstr['pressbrowserpack'].'</font>';
 			exit;
 		}
-		mysql_select_db($mySQLdefaultdb);
+		mysql_select_db($db_name);
 		
 		// all users -> select boxes.
-		$e107usernametable = '<select name="e107_useradmin" class="post">';
+		$smfusernametable = '<select name="smf_useradmin" class="post">';
 
-		$sql = "SELECT user_loginname, user_email FROM " . $e107_prefix . "user ORDER BY user_loginname";
+		$sql = "SELECT member_name, email_address FROM " . $smf_prefix . "members ORDER BY member_name";
 		
-		$result = mysql_query($sql) or die($localstr['step5e107sub3errorretusername'] . mysql_error());
+		$result = mysql_query($sql) or die($localstr['step5smfsub3errorretusername'] . mysql_error());
 		if (mysql_num_rows($result) > 0) {
 			while ($data = mysql_fetch_assoc($result)) {
-				$e107usernametable .= '<option value="' . $data['user_loginname']. '">' .$data['user_loginname']. ': '.$data['user_email'] . '</option>';
-				$e107_useradmin_name = $data['user_loginname'];
-				$e107_useradmin_email = $data['user_email'];
+				$smfusernametable .= '<option value="' . $data['member_name']. '">' .$data['member_name']. ': '.$data['email_address'] . '</option>';
+				$smf_useradmin_name = $data['member_name'];
+				$smf_useradmin_email = $data['email_address'];
 			}
 		}
-		$e107usernametable .= '</select>';
+		$smfusernametable .= '</select>';
 		
 		mysql_close($linkDB);
 		
@@ -156,16 +140,16 @@ function step5($auth_type)
 		$content .= '<form action="install.php?s=5&lang='.$lang.'" method="POST">';
 		$content .= '<input type="hidden" name="auth_type" value="' . $auth_type . '" class="post">';
 		$content .= '<input type="hidden" name="substep" value="3" class="post">';
-		$content .= '<input type="hidden" name="e107_base_path" value="'.$e107_base_path.'" class="post">';
-		$content .= '<input type="hidden" name="e107_useradmin_name" value="'.$e107_useradmin_name.'" class="post">';
-		$content .= '<input type="hidden" name="e107_useradmin_email" value="'.$e107_useradmin_email.'" class="post">';
-		$content .= $localstr['step5e107sub2readconffile'].': <font color=green>'.$localstr['step5done'].'</font><br>';
+		$content .= '<input type="hidden" name="smf_base_path" value="'.$smf_base_path.'" class="post">';
+		$content .= '<input type="hidden" name="smf_useradmin_name" value="'.$smf_useradmin_name.'" class="post">';
+		$content .= '<input type="hidden" name="smf_useradmin_email" value="'.$smf_useradmin_email.'" class="post">';
+		$content .= $localstr['step5smfsub2readconffile'].': <font color=green>'.$localstr['step5done'].'</font><br>';
 		$content .= '<br>------------------------------------------------------------------<br><br>';
 		$content .= '<br><br>';	
 		$content .= $localstr['step5sub2usernamefullperm'].'!<br><br>';		
-		$content .= $e107usernametable. '<br><br>';
+		$content .= $smfusernametable. '<br><br>';
 		$content .= $localstr['txtpassword'].':';
-		$content .= '<input type="text" name="e107_useradmin_password" size="20" class="post" value=""><br><br>';
+		$content .= '<input type="text" name="smf_useradmin_password" size="20" class="post" value=""><br><br>';
 		$content .= '<br><br><br>';
 		$content .= '<br>------------------------------------------------------------------<br>';	
 		$content .= $localstr['hittingsubmit'].'.<br><br>';
@@ -174,55 +158,55 @@ function step5($auth_type)
 	}
 	else if ($step5_substep == 3){
 	
-		$e107_base_path = $_POST['e107_base_path'];
-		$e107_useradmin_name = $_POST['e107_useradmin_name'];
-		$e107_useradmin_password = md5($_POST['e107_useradmin_password']);
+		$smf_base_path = $_POST['smf_base_path'];
+		$smf_useradmin_name = $_POST['smf_useradmin_name'];
+		$smf_useradmin_password = $pwd_hasher->HashPassword($_POST['smf_useradmin_password']);
 
-		require('../'.$e107_base_path.$e107_config_name);
+		require('../'.$smf_base_path.$smf_config_name);
 		
-		$e107_prefix = $mySQLprefix;
+		$smf_prefix = $db_prefix;
 		
 		//check if db available
-		$linkDB = mysql_connect($mySQLserver,$mySQLuser,$mySQLpassword);
+		$linkDB = mysql_connect($db_server,$db_user,$db_passwd);
 		if (!$linkDB) {
-			echo '<font color=red>'.$localstr['step5e107failcone107'].'<br>';
+			echo '<font color=red>'.$localstr['step5smffailconsmf'].'<br>';
 			echo $localstr['problem']. mysql_error().'<br>';
 			echo $localstr['pressbrowserpack'].'</font>';
 			exit;
 		}
-		mysql_select_db($mySQLdefaultdb);
+		mysql_select_db($db_name);
 		
-		// Setup the e107_auth_user_class and alt_auth_userclass select boxes.
-		$userclasses = '<select name="e107_auth_user_class" class="post">';
+		// Setup the smf_auth_user_class and smf_alt_auth_userclass select boxes.
+		$userclasses = '<select name="smf_auth_user_class" class="post">';
 		$userclasses .= '<option value="0">'.$localstr['step5sub3norest'].'</option>';
-		$altuserclass = '<select name="alt_auth_user_class" class="post">';
+		$altuserclass = '<select name="smf_alt_auth_user_class" class="post">';
 		$altuserclass .= '<option value="0">'.$localstr['step5sub3noaddus'].'</option>';
 		
-		// Get Userclasses from e107 database.
-		$sql = "SELECT userclass_id, userclass_name FROM " . $e107_prefix . "userclass_classes ORDER BY userclass_id";
-		$result = mysql_query($sql) or die($localstr['step5e107sub3errorretuserclass'].':' . mysql_error());
+		// Get Userclasses from smf database.
+		$sql = "SELECT id_group, group_name FROM " . $smf_prefix . "membergroups ORDER BY id_group";
+		$result = mysql_query($sql) or die($localstr['step5smfsub3errorretuserclass'].':' . mysql_error());
 		if (mysql_num_rows($result) > 0) {
 			while ($data = mysql_fetch_assoc($result)) {
-				$userclasses .= '<option value="' . $data['userclass_id']. '">' . htmlentities($data['userclass_name']).'</option>';
-				$altuserclass .= '<option value="' . $data['userclass_id']. '">' . htmlentities($data['userclass_name']) . '</option>';
+				$userclasses .= '<option value="' . $data['id_group']. '">' . htmlentities($data['group_name']) . '</option>';
+				$altuserclass .= '<option value="' . $data['id_group']. '">' . htmlentities($data['group_name']) . '</option>';
 			}
 		}
 		$userclasses .= '</select>';
 		$altuserclass .= '</select>';
 		
-		$sql = "SELECT user_loginname, user_email, user_id FROM ".$e107_prefix."user WHERE user_loginname = '$e107_useradmin_name'";
+		$sql = "SELECT member_name, email_address, id_member FROM ".$smf_prefix."members WHERE member_name  = '$smf_useradmin_name'";
 		//echo ':datenbank:'.$mySQLdefaultdb.'::<br>::'.$sql;
-		$result = mysql_query($sql) or die($localstr['step5e107sub3errorretusername'].': <br>' .$sql. '<br>'. mysql_error());
+		$result = mysql_query($sql) or die($localstr['step5smfsub3errorretusername'].': <br>' .$sql. '<br>'. mysql_error());
 		
 		$data = mysql_fetch_assoc($result);
-		$e107_useradmin_email = $data['user_email'];
-		$e107_useradmin_id = $data['user_id'];
+		$smf_useradmin_email = $data['email_address'];
+		$smf_useradmin_id = $data['id_member'];
 		
 		mysql_close($linkDB);
 		
-		if ($phpraid_config['db_name'] != $mySQLdefaultdb)
+		if ($phpraid_config['db_name'] != $db_name)
 		{
-			$e107_prefix = $mySQLdefaultdb.'.'. $e107_prefix;
+			$smf_prefix = $db_name.'.'. $smf_prefix;
 		}
 
 		global $phpraid_config;
@@ -238,7 +222,7 @@ function step5($auth_type)
 		mysql_select_db($phpraid_config['db_name']);
 
 		// verified user, might as well throw him in profile now if they don't already exist
-		$sql = "SELECT username FROM " . $phpraid_config['db_prefix']. "profile WHERE username = '$e107_useradmin_name'";
+		$sql = "SELECT username FROM " . $phpraid_config['db_prefix']. "profile WHERE username = '$smf_useradmin_name'";
 		
 		$result = mysql_query($sql) or die("Error verifying " . mysql_error());
 		//$sqlresultdata = mysql_fetch_assoc($result);
@@ -246,12 +230,12 @@ function step5($auth_type)
 		if((mysql_num_rows($result) == 0))
 		{
 			$sql = "INSERT INTO " . $phpraid_config['db_prefix'] . "profile (`profile_id`,`username`,`email`,`password`,`priv`) ";
-			$sql.= "VALUES('$e107_useradmin_id','$e107_useradmin_name','$e107_useradmin_email','$e107_useradmin_password','1')";
+			$sql.= "VALUES('$smf_useradmin_id','$smf_useradmin_name','$smf_useradmin_email','$smf_useradmin_password','1')";
 			$result = mysql_query($sql) or die("Error inserting " . mysql_error());
 		}
 		else
 		{
-			$sql = "UPDATE " . $phpraid_config['db_prefix'] . "profile SET priv='1' WHERE username='$e107_useradmin_name'";
+			$sql = "UPDATE " . $phpraid_config['db_prefix'] . "profile SET priv='1' WHERE username='$smf_useradmin_name'";
 			mysql_query($sql)or die("Error updating " . mysql_error());
 		}
 	
@@ -262,7 +246,7 @@ function step5($auth_type)
 		$content .= '<input type="hidden" name="auth_type" value="' . $auth_type . '" class="post">';
 		$content .= '<input type="hidden" name="substep" value="done" class="post">';
 		$content .= '<br>';
-		$content .= $localstr['step5selctusername'].' ('.$e107_useradmin_name.'): <font color=green>'.$localstr['step5done'].'</font><br>';
+		$content .= $localstr['step5selctusername'].' ('.$smf_useradmin_name.'): <font color=green>'.$localstr['step5done'].'</font><br>';
 		$content .= '<br>------------------------------------------------------------------<br><br>';
 		$content .= $localstr['step5sub3group01'].'.<br>';
 		$content .= $localstr['step5sub3group02'].'.<br>';
@@ -272,59 +256,63 @@ function step5($auth_type)
 		$content .= $localstr['step5sub3altgroup02'].'.<br><br>';
 		$content .= $altuserclass . '<br><br>';
 		$content .= '<br>------------------------------------------------------------------<br><br>';	
-		$content .= '<input type="hidden" name="e107_prefix" value="'. $e107_prefix .'" class="post">';
-		$content .= '<input type="hidden" name="e107_base_path" value="'. $e107_base_path .'" class="post">';
+		$content .= '<input type="hidden" name="smf_prefix" value="'. $smf_prefix .'" class="post">';
+		$content .= '<input type="hidden" name="smf_base_path" value="'. $smf_base_path .'" class="post">';
 
 		$content .= $localstr['hittingsubmit'].'<br><br>';
 		$content .= '<input type="submit" value="'.$localstr['bd_submit'].'" name="submit" class="post"></form>';
 
 	}
 	else if ($step5_substep == "done"){
-		$e107_base_path = $_POST['e107_base_path'];
-		$e107_prefix = $_POST['e107_prefix'];
+		$smf_base_path = $_POST['smf_base_path'];
+		$smf_prefix = $_POST['smf_prefix'];
 	
-		$e107_auth_user_class = $_POST['e107_auth_user_class'];
-		$alt_auth_user_class = $_POST['alt_auth_user_class'];
+		$smf_auth_user_class = $_POST['smf_auth_user_class'];
+		$smf_alt_auth_user_class = $_POST['smf_alt_auth_user_class'];
 	
 		// insert the super group or update if it exists already
 		$linkWRM = mysql_connect($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass']);
 		mysql_select_db($phpraid_config['db_name']);
 	
-		$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "config WHERE config_name='e107_base_path'";
+		$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "config WHERE config_name='smf_base_path'";
 		$result = mysql_query($sql) or die("BOO2: ". mysql_error());
 		
 	
 		if(mysql_num_rows($result) > 0)
 		{
 			// update
-			$sql = "UPDATE " . $phpraid_config['db_prefix'] . "config SET config_value='$e107_base_path' WHERE config_name='e107_base_path'";
-			mysql_query($sql) or die("Error updateing e107_base_path in config table. " . mysql_error());
-			$sql = "UPDATE " . $phpraid_config['db_prefix'] . "config SET config_value='$e107_prefix' WHERE config_name='e107_table_prefix'";
-			mysql_query($sql) or die("Error updateing e107_prefix in config table. " . mysql_error());
-			$sql = "UPDATE " . $phpraid_config['db_prefix'] . "config SET config_value='e107' WHERE config_name='auth_type'";
+			$sql = "UPDATE " . $phpraid_config['db_prefix'] . "config SET config_value='$smf_base_path' WHERE config_name='smf_base_path'";
+			mysql_query($sql) or die("Error updateing smf_base_path in config table. " . mysql_error());
+			
+			$sql = "UPDATE " . $phpraid_config['db_prefix'] . "config SET config_value='$smf_prefix' WHERE config_name='smf_table_prefix'";
+			mysql_query($sql) or die("Error updateing smf_prefix in config table. " . mysql_error());
+			
+			$sql = "UPDATE " . $phpraid_config['db_prefix'] . "config SET config_value='smf' WHERE config_name='auth_type'";
 			mysql_query($sql) or die("Error updateing auth_type in config table. " . mysql_error());
-			$sql = "UPDATE " . $phpraid_config['db_prefix'] . "config SET config_value='$e107_auth_user_class' WHERE config_name='e107_auth_user_class'";
-			mysql_query($sql) or die("Error updateing e107_auth_user_class in config table. " . mysql_error());
-			$sql = "UPDATE " . $phpraid_config['db_prefix'] . "config SET config_value='$alt_auth_user_class' WHERE config_name='alt_auth_user_class'";
-			mysql_query($sql) or die("Error updateing alt_auth_user_class in config table. " . mysql_error());
+			
+			$sql = "UPDATE " . $phpraid_config['db_prefix'] . "config SET config_value='$smf_auth_user_class' WHERE config_name='smf_auth_user_class'";
+			mysql_query($sql) or die("Error updateing smf_auth_user_class in config table. " . mysql_error());
+			
+			$sql = "UPDATE " . $phpraid_config['db_prefix'] . "config SET config_value='$smf_alt_auth_user_class' WHERE config_name='smf_alt_auth_user_class'";
+			mysql_query($sql) or die("Error updateing smf_alt_auth_user_class in config table. " . mysql_error());
 			
 		}
 		else
 		{
 			// install
-			$sql = "INSERT INTO " . $phpraid_config['db_prefix'] . "config VALUES('auth_type','e107')";
+			$sql = "INSERT INTO " . $phpraid_config['db_prefix'] . "config VALUES('auth_type','smf')";
 			mysql_query($sql);
-			$sql = "INSERT INTO " . $phpraid_config['db_prefix'] . "config VALUES('e107_base_path','$e107_base_path')";
+			$sql = "INSERT INTO " . $phpraid_config['db_prefix'] . "config VALUES('smf_base_path','$smf_base_path')";
 			mysql_query($sql) or die("BOO5");
-			$sql = "INSERT INTO " . $phpraid_config['db_prefix'] . "config VALUES('e107_table_prefix','$e107_prefix')";
-			mysql_query($sql) or die("Error inserting e107_table_prefix in config table. " . mysql_error());
-			// Insert the e107_auth_user_class
-			$sql = "INSERT INTO " . $phpraid_config['db_prefix'] . "config VALUES('e107_auth_user_class', '" . $e107_auth_user_class . "')";
-			mysql_query($sql) or die("Error inserting e107_auth_user_class in config table. " . mysql_error());
+			$sql = "INSERT INTO " . $phpraid_config['db_prefix'] . "config VALUES('smf_table_prefix','$smf_prefix')";
+			mysql_query($sql) or die("Error inserting smf_table_prefix in config table. " . mysql_error());
+			// Insert the smf_auth_user_class
+			$sql = "INSERT INTO " . $phpraid_config['db_prefix'] . "config VALUES('smf_auth_user_class', '" . $smf_auth_user_class . "')";
+			mysql_query($sql) or die("Error inserting smf_auth_user_class in config table. " . mysql_error());
 		
-			// Insert the e107_auth_user_class
-			$sql = "INSERT INTO " . $phpraid_config['db_prefix'] . "config VALUES('alt_auth_user_class', '" . $alt_auth_user_class . "')";
-			mysql_query($sql) or die("Error inserting alt_auth_user_class in config table. " . mysql_error());
+			// Insert the smf_auth_user_class
+			$sql = "INSERT INTO " . $phpraid_config['db_prefix'] . "config VALUES('smf_alt_auth_user_class', '" . $smf_alt_auth_user_class . "')";
+			mysql_query($sql) or die("Error inserting smf_alt_auth_user_class in config table. " . mysql_error());
 		}
 	
 		mysql_close($linkWRM);
@@ -335,12 +323,12 @@ function step5($auth_type)
 		$content .= '<input type="hidden" name="auth_type" value="' . $auth_type . '" class="post">';
 		$content .= '<input type="hidden" name="substep" value="done" class="post">';
 
-		$content .= $localstr['step5e107desc'] .' '. $localstr['txtconfig'];
+		$content .= $localstr['step5smfdesc'] .' '. $localstr['txtconfig'];
 		$content .= ': <font color=green>'.$localstr['step5done'].'</font><br><br>';
 		$content .= '<input type="submit" value="'.$localstr['bd_submit'].'" name="submit" class="post"></form>';
 
 	}
-	step($localstr['menustep5confauth'].' ('.$localstr['step5e107desc'].')','lime','lime','lime','lime','red','white',$content);
+	step($localstr['menustep5confauth'].' ('.$localstr['step5smfdesc'].')','lime','lime','lime','lime','red','white',$content);
 
 	return 1;
 }

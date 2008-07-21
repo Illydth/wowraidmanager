@@ -1,12 +1,14 @@
 <?php
 /***************************************************************************
- *                             auth_e107.php
+ *                             auth_xoops.php
  *                            -------------------
- *   begin                : Tuesday, June 19, 2007
+ *   begin                : June 18, 2008
+ *	 Dev                  : Carsten Hölbing
+ *	 email                : hoelbin@gmx.de
+ *
+ *	 based on 			  : auth_e107.php @ Douglas Wagner
  *   copyright            : (C) 2007-2008 Douglas Wagner
  *   email                : douglasw0@yahoo.com
- *
- *   $Id: auth_e107.php,v 2.00 2007/11/18 13:19:00 psotfx Exp $
  *
  ***************************************************************************/
 
@@ -32,10 +34,16 @@
 
 function phpraid_login() {
 	global $groups, $db_raid, $phpraid_config;
-
+	
+	# Try to use stronger but system-specific hashes, with a possible fallback to
+	# the weaker portable hashes.
+	$pwd_hasher = new PasswordHash(8, FALSE);
+	
 	if(isset($_POST['username'])) 	{
 		$username = scrub_input(strtolower($_POST['username']));
-		$password = md5($_POST['password']);
+		//pwd hash
+		$password = $pwd_hasher->HashPassword($_POST['password']);
+		
 	} elseif(isset($_COOKIE['username']) && isset($_COOKIE['password'])) {
 		$username = scrub_input(strtolower($_COOKIE['username']));
 		$password = scrub_input($_COOKIE['password']);
@@ -43,25 +51,41 @@ function phpraid_login() {
 		phpraid_logout();
 	}
 
-	// Set e107 Configuration Options
-	$e107_table_prefix = $phpraid_config['e107_table_prefix'];
-	$e107_auth_user_class = $phpraid_config['e107_auth_user_class'];
-	$alt_auth_user_class = $phpraid_config['alt_auth_user_class'];
+	// Set smf Configuration Options
+	$smf_table_prefix = $phpraid_config['smf_table_prefix'];
+	$smf_auth_user_class = $phpraid_config['smf_auth_user_class'];
+	$smf_alt_auth_user_class = $phpraid_config['smf_alt_auth_user_class'];
 
+	
 	// Get the user_loginname and password and the various user classes that the user belongs to.
-	$sql = "SELECT user_id, user_loginname, user_password, user_email, user_class FROM " . $e107_table_prefix . "user";
+	//$sql = "SELECT * FROM " . $phpraid_config['db_dkp_prefix'] . "members, " . $phpraid_config['db_dkp_prefix'] . "classes WHERE " . $phpraid_config['db_dkp_prefix'] . "classes.class_id = " . $phpraid_config['db_dkp_prefix'] . "members.member_class_id";
+	
+	$sql = "SELECT password FROM " . $phpraid_config['db_prefix'] . "profile WHERE username='".$username."'";
+	$result2 = $db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	if ($data2 = $db_raid->sql_fetchrow($result2))
+			{
+				$wrmuserpassword = $data2['password'];
+			}
+	$xoops_table_prefix_user = $xoops_table_prefix . "users";
+	$xoops_table_prefix_gul = $xoops_table_prefix . "groups_users_link";
+	
+	//cross table
+	$sql = "SELECT ".$xoops_table_prefix_user.".uid, ".$xoops_table_prefix_user.".loginname, ".$xoops_table_prefix_user.".email, ".$xoops_table_prefix_user.".groupid FROM " . $xoops_table_prefix_user.", " . $xoops_table_prefix_gul." WHERE " . $xoops_table_prefix_user.".uid = ".$xoops_table_prefix_gul.".uid AND ".$xoops_table_prefix_user."loginname = ".$username;
+	
 	$result = $db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	
 
+	
 	while($data = $db_raid->sql_fetchrow($result, true)) {
-		//echo "<br>Processing: " . $data['user_loginname'] . " : " . $data['user_password'];
-		if($username == strtolower($data['user_loginname']) && $password == $data['user_password']) {
-			// The user has a matching username and proper password in the e107 database.
+		//echo "<br>Processing: " . $data['member_name'] . " : " . $data['passwd'].'<br>pwd:'.
+		if($username == strtolower($data['loginname']) && $pwd_hasher->CheckPassword($password, $wrmuserpassword)==0) {
+			// The user has a matching username and proper password in the smf database.
 			// We need to validate the users class.  If it does not contain the user class that has been set as
-			//	authorized to use phpRaid, we need to fail the login with a proper message.
-			$user_class = $data['user_class'];
-			$pos = strpos($user_class, $e107_auth_user_class);
-			$pos2 = strpos($user_class, $alt_auth_user_class);
-			if ($pos === false && $e107_auth_user_class != 0)
+			//	authorized to use smf, we need to fail the login with a proper message.
+			$user_class = $data['groupid'];
+			$pos = strpos($user_class, $smf_auth_user_class);
+			$pos2 = strpos($user_class, $smf_alt_auth_user_class);
+			if ($pos === false && $smf_auth_user_class != 0)
 			{
 				if ($pos2 === false)
 				{
@@ -70,28 +94,28 @@ function phpraid_login() {
 				}
 			}
 
-			// User is properly logged in and is allowed to use phpRaid, go ahead and process his login.
+			// User is properly logged in and is allowed to use WRM, go ahead and process his login.
 			$autologin=scrub_input($_POST['autologin']);
 			if(isset($autologin)) {
 				// they want automatic logins so set the cookie
 				// set to expire in one month
-				setcookie('username', $data['user_loginname'], time() + 2629743);
-				setcookie('password', $data['user_password'], time() + 2629743);
+				setcookie('username', $data['loginname'], time() + 2629743);
+				setcookie('password', $wrmuserpassword, time() + 2629743);
 			}
 
 			// set user profile variables
-			$_SESSION['username'] = strtolower($data['user_loginname']);
+			$_SESSION['username'] = strtolower($data['loginname']);
 			$_SESSION['session_logged_in'] = 1;
-			$_SESSION['profile_id'] = $data['user_id'];
-			$_SESSION['email'] = $data['user_email'];
-			$user_password = $data['user_password'];
+			$_SESSION['profile_id'] = $data['uid'];
+			$_SESSION['email'] = $data['email'];
+			$user_password = $wrmuserpassword;
 			if($phpraid_config['default_group'] != 'nil')
 				$user_priv = $phpraid_config['default_group'];
 			else
 				$user_priv = '0';
 
 			// User is all logged in and setup, the session is initialized properly.  Now we need to create the users
-			//    profile in the phpRaid database if it does not already exist.
+			//    profile in the WRM database if it does not already exist.
 			$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "profile WHERE profile_id=%s", quote_smart($_SESSION['profile_id']));
 			$result = $db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
 			if ($data = $db_raid->sql_fetchrow($result))
@@ -104,10 +128,6 @@ function phpraid_login() {
 				$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "profile VALUES (%s, %s, %s, %s, %s)", quote_smart($_SESSION['profile_id']), quote_smart($_SESSION['email']), quote_smart($user_password), quote_smart($user_priv), quote_smart($_SESSION['username']));
 				$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 			}
-
-			$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "profile SET last_login_time=%s WHERE profile_id=%s",
-							quote_smart(time()),quote_smart($_SESSION['profile_id']));
-			$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 
 			return 1;
 		}
@@ -122,6 +142,8 @@ function phpraid_logout()
 	setcookie('username', '', time() - 2629743);
 	setcookie('password', '', time() - 2629743);
 }
+
+require ("functions_pwdhash.php");
 
 // good ole authentication
 session_start();

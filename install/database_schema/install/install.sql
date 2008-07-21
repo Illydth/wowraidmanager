@@ -6,7 +6,7 @@ CREATE TABLE  `phpraid_announcements` (
   `timestamp` varchar(255) NOT NULL default '',
   `posted_by` varchar(255) NOT NULL default '',
   PRIMARY KEY  (`announcements_id`)
-);
+) DEFAULT CHARACTER SET 'UTF8' COLLATE=utf8_bin ;
 
 DROP TABLE IF EXISTS `phpraid_chars`;
 CREATE TABLE  `phpraid_chars` (
@@ -25,13 +25,13 @@ CREATE TABLE  `phpraid_chars` (
   `shadow` int(5) NOT NULL default '0',
   `role` varchar(255) NOT NULL default '',
   PRIMARY KEY  (`char_id`)
-);
+) DEFAULT CHARACTER SET 'UTF8' COLLATE=utf8_bin ;
 
 DROP TABLE IF EXISTS `phpraid_config`;
 CREATE TABLE  `phpraid_config` (
   `config_name` varchar(255) NOT NULL default '',
   `config_value` varchar(255) NOT NULL default ''
-);
+)DEFAULT CHARACTER SET 'UTF8' COLLATE=utf8_bin ;
 
 DROP TABLE IF EXISTS `phpraid_guilds`;
 CREATE TABLE  `phpraid_guilds` (
@@ -40,7 +40,7 @@ CREATE TABLE  `phpraid_guilds` (
   `guild_name` varchar(30) NOT NULL default '',
   `guild_tag` varchar(20) NOT NULL default '',
   PRIMARY KEY  (`guild_id`)
-);
+)DEFAULT CHARACTER SET 'UTF8' COLLATE=utf8_bin ;
 
 DROP TABLE IF EXISTS `phpraid_locations`;
 CREATE TABLE  `phpraid_locations` (
@@ -67,7 +67,7 @@ CREATE TABLE  `phpraid_locations` (
   `max` int(2) NOT NULL default '0',
   `locked` tinyint(1) NOT NULL default '0',
   PRIMARY KEY  (`location_id`)
-);
+)DEFAULT CHARACTER SET 'UTF8' COLLATE=utf8_bin ;
 
 DROP TABLE IF EXISTS `phpraid_logs_create`;
 CREATE TABLE  `phpraid_logs_create` (
@@ -79,7 +79,7 @@ CREATE TABLE  `phpraid_logs_create` (
   `type` varchar(45) NOT NULL default '',
   `create_name` varchar(45) NOT NULL default '',
   PRIMARY KEY  (`log_id`)
-);
+)DEFAULT CHARACTER SET 'UTF8' COLLATE=utf8_bin ;
 
 DROP TABLE IF EXISTS `phpraid_logs_delete`;
 CREATE TABLE  `phpraid_logs_delete` (
@@ -90,7 +90,7 @@ CREATE TABLE  `phpraid_logs_delete` (
   `type` varchar(45) NOT NULL default '',
   `delete_name` varchar(255) NOT NULL default '',
   PRIMARY KEY  (`log_id`)
-);
+)DEFAULT CHARACTER SET 'UTF8' COLLATE=utf8_bin ;
 
 DROP TABLE IF EXISTS `phpraid_logs_hack`;
 CREATE TABLE  `phpraid_logs_hack` (
@@ -99,7 +99,7 @@ CREATE TABLE  `phpraid_logs_hack` (
   `message` text NOT NULL,
   `timestamp` varchar(255) NOT NULL default '',
   PRIMARY KEY  (`log_id`)
-);
+)DEFAULT CHARACTER SET 'UTF8' COLLATE=utf8_bin ;
 
 DROP TABLE IF EXISTS `phpraid_logs_raid`;
 CREATE TABLE  `phpraid_logs_raid` (
@@ -111,7 +111,7 @@ CREATE TABLE  `phpraid_logs_raid` (
   `timestamp` varchar(45) NOT NULL default '',
   `type` varchar(45) NOT NULL default '',
   PRIMARY KEY  (`log_id`)
-);
+)DEFAULT CHARACTER SET 'UTF8' COLLATE=utf8_bin ;
 
 DROP TABLE IF EXISTS `phpraid_permissions`;
 CREATE TABLE  `phpraid_permissions` (
@@ -128,7 +128,7 @@ CREATE TABLE  `phpraid_permissions` (
   `logs` int(1) NOT NULL default '0',
   `users` int(1) NOT NULL default '0',
   PRIMARY KEY  (`permission_id`)
-);
+)DEFAULT CHARACTER SET 'UTF8' COLLATE=utf8_bin ;
 
 DROP TABLE IF EXISTS `phpraid_profile`;
 CREATE TABLE  `phpraid_profile` (
@@ -139,7 +139,7 @@ CREATE TABLE  `phpraid_profile` (
   `username` varchar(255) NOT NULL default '',
   `last_login_time` varchar(25) NOT NULL default '',
   PRIMARY KEY  (`profile_id`)
-);
+)DEFAULT CHARACTER SET 'UTF8' COLLATE=utf8_bin ;
 
 DROP TABLE IF EXISTS `phpraid_raids`;
 CREATE TABLE  `phpraid_raids` (
@@ -170,7 +170,7 @@ CREATE TABLE  `phpraid_raids` (
   `max_lvl` int(2) NOT NULL default '0',
   `max` varchar(255) NOT NULL default '',
   PRIMARY KEY  (`raid_id`)
-);
+)DEFAULT CHARACTER SET 'UTF8' COLLATE=utf8_bin ;
 
 DROP TABLE IF EXISTS `phpraid_signups`;
 CREATE TABLE  `phpraid_signups` (
@@ -183,7 +183,7 @@ CREATE TABLE  `phpraid_signups` (
   `queue` int(1) NOT NULL default '0',
   `timestamp` varchar(255) NOT NULL default '',
   PRIMARY KEY  (`signup_id`)
-);
+)DEFAULT CHARACTER SET 'UTF8' COLLATE=utf8_bin ;
 
 DROP TABLE IF EXISTS `phpraid_teams`;
 CREATE TABLE  `phpraid_teams` (
@@ -192,7 +192,7 @@ CREATE TABLE  `phpraid_teams` (
   `team_name` varchar(255) NOT NULL default '',
   `char_id` int(10) NOT NULL default '0',
   PRIMARY KEY  (`team_id`)
-);
+)DEFAULT CHARACTER SET 'UTF8' COLLATE=utf8_bin ;
 
 INSERT INTO `phpraid_config` VALUES ('admin_email','webmaster@yourdomain.com');
 INSERT INTO `phpraid_config` VALUES ('anon_view', '1');
@@ -206,13 +206,13 @@ INSERT INTO `phpraid_config` VALUES ('dst','0');
 INSERT INTO `phpraid_config` VALUES ('email_signature','Thanks');
 INSERT INTO `phpraid_config` VALUES ('faction','alliance');
 INSERT INTO `phpraid_config` VALUES ('guild_description','raid management made easy');
-INSERT INTO `phpraid_config` VALUES ('guild_name','phpRaid');
+INSERT INTO `phpraid_config` VALUES ('guild_name','WoW Raid Manager');
 INSERT INTO `phpraid_config` VALUES ('guild_server','Illidan');
 INSERT INTO `phpraid_config` VALUES ('header_link','http://www.yourdomain.com/');
 INSERT INTO `phpraid_config` VALUES ('header_logo','templates/SpiffyJr/images/logo_phpRaid.jpg');
 INSERT INTO `phpraid_config` VALUES ('language','english');
 INSERT INTO `phpraid_config` VALUES ('multiple_signups','0');
-INSERT INTO `phpraid_config` VALUES ('phpraid_addon_link','http://www.spiffyjr.com/forums/viewtopic.php?t=1073');
+INSERT INTO `phpraid_config` VALUES ('phpraid_addon_link','http://www.wowraidmanager.net');
 INSERT INTO `phpraid_config` VALUES ('armory_link','http://www.wowarmory.com');
 INSERT INTO `phpraid_config` VALUES ('armory_language','en');
 INSERT INTO `phpraid_config` VALUES ('register_url','register.php');
@@ -275,4 +275,4 @@ INSERT INTO `phpraid_config` VALUES ('enforce_role_limits', '1');
 INSERT INTO `phpraid_config` VALUES ('enforce_class_limits', '0');
 INSERT INTO `phpraid_config` VALUES ('class_as_min', '1');
 
-INSERT INTO `phpraid_permissions` (`name`,`description`,`announcements`,`configuration`,`guilds`,`locations`,`permissions`,`profile`,`raids`,`logs`,`users`) VALUES ('phpRaid Superadmin','Full access','1','1','1','1','1','1','1','1','1');
+INSERT INTO `phpraid_permissions` (`name`,`description`,`announcements`,`configuration`,`guilds`,`locations`,`permissions`,`profile`,`raids`,`logs`,`users`) VALUES ('WRM Superadmin','Full access','1','1','1','1','1','1','1','1','1');

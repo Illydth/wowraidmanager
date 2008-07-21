@@ -1,0 +1,94 @@
+/******************************
+*    WRM Install stylesheet   *
+******************************/
+body {
+	background-color: #1E1C34;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	margin:0px;
+
+}
+
+h1 {
+	color: #CCCCCC;
+	font-size:13px;
+}
+
+.normaltxt {
+	color: #CCCCCC;
+	font-size:10px;
+}
+.normaltxtred {
+	color: #FF0000;
+	font-size:10px;
+	text-align:center;
+}
+.normaltxtgreen {
+	color: #00FF00;
+	font-size:10px;
+	text-align:center;
+}
+.installhead {
+	background-color:#1E233E;
+	border-bottom:1px solid #333;
+	vertical-align:middle;
+	text-align:center;
+	font-size:10px;
+	color: #CCCCCC;
+	margin:3px;
+	padding:10px;
+}
+
+.installheadBigtxt
+{
+	float:left;
+	font-size:25px;
+	color: #CCCCCC;
+	text-align:left;
+}
+/*.installnavmenu {}*/
+.installnavmenu ul {
+	font-size:11px;
+	list-style-type:none;
+	margin:3px;
+	padding:4px;
+	text-align:left;
+}
+
+.installnavmenu li {
+	margin: 0 0 0 0;
+}
+.installmaindiv {
+	background-color:#1E1C34;
+/*	border-bottom:1px solid #333;*/
+	vertical-align:middle;
+	text-align:center;
+	font-size:10px;
+	color: #CCCCCC;
+	margin:3px;
+	padding:10px;
+}
+
+/* The text input fields background colour */
+/* And all button looks */
+input.post, textarea.post, select {
+	background-color : #38374A;
+	border: 1px solid #000000;
+	color:#ffffff;
+	font-size: 11px;
+}
+input { text-indent : 2px; }
+
+input.mainoption {
+	background-color: #38374A;
+	border: 1px solid #000000;
+	color : #ffffff;
+	font-size: 11px; font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-weight:bolder;
+}
+
+input.liteoption {
+	background-color: #38374A;
+	border: 1px solid #000000;
+	color : #ffffff;
+	font-size: 11px; font-family: Verdana, Arial, Helvetica, sans-serif;
+}
