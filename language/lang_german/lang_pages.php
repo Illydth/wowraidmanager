@@ -109,9 +109,9 @@ $phprlang['configuration_user_rights_header'] = 'Benutzerrechte';
 $phprlang['configuration_version_current'] = 'Du benutzt die aktuellste Version von WoW Raid Manager';
 $phprlang['configuration_version_info_header'] = 'Version Information';
 $phprlang['configuration_version_outdated_header'] = 'Eine neuere Version von WoW Raid Manager ist verfügbar!';
-$phprlang['configuration_version_outdated_message'] = 'Deine Version von phpRaid ist nicht aktuell. Ein Update wird empfohlen.<br>
+$phprlang['configuration_version_outdated_message'] = 'Deine Version von WoW Raid Manager ist nicht aktuell. Ein Update wird empfohlen.<br>
 													   Die aktuellste Version ist %s, und du benutzt Version %s.<br>
-													   Zum Herunterladen besuche bitte den <a href="hhttp://www.spiffyjr.com/forums/viewtopic.php?t=900">inoffiziellen phpRaid-Downloadbereich</a>.';
+													   Zum Herunterladen besuche bitte den <a href="http://www.wowraidmanager.net/>offizielle WRM - Downloadbereich</a>.';
 
 // guilds
 $phprlang['guilds_header'] = 'Gildenliste';
@@ -241,8 +241,8 @@ $phprlang['view_queued'] = 'Mitglieder auf der Warteliste';
 $phprlang['view_raid_cancel_text'] = 'Zurückgezogene Anmeldungen';
 $phprlang['view_signed'] = 'Bereits angemeldet';
 $phprlang['view_signup'] = 'Anmeldeinformation';
-$phprlang['view_signup_queue'] = 'Signup as Queued';
-$phprlang['view_signup_cancel'] = 'Signup as Cancelled';
+$phprlang['view_signup_queue'] = 'Anmelden';
+$phprlang['view_signup_cancel'] = 'Abmelden';
 $phprlang['view_signup_draft'] = 'Signup as In Raid (Drafted)';
 $phprlang['view_start'] = 'Startzeit';
 $phprlang['view_statistics_header'] = 'Statistiken';
