@@ -136,7 +136,7 @@ function step5($auth_type)
 		mysql_select_db($mySQLdefaultdb);
 		
 		// all users -> select boxes.
-		$e107usernametable = '<select name="e107_useradmin" class="post">';
+		$e107usernametable = '<select name="e107_useradmin_name" class="post">';
 
 		$sql = "SELECT user_loginname, user_email FROM " . $e107_prefix . "user ORDER BY user_loginname";
 		
@@ -144,8 +144,8 @@ function step5($auth_type)
 		if (mysql_num_rows($result) > 0) {
 			while ($data = mysql_fetch_assoc($result)) {
 				$e107usernametable .= '<option value="' . $data['user_loginname']. '">' .$data['user_loginname']. ': '.$data['user_email'] . '</option>';
-				$e107_useradmin_name = $data['user_loginname'];
-				$e107_useradmin_email = $data['user_email'];
+//				$e107_useradmin_name = $data['user_loginname'];
+//				$e107_useradmin_email = $data['user_email'];
 			}
 		}
 		$e107usernametable .= '</select>';
@@ -157,8 +157,8 @@ function step5($auth_type)
 		$content .= '<input type="hidden" name="auth_type" value="' . $auth_type . '" class="post">';
 		$content .= '<input type="hidden" name="substep" value="3" class="post">';
 		$content .= '<input type="hidden" name="e107_base_path" value="'.$e107_base_path.'" class="post">';
-		$content .= '<input type="hidden" name="e107_useradmin_name" value="'.$e107_useradmin_name.'" class="post">';
-		$content .= '<input type="hidden" name="e107_useradmin_email" value="'.$e107_useradmin_email.'" class="post">';
+//		$content .= '<input type="hidden" name="e107_useradmin_name" value="'.$e107_useradmin_name.'" class="post">';
+//		$content .= '<input type="hidden" name="e107_useradmin_email" value="'.$e107_useradmin_email.'" class="post">';
 		$content .= $localstr['step5e107sub2readconffile'].': <font color=green>'.$localstr['step5done'].'</font><br>';
 		$content .= '<br>------------------------------------------------------------------<br><br>';
 		$content .= '<br><br>';	

@@ -45,14 +45,16 @@ $localstr['step3errordbcon'] = 'Fehler: konnte keine Verbindung zur angegeben Da
 $localstr['step3errorschema'] = 'Fehler: das Upgrade Schema konnte nicht geöffnet werden';
 $localstr['step3errorsql'] = 'Fehler bei der Installation :<br> SQL String: $sql<br> Bericht: ';
 $localstr['step3installinfo'] = 'Wenn du das lesen kannst, sind keine Fehler bei der Installation der SQL-Tabellen aufgetreten!';
+$localstr['step3errorversion'] = 'The software version in version.php doesn\'t match database version in version table.';
 
 //step 4
 $localstr['step4auttype'] = 'Ermächtigungs- Art';
 $localstr['step4desc'] = 'Beschreibung';
-$localstr['step4desc_e107'] = 'cms System e107';
+$localstr['step4desc_e107'] = 'e107 CMS System';
 $localstr['step4desc_phpBB'] = 'phpBB2 oder phpBB3';
 $localstr['step4desc_iums'] = 'integrierte Benutzer Management-System';
-$localstr['step4desc_smf'] = 'Simple Machines Forum';
+$localstr['step4desc_smf'] = 'Simple Machines Forum 1.x';
+$localstr['step4desc_smf2'] = 'Simple Machines Forum 2.x';
 $localstr['step4desc_wbb'] = 'WoltLab Burning Board Lite 1.x.x';
 $localstr['step4desc_xoops'] = 'XOOPS';
 $localstr['step4unkownauth'] = '(wenn sie sich nicht sicher sind, wählen sie bitte "iUMS")';

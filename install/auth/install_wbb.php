@@ -120,7 +120,7 @@ function step5($auth_type)
 		mysql_select_db($sqldb);
 		
 		// all users -> select boxes.
-		$wbbusernametable = '<select name="wbb_useradmin" class="post">';
+		$wbbusernametable = '<select name="wbb_useradmin_name" class="post">';
 
 		$sql = "SELECT username, email FROM " . $wbb_prefix . "users ORDER BY username";
 		
@@ -128,8 +128,8 @@ function step5($auth_type)
 		if (mysql_num_rows($result) > 0) {
 			while ($data = mysql_fetch_assoc($result)) {
 				$wbbusernametable .= '<option value="' . $data['username']. '">' .$data['username']. ': '.$data['email'] . '</option>';
-				$wbb_useradmin_name = $data['username'];
-				$wbb_useradmin_email = $data['email'];
+//				$wbb_useradmin_name = $data['username'];
+//				$wbb_useradmin_email = $data['email'];
 			}
 		}
 		$wbbusernametable .= '</select>';
@@ -141,8 +141,8 @@ function step5($auth_type)
 		$content .= '<input type="hidden" name="auth_type" value="' . $auth_type . '" class="post">';
 		$content .= '<input type="hidden" name="substep" value="3" class="post">';
 		$content .= '<input type="hidden" name="wbb_base_path" value="'.$wbb_base_path.'" class="post">';
-		$content .= '<input type="hidden" name="wbb_useradmin_name" value="'.$wbb_useradmin_name.'" class="post">';
-		$content .= '<input type="hidden" name="wbb_useradmin_email" value="'.$wbb_useradmin_email.'" class="post">';
+//		$content .= '<input type="hidden" name="wbb_useradmin_name" value="'.$wbb_useradmin_name.'" class="post">';
+//		$content .= '<input type="hidden" name="wbb_useradmin_email" value="'.$wbb_useradmin_email.'" class="post">';
 		$content .= $localstr['step5wbbsub2readconffile'].': <font color=green>'.$localstr['step5done'].'</font><br>';
 		$content .= '<br>------------------------------------------------------------------<br><br>';
 		$content .= '<br><br>';	

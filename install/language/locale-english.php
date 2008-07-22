@@ -45,17 +45,19 @@ $localstr['step3errordbcon'] = 'Error connecting to database.';
 $localstr['step3errorschema'] = 'Error opening upgrade schema';
 $localstr['step3errorsql'] = 'Error installing<br>Query: $sql<br>Reported: ';
 $localstr['step3installinfo'] = 'If you are seeing this then no errors occurred during table installation!';
+$localstr['step3errorversion'] = 'The software version in version.php doesn\'t match database version in version table.';
 
 //step 4
 $localstr['step4auttype'] = 'authorization type';
 $localstr['step4desc'] = 'Description';
-$localstr['step4desc_e107'] = 'cms system e107';
+$localstr['step4desc_e107'] = 'e107 CMS System';
 $localstr['step4desc_phpBB'] = 'phpBB2 or phpBB3';
 $localstr['step4desc_iums'] = 'integrated User Management System';
-$localstr['step4desc_smf'] = 'Simple Machines Forum';
+$localstr['step4desc_smf'] = 'Simple Machines Forum 1.x';
+$localstr['step4desc_smf2'] = 'Simple Machines Forum 2.x';
 $localstr['step4desc_wbb'] = 'WoltLab Burning Board Lite 1.x.x';
 $localstr['step4desc_xoops'] = 'XOOPS';
-$localstr['step4unkownauth'] = '(if they are not sure, please select "iUMS")';
+$localstr['step4unkownauth'] = '(if you are not sure, please select "iUMS")';
 $localstr['step4chooseauth'] = 'Please choose an authorization type.';
 
 //--------------------------

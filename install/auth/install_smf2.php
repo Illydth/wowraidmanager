@@ -120,16 +120,16 @@ function step5($auth_type)
 		mysql_select_db($db_name);
 		
 		// all users -> select boxes.
-		$smfusernametable = '<select name="smf_useradmin" class="post">';
+		$smfusernametable = '<select name="smf_useradmin_name" class="post">';
 
-		$sql = "SELECT memberName, emailAddress FROM " . $smf_prefix . "members ORDER BY memberName";
+		$sql = "SELECT member_name, email_address FROM " . $smf_prefix . "members ORDER BY member_name";
 		
 		$result = mysql_query($sql) or die($localstr['step5smfsub3errorretusername'] . mysql_error());
 		if (mysql_num_rows($result) > 0) {
 			while ($data = mysql_fetch_assoc($result)) {
-				$smfusernametable .= '<option value="' . $data['memberName']. '">' .$data['memberName']. ': '.$data['emailAddress'] . '</option>';
-				$smf_useradmin_name = $data['memberName'];
-				$smf_useradmin_email = $data['emailAddress'];
+				$smfusernametable .= '<option value="' . $data['member_name']. '">' .$data['member_name']. ': '.$data['email_address'] . '</option>';
+//				$smf_useradmin_name = $data['member_name'];
+//				$smf_useradmin_email = $data['email_address'];
 			}
 		}
 		$smfusernametable .= '</select>';
@@ -141,8 +141,8 @@ function step5($auth_type)
 		$content .= '<input type="hidden" name="auth_type" value="' . $auth_type . '" class="post">';
 		$content .= '<input type="hidden" name="substep" value="3" class="post">';
 		$content .= '<input type="hidden" name="smf_base_path" value="'.$smf_base_path.'" class="post">';
-		$content .= '<input type="hidden" name="smf_useradmin_name" value="'.$smf_useradmin_name.'" class="post">';
-		$content .= '<input type="hidden" name="smf_useradmin_email" value="'.$smf_useradmin_email.'" class="post">';
+//		$content .= '<input type="hidden" name="smf_useradmin_name" value="'.$smf_useradmin_name.'" class="post">';
+//		$content .= '<input type="hidden" name="smf_useradmin_email" value="'.$smf_useradmin_email.'" class="post">';
 		$content .= $localstr['step5smfsub2readconffile'].': <font color=green>'.$localstr['step5done'].'</font><br>';
 		$content .= '<br>------------------------------------------------------------------<br><br>';
 		$content .= '<br><br>';	
@@ -183,24 +183,24 @@ function step5($auth_type)
 		$altuserclass .= '<option value="0">'.$localstr['step5sub3noaddus'].'</option>';
 		
 		// Get Userclasses from smf database.
-		$sql = "SELECT ID_GROUP, groupName FROM " . $smf_prefix . "membergroups ORDER BY ID_GROUP";
+		$sql = "SELECT id_group, group_name FROM " . $smf_prefix . "membergroups ORDER BY id_group";
 		$result = mysql_query($sql) or die($localstr['step5smfsub3errorretuserclass'].':' . mysql_error());
 		if (mysql_num_rows($result) > 0) {
 			while ($data = mysql_fetch_assoc($result)) {
-				$userclasses .= '<option value="' . $data['ID_GROUP']. '">' . htmlentities($data['groupName']) . '</option>';
-				$altuserclass .= '<option value="' . $data['ID_GROUP']. '">' . htmlentities($data['groupName']) . '</option>';
+				$userclasses .= '<option value="' . $data['id_group']. '">' . htmlentities($data['group_name']) . '</option>';
+				$altuserclass .= '<option value="' . $data['id_group']. '">' . htmlentities($data['group_name']) . '</option>';
 			}
 		}
 		$userclasses .= '</select>';
 		$altuserclass .= '</select>';
 		
-		$sql = "SELECT memberName, emailAddress, ID_MEMBER FROM ".$smf_prefix."members WHERE memberName  = '$smf_useradmin_name'";
+		$sql = "SELECT member_name, email_address, id_member FROM ".$smf_prefix."members WHERE member_name  = '$smf_useradmin_name'";
 		//echo ':datenbank:'.$mySQLdefaultdb.'::<br>::'.$sql;
 		$result = mysql_query($sql) or die($localstr['step5smfsub3errorretusername'].': <br>' .$sql. '<br>'. mysql_error());
 		
 		$data = mysql_fetch_assoc($result);
-		$smf_useradmin_email = $data['emailAddress'];
-		$smf_useradmin_id = $data['ID_MEMBER'];
+		$smf_useradmin_email = $data['email_address'];
+		$smf_useradmin_id = $data['id_member'];
 		
 		mysql_close($linkDB);
 		
@@ -287,7 +287,7 @@ function step5($auth_type)
 			$sql = "UPDATE " . $phpraid_config['db_prefix'] . "config SET config_value='$smf_prefix' WHERE config_name='smf_table_prefix'";
 			mysql_query($sql) or die("Error updateing smf_prefix in config table. " . mysql_error());
 			
-			$sql = "UPDATE " . $phpraid_config['db_prefix'] . "config SET config_value='smf' WHERE config_name='auth_type'";
+			$sql = "UPDATE " . $phpraid_config['db_prefix'] . "config SET config_value='smf2' WHERE config_name='auth_type'";
 			mysql_query($sql) or die("Error updateing auth_type in config table. " . mysql_error());
 			
 			$sql = "UPDATE " . $phpraid_config['db_prefix'] . "config SET config_value='$smf_auth_user_class' WHERE config_name='smf_auth_user_class'";
@@ -300,7 +300,7 @@ function step5($auth_type)
 		else
 		{
 			// install
-			$sql = "INSERT INTO " . $phpraid_config['db_prefix'] . "config VALUES('auth_type','smf')";
+			$sql = "INSERT INTO " . $phpraid_config['db_prefix'] . "config VALUES('auth_type','smf2')";
 			mysql_query($sql);
 			$sql = "INSERT INTO " . $phpraid_config['db_prefix'] . "config VALUES('smf_base_path','$smf_base_path')";
 			mysql_query($sql) or die("BOO5");

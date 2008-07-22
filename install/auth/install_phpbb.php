@@ -149,7 +149,7 @@ function step5($auth_type)
 		mysql_select_db($dbname);
 		
 		// all phpBB3 users -> select boxes.
-		$phpBB3usernametable = '<select name="phpbb_useradmin" class="post">';
+		$phpBB3usernametable = '<select name="phpbb_useradmin_name" class="post">';
 		
 		//standart/default bots, in phpbb3, have not a email adress
 		$sql = "SELECT username, user_email FROM " . $phpbb_prefix . "users WHERE user_email <> '' ORDER BY username";
@@ -158,8 +158,8 @@ function step5($auth_type)
 		if (mysql_num_rows($result) > 0) {
 			while ($data = mysql_fetch_assoc($result)) {
 				$phpBB3usernametable .= '<option value="' . $data['username']. '">' .$data['username']. ': '.$data['user_email'] . '</option>';
-				$phpbb_useradmin_name = $data['username'];
-				$phpbb_useradmin_email = $data['user_email'];
+//				$phpbb_useradmin_name = $data['username'];
+//				$phpbb_useradmin_email = $data['user_email'];
 			}
 		}
 		$phpBB3usernametable .= '</select>';
@@ -171,8 +171,8 @@ function step5($auth_type)
 		$content .= '<input type="hidden" name="auth_type" value="' . $auth_type . '" class="post">';
 		$content .= '<input type="hidden" name="substep" value="3" class="post">';
 		$content .= '<input type="hidden" name="phpbb_root_path" value="'.$phpbb_root_path.'" class="post">';
-		$content .= '<input type="hidden" name="phpbb_useradmin_name" value="'.$phpbb_useradmin_name.'" class="post">';
-		$content .= '<input type="hidden" name="phpbb_useradmin_email" value="'.$phpbb_useradmin_email.'" class="post">';
+//		$content .= '<input type="hidden" name="phpbb_useradmin_name" value="'.$phpbb_useradmin_name.'" class="post">';
+//		$content .= '<input type="hidden" name="phpbb_useradmin_email" value="'.$phpbb_useradmin_email.'" class="post">';
 		$content .= '<input type="hidden" name="phpbbversioncheck" value="'.$phpbbversioncheck.'" class="post">';
 		$content .= $localstr['step5phpBBsub2founddb'].' <font color=green></font> Version: phpBB'.$phpbbversioncheck.'<br>';
 		$content .= $localstr['step5phpBBsub2readconffile'].': <font color=green>'.$localstr['step5done'].'</font><br>';

@@ -58,7 +58,7 @@ function phpraid_login() {
 
 	
 	// Get the user_loginname and password and the various user classes that the user belongs to.
-	$sql = "SELECT ID_MEMBER, memberName, emailAddress, ID_GROUP FROM " . $smf_table_prefix . "members WHERE memberName = '".$username."'";
+	$sql = "SELECT id_member, member_name, email_address, id_group FROM " . $smf_table_prefix . "members WHERE member_name = '".$username."'";
 	$result = $db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
 	
 	$sql = "SELECT username, password FROM " . $phpraid_config['db_prefix'] . "profile WHERE username='".$username."'";
@@ -70,11 +70,11 @@ function phpraid_login() {
 	
 	while($data = $db_raid->sql_fetchrow($result, true)) {
 		//echo "<br>Processing: " . $data['member_name'] . " : " . $data['passwd'].'<br>pwd:'.$password;
-		if($username == strtolower($data['memberName']) && $pwd_hasher->CheckPassword($password, $wrmuserpassword)==0) {
+		if($username == strtolower($data['member_name']) && $pwd_hasher->CheckPassword($password, $wrmuserpassword)==0) {
 			// The user has a matching username and proper password in the smf database.
 			// We need to validate the users class.  If it does not contain the user class that has been set as
 			//	authorized to use smf, we need to fail the login with a proper message.
-			$user_class = $data['ID_GROUP'];
+			$user_class = $data['id_group'];
 			$pos = strpos($user_class, $smf_auth_user_class);
 			$pos2 = strpos($user_class, $smf_alt_auth_user_class);
 			if ($pos === false && $smf_auth_user_class != 0)
@@ -91,15 +91,15 @@ function phpraid_login() {
 			if(isset($autologin)) {
 				// they want automatic logins so set the cookie
 				// set to expire in one month
-				setcookie('username', $data['memberName'], time() + 2629743);
+				setcookie('username', $data['member_name'], time() + 2629743);
 				setcookie('password', $wrmuserpassword, time() + 2629743);
 			}
 
 			// set user profile variables
-			$_SESSION['username'] = strtolower($data['memberName']);
+			$_SESSION['username'] = strtolower($data['member_name']);
 			$_SESSION['session_logged_in'] = 1;
-			$_SESSION['profile_id'] = $data['ID_MEMBER'];
-			$_SESSION['email'] = $data['emailAddress'];
+			$_SESSION['profile_id'] = $data['id_member'];
+			$_SESSION['email'] = $data['email_address'];
 			$user_password = $wrmuserpassword;
 			if($phpraid_config['default_group'] != 'nil')
 				$user_priv = $phpraid_config['default_group'];
@@ -117,7 +117,7 @@ function phpraid_login() {
 			}
 			else
 			{ //Profile not found in the database or DB Error, insert.
-				$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "profile VALUES (%s, %s, %s, %s, %s, '')", quote_smart($_SESSION['profile_id']), quote_smart($_SESSION['email']), quote_smart($user_password), quote_smart($user_priv), quote_smart($_SESSION['username']));
+				$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "profile VALUES (%s, %s, %s, %s, %s)", quote_smart($_SESSION['profile_id']), quote_smart($_SESSION['email']), quote_smart($user_password), quote_smart($user_priv), quote_smart($_SESSION['username']));
 				$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 			}
 

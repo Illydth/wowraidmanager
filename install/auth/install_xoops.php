@@ -121,7 +121,7 @@ function step5($auth_type)
 		mysql_select_db(XOOPS_DB_NAME);
 		
 		// all users -> select boxes.
-		$xoopsusernametable = '<select name="xoops_useradmin" class="post">';
+		$xoopsusernametable = '<select name="xoops_useradmin_name" class="post">';
 
 		$sql = "SELECT loginname, email FROM " . $xoops_prefix . "users ORDER BY loginname";
 		
@@ -129,8 +129,8 @@ function step5($auth_type)
 		if (mysql_num_rows($result) > 0) {
 			while ($data = mysql_fetch_assoc($result)) {
 				$xoopsusernametable .= '<option value="' . $data['loginname']. '">' .$data['loginname']. ': '.$data['email'] . '</option>';
-				$xoops_useradmin_name = $data['loginname'];
-				$xoops_useradmin_email = $data['email'];
+//				$xoops_useradmin_name = $data['loginname'];
+//				$xoops_useradmin_email = $data['email'];
 			}
 		}
 		$xoopsusernametable .= '</select>';
@@ -142,8 +142,8 @@ function step5($auth_type)
 		$content .= '<input type="hidden" name="auth_type" value="' . $auth_type . '" class="post">';
 		$content .= '<input type="hidden" name="substep" value="3" class="post">';
 		$content .= '<input type="hidden" name="xoops_base_path" value="'.$xoops_base_path.'" class="post">';
-		$content .= '<input type="hidden" name="xoops_useradmin_name" value="'.$xoops_useradmin_name.'" class="post">';
-		$content .= '<input type="hidden" name="xoops_useradmin_email" value="'.$xoops_useradmin_email.'" class="post">';
+//		$content .= '<input type="hidden" name="xoops_useradmin_name" value="'.$xoops_useradmin_name.'" class="post">';
+//		$content .= '<input type="hidden" name="xoops_useradmin_email" value="'.$xoops_useradmin_email.'" class="post">';
 		$content .= $localstr['step5xoopssub2readconffile'].': <font color=green>'.$localstr['step5done'].'</font><br>';
 		$content .= '<br>------------------------------------------------------------------<br><br>';
 		$content .= '<br><br>';	

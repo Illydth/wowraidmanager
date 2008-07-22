@@ -22,3 +22,18 @@ INSERT INTO `phpraid_config` VALUES ('role6_name','misc2');
 INSERT INTO `phpraid_config` VALUES ('enforce_role_limits', '1');
 INSERT INTO `phpraid_config` VALUES ('enforce_class_limits', '0');
 INSERT INTO `phpraid_config` VALUES ('class_as_min', '1');
+
+DROP TABLE IF EXISTS `phpraid_version`;
+CREATE TABLE `phpraid_version` (
+`version_number` VARCHAR( 20 ) NOT NULL ,
+`version_desc` VARCHAR( 255 ) NOT NULL ,
+PRIMARY KEY ( `version_number` )
+) DEFAULT CHARACTER SET 'UTF8' COLLATE=utf8_bin;
+
+INSERT INTO `phpraid_version` VALUES ('3.0.9.2','Version 3.0.9.2 of phpRaid');
+INSERT INTO `phpraid_version` VALUES ('3.1.0','Version 3.1.0 of phpRaid (Beta)');
+INSERT INTO `phpraid_version` VALUES ('3.1.1','Version 3.1.1 of phpRaid');
+INSERT INTO `phpraid_version` VALUES ('3.1.2','Version 3.1.2 of WoW Raid Manager');
+INSERT INTO `phpraid_version` VALUES ('3.2.0','Version 3.2.0 of WoW Raid Manager');
+INSERT INTO `phpraid_version` VALUES ('3.2.1','Version 3.2.1 of WoW Raid Manager');
+INSERT INTO `phpraid_version` VALUES ('3.5.0','Version 3.5.0 of WoW Raid Manager');

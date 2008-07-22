@@ -45,13 +45,13 @@
 		}
 	require_once('language/locale-'.$lang.'.php');
 	
-// Is Writeable function is bugged beyond belief, it has issues with ACL and Group accesses, use this instead.
-//will work in despite of Windows ACLs bug
-//NOTE: use a trailing slash for folders!!!
-//see http://bugs.php.net/bug.php?id=27609
-//see http://bugs.php.net/bug.php?id=30931
-function is__writeable($path)
-{
+	// Is Writeable function is bugged beyond belief, it has issues with ACL and Group accesses, use this instead.
+	//    will work in despite of Windows ACLs bug.
+	//NOTE: use a trailing slash for folders!!!
+	//see http://bugs.php.net/bug.php?id=27609
+	//see http://bugs.php.net/bug.php?id=30931
+	function is__writeable($path)
+	{
         // Check for a directory, if the passed path is a directory create a temp file as path
         //    and try to open, otherwise just try to open that file for writing.
         $checkpath = $path;
@@ -66,12 +66,12 @@ function is__writeable($path)
         if ($checkpath != $path)
                 unlink($checkpath);
         return true;
-}
+	}
 	
 	//header
 	function print_header()
 	{
-	global $localstr;
+		global $localstr;
 		echo '<html>
 			  <head><title>'.$localstr['headtitle'].'</title>
 			  <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
@@ -81,15 +81,20 @@ function is__writeable($path)
 			  <div class="installhead">
 			     <table width="500" border="0" align="center" cellspacing="5">
                   <tr>
-                    <td><img src="logo_WRM.gif" align="right"></td>
-                    <td><div class="installheadBigtxt">Wow Raid Manager</div></td>
-                  </tr>
-                </table>
-				'.$localstr['headtitle'].'<br/>
-			    <strong>'.$localstr['headbodyinfo'].'</strong>
+                    <td><img src="logo_phpRaid.jpg" align="right"></td>
+                    <!-- <td><div class="installheadBigtxt">Wow Raid Manager</div></td> -->
+                  </tr> 
+                 </table>
+			     <table width="500" border="0" align="center" cellspacing="5">
+                  <tr>
+					'.$localstr['headtitle'].'<br/>
+				    <strong>'.$localstr['headbodyinfo'].'</strong>
+                  </tr> 
+                 </table>
 			  </div>
 			  <br/>';
 	}
+	
 	//menu with css-style (stylesheet/stylesheet.css)
 	function step($header,$c1,$c2,$c3,$c4,$c5,$c6,$content)
 	{
@@ -146,6 +151,7 @@ function is__writeable($path)
 
 		$content .= '<tr>';
 		
+		// NOTE: BE CAREFUL WITH IS__WRITEABLE, that is NOT the built in is_writeable function. (See Double Underscore)
 		if(!is__writeable('../config.php'))
 		{
 			$error = 1;
@@ -445,6 +451,15 @@ function is__writeable($path)
 			}
 			fclose($fd);
 		}
+		
+		// Make a Version Check
+		$sql = "select max(version_number) from `phpraid_version`";
+		$sql = str_replace('`phpraid_', '`' . $prefix, $sql);
+		$result = mysql_query($sql) or die($localstr['step3errorsql'].' ' . mysql_error());
+		$data = mysql_fetch_assoc($result);
+		
+		if($data['max(version_number)'] != $version)
+			die('<font color=red>'.$localstr['step3errorversion'].'.</font>');
 
 		$content  = '<font color=#00ff00>'.$localstr['step3installinfo'].'</font>';
 		$content .= '<form action="install.php?s=4&lang='.$lang.'" method="POST">';
@@ -491,7 +506,7 @@ function is__writeable($path)
                             <td class="normaltxt">'.$localstr['step4desc_phpBB'].'</td>
                           </tr>
                           <tr>
-                            <td class="normaltxt">xoops</td>
+                            <td class="normaltxt">XOOPS</td>
                             <td class="normaltxt">'.$localstr['step4desc_xoops'].'</td>
                           </tr>
 						  <tr>
@@ -499,11 +514,15 @@ function is__writeable($path)
                             <td class="normaltxt">'.$localstr['step4desc_smf'].'</td>
                           </tr>
 						  <tr>
-                            <td class="normaltxt">wbb</td>
+                            <td class="normaltxt">SMF2</td>
+                            <td class="normaltxt">'.$localstr['step4desc_smf2'].'</td>
+                          </tr>
+						  <tr>
+                            <td class="normaltxt">WBB</td>
                             <td class="normaltxt">'.$localstr['step4desc_wbb'].'</td>
                           </tr>
 						  <tr>
-                            <td class="normaltxt">iums</td>
+                            <td class="normaltxt">iUMS</td>
                             <td class="normaltxt">'.$localstr['step4desc_iums'].'</td>
                           </tr>
                         </table>';
@@ -551,11 +570,11 @@ function is__writeable($path)
 		}
 		else{
 			$sql = "UPDATE " .$phpraid_config['db_prefix'] ."config SET config_value='$wrmserver' WHERE config_name='header_link'";
-			mysql_query($sql) or die("Error updateing header_link in config table. " . mysql_error());
+			mysql_query($sql) or die("Error updating header_link in config table. " . mysql_error());
 			$sql = "UPDATE " .$phpraid_config['db_prefix'] ."config SET config_value='$wrmserverfile' WHERE config_name='rss_site_url'";
-			mysql_query($sql) or die("Error updateing header_link in config table. " . mysql_error());
+			mysql_query($sql) or die("Error updating header_link in config table. " . mysql_error());
 			$sql = "UPDATE " .$phpraid_config['db_prefix'] ."config SET config_value='$wrmserverfile' WHERE config_name='rss_export_url'";
-			mysql_query($sql) or die("Error updateing header_link in config table. " . mysql_error());
+			mysql_query($sql) or die("Error updating header_link in config table. " . mysql_error());
 		}
 		mysql_close($linkWRM);
 
