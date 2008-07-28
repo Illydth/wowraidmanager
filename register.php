@@ -33,7 +33,7 @@ define("IN_PHPRAID", true);
 require_once('./common.php');
 
 // if not using phpRaid die
-if($phpraid_config['auth_type'] != 'phpraid')
+if($phpraid_config['auth_type'] != 'iums')
 {
 	die("You can not access this file");
 	$db_raid->sql_close();
