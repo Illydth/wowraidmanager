@@ -189,7 +189,7 @@ function step5($auth_type)
 	else if ($step5_substep == 3){
 	
 		$phpbb_root_path = $_POST['phpbb_root_path'];
-		$phpbb_useradmin_name = $_POST['phpbb_useradmin'];
+		$phpbb_useradmin_name = $_POST['phpbb_useradmin_name'];
 		$phpbbversioncheck = $_POST['phpbbversioncheck'];
 
 		//need user_email, user_id
