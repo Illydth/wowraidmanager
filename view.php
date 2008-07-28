@@ -995,17 +995,24 @@ if($mode == 'view')
 	$warlock_icon = '<a href="#warlocks" onMouseover="ddrivetip(\''.$phprlang['warlock_icon'].'\')"; onMouseout="hideddrivetip()"><img src="templates/'.$phpraid_config['template'].'/images/classes/warlock_icon.gif" width="24" height="24" border="0"></a>';
 	$warrior_icon = '<a href="#warriors" onMouseover="ddrivetip(\''.$phprlang['warrior_icon'].'\')"; onMouseout="hideddrivetip()"><img src="templates/'.$phpraid_config['template'].'/images/classes/warrior_icon.gif" width="24" height="24" border="0"></a>';
 
-	// And now create the link to the team assignment/creation form but only if RL or RA.
+	// And now create the link to the team assignment/creation form and view missing signups but only if RL or RA.
 	if ($user_perm_group['admin'] OR $user_perm_group['RL'])
+	{
 		$team_link = '<a href="teams.php?mode=view&raid_id=' . $raid_id . '">' . $phprlang['view_teams_link_text'] . '</a>';
+		$missing_link = '<a href="missing_signups.php?raid_id=' . $raid_id . '">' . $phprlang['view_missing_signups_link_text'] . '</a>';
+	}
 	else
+	{
 		$team_link="";
+		$missing_link = "";
+	}
 
 	// output
 	$page->set_file('output',$phpraid_config['template'] . '/view_raid.htm');
 	$page->set_var(
 		array(
 			'team_link'=>$team_link,
+			'missing_link'=>$missing_link,
 			'raid_location'=>$raid_location,
 			'raid_officer'=>$raid_officer,
 			'raid_date'=>$raid_date,

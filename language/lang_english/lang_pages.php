@@ -233,6 +233,7 @@ $phprlang['view_new'] = 'Signup for this raid';
 $phprlang['view_max'] = 'Raid max';
 $phprlang['view_max_lvl'] = 'Maximum level';
 $phprlang['view_min_lvl'] = 'Minimum level';
+$phprlang['view_missing_signups_link_text'] = 'View Profles who have NOT signed up for this raid.';
 $phprlang['view_officer'] = 'Creator';
 $phprlang['view_ok'] = 'Open for signups';
 $phprlang['view_queue'] = 'How do you want to signup?';
