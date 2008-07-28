@@ -57,6 +57,9 @@ if($_GET['mode'] == 'view')
 
 	// Get information for current raids
 	// And push into current array so that we can output it with our report class
+	if (!$db_raid->sql_numrows($result) || $db_raid->sql_numrows($result) < 1)
+		$new_raid_link = '<a href="raids.php?mode=new"><img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_new_raid.gif" border="0"  onMouseover="ddrivetip(\''.$phprlang['raids_new_header'].'\')"; onMouseout="hideddrivetip()"></a>';		
+
 	while($data = $db_raid->sql_fetchrow($result, true)) {
 		if ($priv_raids or $username == $data['officer'])
 		{
@@ -81,7 +84,7 @@ if($_GET['mode'] == 'view')
 
 		// Create the "new raid" button.
 		$new_raid_link = '<a href="raids.php?mode=new"><img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_new_raid.gif" border="0"  onMouseover="ddrivetip(\''.$phprlang['raids_new_header'].'\')"; onMouseout="hideddrivetip()"></a>';
-	
+
 		//setup the count array
 		$count = array('dr'=>'0','hu'=>'0','ma'=>'0','pa'=>'0','pr'=>'0','ro'=>'0','sh'=>'0','wk'=>'0','wa'=>'0','role1'=>'0','role2'=>'0','role3'=>'0','role4'=>'0','role5'=>'0','role6'=>'0');
 
