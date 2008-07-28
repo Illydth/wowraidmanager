@@ -674,7 +674,7 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 
 		// freeze
 		$freeze = '<select name="freeze" class="post">';
-		for($i = 1; $i <= 24; $i++)
+		for($i = 0; $i <= 24; $i++)
 		{
 			if(isset($freeze_value) && $i == $freeze_value)
 				$freeze .= '<option value="' . $i . '" selected>' . $i . '</option>';
