@@ -113,6 +113,9 @@ $phprlang['configuration_version_outdated_message'] = 'Deine Version von WoW Rai
 													   Die aktuellste Version ist %s, und du benutzt Version %s.<br>
 													   Zum Herunterladen besuche bitte den <a href="http://www.wowraidmanager.net/>offizielle WRM - Downloadbereich</a>.';
 
+// DKP
+$phprlang['eqdkp_system_link'] = 'Der Link zu unserem DKP - System:'; 
+
 // guilds
 $phprlang['guilds_header'] = 'Gildenliste';
 $phprlang['guilds_master'] = 'Gildenmeister';

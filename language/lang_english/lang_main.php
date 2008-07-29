@@ -81,6 +81,10 @@ $phprlang['total'] = 'total';
 $phprlang['section'] = 'Section';
 $phprlang['prev'] = 'Prev';
 $phprlang['next'] = 'Next';
+$phprlang['earned'] = 'Earned';
+$phprlang['spent'] = 'Spent';
+$phprlang['adjustment'] = 'Adjustment';
+$phprlang['dkp'] = 'DKP';
 
 // roles
 $phprlang['role'] = 'Role';

@@ -47,11 +47,11 @@ global $db_dkp, $errorTitle, $errorMsg, $errorDie;
 
 /*---------- (eqdkp) web link + text -------------------------*/
 
-$eqdkp_text_link = 'Der Link zu unserem DKP - System: <a href="http://www.ab-gilde.de/dkp"> >-LINK-< </a>';
+$eqdkp_text_link = $phprlang['eqdkp_system_link'] . '<a href="'.$phpraid_config['eqdkp_url'].'/listmembers.php?s="> >-LINK-< </a>';
 
 /*------------------------------------*/
 
-$db_dkp = &new sql_db($phpraid_config['db_eqdkp_host'],$phpraid_config['db_eqdkp_user'],$phpraid_config['db_eqdkp_pass'],$phpraid_config['db_eqdkp_name']);
+$db_dkp = &new sql_db($phpraid_config['eqdkp_db_host'],$phpraid_config['eqdkp_db_user'],$phpraid_config['eqdkp_db_pass'],$phpraid_config['eqdkp_db_name']);
 
 if(!$db_dkp->db_connect_id) 
 {
@@ -60,7 +60,7 @@ if(!$db_dkp->db_connect_id)
 }
 
 // view the character list
-$sql = "SELECT * FROM " . $phpraid_config['db_eqdkp_prefix'] . "members, " . $phpraid_config['db_eqdkp_prefix'] . "classes WHERE " . $phpraid_config['db_eqdkp_prefix'] . "classes.class_id = " . $phpraid_config['db_eqdkp_prefix'] . "members.member_class_id";
+$sql = "SELECT * FROM " . $phpraid_config['eqdkp_db_prefix'] . "members, " . $phpraid_config['eqdkp_db_prefix'] . "classes WHERE " . $phpraid_config['eqdkp_db_prefix'] . "classes.class_id = " . $phpraid_config['eqdkp_db_prefix'] . "members.member_class_id";
 
 $result = $db_dkp->sql_query($sql) or print_error($sql, mysql_error(), 1);
 $members = array();
@@ -76,10 +76,13 @@ while($data = $db_dkp->sql_fetchrow($result)) {
 	$tmpclass = $phprlang[strtolower($data['class_name'])];
 	if ($tmpclass == "") $tmpclass = $data['class_name'];
 	
+	//Calculate name link.
+	$namelink = '<a href="'.$phpraid_config['eqdkp_url'].'/viewmember.php?s=&name='.$data['member_name'].'">'.$data['member_name'].'</a>';
+	
 	array_push($members,
 		array(
 			'id'=>$data['member_id'],
-			'Name'=>$data['member_name'],
+			'Name'=>$namelink,
 			'Earned'=>$data['member_earned'],
 			'Spent'=>$data['member_spent'],
 			'Adjustment'=>$data['member_adjustment'],
@@ -111,8 +114,11 @@ $report->showRecordCount(true);
 if($phpraid_config['show_id'] == 1)
 	$report->addOutputColumn('id',$phprlang['id'],'','center');
 $report->addOutputColumn('Name',$phprlang['name'],'','center');
-$report->addOutputColumn('Class','Klasse','','center');
-$report->addOutputColumn('Dkp_Now','Dkp','','center');
+$report->addOutputColumn('Class',$phprlang['class'],'','center');
+$report->addOutputColumn('Earned',$phprlang['earned'],'','center');
+$report->addOutputColumn('Spent',$phprlang['spent'],'','center');
+$report->addOutputColumn('Adjustment',$phprlang['adjustment'],'','center');
+$report->addOutputColumn('Dkp_Now',$phprlang['dkp'],'','center');
 $report->allowPaging(true, $_SERVER['PHP_SELF'] . '?Base=');
 $report->setListRange($_GET['Base'], 25);
 $body = $report->getListFromArray($members);
@@ -129,7 +135,7 @@ $page->set_file(array(
 $page->set_var(
 	array(
 		'roster' => $body,
-		'header' => 'DKP',
+		'header' => $phprlang['dkp'],
 		'dkp_link' => $eqdkp_text_link
 	)
 );
