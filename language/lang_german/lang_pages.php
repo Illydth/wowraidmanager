@@ -236,6 +236,7 @@ $phprlang['view_new'] = 'Für diesen Raid anmelden';
 $phprlang['view_max'] = 'Maximale Teilnehmerzahl';
 $phprlang['view_max_lvl'] = 'Maximalstufe';
 $phprlang['view_min_lvl'] = 'Minimalstufe';
+$phprlang['view_missing_signups_link_text'] = 'Zeige Profile, die sich NICHT für diesen Raid angemeldet haben.';
 $phprlang['view_officer'] = 'Ersteller';
 $phprlang['view_ok'] = 'Offen für Anmeldungen';
 $phprlang['view_queue'] = 'Wie möchtest du dich anmelden?';
