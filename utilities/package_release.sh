@@ -169,17 +169,18 @@ cd ..
 
 #Creating Working Directories and Files
 mkdir package
-mkdir package/phpraid
-cp -R * package/phpraid
+mkdir package/wrm
+cp -R * package/wrm
 cd package
 
 #Remove Misc Stuff
-rm -rf phpraid/Utilities
-rm -rf phpraid/package
+rm -rf wrm/Utilities
+rm -rf wrm/package
+rm -f wrm/config.php
 
 #Build the Packages
-tar -czvf wowRaidManager_v$1.tar.gz phpraid/*
-zip -r wowRaidManager_v$1.zip phpraid
+tar -czvf wowRaidManager_v$1.tar.gz wrm/*
+zip -r wowRaidManager_v$1.zip wrm
 
 #Final Packages should be in <root>/package at this point, ready for disbursal, remove temp directories
-rm -rf phpraid
+rm -rf wrm
