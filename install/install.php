@@ -59,7 +59,7 @@
         if ($path{strlen($path)-1}=='/')
                 $checkpath = $path.uniqid(mt_rand()).'.tmp';
 
-        if (!($f = @fopen($checkpath, 'w+')))
+        if (!($f = @fopen($checkpath, 'a+')))
                 return false;
 
         fclose($f);
