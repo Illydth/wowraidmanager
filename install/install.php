@@ -450,9 +450,9 @@
 		$output .= "global ".'$phpraid_config'.";\n";
 		$output .='$phpraid_config[\'db_name\']'." = '$name';\n".'$phpraid_config[\'db_host\']'." = '$hostname';\n";
 		$output .='$phpraid_config[\'db_user\']'." = '$username';\n".'$phpraid_config[\'db_pass\']'." = '$password';\n";
-		$output .='$phpraid_config[\'db_prefix\']'." = '$prefix';\n".'$phpraid_config[\'db_eqdkp_name\']'." = '$eqdkp_name';\n";
-		$output .='$phpraid_config[\'db_eqdkp_host\']'." = '$eqdkp_host';\n".'$phpraid_config[\'db_eqdkp_user\']'." = '$eqdkp_user';\n";
-		$output .='$phpraid_config[\'db_eqdkp_pass\']'." = '$eqdkp_pass';\n".'$phpraid_config[\'db_eqdkp_prefix\']'." = '$eqdkp_prefix';\n";
+		$output .='$phpraid_config[\'db_prefix\']'." = '$prefix';\n".'$phpraid_config[\'eqdkp_db_name\']'." = '$eqdkp_name';\n";
+		$output .='$phpraid_config[\'eqdkp_db_host\']'." = '$eqdkp_host';\n".'$phpraid_config[\'eqdkp_db_user\']'." = '$eqdkp_user';\n";
+		$output .='$phpraid_config[\'eqdkp_db_pass\']'." = '$eqdkp_pass';\n".'$phpraid_config[\'eqdkp_db_prefix\']'." = '$eqdkp_prefix';\n";
 		$output .= "?>\n";
 
 		$fd = fopen('../config.php','w+');
