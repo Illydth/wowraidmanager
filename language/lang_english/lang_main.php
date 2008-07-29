@@ -204,6 +204,7 @@ $phprlang['roster_link'] = '&raquo; Roster';
 $phprlang['users_link'] = '&raquo; Users';
 $phprlang['lua_output_link'] = '&raquo; Lua output raids';
 $phprlang['index_link'] = '&raquo; Home';
+$phprlang['dkp_link'] = '&raquo; DKP';
 
 // sorting information
 $phprlang['sort_text'] = 'Click here to sort by ';

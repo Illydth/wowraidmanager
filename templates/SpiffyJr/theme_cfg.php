@@ -1,6 +1,7 @@
 <?php
 // this defines whether to use the test in language.php or images for all links
-// if set to 0, then it pulls information from language.php
+// if set to 0, then it pulls information from lang_main.php
+// NOTE: DO NOT SET THIS TO 1, there ARE NO IMAGES.
 $use_images = 0;
 
 // image locations
@@ -19,7 +20,7 @@ $image_profile = "<img src=\"templates/" . $phpraid_config['template'] . "/image
 $image_register = "<img src=\"templates/" . $phpraid_config['template'] . "/images/register.gif\" border=\"0\">";
 $image_rss = "<img src=\"templates/" . $phpraid_config['template'] . "/images/rss.png\" border=\"0\">";
 $image_lua_output = "<img src=\"templates/" . $phpraid_config['template'] . "/images/lua_output.gif\" border=\"0\">";
-
+$image_dkp_link = "<img src=\"templates/" . $phpraid_config['template'] . "/images/dkp_link.gif\" border=\"0\">";
 
 // no further editing necessary
 if($use_images == 0) {
@@ -38,6 +39,7 @@ if($use_images == 0) {
 	$theme_users_link = $phprlang['users_link'];
 	$theme_register_link = $phprlang['register_link'];
 	$theme_roster_link = $phprlang['roster_link'];
+	$theme_dkp_link = $phprlang['dkp_link'];
 } else {
 	$theme_index_link = $image_index;
 	$theme_configure_link = $image_configure;
@@ -53,5 +55,6 @@ if($use_images == 0) {
 	$theme_register_link = $image_register;
 	$theme_roster_link = $image_roster;
 	$theme_lua_output_link = $image_lua_output;
+	$theme_dkp_link = $image_dkp_link;
 }
 ?>

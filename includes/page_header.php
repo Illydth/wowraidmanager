@@ -122,6 +122,7 @@ $index_link = '<a href="' . $phpraid_config['header_link'] . '">' . $theme_index
 $home_link = '<a href="index.php">' . $theme_home_link . '</a>';
 $calendar_link = '<a href="calendar.php">' . $theme_calendar_link . '</a>';
 $roster_link = '<a href="roster.php">' . $theme_roster_link . '</a>';
+$dkp_view_link = '<a href="dkp_view.php">' . $theme_dkp_link . '</a>';
 
 // these links need special permissions
 $priv_announcement ? $announce_link = '<a href="announcements.php?mode=view">' . $theme_announcement_link . '</a>' : $announce_link = '';
@@ -256,8 +257,20 @@ if($logged_in == 0) {
 if (preg_match("/(.*)roster\.php(.*)/", $_SERVER['PHP_SELF'])) {
     $menu .= '<li class="active">' . $roster_link . '</li>';
 } else {
-    $menu .= '<li class="">' . $roster_link . '</li></ul></div>';
+    $menu .= '<li class="">' . $roster_link . '</li>';
 }
+
+// If integration with EQDKP is enabled, add a link here.
+if ($phpraid_config['enable_eqdkp'])
+{
+	if (preg_match("/(.*)dkp_view\.php(.*)/", $_SERVER['PHP_SELF'])) {
+		$menu .= '<li class="active">' . $dkp_view_link . '</li>';
+	} else {
+		$menu .= '<li class="">' . $dkp_view_link . '</li>';
+	}
+}
+
+$menu .= '</ul></div>';
 
 $page->set_var('menu',$menu);
 

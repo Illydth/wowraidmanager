@@ -1,0 +1,49 @@
+<H1>EqDKP Integration Help</H1>
+-----------------------<br>
+<H2>Introduction:</H2>
+Integration with EqDKP is now built into WRM.  At it's base, turning on this option allows for the information from an<br>
+EqDKP installation to be displayed within WoW Raid Manager.  A new side menu item "DKP" will show up with this enabled<br>
+that will show the User and DKP information from your EqDKP installation.  A link to the entry point of the DKP installation<br>
+is displayed, and each listed character will like to it's own detail page within EqDKP.<br>
+
+<H2>Requirements:</H2>
+The first and foremost requirement is that you must have an existing and working (installed, setup, configured) EqDKP<br>
+installation who's database is accessible to the web host running your WoW Raid Manager installation.  In other words,<br>
+the webserver hosting your WRM installation must be able to also see your EqDKP database.  These systems DO NOT have<br>
+to be installed on the same server or even the same webhost so long as your WRM installation can open a database connection<br>
+to wherever the EqDKP installation resides.<br>
+<br>
+Too, you must already be using your EqDKP installation.  Having no data in the system will produce no data within WRM for<br>
+your DKP Information.  Be sure to configure and add users and data to EqDKP.<br>
+<br>  
+Finally, you must configure your WRM installation to be able to see and properly access your EqDKP installation.  See the<br>
+next section for information on configuring your system to support the integration of EqDKP.<br>
+<br>
+Note: At the time of this writing the current EqDKP installations are 1.3.x (Stable) and 1.4.x (Beta), both of these<br>
+installations should work with WRM.<br>
+
+<H2>Installation/Configuration:</H2>
+To install and configure WRM to work with EqDKP follow these steps:<br>
+<br>
+1) Install both WRM and EqDKP.  If you are reading this via the "help" link in the configuration section, your WRM installation<br>
+is likely already complete.  Make sure EqDKP is also installed and properly working.<br>
+<br>
+2) Configure your EqDKP Database connection.  Open the WRM config.php in the root directory of the WRM installation.  Inside<br>
+you will find a "db_eqdkp_" section asking for name, host, user, pass, and prefix.  Fill in the information as noted below.<br>
+<ul>
+<li> db_eqdkp_name: The name of your EqDKP Database.  Often this is "eqdkp".</li>
+<li> db_eqdkp_host: The hostname of the database server where your EqDKP Database Resides.</li>
+<li> db_eqdkp_user: The User account name that has access to your EqDKP Database.</li>
+<li> db_eqdkp_pass: The password for the user account noted above.</li>
+<li> db_eqdkp_prefix: The database table prefix for the tables in your EqDKP Installation, this is usually "eqdkp_."</li>
+</ul>
+3) Check the "Integrate with EqDKP" check box, this will turn on access to the EqDKP system.  When you click the "Submit" button<br>
+in the configuration section of WRM a new "DKP" menu will show up on the left hand side. <strong>You MUST have completed the<br>
+database configuration steps in #2 above BEFORE you click the new DKP link, otherwise you WILL get an error.</strong></br>
+<br>
+4) Fill in the URL to the base of your EqDKP installation, leave off the trailing "/".  This will look something like:<br>
+"http://localhost/eqdkp" or "http://www.myguild.com/eqdkp".  Please do not add something like "viewnews.php" or "listmembers.php"<br>
+to the end of this.<br>
+<br>
+With the Database information in place in your config.php file and the "Integrate with EqDKP" link checked and submitted<br>
+you should now be able to click the "DKP" button and see the information from the EqDKP installation.
