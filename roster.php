@@ -53,10 +53,15 @@ while($data = $db_raid->sql_fetchrow($result, true)) {
 
 	$guildname = get_guild_name($data['name'], $server);
 	
+	if ($phpraid_config['enable_armory'])
+		$charname = get_armorychar($data['name'], $phpraid_config['armory_language'], $server);
+	else
+		$charname = $data['name'];
+		
 	array_push($chars,
 		array(
 			'id'=>$data['char_id'],
-			'Name'=>get_armorychar($data['name'], $phpraid_config['armory_language'], $server),
+			'Name'=> $charname,
 			'GuildArmory'=>$guildname,
 			'Guild'=>$data['guild'],
 			'Level'=>$data['lvl'],

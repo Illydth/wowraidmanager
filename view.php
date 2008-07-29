@@ -318,7 +318,11 @@ if($mode == 'view')
 		$shadow = $data['shadow'];
 		$role = $data['role'];
 
-		$name = get_armorychar($data['name'], $phpraid_config['armory_language'], $server);
+		if ($phpraid_config['enable_armory'])
+			$name = get_armorychar($data['name'], $phpraid_config['armory_language'], $server);
+		else
+			$name = $data['name'];
+		
 		$guildname = '?';
 
 		if($priv_raids == 1 || $user_perm_group['RL'] == 1)
@@ -576,7 +580,8 @@ if($mode == 'view')
 		$actions = '';
 		$actions=queuedFlow($user_perm_group, $phpraid_config, $data, $raid_id, $phprlang, $sort_mode, $sort_descending, $signups);
 
-		$name = get_armorychar($name, $phpraid_config['armory_language'], $server);
+		if ($phpraid_config['enable_armory'])
+			$name = get_armorychar($name, $phpraid_config['armory_language'], $server);
 
 		if($priv_raids == 1 || $user_perm_group['RL'] == 1)
 		{
@@ -725,7 +730,8 @@ if($mode == 'view')
 		$actions = '';
 		$actions=canceledFlow($user_perm_group, $phpraid_config, $data, $raid_id, $phprlang, $sort_mode, $sort_descending, $signups);
 
-		$name = get_armorychar($name, $phpraid_config['armory_language'], $server);
+		if ($phpraid_config['enable_armory'])
+			$name = get_armorychar($name, $phpraid_config['armory_language'], $server);
 		
 		if($priv_raids == 1 || $user_perm_group['RL'] == 1)
 		{

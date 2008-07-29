@@ -49,10 +49,16 @@ if($_GET['mode'] == 'view') {
 	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 	while($data = $db_raid->sql_fetchrow($result, true))
 	{
+		
+		if ($phpraid_config['enable_armory'])
+			$charname = get_armorychar($data['name'], $phpraid_config['armory_language'], $server);
+		else
+			$charname = $data['name'];
+			
 		array_push($chars,
 			array(
 				'ID'=>$data['char_id'],
-				'Name'=>get_armorychar($data['name'], $phpraid_config['armory_language'], $server),
+				'Name'=>$charname,
 				'Guild'=>$data['guild'],
 				'Level'=>$data['lvl'],
 				'Race'=>$data['race'],
