@@ -1148,7 +1148,7 @@ elseif($mode == 'signup')
 		{
 			// now check class limits
 			// setup the count array
-			$count = array('dr'=>'0','hu'=>'0','ma'=>'0','pa'=>'0','pr'=>'0','ro'=>'0','sh'=>'0','wk'=>'0','wa'=>'0','role1'=>'0','role2'=>'0','role3'=>'0','role4'=>'0','role5'=>'0','role6'=>'0');
+			$count = array('dr'=>'0','hu'=>'0','ma'=>'0','pa'=>'0','pr'=>'0','ro'=>'0','sh'=>'0','wk'=>'0','wa'=>'0','role1'=>'0','role2'=>'0','role3'=>'0','role4'=>'0','role5'=>'0','role6'=>'0','total'=>'0');
 			$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id=%s AND queue='0' AND cancel='0'",quote_smart($raid_id));
 			$result_char = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 			while($char = $db_raid->sql_fetchrow($result_char, true))
@@ -1208,10 +1208,11 @@ elseif($mode == 'signup')
 					case $phpraid_config['role6_name']:
 						$count['role6']++;
 						break;
-				}				
+				}	
+				$count['total']++;			
 			}
 
-			$sql = sprintf("SELECT dr_lmt,hu_lmt,ma_lmt,pa_lmt,pr_lmt,ro_lmt,sh_lmt,wk_lmt,wa_lmt,role1_lmt,role2_lmt,role3_lmt,role4_lmt,role5_lmt,role6_lmt FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id=%s", quote_smart($raid_id));
+			$sql = sprintf("SELECT dr_lmt,hu_lmt,ma_lmt,pa_lmt,pr_lmt,ro_lmt,sh_lmt,wk_lmt,wa_lmt,role1_lmt,role2_lmt,role3_lmt,role4_lmt,role5_lmt,role6_lmt,max FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id=%s", quote_smart($raid_id));
 			$result_raid = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 			$total = $db_raid->sql_fetchrow($result_raid, true);
 
@@ -1295,6 +1296,8 @@ elseif($mode == 'signup')
 							break;
 					}
 				}
+				if($count['total'] >= $total['max'])
+					$queue = 1;
 			}
 		}
 
@@ -1448,7 +1451,7 @@ elseif($mode == 'draft')
 
 	// now check class limits to prevent users cheating the cancel/queue signup
 	// setup the count array
-	$count = array('dr'=>'0','hu'=>'0','ma'=>'0','pa'=>'0','pr'=>'0','ro'=>'0','sh'=>'0','wk'=>'0','wa'=>'0','role1'=>'0','role2'=>'0','role3'=>'0','role4'=>'0','role5'=>'0','role6'=>'0');
+	$count = array('dr'=>'0','hu'=>'0','ma'=>'0','pa'=>'0','pr'=>'0','ro'=>'0','sh'=>'0','wk'=>'0','wa'=>'0','role1'=>'0','role2'=>'0','role3'=>'0','role4'=>'0','role5'=>'0','role6'=>'0','total'=>'0');
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id=%s AND queue='0' AND cancel='0'",quote_smart($raid_id));
 	$result_char = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 	while($char = $db_raid->sql_fetchrow($result_char, true))
@@ -1508,8 +1511,9 @@ elseif($mode == 'draft')
 				$count['role6']++;
 				break;
 		}				
+		$count['total']++;
 	}
-	$sql = sprintf("SELECT dr_lmt,hu_lmt,ma_lmt,pa_lmt,pr_lmt,ro_lmt,sh_lmt,wk_lmt,wa_lmt,role1_lmt,role2_lmt,role3_lmt,role4_lmt,role5_lmt,role6_lmt FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id=%s", quote_smart($raid_id));
+	$sql = sprintf("SELECT dr_lmt,hu_lmt,ma_lmt,pa_lmt,pr_lmt,ro_lmt,sh_lmt,wk_lmt,wa_lmt,role1_lmt,role2_lmt,role3_lmt,role4_lmt,role5_lmt,role6_lmt,max FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id=%s", quote_smart($raid_id));
 	$result_raid = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 	$total = $db_raid->sql_fetchrow($result_raid, true);
 
@@ -1590,6 +1594,9 @@ elseif($mode == 'draft')
 				break;
 		}
 	}
+	if($count['total'] >= $total['max'])
+		$queue = 1;
+
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id=%s AND char_id=%s", quote_smart($raid_id), quote_smart($char_id));
 	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 	$data = $db_raid->sql_fetchrow($result, true);
