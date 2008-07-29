@@ -368,20 +368,37 @@
 
 		unset($files);
 
+		// If the config file already exists and has something in it, we'll use it.
+		include('../config.php');
+
 		$content = '<form action="install.php?s=3&lang='.$lang.'" method="POST">';
 		$content .= '<br/><br/>';
 		$content .= '<table width="100%" cellpadding="0" cellspacing="0" border="0">';
 		$content .= '<tr><td width="40%" class="normaltxt" align="right">'.$localstr['step2dbname'].':</td><td width="60%">';
-		$content .= '<input type="text" name="name" class="post"></td></tr>';
+		$content .= '<input type="text" name="name" class="post" value="'.$phpraid_config['db_name'].'"></td></tr>';
 		$content .= '<tr><td class="normaltxt" align="right">'.$localstr['step2dbserverhostname'].':</td><td>';
-		$content .= '<input type="text" name="hostname" class="post" value="localhost"></td></tr>';
+		if (!isset($phpraid_config['db_host']))
+			$content .= '<input type="text" name="hostname" class="post" value="localhost"></td></tr>';
+		else
+			$content .= '<input type="text" name="hostname" class="post" value="'.$phpraid_config['db_host'].'"></td></tr>';
 		$content .= '<tr><td class="normaltxt" align="right">'.$localstr['step2dbserverusername'].':</td><td>';
-		$content .= '<input type="text" name="username" class="post"></td></tr>';
+		$content .= '<input type="text" name="username" class="post" value="'.$phpraid_config['db_user'].'"></td></tr>';
 		$content .= '<tr><td class="normaltxt" align="right">'.$localstr['step2dbserverpwd'].':</td><td>';
-		$content .= '<input type="text" name="password" class="post"></td></tr>';
+		$content .= '<input type="text" name="password" class="post" value="'.$phpraid_config['db_pass'].'"></td></tr>';
 		$content .= '<tr><td>&nbsp;</td><td>&nbsp;</td></tr>';
 		$content .= '<tr><td class="normaltxt" align="right">'.$localstr['step2WRMtableprefix'].':</td><td>';
-		$content .= '<input type="text" name="prefix" class="post" value="wrm_"></td></tr>';
+		if (!isset($phpraid_config['db_prefix']))
+			$content .= '<input type="text" name="prefix" class="post" value="wrm_"></td></tr>';
+		else
+			$content .= '<input type="text" name="prefix" class="post" value="'.$phpraid_config['db_prefix'].'"></td></tr>';
+
+		//Insert Hidden boxes at this point to Store any other DB Information Needed from config.php.
+		$content .= '<input type="hidden" name="eqdkp_db_name" class="post" value="'.$phpraid_config['eqdkp_db_name'].'"></td></tr>';
+		$content .= '<input type="hidden" name="eqdkp_db_host" class="post" value="'.$phpraid_config['eqdkp_db_host'].'"></td></tr>';
+		$content .= '<input type="hidden" name="eqdkp_db_user" class="post" value="'.$phpraid_config['eqdkp_db_user'].'"></td></tr>';
+		$content .= '<input type="hidden" name="eqdkp_db_pass" class="post" value="'.$phpraid_config['eqdkp_db_pass'].'"></td></tr>';
+		$content .= '<input type="hidden" name="eqdkp_db_prefix" class="post" value="'.$phpraid_config['eqdkp_db_prefix'].'"></td></tr>';
+					
 		$content .= '<tr><td>&nbsp;</td><td>&nbsp;</td></tr>';
 		$content .= '<tr><td class="normaltxt" align="right">'.$localstr['step2installtype'].': </td><td>';
 		$content .= $type.'</td></tr>';
@@ -400,6 +417,12 @@
 		$username = $_POST['username'];
 		$password = $_POST['password'];
 		$prefix = $_POST['prefix'];
+		$eqdkp_name = $_POST['eqdkp_db_name'];
+		$eqdkp_host = $_POST['eqdkp_db_host'];
+		$eqdkp_user = $_POST['eqdkp_db_user'];
+		$eqdkp_pass = $_POST['eqdkp_db_pass'];
+		$eqdkp_prefix = $_POST['eqdkp_db_prefix'];
+		
 		$sql_file = $_POST['type'];
 
 		$sql = '';
@@ -427,7 +450,10 @@
 		$output .= "global ".'$phpraid_config'.";\n";
 		$output .='$phpraid_config[\'db_name\']'." = '$name';\n".'$phpraid_config[\'db_host\']'." = '$hostname';\n";
 		$output .='$phpraid_config[\'db_user\']'." = '$username';\n".'$phpraid_config[\'db_pass\']'." = '$password';\n";
-		$output .='$phpraid_config[\'db_prefix\']'." = '$prefix';\n?>";
+		$output .='$phpraid_config[\'db_prefix\']'." = '$prefix';\n".'$phpraid_config[\'db_eqdkp_name\']'." = '$eqdkp_name';\n";
+		$output .='$phpraid_config[\'db_eqdkp_host\']'." = '$eqdkp_host';\n".'$phpraid_config[\'db_eqdkp_user\']'." = '$eqdkp_user';\n";
+		$output .='$phpraid_config[\'db_eqdkp_pass\']'." = '$eqdkp_pass';\n".'$phpraid_config[\'db_eqdkp_prefix\']'." = '$eqdkp_prefix';\n";
+		$output .= "?>\n";
 
 		$fd = fopen('../config.php','w+');
 		fwrite($fd, $output);

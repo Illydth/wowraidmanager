@@ -108,6 +108,7 @@ $site_configure_header = $phprlang['configuration_site_header'];
 $guild_configure_header = $phprlang['configuration_guild_header'];
 $role_configure_header = $phprlang['configuration_role_header'];
 $user_rights_header = $phprlang['configuration_user_rights_header'];
+$external_links_header = $phprlang['configuration_external_links_header'];
 $signup_rights_header = $phprlang['configuration_signup_rights_header'];
 $on_queue_text = $phprlang['configuration_on_queue'];
 $cancelled_text = $phprlang['configuration_cancelled'];
@@ -117,7 +118,6 @@ $comments_row_header = $phprlang['configuration_comments'];
 $cancel_row_header = $phprlang['configuration_cancel'];
 $delete_row_header = $phprlang['configuration_delete'];
 $queue_row_header = $phprlang['configuration_queue'];
-
 
 // setup variables based on the forum information
 // start with the checkboxes
@@ -195,6 +195,16 @@ if($phpraid_config['class_as_min'] == '0')
 	$class_as_min = '<input type="checkbox" name="class_as_min" value="1">';
 else
 	$class_as_min = '<input type="checkbox" name="class_as_min" value="1" checked>';
+
+if($phpraid_config['enable_armory'] == '0')
+	$enable_armory = '<input type="checkbox" name="enable_armory" value="1">';
+else
+	$enable_armory = '<input type="checkbox" name="enable_armory" value="1" checked>';
+
+if($phpraid_config['enable_eqdkp'] == '0')
+	$enable_eqdkp = '<input type="checkbox" name="enable_eqdkp" value="1">';
+else
+	$enable_eqdkp = '<input type="checkbox" name="enable_eqdkp" value="1" checked>';
 
 // now the faction
 $faction = '<select name="faction">';
@@ -522,6 +532,7 @@ $role3_name='<input name="role3_name" type="text" value="'.$phpraid_config['role
 $role4_name='<input name="role4_name" type="text" value="'.$phpraid_config['role4_name'].'" size="25" class="post">';
 $role5_name='<input name="role5_name" type="text" value="'.$phpraid_config['role5_name'].'" size="25" class="post">';
 $role6_name='<input name="role6_name" type="text" value="'.$phpraid_config['role6_name'].'" size="25" class="post">';
+$eqdkp_url='<input name="eqdkp_url" type="text" value="'.$phpraid_config['eqdkp_url'].'" size="60" class="post">';
 
 // put the variables into the template
 $page->set_var(
@@ -555,6 +566,12 @@ $page->set_var(
 		'dst'=>$dst,
 		'roster' => $roster,
 		'register' => $register,
+		'eqdkp_url' => $eqdkp_url,
+		'enable_armory' => $enable_armory,
+		'enable_eqdkp' => $enable_eqdkp,
+		'enable_armory_text' => $phprlang['configuration_armory_enable'],
+		'enable_eqdkp_text' => $phprlang['configuration_eqdkp_integration_text'],
+		'eqdkp_url_text' => $phprlang['configuration_eqdkp_link'],
 		'role1_name' => $role1_name,
 		'role2_name' => $role2_name,
 		'role3_name' => $role3_name,
@@ -669,6 +686,7 @@ $page->set_var(
 		'raid_settings_header'=>$phprlang['configuration_raid_settings_header'],
 		'user_rights_header'=>$phprlang['configuration_user_rights_header'],
 		'signup_rights_header'=>$phprlang['configuration_signup_rights_header'],
+		'external_links_header'=>$phprlang['configuration_external_links_header'],
 		'email_header'=>$phprlang['configuration_email_header'],
 		'on_queue_text'=>$phprlang['configuration_on_queue'],
 		'cancelled_text'=>$phprlang['configuration_cancelled'],
@@ -735,10 +753,21 @@ else
  		$enable_five_man = 1;
  	else
  		$enable_five_man = 0;
+ 		
+ 	if(isset($_POST['enable_armory']))
+ 		$enable_armory = 1;
+ 	else
+ 		$enable_armory = 0;
 
+ 	if(isset($_POST['enable_eqdkp']))
+ 		$enable_eqdkp = 1;
+ 	else
+ 		$enable_eqdkp = 0;
+ 
 	$h_logo = scrub_input($_POST['header_logo'], true);
  	$h_link = scrub_input($_POST['header_link'], true);
  	$p_link = scrub_input($_POST['phpraid_addon_link'], true);
+	$eqdkp_url = scrub_input($_POST['eqdkp_url'], true);
 	$rss_site_url_p = scrub_input($_POST['rss_site_url'], true);
 	$rss_export_url_p = scrub_input($_POST['rss_export_url'], true);
 	$rss_feed_amt_p = scrub_input($_POST['rss_feed_amt']);
@@ -750,7 +779,7 @@ else
 	$role4_name = scrub_input($_POST['role4_name']);
 	$role5_name = scrub_input($_POST['role5_name']);
 	$role6_name = scrub_input($_POST['role6_name']);
-		
+
 	if(isset($_POST['multiple_signups']))
 		$allow_multiple = 1;
 	else
@@ -1092,6 +1121,12 @@ else
 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'enforce_class_limits';", quote_smart($enforce_class_limits));
 	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'class_as_min';", quote_smart($class_as_min));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'enable_armory';", quote_smart($enable_armory));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'enable_eqdkp';", quote_smart($enable_eqdkp));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'eqdkp_url';", quote_smart($eqdkp_url));
 	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
 
 	// Now, write out the config files for the armory stuff in both the wowchar-link and wowitem-link directories.
