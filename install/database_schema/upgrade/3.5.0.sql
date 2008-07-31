@@ -25,6 +25,7 @@ INSERT INTO `phpraid_config` VALUES ('class_as_min', '1');
 INSERT INTO `phpraid_config` VALUES ('enable_armory', '1');
 INSERT INTO `phpraid_config` VALUES ('enable_eqdkp', '0');
 INSERT INTO `phpraid_config` VALUES ('eqdkp_url', 'http://localhost/eqdkp');
+INSERT INTO `phpraid_config` VALUES ('ampm', '12');
 
 DROP TABLE IF EXISTS `phpraid_version`;
 CREATE TABLE `phpraid_version` (

@@ -44,6 +44,7 @@ $phprlang['key'] = 'Key:<br>(*) = Påmeldt & utkast<br>(#) = Påmeldt, ikke i ut
 $phprlang['configuration_addon'] = 'Addon URL';
 $phprlang['configuraiton_admin'] = 'Administrator';
 $phprlang['configuration_admin_email'] = 'Admin e-mail';
+$phprlang['configuration_ampm'] = 'Schedule Raids in 12h/24h format';
 $phprlang['configuration_anonymous'] = 'Tillate anonym visning';
 $phprlang['configuration_armory_enable'] = 'Enable Armory Lookups';
 $phprlang['configuration_armory_link_text'] = 'Rett armory ling for server';

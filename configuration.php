@@ -214,6 +214,14 @@ else
 	$faction .= '<option value="alliance">Alliance</option><option value="horde" selected>Horde</option>';
 $faction .= '</select>';
 
+// 12/24 Hour switch
+$ampm = '<select name="ampm">';
+if($phpraid_config['ampm'] == '12')
+       $ampm .= '<option value="12" selected>12h</option><option value="24">24h</option>';
+else
+    $ampm .= '<option value="12">12h</option><option value="24" selected>24h</option>';
+$ampm .= '</select>';
+
 $date_format = '<input name="date_format" type="text" class="post"  value="' . $phpraid_config['date_format']. '">';
 $time_format = '<input name="time_format" type="text" class="post" value="' . $phpraid_config['time_format']. '">';
 $admin_email = '<input name="admin_email" type="text" class="post" value="' . $phpraid_config['admin_email'] .'" maxlength="255">';
@@ -556,6 +564,7 @@ $page->set_var(
 		'allow_resop' => $allow_resop,
 		'faction' => $faction,
 		'language' => $language,
+		'ampm' => $ampm,
 		'date_format' => $date_format,
 		'time_format' => $time_format,
 		'auto_queue' => $auto_queue,
@@ -617,6 +626,7 @@ $page->set_var(
 		'language_text' => $phprlang['configuration_language'],
 		'time_text' => $phprlang['configuration_time'],
 		'date_text' => $phprlang['configuration_date'],
+		'ampm_text' => $phprlang['configuration_ampm'],
 		'resop_text' => $phprlang['configuration_resop'],
 		'putonsignup_text' => $phprlang['configuration_putonsignup'],
 		'multiple_text' => $phprlang['configuration_multiple'],
@@ -957,6 +967,7 @@ else
 	$g_server =  scrub_input(DEUBB($_POST['guild_server']));
 	$faction = scrub_input($_POST['faction']);
 	$lang = scrub_input($_POST['language']);
+	$ampm = scrub_input(DEUBB($_POST['ampm']));
 	$a_email = scrub_input(DEUBB($_POST['admin_email']));
 	$e_sig = scrub_input(DEUBB($_POST['email_signature']));
 	$d_format = scrub_input(DEUBB($_POST['date_format']));
@@ -1007,6 +1018,8 @@ else
 	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'language';", quote_smart($lang));
 	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'ampm';", quote_smart($ampm));
+    $db_raid->sql_query($sql) or print_error($sql,mysql_error($sql),1);
 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'phpraid_addon_link';", quote_smart($p_link));
 	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'register_url';", quote_smart($register));

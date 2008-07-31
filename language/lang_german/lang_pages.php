@@ -44,6 +44,7 @@ $phprlang['key'] = 'Key:<br>(*) = Signed Up & Drafted<br>(#) = Signed Up, Not Dr
 $phprlang['configuration_addon'] = 'Addon-URL';
 $phprlang['configuraiton_admin'] = 'Administrator';
 $phprlang['configuration_admin_email'] = 'Administrator-E-Mail';
+$phprlang['configuration_ampm'] = 'Schedule Raids in 12h/24h format';
 $phprlang['configuration_anonymous'] = 'Anonymes Betrachten erlauben';
 $phprlang['configuration_armory_enable'] = 'Arsenal-Hints aktivieren';
 $phprlang['configuration_armory_link_text'] = 'Correct Armory Link for Server';

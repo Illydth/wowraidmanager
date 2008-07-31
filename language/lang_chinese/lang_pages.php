@@ -44,6 +44,7 @@ $phprlang['key'] = '代表符號: <br>(*) = 已報名並列入團隊 <br>(#) = �
 $phprlang['configuration_addon'] = '插件鏈結位址';
 $phprlang['configuraiton_admin'] = '管理者';
 $phprlang['configuration_admin_email'] = '管理者信箱';
+$phprlang['configuration_ampm'] = 'Schedule Raids in 12h/24h format';
 $phprlang['configuration_anonymous'] = '允許遊客瀏覽';
 $phprlang['configuration_armory_enable'] = 'Enable Armory Lookups';
 $phprlang['configuration_armory_link_text'] = '正確伺服器ARMORY連結';

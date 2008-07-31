@@ -44,6 +44,7 @@ $phprlang['key'] = 'Key:<br>(*) = Signed Up & Drafted<br>(#) = Signed Up, Not Dr
 $phprlang['configuration_addon'] = 'Addon URL';
 $phprlang['configuraiton_admin'] = 'Administrator';
 $phprlang['configuration_admin_email'] = 'Admin e-mail';
+$phprlang['configuration_ampm'] = 'Schedule Raids in 12h/24h format';
 $phprlang['configuration_anonymous'] = 'Allow anonymous viewing';
 $phprlang['configuration_armory_enable'] = 'Enable Armory Lookups';
 $phprlang['configuration_armory_link_text'] = 'Correct Armory Link for Server';

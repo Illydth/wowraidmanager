@@ -96,7 +96,7 @@ if($_GET['mode'] == 'view')
 		// convert unix timestamp to something readable
 		$start = new_date('Y/m/d H:i:s',$data['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
 		$invite = new_date('Y/m/d H:i:s',$data['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
-		$date = new_date('Y/m/d H:i:s',$data['timestamp']);
+		$date = $start;
 
 		$count = get_char_count($data['raid_id'], $type='');
 		$count2 = get_char_count($data['raid_id'], $type='queue');
@@ -485,10 +485,16 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 	            $data2 = $db_raid->sql_fetchrow($result2, true);
 	            
 	            $date_value = new_date("m/d/Y",$data2['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
-	            $i_time_hour_value = new_date("h",$data2['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+				if ($phpraid_config['ampm'] == '12')
+	            	$i_time_hour_value = new_date("h",$data2['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+	            else
+	            	$i_time_hour_value = new_date("H",$data2['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);	            	
 	            $i_time_minute_value = new_date("i",$data2['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
 	            $i_time_ampm_value = new_date("a",$data2['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
-	            $s_time_hour_value = new_date("h",$data2['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+				if ($phpraid_config['ampm'] == '12')
+	            	$s_time_hour_value = new_date("h",$data2['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+	            else
+   		            $s_time_hour_value = new_date("H",$data2['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
 	            $s_time_minute_value = new_date("i",$data2['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
 	            $s_time_ampm_value = new_date("a",$data2['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
 	            $freeze_value = $data2['freeze'];
@@ -521,10 +527,16 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 	            $max_lvl_value = $data['max_lvl'];
 	            $location_value = UBB2($data['location']);
 	            $date_value = new_date("m/d/Y",$data['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
-	            $i_time_hour_value = new_date("h",$data['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+				if ($phpraid_config['ampm'] == '12')
+	            	$i_time_hour_value = new_date("h",$data['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+	            else
+	            	$i_time_hour_value = new_date("H",$data['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);	            	
 	            $i_time_minute_value = new_date("i",$data['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
 	            $i_time_ampm_value = new_date("a",$data['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
-	            $s_time_hour_value = new_date("h",$data['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+				if ($phpraid_config['ampm'] == '12')
+	            	$s_time_hour_value = new_date("h",$data['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+	            else
+	            	$s_time_hour_value = new_date("H",$data['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
 	            $s_time_minute_value = new_date("i",$data['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
 	            $s_time_ampm_value = new_date("a",$data['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
 	            $freeze_value = $data['freeze'];
@@ -572,7 +584,7 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 
 		// invite time
 		$i_time_hour = '<select name="i_time_hour" class="post">';
-		for($i = 1; $i <= 12; $i++)
+		for($i = 1; $i <= $phpraid_config['ampm']; $i++)
 		{
 			if($i < 10)
 				$i_string = '0' . $i;
@@ -607,25 +619,28 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 		}
 		$i_time_minute .= '</select>';
 
-		$i_time_ampm = '<select name="i_time_ampm" class="post">';
-		if(isset($i_time_ampm_value) && $i_time_ampm_value == 'am')
+		if ($phpraid_config['ampm'] == '12')
 		{
-			$i_time_ampm .= '<option value="am" selected>am</option><option value="pm">pm</option>';
+			$i_time_ampm = '<select name="i_time_ampm" class="post">';
+			if(isset($i_time_ampm_value) && $i_time_ampm_value == 'am')
+			{
+				$i_time_ampm .= '<option value="am" selected>am</option><option value="pm">pm</option>';
+			}
+			elseif(isset($i_time_ampm_value) && $i_time_ampm_value == 'pm')
+			{
+				$i_time_ampm .= '<option value="am">am</option><option value="pm" selected>pm</option>';
+			}
+			else
+			{
+				$i_time_ampm .= '<option value="am">am</option><option value="pm" selected>pm</option>';
+			}
+			$i_time_ampm .= '</select>';
+			// end of invite time
 		}
-		elseif(isset($i_time_ampm_value) && $i_time_ampm_value == 'pm')
-		{
-			$i_time_ampm .= '<option value="am">am</option><option value="pm" selected>pm</option>';
-		}
-		else
-		{
-			$i_time_ampm .= '<option value="am">am</option><option value="pm" selected>pm</option>';
-		}
-		$i_time_ampm .= '</select>';
-		// end of invite time
-
+		
 		// start time
 		$s_time_hour = '<select name="s_time_hour" class="post">';
-		for($i = 1; $i <= 12; $i++)
+		for($i = 1; $i <= $phpraid_config['ampm']; $i++)
 		{
 			if($i < 10)
 				$s_string = '0' . $i;
@@ -659,22 +674,26 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 			} 								//Added
 		}
 		$s_time_minute .= '</select>';
-			$s_time_ampm = '<select name="s_time_ampm" class="post">';
-		if(isset($s_time_ampm_value) && $s_time_ampm_value == 'am')
-		{
-			$s_time_ampm .= '<option value="am" selected>am</option><option value="pm">pm</option>';
-		}
-		elseif(isset($s_time_ampm_value) && $s_time_ampm_value == 'pm')
-		{
-			$s_time_ampm .= '<option value="am">am</option><option value="pm" selected>pm</option>';
-		}
-		else
-		{
-			$s_time_ampm .= '<option value="am">am</option><option value="pm" selected>pm</option>';
-		}
-		$s_time_ampm .= '</select>';
-		// end of start time
 
+		if ($phpraid_config['ampm'] == '12')
+		{
+			$s_time_ampm = '<select name="s_time_ampm" class="post">';
+			if(isset($s_time_ampm_value) && $s_time_ampm_value == 'am')
+			{
+				$s_time_ampm .= '<option value="am" selected>am</option><option value="pm">pm</option>';
+			}
+			elseif(isset($s_time_ampm_value) && $s_time_ampm_value == 'pm')
+			{
+				$s_time_ampm .= '<option value="am">am</option><option value="pm" selected>pm</option>';
+			}
+			else
+			{
+				$s_time_ampm .= '<option value="am">am</option><option value="pm" selected>pm</option>';
+			}
+			$s_time_ampm .= '</select>';
+			// end of start time
+		}
+		
 		// freeze
 		$freeze = '<select name="freeze" class="post">';
 		for($i = 0; $i <= 24; $i++)
