@@ -190,6 +190,14 @@ $phprlang['wednesday'] = 'Mittwoch';
 $phprlang['thursday'] = 'Donnerstag';
 $phprlang['friday'] = 'Freitag';
 $phprlang['saturday'] = 'Samstag';
+$phprlang['2ltrsunday'] = 'So';
+$phprlang['2ltrmonday'] = 'Mo';
+$phprlang['2ltrtuesday'] = 'Di';
+$phprlang['2ltrwednesday'] = 'Mi';
+$phprlang['2ltrthursday'] = 'Do';
+$phprlang['2ltrfriday'] = 'Fr';
+$phprlang['2ltrsaturday'] = 'Sa';
+
 									
 // links
 $phprlang['announcements_link'] = '&raquo; Ankündigungen';

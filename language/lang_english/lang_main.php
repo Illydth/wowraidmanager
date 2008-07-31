@@ -191,6 +191,13 @@ $phprlang['wednesday'] = 'Wednesday';
 $phprlang['thursday'] = 'Thursday';
 $phprlang['friday'] = 'Friday';
 $phprlang['saturday'] = 'Saturday';
+$phprlang['2ltrsunday'] = 'Su';
+$phprlang['2ltrmonday'] = 'Mo';
+$phprlang['2ltrtuesday'] = 'Tu';
+$phprlang['2ltrwednesday'] = 'We';
+$phprlang['2ltrthursday'] = 'Th';
+$phprlang['2ltrfriday'] = 'Fr';
+$phprlang['2ltrsaturday'] = 'Sa';
 							
 // links
 $phprlang['announcements_link'] = '&raquo; Announcements';

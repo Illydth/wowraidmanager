@@ -1,4 +1,5 @@
 <?php
+
 /**
 * DESCRIPTION:
 * The ReportList class is designed for easy and extremely functional output of array
@@ -1268,6 +1269,47 @@ class ReportList
         return $strValue;
     }
 
+	/**
+	*Used to obtain a two letter representation of the day of the week that is internationalized.
+	* @param array $varDate An array of date data obtained from the "GetDate" function.
+	* @return string - The two letter representation of the day of the week, obtaned from the language files.
+	* @access private
+	*/
+	function _getDayString($varDate)
+	{
+		global $phprlang;
+			
+		$dayofweek = $varDate['wday'];
+			
+		switch ($dayofweek) {
+			case '0' :
+				$daystr = $phprlang['2ltrsunday'];
+				break;
+			case '1' :
+				$daystr = $phprlang['2ltrmonday'];
+				break;
+			case '2' :
+				$daystr = $phprlang['2ltrtuesday'];
+				break;
+			case '3' :
+				$daystr = $phprlang['2ltrwednesday'];
+				break;
+			case '4' :
+				$daystr = $phprlang['2ltrthursday'];
+				break;
+			case '5' :
+				$daystr = $phprlang['2ltrfriday'];
+				break;
+			case '6' :
+				$daystr = $phprlang['2ltrsaturday'];
+				break;
+			default :
+				$daystr = '';
+				break;
+		}
+		return $daystr;
+	}
+
     /**
 	* Formats a given string value for display, to the specified format type.  Currently
 	* 	supported formats are: phone, ucase, lcase, pcase, decimal, money, dollars, date,
@@ -1283,6 +1325,8 @@ class ReportList
 	*/
     function _formatListValue($strValue, $strFormat)
     {
+    	global $phpraid_config;
+
         switch ($strFormat) {
             case 'phone' :
                 $strValue = trim($strValue);
@@ -1364,10 +1408,41 @@ class ReportList
                     }
                 }
                 break;
-			case 'unixtime' :
-				$strValue = ' <script type="text/javascript"> document.write(formatTimeDayMDYEnglish(new Date(' . $strValue . ' * 1000))) </script>';
+			case 'wrmdate' :
+                if ($strValue == '') {
+                    $strValue = '';
+                }
+                else {
+					$varDate = strtotime($strValue);
+					$daystr = $this->_getDayString(getDate($varDate));
+					$date_format = $phpraid_config['date_format'];
+                    $strValue = date($date_format, $varDate);
+                    $strValue = $daystr . ": " . $strValue;
+                }
 				break;
-  default :
+			case 'wrmtime' :
+                if ($strValue == '') {
+                    $strValue = '';
+                }
+                else {
+					$varDate = strtotime($strValue);
+					$date_format = $phpraid_config['time_format'];
+                    $strValue = date($date_format, $varDate);
+                }
+				break;
+			case 'wrmdatetime' :
+                if ($strValue == '') {
+                    $strValue = '';
+                }
+                else {
+					$varDate = strtotime($strValue);
+					$daystr = $this->_getDayString(getDate($varDate));
+					$date_format = $phpraid_config['date_format'] . " " . $phpraid_config['time_format'];
+                    $strValue = date($date_format, $varDate);
+                    $strValue = $daystr . ": " . $strValue;
+                }
+				break;
+  			default :
                 break;
         }
 

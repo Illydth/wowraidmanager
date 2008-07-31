@@ -133,9 +133,9 @@ if($_GET['mode'] == 'view') {
 					 . DEUBB($desc) . '\')" onMouseout="hideddrivetip()">'.UBB($data['location']).'</a>';
 
 		// convert unix timestamp to something readable
-		$start = new_date($phpraid_config['time_format'],$data['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
-		$invite = new_date($phpraid_config['time_format'],$data['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
-		$date = $data['start_time'];
+		$start = new_date('Y/m/d H:i:s',$data['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+		$invite = new_date('Y/m/d H:i:s',$data['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+		$date = new_date('Y/m/d H:i:s',$data['start_time']);
 
 		$count = get_char_count($data['raid_id'], $type='');
 		$count2 = get_char_count($data['raid_id'], $type='queue');
@@ -247,10 +247,10 @@ if($_GET['mode'] == 'view') {
 	// the report class makes it very easy to use icons (or whatever) instead of just text
 	if($phpraid_config['show_id'])
 		$report->addOutputColumn('id',$phprlang['id'],'','left');
-	$report->addOutputColumn('Date',$phprlang['date'],'unixtime','center');
+	$report->addOutputColumn('Date',$phprlang['date'],'wrmdate','center');
 	$report->addOutputColumn('Location',$phprlang['location'],'','center');
-	$report->addOutputColumn('Invite Time',$phprlang['invite_time'],'','center');
-	$report->addOutputColumn('Start Time',$phprlang['start_time'],'','center');
+	$report->addOutputColumn('Invite Time',$phprlang['invite_time'],'wrmtime','center');
+	$report->addOutputColumn('Start Time',$phprlang['start_time'],'wrmtime','center');
 	$report->addOutputColumn('Officer',$phprlang['officer'],'','center');
 	$report->addOutputColumn('Dru', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/druid_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['druid'] . '\')"; onMouseout="hideddrivetip()">', '', 'center');
 	$report->addOutputColumn('Hun', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/hunter_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['hunter'] . '\')"; onMouseout="hideddrivetip()">', '', 'center');

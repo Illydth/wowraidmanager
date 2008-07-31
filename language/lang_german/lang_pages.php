@@ -115,7 +115,7 @@ $phprlang['configuration_version_info_header'] = 'Version Information';
 $phprlang['configuration_version_outdated_header'] = 'Eine neuere Version von WoW Raid Manager ist verfügbar!';
 $phprlang['configuration_version_outdated_message'] = 'Deine Version von WoW Raid Manager ist nicht aktuell. Ein Update wird empfohlen.<br>
 													   Die aktuellste Version ist %s, und du benutzt Version %s.<br>
-													   Zum Herunterladen besuche bitte den <a href="http://www.wowraidmanager.net/>offizielle WRM - Downloadbereich</a>.';
+													   Zum Herunterladen besuche bitte den <a href="http://www.wowraidmanager.net/">offizielle WRM - Downloadbereich</a>.';
 
 // DKP
 $phprlang['eqdkp_system_link'] = 'Der Link zu unserem DKP - System:'; 

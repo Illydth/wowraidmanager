@@ -188,6 +188,13 @@ $phprlang['wednesday'] = 'Mercoledì';
 $phprlang['thursday'] = 'Giovedì';
 $phprlang['friday'] = 'Venerdì';
 $phprlang['saturday'] = 'Sabato';
+$phprlang['2ltrsunday'] = 'Do';
+$phprlang['2ltrmonday'] = 'Lu';
+$phprlang['2ltrtuesday'] = 'Ma';
+$phprlang['2ltrwednesday'] = 'Me';
+$phprlang['2ltrthursday'] = 'Gi';
+$phprlang['2ltrfriday'] = 'Ve';
+$phprlang['2ltrsaturday'] = 'Sa';
 							
 // links
 $phprlang['announcements_link'] = '&raquo; Annunci';

@@ -51,9 +51,9 @@ $raids_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1)
 $count = array();
 
 while($raids = $db_raid->sql_fetchrow($raids_result, true)) {
-	$date = $raids['start_time'];
-	$invite = new_date($phpraid_config['time_format'], $raids['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
-	$start = new_date($phpraid_config['time_format'], $raids['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+	$date = new_date('Y/m/d H:i:s',$raids['start_time']);
+	$invite = new_date('Y/m/d H:i:s', $raids['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+	$start = new_date('Y/m/d H:i:s', $raids['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
 	
 	$count = get_char_count($raids['raid_id'], $type='');
 	$count2 = get_char_count($raids['raid_id'], $type='queue');
@@ -236,10 +236,10 @@ else
 $report->addOutputColumn('info','','','left');
 if($phpraid_config['show_id'] == 1)
 	$report->addOutputColumn('id',$phprlang['id'],'','center');
-$report->addOutputColumn('Date',$phprlang['date'],'unixtime','center');
+$report->addOutputColumn('Date',$phprlang['date'],'wrmdate','center');
 $report->addOutputColumn('Location',$phprlang['location'],'','center');
-$report->addOutputColumn('Invite Time',$phprlang['invite_time'],'','center');
-$report->addOutputColumn('Start Time',$phprlang['start_time'],'','center');
+$report->addOutputColumn('Invite Time',$phprlang['invite_time'],'wrmtime','center');
+$report->addOutputColumn('Start Time',$phprlang['start_time'],'wrmtime','center');
 $report->addOutputColumn('Officer',$phprlang['officer'],'','center');
 $report->addOutputColumn('dr', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/druid_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['druid'] . '\')"; onMouseout="hideddrivetip()">', '', 'center');
 $report->addOutputColumn('hu', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/hunter_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['hunter'] . '\')"; onMouseout="hideddrivetip()">', '', 'center');

@@ -189,6 +189,13 @@ $phprlang['wednesday'] = 'Onsdag';
 $phprlang['thursday'] = 'Torsdag';
 $phprlang['friday'] = 'Fredag';
 $phprlang['saturday'] = 'Lørdag';
+$phprlang['2ltrsunday'] = 'Sø';
+$phprlang['2ltrmonday'] = 'Ma';
+$phprlang['2ltrtuesday'] = 'Ti';
+$phprlang['2ltrwednesday'] = 'On';
+$phprlang['2ltrthursday'] = 'To';
+$phprlang['2ltrfriday'] = 'Fr';
+$phprlang['2ltrsaturday'] = 'Lø';						
 							
 // links
 $phprlang['announcements_link'] = '&raquo; Nyheter';
