@@ -115,11 +115,10 @@ $phprlang['configuration_version_info_header'] = 'Version Information';
 $phprlang['configuration_version_outdated_header'] = 'WoW Raid Manager update available!';
 $phprlang['configuration_version_outdated_message'] = 'Your version of WoW Raid Manager is out of date. Updating is strongly recommended.<br>
 													   The latest version is %s and you are running version %s.<br>
-													   To download, visit the <a href="http://www.wowraidmanager.net">phpRaid for BC download</a> section.';
+													   To download, visit the <a href="http://www.wowraidmanager.net">WoW Raid Manager for BC download</a> section.';
 
 // DKP View
 $phprlang['eqdkp_system_link'] = 'Direct link to Associated DKP System:';
-
 
 // guilds
 $phprlang['guilds_header'] = 'Guild Listing';
