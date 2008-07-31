@@ -235,8 +235,8 @@ if($mode == 'view')
 		$actions = '';
 		$actions = signedUpFlow($user_perm_group, $phpraid_config, $data, $raid_id, $phprlang, $sort_mode, $sort_descending, $signups);
 
-		$date = new_date('Y/m/d H:i:s',$signups['timestamp']);
 		$time = new_date('Y/m/d H:i:s',$signups['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+		$date = $time;
 		switch($data['race'])
 		{
 			case $phprlang['draenei']:
@@ -444,8 +444,8 @@ if($mode == 'view')
 
 		$name = $data['name'];
 
-		$date = new_date('Y/m/d H:i:s',$signups['timestamp']);
 		$time = new_date('Y/m/d H:i:s',$signups['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+		$date = $time;
 
 		switch($data['race'])
 		{
@@ -615,8 +615,8 @@ if($mode == 'view')
 
 		$name = $data['name'];
 
-		$date = new_date('Y/m/d H:i:s',$signups['timestamp']);
 		$time = new_date('Y/m/d H:i:s',$signups['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+		$date = $time;
 
 		switch($data['race'])
 		{

@@ -56,7 +56,7 @@ if($_GET['mode'] == 'view')
 			$message = substr($message, 0, 30) . '...';
 
 		$posted_by = $data['posted_by'];
-		$date = new_date('Y/m/d H:i:s',$data['timestamp']);
+		$date = new_date('Y/m/d H:i:s',$data['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']);
 		$time = new_date('Y/m/d H:i:s',$data['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']);
 
 		$edit = '<a href="announcements.php?mode=edit&id='.$data['announcements_id'].'"><img src="templates/' . $phpraid_config['template'] .

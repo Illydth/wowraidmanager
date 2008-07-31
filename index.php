@@ -51,9 +51,9 @@ $raids_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1)
 $count = array();
 
 while($raids = $db_raid->sql_fetchrow($raids_result, true)) {
-	$date = new_date('Y/m/d H:i:s',$raids['start_time']);
 	$invite = new_date('Y/m/d H:i:s', $raids['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
 	$start = new_date('Y/m/d H:i:s', $raids['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+	$date = $start;
 	
 	$count = get_char_count($raids['raid_id'], $type='');
 	$count2 = get_char_count($raids['raid_id'], $type='queue');

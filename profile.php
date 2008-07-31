@@ -135,7 +135,7 @@ if($_GET['mode'] == 'view') {
 		// convert unix timestamp to something readable
 		$start = new_date('Y/m/d H:i:s',$data['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
 		$invite = new_date('Y/m/d H:i:s',$data['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
-		$date = new_date('Y/m/d H:i:s',$data['start_time']);
+		$date = $start;
 
 		$count = get_char_count($data['raid_id'], $type='');
 		$count2 = get_char_count($data['raid_id'], $type='queue');
