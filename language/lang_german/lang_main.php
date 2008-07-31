@@ -81,6 +81,10 @@ $phprlang['total'] = 'insgesamt';
 $phprlang['section'] = 'Abschnitt';
 $phprlang['prev'] = 'Zurück';
 $phprlang['next'] = 'Weiter';
+$phprlang['earned'] = 'Erhalten';
+$phprlang['spent'] = 'Ausgegeben';
+$phprlang['adjustment'] = 'Anpassung';
+$phprlang['dkp'] = 'DKP';
 
 // roles
 $phprlang['role'] = 'Rolle';
@@ -259,4 +263,5 @@ $phprlang['signup_delete'] = 'Benutzer von der Anmeldung entfernen (permanent)';
 $phprlang['users'] = 'Benutzer';
 $phprlang['warlock_icon'] = 'Klick, um Hexenmeister zu sehen';
 $phprlang['warrior_icon'] = 'Klick, um Krieger zu sehen';
+
 ?>
