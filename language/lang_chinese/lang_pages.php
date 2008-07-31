@@ -115,7 +115,7 @@ $phprlang['configuration_version_info_header'] = '版本資訊';
 $phprlang['configuration_version_outdated_header'] = '有新版的phpRaid可以更新!';
 $phprlang['configuration_version_outdated_message'] = '您的phpRaid已經是舊版的了. 強烈建議您立即更新.<br>
 													   最新的版本號是 %s 您目前的版本是 %s.<br>
-													   請到後面的鏈結下載 <a href="http://www.phpraider.com/index.php?option=com_smf&Itemid=2&topic=567.0">phpRaid for BC</a>.';
+													   請到後面的鏈結下載 <a href="http://www.wowraidmanager.net">WoW Raid Manager for BC</a>.';
 
 // DKP View
 $phprlang['eqdkp_system_link'] = 'Direct link to Associated DKP System:';
