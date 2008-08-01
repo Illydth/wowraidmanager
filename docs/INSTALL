@@ -30,33 +30,22 @@ Quick Upgrade
 	including the phpRaid directory.
 * Change the Ownership of all files to match that of your web server.  Check the list above
 	to ensure that everything listed in step 4 above is writable.  
-* Go to "install/database_schema/upgrade" 
-* Log in to your MySQL server installation and into your phpRaid database
-* Run appropriate .sql files through a program like phpMyAdmin to move from your version of 
-	WRM to the 3.2.1 version to make sure that the appropriate changes to your database have
-	been made.  
+* Run the Installation application and select "Upgrade to 3.5.0".  Follow the installer all
+    the way through to the end (much of your prior information should be already set) and 
+    make sure to properly re-set your authentication method (if it's not pre-selected for you)
+    already).   
 	
-*** NOTE *** 
-
-The SQL in these files assumes you are using the default table names for phpRaid.  If
-in your original installation you chose to use a table prefix other than phpraid_ you
-will need to modify the SQL you are applying to include your table prefix.  You should
-be able to use a search and replace on phpraid_ and change that to your table prefix
-(in my case that would be phpraid_TC_)
-
-
 Installing phpRaid into a supported CMS system
 -----------------------------------------------
-At the time of this writing 3.2.1 supports the following CMS systems:
+At the time of this writing 3.5.0 supports the following CMS systems:
 
 * e107 from http://www.e107.org
-* phpBB from http://www.phpbb.com (v2 only)
+* phpBB from http://www.phpbb.com (v2 and v3)
+* SMF from http://www.simplemachines.org/ (v1 and v2)
+* WBB from http://www.woltlab.com/products/burning_board/index_en.php
+* XOOPS from http://www.xoops.org/
 
-Note: phpBB Version 3 has support in this version through a patch on www.wowraidmanager.net
-however this code has not been offically merged into the release and is supported by it's
-maintainer for the moment. 
-
-Also supported, if you do not have a supported CMS system, is "phpRaid" installation,
+Also supported, if you do not have a supported CMS system, is the "iUMS" (previously phpRaid) installation,
 which is the default non-CMS supported installation.  
 
 If you do intend to install this application into a CMS please note that it is a
@@ -66,23 +55,20 @@ moment you CANNOT separate the databases and have everything work.
 When entering the database information to install to, please ensure that you install
 into your CMS database to get CMS integration to work.
 
-
-Template Changes - v3.2.1
+Template Changes - v3.5.0
 ------------------------------
 This version makes minor changes to the WRM template system.  Particularly there are two
 major changes:
 
-* header.htm has had several lines loaded at the top in the "script" and "link" area at
-	the top.
+* header.htm has been changed to support header graphics and a few other modifications.
 	
-* configuration.htm has had a few lines added in the guild configuration section to support
-	the new armory linking.
-	
-	
-Language Changes - v3.2.1
-------------------------------
-Two new strings were added to the lang_pages.php in the "configuration" section.
-	* $phprlang['configuration_anonymous'] = 'Allow anonymous viewing';
-	* $phprlang['configuration_armory_link_text'] = 'Correct Armory Link for Server';
+* configuration.htm had several new lines added and a few moved.
 
-These strings have not been translated at this point.
+* MANY .htm files have changed to have new strings added to them, please diff against the v3.2.1 for all
+changes to all template files.	
+	
+Language Changes - v3.5.0
+------------------------------
+Major Language Re-Working.  Some of the strings, particularly in the Chinese and Norwegian language 
+files are not translated and are still english based.  Most of the strings in German and Italian translations
+however are good to go.

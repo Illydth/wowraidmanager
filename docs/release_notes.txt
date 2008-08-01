@@ -1,234 +1,161 @@
-Release 3.2.1 of WoW Raid Manager
+Note, you can find all of the past release notes, installation instructions and README information for WRM 
+at:
+
+* http://www.wowraidmanager.net/wiki/index.php?title=Installation
+
+Release 3.5.0 of WoW Raid Manager
 -----------------------------------
-Several updates and fixes to WRM 3.2.0.
+What an update!  Roles, Internationalization, Date Sort fixes, and a whole SLEW of other changes mark this
+version as a fairly major update.  As always, this release supercedes any prior release of WRM.
 
-* Many permissions fixes made to various files to ensure that the release is packaged correctly (
-things like the .php files are no longer executable, etc.)
-* Much code formatting has been fixed (spacing) for better readability.
-* BUG: Fixed a bug with the template class being mis-declared.  This was fixed in patch 1.
-* BUG: View.php issues (Patches 2, 3, 6).  Fixes to create characters being female only. (Correctly
-fixed by LuL0R [nemo] from wowraidmanager.net)  Fixes to Raid Leaders being able to draft users 
-to raids.  Fixes to cross linking of records from e107 to WRM.
-* BUG: General fixes for e107 / WRM Authentication.  This fixes admins who install WRM with an
-e107 ID that is not ID 1 cannot get admin privileges after install.  It also fixes an issue where
-profiles created after installation of 3.2.0 were created blank.
-* BUG: RSS Feeds Fix.  Old Raids that were showing up under the RSS feeds should no longer show up.
-* Feature: Added a visual navigation hint for WRM.  The button look and feel on the left side
-will now change for the currently accessed page.  It will look differently for the page the user
-is currently on.
-* BUG: Data De-Sanitization.  While the 3.2 release sanitized all data going to the database for
-data security purposes, there were several spots where data was not DE-Sanitized when it came 
-out of the database, thus causing issues.  These de-sanitization issues should now all be fixed.
-* BUG: Deletion of Logs fails.  Log deletions fail due to the single quoting of strings with 
-the printf function.  this has now been fixed. (LuL0R [nemo] Of wowraidmanager.net)
-* BUG: Privilege level is now set correctly when the default group = none.  Originally the default
-privileges provided to users where "default group" in configuration is not set was to provide 
-"null" as the privilege level for the user. (Diska of wowraidmanager.net)
-* BUG: Installation does not fail when admin cannot be validated.  Originally the installation
-code for e107 authentication checked the username/email against the e107 database to verify
-the correct account is being made admin, however due to the way the "or die" statement works
-in php only a syntax error in the SQL statement would cause the error.  This has been fixed
-so that when the username/e-mail address of the admin user doesn't match that of the e107 
-database the installation throws back an error.
-* Feature: WoW Armory Character and Item Tooltips have been added to WRM.  The Character tooltips
-are currently implemented as rollovers to any character name in the profile, roster, raids view,
-teams, etc. sections.  Any time a character name is displayed in WRM it should now be linked
-properly back to the Profile on the WoW Armory and show a small popup with the current character
-information in it.  Major thanks to Nalumis of the wowraidmanager.net boards for doing the initial
-research and code for this.  A large majority of the code in this change was his.
+LOTS of changes to this one, please see the notes below for information on what all has been changed/fixed.
 
-Please go to the "configuration" section of the WRM Application and set the new information under
-the "guild information" section.
+I'd like to thank Diska, Neme, Nimo and Nalumis of the WRM boards for their code contributions.  Much/Most
+of the code changes in this release come from one of these 4, implemented/modified/changed by me.  There 
+were also other more minor code contributions by a large segment of the community and I'd like to thank 
+EVERYONE of you out there for your help and assistance for making this project what it is.
 
-Release 3.2 of WoW Raid Manager
---------------------------------
-NAME CHANGE: phpRaid is now WOW Raid Manager.  All displayed strings should now note the
-name change.  
+Because of the mass amount of user contributed code in this release I am going to refrain from tagging 
+specific changes to specific people as in a lot of cases a large amount of these changes were contributed
+and worked on by multiple people or contributions built upon other contributions.  That said I would be 
+amiss if I did not identify up front that the new installer is entirely Neme's with a few minor 
+modifications by me, and a large amount of the other code (including the implementation for Roles) came 
+from Nalimus's personal code base.  Major thanks to both of you.
 
-SECURITY: This is the security release of WRM.  The whole code base should now be significantly
-more secure than it was in the past.  Please see the www.wowraidmanager.net website for
-information on the security update.
+NEW!  I am releasing this as a BETA release first due to the mass amount of changes.
 
-* Updated the template.php file from the phplib release 7.4a.  This changes the class
-name form "Page" to "Template" but other than that everything should function normally.
-See the "template.php" file for release notes for the 7.4a version of template.php.
+Changes
+-----------
 
-* BUG: Fixed bug with minutes dropdown.  It was showing 00, 15, 30, 45, 60, it should now be
-showing only 00, 15, 30, 45.
+* BUG: Sorting by International Date has been fixed!  This one has been open for quite some time and has
+finally been quashed.  The original implementation used a javascript to generate the proper formatting.  I
+have, on the recommendations of the maintainer of the reports.php file, totally re-written the handling of
+this bugfix.  At this point, all dates in WRM follow the configuration settings for formatting.  HOWEVER
+all dates are SORTED using the ISO date format (YYYY/MM/DD HH:MM:SS).  There is a technical document being
+written at http://www.wowraidmanager.net/wiki/index.php?title=Technical documenting the process of creating
+and managing dates and times within WoW Raid Manager.  For any developers who dig into this code, I encourage
+you to read this information to avoid making the same mistakes that were made in the past with regards to
+dates and date sorting. 
 
-* Feature: Added the configuration of the RSS feed to the configuration area and removed it
-from the rss.php file.  It is no longer necessary (or wanted) to go into the rss.php file
-and change strings to configure RSS.  Go into the configuration area and configure the rss
-feed from there.
+* BUG: Date Format in Configuration only partially Useful.  In relation to the above bug, it used to be that
+the date format and time format strings in the configuration section were only partially useful.  Changing
+those strings did change the display of some dates but also hosed up the date sorting.  With this date fix, 
+ALL Date / Time Strings should now correspond to the formatting as set in the configuration setting while 
+still maintaining their proper "order" in a sort.  This fixes bug 00000012 and 00000014 and feeds into the
+fix for bug 00000015.
 
+* FEATURE:  Time frame Choice for Viewing Logs.  The "logs" section has been updated to include a dropdown
+list of time frames for viewing logs.  This limits the logs visible and makes the screen smaller and more
+manageable.  This code allows users to choose a time frame for what logs to view.  By default the logs 
+display one day's worth of data, this can go up to multiple months or the "whole" log.
 
-Release 3.1.2 of phpRaid
--------------------------
-This is a bugfix release that fixes the following errors:
+* FEATURE: Checks on Profile/Character creation. - This code checks for proper information when creating 
+characters on the profile page.  Items were always checked but no error message was being displayed due to 
+failed checks.  A new error box is now created upon submission detailing the failed checks.
 
-* BUG Fix: Fixed an issue where Raid Leaders could not create teams for their own raids.  
-The raid leader could click on the "create teams" link in the "details" page of a raid 
-but would get an "insufficient privileges" message returned to them.
+* FEATURE: Profile Name and Link in Roster Page - On the guild Roster page, those with the "users" 
+privilege (should be just admins) have the ability to see each character and the WRM Profile they are 
+attached to.  A new profile column and link have been added.
 
-* BUG Fix: When a User or Raid Leader clicks the "delete" button next to a user in the 
-cancelled status on the raid information page, the user is taken back to the front page 
-(index) without deleting the cancelled signup.
+* FEATURE: Last Login Time: User List Displays Last Login.  The user list now captures and displays the 
+last login date/time of the profile, allowing the admin to see who's using the system and who isn't.
 
-* BUG Fix: Accidental changes to the LUA Output files rendered the phpRaidViewer UI Mod
-in game inoperable with 3.1.1 of phpRaid.
+* FEATURE: Multiple Signup Notification - There is now a display of multiple characters signed up on one 
+raid, i.e. if one person signs up for a raid with two characters (assuming the options to do so are checked)
+there will be an identifier tagged next to their name that notes that the character belongs to an account
+that is already signed up to the raid.
 
-Open Issues: 
+* FEATURE: Screen Width "Fix".  Removed the 875 px hard coded width of the center column and allowing it to
+float now based upon the size of the screen and the size specified in the css file.  This is half a fix 
+that is intended to lengthen the raid screen to full screen size.  The other half of the fix is in 
+templates/SpiffyJr/style/stylesheet.css line 221.  The 1000px width needs to be removed and a percentage 
+added (95% for full screen).
 
-* Possible open issue of raid leaders not being able to promote members from queued status.
-* Possible open issue of not being able to use a port to connect to an SQL server.
+* BUG: Tooltip Java Changes for Armory Tooltips.  Used a more standard suggested method for creating the 
+HttpHeader object for IE6 through ActiveX controls.
 
+* FEATURE: Role Based Signups.  Yes, it's finally here.  This allows users to sign up for raids by ROLE
+instead of by class.  There are too many changes here to document in a set of release notes.  There is new
+documentation at http://www.wowraidmanager.net/wiki/index.php?title=Installation regarding role based
+signups and their use.  Several new options have been added to the configuration section to support this.
 
-Release 3.1.1 of phpRaid.
---------------------------
-* Added signup flow control to config area.  There are now Check boxes for each button seen
-by a user in the raid signup area.  For each state, each of the three user groups (users, 
-Raid Leaders and Administrators) can now be given access to each of the 4 actions available
-to that state.  This is the new signup flow overhaul that is mentioned below in 3.1.0.  It
-is no longer necessary (nor wanted) to modify the code to get the proper sign up control.
-Each phpRaid admin can now set their own signup flow through the config options.
+* FEATURE: Major Internationalization Updates.  The vast majority of the WRM code base has now been
+fully internationalized.  The code base has been parsed and combed for "hard coded strings" and all of them
+have been removed and added to the language files to make for a fully internationalized application.
 
-* Deprecated "PutOnQueue" option, this is now controlled by the Raid Signup Flow checkboxes
-in the config area.  To get the same thing as "put on queue" used to give you, in the 
-canceled and drafted area for the "User" set the "Queue" checkbox for both.  
+* FEATURE: Totally Re-Written Installer.  The installation process for WRM has been TOTALLY re-written and
+re-worked.  The upgrade process is now alive and well and should be used every time a new upgrade comes
+down the pike for WRM.  The initial screen does all the desk checking needed to verify and validate that
+all of the local directories are writable and usable.  There are also new authentication types that have
+been added to the code: WRM now supports the following CMS Systems:
 
-* Due to complaints of a confusing front page interface, the "signup" graphic that used to
-be used on the front page to indicate the user has the ability to sign up for the raid
-(the white U shaped arrow pointing up) has been removed and changed to a link saying 
-"Sign Up" for clarity sakes.  The Green Check mark and red Circle with Slash still remain 
-the same.  If anyone has a strong preference one way or the other please let me know.  You 
-can re-enable the U shaped arrow by uncommenting the appropriate line in the index.php file.
-If there's enough issue with this i'll make a configuration option for text information or
-graphical information in that area. 
+	* e107
+	* phpbb2/3
+	* smf v1 / v2
+	* wbb
+	* xoops
+	
+as well as the standard built in authentication system.  This system, however, has been renamed from 
+phpRaid to iUMS (Integrated User Management System).  
 
-* Due to confusing language the "Auto-Queue" option in the configuration section has now
-changed to "Disallow Signup to Drafted Status".  The effect of this option is the same as 
-before.  It forces the user to sign up to the "queued" status instead of
-allowing signups to the drafted status...more practically it removes the "Signup as Available"
-selection in the "How do you want to Signup?" dropdown box.
+* FEATURE: New Languages Added.  The code base has been localized into several new languages:  Italian, 
+Traditional Chinese and Norwegian along with the standard two English and German.  The installer has been
+internationalized as well and localized into German and Italian, as well as the standard English.
 
-* BUG Fix: Fixed issue with installation of phpraid and phpbb auth types: They weren't using
-the right hidden field names for the auth_type which caused installation to take you to the
-wrong step and as such the installation would never finish.
+* FEATURE: Disable Freeze Checking for a specific Raid.  There is now a "0" choice when creating a specific
+raid in the "Freeze" dropdown box.  Setting this to "0" Disables the freeze check for that raid without
+having to disable freeze checking for all raids.
 
-* BUG Fix: When you queue from cancel as a normal user you get a hacking attempt.  This has
-been fixed.
+* FEATURE: Link to display who has not signed up for a raid.  There is a new link in the raid view (under
+the link for teams) that, when clicked by a raid lead or system admin, can see what profiles have NOT 
+signed up for the raid.  This gives a raid leader some understanding/information on who is not showing 
+up to the specific raid.
 
-Up Comming Changes
--------------------
-* To DO: Fix link that points in installation to Spiffy JR site, doesn't work.  Point to
-local documentation or wiki.
+* FEATURE: eqDKP Integration into WRM.  WRM is now integrated with EQDKP.  By turning on the EQDKP link
+in the configuration section (and filling in the appropriate information on database in the config.php
+file) a new "DKP" button will appear that will allow the users to see their DKP information from the 
+eqDKP system within WRM, also the profiles are linked to the profiles in eqDKP to display user by user
+information by clicking links from within WRM.  See "eqdkp_link.htm" in the "docs" directory or the help
+link in the configuration section for more information on turning this on.
 
-* New Feature: Allow admin/RL to add people to queued area.  May need special highlight/note 
-to ensure that players know they were admin added.
+* FEATURE: Schedule raids in 12/24 hour format.  There is now an option in the configuration area that
+allows you to schedule raids in a 24 hour format regardless of the display settings for date and time.
+This allows a guild to schedule raids in 24 hour format but display them in 12 hour (am/pm) format.
 
-* New Feature: Allow Admin to select start page (either calendar or Top Down)?
+* FEATURE/BUG: Turn off/on WoW Armory Lookups.  For those who are having issues/trouble with getting the
+WoW Armory Lookups to work, there is an option to turn them off now in the configuration section.  This 
+will bypass the armory lookup if turned off and will simply display an unlinked character name.
 
-* New Feature: Impliment Signup to Drafted, Signup To Queued, Signup To Cancel configuration
-options.  This allows the admin to select the dropdown values available to the user when they
-signup.  This will replace "auto queue" flag.  Should work in conjunction with signup flow
-to allow users to queue themselves in various statuses.  Check the "users can put themselves
-on queue" configuration option to verify what this does and how this works with the "auto
-queue" option here.
+* BUG: Header Image Hard Coded.  There was a bug where the header image (the image that displays to the
+upper left corner of WRM) was hard coded.  There has always been a configuration option to change that 
+image based upon it's setting, but that setting was never used.  Users up till now had to overwrite the
+default logo image with their own to get their guild specific image to display.  Now, changing the config
+item in the configuration section will change the header image (or remove it completely).
 
-* New Feature: Add a configuration option to change the authentication type from XXX to
-phpraid.  Maybe add an ability to switch between any of the chosen authentication types.
+* BUG: Max Raid Signups not used to limit raid signups.  Setting the "maximum raiders" for a raid had no
+affect on raid signups.  The code allowed users to continue signing up to drafted status beyond the raid
+maximum number.  This has now been changed to be a hard limit within the software.
 
-* New Feature: Complete Security Overhaul for all of phpRaid, including a new function 
-to determine the state you're in, what your rights are, and to return a "true/false" 
-to check a hacking attempt.
+* BUG: Log Deletion Broken.  Logs are now able to be deleted from the system again.  There was a bug with
+the SQL being generated incorrectly that caused this to be broken...it is now fixed.
 
-Release 3.1.0 of phpRaid.
-----------------------------
-phpRaid has new "management".  As phpRaider from SpiffyJr had replaced phpRaid
-as the raid scheduling system he was putting his time into, the phpRaid code
-was considered dead.  Since phpRaid still has an online community, and since
-the code for phpRaid was accessable at the time of this writing, I have decided 
-to carry it along.
+Offical Bugs Fixed:
+-----------------------
+00000002 - Header Image Hard Coded
+00000003 - Wrong Website Link in Configuration Error Messages
+00000005 - Authentication Type Documentation link wrong in Installer.
+00000011 - .htaccess showing up as authentication type in Installer.
+00000012 - International Date Sorting is Incorrect
+00000014 - International Date Sorting is Incorrect
+00000015 - Generic Internationalization Errors
+00000019 - Female Display for all Classes
+00000023 - Max Limit of Users in Raids does not limit raid signup.
+00000025 - Log Deletion Broken
+00000027 - Multi character signup fails with get_dupesignup_symbol()
+00000028 - Turn off Armory Lookups
+00000029 - Error on Display (Header) - Missing Argument 5 for get_coloredcount().
 
-This update contains some basic changes that make it more functional for my
-guild.  Where appropriate i've tried to include options to get the system to 
-work as it always has in the past.  In the few instances where i've changed 
-functionality to make it different from the 3.0.9.2 system I have tried to 
-document those areas, both in code as well as here in the notes.
-
-If there are changes that have made the system unliveable to the users for your 
-specific guild please let me know and i'll be happy to try to get a release out
-that manages those areas better.  The intent of 3.1.0 is as a drop in replacement
-update of all prior versions of code, not as a system written specifically for
-my needs or a handfull of guilds.
-
-Modifications for 3.1.0 are listed below:
--------------------------------------
-* New Extensible Authentication System.  While writing new authentication modules
-is still a codeing project, the concepts behind writing a module to link in with
-another system have been made easier.  There are now 4 functions that need to be
-written to install a new authentication system.  There is no need to touch any
-of the base phpRaid code to add a new system to authenticate against.  See
-authenticating_against_new_cms.txt in the docs directory for more information.
-
-* Support for the e107 CMS system.  e107 is now a natively supported system for 
-user authentication.  Please see the documentation in the install/auth/
-directory in the install_e107.php file.  This is in addition to the phpBB and
-phpRaid authentication that already existed.
-
-* Support for three distinct classes of users.  Raid Administrators (those with
-the raids permission set in the permissions area), Raid Leaders (the user who
-started and thus owns a raid, displayed as "Leader" (used to be officer) on the
-raid list, and "Users", those people signing up for a raid who are not Admins 
-or the RL.  This change allows those with "Raids" permissions to be granted
-enhanced permissions for raid signups or to administrate multiple raids at once.
-This change helps support the phpRaid system being used for 5 man group signup
-as well.
-
-* Group Support.  phpRaid has been changed at a fundamental level to support
-being used as a signup system for 5 man groups as well as raids.  Please see
-the online documentation "enable_groups.htm" in the docs folder for more
-information, you can access this documentation through the "help" link on the
-phpRaid configuration page under the "Enable Groups" checkbox.
-
-* New more easily modified user signup flow.  For those guilds who have a
-slightly different process for signing up users for their raids, the phpRaid
-system now supports an easier method of changing what buttons users have access
-to.  In the "signup_flow.php" file are 3 functions, one controls user access
-when they're in the queue, one controls access when they're in the "signed up"
-area, and one controls the access for users in the cancelled area.  Simply 
-turning on and off buttons in the documented "if" statements will change the
-process flow to allow more or less access or even completely changed process 
-flows.  
-
-Note: this is a temporary solution till I can get a fully functional
-configuration based system up and running for this.  Look for it in the next
-version of the software.
-
-Note: The default signup flow (what buttons users have access to) may have 
-changed in this version.  If you are finding that your users aren't able
-to do things they're used to doing, or can do more than they should, you 
-can easily edit signup_flow.php (read the comments) to modify the behavior.
-
-* Granularity for time dropdowns (Signup Time, Raid Time, etc.) has been changed
-to 15 minute intervals.  Users will no longer be able to schedule a raid for 
-8:07 pm with a signup time of 7:32 pm.  Instead your "Minute" options are: 00,
-15,30,45.  While this is a basic change to the system, I simply don't see the
-need to populate the dropdown with (and thus force people to scroll through) 60 
-options when 4 is really sufficient.  I could be convinced to go to 10 minute
-granularity instead of 15, but really i've never encounterd a guild that is so
-punctual as to be able to make an 8:05 raid start time as opposed to 8:06.
-
-* To support the 3 levels of raid access introduced in 3.1.0 (see above) and 
-the 5 man group support added for phpRaid in this version, the name "officer"
-in the header of the raids listing has been changed to "Leader", the underlaying
-database and code has NOT been changed to reflect the new name, only the display.
-
-Fixes for 3.1.0
------------------
-* Locations with a ' in them (For instance "Gruul's Lair" or "Onyxia's Lair"
-were failing to load properly when creating new raids or editing raids.  The 
-problem with the underlaying java code is now fixed.
-
-* Install addendum.txt file mistakenly named "Install addendum..txt" (two dots)
-this has been renamed.
+Unfinished/Incomplete
+----------------------
+* While classes can sign up to raids by role, they are still DISPLAYED by class in the raid view.  There
+needs to be a configuration option implemented to display signups by either class or by role. 
