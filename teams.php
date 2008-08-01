@@ -276,8 +276,8 @@ if($mode == 'view')
 	$report->addOutputColumn('action',$phprlang['add_team'],'','left',__NOLINK__);
 	$team_add_body .= $report->getListFromArray($team_add);
 
-	$team_add_buttons = '<input type="submit" value="Submit" name="submit" class="mainoption">
-						<input type="reset" value="Reset" name="reset" class="liteoption"></form>';
+	$team_add_buttons = '<input type="submit" value="'.$phprlang['submit'].'" name="submit" class="mainoption">
+						<input type="reset" value="'.$phprlang['reset'].'" name="reset" class="liteoption"></form>';
 }
 elseif($mode == 'new')
 {

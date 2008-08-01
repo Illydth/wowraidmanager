@@ -44,7 +44,7 @@ $phprlang['key'] = 'Legenda:<br>(*) = Iscritto e confermato<br>(#) = Iscritto (i
 $phprlang['configuration_addon'] = 'Sito ufficiale di WowRaidManager';
 $phprlang['configuraiton_admin'] = 'Amministratori';
 $phprlang['configuration_admin_email'] = 'E-mail dell\'Amministratore';
-$phprlang['configuration_ampm'] = 'Schedule Raids in 12h/24h format';
+$phprlang['configuration_ampm'] = 'Formato 12/24 ore per gli orari dei Raid';
 $phprlang['configuration_anonymous'] = 'Consenti la visualizzazione agli Utenti non registrati';
 $phprlang['configuration_armory_enable'] = 'Abilita la lettura dei dati dall\'Armory';
 $phprlang['configuration_armory_link_text'] = 'Indirizzo dell\'Armory di riferimento';

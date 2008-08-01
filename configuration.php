@@ -532,7 +532,7 @@ $guild_name = '<input name="guild_name" type="text" id="guild_name" value="' . $
 $guild_description = '<input name="guild_description" type="text" id="guild_description" value="' . $phpraid_config['guild_description'] . '" maxlength="255" class="post">';
 $guild_server = '<input name="guild_server" type="text" id="guild_server" value="' . $phpraid_config['guild_server'] . '" maxlength="255" class="post">';
 $register = '<input name="register" type="text" value="'.$phpraid_config['register_url'].'" size="60" class="post">';
-$buttons = '<input type="submit" name="submit" value="Submit" class="mainoption"> <input type="reset" name="Reset" value="Reset" class="liteoption">';
+$buttons = '<input type="submit" name="submit" value="'.$phprlang['submit'].'" class="mainoption"> <input type="reset" name="Reset" value="'.$phprlang['reset'].'" class="liteoption">';
 $armory_language = '<input name="armory_language" type="text" value="'.$phpraid_config['armory_language'].'" size="4" class="post">';
 $role1_name='<input name="role1_name" type="text" value="'.$phpraid_config['role1_name'].'" size="25" class="post">';
 $role2_name='<input name="role2_name" type="text" value="'.$phpraid_config['role2_name'].'" size="25" class="post">';

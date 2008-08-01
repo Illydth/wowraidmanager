@@ -37,7 +37,6 @@ $localstr['step2dbserverusername'] = 'MySQL Server Username';
 $localstr['step2dbserverpwd'] = 'MySQL Server Password';
 $localstr['step2WRMtableprefix'] = 'WRM Table Prefix';
 $localstr['step2installtype'] = 'Install Type';
-$localstr['step2upgradefrom'] = 'Upgrade from: ';
 $localstr['step2error01'] = 'Failure to do so could cause unforeseen failure and support will not be given!';
 
 //step 3
@@ -116,7 +115,7 @@ $localstr['step5smfsub1inputdir'] = 'Input the relative path to your SMF directo
 $localstr['step5smfsub2failincdir'] = 'your SMF directory is incorect';
 $localstr['step5smfsub2readconffile'] = 'read SMF config file';
 $localstr['step5smfsub3errorretusername'] = 'Error retrieving username from SMF';
-$localstr['step5smfsub3errorretuserclass'] = 'Error retrieving userclass from e107';
+$localstr['step5smfsub3errorretuserclass'] = 'Error retrieving userclass from SMF';
 $localstr['step5smffailconesmf'] = 'Unable to connect to SMF DB';
 
 // WoltLab Burning Board Lite 1.x.x = wbb

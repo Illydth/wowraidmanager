@@ -37,7 +37,6 @@ $localstr['step2dbserverusername'] = 'MySQL Server Benutzername';
 $localstr['step2dbserverpwd'] = 'MySQL Server Passwort';
 $localstr['step2WRMtableprefix'] = 'WRM Table Prefix';
 $localstr['step2installtype'] = 'Art der Installation';
-$localstr['step2upgradefrom'] = 'Update von: ';
 $localstr['step2error01'] = 'Bei Falscheingabe könnte es zu unvorhersehbaren Auswirkungen kommen, es wird dann auch keine Hilfe angeboten!';
 
 //step 3
