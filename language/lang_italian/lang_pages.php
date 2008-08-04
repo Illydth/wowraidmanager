@@ -32,8 +32,8 @@
 // announcements
 $phprlang['announcements_header'] = 'Annunci';
 $phprlang['announcements_new_header'] = 'Crea un nuovo Annuncio';
-$phprlang['announcements_msg_txt'] = 'Testo';
-$phprlang['announcements_title_txt'] = 'Titolo';
+$phprlang['announcements_message_text'] = 'Testo';
+$phprlang['announcements_title_text'] = 'Titolo';
 
 // Calendar
 $phprlang['invites'] = 'Inviti';
@@ -44,10 +44,10 @@ $phprlang['key'] = 'Legenda:<br>(*) = Iscritto e confermato<br>(#) = Iscritto (i
 $phprlang['configuration_addon'] = 'Sito ufficiale di WowRaidManager';
 $phprlang['configuraiton_admin'] = 'Amministratori';
 $phprlang['configuration_admin_email'] = 'E-mail dell\'Amministratore';
-$phprlang['configuration_ampm'] = 'Formato 12/24 ore per gli orari dei Raid';
+$phprlang['configuration_ampm'] = 'Formato orario di creazione dei Raid';
 $phprlang['configuration_anonymous'] = 'Consenti la visualizzazione agli Utenti non registrati';
-$phprlang['configuration_armory_enable'] = 'Abilita la lettura dei dati dall\'Armory';
-$phprlang['configuration_armory_link_text'] = 'Indirizzo dell\'Armory di riferimento';
+$phprlang['configuration_armory_enable'] = 'Abilita l\'integrazione con l\'Armory';
+$phprlang['configuration_armory_link_text'] = 'Indirizzo dell\'Armory';
 $phprlang['configuration_armory_language_text'] = 'Codice linguaggio dell\'Armory';
 $phprlang['configuration_autoqueue'] = 'Impedisci l\'inserimento diretto fra le iscrizioni confermate';
 $phprlang['configuration_cancel'] = 'Annulla';
@@ -78,7 +78,7 @@ $phprlang['configuration_guild_header'] = 'Configurazione della Gilda';
 $phprlang['configuration_guild_name'] = 'Nome';
 $phprlang['configuration_id'] = 'Visualizza l\'ID nelle tabelle';
 $phprlang['configuration_language'] = 'Lingua';
-$phprlang['configuration_logo'] = 'Percorso dell\'immagine dell\'intestazione';
+$phprlang['configuration_logo'] = 'Immagine di intestazione';
 $phprlang['configuration_multiple'] = 'Consenti iscrizioni multiple';
 $phprlang['configuration_on_queue'] = 'Iscrizioni in coda';
 $phprlang['configuration_queue'] = 'Accoda';
@@ -102,10 +102,10 @@ $phprlang['configuration_rss_site'] = 'RSS: indirizzo di installazione di WowRai
 $phprlang['configuration_rss_export'] = 'RSS: indirizzo a cui esportare il feed RSS';
 $phprlang['configuration_rss_feed_amt'] = 'RSS: numero di Raid da visualizzare';
 $phprlang['configuration_server'] = 'Server';
-$phprlang['configuration_show_addon'] = 'Visualizza il link a WowRaidManager';
+$phprlang['configuration_show_addon'] = 'Visualizza link a WRM';
 $phprlang['configuration_signup_rights_header'] = 'Permessi di iscrizione';
 $phprlang['configuration_site_header'] = 'Configurazione del sito';
-$phprlang['configuration_sitelink'] = 'Il link "Homepage del sito" punta a';
+$phprlang['configuration_sitelink'] = 'Il link "Homepage" punta a';
 $phprlang['configuration_template'] = 'Tema visuale';
 $phprlang['configuration_time'] = 'Formato degli orari<br><a href="http://www.php.net/date/" target="_blank">(Guida)</a>';
 $phprlang['configuration_timezone_text'] = 'Fuso orario';
@@ -130,7 +130,7 @@ $phprlang['guilds_tag']	= 'Abbreviazione della Gilda';
 $phprlang['locations_header'] = 'Istanze configurate';
 $phprlang['locations_max_lvl'] = 'Livello massimo';
 $phprlang['locations_min_lvl'] = 'Livello minimo';
-$phprlang['locations_limits_header'] = 'Limiti massimi per classe';
+$phprlang['locations_limits_header'] = 'Limiti';
 $phprlang['locations_long'] = 'Nome esteso';
 $phprlang['locations_new'] = 'Configura una nuova Istanza';
 $phprlang['locations_raid_max'] = 'Numero massimo di PG';
@@ -240,7 +240,7 @@ $phprlang['view_new'] = 'Iscriviti a questo Raid';
 $phprlang['view_max'] = 'Numero massimo di PG';
 $phprlang['view_max_lvl'] = 'Livello massimo';
 $phprlang['view_min_lvl'] = 'Livello minimo';
-$phprlang['view_missing_signups_link_text'] = 'Visualizza i Personaggi che NON risultano iscritti a questo Raid.';
+$phprlang['view_missing_signups_link_text'] = 'Visualizza gli Utenti che NON risultano iscritti a questo Raid';
 $phprlang['view_officer'] = 'Inserito da';
 $phprlang['view_ok'] = 'Iscrizioni aperte';
 $phprlang['view_queue'] = 'Tipo di iscrizione';
@@ -256,7 +256,7 @@ $phprlang['view_start'] = 'Ora di inizio';
 $phprlang['view_statistics_header'] = 'Statistiche';
 $phprlang['view_teams_link_text'] = 'Crea ed assegna i Team per questo Raid';
 $phprlang['view_total'] = 'Iscrizioni totali';
-$phprlang['view_username'] = 'Username';
+$phprlang['view_username'] = 'Utente';
 
 // main page
 $phprlang['main_previous_raids'] = 'Eventi passati';
@@ -264,7 +264,7 @@ $phprlang['main_upcoming_raids'] = 'Eventi in programma';
 $phprlang['signup'] = 'Iscriviti';
 $phprlang['rss_feed_text'] = 'Feed RSS delle iscrizioni ai Raid';
 $phprlang['guild_time_string'] = 'Orario di gilda';
-$phprlang['menu_header_text'] = 'Menù di WowRaidManager';
+$phprlang['menu_header_text'] = 'Menù di WRM';
 
 // teams
 $phprlang['team_new_header'] = 'Crea un nuovo Team';
