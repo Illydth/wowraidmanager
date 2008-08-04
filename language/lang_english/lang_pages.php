@@ -32,8 +32,8 @@
 // announcements
 $phprlang['announcements_header'] = 'Announcements';
 $phprlang['announcements_new_header'] = 'Create New Announcement';
-$phprlang['announcements_msg_txt'] = 'Message';
-$phprlang['announcements_title_txt'] = 'Title';
+$phprlang['announcements_message_text'] = 'Message';
+$phprlang['announcements_title_text'] = 'Title';
 
 // Calendar
 $phprlang['invites'] = 'Invites';

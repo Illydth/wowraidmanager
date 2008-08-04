@@ -32,8 +32,8 @@
 // announcements
 $phprlang['announcements_header'] = '公告訊息';
 $phprlang['announcements_new_header'] = '新增公告';
-$phprlang['announcements_msg_txt'] = '內容';
-$phprlang['announcements_title_txt'] = '標題';
+$phprlang['announcements_message_text'] = '內容';
+$phprlang['announcements_title_text'] = '標題';
 
 // Calendar
 $phprlang['invites'] = '邀請';
