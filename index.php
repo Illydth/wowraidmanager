@@ -312,6 +312,7 @@ if($db_raid->sql_numrows($result) > 0)
 		
 		$page->set_var(
 			array(
+				'announcement_header'=>$phprlang['announcements_header'],
 				'announcement_author'=>$data['posted_by'],
 				'announcement_date'=>$date,
 				'announcement_time'=>$time,
