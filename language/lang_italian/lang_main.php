@@ -44,6 +44,8 @@ require_once('lang_wow.php');
 $phprlang['add_team']='Seleziona per aggiungere al Team';
 $phprlang['add_team_dropdown_text']='Seleziona il Team a cui aggiungere i membri';
 $phprlang['team_global']='Team riutilizzabile in altri Raid';
+$phprlang['sort_desc']='Click here to sort (in descending order) by ';
+$phprlang['sort_asc']='Click here to sort (in ascending order) by '; 
 $phprlang['male'] = 'Maschio';
 $phprlang['female'] = 'Femmina';
 $phprlang['class'] = 'Classe';

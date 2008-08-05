@@ -44,6 +44,8 @@ require_once('lang_wow.php');
 $phprlang['add_team']='Kryss av for å legge til Lag';
 $phprlang['add_team_dropdown_text']='Velg Lag til å legge medlemmer til';
 $phprlang['team_global']='Marker gruppe tilgjengelig for alle raid';
+$phprlang['sort_desc']='Click here to sort (in descending order) by ';
+$phprlang['sort_asc']='Click here to sort (in ascending order) by '; 
 $phprlang['male'] = 'Mann';
 $phprlang['female'] = 'Dame';
 $phprlang['class'] = 'Class';

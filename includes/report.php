@@ -705,15 +705,15 @@ class ReportList
                 	if ($arrCol['name'] == $this->_arrSortInfo['strSortField'] && !($this->_arrSortInfo['blnSortDescending'])) {
                 		// Give the option to sort descending
 						if ($this->_arrSortInfo['blnUsePathParams'] == 1) {
-		                	$strColTitle = '<a href="' . $this->_arrSortInfo['strSortURL'] . urlencode($arrCol['name']) . '/SortDescending-1" title="Click here to sort (in descending order) by ' . htmlspecialchars(strip_tags($strColTitle)) . '">' . $strColTitle . '</a>';
+		                	$strColTitle = '<a href="' . $this->_arrSortInfo['strSortURL'] . urlencode($arrCol['name']) . '/SortDescending-1" title="' . $phprlang['sort_desc'] . htmlspecialchars(strip_tags($strColTitle)) . '">' . $strColTitle . '</a>';
 						}
 						else {
-		                	$strColTitle = '<a href="' . $this->_arrSortInfo['strSortURL'] . urlencode($arrCol['name']) . '&SortDescending=1' . $this->_arrSortInfo['strSortAnchor'] . '" title="Click here to sort (in descending order) by ' . htmlspecialchars(strip_tags($strColTitle)) . '">' . $strColTitle . '</a>';
+		                	$strColTitle = '<a href="' . $this->_arrSortInfo['strSortURL'] . urlencode($arrCol['name']) . '&SortDescending=1' . $this->_arrSortInfo['strSortAnchor'] . '" title="'. $phprlang['sort_desc'] . htmlspecialchars(strip_tags($strColTitle)) . '">' . $strColTitle . '</a>';
 						}
                 	}
                 	else {
                 		// Give the option to sort (ascending) by this field
-                		$strColTitle = '<a href="' . $this->_arrSortInfo['strSortURL'] . urlencode($arrCol['name']) . $this->_arrSortInfo['strSortAnchor'] . '" title="Click here to sort (in ascending order) by ' . htmlspecialchars(strip_tags($strColTitle)) . '">' . $strColTitle . '</a>';
+                		$strColTitle = '<a href="' . $this->_arrSortInfo['strSortURL'] . urlencode($arrCol['name']) . $this->_arrSortInfo['strSortAnchor'] . '" title="' . $phprlang['sort_asc'] . htmlspecialchars(strip_tags($strColTitle)) . '">' . $strColTitle . '</a>';
                 	}
                 }
 
