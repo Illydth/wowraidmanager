@@ -260,47 +260,42 @@ function strip_linebreaks($str) {
 
 // Sanitizes data for entry into the database. Escapes special
 // characters and encodes html entities.
-function sanitize(&$array) {
-  escape_db_data($array);
+function sanitize($array) {
+  $retarr_keys = array_keys($array);
+  $retarr_values = array_values($array);
   
+  for ($i = 0; $i < count($retarr_keys) - 1; $i++)
+  {
+  	if (is_string($retarr_values[$i]))
+  	{
+		$retarr_values[$i] = addslashes($retarr_values[$i]);
+		$retarr_values[$i] = htmlspecialchars($retarr_values[$i]);
+  	}
+
+  	$array[$retarr_keys[$i]] = $retarr_values[$i];
+  }
+
   return $array;
 }
 
 // Reverses database sanitization by removing escape backslashes
 // and decoding html entities.
-function desanitize(&$array) {
-  @unescape_db_data($array);
+function desanitize($array) {
+  $retarr_keys = array_keys($array);
+  $retarr_values = array_values($array);
   
+  for ($i = 0; $i < count($retarr_keys) - 1; $i++)
+  {
+  	if (is_string($retarr_values[$i]))
+  	{
+		$retarr_values[$i] = stripslashes($retarr_values[$i]);
+		$retarr_values[$i] = htmlspecialchars_decode($retarr_values[$i]);
+  	}
+
+  	$array[$retarr_keys[$i]] = $retarr_values[$i];
+  }
+
   return $array;
-}
-
-function escape_db_data(&$array) {
-  foreach($array as &$value) {
-    if (is_string($value)) {
-      escape_data($value);
-    }
-  }
-  unset($value);
-}
-
-function escape_data(&$data) {
-  $data = addslashes($data);
-  $data = htmlspecialchars($data);
-}
-
-function unescape_db_data(&$array) {
-
-  foreach($array as &$value) {
-    if (is_string($value)) {
-      unescape_data($value);
-    }
-  }
-  unset($value);
-}
-
-function unescape_data(&$data) {
-  $data = stripslashes($data);
-  $data = htmlspecialchars_decode($data);
 }
 
 function magic_quotes_on() {
