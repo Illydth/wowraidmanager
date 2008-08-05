@@ -135,7 +135,7 @@ function phpraid_logout()
 	setcookie('password', '', time() - 2629743);
 }
 
-require ("functions_pwdhash.php");
+require ("../includes/functions_pwdhash.php");
 
 // good ole authentication
 session_start();
