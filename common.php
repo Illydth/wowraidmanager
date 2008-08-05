@@ -41,6 +41,11 @@ error_reporting(E_ALL ^ E_NOTICE);
 // feel free to set this to absolute if necessary
 $phpraid_dir = './';
 
+// redirect to setup if it exists
+if(file_exists($phpraid_dir.'install/')) {
+	header("Location: install/install.php");
+}
+
 require_once($phpraid_dir.'version.php');
 
 // Class require_onces
@@ -54,11 +59,6 @@ require_once($phpraid_dir.'includes/functions_users.php');
 require_once($phpraid_dir.'includes/report.php');
 require_once($phpraid_dir.'includes/template.php');
 require_once($phpraid_dir.'includes/ubb.php');
-
-// redirect to setup if it exists
-if(file_exists($phpraid_dir.'install/')) {
-	header("Location: install/install.php");
-}
 	
 // reports for all data listing
 global $report;
