@@ -122,7 +122,7 @@ $phprlang['print_error_details'] = 'Details';
 $phprlang['print_error_minor'] = 'kleinen Fehler entdeckt!';
 $phprlang['print_error_msg_begin'] = 'Entschuldigung, phhRaid hat einen ';
 $phprlang['print_error_msg_end'] = 'Wenn der Fehler weiter auftritt, erzeuge bitte ein Posting 
-									mit dieser Nachricht <br>in den <a href="http://www.spiffyjr.com/forums/">SpiffyJr.com-Forums</a> und
+									mit dieser Nachricht <br>in den <a href="http://www.wowraidmanager.net/">wowraidmanager.net-Forums</a> und
 									wir werden unser Bestes geben, um ihn zu beheben. Danke!';
 $phprlang['print_error_page'] = 'Seite';
 $phprlang['print_error_query'] = 'Anfrage';

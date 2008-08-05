@@ -122,7 +122,7 @@ $phprlang['print_error_details'] = 'Details';
 $phprlang['print_error_minor'] = 'a minor error!';
 $phprlang['print_error_msg_begin'] = 'Sorry, phpRaid has encountered ';
 $phprlang['print_error_msg_end'] = 'If this error persists, please make a post 
-									with this message <br>on the <a href="http://www.spiffyjr.com/forums/">SpiffyJr.com Forums</a> and
+									with this message <br>on the <a href="http://www.wowraidmanager.net/">wowraidmanager.net Forums</a> and
 									we will do our best to get it corrected. Thanks!';
 $phprlang['print_error_page'] = 'Page';
 $phprlang['print_error_query'] = 'Query';

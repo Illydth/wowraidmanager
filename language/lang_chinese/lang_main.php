@@ -122,7 +122,7 @@ $phprlang['print_error_details'] = '細節';
 $phprlang['print_error_minor'] = '警告!';
 $phprlang['print_error_msg_begin'] = '抱歉，phpRaid發生了 ';
 $phprlang['print_error_msg_end'] = '如果問題持續發生，請將錯誤訊息 
-									<br>貼至 <a href="http://www.spiffyjr.com/forums/">SpiffyJr.com Forums</a> 然後
+									<br>貼至 <a href="http://www.wowraidmanager.net/">wowraidmanager.net Forums</a> 然後
 									我們會盡全力解決您的問題. 謝謝!';
 $phprlang['print_error_page'] = '頁';
 $phprlang['print_error_query'] = '查詢';
