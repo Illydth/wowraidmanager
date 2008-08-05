@@ -44,7 +44,7 @@ function check_profile($user)
 	//Update email incase it doesn't match phpBB
 	if($user->data['user_email'] != $result['email'])
 	{
-		$sql = "UPDATE " . $phpraid_config['db_prefix'] . "profile SET email='$email' WHERE profile_id='$user_id'";
+		$sql = "UPDATE " . $phpraid_config['db_prefix'] . "profile SET email='$email',last_login_time='".quote_smart(time())."' WHERE profile_id='$user_id'";
 		$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 	}
 	
@@ -62,8 +62,8 @@ function check_profile($user)
 			$default = '0';
 		
 		// nothing returned, create profile
-		$sql = "INSERT INTO " . $phpraid_config['db_prefix'] . "profile (`profile_id`,`email`,`password`,`priv`,`username`)
-				VALUES ('$user_id','$email','','$default','$username')";
+		$sql = "INSERT INTO " . $phpraid_config['db_prefix'] . "profile (`profile_id`,`email`,`password`,`priv`,`username`,`last_login_time`)
+				VALUES ('$user_id','$email','','$default','$username',".quote_smart(time()).")";
 		$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 	}
 	

@@ -112,12 +112,12 @@ function phpraid_login() {
 			$result = $db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
 			if ($data = $db_raid->sql_fetchrow($result))
 			{ //We found the profile in the database, update.
-				$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "profile SET email=%s,password=%s WHERE profile_id=%s",quote_smart($_SESSION['email']),quote_smart($user_password),quote_smart($_SESSION['profile_id']));
+				$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "profile SET email=%s,password=%s,last_login_time=%s WHERE profile_id=%s",quote_smart($_SESSION['email']),quote_smart($user_password),quote_smart(time()),quote_smart($_SESSION['profile_id']));
 				$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 			}
 			else
 			{ //Profile not found in the database or DB Error, insert.
-				$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "profile VALUES (%s, %s, %s, %s, %s)", quote_smart($_SESSION['profile_id']), quote_smart($_SESSION['email']), quote_smart($user_password), quote_smart($user_priv), quote_smart($_SESSION['username']));
+				$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "profile VALUES (%s, %s, %s, %s, %s, %s)", quote_smart($_SESSION['profile_id']), quote_smart($_SESSION['email']), quote_smart($user_password), quote_smart($user_priv), quote_smart($_SESSION['username']),quote_smart(time()));
 				$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 			}
 
