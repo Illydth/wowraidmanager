@@ -68,6 +68,19 @@
         return true;
 	}
 	
+	function get_mysql_version_from_phpinfo()
+	{
+		ob_start();
+		phpinfo(INFO_MODULES);
+		$info = ob_get_contents();
+		ob_end_clean();
+		$info = stristr($info, 'Client API version');
+		preg_match('@[0-9]+\.[0-9]+\.[0-9]+@', $info, $match);
+		$gd = $match[0];
+		
+		return $gd; 
+	}
+	
 	//header
 	function print_header()
 	{
@@ -310,6 +323,20 @@
 			$content .= '<br/><font color=#00ff00>Success: directory <strong>database_schema</strong> exists.</font>';
 		}
 		
+		// Get the MySQL Version and Print It.
+		$gd = get_mysql_version_from_phpinfo();
+		if ($gd < "4.1.0")
+		{
+			$content .= '<br/><font color=yellow>Warning: MySQL Version too low to set Character Set and Collation upon table installation' .
+					', <br/>ensure international characters are storeable to the database or upgrade to MySQL 4.1 or above.' .
+					'<br/>Current MySQL Version: ' . $gd . '</font>';
+		}
+		else
+		{
+			$content .= '<br/><font color=#00ff00>Current MySQL Version: ' . $gd . '</font>';			
+		}
+
+		
 	//	echo fileperms($dirname_wowitem). " : ".fileperms($dirname_wowchar);
 
 		if($error == 0)
@@ -478,6 +505,29 @@
 			fclose($fd);
 		}
 		
+		// Run the alter_tables.sql for setting Character Set and Collation if MySQL version > 4.1.0
+		$gd = get_mysql_version_from_phpinfo();
+		if ($gd >= "4.1.0")
+		{
+			if(!$fd = fopen('./database_schema/install/alter_tables.sql', 'r'))
+				die('<font color=red>'.$localstr['step3errorschema'].'.</font>');
+	
+			if ($fd) {
+				while (!feof($fd)) {
+					$line = fgetc($fd);
+					$sql .= $line;
+	
+					if($line == ';')
+					{
+				  		$sql = substr(str_replace('`phpraid_','`' . $prefix, $sql), 0, -1);
+						mysql_query($sql) or die($localstr['step3errorsql'].' ' . mysql_error());
+						$sql = '';
+					}
+				}
+				fclose($fd);
+			}
+		}
+			
 		// Make a Version Check
 		$sql = "select max(version_number) from `phpraid_version`";
 		$sql = str_replace('`phpraid_', '`' . $prefix, $sql);

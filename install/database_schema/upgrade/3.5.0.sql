@@ -32,7 +32,7 @@ CREATE TABLE `phpraid_version` (
 `version_number` VARCHAR( 20 ) NOT NULL ,
 `version_desc` VARCHAR( 255 ) NOT NULL ,
 PRIMARY KEY ( `version_number` )
-) DEFAULT CHARACTER SET 'UTF8' COLLATE=utf8_bin;
+) ;
 
 INSERT INTO `phpraid_version` VALUES ('3.0.9.2','Version 3.0.9.2 of phpRaid');
 INSERT INTO `phpraid_version` VALUES ('3.1.0','Version 3.1.0 of phpRaid (Beta)');
