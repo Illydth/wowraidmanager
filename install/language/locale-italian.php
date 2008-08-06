@@ -30,7 +30,7 @@ $localstr['txtconfig'] = 'Configurazione';
 
 //step 2
 $localstr['step2freshinstall'] = 'Nuova installazione';
-$localstr['step2upgradefrom'] = 'Aggiornamento da';
+$localstr['step2upgradefrom'] = 'Aggiornamento di';
 $localstr['step2dbname'] = 'Database MySQL';
 $localstr['step2dbserverhostname'] = 'Indirizzo del server MySQL';
 $localstr['step2dbserverusername'] = 'Username del server MySQL';
