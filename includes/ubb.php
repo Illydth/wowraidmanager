@@ -29,7 +29,8 @@ function DEUBB($post)
 //For comments
 function DEUBB2($post)
 {
-	$post = addslashes($post);
+	if (!magic_quotes_on())
+		$post = addslashes($post);
 	$post = linebreak_to_br($post);
 
 	return $post;

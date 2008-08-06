@@ -88,10 +88,14 @@ if($_GET['mode'] == 'view')
 		//setup the count array
 		$count = array('dr'=>'0','hu'=>'0','ma'=>'0','pa'=>'0','pr'=>'0','ro'=>'0','sh'=>'0','wk'=>'0','wa'=>'0','role1'=>'0','role2'=>'0','role3'=>'0','role4'=>'0','role5'=>'0','role6'=>'0');
 
-		$desc = strip_tags($data['description']);
-		$desc = UBB($desc);
+		//echo "Description = " . $data['description'];
 
-		$location = '<a href="view.php?mode=view&raid_id='.$data['raid_id'].'" onMouseover="ddrivetip(\'<span class=tooltip_title>'. $phprlang['description'] .'</span><br>' . DEUBB($desc) . '\')" onMouseout="hideddrivetip()">'.UBB2($data['location']).'</a>';
+		//$desc = strip_tags($data['description']);
+		//$desc = UBB($desc);
+
+		$desc = scrub_input($data['description']);
+		$ddrivetiptxt = "'<span class=tooltip_title>" . $phprlang['description'] ."</span><br>" . DEUBB2($desc) . "'";
+		$location = '<a href="view.php?mode=view&raid_id='.$data['raid_id'].'" onMouseover="ddrivetip('.$ddrivetiptxt.')"; onMouseout="hideddrivetip()">'.$data['location'].'</a>';
 
 		// convert unix timestamp to something readable
 		$start = new_date('Y/m/d H:i:s',$data['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
@@ -965,14 +969,14 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 		{
 
 			$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "raids (`description`,`freeze`,`invite_time`,
-			`location`,`officer`,`old`,`start_time`,`dr_lmt`,`hu_lmt`,`ma_lmt`,`pa_lmt`,`pr_lmt`,`ro_lmt`,`sh_lmt`,`wk_lmt`,`wa_lmt`,
-			`role1_lmt`,`role2_lmt`,`role3_lmt`,`role4_lmt`,`role5_lmt`,`role6_lmt`,
-			`min_lvl`,`max_lvl`,`max`)	VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
-			quote_smart($description),quote_smart($freeze),quote_smart($invite_time),quote_smart($location),
-			quote_smart($username),quote_smart('0'),quote_smart($start_time),
-			quote_smart($dr),quote_smart($hu),quote_smart($ma),quote_smart($pa),quote_smart($pr),quote_smart($ro),quote_smart($sh),quote_smart($wk),quote_smart($wa),
-			quote_smart($role1),quote_smart($role2),quote_smart($role3),quote_smart($role4),quote_smart($role5),quote_smart($role6),
-			quote_smart($min_lvl),quote_smart($max_lvl),quote_smart($max));
+					`location`,`officer`,`old`,`start_time`,`dr_lmt`,`hu_lmt`,`ma_lmt`,`pa_lmt`,`pr_lmt`,`ro_lmt`,`sh_lmt`,`wk_lmt`,`wa_lmt`,
+					`role1_lmt`,`role2_lmt`,`role3_lmt`,`role4_lmt`,`role5_lmt`,`role6_lmt`,
+					`min_lvl`,`max_lvl`,`max`)	VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
+					quote_smart($description),quote_smart($freeze),quote_smart($invite_time),quote_smart($location),
+					quote_smart($username),quote_smart('0'),quote_smart($start_time),
+					quote_smart($dr),quote_smart($hu),quote_smart($ma),quote_smart($pa),quote_smart($pr),quote_smart($ro),quote_smart($sh),
+					quote_smart($wk),quote_smart($wa),quote_smart($role1),quote_smart($role2),quote_smart($role3),quote_smart($role4),
+					quote_smart($role5),quote_smart($role6),quote_smart($min_lvl),quote_smart($max_lvl),quote_smart($max));
 
 			$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
 
@@ -981,14 +985,16 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 		else
 		{
 
-		$sql = "UPDATE " . $phpraid_config['db_prefix'] . "raids SET location='$location',description='$description',invite_time='$invite_time',start_time='$start_time',
-					freeze='$freeze',max='$max',old='0',dr_lmt='$dr',
-					hu_lmt='$hu',ma_lmt='$ma',pa_lmt='$pa',pr_lmt='$pr',ro_lmt='$ro',sh_lmt='$sh',wk_lmt='$wk',wa_lmt='$wa',
-					role1_lmt='$role1',role2_lmt='$role2',role3_lmt='$role3',role4_lmt='$role4',role5_lmt='$role5',role6_lmt='$role6',
-					min_lvl='$min_lvl',max_lvl='$max_lvl' WHERE raid_id='$id'";
+			$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "raids SET location=%s,description=%s,invite_time=%s,start_time=%s,
+					freeze=%s,max=%s,old='0',dr_lmt=%s,hu_lmt=%s,ma_lmt=%s,pa_lmt=%s,pr_lmt=%s,ro_lmt=%s,sh_lmt=%s,wk_lmt=%s,wa_lmt=%s,
+					role1_lmt=%s,role2_lmt=%s,role3_lmt=%s,role4_lmt=%s,role5_lmt=%s,role6_lmt=%s,min_lvl=%s,max_lvl=%s WHERE raid_id=%s",
+					quote_smart($location),quote_smart($description),quote_smart($invite_time),quote_smart($start_time), quote_smart($freeze),
+					quote_smart($max),quote_smart($dr),quote_smart($hu),quote_smart($ma),quote_smart($pa),quote_smart($pr),quote_smart($ro),
+					quote_smart($sh),quote_smart($wk),quote_smart($wa),quote_smart($role1),quote_smart($role2),quote_smart($role3),
+					quote_smart($role4),quote_smart($role5),quote_smart($role6),quote_smart($min_lvl),quote_smart($max_lvl),quote_smart($id));
 
-		$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-	}
+			$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		}
 		header("Location: raids.php?mode=view");
 	}
 }

@@ -125,12 +125,12 @@ if($_GET['mode'] == 'view') {
 		$result_raid = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 		$data = $db_raid->sql_fetchrow($result_raid, true);
 		
-		$desc = strip_tags($data['description']);
-		$desc = UBB($desc);
-
+		//$desc = strip_tags($data['description']);
+		//$desc = UBB($desc);
+		$desc = scrub_input($data['description']);
+		$ddrivetiptxt = "'<span class=tooltip_title>" . $phprlang['description'] ."</span><br>" . DEUBB2($desc) . "'";
 		$location = '<a href="view.php?mode=view&raid_id='.$data['raid_id'].'"
-					 onMouseover="ddrivetip(\'<span class=tooltip_title>'.$phprlang['description'].'</span><br>'
-					 . DEUBB($desc) . '\')" onMouseout="hideddrivetip()">'.UBB($data['location']).'</a>';
+					 onMouseover="ddrivetip('.$ddrivetiptxt.')" onMouseout="hideddrivetip()">'.$data['location'].'</a>';
 
 		// convert unix timestamp to something readable
 		$start = new_date('Y/m/d H:i:s',$data['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);

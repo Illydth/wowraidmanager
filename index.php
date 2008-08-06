@@ -95,8 +95,10 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true)) {
 			$info = '<a href="view.php?mode=view&raid_id=' . $raids['raid_id'] . '#signup">'. $phprlang['signup'] .'</a>';
 		//	$info = '<a href="view.php?mode=view&raid_id=' . $raids['raid_id'] . '#signup"><img src="templates/' . $phpraid_config['template'] . '/images/icons/signup.gif" border="0" height="14" width="14" onMouseover="ddrivetip(\'' . $phprlang['not_signed_up'] . '\')"; onMouseout="hideddrivetip()"></a>';
 	}
-	
-	$location = '<a href="view.php?mode=view&raid_id=' . $raids['raid_id'] . '">' . $raids['location'] . '</a>';
+
+	$desc = scrub_input($raids['description']);
+	$ddrivetiptxt = "'<span class=tooltip_title>" . $phprlang['description'] ."</span><br>" . DEUBB2($desc) . "'";
+	$location = '<a href="view.php?mode=view&raid_id=' . $raids['raid_id'] . '" onMouseover="ddrivetip('.$ddrivetiptxt.')"; onMouseout="hideddrivetip()">'.$raids['location'].'</a>';
 	
 	//Code Specific to Nalumis	
 	//$minustkmel = 0;

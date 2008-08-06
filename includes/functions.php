@@ -254,8 +254,7 @@ function get_coloredcount2($signedup, $onqueue, $wanted, $type, $extracount, $dd
 
 function linebreak_to_br($str) {
   $str = preg_replace("/(\r\n?)|(\n\r?)/s", "<br />", $str);
-	
-	return $str;
+  return $str;
 }
 
 function strip_linebreaks($str) {

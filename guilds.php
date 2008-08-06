@@ -48,7 +48,7 @@ if($_GET['mode'] == 'view') {
 		
 
 	$edit = '<a href="guilds.php?mode=update&id='.$data['guild_id'].'"><img src="templates/' . $phpraid_config['template'] . 
-			'/images/icons/icon_edit.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['delete'].'\')"; onMouseout="hideddrivetip()"></a>';
+			'/images/icons/icon_edit.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['edit'].'\')"; onMouseout="hideddrivetip()"></a>';
 			
 	$delete = '<a href="guilds.php?mode=delete&n='.$data['guild_name'].'&id='.$data['guild_id'].'"><img src="templates/' . 
 				$phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['delete'].'\')"; 

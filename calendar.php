@@ -153,10 +153,6 @@ while($data = $db_raid->sql_fetchrow($result, true)) {
 //	$starttime = date($config['time_format'],$data['start_time']);
 //	$invitetime = date($config['time_format'],$data['invite_time']);
 
-	$desc = strip_tags($data['description']);
-	$desc = str_replace("\n","<br>",$desc);
-	$desc = str_replace("'","\'",$desc);
-	$desc = str_replace("\r","",$desc);
 	$uid = $_SESSION['profile_id'];
 	$issignedup = "";
 	$resultz = $db_raid->sql_query("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id='" . $data['raid_id']. "' AND profile_id='{$_SESSION['profile_id']}'");
@@ -174,8 +170,11 @@ while($data = $db_raid->sql_fetchrow($result, true)) {
 		$issignedup = "*";
 	}
 
-
-	$location = '<a href="view.php?mode=view&raid_id='.$data['raid_id'].'" onMouseover="ddrivetip(\'<span class=tooltip_title>Description</span><br>' . $desc . '\')" onMouseout="hideddrivetip()">'.$data['location'].'</a> <font color="#0000ff" size=+1>' . $issignedup . '</font></font>';
+	$desc = scrub_input($data['description']);
+	$ddrivetiptxt = "'<span class=tooltip_title>" . $phprlang['description'] ."</span><br>" . DEUBB2($desc) . "'";
+	$location = '<a href="view.php?mode=view&raid_id='.$data['raid_id'].'" onMouseover="ddrivetip('.$ddrivetiptxt.')"; onMouseout="hideddrivetip()">'.$data['location'].'</a> <font color="#0000ff" size=+1>' . $issignedup . '</font></font>';
+	
+	//$location = '<a href="view.php?mode=view&raid_id='.$data['raid_id'].'" onMouseover="ddrivetip(\'<span class=tooltip_title>Description</span><br>' . $desc . '\')" onMouseout="hideddrivetip()">'.$data['location'].'</a> <font color="#0000ff" size=+1>' . $issignedup . '</font></font>';
 	$result_total = $db_raid->sql_query("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id='".$data['raid_id']."' AND queue='0'");
 	$total = $db_raid->sql_numrows($result_total);
 
