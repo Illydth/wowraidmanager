@@ -44,13 +44,13 @@ function check_profile($userdata)
 	$user_id = $userdata['user_id'];
 	$email = $userdata['user_email'];
 	
-	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "profile WHERE profile_id='$user_id'";
+	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "profile WHERE profile_id=%s", quote_smart($user_id));
 	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 	
 	//Update email incase it doesn't match phpBB
 	if($userdata['user_email'] != $result['email'])
 	{
-		$sql = "UPDATE " . $phpraid_config['db_prefix'] . "profile SET email='$email',last_login_time='".quote_smart(time())."' WHERE profile_id='$user_id'";
+		$sql = sprintf("UPDATE" . $phpraid_config['db_prefix'] . "profile SET email=%s, last_login_time=%s WHERE profile_id=%s", quote_smart($email), quote_smart(time()), quote_smart($user_id));
 		$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 	}
 	
@@ -68,8 +68,8 @@ function check_profile($userdata)
 			$default = '0';
 		
 		// nothing returned, create profile
-		$sql = "INSERT INTO " . $phpraid_config['db_prefix'] . "profile (`profile_id`,`email`,`password`,`priv`,`username`,`last_login_time`)
-				VALUES ('$user_id','$email','','$default','$username',".quote_smart(time()).")";
+		$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "profile (`profile_id`,`email`,`password`,`priv`,`username`,`last_login_time`)" .
+						"VALUES (%s, %s, '', %s, %s, %s)", quote_smart($user_id), quote_smart($email), quote_smart($default), quote_smart($username), quote_smart(time()));
 		$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 	}
 	

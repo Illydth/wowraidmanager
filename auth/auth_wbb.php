@@ -61,7 +61,7 @@ function phpraid_login() {
 	$sql = "SELECT userid, username, email, groupid FROM " . $wbb_table_prefix . "users WHERE username = '".$username."'";
 	$result = $db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
 	
-	$sql = "SELECT username, password FROM " . $phpraid_config['db_prefix'] . "profile WHERE username='".$username."'";
+	$sql = sprintf("SELECT username, password FROM " . $phpraid_config['db_prefix'] . "profile WHERE username=%s", quote_smart($username));
 	$result2 = $db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
 	if ($data2 = $db_raid->sql_fetchrow($result2))
 			{

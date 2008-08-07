@@ -51,16 +51,16 @@ function phpraid_login() {
 		phpraid_logout();
 	}
 
-	// Set smf Configuration Options
-	$smf_table_prefix = $phpraid_config['smf_table_prefix'];
-	$smf_auth_user_class = $phpraid_config['smf_auth_user_class'];
-	$smf_alt_auth_user_class = $phpraid_config['smf_alt_auth_user_class'];
+	// Set xoops Configuration Options
+	$xoops_table_prefix = $phpraid_config['xoops_table_prefix'];
+	$xoops_auth_user_class = $phpraid_config['xoops_auth_user_class'];
+	$xoops_alt_auth_user_class = $phpraid_config['xoops_alt_auth_user_class'];
 
 	
 	// Get the user_loginname and password and the various user classes that the user belongs to.
 	//$sql = "SELECT * FROM " . $phpraid_config['db_dkp_prefix'] . "members, " . $phpraid_config['db_dkp_prefix'] . "classes WHERE " . $phpraid_config['db_dkp_prefix'] . "classes.class_id = " . $phpraid_config['db_dkp_prefix'] . "members.member_class_id";
 	
-	$sql = "SELECT password FROM " . $phpraid_config['db_prefix'] . "profile WHERE username='".$username."'";
+	$sql = sprintf("SELECT password FROM " . $phpraid_config['db_prefix'] . "profile WHERE username=%s", quote_smart($username));
 	$result2 = $db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
 	if ($data2 = $db_raid->sql_fetchrow($result2))
 			{
@@ -74,8 +74,6 @@ function phpraid_login() {
 	
 	$result = $db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
 	
-
-	
 	while($data = $db_raid->sql_fetchrow($result, true)) {
 		//echo "<br>Processing: " . $data['member_name'] . " : " . $data['passwd'].'<br>pwd:'.
 		if($username == strtolower($data['loginname']) && $pwd_hasher->CheckPassword($password, $wrmuserpassword)==0) {
@@ -83,9 +81,9 @@ function phpraid_login() {
 			// We need to validate the users class.  If it does not contain the user class that has been set as
 			//	authorized to use smf, we need to fail the login with a proper message.
 			$user_class = $data['groupid'];
-			$pos = strpos($user_class, $smf_auth_user_class);
-			$pos2 = strpos($user_class, $smf_alt_auth_user_class);
-			if ($pos === false && $smf_auth_user_class != 0)
+			$pos = strpos($user_class, $xoops_auth_user_class);
+			$pos2 = strpos($user_class, $xoops_alt_auth_user_class);
+			if ($pos === false && $xoops_auth_user_class != 0)
 			{
 				if ($pos2 === false)
 				{
