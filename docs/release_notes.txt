@@ -3,7 +3,78 @@ at:
 
 * http://www.wowraidmanager.net/wiki/index.php?title=Installation
 
-Release 3.5.0 of WoW Raid Manager
+Release Notes for RC2:
+--------------------------
+Bug 0000030: Localization Error for Announcements Header Fixed.
+Added code to fix the localization of the word "announcements" 
+above the announcements display box on the front page and in the calendar page.
+
+Fixed Italian Installation Localization
+Fix to several installation and message strings for the italian l10n.
+Italian l10n of sort_desc and sort_asc strings.
+
+Bug 0000031: Text for Title and Message headers do not show up.
+There was an issue with the langauge files for all languages that had the
+wrong keys for announcements_title_text and announcements_messages_text.
+The keys were announcements_title_txt and announcements_msg_txt in the
+language file and as above in the code.
+Note: Italian is not included in this patch due to there being other
+changes for the italian language files.
+
+Bug 0000034: Character Armory Links do not show up on Logs page.
+There was a bug with the logs page where the armory call didn't include 
+the server name or language and thus could not properly retrieve information
+from the WOW Armory.
+
+Bug 0000035: Parse error with unexpected & for php v4.
+There was a parse error using pass by reference to desanitize and sanitize
+the data comming from and to the database.  This only happened for phpV4
+because it doesn't support foreach and pass by reference.  Used a
+different method of handling this from the PHP boards.
+
+Bug 0000037: Inserts to Profile Table in Bridge fails.
+Failure in inserting new folks to the profile table due to only attempting
+to insert into 5 fields (the last_login_time field was forgotten and thus
+caused a failure on insert).
+
+i18n Error: reports.php sort strings untranslated.
+There were hard coded strings for sort in descending and ascending order
+that are now translated for i18n.
+
+l10n of the ampm string for german.
+
+Fix for bug 0000038: Missing config.php file.
+Redirect in common.php was done after the load of the config.php file
+which, for a default installation, would blow up since it didn't exist.
+
+Bug 0000039: HTMLSPECIALCHARS_DECODE Fails on PHP4.
+The htmlspecialchars_decode function is PHP5 (5.1.0) only and doesn't work
+for php4.  There is a new function definition at the top of the file to define the
+function for php4 folks.
+
+Bug Fix: 0000040 - PWDHASH throwing errors on load in SMF, SMF2 and XOOPS
+The SMF, SMF2 and XOOPS bridges are failing when loading the pwdhash
+functions.  The include is incorrect.  This has been updated, please see
+bug.
+
+Additional l10n: French, updates to other languages.
+This is an addition of the French language translation to WRM.  Also
+updated a phpraid/spiffyJr string to wowraid manager.
+
+Removed the unixdatetime.js from the header.
+
+Bug 0000041: Problem with v4.0 of MySQL and Collation/Character Set fixed.
+This is a fix for the issue where MySQL 4.0 folks fail installation with
+the CHARACTER SET and COLLATE commands on the end of the table creation
+script.
+
+Modified upgrade string from "Upgrade from XXX" to "Upgrade 
+to XXX".
+
+Bug 0000039: Fix for raid description tooltips.
+This is a fix for the raid description mouse over tooltips.
+
+Release of 3.5.0 of WoW Raid Manager
 -----------------------------------
 What an update!  Roles, Internationalization, Date Sort fixes, and a whole SLEW of other changes mark this
 version as a fairly major update.  As always, this release supercedes any prior release of WRM.
