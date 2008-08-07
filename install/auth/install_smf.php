@@ -120,7 +120,7 @@ function step5($auth_type)
 		mysql_select_db($db_name);
 		
 		// all users -> select boxes.
-		$smfusernametable = '<select name="smf_useradmin" class="post">';
+		$smfusernametable = '<select name="smf_useradmin_name" class="post">';
 
 		$sql = "SELECT memberName, emailAddress FROM " . $smf_prefix . "members ORDER BY memberName";
 		
@@ -128,8 +128,8 @@ function step5($auth_type)
 		if (mysql_num_rows($result) > 0) {
 			while ($data = mysql_fetch_assoc($result)) {
 				$smfusernametable .= '<option value="' . $data['memberName']. '">' .$data['memberName']. ': '.$data['emailAddress'] . '</option>';
-				$smf_useradmin_name = $data['memberName'];
-				$smf_useradmin_email = $data['emailAddress'];
+//				$smf_useradmin_name = $data['memberName'];
+//				$smf_useradmin_email = $data['emailAddress'];
 			}
 		}
 		$smfusernametable .= '</select>';
@@ -141,8 +141,8 @@ function step5($auth_type)
 		$content .= '<input type="hidden" name="auth_type" value="' . $auth_type . '" class="post">';
 		$content .= '<input type="hidden" name="substep" value="3" class="post">';
 		$content .= '<input type="hidden" name="smf_base_path" value="'.$smf_base_path.'" class="post">';
-		$content .= '<input type="hidden" name="smf_useradmin_name" value="'.$smf_useradmin_name.'" class="post">';
-		$content .= '<input type="hidden" name="smf_useradmin_email" value="'.$smf_useradmin_email.'" class="post">';
+//		$content .= '<input type="hidden" name="smf_useradmin_name" value="'.$smf_useradmin_name.'" class="post">';
+//		$content .= '<input type="hidden" name="smf_useradmin_email" value="'.$smf_useradmin_email.'" class="post">';
 		$content .= $localstr['step5smfsub2readconffile'].': <font color=green>'.$localstr['step5done'].'</font><br>';
 		$content .= '<br>------------------------------------------------------------------<br><br>';
 		$content .= '<br><br>';	
@@ -154,7 +154,6 @@ function step5($auth_type)
 		$content .= '<br>------------------------------------------------------------------<br>';	
 		$content .= $localstr['hittingsubmit'].'.<br><br>';
 		$content .= '<input type="submit" value="'.$localstr['bd_submit'].'" name="submit" class="post"></form>';
-
 	}
 	else if ($step5_substep == 3){
 	
