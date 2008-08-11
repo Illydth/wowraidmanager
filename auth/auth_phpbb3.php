@@ -44,7 +44,7 @@ function check_profile($user)
 	//Update email incase it doesn't match phpBB
 	if($user->data['user_email'] != $result['email'])
 	{
-		$sql = sprintf("UPDATE" . $phpraid_config['db_prefix'] . "profile SET email=%s, last_login_time=%s WHERE profile_id=%s", quote_smart($email), quote_smart(time()), quote_smart($user_id));
+		$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "profile SET email=%s, last_login_time=%s WHERE profile_id=%s", quote_smart($email), quote_smart(time()), quote_smart($user_id));
 		$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 	}
 	
@@ -154,8 +154,9 @@ unset($template);
 
 //0 = not log in
 //1 = log in
+
 if ($user->data['username'] != 'Anonymous' ) {
-		
+
 	if ($user->data['user_id'] != '1') {
 
 		// check profile in db
@@ -172,10 +173,12 @@ if ($user->data['username'] != 'Anonymous' ) {
 		$_SESSION['session_logged_in'] = 0;
 	}
 }else{
+
 		//if user login -> Anonymous 
-			$_SESSION['priv_configuration'] = 0;
+			$_SESSION['session_logged_in'] = 0;
+//			$_SESSION['priv_configuration'] = 0;
 			$_SESSION['priv_profile'] = -1;
-			define("PAGE_LVL","profile");
+//			define("PAGE_LVL","profile");
 }
 
 ?>
