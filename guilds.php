@@ -105,21 +105,38 @@ if($_GET['mode'] == 'view') {
 	$short = scrub_input($_POST['short'], false);
 	$master = scrub_input($_POST['master'], false);
 	
-	if($_GET['mode'] == 'new') 	{
-		$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "guilds (`guild_master`,`guild_name`,`guild_tag`) 
-		VALUES (%s,%s,%s)",quote_smart($master),quote_smart($name),quote_smart($short));
-		
-		$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-		
-		log_create('guild',mysql_insert_id(),$name);
-	} elseif($_GET['mode'] == 'edit') {
-		$id = scrub_input($_GET['id'], false);
-		
-		$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "guilds SET guild_name=%s,guild_tag=%s,guild_master=%s WHERE guild_id=%s",quote_smart($name),quote_smart($short),quote_smart($master),quote_smart($id));
-		$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-	}
+	// Added Verifications
+	$errorSpace = 1;
+	$errorTitle = $phprlang['form_error'];
+	$errorMsg = '<ul>';
+	if ($name == '')
+		$errorMsg .= '<li>'.$phprlang['guild_name_missing'].'</li>';
+	if ($short == '')
+		$errorMsg .= '<li>'.$phprlang['guild_tag_missing'].'</li>';
+	$errorDie = 0;
+	$errorMsg .= '</ul>';
+
+	if($errorMsg != '<ul></ul>')
+		$errorDie = 1;
+	else
+	{
+		if($_GET['mode'] == 'new') 	{
+			$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "guilds (`guild_master`,`guild_name`,`guild_tag`) 
+			VALUES (%s,%s,%s)",quote_smart($master),quote_smart($name),quote_smart($short));
+			
+			$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+			
+			log_create('guild',mysql_insert_id(),$name);
+		} elseif($_GET['mode'] == 'edit') {
+			$id = scrub_input($_GET['id'], false);
+			
+			$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "guilds SET guild_name=%s,guild_tag=%s,guild_master=%s WHERE guild_id=%s",quote_smart($name),quote_smart($short),quote_smart($master),quote_smart($id));
+			$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		}		
 	
-	header("Location: guilds.php?mode=view");
+		header("Location: guilds.php?mode=view");
+	}
+
 } elseif($_GET['mode'] == 'delete') {
 	$id = scrub_input($_GET['id'], false);
 	$n = scrub_input($_GET['n'], false);
