@@ -46,12 +46,24 @@ if($raid_id == '')
 //$server = $phpraid_config['guild_server'];
 
 $users = array();
+//$signed_profile_id_arr = array();
+//$profile_list_arr = array();
+//$not_in_signed_arr = array();
 
 // Get a list of all Profiles that are NOT currently signed up for this raid. 
-$sql = sprintf("SELECT profile_id, username, last_login_time FROM " . $phpraid_config['db_prefix'] . "profile " .
-		"WHERE profile_id NOT IN " .
-		    "(SELECT profile_id FROM " . $phpraid_config['db_prefix'] . "signups " .
-		     "WHERE raid_id = %s)", quote_smart($raid_id));
+// Update: We can't use "NOT IN" because MySQL 4.0 doesn't support it (MUTTER).  We've got to do it
+//   with left joins.  Solution found on net.
+//$sql = sprintf("SELECT profile_id, username, last_login_time FROM " . $phpraid_config['db_prefix'] . "profile " .
+//		"WHERE profile_id NOT IN " .
+//		    "(SELECT profile_id FROM " . $phpraid_config['db_prefix'] . "signups " .
+//		     "WHERE raid_id = %s)", quote_smart($raid_id));
+
+$sql = sprintf("SELECT a.profile_id, a.username, a.last_login_time " .
+				"FROM " . $phpraid_config['db_prefix'] . "profile AS a " . 
+				"LEFT JOIN " . $phpraid_config['db_prefix'] . "signups ON a.profile_id = " . $phpraid_config['db_prefix'] . "signups.profile_id " .
+				    "AND " . $phpraid_config['db_prefix'] . "signups.raid_id = %s " .
+				"WHERE " . $phpraid_config['db_prefix'] . "signups.profile_id IS NULL", quote_smart($raid_id));
+
 $result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 
 while($data = $db_raid->sql_fetchrow($result, true))
