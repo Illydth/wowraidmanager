@@ -1,7 +1,7 @@
 <?php
 // classes
 $phprlang['druid'] = 'Druide';
-$phprlang['hunter'] = 'Jäger';
+$phprlang['hunter'] = 'JÃ¤ger';
 $phprlang['mage'] = 'Magier';
 $phprlang['paladin'] = 'Paladin';
 $phprlang['priest'] = 'Priester';
