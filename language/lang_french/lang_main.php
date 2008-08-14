@@ -46,8 +46,6 @@ require_once('lang_wow.php');
 $phprlang['add_team']='Cochez pour ajouter à l\'équipe';
 $phprlang['add_team_dropdown_text']='Sèlectionnez une équipe pour y ajouter des membres';
 $phprlang['team_global']='Sélection des groupes disponibles pour tous les Raids';
-$phprlang['sort_desc']='Click here to sort (in descending order) by ';
-$phprlang['sort_asc']='Click here to sort (in ascending order) by '; 
 $phprlang['male'] = 'Male';
 $phprlang['female'] = 'Femelle';
 $phprlang['class'] = 'Classe';
@@ -225,6 +223,8 @@ $phprlang['dkp_link'] = '&raquo; DKP';
 
 // sorting information
 $phprlang['sort_text'] = 'Cliquer ici pour trier par ';
+$phprlang['sort_desc']='Click here to sort (in descending order) by ';
+$phprlang['sort_asc']='Click here to sort (in ascending order) by '; 
 
 // tooltips
 $phprlang['add'] = 'Ajouter';

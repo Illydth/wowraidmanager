@@ -44,8 +44,6 @@ require_once('lang_wow.php');
 $phprlang['add_team']='點擊以增加新隊伍';
 $phprlang['add_team_dropdown_text']='將新成員增加至隊伍';
 $phprlang['team_global']='使隊伍可供各類團隊使用';
-$phprlang['sort_desc']='Click here to sort (in descending order) by ';
-$phprlang['sort_asc']='Click here to sort (in ascending order) by '; 
 $phprlang['male'] = '男性';
 $phprlang['female'] = '女性';
 $phprlang['class'] = '職業';
@@ -223,6 +221,8 @@ $phprlang['dkp_link'] = '&raquo; DKP';
 
 // sorting information
 $phprlang['sort_text'] = '排序依照';
+$phprlang['sort_desc']='Click here to sort (in descending order) by ';
+$phprlang['sort_asc']='Click here to sort (in ascending order) by '; 
 
 // tooltips
 $phprlang['add'] = '新增';

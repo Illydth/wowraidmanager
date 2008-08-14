@@ -44,8 +44,6 @@ require_once('lang_wow.php');
 $phprlang['add_team']='Kryss av for å legge til Lag';
 $phprlang['add_team_dropdown_text']='Velg Lag til å legge medlemmer til';
 $phprlang['team_global']='Marker gruppe tilgjengelig for alle raid';
-$phprlang['sort_desc']='Click here to sort (in descending order) by ';
-$phprlang['sort_asc']='Click here to sort (in ascending order) by '; 
 $phprlang['male'] = 'Mann';
 $phprlang['female'] = 'Dame';
 $phprlang['class'] = 'Class';
@@ -83,9 +81,9 @@ $phprlang['total'] = 'total';
 $phprlang['section'] = 'Avsnitt';
 $phprlang['prev'] = 'Forrige';
 $phprlang['next'] = 'Neste';
-$phprlang['earned'] = 'Earned';
-$phprlang['spent'] = 'Spent';
-$phprlang['adjustment'] = 'Adjustment';
+$phprlang['earned'] = 'Tjent';
+$phprlang['spent'] = 'Brukt';
+$phprlang['adjustment'] = 'Justering';
 $phprlang['dkp'] = 'DKP';
 
 // roles
@@ -135,8 +133,8 @@ $phprlang['form_error'] = 'Feil i formen';
 $phprlang['form_select'] = 'Velg en';
 $phprlang['no'] = 'Nei';
 $phprlang['none'] = 'Ingen';
-$phprlang['guild_name_missing'] = 'The Full Guild Name is missing.';
-$phprlang['guild_tag_missing'] = 'The Guild Tag is missing.';
+$phprlang['guild_name_missing'] = 'Fullt guild navn mangler.';
+$phprlang['guild_tag_missing'] = 'Guild taggen mangler.';
 $phprlang['permissions_form_description'] = 'Du må legge til en beskrivelse';
 $phprlang['permissions_form_name'] = 'Du må legge til et navn';
 $phprlang['profile_error_arcane'] = 'Arcane må være et tall';
@@ -221,6 +219,8 @@ $phprlang['dkp_link'] = '&raquo; DKP';
 
 // sorting information
 $phprlang['sort_text'] = 'Trykk her for å sortere etter ';
+$phprlang['sort_desc']='Klikk her for å sortere (synkende) av ';
+$phprlang['sort_asc']='Klikk her for å sortere (stigende) av '; 
 
 // tooltips
 $phprlang['add'] = 'Legg til';
