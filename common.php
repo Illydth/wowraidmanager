@@ -102,6 +102,11 @@ else
 	require_once($phpraid_dir."language/lang_{$phpraid_config['language']}/lang_main.php");
 }
 
+foreach($phprlang as $key => $value)
+{
+	$phprlang[$key] = htmlentities($value, ENT_QUOTES, "UTF-8", false);
+}
+
 // get auth type
 require_once($phpraid_dir.'auth/auth_' . $phpraid_config['auth_type'] . '.php');
 get_permissions();
