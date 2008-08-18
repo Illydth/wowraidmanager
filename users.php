@@ -102,8 +102,8 @@ if($mode == 'view')
 	$report->addOutputColumn('username',$phprlang['username'],'','center');
 	$report->addOutputColumn('email',$phprlang['email'],'','center');
 	$report->addOutputColumn('priv',$phprlang['priv'],'','center');
-	$report->addOutputColumn('last_login_date',$phprlang['last_login_date'],'unixtime','center');
-	$report->addOutputColumn('last_login_time',$phprlang['last_login_time'],'','center');
+	$report->addOutputColumn('last_login_date',$phprlang['last_login_date'],'wrmdate','center');
+	$report->addOutputColumn('last_login_time',$phprlang['last_login_time'],'wrmtime','center');
 	$report->addOutputColumn('','','','right');
 	$users = $report->getListFromArray($users);
 
