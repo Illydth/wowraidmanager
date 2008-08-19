@@ -927,11 +927,23 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 		$wk = scrub_input($_POST['wk']);
 		$wa = scrub_input($_POST['wa']);
 		$role1 = scrub_input($_POST['role1']);
+		if ($role1 == '')
+			$role1 = '0';
 		$role2 = scrub_input($_POST['role2']);
+		if ($role2 == '')
+			$role2 = '0';
 		$role3 = scrub_input($_POST['role3']);
+		if ($role3 == '')
+			$role3 = '0';
 		$role4 = scrub_input($_POST['role4']);
+		if ($role4 == '')
+			$role4 = '0';
 		$role5 = scrub_input($_POST['role5']);
+		if ($role5 == '')
+			$role5 = '0';
 		$role6 = scrub_input($_POST['role6']);
+		if ($role6 == '')
+			$role6 = '0';
 		$min_lvl = scrub_input($_POST['min_lvl']);
 		$max_lvl = scrub_input($_POST['max_lvl']);
 
