@@ -3,6 +3,67 @@ at:
 
 * http://www.wowraidmanager.net/wiki/index.php?title=Installation
 
+Release of 3.5.0 of WoW Raid Manager
+-----------------------------------
+What an update!  Roles, Internationalization, Date Sort fixes, and a whole SLEW of other changes mark this
+version as a fairly major update.  As always, this release supercedes any prior release of WRM.
+
+LOTS of changes to this one, please see the notes below for information on what all has been changed/fixed.
+
+I'd like to thank Diska, Neme, Nimo and Nalumis of the WRM boards for their code contributions.  Much/Most
+of the code changes in this release come from one of these 4, implemented/modified/changed by me.  There 
+were also other more minor code contributions by a large segment of the community and I'd like to thank 
+EVERYONE of you out there for your help and assistance for making this project what it is.
+
+Because of the mass amount of user contributed code in this release I am going to refrain from tagging 
+specific changes to specific people as in a lot of cases a large amount of these changes were contributed
+and worked on by multiple people or contributions built upon other contributions.  That said I would be 
+amiss if I did not identify up front that the new installer is entirely Neme's with a few minor 
+modifications by me, and a large amount of the other code (including the implementation for Roles) came 
+from Nalimus's personal code base.  Major thanks to both of you.
+
+Release Notes for Final Release of WRM 3.5.0
+---------------------------------------------
+Bug 0000047 and 0000048: Fix to the "Update" statement bugs and a bug in PHPBB3 that 
+removed the ability to display pages anonymously...as well as allowed raid creation to
+users that weren't supposed to be able to create raids.
+
+Bug 0000046: SMF 1 Bridge sets admin permissions on the wrong user.
+This bug is fixed.  There were some additional lines left in that were
+removed for the other bridges.
+
+Bug 0000051: Localization Error - Hunters unable to be promoted.
+There was a problem with one of the characters in this file, this has been
+fixed.
+
+Multiple Language Updates
+
+Bug 0000043: Guild Tag in Guilds sections doesn't get validated.
+Fix for bug 43 where the guild tag (and guild name) don't get validated
+upon creation and thus can cause character creation and other problems
+down the line.
+
+Fix for Bug 0000052: View Profiles not signed up error.
+There is a bug with the "view profiles not signed up" for MySQL 
+4.0 users. The original code used a "NOT IN" query (subquery) which is not 
+supported by MySQL 4.0.  The new code uses a "LEFT JOIN" to do basically 
+the same thing.
+
+Bug: Date/Time Not displayed correctly in user.php
+The Date/Time displayed in User.php was not properly being shown.  This is
+because the formatting codes (wrmdate, wrmtime) were not properly 
+applied to the report column, this is now fixed.
+
+Bug: Error Adding raids with less than 6 defined roles.
+There's a bug where less than 6 defined roles will cause the raids.php
+interface to output: "Incorrect integer value: '' for column 
+'role5_lmt' at row 1". Forcing 0's into undefined limit fields to fix this.
+
+Template Update/Addition
+The included are all changes needed to support the new m9wowLK template.
+The above changes are all modifications of spacing and modifications of
+minor parts of the htm files to support the new Template.
+
 Release Notes for RC2:
 --------------------------
 Bug 0000030: Localization Error for Announcements Header Fixed.
@@ -74,29 +135,8 @@ to XXX".
 Bug 0000039: Fix for raid description tooltips.
 This is a fix for the raid description mouse over tooltips.
 
-Release of 3.5.0 of WoW Raid Manager
------------------------------------
-What an update!  Roles, Internationalization, Date Sort fixes, and a whole SLEW of other changes mark this
-version as a fairly major update.  As always, this release supercedes any prior release of WRM.
-
-LOTS of changes to this one, please see the notes below for information on what all has been changed/fixed.
-
-I'd like to thank Diska, Neme, Nimo and Nalumis of the WRM boards for their code contributions.  Much/Most
-of the code changes in this release come from one of these 4, implemented/modified/changed by me.  There 
-were also other more minor code contributions by a large segment of the community and I'd like to thank 
-EVERYONE of you out there for your help and assistance for making this project what it is.
-
-Because of the mass amount of user contributed code in this release I am going to refrain from tagging 
-specific changes to specific people as in a lot of cases a large amount of these changes were contributed
-and worked on by multiple people or contributions built upon other contributions.  That said I would be 
-amiss if I did not identify up front that the new installer is entirely Neme's with a few minor 
-modifications by me, and a large amount of the other code (including the implementation for Roles) came 
-from Nalimus's personal code base.  Major thanks to both of you.
-
-NEW!  I am releasing this as a BETA release first due to the mass amount of changes.
-
-Changes
------------
+Release Notes for RC1:
+----------------------
 
 * BUG: Sorting by International Date has been fixed!  This one has been open for quite some time and has
 finally been quashed.  The original implementation used a javascript to generate the proper formatting.  I
@@ -212,19 +252,36 @@ the SQL being generated incorrectly that caused this to be broken...it is now fi
 
 Offical Bugs Fixed:
 -----------------------
-00000002 - Header Image Hard Coded
-00000003 - Wrong Website Link in Configuration Error Messages
-00000005 - Authentication Type Documentation link wrong in Installer.
-00000011 - .htaccess showing up as authentication type in Installer.
-00000012 - International Date Sorting is Incorrect
-00000014 - International Date Sorting is Incorrect
-00000015 - Generic Internationalization Errors
-00000019 - Female Display for all Classes
-00000023 - Max Limit of Users in Raids does not limit raid signup.
-00000025 - Log Deletion Broken
-00000027 - Multi character signup fails with get_dupesignup_symbol()
-00000028 - Turn off Armory Lookups
-00000029 - Error on Display (Header) - Missing Argument 5 for get_coloredcount().
+0000002 - Header Image Hard Coded
+0000003 - Wrong Website Link in Configuration Error Messages
+0000005 - Authentication Type Documentation link wrong in Installer.
+0000011 - .htaccess showing up as authentication type in Installer.
+0000012 - International Date Sorting is Incorrect
+0000014 - International Date Sorting is Incorrect
+0000015 - Generic Internationalization Errors
+0000019 - Female Display for all Classes
+0000023 - Max Limit of Users in Raids does not limit raid signup.
+0000025 - Log Deletion Broken
+0000027 - Multi character signup fails with get_dupesignup_symbol()
+0000028 - Turn off Armory Lookups
+0000029 - Error on Display (Header) - Missing Argument 5 for get_coloredcount().
+0000030 - Localization Error: ANNOUNCEMENTS header above displayed annoucements are not localized.
+0000031 - Text for Title and Message do not show on left side of Announcements Page
+0000034 - Character Armory Links do not show up in Logs section - Produces Errors
+0000035 - Parse error: syntax error, unexpected '&', expecting T_VARIABLE or '$' in includes/functions.php on line 278
+0000037 - Inserts to Profile Table fail with error.
+0000038 - Installation Fails if config.php is not there...config.php is removed in 3.5
+0000039 - htmlspecialchars_decode() Fails on PHP4.
+0000040 - SMF, SMF2 and XOOPS bridges fail when loading functions_pwdhash.php
+0000041 - Install Crashes with MySQL v4.0 due to inability to handle Collation/Character Set modification on table create.
+0000043 - Guild create doesn't force guild tag to be properly filled in, causes problems in char create.
+0000044 - Bug with Update SQL to update character retrieved from foreign system. (phpbb auth)
+0000045 - General Bridge Failures (All) - Security Issues, Xoops issue.
+0000046 - SMF1 Bridge Incorrectly sets admin permissions on last user pulled from SMF
+0000048 - Anonymous Viewing Does not Take with PHPBB3 Bridge
+0000049 - SQL Errors in phpbb and phpbb3 authentication.
+0000051 - Localization Error: German lang_wow.php file not in "utf8" format.
+0000052 - View Profiles Not Signed Up Crashes on MySQL 4.0.
 
 Unfinished/Incomplete
 ----------------------

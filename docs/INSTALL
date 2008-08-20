@@ -22,7 +22,6 @@ Quick Installation
 	
 Please see phpRaid_install_doc.pdf for more information.
 
-
 Quick Upgrade
 -------------------
 * Unpackage the files from this archive into a directory on your local machine.
@@ -34,6 +33,12 @@ Quick Upgrade
     the way through to the end (much of your prior information should be already set) and 
     make sure to properly re-set your authentication method (if it's not pre-selected for you)
     already).   
+
+Upgrading from a Release Candidate of 3.5
+-------------------------------------------
+If you are upgrading from another release candidate of 3.5 (RC1, RC2) you should only need to
+upload the files to your directory.  There is no real need to run the installer to upgrade your
+database as no database changes have taken place.
 	
 Installing phpRaid into a supported CMS system
 -----------------------------------------------
