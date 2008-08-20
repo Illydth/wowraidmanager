@@ -269,11 +269,11 @@ if($mode == 'view')
 
 	if($phpraid_config['show_id'] == 1)
 		$report->addOutputColumn('id',$phprlang['id'],'','center');
-	$report->addOutputColumn('name',$phprlang['username'],'','left');
-	$report->addOutputColumn('class',$phprlang['class'],'','left');
-	$report->addOutputColumn('guild',$phprlang['guild'],'','left');
-	$report->addOutputColumn('level',$phprlang['level'],'','left');
-	$report->addOutputColumn('action',$phprlang['add_team'],'','left',__NOLINK__);
+	$report->addOutputColumn('name',$phprlang['username'],'','center');
+	$report->addOutputColumn('class',$phprlang['class'],'','center');
+	$report->addOutputColumn('guild',$phprlang['guild'],'','center');
+	$report->addOutputColumn('level',$phprlang['level'],'','center');
+	$report->addOutputColumn('action',$phprlang['add_team'],'','center',__NOLINK__);
 	$team_add_body .= $report->getListFromArray($team_add);
 
 	$team_add_buttons = '<input type="submit" value="'.$phprlang['submit'].'" name="submit" class="mainoption">

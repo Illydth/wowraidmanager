@@ -110,7 +110,10 @@ $page->set_var(
 			'of_string'=>$phprlang['of'],
 			'rss_feed_string'=>$phprlang['rss_feed_text'],
 			'guild_time_string'=>$phprlang['guild_time_string'],
-			'menu_header_text'=>$phprlang['menu_header_text']
+			'menu_header_text'=>$phprlang['menu_header_text'],
+			'armory_url'=>$phpraid_config['armory_link'],
+			'dkp_url'=>$phpraid_config['eqdkp_url'],
+			'header_link'=>$phpraid_config['header_link'],
 	)
 );
 

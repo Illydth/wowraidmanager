@@ -1735,7 +1735,7 @@ else if($mode == 'edit_comment')
 	$page->set_file('view_output',$phpraid_config['template'].'/view_edit.htm');
 	$page->set_var(
 		array(
-			'header'=>$phprlang['view_edit_header'],
+			'header'=>$phprlang['view_comments'],
 			'view_edit'=>$view_edit
 		)
 	);

@@ -48,10 +48,11 @@ if($use_images == 0) {
 	$theme_home_link = $image_home;
 	$theme_announcement_link = $image_announcement;
 	$theme_raids_link = $image_raids;
+	$theme_calendar_link = $image_calendar;
 	$theme_locations_link = $image_locations;
-	$theme_logs_link = $image_locations;
+	$theme_logs_link = $image_logs;
 	$theme_profile_link = $image_profile;
-	$theme_profile_link = $image_users;
+	$theme_users_link = $image_users;
 	$theme_register_link = $image_register;
 	$theme_roster_link = $image_roster;
 	$theme_lua_output_link = $image_lua_output;

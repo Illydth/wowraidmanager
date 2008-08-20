@@ -123,6 +123,7 @@ $phprlang['eqdkp_system_link'] = 'Direct link to Associated DKP System:';
 
 // guilds
 $phprlang['guilds_header'] = 'Liste des Guildes';
+$phprlang['guilds_new_header'] = 'New Guild';
 $phprlang['guilds_master'] = 'Maitre de guilde';
 $phprlang['guilds_name'] = 'Nom complet de la Guilde';
 $phprlang['guilds_tag']	= 'Tag de Guilde';						
