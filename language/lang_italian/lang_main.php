@@ -199,22 +199,22 @@ $phprlang['2ltrfriday'] = 'Ve';
 $phprlang['2ltrsaturday'] = 'Sa';
 							
 // links
-$phprlang['announcements_link'] = '&raquo; Annunci';
-$phprlang['configuration_link'] = '&raquo; Configurazione';
-$phprlang['guilds_link'] = '&raquo; Gilde';
-$phprlang['home_link'] = '&raquo; Indice';
-$phprlang['calendar_link'] = '&raquo; Calendario eventi';
-$phprlang['locations_link'] = '&raquo; Istanze';
-$phprlang['logs_link'] = '&raquo; Log';
-$phprlang['permissions_link'] = '&raquo; Profili Utente';
-$phprlang['profile_link'] = '&raquo; Personaggi';
-$phprlang['raids_link'] = '&raquo; Raid';
-$phprlang['register_link'] = '&raquo; Registrati';
-$phprlang['roster_link'] = '&raquo; Roster';
-$phprlang['users_link'] = '&raquo; Utenti';
-$phprlang['lua_output_link'] = '&raquo; Export LUA';
-$phprlang['index_link'] = '&raquo; Homepage';
-$phprlang['dkp_link'] = '&raquo; DKP';
+$phprlang['announcements_link'] = '&raquo;&nbsp;Annunci';
+$phprlang['configuration_link'] = '&raquo;&nbsp;Configurazione';
+$phprlang['guilds_link'] = '&raquo;&nbsp;Gilde';
+$phprlang['home_link'] = '&raquo;&nbsp;Indice';
+$phprlang['calendar_link'] = '&raquo;&nbsp;Calendario&nbsp;eventi';
+$phprlang['locations_link'] = '&raquo;&nbsp;Istanze';
+$phprlang['logs_link'] = '&raquo;&nbsp;Log';
+$phprlang['permissions_link'] = '&raquo;&nbsp;Profili&nbsp;Utente';
+$phprlang['profile_link'] = '&raquo;&nbsp;Personaggi';
+$phprlang['raids_link'] = '&raquo;&nbsp;Raid';
+$phprlang['register_link'] = '&raquo;&nbsp;Registrati';
+$phprlang['roster_link'] = '&raquo;&nbsp;Roster';
+$phprlang['users_link'] = '&raquo;&nbsp;Utenti';
+$phprlang['lua_output_link'] = '&raquo;&nbsp;Export&nbsp;LUA';
+$phprlang['index_link'] = '&raquo;&nbsp;Forum';
+$phprlang['dkp_link'] = '&raquo;&nbsp;DKP';
 
 // sorting information
 $phprlang['sort_text'] = 'Clicka qui per ordinare per ';

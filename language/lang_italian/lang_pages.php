@@ -118,10 +118,11 @@ $phprlang['configuration_version_outdated_message'] = 'La versione in uso di Wow
 													   L\'ultima versione è %s, mentre quella in uso è %s.<br>
 													   Per scaricare l\'ultima versione, fare riferimento all\'area Download di <a href="http://www.wowraidmanager.net">WowRaidManager.net</a>.';
 // DKP View
-$phprlang['eqdkp_system_link'] = 'Direct link to Associated DKP System:';
+$phprlang['eqdkp_system_link'] = 'Link al sistema DKP:';
 
 // guilds
 $phprlang['guilds_header'] = 'Lista delle Gilde';
+$phprlang['guilds_new_header'] = 'New Guild';
 $phprlang['guilds_master'] = 'GuildMaster';
 $phprlang['guilds_name'] = 'Nome della Gilda';
 $phprlang['guilds_tag']	= 'Abbreviazione della Gilda';						
@@ -232,7 +233,7 @@ $phprlang['view_create'] = 'Definisci un Personaggio da iscrivere';
 $phprlang['view_date'] = 'Data';
 $phprlang['view_description_header'] = 'Descrizione del Raid';
 $phprlang['view_frozen'] = 'Le iscrizioni per questo Raid sono chiuse';
-$phprlang['view_information_header'] = 'Informazione';
+$phprlang['view_information_header'] = 'Informazioni';
 $phprlang['view_invite'] = 'Ora di invito';
 $phprlang['view_location'] = 'Istanza';
 $phprlang['view_login'] = 'Accedi a WowRaidManager con i tuoi username e password per poterti iscrivere';
@@ -270,7 +271,7 @@ $phprlang['menu_header_text'] = 'Menù di WRM';
 $phprlang['team_new_header'] = 'Crea un nuovo Team';
 $phprlang['team_add_header'] = 'Aggiungi membri al Team';
 $phprlang['team_remove_header'] = 'Rimuovi membri dal Team';
-$phprlang['teams_raid_view_text'] = 'Ritorna alla visualizzazione dei Raid';
+$phprlang['teams_raid_view_text'] = 'Torna alla visualizzazione del Raid';
 $phprlang['team_cur_teams_header'] = 'Team creati';
 $phprlang['team_page_header'] = 'Team';
 ?>
