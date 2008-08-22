@@ -337,6 +337,19 @@ else
 	$armory_box .=   '<option value="http://tw.wowarmory.com">http://tw.wowarmory.com</option>';
 $armory_box .= '</select>';
 
+// Selection box for Raid View Type.
+$raid_view_type = '<select name="raid_view_type" class="post">';
+if ($phpraid_config['raid_view_type'] == 'by_class')
+	$raid_view_type .=   '<option value="by_class" selected>' . $phprlang['configuration_raid_view_type_class'] . '</option>';
+else
+	$raid_view_type .=   '<option value="by_class">' . $phprlang['configuration_raid_view_type_class'] . '</option>';
+if ($phpraid_config['raid_view_type'] == 'by_role')
+	$raid_view_type .=   '<option value="by_role" selected>'. $phprlang['configuration_raid_view_type_role'] . '</option>';
+else
+	$raid_view_type .=   '<option value="by_role">' . $phprlang['configuration_raid_view_type_role'] . '</option>';
+$raid_view_type .= '</select>';
+
+
 // Setup the Signup Flow Configuration Area - Setup Checkboxes
 // 		User Permissions
 if($phpraid_config['user_queue_promote'] == '0')
@@ -550,6 +563,7 @@ $page->set_var(
 		'show_id' => $show_id,
 		'guild_server' => $guild_server,
 		'armory_link' => $armory_box,
+		'raid_view_type' => $raid_view_type,
 		'armory_language' => $armory_language,
 		'admin_email' => $admin_email,
 		'email_signature' => $email_signature,
@@ -597,6 +611,7 @@ $page->set_var(
 		'class_limit_text' => $phprlang['configuration_class_limit_text'],
 		'class_as_min_text' => $phprlang['configuration_class_as_min'],
 		'armory_link_text' => $phprlang['configuration_armory_link_text'],
+		'raid_view_type_text' => $phprlang['configuration_raid_view_type_text'],
 		'armory_language_text' => $phprlang['configuration_armory_language_text'],
 		'enable_five_man_text' => $phprlang['configuration_enable_five_man'],
 		'dst_text' => $phprlang['configuration_dst_text'],
@@ -782,6 +797,7 @@ else
 	$rss_export_url_p = scrub_input($_POST['rss_export_url'], true);
 	$rss_feed_amt_p = scrub_input($_POST['rss_feed_amt']);
 	$armory_link = scrub_input($_POST['armory_link']);
+	$raid_view_type = scrub_input($_POST['raid_view_type']);
 	$armory_language = scrub_input($_POST['armory_language']);
 	$role1_name = scrub_input($_POST['role1_name']);
 	$role2_name = scrub_input($_POST['role2_name']);
@@ -1055,6 +1071,8 @@ else
 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'role5_name';", quote_smart($role5_name));
 	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'role6_name';", quote_smart($role6_name));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'raid_view_type';", quote_smart($raid_view_type));
 	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
 	//Signup Flow Config
 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'user_queue_promote';", quote_smart($uqp));
