@@ -176,7 +176,7 @@ $phprlang['signup'] = '註冊';
 // generic information
 $phprlang['delete_msg'] = '注意: 刪除後無法回復資料 <br>點擊下面的按鈕確認刪除.';
 $phprlang['disable_header'] = '系統維護中';
-$phprlang['disable_message'] = 'phpRaid系統現在維護中. 請稍候再試一次.';
+$phprlang['disable_message'] = 'WoW Raid Manager系統現在維護中. 請稍候再試一次.';
 $phprlang['login_title'] = '登入失敗';
 $phprlang['login_msg'] = '您輸入了錯誤的用戶名稱或密碼. 請再試一次.';
 $phprlang['userclass_msg'] = '您的e107使用者帳號未被授權,請聯繫系統管理者.';

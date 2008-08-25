@@ -178,10 +178,10 @@ $phprlang['signup'] = 'S\'inscrire';
 // generic information
 $phprlang['delete_msg'] = 'NOTICE: La suppression est IRREVERSIBLE. <br>Cliquez sur le bouton pour confirmer.';
 $phprlang['disable_header'] = 'Site en maintenance, contactez l\'administrateur si besoin.';
-$phprlang['disable_message'] = 'phpRaid est actuellement en maintenance. Réessayez plus tard.';
+$phprlang['disable_message'] = 'WoW Raid Manager est actuellement en maintenance. Réessayez plus tard.';
 $phprlang['login_title'] = 'Erreur d\'identification';
 $phprlang['login_msg'] = 'Mauvais mot de passe ou mauvais Identifiant. Veuillez réessayer.';
-$phprlang['userclass_msg'] = 'Your e107 user is not authorized to use phpRaid, please contact the system administrator.';
+$phprlang['userclass_msg'] = 'Your e107 user is not authorized to use WoW Raid Manager, please contact the system administrator.';
 $phprlang['priv_title'] = 'Privilèges insuffisants';
 $phprlang['priv_msg'] = 'Vosu n\'avez pas les privilèges pour accèder a cette page. Contactez l\'administrateur si vous pensez que c une erreur';
 $phprlang['remember'] = 'Garder mon identifiant en mémoire';

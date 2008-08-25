@@ -176,10 +176,10 @@ $phprlang['signup'] = 'Signup';
 // generic information
 $phprlang['delete_msg'] = 'NOTICE: Deletion is permanent and cannot be reversed. <br>Click the button below to continue.';
 $phprlang['disable_header'] = 'Site under maintenance';
-$phprlang['disable_message'] = 'phpRaid is currently undergoing maintenance. Please try again later.';
+$phprlang['disable_message'] = 'WoW Raid Manager is currently undergoing maintenance. Please try again later.';
 $phprlang['login_title'] = 'Login failed';
 $phprlang['login_msg'] = 'You have specified an invalid username or password. Please try again.';
-$phprlang['userclass_msg'] = 'Your e107 user is not authorized to use phpRaid, please contact the system administrator.';
+$phprlang['userclass_msg'] = 'Your e107 user is not authorized to use WoW Raid Manager , please contact the system administrator.';
 $phprlang['priv_title'] = 'Insufficient priveleges';
 $phprlang['priv_msg'] = 'You have insufficient priveleges to view this page. If you believe this is an error, please contact the site administrator';
 $phprlang['remember'] = 'Remember me on this computer';

@@ -230,7 +230,7 @@ $phprlang['users_header'] = 'Benutzer';
 
 // view
 $phprlang['view_approved'] = 'Bestätigte Mitglieder';
-$phprlang['view_cancel_header'] = 'Abgebrochene Anmeldungen';
+$phprlang['view_cancel_header'] = 'Abgemeldete Benutzer';
 $phprlang['view_character'] = 'Charakter';
 $phprlang['view_comments'] = 'Kommentare';
 $phprlang['view_create'] = 'Charakter erstellen';

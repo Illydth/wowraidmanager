@@ -175,10 +175,10 @@ $phprlang['signup'] = 'Anmelden';
 // generic information
 $phprlang['delete_msg'] = 'ACHTUNG: Die Löschung ist permanent und kann nicht rückgängig gemacht werden. <br>Klicke auf die Schaltfläche unten, um fortzufahren.';
 $phprlang['disable_header'] = 'Wartungsarbeiten';
-$phprlang['disable_message'] = 'phpRaid wird gerade Wartungsarbeiten unterzogen. Bitte versuche es später noch einmal.';
+$phprlang['disable_message'] = 'WoW Raid Manager wird gerade Wartungsarbeiten unterzogen. Bitte versuche es später noch einmal.';
 $phprlang['login_title'] = 'Login fehlgeschlagen';
 $phprlang['login_msg'] = 'Du hast einen ungültigen Benutzernamen oder ein falsches Passwort eingegeben. Bitte versuche es noch einmal.';
-$phprlang['userclass_msg'] = 'Dein e107-Benutzer hat nicht die Berechtigung, phpRaid zu benutzen. Bitte benachrichtige den System-Administrator.';
+$phprlang['userclass_msg'] = 'Dein e107-Benutzer hat nicht die Berechtigung, WoW Raid Manager zu benutzen. Bitte benachrichtige den System-Administrator.';
 $phprlang['priv_title'] = 'Ungenügende Rechte';
 $phprlang['priv_msg'] = 'Du hast nicht die Berechtigung, diese Seite aufzurufen. Wenn du glaubst, dass es sich dabei um einen Fehler handelt, benachrichtige bitte den Administrator.';
 $phprlang['remember'] = 'Mich bei jedem Besuch von diesem Computer automatisch anmelden';
