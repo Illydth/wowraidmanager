@@ -146,15 +146,27 @@ if($mode == 'view')
 	$raid_open = $raid_max - $raid_total;
 
 	// now, get the actual class information and put them into their arrays
-	$druid = array();
-	$hunter = array();
-	$mage = array();
-	$paladin = array();
-	$priest = array();
-	$rogue = array();
-	$shaman = array();
-	$warlock = array();
-	$warrior = array();
+	if ($phpraid_config['raid_view_type'] == 'by_class')
+	{
+		$druid = array();
+		$hunter = array();
+		$mage = array();
+		$paladin = array();
+		$priest = array();
+		$rogue = array();
+		$shaman = array();
+		$warlock = array();
+		$warrior = array();
+	}
+	else
+	{
+		$role1 = array();
+		$role2 = array();
+		$role3 = array();
+		$role4 = array();
+		$role5 = array();
+		$role6 = array();
+	}
 	$raid_queue = array();
 	$raid_cancel = array();
 
@@ -168,21 +180,7 @@ if($mode == 'view')
 	$warlock_count = 0;
 	$warrior_count = 0;
 
-	$role1_count = 0;
-	$role2_count = 0;
-	$role3_count = 0;
-	$role4_count = 0;
-	$role5_count = 0;
-	$role6_count = 0;
-
-	$qrole1_count = 0;
-	$qrole2_count = 0;
-	$qrole3_count = 0;
-	$qrole4_count = 0;
-	$qrole5_count = 0;
-	$qrole6_count = 0;
-
-	// parse the signup array and seperate to classes
+	// parse the signup array and seperate to classes or roles
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id=%s AND queue='0' AND cancel='0'", quote_smart($raid_id));
 	$signups_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 	while($signups = $db_raid->sql_fetchrow($signups_result, true))
@@ -237,6 +235,7 @@ if($mode == 'view')
 
 		$time = new_date('Y/m/d H:i:s',$signups['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']);
 		$date = $time;
+
 		switch($data['race'])
 		{
 			case $phprlang['draenei']:
@@ -331,93 +330,108 @@ if($mode == 'view')
 			$guildname = get_guild_name($data['name'], $server);
 		}
 
-		// now that we have the row, figure out what class and push into corresponding array
-		switch($data['class'])
-		{
-			case $phprlang['druid']:
-				$druid_count++;
-				array_push($druid,
-					array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,'role'=>$role,
-						  'race'=>$race,'name'=>$name,'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
-						  'date'=>$date,'time'=>$time,'team_name'=>$team_name,'guild'=>$guildname));
-				break;
-			case $phprlang['hunter']:
-				$hunter_count++;
-				array_push($hunter,
-					array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,'role'=>$role,
-						  'race'=>$race,'name'=>$name,'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
-						  'date'=>$date,'time'=>$time,'team_name'=>$team_name,'guild'=>$guildname));
-				break;
-			case $phprlang['mage']:
-				$mage_count++;
-				array_push($mage,
-					array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,'role'=>$role,
-						  'race'=>$race,'name'=>$name,'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
-						  'date'=>$date,'time'=>$time,'team_name'=>$team_name,'guild'=>$guildname));
-				break;
-			case $phprlang['paladin']:
-				$paladin_count++;
-				array_push($paladin,
-					array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,'role'=>$role,
-						  'race'=>$race,'name'=>$name,'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
-						  'date'=>$date,'time'=>$time,'team_name'=>$team_name,'guild'=>$guildname));
-				break;
-			case $phprlang['priest']:
-				$priest_count++;
-				array_push($priest,
-					array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,'role'=>$role,
-						  'race'=>$race,'name'=>$name,'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
-						  'date'=>$date,'time'=>$time,'team_name'=>$team_name,'guild'=>$guildname));
-				break;
-			case $phprlang['rogue']:
-				$rogue_count++;
-				array_push($rogue,
-					array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,'role'=>$role,
-						  'race'=>$race,'name'=>$name,'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
-						  'date'=>$date,'time'=>$time,'team_name'=>$team_name,'guild'=>$guildname));
-				break;
-			case $phprlang['shaman']:
-				$shaman_count++;
-				array_push($shaman,
-					array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,'role'=>$role,
-						  'race'=>$race,'name'=>$name,'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
-						  'date'=>$date,'time'=>$time,'team_name'=>$team_name,'guild'=>$guildname));
-				break;
-			case $phprlang['warlock']:
-				$warlock_count++;
-				array_push($warlock,
-					array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,'role'=>$role,
-						  'race'=>$race,'name'=>$name,'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
-						  'date'=>$date,'time'=>$time,'team_name'=>$team_name,'guild'=>$guildname));
-				break;
-			case $phprlang['warrior']:
-				$warrior_count++;
-				array_push($warrior,
-					array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,'role'=>$role,
-						  'race'=>$race,'name'=>$name,'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
-						  'date'=>$date,'time'=>$time,'team_name'=>$team_name,'guild'=>$guildname));
-				break;
+		// now that we have the row, figure out what class or role and push into corresponding array
+		if ($phpraid_config['raid_view_type'] == 'by_class')
+		{		
+			switch($data['class'])
+			{
+				case $phprlang['druid']:
+					array_push($druid,
+						array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,'role'=>$role,
+							  'race'=>$race,'name'=>$name,'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
+							  'date'=>$date,'time'=>$time,'team_name'=>$team_name,'guild'=>$guildname));
+					break;
+				case $phprlang['hunter']:
+					array_push($hunter,
+						array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,'role'=>$role,
+							  'race'=>$race,'name'=>$name,'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
+							  'date'=>$date,'time'=>$time,'team_name'=>$team_name,'guild'=>$guildname));
+					break;
+				case $phprlang['mage']:
+					array_push($mage,
+						array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,'role'=>$role,
+							  'race'=>$race,'name'=>$name,'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
+							  'date'=>$date,'time'=>$time,'team_name'=>$team_name,'guild'=>$guildname));
+					break;
+				case $phprlang['paladin']:
+					array_push($paladin,
+						array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,'role'=>$role,
+							  'race'=>$race,'name'=>$name,'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
+							  'date'=>$date,'time'=>$time,'team_name'=>$team_name,'guild'=>$guildname));
+					break;
+				case $phprlang['priest']:
+					array_push($priest,
+						array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,'role'=>$role,
+							  'race'=>$race,'name'=>$name,'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
+							  'date'=>$date,'time'=>$time,'team_name'=>$team_name,'guild'=>$guildname));
+					break;
+				case $phprlang['rogue']:
+					array_push($rogue,
+						array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,'role'=>$role,
+							  'race'=>$race,'name'=>$name,'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
+							  'date'=>$date,'time'=>$time,'team_name'=>$team_name,'guild'=>$guildname));
+					break;
+				case $phprlang['shaman']:
+					array_push($shaman,
+						array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,'role'=>$role,
+							  'race'=>$race,'name'=>$name,'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
+							  'date'=>$date,'time'=>$time,'team_name'=>$team_name,'guild'=>$guildname));
+					break;
+				case $phprlang['warlock']:
+					array_push($warlock,
+						array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,'role'=>$role,
+							  'race'=>$race,'name'=>$name,'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
+							  'date'=>$date,'time'=>$time,'team_name'=>$team_name,'guild'=>$guildname));
+					break;
+				case $phprlang['warrior']:
+					array_push($warrior,
+						array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,'role'=>$role,
+							  'race'=>$race,'name'=>$name,'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
+							  'date'=>$date,'time'=>$time,'team_name'=>$team_name,'guild'=>$guildname));
+					break;
+			}
 		}
-		switch($data['role'])
+		else
 		{
-			case $phpraid_config['role1_name']:
-				$role1_count++;
-				break;
-			case $phpraid_config['role2_name']:
-				$role2_count++;
-				break;
-			case $phpraid_config['role3_name']:
-				$role3_count++;
-				break;
-			case $phpraid_config['role4_name']:
-				$role4_count++;
-				break;
-			case $phpraid_config['role5_name']:
-				$role5_count++;
-				break;
-			case $phpraid_config['role6_name']:
-				$role6_count++;
-				break;
+			switch($data['role'])
+			{
+				case strtolower($phpraid_config['role1_name']):
+					array_push($role1,
+						array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,'role'=>$role,
+							  'race'=>$race,'name'=>$name,'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
+							  'date'=>$date,'time'=>$time,'team_name'=>$team_name,'guild'=>$guildname));
+					break;
+				case strtolower($phpraid_config['role2_name']):
+					array_push($role2,
+						array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,'role'=>$role,
+							  'race'=>$race,'name'=>$name,'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
+							  'date'=>$date,'time'=>$time,'team_name'=>$team_name,'guild'=>$guildname));
+					break;
+				case strtolower($phpraid_config['role3_name']):
+					array_push($role3,
+						array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,'role'=>$role,
+							  'race'=>$race,'name'=>$name,'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
+							  'date'=>$date,'time'=>$time,'team_name'=>$team_name,'guild'=>$guildname));
+					break;
+				case strtolower($phpraid_config['role4_name']):
+					array_push($role4,
+						array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,'role'=>$role,
+							  'race'=>$race,'name'=>$name,'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
+							  'date'=>$date,'time'=>$time,'team_name'=>$team_name,'guild'=>$guildname));
+					break;
+				case strtolower($phpraid_config['role5_name']):
+					array_push($role5,
+						array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,'role'=>$role,
+							  'race'=>$race,'name'=>$name,'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
+							  'date'=>$date,'time'=>$time,'team_name'=>$team_name,'guild'=>$guildname));
+					break;
+				case strtolower($phpraid_config['role6_name']):
+					array_push($role6,
+						array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,'role'=>$role,
+							  'race'=>$race,'name'=>$name,'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
+							  'date'=>$date,'time'=>$time,'team_name'=>$team_name,'guild'=>$guildname));
+					break;
+			}
 		}
 	}
 
@@ -539,27 +553,6 @@ if($mode == 'view')
 				break;
 			case $phprlang['warrior']:
 				$class = ' <img src="templates/' . $phpraid_config['template'] . '/images/classes/warrior_icon.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['warrior'].'\')"; onMouseout="hideddrivetip()">';
-				break;
-		}
-		switch($data['role'])
-		{
-			case $phpraid_config['role1_name']:
-				$qrole1_count++;
-				break;
-			case $phpraid_config['role2_name']:
-				$qrole2_count++;
-				break;
-			case $phpraid_config['role3_name']:
-				$qrole3_count++;
-				break;
-			case $phpraid_config['role4_name']:
-				$qrole4_count++;
-				break;
-			case $phpraid_config['role5_name']:
-				$qrole5_count++;
-				break;
-			case $phpraid_config['role6_name']:
-				$qrole6_count++;
 				break;
 		}
 
@@ -748,7 +741,7 @@ if($mode == 'view')
 
 	$report->showRecordCount(false);
 	$report->allowLink(ALLOW_HOVER_INDEX,'',array());
-
+	
 	//Default sorting
 	if(!$_GET['Sort'])
 	{
@@ -795,16 +788,27 @@ if($mode == 'view')
 	$report->addOutputColumn('time',$phprlang['time'],'wrmtime','center');
 	$report->addOutputColumn('actions','','','right');
 
-	$druid = $report->getListFromArray($druid);
-	$hunter = $report->getListFromArray($hunter);
-	$mage = $report->getListFromArray($mage);
-	$paladin = $report->getListFromArray($paladin);
-	$priest = $report->getListFromArray($priest);
-	$rogue = $report->getListFromArray($rogue);
-	$shaman = $report->getListFromArray($shaman);
-	$warlock = $report->getListFromArray($warlock);
-	$warrior = $report->getListFromArray($warrior);
-
+	if ($phpraid_config['raid_view_type'] == 'by_class')
+	{
+		$druid = $report->getListFromArray($druid);
+		$hunter = $report->getListFromArray($hunter);
+		$mage = $report->getListFromArray($mage);
+		$paladin = $report->getListFromArray($paladin);
+		$priest = $report->getListFromArray($priest);
+		$rogue = $report->getListFromArray($rogue);
+		$shaman = $report->getListFromArray($shaman);
+		$warlock = $report->getListFromArray($warlock);
+		$warrior = $report->getListFromArray($warrior);
+	}
+	else
+	{
+		$role1 = $report->getListFromArray($role1);
+		$role2 = $report->getListFromArray($role2);
+		$role3 = $report->getListFromArray($role3);
+		$role4 = $report->getListFromArray($role4);
+		$role5 = $report->getListFromArray($role5);
+		$role6 = $report->getListFromArray($role6);
+	}
 	$report->clearOutputColumns();
 	// setup formatting for report class (THANKS to www.thecalico.com)
 	// generic settings
@@ -850,7 +854,7 @@ if($mode == 'view')
 
 	$count = get_char_count($raid_id, $type='');
 	$count2 = get_char_count($raid_id, $type='queue');
-	
+
 	if($phpraid_config['class_as_min'])
 	{
 		$druid_count = get_coloredcount('druid', $count['dr'], $data['dr_lmt'], $count2['dr'], true);
@@ -875,16 +879,6 @@ if($mode == 'view')
 		$warlock_count = get_coloredcount('warlock', $count['wk'], $data['wk_lmt'], $count2['wk']);
 		$warrior_count = get_coloredcount('warrior', $count['wa'], $data['wa_lmt'], $count2['wa']);
 	}
-	
-	//Code Specific to Nalumis	
-    //$minustkmel = 0;
-    //$tank_count = get_coloredcount($count['tank'], $count2['tank'], $data['tank_lmt'], 0, $count['tkmel'] + $count2['tkmel'], 0, 0, 0, $minustkmel);
-    //$heal_count = get_coloredcount($count['heal'], $count2['heal'], $data['heal_lmt'], 0, 0, 0, 0, 0, $minustkmel);
-    //$merk_minustkmel = $minustkmel;
-    //$melee_count = get_coloredcount($count['melee'], $count2['melee'], $data['melee_lmt'], 2,$count['tkmel'] + $count2['tkmel'] - $minustkmel, $count['melee'] + $count['ranged'], $count2['melee'] + $count2['ranged'], $data['melee_lmt'] + $data['ranged_lmt'], $minustkmel);
-    //$minustkmel = $merk_minustkmel;
-    //$ranged_count = get_coloredcount($count['ranged'], $count2['ranged'], $data['ranged_lmt'], 2, $count['tkmel'] + $count2['tkmel'] - $minustkmel, $count['melee'] + $count['ranged'], $count2['melee'] + $count2['ranged'], $data['melee_lmt'] + $data['ranged_lmt'], $minustkmel);
-    //$tankmelee_count = get_coloredcount($count['tkmel'], $count2['tkmel'], $data['tkmel_lmt'], 1, 0, 0, 0, 0, $minustkmel);
 
 	if ($phpraid_config['role1_name'] != '')
 	{
@@ -1014,7 +1008,11 @@ if($mode == 'view')
 	}
 
 	// output
-	$page->set_file('output',$phpraid_config['template'] . '/view_raid.htm');
+	if ($phpraid_config['raid_view_type'] == 'by_class')
+		$page->set_file('output',$phpraid_config['template'] . '/view_raid_class.htm');
+	else
+		$page->set_file('output',$phpraid_config['template'] . '/view_raid_role.htm');
+	
 	$page->set_var(
 		array(
 			'team_link'=>$team_link,
@@ -1080,6 +1078,12 @@ if($mode == 'view')
 			'role4_text'=>$role4_text,
 			'role5_text'=>$role5_text,
 			'role6_text'=>$role6_text,
+			'role1'=>$role1,
+			'role2'=>$role2,
+			'role3'=>$role3,
+			'role4'=>$role4,
+			'role5'=>$role5,
+			'role6'=>$role6,
 			'maxattendees_text'=>$phprlang['view_max'],
 			'approved_text'=>$phprlang['view_approved'],
 			'queued_text'=>$phprlang['view_queued'],
