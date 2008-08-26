@@ -144,23 +144,23 @@ function get_char_count($id, $type) {
 				break;
 		}
 
-		switch($char['role']) {
-			case $phpraid_config['role1_name']:
+		switch(strtolower($char['role'])) {
+			case strtolower($phpraid_config['role1_name']):
 				$count['role1']++;
 				break;
-			case $phpraid_config['role2_name']:
+			case strtolower($phpraid_config['role2_name']):
 				$count['role2']++;
 				break;
-			case $phpraid_config['role3_name']:
+			case strtolower($phpraid_config['role3_name']):
 				$count['role3']++;
 				break;
-			case $phpraid_config['role4_name']:
+			case strtolower($phpraid_config['role4_name']):
 				$count['role4']++;
 				break;
-			case $phpraid_config['role5_name']:
+			case strtolower($phpraid_config['role5_name']):
 				$count['role5']++;
 				break;
-			case $phpraid_config['role6_name']:
+			case strtolower($phpraid_config['role6_name']):
 				$count['role6']++;
 				break;
 		}
