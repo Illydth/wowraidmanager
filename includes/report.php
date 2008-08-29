@@ -290,7 +290,7 @@ class ReportList
     		if (strpos($strSortURL, '?') === false) {
     			$strSortURL .= '?Sort=';
     		}
-    		else { $strSortURL .= '&Sort='; }
+    		else { $strSortURL .= '&amp;Sort='; }
 		}
 
         $this->_arrSortInfo['blnAllowSort'] = $blnAllowSort;
@@ -708,7 +708,7 @@ class ReportList
 		                	$strColTitle = '<a href="' . $this->_arrSortInfo['strSortURL'] . urlencode($arrCol['name']) . '/SortDescending-1" title="' . $phprlang['sort_desc'] . htmlspecialchars(strip_tags($strColTitle)) . '">' . $strColTitle . '</a>';
 						}
 						else {
-		                	$strColTitle = '<a href="' . $this->_arrSortInfo['strSortURL'] . urlencode($arrCol['name']) . '&SortDescending=1' . $this->_arrSortInfo['strSortAnchor'] . '" title="'. $phprlang['sort_desc'] . htmlspecialchars(strip_tags($strColTitle)) . '">' . $strColTitle . '</a>';
+		                	$strColTitle = '<a href="' . $this->_arrSortInfo['strSortURL'] . urlencode($arrCol['name']) . '&amp;SortDescending=1' . $this->_arrSortInfo['strSortAnchor'] . '" title="'. $phprlang['sort_desc'] . htmlspecialchars(strip_tags($strColTitle)) . '">' . $strColTitle . '</a>';
 						}
                 	}
                 	else {
@@ -1116,7 +1116,7 @@ class ReportList
         		$strSortOptions = '/Sort-' . $this->_arrSortInfo['strSortField'] . '/SortDescending-' . intval($this->_arrSortInfo['blnSortDescending']);
         	}
         	else {
-        		$strSortOptions = '&Sort=' . $this->_arrSortInfo['strSortField'] . '&SortDescending=' . intval($this->_arrSortInfo['blnSortDescending']);
+        		$strSortOptions = '&amp;Sort=' . $this->_arrSortInfo['strSortField'] . '&amp;SortDescending=' . intval($this->_arrSortInfo['blnSortDescending']);
         	}
         }
         else { $strSortOptions = ''; }

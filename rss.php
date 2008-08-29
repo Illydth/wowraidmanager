@@ -48,7 +48,7 @@
 	{
 		$raid_id = $data['raid_id'];
 
-		$raidloc = htmlentities($phpraid_url . '/view.php?mode=view&raid_id='.$data['raid_id']);
+		$raidloc = htmlentities($phpraid_url . '/view.php?mode=view&amp;raid_id='.$data['raid_id']);
 		$rssloc = htmlentities($data['location']);
     	$rssdesc = htmlentities(nl2br($data['description']));
 

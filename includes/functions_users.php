@@ -330,7 +330,7 @@ function check_dupe($profile_id, $raid_id)
 {
 	if(has_char_multiple_signups($profile_id, $raid_id))
 	{
-		return '&nbsp;' . get_dupesignup_symbol() . '&nbsp;(@&nbsp;<a href="users.php?mode=details&user_id=' . $profile_id . '">' . get_user_name($profile_id) . '</a>)';
+		return '&nbsp;' . get_dupesignup_symbol() . '&nbsp;(@&nbsp;<a href="users.php?mode=details&amp;user_id=' . $profile_id . '">' . get_user_name($profile_id) . '</a>)';
 	}
 	return '';
 }

@@ -102,9 +102,9 @@ function permissions($report) {
 				if($id == 1 && $data['profile_id'] == 1) {
 					$delete = '';
 				} else {
-					$delete = '<a href="permissions.php?mode=remove_user&priv_id=' . $id . '&user_id='.$data['profile_id'].'">
+					$delete = '<a href="permissions.php?mode=remove_user&amp;priv_id=' . $id . '&amp;user_id='.$data['profile_id'].'">
 								<img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" 
-								onMouseover="ddrivetip(\''.$phprlang['remove_user'].'\')"; onMouseout="hideddrivetip()"></a>';
+								onMouseover="ddrivetip(\''.$phprlang['remove_user'].'\');" onMouseout="hideddrivetip();" alt="delete icon"></a>';
 				}
 			} else {
 				$delete = '';
@@ -126,18 +126,18 @@ function permissions($report) {
 		setup_output();
 		
 		$report->showRecordCount(true);
-		$report->allowPaging(true, $_SERVER['PHP_SELF'] . '?mode=details&id='.$id.'&Base=');
+		$report->allowPaging(true, $_SERVER['PHP_SELF'] . '?mode=details&amp;id='.$id.'&Base=');
 		$report->setListRange($_GET['Base'], 25);
 		$report->allowLink(ALLOW_HOVER_INDEX,'',array());	
 		
 		//Default sorting
 		if(!$_GET['Sort'])
 		{
-			$report->allowSort(true, 'username', 'ASC', 'permissions.php?mode=details&id=' . $id);
+			$report->allowSort(true, 'username', 'ASC', 'permissions.php?mode=details&amp;id=' . $id);
 		}
 		else
 		{
-			$report->allowSort(true, $_GET['Sort'], $_GET['SortDescending'], 'permissions.php?mode=details&id=' . $id);
+			$report->allowSort(true, $_GET['Sort'], $_GET['SortDescending'], 'permissions.php?mode=details&amp;id=' . $id);
 		}
 		
 		if($phpraid_config['show_id'] == 1)
@@ -170,23 +170,23 @@ function permissions($report) {
 			array_push($users, array('id'=>$data['profile_id'],'username'=>ucwords(strtolower($data['username'])), 'email'=>$data['email'], 'actions'=>$actions));
 		}
 				
-		$add_body = '<form action="permissions.php?mode=details&id=' . $id . '" method="POST">';
+		$add_body = '<form action="permissions.php?mode=details&amp;id=' . $id . '" method="POST">';
 		
 		// setup report (users)
 		$report->clearOutputColumns();
 		//Default sorting
 		if(!$_GET['Sort'])
 		{
-			$report->allowSort(true, 'username', 'ASC', 'permissions.php?mode=details&id=' . $id);
+			$report->allowSort(true, 'username', 'ASC', 'permissions.php?mode=details&amp;id=' . $id);
 		}
 		else
 		{
-			$report->allowSort(true, $_GET['Sort'], $_GET['SortDescending'], 'permissions.php?mode=details&id=' . $id);
+			$report->allowSort(true, $_GET['Sort'], $_GET['SortDescending'], 'permissions.php?mode=details&amp;id=' . $id);
 		}
 		setup_output();
 		
 		$report->showRecordCount(true);
-		$report->allowPaging(true, $_SERVER['PHP_SELF'] . '?mode=details&id=' . $id . '&Base=');
+		$report->allowPaging(true, $_SERVER['PHP_SELF'] . '?mode=details&amp;id=' . $id . '&Base=');
 		$report->setListRange($_GET['Base'], 25);
 		$report->allowLink(ALLOW_HOVER_INDEX,'',array());
 		
@@ -217,7 +217,7 @@ function permissions($report) {
 					$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 			}
 		}
-		header("Location: permissions.php?mode=details&id=$priv_id");
+		header("Location: permissions.php?mode=details&amp;id=$priv_id");
 	}
 }
 
@@ -229,7 +229,7 @@ function remove_user() {
 	
 	$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "profile SET priv='0' WHERE profile_id=%s", quote_smart($user_id));
 	$sql = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-	header("Location: permissions.php?mode=details&id=$priv_id");
+	header("Location: permissions.php?mode=details&amp;id=$priv_id");
 }
 
 ?>

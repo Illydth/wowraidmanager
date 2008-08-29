@@ -47,12 +47,12 @@ if($_GET['mode'] == 'view') {
 	while($data = $db_raid->sql_fetchrow($result, true)) {
 		
 
-	$edit = '<a href="guilds.php?mode=update&id='.$data['guild_id'].'"><img src="templates/' . $phpraid_config['template'] . 
-			'/images/icons/icon_edit.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['edit'].'\')"; onMouseout="hideddrivetip()"></a>';
+	$edit = '<a href="guilds.php?mode=update&amp;id='.$data['guild_id'].'"><img src="templates/' . $phpraid_config['template'] . 
+			'/images/icons/icon_edit.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['edit'].'\');" onMouseout="hideddrivetip();" alt="edit icon"></a>';
 			
-	$delete = '<a href="guilds.php?mode=delete&n='.$data['guild_name'].'&id='.$data['guild_id'].'"><img src="templates/' . 
-				$phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['delete'].'\')"; 
-				onMouseout="hideddrivetip()"></a>';
+	$delete = '<a href="guilds.php?mode=delete&amp;n='.$data['guild_name'].'&amp;id='.$data['guild_id'].'"><img src="templates/' . 
+				$phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['delete'].'\');" 
+				onMouseout="hideddrivetip();" alt="delete icon"></a>';
 		
 		array_push($loc, 
 			array(
@@ -143,7 +143,7 @@ if($_GET['mode'] == 'view') {
 	
 	if($_SESSION['priv_guilds'] == 1) {
 		if(!isset($_POST['submit'])) {			
-			$form_action = 'guilds.php?mode=delete&n='.$n.'&id=' . $id;
+			$form_action = 'guilds.php?mode=delete&amp;n='.$n.'&amp;id=' . $id;
 			$confirm_button = '<input type="submit" value="'.$phprlang['confirm'].'" name="submit" class="post">';
 			
 			$page->set_file('output',$phpraid_config['template'] . '/delete.htm');
@@ -179,7 +179,7 @@ if($_GET['mode'] != 'delete') {
 		$form_action = 'guilds.php?mode=new';
 		$name = '<input name="name" type="text" id="name" class="post">';
 		$short = '<input name="short" type="text" id="short" class="post">';
-		$master = '<input name="master" type="text" id="short" class="post">';
+		$master = '<input name="master" type="text" id="master" class="post">';
 		
 		$buttons = '<input type="submit" value="'.$phprlang['submit'].'" name="submit" class="mainoption"> <input type="reset" value="'.$phprlang['reset'].'" name="reset" class="liteoption">';
 	} elseif($_GET['mode'] == 'update') {
@@ -190,10 +190,10 @@ if($_GET['mode'] != 'delete') {
 		$data = $db_raid->sql_fetchrow($result, true);
 		
 		// it's an edit... joy
-		$form_action = "guilds.php?mode=edit&id=$id";
+		$form_action = "guilds.php?mode=edit&amp;id=$id";
 		$name = '<input name="name" type="text" id="name" value="' . $data['guild_name'] . '" class="post">';
 		$short = '<input name="short" type="text" id="short" value="' . $data['guild_tag'] . '" class="post">';
-		$master = '<input name="master" type="text" id="short" value="' . $data['guild_master'] . '" class="post">';
+		$master = '<input name="master" type="text" id="master" value="' . $data['guild_master'] . '" class="post">';
 		
 		$buttons = '<input type="submit" value="'.$phprlang['update'].'" name="submit" class="mainoption"> <input type="reset" value="'.$phprlang['reset'].'" name="reset" class="liteoption">';			
 	}

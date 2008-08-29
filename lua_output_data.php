@@ -67,30 +67,30 @@ class Output_Data
 		
 		$raid_id = scrub_input($_GET['raid_id']);
 		
-		$text .= '<form method="post" action="lua_output.php?raid_id='. $raid_id .' name="post">';
+		$text .= '<form method="post" action="lua_output.php?raid_id=' . $raid_id . '&amp;name=post">';
 		$text .= '<table width="300" align="center">';
 		$text .= '<tr><th colspan="2">Options</th></tr>';
 		$text .= '<tr>';
 		$text .= '<td>Sort signups by:</td>';
-		$text .= '<td><select name="config[lua_output_sort_signups]" size=1 maxlength="256">';
+		$text .= '<td><select name="config[lua_output_sort_signups]" size=1>';
 		$text .= '<option '.$selected[1].' value="1">Name</option>';
 		$text .= '<option '.$selected[2].' value="2">Date</option>';
 		$text .= '</select></td>';
 		$text .= '</tr><tr>';
 		$text .= '<td>Sort queue by:</td>';
-		$text .= '<td><select name="config[lua_output_sort_queue]" size=1 maxlength="256">';
+		$text .= '<td><select name="config[lua_output_sort_queue]" size=1>';
 		$text .= '<option '.$selected[3].' value="1">Name</option>';
 		$text .= '<option '.$selected[4].' value="2">Date</option>';
 		$text .= '<option '.$selected[5].' value="3">Class</option>';
 		$text .= '</select></td>';
 		$text .= '</tr><tr>';
 		$text .= '<td>Output Format:</td>';
-		$text .= '<td><select name="config[lua_output_format]" size=1 maxlength="256">';
+		$text .= '<td><select name="config[lua_output_format]" size=1>';
 		$text .= '<option '.$selected[6].' value="1">RIM (Raid Invite Manager)</option>';
 		$text .= '<option '.$selected[7].' value="2">PHP Raid Viewer</option>';
 		$text .= '</select></td>';
 		$text .= '<tr>';
-		$text .= '<td align="left" colspan="2"><input type="submit" name="parse" value="Apply options" class="mainoption" /></td>';
+		$text .= '<td align="left" colspan="2"><input type="submit" name="parse" value="Apply options" class="mainoption"></td>';
 		$text .= '</tr>';
 		$text .= '</table>';
 		$text .= '</form>';
@@ -502,7 +502,7 @@ class Output_Data
 		}
 		else
 		{
-			$text .= 'LUA file created.</b><br>';
+			$text .= '<b>LUA file created.</b><br>';
 			$text .= 'Download <a href="./raid_lua/phpRaid_Data.lua">phpRaid_Data.lua</a> and save it to [wow-dir]\interface\addons\phpraidviewer\<br>';
 			$text .= 'or use this for copy+paste:<br>';
 			$text .= '<textarea rows="10" cols="60" style="width: 100%">';

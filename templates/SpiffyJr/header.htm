@@ -3,14 +3,18 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<title>WoW Raid Manager :: {title_guild_name} {of_string} {title_guild_server} :: {title_guild_description}</title>
-		<script src="templates/SpiffyJr/scripts/cal2.js" language="javascript"></script>
-		<script src="templates/SpiffyJr/scripts/cal2_conf.js" language="javascript"></script>
-		<script src="templates/SpiffyJr/scripts/phpRaid.js" language="javascript"></script>
-		<script type='text/javascript' language='javascript' src='wowchar-tooltip/js/overlib.js'><!-- overLIB (c) Erik Bosrup --></script>
-		<script type='text/javascript' language='javascript' src='wowchar-tooltip/js/tooltipnew.js'></script>
-		<script type='text/javascript' language='javascript' src='wowitem-tooltip/js/tooltipnew.js'></script>
-		<link rel="stylesheet" href="wowitem-tooltip/css/tooltip.css" type="text/css" />
-		<link rel="stylesheet" href="wowchar-tooltip/css/tooltip.css" type="text/css" />
+		<script src="templates/SpiffyJr/scripts/cal2.js" type="text/javascript"></script>
+		<script src="templates/SpiffyJr/scripts/cal2_conf.js" type="text/javascript"></script>
+		<script src="templates/SpiffyJr/scripts/phpRaid.js" type="text/javascript"></script>
+		<!--<script type='text/javascript' language='javascript' src='wowchar-tooltip/js/overlib.js'></script>-->
+		<!--<script type='text/javascript' language='javascript' src='wowchar-tooltip/js/tooltipnew.js'></script>-->
+		<!--<script type='text/javascript' language='javascript' src='wowitem-tooltip/js/tooltipnew.js'></script>-->
+		<!--<link rel="stylesheet" href="wowitem-tooltip/css/tooltip.css" type="text/css">-->
+		<!--<link rel="stylesheet" href="wowchar-tooltip/css/tooltip.css" type="text/css">-->
+		<script language="JavaScript" src="wowarmory_tooltip/js/qtip.js" type="text/JavaScript"></script>
+		<script language="JavaScript" src="wowarmory_tooltip/js/tw-sack.js" type="text/JavaScript"></script>
+		<script language="JavaScript" src="wowarmory_tooltip/js/ajax-dynamic-content.js" type="text/JavaScript"></script>		
+		<link rel="stylesheet" href="wowarmory_tooltip/style.php" type="text/css" title="wow">
 		<link rel="shortcut icon" href="templates/SpiffyJr/images/favicon.ico">
 		<link rel="icon" href="templates/SpiffyJr/images/favicon.ico" type="image/x-icon">
 		<link rel="alternate" title="{title_guild_name} {of_string} {title_guild_server} {rss_feed_string}" type="application/rss+xml" href="rss.php">
@@ -20,14 +24,14 @@
 	<body>
 		<!-- DO NOT REMOVE OR YOU RISK BREAKING TOOLTIPS -->
 		<div id="dhtmltooltip"></div>
-		<script src="templates/SpiffyJr/scripts/tooltips.js" language="javascript"></script>
-		<script src="templates/SpiffyJr/scripts/fixedtooltip.js" language="javascript"></script>
+		<script src="templates/SpiffyJr/scripts/tooltips.js" type="text/javascript"></script>
+		<script src="templates/SpiffyJr/scripts/fixedtooltip.js" type="text/javascript"></script>
 		<!-- END TOOLTIP CODE -->
 		<div align="center">
 			<div id="container">
 				<table width="100%" cellpadding="0" cellspacing="0">
 					<tr id="banner">
-						<td width="50%"><a href="{header_link}"><img src="./{header_logo}" border="0"></a></td>
+						<td width="50%"><a href="{header_link}"><img src="./{header_logo}" border="0" alt="Site Logo"></a></td>
 						<td width="50%" valign="top"><div align="right" style="margin-right:3px; font-size:10px; color:#ffffff">{login_form_open} <strong>{login_username}</strong> {login_password} {login_remember_hidden} {login_button} {login_form_close}</div></td>
 					</tr>
 				</table>

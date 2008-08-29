@@ -142,27 +142,27 @@ function signedUpFlow($user_perm_group, $phpraid_config, $data, $raid_id, $phprl
 	//Create Buttons
 	if ($buttons['Queue']) {
 		#Demote from Drafted to Queue.
-		$actions .= '<a href="view.php?mode=queue&raid_id=' . $raid_id . '&char_id=' . $data['char_id'] . '&Sort=' . $sort_mode . '&SortDescending=' . $sort_descending . '">
+		$actions .= '<a href="view.php?mode=queue&amp;raid_id=' . $raid_id . '&char_id=' . $data['char_id'] . '&Sort=' . $sort_mode . '&SortDescending=' . $sort_descending . '">
 			<img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_demote.gif" border="0"
-			onMouseover="ddrivetip(\''.$phprlang['in_queue'].'\')"; onMouseout="hideddrivetip()"></a>';
+			onMouseover="ddrivetip(\''.$phprlang['in_queue'].'\');" onMouseout="hideddrivetip();" alt="demote icon"></a>';
 	}
 	if ($buttons['Comments']) {
 		#Edit Comments
-		$actions .= '<a href="view.php?mode=edit_comment&raid_id='.$raid_id.'&signup_id='.$signups['signup_id'].'">
+		$actions .= '<a href="view.php?mode=edit_comment&amp;raid_id='.$raid_id.'&signup_id='.$signups['signup_id'].'">
 			<img src="templates/'.$phpraid_config['template'].'/images/icons/icon_edit.gif" border="0"
-			onMouseover="ddrivetip(\''.$phprlang['edit_comment'].'\')"; onMouseout="hideddrivetip()">';
+			onMouseover="ddrivetip(\''.$phprlang['edit_comment'].'\');" onMouseout="hideddrivetip();" alt="edit icon">';
 	}
 	if ($buttons['Cancel']) {
 		#Move to Cancelled Area
-		$actions .= '<a href="view.php?mode=cancel&profile_id='.$data['profile_id'].'&raid_id=' . $raid_id . '&char_id='.$data['char_id'].'">
+		$actions .= '<a href="view.php?mode=cancel&profile_id='.$data['profile_id'].'&amp;raid_id=' . $raid_id . '&char_id='.$data['char_id'].'">
 			<img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_cancel.gif" border="0"
-			onMouseover="ddrivetip(\''.$phprlang['cancel'].'\')"; onMouseout="hideddrivetip()"></a>';
+			onMouseover="ddrivetip(\''.$phprlang['cancel'].'\');" onMouseout="hideddrivetip();" alt="cancel icon"></a>';
 	}
 	if ($buttons['Delete']) {
 		#Delete (Remove Signup Completely)
-		$actions .= '<a href="view.php?mode=delete&profile_id='.$data['profile_id'].'&raid_id=' . $raid_id . '&char_id='.$data['char_id'].'">
+		$actions .= '<a href="view.php?mode=delete&profile_id='.$data['profile_id'].'&amp;raid_id=' . $raid_id . '&char_id='.$data['char_id'].'">
 			<img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0"
-			onMouseover="ddrivetip(\''.$phprlang['signup_delete'].'\')"; onMouseout="hideddrivetip()"></a>';
+			onMouseover="ddrivetip(\''.$phprlang['signup_delete'].'\');" onMouseout="hideddrivetip();" alt="delete icon"></a>';
 	}
 
 	return $actions;
@@ -223,27 +223,27 @@ function queuedFlow($user_perm_group, $phpraid_config, $data, $raid_id, $phprlan
 	//Create Buttons
 	if ($buttons['Draft']) {
 		#Promote from Queue to Drafted.
-		$actions .= '<a href="view.php?mode=draft&raid_id=' . $raid_id . '&char_id=' . $data['char_id'] . '&Sort=' . $sort_mode . '&SortDescending=' . $sort_descending . '">
+		$actions .= '<a href="view.php?mode=draft&amp;raid_id=' . $raid_id . '&char_id=' . $data['char_id'] . '&Sort=' . $sort_mode . '&SortDescending=' . $sort_descending . '">
 			<img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_promote.gif" border="0"
-			onMouseover="ddrivetip(\''.$phprlang['out_queue'].'\')"; onMouseout="hideddrivetip()"></a>';
+			onMouseover="ddrivetip(\''.$phprlang['out_queue'].'\');" onMouseout="hideddrivetip();" alt="promote icon"></a>';
 	}
 	if ($buttons['Comments']) {
 		#Edit Comments
-		$actions .= '<a href="view.php?mode=edit_comment&raid_id='.$raid_id.'&signup_id='.$signups['signup_id'].'">
+		$actions .= '<a href="view.php?mode=edit_comment&amp;raid_id='.$raid_id.'&signup_id='.$signups['signup_id'].'">
 			<img src="templates/'.$phpraid_config['template'].'/images/icons/icon_edit.gif" border="0"
-			onMouseover="ddrivetip(\''.$phprlang['edit_comment'].'\')"; onMouseout="hideddrivetip()">';
+			onMouseover="ddrivetip(\''.$phprlang['edit_comment'].'\');" onMouseout="hideddrivetip();" alt="edit icon"></a>';
 	}
 	if ($buttons['Cancel']) {
 		#Move to Cancelled Area
-		$actions .= '<a href="view.php?mode=cancel&profile_id='.$data['profile_id'].'&raid_id=' . $raid_id . '&char_id='.$data['char_id'].'">
+		$actions .= '<a href="view.php?mode=cancel&profile_id='.$data['profile_id'].'&amp;raid_id=' . $raid_id . '&char_id='.$data['char_id'].'">
 			<img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_cancel.gif" border="0"
-			onMouseover="ddrivetip(\''.$phprlang['cancel'].'\')"; onMouseout="hideddrivetip()"></a>';
+			onMouseover="ddrivetip(\''.$phprlang['cancel'].'\');" onMouseout="hideddrivetip();" alt="cancel icon"></a>';
 	}
 	if ($buttons['Delete']) {
 		#Delete (Remove Signup Completely)
-		$actions .= '<a href="view.php?mode=delete&profile_id='.$data['profile_id'].'&raid_id=' . $raid_id . '&char_id='.$data['char_id'].'">
+		$actions .= '<a href="view.php?mode=delete&profile_id='.$data['profile_id'].'&amp;raid_id=' . $raid_id . '&char_id='.$data['char_id'].'">
 			<img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0"
-			onMouseover="ddrivetip(\''.$phprlang['signup_delete'].'\')"; onMouseout="hideddrivetip()"></a>';
+			onMouseover="ddrivetip(\''.$phprlang['signup_delete'].'\');" onMouseout="hideddrivetip();" alt="delete icon"></a>';
 	}
 
 	return $actions;
@@ -305,30 +305,30 @@ function canceledFlow($user_perm_group, $phpraid_config, $data, $raid_id, $phprl
 	if ($buttons['Queue'])
 	{
 		#Promote from Cancelled to Queue.
-		$actions .= '<a href="view.php?mode=queue&raid_id=' . $raid_id . '&char_id=' . $data['char_id'] . '&Sort=' . $sort_mode . '&SortDescending=' . $sort_descending . '">
+		$actions .= '<a href="view.php?mode=queue&amp;raid_id=' . $raid_id . '&char_id=' . $data['char_id'] . '&Sort=' . $sort_mode . '&SortDescending=' . $sort_descending . '">
 			<img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_demote.gif" border="0"
-			onMouseover="ddrivetip(\''.$phprlang['in_queue'].'\')"; onMouseout="hideddrivetip()"></a>';
+			onMouseover="ddrivetip(\''.$phprlang['in_queue'].'\');" onMouseout="hideddrivetip();" alt="demote icon"></a>';
 	}
 	if ($buttons['Draft'])
 	{
 		#Promote from Cancelled to Drafted.
-		$actions .= '<a href="view.php?mode=draft&raid_id=' . $raid_id . '&char_id=' . $data['char_id'] . '&Sort=' . $sort_mode . '&SortDescending=' . $sort_descending . '">
+		$actions .= '<a href="view.php?mode=draft&amp;raid_id=' . $raid_id . '&char_id=' . $data['char_id'] . '&Sort=' . $sort_mode . '&SortDescending=' . $sort_descending . '">
 			<img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_promote.gif" border="0"
-			onMouseover="ddrivetip(\''.$phprlang['out_queue'].'\')"; onMouseout="hideddrivetip()"></a>';
+			onMouseover="ddrivetip(\''.$phprlang['out_queue'].'\');" onMouseout="hideddrivetip();" alt="promote icon"></a>';
 	}
 	if ($buttons['Comments'])
 	{
 		#Edit Comments
-		$actions .= '<a href="view.php?mode=edit_comment&raid_id='.$raid_id.'&signup_id='.$signups['signup_id'].'">
+		$actions .= '<a href="view.php?mode=edit_comment&amp;raid_id='.$raid_id.'&signup_id='.$signups['signup_id'].'">
 			<img src="templates/'.$phpraid_config['template'].'/images/icons/icon_edit.gif" border="0"
-			onMouseover="ddrivetip(\''.$phprlang['edit_comment'].'\')"; onMouseout="hideddrivetip()">';
+			onMouseover="ddrivetip(\''.$phprlang['edit_comment'].'\');" onMouseout="hideddrivetip();" alt="edit icon"></a>';
 	}
 	if ($buttons['Delete'])
 	{
 		#Delete (Remove Signup Completely)
-		$actions .= '<a href="view.php?mode=delete&profile_id='.$data['profile_id'].'&raid_id=' . $raid_id . '&char_id='.$data['char_id'].'">
+		$actions .= '<a href="view.php?mode=delete&profile_id='.$data['profile_id'].'&amp;raid_id=' . $raid_id . '&char_id='.$data['char_id'].'">
 			<img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0"
-			onMouseover="ddrivetip(\''.$phprlang['signup_delete'].'\')"; onMouseout="hideddrivetip()"></a>';
+			onMouseover="ddrivetip(\''.$phprlang['signup_delete'].'\');" onMouseout="hideddrivetip();" alt="delete icon"></a>';
 	}
 
 	return $actions;

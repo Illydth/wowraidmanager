@@ -69,7 +69,7 @@ if($mode == 'view')
 	//**********************************************
 	//Setup the "New Team" Form
 	//**********************************************
-	$team_new = '<form action="teams.php?mode=new&raid_id='.$raid_id.'" method="POST">';
+	$team_new = '<form action="teams.php?mode=new&amp;raid_id='.$raid_id.'" method="POST">';
 	$team_new .= '<input name="team_name" type="text" class="post"><br>';
 	$team_new .= '<input type="checkbox" name="global" value="1">  ';
 	$team_new .= $phprlang['team_global'] . '<br><br>';
@@ -77,7 +77,7 @@ if($mode == 'view')
 	$team_new .= '<input type="reset" name="reset" value="'.$phprlang['reset'].'" class="liteoption">';
 	$team_new .= '</form>';
 
-	$team_cur_teams = '<form action="teams.php?mode=delteam&raid_id='.$raid_id.'" method="POST">';
+	$team_cur_teams = '<form action="teams.php?mode=delteam&amp;raid_id='.$raid_id.'" method="POST">';
 
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "teams WHERE (raid_id=%s and char_id='-1') or char_id='-2'",quote_smart($raid_id));
 	$teams_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
@@ -118,9 +118,9 @@ if($mode == 'view')
 	{
 		// set delete permissions
 		if($_SESSION['priv_raids'] == 1) {
-			$delete = '<a href="teams.php?mode=remove&raid_id=' . $raid_id . '&char_id='.$team['char_id'].'">
+			$delete = '<a href="teams.php?mode=remove&amp;raid_id=' . $raid_id . '&char_id='.$team['char_id'].'">
 						<img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0"
-						onMouseover="ddrivetip(\''.$phprlang['remove_user'].'\')"; onMouseout="hideddrivetip()"></a>';
+						onMouseover="ddrivetip(\''.$phprlang['remove_user'].'\');" onMouseout="hideddrivetip();" alt="delete icon"></a>';
 		} else {
 			$delete = '';
 		}
@@ -141,11 +141,11 @@ if($mode == 'view')
 	// setup report (users)
 	$report->clearOutputColumns();
 	//Default sorting
-	$report->allowSort(true, 'name', 'ASC', 'teams.php?mode=view&raid_id=' . $raid_id);
+	$report->allowSort(true, 'name', 'ASC', 'teams.php?mode=view&amp;raid_id=' . $raid_id);
 	setup_output();
 
 	$report->showRecordCount(true);
-	//$report->allowPaging(true, $_SERVER['PHP_SELF'] . '?mode=view&raid_id=' . $raid_id . '&Base=');
+	//$report->allowPaging(true, $_SERVER['PHP_SELF'] . '?mode=view&amp;raid_id=' . $raid_id . '&Base=');
 	$report->setListRange($_GET['Base'], 25);
 	$report->allowLink(ALLOW_HOVER_INDEX,'',array());
 
@@ -244,7 +244,7 @@ if($mode == 'view')
 		);
 	}
 
-	$team_add_body = '<form action="teams.php?mode=add&raid_id=' . $raid_id . '" method="POST">';
+	$team_add_body = '<form action="teams.php?mode=add&amp;raid_id=' . $raid_id . '" method="POST">';
 	$team_add_body .= '<center>';
 	$team_add_body .= $phprlang['add_team_dropdown_text'];
 	$team_add_body .= '<br><select name="team_drop_name" class="post">';
@@ -259,11 +259,11 @@ if($mode == 'view')
 	// setup report (users)
 	$report->clearOutputColumns();
 	//Default sorting
-	$report->allowSort(true, 'name', 'ASC', 'teams.php?mode=view&raid_id=' . $raid_id);
+	$report->allowSort(true, 'name', 'ASC', 'teams.php?mode=view&amp;raid_id=' . $raid_id);
 	setup_output();
 
 	$report->showRecordCount(true);
-	$report->allowPaging(true, $_SERVER['PHP_SELF'] . '?mode=view&raid_id=' . $raid_id . '&Base=');
+	$report->allowPaging(true, $_SERVER['PHP_SELF'] . '?mode=view&amp;raid_id=' . $raid_id . '&Base=');
 	$report->setListRange($_GET['Base'], 25);
 	$report->allowLink(ALLOW_HOVER_INDEX,'',array());
 
@@ -295,7 +295,7 @@ elseif($mode == 'new')
 
 		log_create('teams',mysql_insert_id(),$name);
 	}
-	header("Location: teams.php?mode=view&raid_id=$raid_id");
+	header("Location: teams.php?mode=view&amp;raid_id=$raid_id");
 }
 elseif($mode == 'remove')
 {
@@ -309,7 +309,7 @@ elseif($mode == 'remove')
 	$sql = sprintf("DELETE FROM " . $phpraid_config['db_prefix'] . "teams WHERE raid_id=%s and char_id=%s", quote_smart($raid_id),quote_smart($char_id));
 	$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 
-	header("Location: teams.php?mode=view&raid_id=$raid_id");
+	header("Location: teams.php?mode=view&amp;raid_id=$raid_id");
 }
 elseif($mode == 'add')
 {
@@ -339,7 +339,7 @@ elseif($mode == 'add')
 			log_create('teams',mysql_insert_id(),$title);
 		}
 	}
-	header("Location: teams.php?mode=view&raid_id=$raid_id");
+	header("Location: teams.php?mode=view&amp;raid_id=$raid_id");
 }
 elseif($mode == 'delteam')
 {
@@ -357,7 +357,7 @@ elseif($mode == 'delteam')
 			log_delete('teams',$title);
 		}
 	}
-	header("Location: teams.php?mode=view&raid_id=$raid_id");
+	header("Location: teams.php?mode=view&amp;raid_id=$raid_id");
 }
 else
 {
@@ -367,7 +367,7 @@ else
 }
 
 //Create Link back to the Raid View page.
-$raid_view_link = '<a href="view.php?mode=view&raid_id=' . $raid_id . '">' . $phprlang['teams_raid_view_text'] . '</a>';
+$raid_view_link = '<a href="view.php?mode=view&amp;raid_id=' . $raid_id . '">' . $phprlang['teams_raid_view_text'] . '</a>';
 
 require_once('./includes/page_header.php');
 

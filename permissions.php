@@ -51,12 +51,12 @@ if($_GET['mode'] == 'view')
 	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 	
 	while($data = $db_raid->sql_fetchrow($result, true)) {
-		$edit = '<a href="permissions.php?mode=edit&id='.$data['permission_id'].'"><img src="templates/' . $phpraid_config['template'] . 
-					'/images/icons/icon_edit.gif" border="0" onMouseover="ddrivetip(\'' . $phprlang['edit'] . '\')"; onMouseout="hideddrivetip()"></a>';
+		$edit = '<a href="permissions.php?mode=edit&amp;id='.$data['permission_id'].'"><img src="templates/' . $phpraid_config['template'] . 
+					'/images/icons/icon_edit.gif" border="0" onMouseover="ddrivetip(\'' . $phprlang['edit'] . '\');" onMouseout="hideddrivetip();" alt="edit icon"></a>';
 				
-		$delete = '<a href="permissions.php?mode=delete&id='.$data['permission_id'].'"><img src="templates/' . 
-					$phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\'' . $phprlang['delete'] . '\')"; 
-					onMouseout="hideddrivetip()"></a>';
+		$delete = '<a href="permissions.php?mode=delete&amp;id='.$data['permission_id'].'"><img src="templates/' . 
+					$phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\'' . $phprlang['delete'] . '\');" 
+					onMouseout="hideddrivetip();" alt="delete icon"></a>';
 
 		// deny deletion/editing of super account
 		if($data['permission_id'] == 1) {
@@ -67,69 +67,60 @@ if($_GET['mode'] == 'view')
 		
 		if($data['announcements'] == 1)
 			$announcements = '<img src="templates/' . $phpraid_config['template'] . '/images/icons/check_mark.gif" border="0" 
-							height="14" width="14" onMouseover="ddrivetip(\'' . $phprlang['has_permission'] . '\')"; 
-							onMouseout="hideddrivetip()">';
+							height="14" width="14" onMouseover="ddrivetip(\'' . $phprlang['has_permission'] . '\');" onMouseout="hideddrivetip();" alt="check mark">';
 		else
 			$announcements = '';
 			
 		if($data['configuration'] == 1)
 			$phpraid_configuration = '<img src="templates/' . $phpraid_config['template'] . '/images/icons/check_mark.gif" border="0" 
-							height="14" width="14" onMouseover="ddrivetip(\'' . $phprlang['has_permission'] . '\')"; 
-							onMouseout="hideddrivetip()">';
+							height="14" width="14" onMouseover="ddrivetip(\'' . $phprlang['has_permission'] . '\');" onMouseout="hideddrivetip();" alt="check mark">';
 		else
 			$phpraid_configuration = '';
 			
 		if($data['guilds'] == 1)
 			$guilds = '<img src="templates/' . $phpraid_config['template'] . '/images/icons/check_mark.gif" border="0" 
-							height="14" width="14" onMouseover="ddrivetip(\'' . $phprlang['has_permission'] . '\')"; 
-							onMouseout="hideddrivetip()">';
+							height="14" width="14" onMouseover="ddrivetip(\'' . $phprlang['has_permission'] . '\');" onMouseout="hideddrivetip();" alt="check mark">';
 		else
 			$guilds = '';
 			
 		if($data['locations'] == 1)
 			$locations = '<img src="templates/' . $phpraid_config['template'] . '/images/icons/check_mark.gif" border="0" 
-							height="14" width="14" onMouseover="ddrivetip(\'' . $phprlang['has_permission'] . '\')"; 
-							onMouseout="hideddrivetip()">';
+							height="14" width="14" onMouseover="ddrivetip(\'' . $phprlang['has_permission'] . '\');" onMouseout="hideddrivetip();" alt="check mark">';
 		else
 			$locations = '';
 			
 		if($data['profile'] == 1)
 			$profile = '<img src="templates/' . $phpraid_config['template'] . '/images/icons/check_mark.gif" border="0" 
-							height="14" width="14" onMouseover="ddrivetip(\'' . $phprlang['has_permission'] . '\')"; 
-							onMouseout="hideddrivetip()">';
+							height="14" width="14" onMouseover="ddrivetip(\'' . $phprlang['has_permission'] . '\');" onMouseout="hideddrivetip();" alt="check mark">';
 		else
 			$profile = '';
 			
 		if($data['raids'] == 1)
 			$raids = '<img src="templates/' . $phpraid_config['template'] . '/images/icons/check_mark.gif" border="0" 
-							height="14" width="14" onMouseover="ddrivetip(\'' . $phprlang['has_permission'] . '\')"; 
-							onMouseout="hideddrivetip()">';
+							height="14" width="14" onMouseover="ddrivetip(\'' . $phprlang['has_permission'] . '\');"  onMouseout="hideddrivetip();" alt="check mark">';
 		else
 			$raids = '';
 			
 		if($data['permissions'] == 1)
 			$permissions = '<img src="templates/' . $phpraid_config['template'] . '/images/icons/check_mark.gif" border="0" 
-							height="14" width="14" onMouseover="ddrivetip(\'' . $phprlang['has_permission'] . '\')"; 
-							onMouseout="hideddrivetip()">';
+							height="14" width="14" onMouseover="ddrivetip(\'' . $phprlang['has_permission'] . '\');" onMouseout="hideddrivetip();" alt="check mark">';
 		else
 			$permissions = '';
 		
 		if($data['logs'] == 1)
 			$logs = '<img src="templates/' . $phpraid_config['template'] . '/images/icons/check_mark.gif" border="0" 
-							height="14" width="14" onMouseover="ddrivetip(\'' . $phprlang['has_permission'] . '\')"; 
-							onMouseout="hideddrivetip()">';
+							height="14" width="14" onMouseover="ddrivetip(\'' . $phprlang['has_permission'] . '\');" onMouseout="hideddrivetip();" alt="check mark">';
 		else
 			$logs = '';
 			
 		if($data['users'] == 1)
 			$users = '<img src="templates/' . $phpraid_config['template'] . '/images/icons/check_mark.gif" border="0" 
-							height="14" width="14" onMouseover="ddrivetip(\'' . $phprlang['has_permission'] . '\')"; 
-							onMouseout="hideddrivetip()">';
+							height="14" width="14" onMouseover="ddrivetip(\'' . $phprlang['has_permission'] . '\');" onMouseout="hideddrivetip();" alt="check mark">';
 		else
 			$users = '';
 				
 		array_push($perm, 
-			array('id'=>$data['permission_id'],'name'=>'<a href="permissions.php?mode=details&id=' . $data['permission_id'] . '">' . $data['name'] . '</a>','desc'=>$data['description'],
+			array('id'=>$data['permission_id'],'name'=>'<a href="permissions.php?mode=details&amp;id=' . $data['permission_id'] . '">' . $data['name'] . '</a>','desc'=>$data['description'],
 				  'announcements'=>$announcements,'configuration'=>$phpraid_configuration,'guilds'=>$guilds,
 				  'locations'=>$locations,'profile'=>$profile,'raids'=>$raids,'permissions'=>$permissions,
 				  'logs'=>$logs,'users'=>$users,'admin'=>$admin
@@ -161,15 +152,15 @@ if($_GET['mode'] == 'view')
 	
 	$report->addOutputColumn('name',$phprlang['name'],'','left');
 	$report->addOutputColumn('desc',$phprlang['description'],'','left');
-	$report->addOutputColumn('announcements','<a href="#" onMouseover="ddrivetip(\''.$phprlang['announcements'].'\')"; onMouseout="hideddrivetip()">An</a>','','center');
-	$report->addOutputColumn('configuration','<a href="#" onMouseover="ddrivetip(\''.$phprlang['configuration'].'\')"; onMouseout="hideddrivetip()">Co</a>','','center');
-	$report->addOutputColumn('guilds','<a href="#" onMouseover="ddrivetip(\''.$phprlang['guilds'].'\')"; onMouseout="hideddrivetip()">Gu</a>','','center');
-	$report->addOutputColumn('locations','<a href="#" onMouseover="ddrivetip(\''.$phprlang['locations'].'\')"; onMouseout="hideddrivetip()">Lo</a>','','center');
-	$report->addOutputColumn('logs','<a href="#" onMouseover="ddrivetip(\''.$phprlang['logs'].'\')"; onMouseout="hideddrivetip()">Lg</a>','','center');
-	$report->addOutputColumn('permissions','<a href="#" onMouseover="ddrivetip(\''.$phprlang['permissions'].'\')"; onMouseout="hideddrivetip()">Pe</a>','','center');
-	$report->addOutputColumn('profile','<a href="#" onMouseover="ddrivetip(\''.$phprlang['profile'].'\')"; onMouseout="hideddrivetip()">Pr</a>','','center');
-	$report->addOutputColumn('users','<a href="#" onMouseover="ddrivetip(\''.$phprlang['users'].'\')"; onMouseout="hideddrivetip()">Us</a>','','center');
-	$report->addOutputColumn('raids','<a href="#" onMouseover="ddrivetip(\''.$phprlang['raids'].'\')"; onMouseout="hideddrivetip()">Ra</a>','','center');
+	$report->addOutputColumn('announcements','<span onMouseover="ddrivetip(\''.$phprlang['announcements'].'\');" onMouseout="hideddrivetip();">An</span>','','center');
+	$report->addOutputColumn('configuration','<span onMouseover="ddrivetip(\''.$phprlang['configuration'].'\');" onMouseout="hideddrivetip();">Co</span>','','center');
+	$report->addOutputColumn('guilds','<span onMouseover="ddrivetip(\''.$phprlang['guilds'].'\');" onMouseout="hideddrivetip();">Gu</span>','','center');
+	$report->addOutputColumn('locations','<span onMouseover="ddrivetip(\''.$phprlang['locations'].'\');" onMouseout="hideddrivetip();">Lo</span>','','center');
+	$report->addOutputColumn('logs','<span onMouseover="ddrivetip(\''.$phprlang['logs'].'\');" onMouseout="hideddrivetip();">Lg</span>','','center');
+	$report->addOutputColumn('permissions','<span onMouseover="ddrivetip(\''.$phprlang['permissions'].'\');" onMouseout="hideddrivetip();">Pe</span>','','center');
+	$report->addOutputColumn('profile','<span onMouseover="ddrivetip(\''.$phprlang['profile'].'\');" onMouseout="hideddrivetip();">Pr</span>','','center');
+	$report->addOutputColumn('users','<span onMouseover="ddrivetip(\''.$phprlang['users'].'\');" onMouseout="hideddrivetip();">Us</span>','','center');
+	$report->addOutputColumn('raids','<span onMouseover="ddrivetip(\''.$phprlang['raids'].'\');" onMouseout="hideddrivetip();">Ra</span>','','center');
 	$report->addOutputColumn('admin','','','right');
 	$perm = $report->getListFromArray($perm);
 	
@@ -255,7 +246,7 @@ elseif($_GET['mode'] == 'delete')
 	{
 		if(!isset($_POST['submit'])) 
 		{			
-			$form_action = 'permissions.php?mode=delete&id=' . $id;
+			$form_action = 'permissions.php?mode=delete&amp;id=' . $id;
 			$confirm_button = '<input type="submit" value="'.$phprlang['confirm_deletion'].'" name="submit" class="post">';
 			
 			$page->set_file('output',$phpraid_config['template'] . '/delete.htm');
@@ -396,7 +387,7 @@ if($_GET['mode'] != 'delete' && $_GET['mode'] != 'details')
 		$name = '<input type="text" name="name" class="post" value="' . $data['name'] . '">';
 		$description = '<input type="text" name="description" class="post" value="' . $data['description'] . '"style="width:300px">';
 		
-		$form_action = "permissions.php?mode=edit&id=$id";
+		$form_action = "permissions.php?mode=edit&amp;id=$id";
 		
 		$page->set_var('header_text',$phprlang['permissions_edit_header']);	
 	} else {
@@ -448,7 +439,7 @@ if($_GET['mode'] != 'delete' && $_GET['mode'] != 'details')
 		$name = '<input type="text" name="name" class="post">';
 		$description = '<input type="text" name="description" class="post" style="width:300px">';
 		
-		$form_action = "permissions.php?mode=new&id=$id";
+		$form_action = "permissions.php?mode=new&amp;id=$id";
 		
 		$page->set_var('header_text',$phprlang['permissions_new']);
 	}

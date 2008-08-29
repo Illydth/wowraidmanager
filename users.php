@@ -55,16 +55,16 @@ if($mode == 'view')
 	
 	while($data = $db_raid->sql_fetchrow($result, true))
 	{
-		$usersname = '<!-- ' . strtolower($data['username']) . ' --><a href="users.php?mode=details&user_id='.$data['profile_id'].'">'.$data['username'].'</a>';
+		$usersname = '<!-- ' . strtolower($data['username']) . ' --><a href="users.php?mode=details&amp;user_id='.$data['profile_id'].'">'.$data['username'].'</a>';
 
 		if($data['priv'] == 0)
 			$priv = '<a href="permissions.php?mode=view">'.$phprlang['users_assign'].'</a>';
 		else
-			$priv = '<a href="permissions.php?mode=details&id='.$data['priv'].'">'.get_priv_name($data['priv']).'</a>';
+			$priv = '<a href="permissions.php?mode=details&amp;id='.$data['priv'].'">'.get_priv_name($data['priv']).'</a>';
 
-		$actions = '<a href="users.php?mode=remove_user&n='.$data['name'].'&user_id='.$data['profile_id'].'">
+		$actions = '<a href="users.php?mode=remove_user&amp;n='.$data['name'].'&amp;user_id='.$data['profile_id'].'">
 					<img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0"
-					onMouseover="ddrivetip(\''. $phprlang['delete'] .'\')"; onMouseout="hideddrivetip()"></a>';
+					onMouseover="ddrivetip(\''. $phprlang['delete'] .'\');" onMouseout="hideddrivetip();" alt="delete icon"></a>';
 		
 		$date = $data['last_login_time'];
 		$time = !($data['last_login_time'])?'':new_date($phpraid_config['time_format'],$data['last_login_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
@@ -151,7 +151,7 @@ else if($mode == 'details')
 				'Frost'=>$data['frost'],
 				'Nature'=>$data['nature'],
 				'Shadow'=>$data['shadow'],
-				''=>'<a href="users.php?mode=remove_char&n='.$data['name'].'&char_id='.$data['char_id'].'&user_id='.$data['profile_id'].'"><img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''. $phprlang['delete'] .'\')"; onMouseout="hideddrivetip()"></a>')
+				''=>'<a href="users.php?mode=remove_char&amp;n='.$data['name'].'&char_id='.$data['char_id'].'&amp;user_id='.$data['profile_id'].'"><img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''. $phprlang['delete'] .'\');" onMouseout="hideddrivetip();" alt="delete icon"></a>')
 			);
 	}
 
@@ -174,11 +174,11 @@ else if($mode == 'details')
 	$report->addOutputColumn('Level',$phprlang['level'],'','center');
 	$report->addOutputColumn('Race',$phprlang['race'],'','center');
 	$report->addOutputColumn('Class',$phprlang['class'],'','center');
-	$report->addOutputColumn('Arcane','<img src="templates/' . $phpraid_config['template'] . '/images/resistances/arcane_resistance.gif" onMouseover="ddrivetip(\''.$phprlang['arcane'].'\')"; onMouseout="hideddrivetip()" height="16" width="16" border="0">','','center');
-	$report->addOutputColumn('Fire','<img src="templates/' . $phpraid_config['template'] . '/images/resistances/fire_resistance.gif" onMouseover="ddrivetip(\''.$phprlang['fire'].'\')"; onMouseout="hideddrivetip()" height="16" width="16" border="0">','','center');
-	$report->addOutputColumn('Nature','<img src="templates/' . $phpraid_config['template'] . '/images/resistances/nature_resistance.gif" onMouseover="ddrivetip(\''.$phprlang['nature'].'\')"; onMouseout="hideddrivetip()" height="16" width="16" border="0">','','center');
-	$report->addOutputColumn('Frost','<img src="templates/' . $phpraid_config['template'] . '/images/resistances/frost_resistance.gif" onMouseover="ddrivetip(\''.$phprlang['frost'].'\')"; onMouseout="hideddrivetip()" height="16" width="16" border="0">','','center');
-	$report->addOutputColumn('Shadow','<img src="templates/' . $phpraid_config['template'] . '/images/resistances/shadow_resistance.gif" onMouseover="ddrivetip(\''.$phprlang['shadow'].'\')"; onMouseout="hideddrivetip()" height="16" width="16" border="0">','','center');
+	$report->addOutputColumn('Arcane','<img src="templates/' . $phpraid_config['template'] . '/images/resistances/arcane_resistance.gif" onMouseover="ddrivetip(\''.$phprlang['arcane'].'\');" onMouseout="hideddrivetip();" height="16" width="16" border="0" alt="arcane">','','center');
+	$report->addOutputColumn('Fire','<img src="templates/' . $phpraid_config['template'] . '/images/resistances/fire_resistance.gif" onMouseover="ddrivetip(\''.$phprlang['fire'].'\');" onMouseout="hideddrivetip();" height="16" width="16" border="0" alt="fire">','','center');
+	$report->addOutputColumn('Nature','<img src="templates/' . $phpraid_config['template'] . '/images/resistances/nature_resistance.gif" onMouseover="ddrivetip(\''.$phprlang['nature'].'\');" onMouseout="hideddrivetip();" height="16" width="16" border="0" alt="nature">','','center');
+	$report->addOutputColumn('Frost','<img src="templates/' . $phpraid_config['template'] . '/images/resistances/frost_resistance.gif" onMouseover="ddrivetip(\''.$phprlang['frost'].'\');" onMouseout="hideddrivetip();" height="16" width="16" border="0" alt="frost">','','center');
+	$report->addOutputColumn('Shadow','<img src="templates/' . $phpraid_config['template'] . '/images/resistances/shadow_resistance.gif" onMouseover="ddrivetip(\''.$phprlang['shadow'].'\');" onMouseout="hideddrivetip();" height="16" width="16" border="0" alt="shadow">','','center');
 	$report->addOutputColumn('','','','right');
 	$chars = $report->getListFromArray($chars);
 
@@ -197,7 +197,7 @@ else if($mode == 'remove_user')
 	$delete_name = scrub_input($_GET['n']);
 
 	if(!isset($_POST['submit'])) {
-		$form_action = 'users.php?mode=remove_user&user_id='.$user_id.'&n='.$delete_name;
+		$form_action = 'users.php?mode=remove_user&amp;user_id='.$user_id.'&amp;n='.$delete_name;
 		$confirm_button = '<input type="submit" value="'.$phprlang['confirm'].'" name="submit" class="post">';
 
 		$page->set_file('output',$phpraid_config['template'] . '/delete.htm');
@@ -230,7 +230,7 @@ else if($mode == 'remove_char')
 	$delete_name = scrub_input($_GET['n']);
 
 	if(!isset($_POST['submit'])) {
-		$form_action = 'users.php?mode=remove_char&char_id='.$char_id.'&user_id='.$user_id.'&n='.$delete_name;
+		$form_action = 'users.php?mode=remove_char&char_id='.$char_id.'&amp;user_id='.$user_id.'&amp;n='.$delete_name;
 		$confirm_button = '<input type="submit" value="'.$phprlang['confirm'].'" name="submit" class="post">';
 
 		$page->set_file('output',$phpraid_config['template'] . '/delete.htm');
@@ -253,7 +253,7 @@ else if($mode == 'remove_char')
 		$sql = sprintf("DELETE FROM " . $phpraid_config['db_prefix'] . "signups WHERE char_id=%s", quote_smart($char_id));
 		$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 
-		header("Location: users.php?mode=details&user_id=$user_id");
+		header("Location: users.php?mode=details&amp;user_id=$user_id");
 	}
 }
 else

@@ -63,7 +63,7 @@ if($logged_in != 1)
 	$login_form_open = '<form action="login.php" method="POST">';
 	$login_username = '<input name="username" type="text" value="username" size="15" maxlength="45" onFocus="if(this.value==\'username\')this.value=\'\';" class="post">';
 	$login_password = '<input name="password" type="password" value="password" size="15" onFocus="if(this.value==\'password\')this.value=\'\';" class="post">';
-	$login_button = '<input type="submit" name="login" value="'.$phprlang['login'].'" style="font-size:10px" class="mainoption"></form>';
+	$login_button = '<input type="submit" name="login" value="'.$phprlang['login'].'" style="font-size:10px" class="mainoption">';
 	$login_remember = '<input type="checkbox" checked="checked" name="autologin">';
 	$login_remember_hidden = '<input type="hidden" value="1" name="autologin">';
 	$login_form_close = '</form>';
@@ -73,7 +73,7 @@ else
 	$login_form_open = '<form action="login.php?logout=true" method="POST">';
 	$login_username = scrub_input($_SESSION['username']);
 	$login_password = '';
-	$login_button = '<input type="submit" name="login" value="'.$phprlang['logout'].'" style="font-size:10px" class="mainoption"></form>';
+	$login_button = '<input type="submit" name="login" value="'.$phprlang['logout'].'" style="font-size:10px" class="mainoption">';
 	$login_remember = '';
 	$login_remember_hidden = '';
 	$login_form_close = '</form>';

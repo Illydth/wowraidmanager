@@ -73,7 +73,7 @@ while($data = $db_raid->sql_fetchrow($result, true)) {
 			'Frost'=>$data['frost'],
 			'Nature'=>$data['nature'],
 			'Shadow'=>$data['shadow'],
-			'Profile'=>'<a href="users.php?mode=details&user_id=' . $data['profile_id'] . '">' . $data_profdetail['username'] . '</a>'
+			'Profile'=>'<a href="users.php?mode=details&amp;user_id=' . $data['profile_id'] . '">' . $data_profdetail['username'] . '</a>'
 		)
 	);
 }
@@ -109,11 +109,11 @@ $report->addOutputColumn('Level',$phprlang['level'],'','center');
 $report->addOutputColumn('Race',$phprlang['race'],'','center');
 $report->addOutputColumn('Class',$phprlang['class'],'','center');
 $report->addOutputColumn('Role',$phprlang['role'],'','center');
-$report->addOutputColumn('Arcane','<img border="0" src="templates/' . $phpraid_config['template'] . '/images/resistances/arcane_resistance.gif" onMouseover="ddrivetip(\''.$phprlang['arcane'].'\')"; onMouseout="hideddrivetip()" height="16" width="16">','','center');
-$report->addOutputColumn('Fire','<img border="0" src="templates/' . $phpraid_config['template'] . '/images/resistances/fire_resistance.gif" onMouseover="ddrivetip(\''.$phprlang['fire'].'\')"; onMouseout="hideddrivetip()" height="16" width="16">','','center');
-$report->addOutputColumn('Nature','<img border="0" src="templates/' . $phpraid_config['template'] . '/images/resistances/nature_resistance.gif" onMouseover="ddrivetip(\''.$phprlang['nature'].'\')"; onMouseout="hideddrivetip()" height="16" width="16">','','center');
-$report->addOutputColumn('Frost','<img border="0" src="templates/' . $phpraid_config['template'] . '/images/resistances/frost_resistance.gif" onMouseover="ddrivetip(\''.$phprlang['frost'].'\')"; onMouseout="hideddrivetip()" height="16" width="16">','','center');
-$report->addOutputColumn('Shadow','<img border="0" src="templates/' . $phpraid_config['template'] . '/images/resistances/shadow_resistance.gif" onMouseover="ddrivetip(\''.$phprlang['shadow'].'\')"; onMouseout="hideddrivetip()" height="16" width="16">','','center');
+$report->addOutputColumn('Arcane','<img border="0" src="templates/' . $phpraid_config['template'] . '/images/resistances/arcane_resistance.gif" onMouseover="ddrivetip(\''.$phprlang['arcane'].'\');" onMouseout="hideddrivetip();" height="16" width="16" alt="arcane">','','center');
+$report->addOutputColumn('Fire','<img border="0" src="templates/' . $phpraid_config['template'] . '/images/resistances/fire_resistance.gif" onMouseover="ddrivetip(\''.$phprlang['fire'].'\');" onMouseout="hideddrivetip();" height="16" width="16" alt="fire">','','center');
+$report->addOutputColumn('Nature','<img border="0" src="templates/' . $phpraid_config['template'] . '/images/resistances/nature_resistance.gif" onMouseover="ddrivetip(\''.$phprlang['nature'].'\');" onMouseout="hideddrivetip();" height="16" width="16" alt="nature">','','center');
+$report->addOutputColumn('Frost','<img border="0" src="templates/' . $phpraid_config['template'] . '/images/resistances/frost_resistance.gif" onMouseover="ddrivetip(\''.$phprlang['frost'].'\');" onMouseout="hideddrivetip();" height="16" width="16" alt="frost">','','center');
+$report->addOutputColumn('Shadow','<img border="0" src="templates/' . $phpraid_config['template'] . '/images/resistances/shadow_resistance.gif" onMouseover="ddrivetip(\''.$phprlang['shadow'].'\');" onMouseout="hideddrivetip();" height="16" width="16" alt="shadow">','','center');
 if (scrub_input($_SESSION['priv_users']) == 1)
 	$report->addOutputColumn('Profile', $phprlang['profile'], '', 'center');
 $report->allowPaging(true, $_SERVER['PHP_SELF'] . '?Base=');

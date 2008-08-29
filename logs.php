@@ -62,7 +62,7 @@ if($_GET['mode'] == 'delete')
 
 	if(!isset($_POST['submit']))
 	{
-		$form_action = "logs.php?mode=delete&section=$section";
+		$form_action = "logs.php?mode=delete&amp;section=$section";
 		$confirm_button = '<input name="submit" type="submit" id="submit" value="'.$phprlang['confirm_deletion'].'" class="mainoption">';
 
 		$page->set_file('output',$phpraid_config['template'] . '/delete.htm');
@@ -129,13 +129,13 @@ else
 			<table width="450" border="0" cellspacing="0" cellpadding="0">
 			  <tr>
 				<td scope="col"><div align="center">'.$phprlang['log_sort_by'].'
-					  <select name="sort_name" class="post" class="post">
+					  <select name="sort_name" class="post">
 						  <option value="'.$phprlang['log_date'].'" '.$d_select.'>'.$phprlang['log_date'].'</option>
 						  <option value="'.$phprlang['log_id'].'" '.$i_select.'>'.$phprlang['log_id'].'</option>
 						  <option value="'.$phprlang['log_type'].'" '.$t_select.'>'.$phprlang['log_type'].'</option>
 					  </select>
 					  '.$phprlang['log_in'].'
-					  <select name="order" class="post" class="post">
+					  <select name="order" class="post">
 						  <option value="'.$phprlang['asc'].'" '.$a_select.'>'.$phprlang['asc'].'</option>
 						  <option value="'.$phprlang['desc'].'" '.$de_select.'>'.$phprlang['desc'].'</option>
 					  </select>
@@ -155,7 +155,7 @@ else
 			  </tr>
 			  <tr>
 				<td><div align="center">'.$phprlang['log_filter_show'].'
-					  <select name="filter" class="post" class="post">
+					  <select name="filter" class="post">
 						  <option value="'.$phprlang['log_filter_all'].'" '.$fa_select.'>'.$phprlang['log_filter_all'].'</option>
 						  <option value="'.$phprlang['log_filter_2_months'].'" '.$f60_select.'>'.$phprlang['log_filter_2_months'].'</option>
 						  <option value="'.$phprlang['log_filter_1_month'].'" '.$f30_select.'>'.$phprlang['log_filter_1_month'].'</option>
@@ -313,9 +313,9 @@ else
 	if($c_check == 'checked')
 	{
 		$create_output = '<div class="contentHeader">'.$phprlang['log_create_header'].'';
-		$create_output .= '&nbsp;&nbsp;<a href="logs.php?mode=delete&section=1"><img src="templates/' .
-					$phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['delete'].'\')";
-					onMouseout="hideddrivetip()"></a>
+		$create_output .= '&nbsp;&nbsp;<a href="logs.php?mode=delete&amp;section=1"><img src="templates/' .
+					$phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['delete'].'\');"
+					onMouseout="hideddrivetip();" alt="delete icon"></a>
 					';
 		$create_output .= '</div><br>';
 
@@ -329,9 +329,9 @@ else
 	if($d_check == 'checked')
 	{
 		$delete_output = '<div class="contentHeader">'.$phprlang['log_delete_header'].'';
-		$delete_output .= '&nbsp;&nbsp;<a href="logs.php?mode=delete&section=2"><img src="templates/' .
-					$phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['delete'].'\')";
-					onMouseout="hideddrivetip()"></a>
+		$delete_output .= '&nbsp;&nbsp;<a href="logs.php?mode=delete&amp;section=2"><img src="templates/' .
+					$phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['delete'].'\');"
+					onMouseout="hideddrivetip();" alt="delete icon"></a>
 					';
 		$delete_output .= '</div><br>';
 		foreach($delete as $key=>$value)
@@ -344,9 +344,9 @@ else
 	if($h_check == 'checked')
 	{
 		$hack_output = '<div class="contentHeader">'.$phprlang['log_hack_header'].'';
-		$hack_output .= '&nbsp;&nbsp;<a href="logs.php?mode=delete&section=3"><img src="templates/' .
-					$phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['delete'].'\')";
-					onMouseout="hideddrivetip()"></a>
+		$hack_output .= '&nbsp;&nbsp;<a href="logs.php?mode=delete&amp;section=3"><img src="templates/' .
+					$phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['delete'].'\');"
+					onMouseout="hideddrivetip();" alt="delete icon"></a>
 					';
 		$hack_output .= '</div><br>';
 
@@ -361,9 +361,9 @@ else
 	if($r_check == 'checked')
 	{
 		$raid_output = '<div class="contentHeader">'.$phprlang['log_raid_header'].'';
-		$raid_output .= '&nbsp;&nbsp;<a href="logs.php?mode=delete&section=4"><img src="templates/' .
-					$phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['delete'].'\')";
-					onMouseout="hideddrivetip()"></a>
+		$raid_output .= '&nbsp;&nbsp;<a href="logs.php?mode=delete&amp;section=4"><img src="templates/' .
+					$phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['delete'].'\');"
+					onMouseout="hideddrivetip();" alt="delete icon"></a>
 					';
 		$raid_output .= '</div><br>';
 

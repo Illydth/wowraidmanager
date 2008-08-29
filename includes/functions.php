@@ -66,7 +66,7 @@ function print_error($type, $error, $die) {
 	$errorTitle = $phprlang['print_error_title'];
 
 	echo '<div align="center"><div class="errorHeader" style="width:600px">'.$errorTitle .'</div>';
-	echo '<div class="errorBody" style="width:600px">'.$errorMsg.'</div></div>';
+	echo '<div class="errorBody" style="width:600px">'.$errorMsg.'</div>';
 
 	if($die == 1)
 		exit;
@@ -139,19 +139,20 @@ function setup_output() {
 
 function get_armorychar($name, $language, $server)
 {
+	$javascript = '<a href="http://www.wowarmory.com/character-sheet.xml?r=' . ucfirst($server) . '&amp;n=' . ucfirst($name) . '" target="new" onmouseover=\'tooltip.show("wowarmory_tooltip/char.php?v=' . ucfirst($name) . '&amp;z=' . ucfirst($server) . '");\' onmouseout="tooltip.hide();"><strong>&lt;' . ucfirst($name) . '&gt;</strong></a>';
 	if(substr($name, 0, 1) == '_')
 	{
 		$name = substr($name, 1);
-		$name = '<!-- ' . ucfirst($name) . ' -->(<script type="text/javascript"> if(tipcount){ tipcount = tipcount + 1; } else { var tipcount = 1 } document.write("<span id=\"tip-"+tipcount+"\"></span>"); sendRequest_char("' . ucfirst($server) . '", "tip-"+tipcount, "' . ucfirst($name) . '", "'. $language .'"); </script><noscript>' . ucfirst($name) . '</noscript>)';
+		$name = '<!-- ' . ucfirst($name) . ' -->' . $javascript;
 	}
 	else if(substr($name, 0, 1) == '(' && substr($name, strlen($name) - 1, 1) == ')')
 	{
 		$name = substr($name, 1, strlen($name) - 2);
-		$name = '<!-- ' . ucfirst($name) . ' -->(<script type="text/javascript"> if(tipcount){ tipcount = tipcount + 1; } else { var tipcount = 1 } document.write("<span id=\"tip-"+tipcount+"\"></span>"); sendRequest_char("' . ucfirst($server) . '", "tip-"+tipcount, "' . ucfirst($name) . '", "'. $language .'"); </script><noscript>' . ucfirst($name) . '</noscript>)';
+		$name = '<!-- ' . ucfirst($name) . ' -->' . $javascript;
 	}
 	else
 	{
-		$name = '<!-- ' . ucfirst($name) . ' --><script type="text/javascript"> if(tipcount){ tipcount = tipcount + 1; } else { var tipcount = 1 } document.write("<span id=\"tip-"+tipcount+"\"></span>"); sendRequest_char("' . ucfirst($server) . '", "tip-"+tipcount, "' . ucfirst($name) . '", "'. $language .'"); </script><noscript>' . ucfirst($name) . '</noscript>';
+		$name = '<!-- ' . ucfirst($name) . ' -->' . $javascript;
 	}
 
 	return $name;

@@ -103,7 +103,7 @@ function log_hack()
 	// print error out
 	echo '<html><link rel="stylesheet" type="text/css" href="templates/'.$phpraid_config['template'].'/style/stylesheet.css"><body>';
 	echo '<div align="center"><div class="errorHeader" style="width:600px">'.$phprlang['log_hack_header'] .'</div>';
-	echo '<div class="errorBody" style="width:600px">'.sprintf($phprlang['log_hack_message'], $full_page, $time, $ip).'</div></div>';
+	echo '<div class="errorBody" style="width:600px">'.sprintf($phprlang['log_hack_message'], $full_page, $time, $ip).'</div>';
 	echo '</body></html>';
 	
 	die();

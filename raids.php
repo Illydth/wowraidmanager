@@ -58,32 +58,32 @@ if($_GET['mode'] == 'view')
 	// Get information for current raids
 	// And push into current array so that we can output it with our report class
 	if (!$db_raid->sql_numrows($result) || $db_raid->sql_numrows($result) < 1)
-		$new_raid_link = '<a href="raids.php?mode=new"><img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_new_raid.gif" border="0"  onMouseover="ddrivetip(\''.$phprlang['raids_new_header'].'\')"; onMouseout="hideddrivetip()"></a>';		
+		$new_raid_link = '<a href="raids.php?mode=new"><img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_new_raid.gif" border="0"  onMouseover="ddrivetip(\''.$phprlang['raids_new_header'].'\');" onMouseout="hideddrivetip();" alt="new raid icon"></a>';		
 
 	while($data = $db_raid->sql_fetchrow($result, true)) {
 		if ($priv_raids or $username == $data['officer'])
 		{
-			$edit = '<a href="raids.php?mode=edit&id='.$data['raid_id'].'"><img src="templates/' . $phpraid_config['template'] .
-					'/images/icons/icon_edit.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['edit'].'\')"; onMouseout="hideddrivetip()"></a>';
+			$edit = '<a href="raids.php?mode=edit&amp;id='.$data['raid_id'].'"><img src="templates/' . $phpraid_config['template'] .
+					'/images/icons/icon_edit.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['edit'].'\');" onMouseout="hideddrivetip();" alt="edit icon"></a>';
 
-			$delete = '<a href="raids.php?mode=delete&n='.$data['location'].'&id='.$data['raid_id'].'"><img src="templates/' .
-						$phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['delete'].'\')";
-						onMouseout="hideddrivetip()"></a><a href="lua_output.php?raid_id=' . $data['raid_id'] . '">
+			$delete = '<a href="raids.php?mode=delete&amp;n='.$data['location'].'&amp;id='.$data['raid_id'].'"><img src="templates/' .
+						$phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['delete'].'\');"
+						onMouseout="hideddrivetip();" alt="delete icon"></a><a href="lua_output.php?raid_id=' . $data['raid_id'] . '">
 
 						<img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_minipost.gif" border="0"
-						onMouseover="ddrivetip(\''.$phprlang['lua'].'\')"; onMouseout="hideddrivetip()"></a>
+						onMouseover="ddrivetip(\''.$phprlang['lua'].'\');" onMouseout="hideddrivetip();" alt="minipost icon"></a>
 
-						<a href="raids.php?mode=mark&id='.$data['raid_id'].'"><img src="templates/' . $phpraid_config['template'] .
-						'/images/icons/icon_latest_reply.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['mark'].'\')";
-						onMouseout="hideddrivetip()"></a>';
+						<a href="raids.php?mode=mark&amp;id='.$data['raid_id'].'"><img src="templates/' . $phpraid_config['template'] .
+						'/images/icons/icon_latest_reply.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['mark'].'\');"
+						onMouseout="hideddrivetip();" alt="latest reply icon"></a>';
 
-			$old_delete = '<a href="raids.php?mode=delete&id='.$data['raid_id'].'"><img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['delete'].'\')"; onMouseout="hideddrivetip()"></a>';
+			$old_delete = '<a href="raids.php?mode=delete&amp;id='.$data['raid_id'].'"><img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['delete'].'\');" onMouseout="hideddrivetip();" alt="delete icon"></a>';
 
-			$mark_new = '<a href="raids.php?mode=mark&id='.$data['raid_id'].'"><img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_latest_reply.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['new'].'\')"; onMouseout="hideddrivetip()"></a>';
+			$mark_new = '<a href="raids.php?mode=mark&amp;id='.$data['raid_id'].'"><img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_latest_reply.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['new'].'\');" onMouseout="hideddrivetip();" alt="latest reply icon"></a>';
 		}
 
 		// Create the "new raid" button.
-		$new_raid_link = '<a href="raids.php?mode=new"><img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_new_raid.gif" border="0"  onMouseover="ddrivetip(\''.$phprlang['raids_new_header'].'\')"; onMouseout="hideddrivetip()"></a>';
+		$new_raid_link = '<a href="raids.php?mode=new"><img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_new_raid.gif" border="0"  onMouseover="ddrivetip(\''.$phprlang['raids_new_header'].'\');" onMouseout="hideddrivetip();" alt="new raid icon"></a>';
 
 		//setup the count array
 		$count = array('dr'=>'0','hu'=>'0','ma'=>'0','pa'=>'0','pr'=>'0','ro'=>'0','sh'=>'0','wk'=>'0','wa'=>'0','role1'=>'0','role2'=>'0','role3'=>'0','role4'=>'0','role5'=>'0','role6'=>'0');
@@ -95,7 +95,7 @@ if($_GET['mode'] == 'view')
 
 		$desc = scrub_input($data['description']);
 		$ddrivetiptxt = "'<span class=tooltip_title>" . $phprlang['description'] ."</span><br>" . DEUBB2($desc) . "'";
-		$location = '<a href="view.php?mode=view&raid_id='.$data['raid_id'].'" onMouseover="ddrivetip('.$ddrivetiptxt.')"; onMouseout="hideddrivetip()">'.$data['location'].'</a>';
+		$location = '<a href="view.php?mode=view&amp;raid_id='.$data['raid_id'].'" onMouseover="ddrivetip('.$ddrivetiptxt.');" onMouseout="hideddrivetip();">'.$data['location'].'</a>';
 
 		// convert unix timestamp to something readable
 		$start = new_date('Y/m/d H:i:s',$data['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
@@ -257,21 +257,21 @@ if($_GET['mode'] == 'view')
 	$report->addOutputColumn('Invite Time',$phprlang['invite_time'],'wrmtime','center');
 	$report->addOutputColumn('Start Time',$phprlang['start_time'],'wrmtime','center');
 	$report->addOutputColumn('Officer',$phprlang['officer'],'','center');
-	$report->addOutputColumn('Dru', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/druid_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['druid'] . '\')"; onMouseout="hideddrivetip()">', '', 'center');
-	$report->addOutputColumn('Hun', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/hunter_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['hunter'] . '\')"; onMouseout="hideddrivetip()">', '', 'center');
-	$report->addOutputColumn('Mag', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/mage_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['mage'] . '\')"; onMouseout="hideddrivetip()">', '', 'center');
-	$report->addOutputColumn('Pal', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/paladin_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['paladin'] . '\')"; onMouseout="hideddrivetip()">', '', 'center');
-	$report->addOutputColumn('Pri', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/priest_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['priest'] . '\')"; onMouseout="hideddrivetip()">', '', 'center');
-	$report->addOutputColumn('Rog', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/rogue_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['rogue'] . '\')"; onMouseout="hideddrivetip()">', '', 'center');
-	$report->addOutputColumn('Sha', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/shaman_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['shaman'] . '\')"; onMouseout="hideddrivetip()">', '', 'center');
-	$report->addOutputColumn('Wlk', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/warlock_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['warlock'] . '\')"; onMouseout="hideddrivetip()">', '', 'center');
-	$report->addOutputColumn('War', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/warrior_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['warrior'] . '\')"; onMouseout="hideddrivetip()">', '', 'center');
+	$report->addOutputColumn('Dru', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/druid_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['druid'] . '\');" onMouseout="hideddrivetip();" alt="druid">', '', 'center');
+	$report->addOutputColumn('Hun', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/hunter_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['hunter'] . '\');" onMouseout="hideddrivetip();" alt="hunter">', '', 'center');
+	$report->addOutputColumn('Mag', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/mage_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['mage'] . '\');" onMouseout="hideddrivetip();" alt="mage">', '', 'center');
+	$report->addOutputColumn('Pal', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/paladin_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['paladin'] . '\');" onMouseout="hideddrivetip();" alt="paladin">', '', 'center');
+	$report->addOutputColumn('Pri', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/priest_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['priest'] . '\');" onMouseout="hideddrivetip();" alt="priest">', '', 'center');
+	$report->addOutputColumn('Rog', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/rogue_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['rogue'] . '\');" onMouseout="hideddrivetip();" alt="rogue">', '', 'center');
+	$report->addOutputColumn('Sha', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/shaman_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['shaman'] . '\');" onMouseout="hideddrivetip();" alt="shaman">', '', 'center');
+	$report->addOutputColumn('Wlk', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/warlock_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['warlock'] . '\');" onMouseout="hideddrivetip();" alt="warlock">', '', 'center');
+	$report->addOutputColumn('War', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/warrior_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['warrior'] . '\');" onMouseout="hideddrivetip();" alt="warrior">', '', 'center');
 	//$report->addOutputColumn('Tank',$phprlang['role_tanks'],'','center');
-	//$report->addOutputColumn('Tank','<img src="templates/' . $phpraid_config['template'] . '/images/classes/warrior_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['role_tanks'] . '\')"; onMouseout="hideddrivetip()">','','center');
-	//$report->addOutputColumn('Heal','<img src="templates/' . $phpraid_config['template'] . '/images/classes/priest_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['role_heals'] . '\')"; onMouseout="hideddrivetip()">','','center');
-	//$report->addOutputColumn('Melee','<img src="templates/' . $phpraid_config['template'] . '/images/classes/rogue_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['role_melees'] . '\')"; onMouseout="hideddrivetip()">','','center');
-	//$report->addOutputColumn('Ranged','<img src="templates/' . $phpraid_config['template'] . '/images/classes/mage_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['role_ranges'] . '\')"; onMouseout="hideddrivetip()">','','center');
-	//$report->addOutputColumn('TkMel','<img src="templates/' . $phpraid_config['template'] . '/images/classes/druid_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['role_tankmelees'] . '\')"; onMouseout="hideddrivetip()">','','center');
+	//$report->addOutputColumn('Tank','<img src="templates/' . $phpraid_config['template'] . '/images/classes/warrior_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['role_tanks'] . '\');" onMouseout="hideddrivetip();">','','center');
+	//$report->addOutputColumn('Heal','<img src="templates/' . $phpraid_config['template'] . '/images/classes/priest_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['role_heals'] . '\');" onMouseout="hideddrivetip();">','','center');
+	//$report->addOutputColumn('Melee','<img src="templates/' . $phpraid_config['template'] . '/images/classes/rogue_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['role_melees'] . '\');" onMouseout="hideddrivetip();">','','center');
+	//$report->addOutputColumn('Ranged','<img src="templates/' . $phpraid_config['template'] . '/images/classes/mage_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['role_ranges'] . '\');" onMouseout="hideddrivetip();">','','center');
+	//$report->addOutputColumn('TkMel','<img src="templates/' . $phpraid_config['template'] . '/images/classes/druid_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['role_tankmelees'] . '\');" onMouseout="hideddrivetip();">','','center');
 	if ($phpraid_config['role1_name'] != '')
 		$report->addOutputColumn('role1',$phpraid_config['role1_name'],'','center');
 	if ($phpraid_config['role2_name'] != '')
@@ -440,7 +440,7 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 		elseif(isset($_GET['mode']) && $_GET['mode'] == 'edit')
 		{
 			$id = scrub_input($_GET['id']);
-			$form_action = 'raids.php?mode=edit&id='. $id;
+			$form_action = 'raids.php?mode=edit&amp;id='. $id;
 		}
 
  		// and if it's an edit, grab straight from the raids database instead
@@ -749,14 +749,14 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 			if($raid_location == $data['name'])
 			{
 			   if($raid_mode == 'edit')
-				  $raid_name .= '<option value="raids.php?mode=edit&id=' . $raid_id . '&location=' . $data['name'] .'" selected>' . $data['name'] . '</option>';
+				  $raid_name .= '<option value="raids.php?mode=edit&amp;id=' . $raid_id . '&location=' . $data['name'] .'" selected>' . $data['name'] . '</option>';
 			   else
 				  $raid_name .= '<option value="raids.php?mode=new' . $raid_id  . '&location=' . $data['name'] .'" selected>' . $data['name'] . '</option>';
 			}
 			else
 			{
 			   if($raid_mode == 'edit')
-				  $raid_name .= '<option value="raids.php?mode=edit&id=' . $raid_id . '&location=' . $data['name'] .'">' . $data['name'] . '</option>';
+				  $raid_name .= '<option value="raids.php?mode=edit&amp;id=' . $raid_id . '&location=' . $data['name'] .'">' . $data['name'] . '</option>';
 			   else
 				  $raid_name .= '<option value="raids.php?mode=new' . $raid_id . '&location=' . $data['name'] .'">' . $data['name'] . '</option>';
 			}
@@ -1017,7 +1017,7 @@ elseif($_GET['mode'] == 'delete')
 
 	if(!isset($_POST['submit']))
 	{
-		$form_action = "raids.php?mode=delete&n=$n&id=$id";
+		$form_action = "raids.php?mode=delete&amp;n=$n&amp;id=$id";
 		$confirm_button = '<input name="submit" type="submit" id="submit" value="'.$phprlang['confirm_deletion'].'" class="mainoption">';
 
 		$page->set_file('output',$phpraid_config['template'] . '/delete.htm');

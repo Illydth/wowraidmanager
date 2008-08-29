@@ -70,8 +70,8 @@ $phprlang['log_raid_header'] = 'Log delle attività Raid';
 $phprlang['log_sort_header'] = 'Filtri di visualizzazione';
 							
 // output text
-$phprlang['log_create'] = '%s - %s: l\'Utente [<a href="users.php?mode=details&user_id=%s">%s</a> (%s)] ha creato [%s] con id [%s] e nome [%s]';
-$phprlang['log_delete'] = '%s - %s: l\'Utente [<a href="users.php?mode=details&user_id=%s">%s</a> (%s)] ha eliminato [%s] con nome [%s]';
+$phprlang['log_create'] = '%s - %s: l\'Utente [<a href="users.php?mode=details&amp;user_id=%s">%s</a> (%s)] ha creato [%s] con id [%s] e nome [%s]';
+$phprlang['log_delete'] = '%s - %s: l\'Utente [<a href="users.php?mode=details&amp;user_id=%s">%s</a> (%s)] ha eliminato [%s] con nome [%s]';
 $phprlang['log_hack'] = '%s - %s: l\'Utente con IP [%s] ha tentato un hack [%s]';
-$phprlang['log_raid'] = '%s - %s: l\'Utente [<a href="users.php?mode=details&user_id=%s">%s</a> (%s)] ha alterato il Raid <a href="view.php?mode=view&raid_id=%s">%s %s</a>: [%s] del Personaggio %s - %s';
+$phprlang['log_raid'] = '%s - %s: l\'Utente [<a href="users.php?mode=details&amp;user_id=%s">%s</a> (%s)] ha alterato il Raid <a href="view.php?mode=view&amp;raid_id=%s">%s %s</a>: [%s] del Personaggio %s - %s';
 ?>
