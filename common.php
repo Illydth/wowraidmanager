@@ -113,8 +113,8 @@ get_permissions();
 
 if($phpraid_config['disable'] == 1 && $_SESSION['priv_configuration'] == 0)
 {
-	$errorTitle = $phprlang['disable_header'];
-	$errorMsg = $phprlang['disable_message'];
+	$errorTitle = $phprlang['maintenance_header'];
+	$errorMsg = $phprlang['maintenance_message'];
 	$errorDie = 1;
 }
 ?>

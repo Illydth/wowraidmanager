@@ -173,8 +173,10 @@ $phprlang['signup'] = 'Påmelding';
 
 // generic information
 $phprlang['delete_msg'] = 'NOTIS: Sletting er permanent. <br>Klikk under for å slette.';
-$phprlang['disable_header'] = 'Site under vedlikehold';
-$phprlang['disable_message'] = 'Vedlikehold pågår. Prøv igjen senere.';
+$phprlang['maintenance_header'] = 'Site under vedlikehold';
+$phprlang['maintenance_message'] = 'Vedlikehold pågår. Prøv igjen senere.';
+$phprlang['disabled_header'] = 'Site Disabled Notice!';
+$phprlang['disabled_message'] = 'Please note, your site is disabled. Visitors can\'t use the system right now!<br>Go to <u>Configuration</u> and then uncheck <u>Disable phpRaid</u>';
 $phprlang['login_title'] = 'Login feilet';
 $phprlang['login_msg'] = 'Feil brukernavn og/eller passord, prøv igjen.';
 $phprlang['userclass_msg'] = 'Din bruker er ikke autorisert til å bruke WRM, kontakt en admin.';

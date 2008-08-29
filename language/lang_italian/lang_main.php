@@ -172,8 +172,10 @@ $phprlang['signup'] = 'Iscriviti';
 
 // generic information
 $phprlang['delete_msg'] = 'ATTENZIONE: l\'eliminazione è permanente e non reversibile.<br>Clicka il pulsante sottostante se sei sicuro di voler procedere.';
-$phprlang['disable_header'] = 'Lavori in corso';
-$phprlang['disable_message'] = 'WowRaidManager è momentaneamente non disponibile per lavori in corso. Riprova più tardi.';
+$phprlang['maintenance_header'] = 'Lavori in corso';
+$phprlang['maintenance_message'] = 'WowRaidManager è momentaneamente non disponibile per lavori in corso. Riprova più tardi.';
+$phprlang['disabled_header'] = 'Site Disabled Notice!';
+$phprlang['disabled_message'] = 'Please note, your site is disabled. Visitors can\'t use the system right now!<br>Go to <u>Configuration</u> and then uncheck <u>Disable phpRaid</u>';
 $phprlang['login_title'] = 'Accesso fallito';
 $phprlang['login_msg'] = 'Username e/o password inesistenti o non validi. Riprova nuovamente.';
 $phprlang['userclass_msg'] = 'Il tuo utente non è autorizzato ad utilizzare WowRaidManager: contatta un Amministratore per risolvere il problema.';

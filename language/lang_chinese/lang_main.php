@@ -175,8 +175,10 @@ $phprlang['signup'] = '註冊';
 
 // generic information
 $phprlang['delete_msg'] = '注意: 刪除後無法回復資料 <br>點擊下面的按鈕確認刪除.';
-$phprlang['disable_header'] = '系統維護中';
-$phprlang['disable_message'] = 'WoW Raid Manager系統現在維護中. 請稍候再試一次.';
+$phprlang['maintenance_header'] = '系統維護中';
+$phprlang['maintenance_message'] = 'WoW Raid Manager系統現在維護中. 請稍候再試一次.';
+$phprlang['disabled_header'] = 'Site Disabled Notice!';
+$phprlang['disabled_message'] = 'Please note, your site is disabled. Visitors can\'t use the system right now!<br>Go to <u>Configuration</u> and then uncheck <u>Disable phpRaid</u>';
 $phprlang['login_title'] = '登入失敗';
 $phprlang['login_msg'] = '您輸入了錯誤的用戶名稱或密碼. 請再試一次.';
 $phprlang['userclass_msg'] = '您的使用者帳號未被授權,請聯繫系統管理者.';

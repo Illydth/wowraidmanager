@@ -80,14 +80,13 @@ else
 }
 if(($phpraid_config['disable'] == '1') AND ($priv_config == 1))
 {
-	$site_disabled_warning = "
+	$site_disabled_warning = '
 	<br>
-	<div align=\"center\">
-	<div class=\"errorHeader\">Site disabled notice</div>
-	<div class=\"errorBody\">Please note, your site is disabled. Visitors can't use the system right now!<br>
-	Go to <u>Configuration</u> and then uncheck <u>Disable phpRaid</u></div>
+	<div align="center">
+	<div class="errorHeader">'. $phprlang['disabled_header'] . '</div>
+	<div class="errorBody">' . $phprlang['disabled_message'] . '</div>
 	</div>
-	";
+	';
 } 
 
 $page->set_var(

@@ -174,8 +174,10 @@ $phprlang['signup'] = 'Anmelden';
 
 // generic information
 $phprlang['delete_msg'] = 'ACHTUNG: Die Löschung ist permanent und kann nicht rückgängig gemacht werden. <br>Klicke auf die Schaltfläche unten, um fortzufahren.';
-$phprlang['disable_header'] = 'Wartungsarbeiten';
-$phprlang['disable_message'] = 'WoW Raid Manager wird gerade Wartungsarbeiten unterzogen. Bitte versuche es später noch einmal.';
+$phprlang['maintenance_header'] = 'Wartungsarbeiten';
+$phprlang['maintenance_message'] = 'WoW Raid Manager wird gerade Wartungsarbeiten unterzogen. Bitte versuche es später noch einmal.';
+$phprlang['disabled_header'] = 'Site Disabled Notice!';
+$phprlang['disabled_message'] = 'Please note, your site is disabled. Visitors can\'t use the system right now!<br>Go to <u>Configuration</u> and then uncheck <u>Disable phpRaid</u>';
 $phprlang['login_title'] = 'Login fehlgeschlagen';
 $phprlang['login_msg'] = 'Du hast einen ungültigen Benutzernamen oder ein falsches Passwort eingegeben. Bitte versuche es noch einmal.';
 $phprlang['userclass_msg'] = 'Dein Benutzer hat nicht die Berechtigung, WoW Raid Manager zu benutzen. Bitte benachrichtige den System-Administrator.';

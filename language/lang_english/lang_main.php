@@ -175,8 +175,10 @@ $phprlang['signup'] = 'Signup';
 
 // generic information
 $phprlang['delete_msg'] = 'NOTICE: Deletion is permanent and cannot be reversed. <br>Click the button below to continue.';
-$phprlang['disable_header'] = 'Site under maintenance';
-$phprlang['disable_message'] = 'WoW Raid Manager is currently undergoing maintenance. Please try again later.';
+$phprlang['maintenance_header'] = 'Site under maintenance';
+$phprlang['maintenance_message'] = 'WoW Raid Manager is currently undergoing maintenance. Please try again later.';
+$phprlang['disabled_header'] = 'Site Disabled Notice!';
+$phprlang['disabled_message'] = 'Please note, your site is disabled. Visitors can\'t use the system right now!<br>Go to <u>Configuration</u> and then uncheck <u>Disable phpRaid</u>';
 $phprlang['login_title'] = 'Login failed';
 $phprlang['login_msg'] = 'You have specified an invalid username or password. Please try again.';
 $phprlang['userclass_msg'] = 'Your user is not authorized to use WoW Raid Manager , please contact the system administrator.';
