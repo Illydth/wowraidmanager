@@ -200,6 +200,20 @@ $phprlang['2ltrwednesday'] = 'We';
 $phprlang['2ltrthursday'] = 'Th';
 $phprlang['2ltrfriday'] = 'Fr';
 $phprlang['2ltrsaturday'] = 'Sa';
+
+// Months
+$phprlang['month1'] = 'January';
+$phprlang['month2'] = 'February';
+$phprlang['month3'] = 'March';
+$phprlang['month4'] = 'April';
+$phprlang['month5'] = 'May';
+$phprlang['month6'] = 'June';
+$phprlang['month7'] = 'July';
+$phprlang['month8'] = 'August';
+$phprlang['month9'] = 'September';
+$phprlang['month10'] = 'October';
+$phprlang['month11'] = 'November';
+$phprlang['month12'] = 'December';
 							
 // links
 $phprlang['announcements_link'] = '&raquo; 活動公告';

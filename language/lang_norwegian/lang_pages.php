@@ -39,6 +39,7 @@ $phprlang['announcements_title_text'] = 'Tittel';
 $phprlang['invites'] = 'Inviterte';
 $phprlang['start'] = 'Start';
 $phprlang['key'] = 'Key:<br>(*) = Påmeldt & utkast<br>(#) = Påmeldt, ikke i utkastet (kø eller kannselert)<br><font color="#FFFFFF">Hvite</font> datoer er i fortid.<br><font color="#FF0000">Rød</font> dato er idag.<br><font color="#000000">Sort</font> dato er i fremtiden.';
+$phprlang['calendar_month_select_header'] = 'Velg måned og år som skal vises';
 
 // configuration
 $phprlang['configuration_addon'] = 'Addon URL';

@@ -30,9 +30,6 @@
 *
 ****************************************************************************/
 
-// This is the number of rows (ie, weeks.. current week included) the calendar shows
-$num_rows=4;
-
 // commons
 define("IN_PHPRAID", true);
 include("./common.php");
@@ -44,7 +41,274 @@ else
 	define("PAGE_LVL","profile");
 
 require_once("includes/authentication.php");
+
+// check for month/year passing
+isset($_POST['month']) ? $in_month = scrub_input($_POST['month']) : $in_month = '';
+isset($_POST['year']) ? $in_year = scrub_input($_POST['year']) : $in_year = '';
+
+isset($_GET['month']) ? $in_month = scrub_input($_GET['month']) : $in_month = $in_month;
+isset($_GET['year']) ? $in_year = scrub_input($_GET['year']) : $in_year = $in_year;
+
+// Generate "Current" values.
+$currYear = date("Y");
+$nextYear = date("Y")+1;
+$prevYear = date("Y")-1;
+$currMonth = date("n");
+$currDate = date("j");
+$currTimeStamp = mktime(0,0,0);
+
+// Generate the "timestamp" to use for this display.
+if ($in_month == '')
+	$in_month = $currMonth;
+if ($in_year == '')
+	$in_year = $currYear;
+
+// This "timestamp" is for what the user passed into us and should be the basis for everything generated
+//     on the page.
+$timestamp = mktime('00','00','00', $in_month, '1', $in_year);
+
+// This is for the "next"/"previous" links.  We need the next and prev months and the year those months
+//     are in, this keeps us from moving from December 2008 to January 2008.
+$prevMonth = date("n", mktime('00', '00', '00', $in_month - 1, '1', $in_year));
+$prevMonthYear = date("Y", mktime('00', '00', '00', $in_month - 1, '1', $in_year));
+$nextMonth = date("n", mktime('00', '00', '00', $in_month + 1, '1', $in_year));
+$nextMonthYear = date("Y", mktime('00', '00', '00', $in_month + 1, '1', $in_year));
+
+// Generate the "Year" dropdown.
+$yearSelect = '<select name="year">';
+$yearSelect .= '<option value="'. $prevYear . '">' . $prevYear . '</option>';
+$yearSelect .= '<option value="'. $currYear . '" selected>' . $currYear . '</option>';
+$yearSelect .= '<option value="'. $nextYear . '">' . $nextYear . '</option>';
+$yearSelect .= '</select>';
+
+// Generate the "Month" dropdown.
+$monthSelect = '<select name="month">';
+for ($x = 1; $x <= 12; $x++)
+{
+	if($currMonth == $x)
+		$monthSelect .= '<option value="' . $x . '" selected>'. $phprlang['month'.$x] . '</option>';
+	else
+		$monthSelect .= '<option value="' . $x . '">'. $phprlang['month'.$x] . '</option>';
+}
+$monthSelect .= '</select>';
+
+// Pass Along the Headers
+$monthSelectHeader = $phprlang['calendar_month_select_header'];
+
+//@@ REMOVE THIS
+// Set the Starting Day on the Calendar.
+$startDay = 'Sunday';
+
+$boxOffset = array();
+$box = array();
+
+if ($startDay == $phprlang['monday'])
+{
+	$day1 = $phprlang['monday'];
+	$day2 = $phprlang['tuesday'];
+	$day3 = $phprlang['wednesday'];
+	$day4 = $phprlang['thursday'];
+	$day5 = $phprlang['friday'];
+	$day6 = $phprlang['saturday'];
+	$day7 = $phprlang['sunday'];
+
+	$boxOffset[0]=6;
+	$boxOffset[1]=0;
+	$boxOffset[2]=1;
+	$boxOffset[3]=2;
+	$boxOffset[4]=3;
+	$boxOffset[5]=4;
+	$boxOffset[6]=5;
+}
+else
+{
+	$day1 = $phprlang['sunday'];
+	$day2 = $phprlang['monday'];
+	$day3 = $phprlang['tuesday'];
+	$day4 = $phprlang['wednesday'];
+	$day5 = $phprlang['thursday'];
+	$day6 = $phprlang['friday'];
+	$day7 = $phprlang['saturday'];
+
+	$boxOffset[0]=0;
+	$boxOffset[1]=1;
+	$boxOffset[2]=2;
+	$boxOffset[3]=3;
+	$boxOffset[4]=4;
+	$boxOffset[5]=5;
+	$boxOffset[6]=6;
+}
+
+// This is the Month and Year Header for the Calendar.
+$monthHead = date("F", $timestamp) . " " . date("Y", $timestamp);
+
+// Get Day of Week Number for First Day of Month and the Offset Number to Add.
+$dayOfWeekFirst = date("w", $timestamp);
+$offset = $boxOffset[$dayOfWeekFirst];
+
+// So from here on out, to get any specific box to write into you use the following formula:
+//    Day of Month + Offset = Box Number for that Day of the Month.
+
+// Write the Days of the Month into the correct calendar boxes in the correct color.
+$daysInMonth = date("t", $timestamp);
+
+for ($x = 1; $x <= $daysInMonth; $x++)
+{
+	$checkDate = mktime(0,0,0,$in_month,$x,$in_year);
+	
+	if ($checkDate == $currTimeStamp)
+	{
+		$boxNum = $x + $offset;
+		$varname = 'box'.$boxNum;
+		$$varname = '<div align="right"><font size="4" color="#FF0000"><b>' . $x . '</b></font></div>';		
+	}
+	elseif ($checkDate < $currTimeStamp)
+	{
+		$boxNum = $x + $offset;
+		$varname = 'box'.$boxNum;
+		$$varname = '<div align="right"><font size="4" color="#FFFFFF"><b>' . $x . '</b></font></div>';				
+	}
+	else
+	{
+		$boxNum = $x + $offset;
+		$varname = 'box'.$boxNum;
+		$$varname = '<div align="right"><font size="4"><b>' . $x . '</b></font></div>';				
+	}
+}
+
+// Ok, so the calendar is setup, now put the raids on it.  For each raid, pull the data from the database
+//   obtain it's start date/time and calculate the box that raid needs to go into.
+//   Append the data for that raid into the appropriate calendar box.
+
+// Get the Unix Timestamp for the Start of the Passed in Month and the End of the Passed in Month.
+$raidStartMonth = mktime("0", "0", "0", $in_month, "1", $in_year);
+$lastDayPassedMonth = date("t", $timestamp);
+$raidEndMonth = mktime("23", "59", "59", $in_month, $lastDayPassedMonth, $in_year);
+
+$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "raids WHERE start_time >= '" . $raidStartMonth . "' AND start_time <= '" . $raidEndMonth . "' ORDER BY start_time";
+
+$raids_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+while($raids = $db_raid->sql_fetchrow($raids_result, true)) 
+{
+	// Calculate the Invite and Start Time for the Raid.
+	$invitetime = new_date($phpraid_config['time_format'], $raids['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+	$starttime = new_date($phpraid_config['time_format'], $raids['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+
+	$uid = scrub_input($_SESSION['profile_id']);
+	$issignedup = "";
+	
+	// Get a list of all the signups for this raid for the current profile.
+	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id=%s AND profile_id=%s", quote_smart($raids['raid_id']), quote_smart($uid)); 
+	$resultz = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	
+	// If the profile is signed up check to see whether it should be marked for Drafted or Queued/Cancelled
+	//		the "drafted" mark overrides the "Queued/Cancel" mark for players with more than one character
+	//		signed up for the raid.
+	if($db_raid->sql_numrows($resultz) > 0)
+	{
+		while($signups = $db_raid->sql_fetchrow($resultz, true)) 
+		{
+			if (($signups['queue'] == '0') and ($data2['cancel'] == '0')) {
+				$issignedup = "*";
+			} elseif ($issignedup == '') {
+				$issignedup = "#";
+			}
+		}
+	}
+
+	// Create the link to the raids view.
+	$desc = scrub_input($raids['description']);
+	$ddrivetiptxt = "'<span class=tooltip_title>" . $phprlang['description'] ."</span><br>" . DEUBB2($desc) . "'";
+	$location = '<a href="view.php?mode=view&raid_id='.$raids['raid_id'].'" onMouseover="ddrivetip('.$ddrivetiptxt.')"; onMouseout="hideddrivetip()">'.$raids['location'].'</a> <font color="#0000ff" size=+1>' . $issignedup . '</font>';
+
+	// Start the "display" portion, get the "box" the raid link and information is supposed to go into
+	//		then append the raid into the box.
+	$raidDayOfMonth = date("j", $raids['start_time']);
+	$boxNum = $raidDayOfMonth + $offset;
+	$varname = 'box'.$boxNum;
+	
+	$$varname .= '<div align="left">';
+	$$varname .= $location; 
+	$$varname .= "<br/>"; 
+	$$varname .= $phprlang['invites'] . ": " . $invitetime;
+	$$varname .= "<br/>";
+	$$varname .= $phprlang['start'] . ": " . $starttime;
+	$$varname .= "<br/><br/>";
+	$$varname .= "</div>";
+}
+
 include("includes/page_header.php");
+
+$page->set_file(array(
+	'body_file' => $phpraid_config['template'] . '/calendar.htm')
+);
+
+// Array for Calendar Part Here.
+$page->set_var(
+	array(
+		'key'=>$phprlang['key'],
+		'submit_text'=>$phprlang['submit'],
+		'reset_text'=>$phprlang['reset'],
+		'month_select_header'=>$monthSelectHeader,
+		'month_select'=>$monthSelect,
+		'year_select'=>$yearSelect,
+		'buttons'=>$buttons,
+		'monthhead'=>$monthHead,
+		'prevmonth'=>$prevMonth,
+		'prevmonthyear'=>$prevMonthYear,
+		'nextmonth'=>$nextMonth,
+		'nextmonthyear'=>$nextMonthYear,
+		'day1'=>$day1,
+		'day2'=>$day2,
+		'day3'=>$day3,
+		'day4'=>$day4,
+		'day5'=>$day5,
+		'day6'=>$day6,
+		'day7'=>$day7,
+		'box1'=>$box1,
+		'box2'=>$box2,
+		'box3'=>$box3,
+		'box4'=>$box4,
+		'box5'=>$box5,
+		'box6'=>$box6,
+		'box7'=>$box7,
+		'box8'=>$box8,
+		'box9'=>$box9,
+		'box10'=>$box10,
+		'box11'=>$box11,
+		'box12'=>$box12,
+		'box13'=>$box13,
+		'box14'=>$box14,
+		'box15'=>$box15,
+		'box16'=>$box16,
+		'box17'=>$box17,
+		'box18'=>$box18,
+		'box19'=>$box19,
+		'box20'=>$box20,
+		'box21'=>$box21,
+		'box22'=>$box22,
+		'box23'=>$box23,
+		'box24'=>$box24,
+		'box25'=>$box25,
+		'box26'=>$box26,
+		'box27'=>$box27,
+		'box28'=>$box28,
+		'box29'=>$box29,
+		'box30'=>$box30,
+		'box31'=>$box31,
+		'box32'=>$box32,
+		'box33'=>$box33,
+		'box34'=>$box34,
+		'box35'=>$box35,
+		'box36'=>$box36,
+		'box37'=>$box37,
+		'box38'=>$box38,
+		'box39'=>$box39,
+		'box40'=>$box40,
+		'box41'=>$box41,
+		'box42'=>$box42,
+		)
+);
 
 // now for announcements
 // get announcements
@@ -85,139 +349,6 @@ $page->parse('body','body_file',true);
 
 $page->p('body');
 
-
-?>
-
-<center>
-<hr>
-</center>
-<div align=\"left\">
-
-<p>
-<table border="4" width="100%" id="table1" align="center" cellspacing="3">
-        <tr height="18">
-<?php
-print "                <th colspan=\"7\"><font color=\"#0000FF\"><div align=\"center\">" . date("F",mktime(0, 0, 0, date("m") , date("d") , date("Y"))) . " " . date("Y",mktime(0, 0, 0, date("m") , date("d") , date("Y")))  . "</div></font></th>";
-?>
-<?php
-        echo "</tr>";
-        echo "<tr height=\"18\">";
-        echo "  <th width=14% align=\"center\"><b>" . $phprlang['sunday'] . "</b></td>";
-        echo "  <th width=14% align=\"center\"><b>" . $phprlang['monday'] . "</b></td>";
-        echo "  <th width=14% align=\"center\"><b>" . $phprlang['tuesday'] . "</b></td>";
-        echo "  <th width=14% align=\"center\"><b>" . $phprlang['wednesday'] . "</b></td>";
-        echo "  <th width=14% align=\"center\"><b>" . $phprlang['thursday'] . "</b></td>";
-        echo "  <th width=14% align=\"center\"><b>" . $phprlang['friday'] . "</b></td>";
-        echo "  <th width=14% align=\"center\"><b>" . $phprlang['saturday'] . "</b></td>";
-        echo "</tr>";
-?>
-<?php
-
-$today = mktime(0, 0, 0, date("m") , date("d"), date("Y"));
-$start = mktime(0, 0, 0, date("m") , date("d") - date("w"), date("Y"));
-
-print "        <tr height=\"100\"> \n";
-
-for ($i = 1; $i <= ($num_rows*7); $i++)   {
-
-    $txt_color = "";
-
-  if( (mktime(0, 0, 0, date("m",$start ) , date("d",$start ) +$i-1 , date("Y",$start ))) == $today) {
-    $txt_color = "#FF0000";
-  }
-
-  if( (mktime(0, 0, 0, date("m",$start ) , date("d",$start ) +$i-1 , date("Y",$start ))) < $today) {
-    $txt_color = "#FFFFFF";
-  }
-
-  if(($i==1) or (date("d",mktime(0, 0, 0, date("m",$start ) , date("d",$start ) +$i-1 , date("Y",$start ))) == "01")){
-    print "                <td valign=\"top\"><div align=\"right\"><b><font size=\"4\" color=\"{$txt_color}\">" . date("M",mktime(0, 0, 0, date("m",$start ) , date("d",$start ) +$i-1 , date("Y",$start ))) . " " . date("d",mktime(0, 0, 0, date("m",$start ) , date("d",$start ) +$i-1 , date("Y",$start ))) . "&nbsp;</font></b></div>";
-  } else {
-    print "                <td valign=\"top\"><div align=\"right\"><b><font size=\"4\" color=\"{$txt_color}\">" . date("d",mktime(0, 0, 0, date("m",$start ) , date("d",$start ) +$i-1 , date("Y",$start ))) . "&nbsp;</font></b></div>";
-  }
-
-print "<div align=\"left\"><font size=\"1\" color=\"#FFFFFF\">";
-
-$current_date = date("m-d-Y",mktime(0, 0, 0, date("m",$start ) , date("d",$start ) +$i-1 , date("Y",$start )));
-
-$dayfirst =  mktime(0, 0, 0, date("m",$start ) , date("d",$start ) +$i-1 , date("Y",$start ));
-$daylast = mktime(23, 59, 59, date("m",$start ) , date("d",$start ) +$i-1 , date("Y",$start ));
-
-$result = $db_raid->sql_query("SELECT * FROM " . $phpraid_config['db_prefix'] . "raids WHERE start_time > '" . $dayfirst . "' AND start_time <= '" . $daylast . "' ORDER BY start_time");
-$bob = "a";
-
-while($data = $db_raid->sql_fetchrow($result, true)) {
-	$invitetime = new_date($phpraid_config['time_format'], $data['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
-	$starttime = new_date($phpraid_config['time_format'], $data['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
-
-//	$starttime = date($config['time_format'],$data['start_time']);
-//	$invitetime = date($config['time_format'],$data['invite_time']);
-
-	$uid = $_SESSION['profile_id'];
-	$issignedup = "";
-	$resultz = $db_raid->sql_query("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id='" . $data['raid_id']. "' AND profile_id='{$_SESSION['profile_id']}'");
-	if($db_raid->sql_numrows($resultz) > 0)
-	{
-		$data2 =  $db_raid->sql_fetchrow($resultz, true);
-		if (($data2['queue'] == '0') and ($data2['cancel'] == '0')) {
-			$issignedup = "*";
-		} else {
-			$issignedup = "#";
-		}
-	}
-	$resultz2 = $db_raid->sql_query("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id='" . $data['raid_id']. "' AND profile_id='{$_SESSION['profile_id']}' AND queue = '0' AND cancel = '0'");
-	if ($db_raid->sql_numrows($resultz2) > 0) {
-		$issignedup = "*";
-	}
-
-	$desc = scrub_input($data['description']);
-	$ddrivetiptxt = "'<span class=tooltip_title>" . $phprlang['description'] ."</span><br>" . DEUBB2($desc) . "'";
-	$location = '<a href="view.php?mode=view&raid_id='.$data['raid_id'].'" onMouseover="ddrivetip('.$ddrivetiptxt.')"; onMouseout="hideddrivetip()">'.$data['location'].'</a> <font color="#0000ff" size=+1>' . $issignedup . '</font></font>';
-	
-	//$location = '<a href="view.php?mode=view&raid_id='.$data['raid_id'].'" onMouseover="ddrivetip(\'<span class=tooltip_title>Description</span><br>' . $desc . '\')" onMouseout="hideddrivetip()">'.$data['location'].'</a> <font color="#0000ff" size=+1>' . $issignedup . '</font></font>';
-	$result_total = $db_raid->sql_query("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id='".$data['raid_id']."' AND queue='0'");
-	$total = $db_raid->sql_numrows($result_total);
-
-//	$location = '<a href="view.php?mode=view&raid_id=' . $data['raid_id'] . '">' . $data['location'] . '</a>';
-
-	if ($bob <> "a") {
-		print "<hr>";
-	} else {
-		$bob="b";
-	}
-
-	print $location;
-	print "<br>";
-	print $phprlang['invites'] . ": " . $invitetime;
-	print "<br>";
-	print $phprlang['start'] . ": " . $starttime;
-	print "<br>";
-
-}
-print "&nbsp;</font></div></td> \n";
-
-
-
-  if ( ($i % 7 == 0) and ($i < ($num_rows*7)) ) {
-    print "        </tr> \n";
-    print "        <tr height=\"100\"> \n";
-  }
-}
-    print "        </tr> \n";
-
-?>
-	<tr>
-<?php
-    print '<td colspan="7"><font size="1"><div align="left">' . $phprlang['key']. '</div></font></td>';
-?>
-	</tr>
-
-</table>
-
-<p>&nbsp;</p></div>
-
-<?php
-
-        include("includes/page_footer.php");
+include('includes/page_footer.php');
 
 ?>

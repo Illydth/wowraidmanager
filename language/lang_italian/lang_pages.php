@@ -39,6 +39,7 @@ $phprlang['announcements_title_text'] = 'Titolo';
 $phprlang['invites'] = 'Inviti';
 $phprlang['start'] = 'Inizio';
 $phprlang['key'] = 'Legenda:<br>(*) = Iscritto e confermato<br>(#) = Iscritto (in coda o annullato)<br>Giorni <font color="#FFFFFF">bianchi</font> = eventi passati.<br>Giorno <font color="#FF0000">rosso</font> = eventi odierni.<br>Giorni <font color="#000000">neri</font> = eventi futuri.';
+$phprlang['calendar_month_select_header'] = 'Select Month and Year to View';
 
 // configuration
 $phprlang['configuration_addon'] = 'Sito ufficiale di WowRaidManager';

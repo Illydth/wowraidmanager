@@ -202,6 +202,20 @@ $phprlang['2ltrwednesday'] = 'Mer';
 $phprlang['2ltrthursday'] = 'Jeu';
 $phprlang['2ltrfriday'] = 'Ven';
 $phprlang['2ltrsaturday'] = 'Sam';
+
+// Months
+$phprlang['month1'] = 'January';
+$phprlang['month2'] = 'February';
+$phprlang['month3'] = 'March';
+$phprlang['month4'] = 'April';
+$phprlang['month5'] = 'May';
+$phprlang['month6'] = 'June';
+$phprlang['month7'] = 'July';
+$phprlang['month8'] = 'August';
+$phprlang['month9'] = 'September';
+$phprlang['month10'] = 'October';
+$phprlang['month11'] = 'November';
+$phprlang['month12'] = 'December';
 							
 // links
 $phprlang['announcements_link'] = '&raquo; Messages D\'Accueil';

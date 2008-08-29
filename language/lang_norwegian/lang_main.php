@@ -198,6 +198,20 @@ $phprlang['2ltrwednesday'] = 'On';
 $phprlang['2ltrthursday'] = 'To';
 $phprlang['2ltrfriday'] = 'Fr';
 $phprlang['2ltrsaturday'] = 'Lø';						
+
+// Months
+$phprlang['month1'] = 'Januar';
+$phprlang['month2'] = 'Februar';
+$phprlang['month3'] = 'Mars';
+$phprlang['month4'] = 'April';
+$phprlang['month5'] = 'Mai';
+$phprlang['month6'] = 'Juni';
+$phprlang['month7'] = 'Juli';
+$phprlang['month8'] = 'August';
+$phprlang['month9'] = 'September';
+$phprlang['month10'] = 'Oktober';
+$phprlang['month11'] = 'November';
+$phprlang['month12'] = 'Desember';
 							
 // links
 $phprlang['announcements_link'] = '&raquo; Nyheter';
