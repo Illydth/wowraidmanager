@@ -2,8 +2,6 @@
 
 # Set Directory / File Write permissions.
 chmod 777 raid_lua
-chmod 777 wowchar-tooltips/cache
-chmod 777 wowitem-tooltips/cache
 
 # Remove Prior Package Directory
 rm -rf package
@@ -113,53 +111,36 @@ cd ..
 cd ..
 
 # wowchar-tooltip
-cd wowchar-tooltip
+cd wowarmory_tooltip
 chmod a-x *.php
-cd css
-chmod a-x *.css
-cd ..
-cd image
+cd images
 chmod a-x *.gif
-cd icons
-cd class
 chmod a-x *.png
 cd ..
-cd race
-chmod a-x *.png
-cd ..
-cd ..
-cd portraits
-cd 1-59
-chmod a-x *.gif
-cd ..
-cd 60-69
-chmod a-x *.gif
-cd ..
-cd 70
-chmod a-x *.gif
-cd ..
-cd ..
+cd includes
+chmod a-x *.php
 cd ..
 cd js
 chmod a-x *.js
 cd ..
-cd lang
+cd languages
 chmod a-x *.php
 cd ..
-cd ..
-
-# wowitem-tooltip
-cd wowitem-tooltip
+cd stats_conf
 chmod a-x *.php
+cd ..
+cd template
 cd css
 chmod a-x *.css
 cd ..
-cd image
-chmod a-x *.gif
-chmod a-x *.png
+cd html
+cd default
+chmod a-x *.html
 cd ..
-cd js
-chmod a-x *.js
+cd wowhead
+chmod a-x *.html
+cd ..
+cd ..
 cd ..
 cd ..
 
@@ -177,8 +158,6 @@ cd package
 rm -rf wrm/utilities
 rm -rf wrm/package
 rm -f wrm/config.php
-rm -f wrm/wowitem-tooltip/cache/*
-rm -f wrm/wowchar-tooltip/cache/*
 
 #Build the Packages
 tar -czvf wowRaidManager_v$1.tar.gz wrm/*
