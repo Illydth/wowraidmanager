@@ -111,16 +111,16 @@ function step5($auth_type)
 		$phpbbversioncheck = $_POST['phpbbversioncheck'];
 			
 			// check for valid entry of previous form
-		if(!is_file('../'.$phpbb_root_path.$phpBB_config_name))
+		if(!is_file($phpbb_root_path.$phpBB_config_name))
 		{
-			echo '<font color=red>'.$localstr['step5sub2failfindfile'].' ("../'.$phpbb_root_path.$phpBB_config_name.'").<br>';
+			echo '<font color=red>'.$localstr['step5sub2failfindfile'].' ("'.$phpbb_root_path.$phpBB_config_name.'").<br>';
 			echo $localstr['step5sub2checkdir'].'<br>';
 			echo $localstr['pressbrowserpack'].'</font>';
 			exit;
 		}
 		
 		//check if phpbb == phpBB2
-		if(is_file('../'.$phpbb_root_path.'extension.inc'))
+		if(is_file($phpbb_root_path.'extension.inc'))
 		{
 			$phpbbversioncheck = 2;
 		}
@@ -134,7 +134,7 @@ function step5($auth_type)
 			$phpbbversioncheck = 3;
 		}
 		
-		require('../'.$phpbb_root_path.$phpBB_config_name);
+		require($phpbb_root_path.$phpBB_config_name);
 		
 		$phpbb_prefix=$table_prefix;
 		
@@ -193,7 +193,7 @@ function step5($auth_type)
 		$phpbbversioncheck = $_POST['phpbbversioncheck'];
 
 		//need user_email, user_id
-		require('../'.$phpbb_root_path.$phpBB_config_name);
+		require($phpbb_root_path.$phpBB_config_name);
 		
 		$phpbb_prefix = $table_prefix;
 		
@@ -425,7 +425,7 @@ function importUserfromDB($phpbb_root_path, $phpbb_prefix, $phpraid_config,$admi
 	$defaultuserPriv = '0';
 	
 	//link to phpbb3
-	require('../'.$phpbb_root_path.'config.php');
+	require($phpbb_root_path.'config.php');
 	$linkDB = mysql_connect($dbhost,$dbuser,$dbpasswd);
 	if (!$linkDB) {die($localstr['step5phpBBfailconphpBB'] .' <br> ' . mysql_error());}
 	mysql_select_db($dbname);

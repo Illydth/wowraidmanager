@@ -97,15 +97,15 @@ function step5($auth_type)
 		$wbb_base_path = $_POST['wbb_base_path'];
 			
 			// check for valid entry of previous form
-		if(!is_file('../'.$wbb_base_path.$wbb_config_name))
+		if(!is_file($wbb_base_path.$wbb_config_name))
 		{
-			echo '<font color=red>'.$localstr['step5sub2failfindfile'].' ("../'.$wbb_root_path.$wbb_config_name.'").<br>';
+			echo '<font color=red>'.$localstr['step5sub2failfindfile'].' ("'.$wbb_root_path.$wbb_config_name.'").<br>';
 			echo $localstr['step5sub2checkdir'].'<br>';
 			echo $localstr['pressbrowserpack'].'</font>';
 			exit;
 		}
 		
-		require('../'.$wbb_base_path.$wbb_config_name);
+		require($wbb_base_path.$wbb_config_name);
 		
 		$wbb_prefix = 'bb'.$n.'_';
 		
@@ -162,7 +162,7 @@ function step5($auth_type)
 		$wbb_useradmin_name = $_POST['wbb_useradmin_name'];
 		$wbb_useradmin_password = $pwd_hasher->HashPassword($_POST['wbb_useradmin_password']);
 
-		require('../'.$wbb_base_path.$wbb_config_name);
+		require($wbb_base_path.$wbb_config_name);
 		
 		$wbb_prefix = 'bb'.$n.'_';
 		

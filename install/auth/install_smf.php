@@ -97,15 +97,15 @@ function step5($auth_type)
 		$smf_base_path = $_POST['smf_base_path'];
 			
 			// check for valid entry of previous form
-		if(!is_file('../'.$smf_base_path.$smf_config_name))
+		if(!is_file($smf_base_path.$smf_config_name))
 		{
-			echo '<font color=red>'.$localstr['step5sub2failfindfile'].' ("../'.$smf_root_path.$smf_config_name.'").<br>';
+			echo '<font color=red>'.$localstr['step5sub2failfindfile'].' ("'.$smf_root_path.$smf_config_name.'").<br>';
 			echo $localstr['step5sub2checkdir'].'<br>';
 			echo $localstr['pressbrowserpack'].'</font>';
 			exit;
 		}
 		
-		require('../'.$smf_base_path.$smf_config_name);
+		require($smf_base_path.$smf_config_name);
 		
 		$smf_prefix = $db_prefix;
 		
@@ -161,7 +161,7 @@ function step5($auth_type)
 		$smf_useradmin_name = $_POST['smf_useradmin_name'];
 		$smf_useradmin_password = $pwd_hasher->HashPassword($_POST['smf_useradmin_password']);
 
-		require('../'.$smf_base_path.$smf_config_name);
+		require($smf_base_path.$smf_config_name);
 		
 		$smf_prefix = $db_prefix;
 		

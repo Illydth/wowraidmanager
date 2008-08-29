@@ -113,15 +113,15 @@ function step5($auth_type)
 		$e107_base_path = $_POST['e107_base_path'];
 			
 		// check for valid entry of previous form
-		if(!is_file('../'.$e107_base_path . $e107_config_name))
+		if(!is_file($e107_base_path . $e107_config_name))
 		{
-			echo '<font color=red>'.$localstr['step5sub2failfindfile'].' ("../'.$e107_base_path.$e107_config_name.'").<br>';
+			echo '<font color=red>'.$localstr['step5sub2failfindfile'].' ("'.$e107_base_path.$e107_config_name.'").<br>';
 			echo $localstr['step5sub2checkdir'].'<br>';
 			echo $localstr['pressbrowserpack'].'</font>';
 			exit;
 		}
 		
-		require('../'.$e107_base_path.$e107_config_name);
+		require($e107_base_path.$e107_config_name);
 		
 		$e107_prefix = $mySQLprefix;
 		
@@ -178,7 +178,7 @@ function step5($auth_type)
 		$e107_useradmin_name = $_POST['e107_useradmin_name'];
 		$e107_useradmin_password = md5($_POST['e107_useradmin_password']);
 
-		require('../'.$e107_base_path.$e107_config_name);
+		require($e107_base_path.$e107_config_name);
 		
 		$e107_prefix = $mySQLprefix;
 		

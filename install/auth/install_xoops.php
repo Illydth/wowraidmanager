@@ -98,15 +98,15 @@ function step5($auth_type)
 		$xoops_base_path = $_POST['xoops_base_path'];
 			
 			// check for valid entry of previous form
-		if(!is_file('../'.$xoops_base_path.$xoops_config_name))
+		if(!is_file($xoops_base_path.$xoops_config_name))
 		{
-			echo '<font color=red>'.$localstr['step5sub2failfindfile'].' ("../'.$xoops_root_path.$xoops_config_name.'").<br>';
+			echo '<font color=red>'.$localstr['step5sub2failfindfile'].' ("'.$xoops_root_path.$xoops_config_name.'").<br>';
 			echo $localstr['step5sub2checkdir'].'<br>';
 			echo $localstr['pressbrowserpack'].'</font>';
 			exit;
 		}
 		
-		require('../'.$xoops_base_path.$xoops_config_name);
+		require($xoops_base_path.$xoops_config_name);
 		
 		$xoops_prefix = XOOPS_DB_PREFIX;
 		
@@ -163,7 +163,7 @@ function step5($auth_type)
 		$xoops_useradmin_name = $_POST['xoops_useradmin_name'];
 		$xoops_useradmin_password = $pwd_hasher->HashPassword($_POST['xoops_useradmin_password']);
 
-		require('../'.$xoops_base_path.$xoops_config_name);
+		require($xoops_base_path.$xoops_config_name);
 		
 		$xoops_prefix = XOOPS_DB_PREFIX;
 		
