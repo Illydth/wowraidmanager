@@ -1,0 +1,50 @@
+<table cellspacing="0" cellpadding="5" border="0">
+ <tr>
+  <td width="43" valign="top" rowspan="100%">
+	<img src="{tpl_icon}" border="0">
+  </td>
+  <td id="data_table"  valign="top">
+  	<font color="{tpl_item_color}">{tpl_item_name}</font> 
+	<br />
+        <font color="#FFFFFF">
+  	{tpl_bonding}
+  	{tpl_require_data}
+<!--type_class-->
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+    <tr>
+      <td align="left">
+        {tpl_type_class}
+      </td>
+      <td align="right">
+        {tpl_type_class_sub}
+      </td>
+    </tr>
+  </table>
+<!--/type_class-->        
+<!--damage_data-->        
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+    <tr>
+      <td align="left">
+        {tpl_damage_data}
+      </td>
+      <td align="right">
+        {tpl_damage_data_speed}
+      </td>
+    </tr>
+    <tr>
+     <td colspan="2" align="left">
+        {tpl_damage_data_dps}
+     </td>
+    </tr>
+   </table>
+<!--/damage_data-->
+  	{tpl_armor_data}
+  	{tpl_gem_data}
+  	{tpl_durability}
+  	{tpl_spell_data}
+  	{tpl_set_data}
+  	{tpl_desc}
+	</font>
+  </td>
+ </tr>
+</table>
