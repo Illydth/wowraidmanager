@@ -66,8 +66,8 @@ if($mode == 'view')
 					<img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0"
 					onMouseover="ddrivetip(\''. $phprlang['delete'] .'\');" onMouseout="hideddrivetip();" alt="delete icon"></a>';
 		
-		$date = $data['last_login_time'];
-		$time = !($data['last_login_time'])?'':new_date($phpraid_config['time_format'],$data['last_login_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+		$date = !($data['last_login_time'])?'':new_date('Y/m/d H:i:s',$data['last_login_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+		$time = !($data['last_login_time'])?'':new_date('Y/m/d H:i:s',$data['last_login_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
 		
 		array_push($users, 
 			array(
