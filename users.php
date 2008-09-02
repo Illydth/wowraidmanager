@@ -145,6 +145,7 @@ else if($mode == 'details')
 				'Guild'=>$data['guild'],
 				'Level'=>$data['lvl'],
 				'Race'=>$data['race'],
+				'Role'=>$data['role'],
 				'Class'=>$data['class'],
 				'Arcane'=>$data['arcane'],
 				'Fire'=>$data['fire'],
@@ -174,6 +175,7 @@ else if($mode == 'details')
 	$report->addOutputColumn('Level',$phprlang['level'],'','center');
 	$report->addOutputColumn('Race',$phprlang['race'],'','center');
 	$report->addOutputColumn('Class',$phprlang['class'],'','center');
+	$report->addOutputColumn('Role',$phprlang['role'],'','center');	
 	$report->addOutputColumn('Arcane','<img src="templates/' . $phpraid_config['template'] . '/images/resistances/arcane_resistance.gif" onMouseover="ddrivetip(\''.$phprlang['arcane'].'\');" onMouseout="hideddrivetip();" height="16" width="16" border="0" alt="arcane">','','center');
 	$report->addOutputColumn('Fire','<img src="templates/' . $phpraid_config['template'] . '/images/resistances/fire_resistance.gif" onMouseover="ddrivetip(\''.$phprlang['fire'].'\');" onMouseout="hideddrivetip();" height="16" width="16" border="0" alt="fire">','','center');
 	$report->addOutputColumn('Nature','<img src="templates/' . $phpraid_config['template'] . '/images/resistances/nature_resistance.gif" onMouseover="ddrivetip(\''.$phprlang['nature'].'\');" onMouseout="hideddrivetip();" height="16" width="16" border="0" alt="nature">','','center');
