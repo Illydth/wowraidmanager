@@ -70,9 +70,9 @@ while($data = $db_raid->sql_fetchrow($result, true))
 {
 	$usersname = '<!-- ' . strtolower($data['username']) . ' --><a href="users.php?mode=details&amp;user_id='.$data['profile_id'].'">'.$data['username'].'</a>';
 
-	$date = $data['last_login_time'];
-	$time = !($data['last_login_time'])?'':new_date($phpraid_config['time_format'],$data['last_login_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
-		
+	$date = !($data['last_login_time'])?'':new_date('Y/m/d H:i:s',$data['last_login_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+	$time = !($data['last_login_time'])?'':new_date('Y/m/d H:i:s',$data['last_login_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+	
 	array_push($users, 
 		array(
 			'id'=>$data['profile_id'],
@@ -102,8 +102,8 @@ else
 if($phpraid_config['show_id'] == 1)
 	$report->addOutputColumn('id',$phprlang['id'],'','center');
 $report->addOutputColumn('username',$phprlang['username'],'','center');
-$report->addOutputColumn('last_login_date',$phprlang['last_login_date'],'unixtime','center');
-$report->addOutputColumn('last_login_time',$phprlang['last_login_time'],'','center');
+$report->addOutputColumn('last_login_date',$phprlang['last_login_date'],'wrmdate','center');
+$report->addOutputColumn('last_login_time',$phprlang['last_login_time'],'wrmtime','center');
 $users = $report->getListFromArray($users);
 
 $page->set_file('body_file',$phpraid_config['template'] . '/users.htm');
