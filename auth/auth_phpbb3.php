@@ -91,7 +91,7 @@ function phpraid_login() {
 	//$pwd_hasher = new PasswordHash(8, FALSE);
 
 	if(isset($_POST['username'])){
-		$username = scrub_input(strtolower($_POST['username']));
+		$username = scrub_input(strtolower(utf8_decode($_POST['username'])));
 		//pwd hash
 		//$password = $pwd_hasher->HashPassword($_POST['password']);
 		$password = md5($_POST['password']);
