@@ -8,10 +8,6 @@ Quick Installation
 	web server user:
 	* config.php
 	* raid_lua
-	* wowchar-tooltip/config.php
-	* wowitem-tooltip/config.php
-	* wowchar-tooltip/cache
-	* wowitem-tooltip/cache
 * Open a web browser and go to http://www.yourdomain.com/phpRaid
 * Choose your installation method and follow the steps to install your phpRaid server.
 * At the end of the installation please remove your Install directory (delete it completely)

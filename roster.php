@@ -50,8 +50,6 @@ while($data = $db_raid->sql_fetchrow($result, true)) {
 	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "profile WHERE profile_id=" . $data['profile_id'];
 	$data_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 	$data_profdetail = $db_raid->sql_fetchrow($data_result);
-
-	$guildname = get_guild_name($data['name'], $server);
 	
 	if ($phpraid_config['enable_armory'])
 		$charname = get_armorychar($data['name'], $phpraid_config['armory_language'], $server);
@@ -62,7 +60,6 @@ while($data = $db_raid->sql_fetchrow($result, true)) {
 		array(
 			'id'=>$data['char_id'],
 			'Name'=> $charname,
-			'GuildArmory'=>$guildname,
 			'Guild'=>$data['guild'],
 			'Level'=>$data['lvl'],
 			'Race'=>$data['race'],
@@ -100,10 +97,6 @@ $report->showRecordCount(true);
 if($phpraid_config['show_id'] == 1)
 	$report->addOutputColumn('id',$phprlang['id'],'','center');
 $report->addOutputColumn('Name',$phprlang['name'],'','center');
-if(scrub_input($_SESSION['priv_users']) == 1)
-{
-	$report->addOutputColumn('GuildArmory',$phprlang['guild'],'','center');
-}
 $report->addOutputColumn('Guild',$phprlang['guild'],'','center');
 $report->addOutputColumn('Level',$phprlang['level'],'','center');
 $report->addOutputColumn('Race',$phprlang['race'],'','center');

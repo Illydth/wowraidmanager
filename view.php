@@ -301,6 +301,7 @@ if($mode == 'view')
 			}
 
 		$comments = DEUBB2(scrub_input($signups['comments']));
+		$comments = str_replace("'", "\'", $comments);
 
 		if(strlen($signups['comments']) > 25)
 			$comments = '<a href="#" onMouseover="ddrivetip(\'<span class=tooltip_title>'.$phprlang['comments'].'</span><br>'.$comments.'\',\'\',\'150\')" onMouseout="hideddrivetip();">' . substr($signups['comments'], 0, 22) . '...</a>';
@@ -327,7 +328,7 @@ if($mode == 'view')
 		if($priv_raids == 1 || $user_perm_group['RL'] == 1)
 		{
 			$name .= check_dupe($data['profile_id'], $raid_id);
-			$guildname = get_guild_name($data['name'], $server);
+			$guildname = $data['guild'];
 		}
 
 		// now that we have the row, figure out what class or role and push into corresponding array
@@ -579,7 +580,7 @@ if($mode == 'view')
 		if($priv_raids == 1 || $user_perm_group['RL'] == 1)
 		{
 			$name .= check_dupe($data['profile_id'], $raid_id);
-			$guildname = get_guild_name($data['name'], $server);
+			$guildname = $data['guild'];
 		}
 
 		array_push($raid_queue, array('id'=>$data['char_id'],'race'=>$race,'class'=>$class,'name'=>$name,'lvl'=>$data['lvl'],'role'=>$data['role'],'actions'=>$actions,'date'=>$date,'time'=>$time,'comments'=>$comments,'guild'=>$guildname));
@@ -729,7 +730,7 @@ if($mode == 'view')
 		if($priv_raids == 1 || $user_perm_group['RL'] == 1)
 		{
 			$name .= check_dupe($data['profile_id'], $raid_id);
-			$guildname = get_guild_name($data['name'], $server);
+			$guildname = $data['guild'];
 		}
 
 		array_push($raid_cancel, array('id'=>$data['char_id'],'race'=>$race,'class'=>$class,'name'=>$name,'lvl'=>$data['lvl'],'role'=>$data['role'],'actions'=>$actions,'date'=>$date,'time'=>$time,'comments'=>$comments,'guild'=>$guildname));
@@ -1354,7 +1355,7 @@ elseif($mode == 'delete')
 	if($user_perm_group['admin'] == 1 or $user_perm_group['RL'] == 1 or $S_profile_id == $profile_id) {
 		// they have permission to delete
 		if(!isset($_POST['submit'])) {
-			$form_action = 'view.php?mode=delete&profile_id=' . $profile_id . '&amp;raid_id=' . $raid_id . '&amp;char_id=' . $char_id;
+			$form_action = 'view.php?mode=delete&profile_id=' . $profile_id . '&amp;raid_id=' . $raid_id . '&char_id=' . $char_id;
 			$confirm_button = '<input type="submit" value="'.$phprlang['confirm'].'" name="submit" class="post">';
 
 			$page->set_file('output',$phpraid_config['template'] . '/delete.htm');

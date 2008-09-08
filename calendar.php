@@ -219,7 +219,7 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true))
 	// Create the link to the raids view.
 	$desc = scrub_input($raids['description']);
 	$ddrivetiptxt = "'<span class=tooltip_title>" . $phprlang['description'] ."</span><br>" . DEUBB2($desc) . "'";
-	$location = '<a href="view.php?mode=view&raid_id='.$raids['raid_id'].'" onMouseover="ddrivetip('.$ddrivetiptxt.')"; onMouseout="hideddrivetip()">'.$raids['location'].'</a> <font color="#0000ff" size=+1>' . $issignedup . '</font>';
+	$location = '<a href="view.php?mode=view&amp;raid_id='.$raids['raid_id'].'" onMouseover="ddrivetip('.$ddrivetiptxt.');" onMouseout="hideddrivetip()">'.$raids['location'].'</a> <font color="#0000ff" size="+1">' . $issignedup . '</font>';
 
 	// Start the "display" portion, get the "box" the raid link and information is supposed to go into
 	//		then append the raid into the box.
@@ -229,11 +229,11 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true))
 	
 	$$varname .= '<div align="left">';
 	$$varname .= $location; 
-	$$varname .= "<br/>"; 
+	$$varname .= "<br>"; 
 	$$varname .= $phprlang['invites'] . ": " . $invitetime;
-	$$varname .= "<br/>";
+	$$varname .= "<br>";
 	$$varname .= $phprlang['start'] . ": " . $starttime;
-	$$varname .= "<br/><br/>";
+	$$varname .= "<br><br>";
 	$$varname .= "</div>";
 }
 

@@ -80,7 +80,7 @@ $localstr['step5sub3altgroup02'] = 'Any user tagged with this group will be allo
 // phpBB
 $localstr['step5phpBBdesc'] = 'phpBB';
 $localstr['step5phpBBsub1desc'] = 'You have selected phpBB authentication';
-$localstr['step5phpBBsub1inputdir'] = 'Input the relative path to your phpBB directory (including trailing slash!)';
+$localstr['step5phpBBsub1inputdir'] = 'Input the path to your phpBB directory (including trailing slash!)';
 $localstr['step5phpBBsub2failincdir'] = 'your phpBB directory is incorect';
 $localstr['step5phpBBsub2failfindautfile'] = 'Failed to find "../auth/auth_phpbb3.php" config file';
 $localstr['step5phpBBsub2faildownautfile'] = 'please download (from WRM-Homepage) and copy to "/auth".';
@@ -88,8 +88,8 @@ $localstr['step5phpBBsub2founddb'] = 'found phpBB DB';
 $localstr['step5phpBBsub2readconffile'] = 'read phpBB config file';
 $localstr['step5phpBBsub3errorretusergroup'] = 'Error retrieving usergroup from phpBB3';
 $localstr['step5phpBBsub3errorretusername'] = 'Error retrieving username from phpBB3';
-$localstr['step5phpBBsub4wantimport'] = 'want you all users import from phpBB Forum/Board';
-$localstr['step5phpBBsub4srynotsupport'] = 'SRY import from phpBB Forum/Board: not support with phpBB2';
+$localstr['step5phpBBsub4wantimport'] = 'Do you want to import all users from your phpBB Forum?';
+$localstr['step5phpBBsub4srynotsupport'] = 'Import from phpBB Forum/Board: not supported with phpBB2';
 $localstr['step5phpBBsub5import'] = 'Import';
 $localstr['step5phpBBfailconphpBB'] = 'Unable to connect to phpBB DB';
 

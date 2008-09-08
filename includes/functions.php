@@ -139,7 +139,7 @@ function setup_output() {
 
 function get_armorychar($name, $language, $server)
 {
-	$javascript = '<a href="http://www.wowarmory.com/character-sheet.xml?r=' . ucfirst($server) . '&amp;n=' . ucfirst($name) . '" target="new" onmouseover=\'tooltip.show("wowarmory_tooltip/char.php?v=' . ucfirst($name) . '&amp;z=' . ucfirst($server) . '");\' onmouseout="tooltip.hide();"><strong>&lt;' . ucfirst($name) . '&gt;</strong></a>';
+	$javascript = '<a href="http://www.wowarmory.com/character-sheet.xml?r=' . ucfirst($server) . '&amp;n=' . ucfirst($name) . '" target="new" onmouseover=\'tooltip.show("wowarmory_tooltip/char.php?v=' . ucfirst($name) . '&amp;z=' . ucfirst($server) . '&amp;l=' . ucfirst($language) . '");\' onmouseout="tooltip.hide();"><strong>&lt;' . ucfirst($name) . '&gt;</strong></a>';
 	if(substr($name, 0, 1) == '_')
 	{
 		$name = substr($name, 1);

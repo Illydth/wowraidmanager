@@ -161,7 +161,6 @@
 		$content .= '  <td width="40%" class="normaltxt"><strong><div align="center">File</div></strong></td>';
 		$content .= '  <td width="50%" class="normaltxt"><strong><div align="center">Description</div></strong></td>';
 		$content .= '</tr>';
-
 		$content .= '<tr>';
 		
 		// NOTE: BE CAREFUL WITH IS__WRITEABLE, that is NOT the built in is_writeable function. (See Double Underscore)
@@ -179,135 +178,6 @@
 			$content .= '  <td class="normaltxtgreen">config.php</td>';
 			$content .= '  <td class="normaltxtgreen">is writeable by the server</td>';
 		}
-		//$content .= '</tr><tr>';
-		
-		//if(!is__writeable('../wowchar-tooltip/config.php'))
-		//{
-		//	$error = 1;
-		//	$content .= '<td class="normaltxtred">Error</td>';
-		//	$content .= '<td class="normaltxtred"><strong>/wowchar-tooltip/config.php</strong></td>';
-		//	$content .= '<td class="normaltxtred">is not writeable by the server.';
-		//	$content .= 'Set proper permissions and try again</td>';
-		//}
-		//else
-		//{
-		//	$content .= '<td class="normaltxtgreen">Success</td>';
-		//	$content .= '<td class="normaltxtgreen">/wowchar-tooltip/config.php</td>';
-		//	$content .= '<td class="normaltxtgreen">is writeable by the server</td>';
-		//}
-		//$content .= '</tr><tr>';
-		//$content .= '</tr><tr>';
-		//if(!is__writeable('../wowitem-tooltip/config.php'))
-		//{
-		//	$error = 1;
-		//	$content .= '<td class="normaltxtred">Error</td>';
-		//	$content .= '<td class="normaltxtred"><strong>/wowitem-tooltip/config.php</strong></td>';
-		//	$content .= '<td class="normaltxtred">is not writeable by the server.';
-		//	$content .= 'Set proper permissions and try again</td>';
-		//}
-		//else
-		//{
-		//	$content .= '<td class="normaltxtgreen">Success</td>';
-		//	$content .= '<td class="normaltxtgreen">/wowitem-tooltip/config.php</td>';
-		//	$content .= '<td class="normaltxtgreen">is writeable by the server</td>';
-		//}
-		//$content .= '</tr>';
-		//$content .= '</table>';
-		
-		//$content .= '<br/><br/>';
-
-		//$content .= '<table width="90%" cellpadding="0" cellspacing="0" border="0" align="center">';
-		//$content .= '<tr>';
-		//$content .= '  <td width="10%" class="normaltxt"><strong><div align="center">Status</div></strong></td>';
-		//$content .= '  <td width="40%" class="normaltxt"><strong><div align="center">Directory</div></strong></td>';
-		//$content .= '  <td width="50%" class="normaltxt"><strong><div align="center">Description</div></strong></td>';
-		//$content .= '</tr>';
-		
-		//$dirname_wowitem = ("../wowitem-tooltip/cache/");
-		//$dirname_wowchar = ("../wowchar-tooltip/cache/");
-
-		//$content .= '<tr>';
-
-		//if(!is_dir($dirname_wowitem)){
-		// 	if (!mkdir($dirname_wowitem,0755))
-		//	{
-		//		$error = 1;
-		//		$content .= '<td class="normaltxtred">Error</td>';
-		//		$content .= '<td class="normaltxtred">'.$dirname_wowitem.'</td>';
-		//		$content .= '<td class="normaltxtred">does not create</td>';
-		//	}
-		//	else
-		//	{
-		//		$content .= '<td class="normaltxtgreen">Success</td>';
-		//		$content .= '<td class="normaltxtgreen">'.$dirname_wowitem.'</td>';
-		//		$content .= '<td class="normaltxtgreen">was created</td>';
-		//	}
-		//}
-		//else{
-		// 	if (!is__writeable($dirname_wowitem))
-		//	{
-		//		if(!chmod($dirname_wowchar, 0755))
-		//		{
-		//			$error = 1;
-		//			$content .= '<td class="normaltxtred">Error</td>';
-		//			$content .= '<td class="normaltxtred">'.$dirname_wowchar.'</td>';
-		//			$content .= '<td class="normaltxtred">could not write, cannot chmod to 0755.</td>';
-		//		}
-		//		else
-		//		{
-		//			$content .= '<td class="normaltxtgreen">Success</td>';
-		//			$content .= '<td class="normaltxtgreen">'.$dirname_wowchar.'</td>';
-		//			$content .= '<td class="normaltxtgreen">chmod -> 0755</td>';
-		//		}
-		//	}
-		//	else
-		//	{
-		//		$content .= '<td class="normaltxtgreen">Success</td>';
-		//		$content .= '<td class="normaltxtgreen">'.$dirname_wowitem.'</td>';
-		//		$content .= '<td class="normaltxtgreen">Directory Writeable.</td>';
-		//	}
-		//}
-		//$content .= '</tr><tr>';
-		
-		//if(!is_dir($dirname_wowchar)){
-		// 	if (!mkdir($dirname_wowchar,0755))
-		//	{
-		//		$error = 1;
-		//		$content .= '<td class="normaltxtred">Error</td>';
-		//		$content .= '<td class="normaltxtred">'.$dirname_wowchar.'</td>';
-		//		$content .= '<td class="normaltxtred">does not create</td>';
-		//	}
-		//	else
-		//	{
-		//		$content .= '<td class="normaltxtgreen">Success</td>';
-		//		$content .= '<td class="normaltxtgreen">'.$dirname_wowchar.'</td>';
-		//		$content .= '<td class="normaltxtgreen">was created</td>';
-		//	}
-		//}
-		//else {
-		// 	if (!is__writeable($dirname_wowitem))
-		//	{
-		//		if(!chmod($dirname_wowchar, 0755))
-		//		{
-		//			$error = 1;
-		//			$content .= '<td class="normaltxtred">Error</td>';
-		//			$content .= '<td class="normaltxtred">'.$dirname_wowchar.'</td>';
-		//			$content .= '<td class="normaltxtred">could not write, cannot chmod to 0755.</td>';
-		//		}
-		//		else
-		//		{
-		//			$content .= '<td class="normaltxtgreen">Success</td>';
-		//			$content .= '<td class="normaltxtgreen">'.$dirname_wowchar.'</td>';
-		//			$content .= '<td class="normaltxtgreen">chmod -> 0755</td>';
-		//		}
-		//	}
-		//	else
-		//	{
-		//		$content .= '<td class="normaltxtgreen">Success</td>';
-		//		$content .= '<td class="normaltxtgreen">'.$dirname_wowchar.'</td>';
-		//		$content .= '<td class="normaltxtgreen">Directory Writeable.</td>';
-		//	}
-		//}		
 		$content .= '</tr>';
 		$content .= '</table>';
 		
@@ -335,9 +205,6 @@
 		{
 			$content .= '<br/><font color=#00ff00>Current MySQL Version: ' . $gd . '</font>';			
 		}
-
-		
-	//	echo fileperms($dirname_wowitem). " : ".fileperms($dirname_wowchar);
 
 		if($error == 0)
 		{

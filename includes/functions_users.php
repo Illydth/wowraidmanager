@@ -300,32 +300,6 @@ function has_char_multiple_signups($profile_id, $raid_id) {
 	return 0;
 }
 
-function get_guild_name($char_name, $server)
-{
-	$name = ucfirst($char_name);
-
-	if(substr($name, 0, 1) == '_')
-	{
-		$name = substr($name, 1);
-	}
-	else if(substr($name, 0, 1) == '(' && substr($name, strlen($name) - 1, 1) == ')')
-	{
-		$name = substr($name, 1, strlen($name) - 2);
-	}
-
-	$filename = 'wowchar-tooltip/cache/'.preg_replace("/[^a-zA-Z0-9]/", "-", ucfirst($server)).'-'.preg_replace("/[^a-zA-Z0-9]/", "-", utf8_encode($name)).'-guild.txt';
-
-	if(file_exists($filename) && trim(file_get_contents($filename)) != "")
-	{
-		return utf8_decode(file_get_contents($filename));
-		//return(file_get_contents($filename));
-	}
-	else
-	{
-		return '?';
-	}
-}
-
 function check_dupe($profile_id, $raid_id)
 {
 	if(has_char_multiple_signups($profile_id, $raid_id))

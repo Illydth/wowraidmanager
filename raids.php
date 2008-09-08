@@ -88,12 +88,8 @@ if($_GET['mode'] == 'view')
 		//setup the count array
 		$count = array('dr'=>'0','hu'=>'0','ma'=>'0','pa'=>'0','pr'=>'0','ro'=>'0','sh'=>'0','wk'=>'0','wa'=>'0','role1'=>'0','role2'=>'0','role3'=>'0','role4'=>'0','role5'=>'0','role6'=>'0');
 
-		//echo "Description = " . $data['description'];
-
-		//$desc = strip_tags($data['description']);
-		//$desc = UBB($desc);
-
 		$desc = scrub_input($data['description']);
+		$desc = str_replace("'", "\'", $desc);
 		$ddrivetiptxt = "'<span class=tooltip_title>" . $phprlang['description'] ."</span><br>" . DEUBB2($desc) . "'";
 		$location = '<a href="view.php?mode=view&amp;raid_id='.$data['raid_id'].'" onMouseover="ddrivetip('.$ddrivetiptxt.');" onMouseout="hideddrivetip();">'.$data['location'].'</a>';
 

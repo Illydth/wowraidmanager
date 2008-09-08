@@ -19,6 +19,10 @@ include("includes/common.php");
 // Get the URL GET And decode
 $var  = urldecode($_GET['v']);
 $var2 = urldecode($_GET['z']);
+$var3 = urldecode($_GET['l']);
+
+// Set the armory language
+$armory->setlang($var3);
 
 // Get the char data from Armory
 $char = $armory->characterFetch($var, $var2);

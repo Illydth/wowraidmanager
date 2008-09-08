@@ -102,7 +102,7 @@ function permissions($report) {
 				if($id == 1 && $data['profile_id'] == 1) {
 					$delete = '';
 				} else {
-					$delete = '<a href="permissions.php?mode=remove_user&amp;priv_id=' . $id . '&amp;user_id='.$data['profile_id'].'">
+					$delete = '<a href="permissions.php?mode=remove_user&priv_id=' . $id . '&amp;user_id='.$data['profile_id'].'">
 								<img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" 
 								onMouseover="ddrivetip(\''.$phprlang['remove_user'].'\');" onMouseout="hideddrivetip();" alt="delete icon"></a>';
 				}
