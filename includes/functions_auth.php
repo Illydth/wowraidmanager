@@ -217,7 +217,7 @@ function permissions($report) {
 					$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 			}
 		}
-		header("Location: permissions.php?mode=details&amp;id=$priv_id");
+		header("Location: permissions.php?mode=details&id=$priv_id");
 	}
 }
 
@@ -229,7 +229,7 @@ function remove_user() {
 	
 	$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "profile SET priv='0' WHERE profile_id=%s", quote_smart($user_id));
 	$sql = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-	header("Location: permissions.php?mode=details&amp;id=$priv_id");
+	header("Location: permissions.php?mode=details&id=$priv_id");
 }
 
 ?>

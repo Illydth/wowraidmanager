@@ -49,6 +49,7 @@ isset($_GET['mode']) ? $mode = scrub_input($_GET['mode']) : $mode = '';
 if($mode == '')
 	log_hack();
 
+
 // check for invalid raid passed
 isset($_GET['raid_id']) ? $raid_id = scrub_input($_GET['raid_id']) : $raid_id = '';
 
@@ -1123,7 +1124,7 @@ elseif($mode == 'signup')
 	if(!isset($_POST['submit']))
 	{
 		// they tried to view this page without using the form which is a nono
-		header("Location: view.php?mode=view&amp;raid_id=$raid_id");
+		header("Location: view.php?mode=view&raid_id=$raid_id");
 	}
 	else
 	{
@@ -1340,7 +1341,7 @@ elseif($mode == 'signup')
 							(%s,%s,%s,%s,%s,%s,%s)", quote_smart($char_id), quote_smart($profile_id), quote_smart($raid_id),
 							quote_smart($comments), quote_smart($queue), quote_smart($timestamp), quote_smart($cancel));
 				$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-				header("Location: view.php?mode=view&amp;raid_id=$raid_id");
+				header("Location: view.php?mode=view&raid_id=$raid_id");
 			}
 		}
 	}
@@ -1375,7 +1376,7 @@ elseif($mode == 'delete')
 
 			log_raid($char_id, $raid_id, 'delete');
 
-			header("Location: view.php?mode=view&amp;raid_id=$raid_id");
+			header("Location: view.php?mode=view&raid_id=$raid_id");
 		}
 	} else {
 		header("Location: index.php");
@@ -1432,7 +1433,7 @@ elseif($mode == 'queue')
 
 		log_raid($char_id, $raid_id, 'queue_in');
 	}
-	header("Location: view.php?mode=view&amp;raid_id=$raid_id&Sort=$sort_mode&SortDescending=$sort_descending");
+	header("Location: view.php?mode=view&raid_id=$raid_id&Sort=$sort_mode&SortDescending=$sort_descending");
 }
 elseif($mode == 'draft')
 {
@@ -1653,7 +1654,7 @@ elseif($mode == 'draft')
 			log_raid($char_id, $raid_id, 'queue_out');
 		}
 	}
-	header("Location: view.php?mode=view&amp;raid_id=$raid_id&Sort=$sort_mode&SortDescending=$sort_descending");
+	header("Location: view.php?mode=view&raid_id=$raid_id&Sort=$sort_mode&SortDescending=$sort_descending");
 }
 elseif($mode == 'cancel')
 {
@@ -1696,7 +1697,7 @@ elseif($mode == 'cancel')
 			log_raid($char_id, $raid_id, 'cancel_out');
 		}
 	}
-	header("Location: view.php?mode=view&amp;raid_id=$raid_id");
+	header("Location: view.php?mode=view&raid_id=$raid_id");
 }
 else if($mode == 'edit_comment')
 {
@@ -1734,7 +1735,7 @@ else if($mode == 'edit_comment')
 		$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "signups SET comments=%s WHERE signup_id=%s", quote_smart($comments), quote_smart($signup_id));
 		$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
 
-		header("Location: view.php?mode=view&amp;raid_id=$raid_id");
+		header("Location: view.php?mode=view&raid_id=$raid_id");
 	}
 
 	$page->set_file('view_output',$phpraid_config['template'].'/view_edit.htm');

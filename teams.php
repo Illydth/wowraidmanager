@@ -295,7 +295,7 @@ elseif($mode == 'new')
 
 		log_create('teams',mysql_insert_id(),$name);
 	}
-	header("Location: teams.php?mode=view&amp;raid_id=$raid_id");
+	header("Location: teams.php?mode=view&raid_id=$raid_id");
 }
 elseif($mode == 'remove')
 {
@@ -309,7 +309,7 @@ elseif($mode == 'remove')
 	$sql = sprintf("DELETE FROM " . $phpraid_config['db_prefix'] . "teams WHERE raid_id=%s and char_id=%s", quote_smart($raid_id),quote_smart($char_id));
 	$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 
-	header("Location: teams.php?mode=view&amp;raid_id=$raid_id");
+	header("Location: teams.php?mode=view&raid_id=$raid_id");
 }
 elseif($mode == 'add')
 {
@@ -339,7 +339,7 @@ elseif($mode == 'add')
 			log_create('teams',mysql_insert_id(),$title);
 		}
 	}
-	header("Location: teams.php?mode=view&amp;raid_id=$raid_id");
+	header("Location: teams.php?mode=view&raid_id=$raid_id");
 }
 elseif($mode == 'delteam')
 {
@@ -357,7 +357,7 @@ elseif($mode == 'delteam')
 			log_delete('teams',$title);
 		}
 	}
-	header("Location: teams.php?mode=view&amp;raid_id=$raid_id");
+	header("Location: teams.php?mode=view&raid_id=$raid_id");
 }
 else
 {
