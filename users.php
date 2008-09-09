@@ -62,7 +62,7 @@ if($mode == 'view')
 		else
 			$priv = '<a href="permissions.php?mode=details&amp;id='.$data['priv'].'">'.get_priv_name($data['priv']).'</a>';
 
-		$actions = '<a href="users.php?mode=remove_user&amp;n='.$data['name'].'&amp;user_id='.$data['profile_id'].'">
+		$actions = '<a href="users.php?mode=remove_user&amp;n='.$data['username'].'&amp;user_id='.$data['profile_id'].'">
 					<img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0"
 					onMouseover="ddrivetip(\''. $phprlang['delete'] .'\');" onMouseout="hideddrivetip();" alt="delete icon"></a>';
 		
@@ -222,6 +222,9 @@ else if($mode == 'remove_user')
 		$sql = sprintf("DELETE FROM " . $phpraid_config['db_prefix'] . "chars WHERE profile_id=%s", quote_smart($user_id));
 		$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 
+		$sql = sprintf("DELETE FROM " . $phpraid_config['db_prefix'] . "signups WHERE profile_id=%s", quote_smart($user_id));
+		$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+
 		header("Location: users.php?mode=view");
 	}
 }
@@ -255,7 +258,7 @@ else if($mode == 'remove_char')
 		$sql = sprintf("DELETE FROM " . $phpraid_config['db_prefix'] . "signups WHERE char_id=%s", quote_smart($char_id));
 		$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 
-		header("Location: users.php?mode=details&amp;user_id=$user_id");
+		header("Location: users.php?mode=details&user_id=$user_id");
 	}
 }
 else
