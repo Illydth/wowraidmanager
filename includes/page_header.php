@@ -66,6 +66,8 @@ if($logged_in != 1)
 	$login_button = '<input type="submit" name="login" value="'.$phprlang['login'].'" style="font-size:10px" class="mainoption">';
 	$login_remember = '<input type="checkbox" checked="checked" name="autologin">';
 	$login_remember_hidden = '<input type="hidden" value="1" name="autologin">';
+	if ( ($BridgeSupportPWDChange == TRUE) and isset($BridgeSupportPWDChange) )
+		$login_change_pass = '<a href="login.php?mode=new_pwd">'.$phprlang['login_forgot_password'].'</a>';
 	$login_form_close = '</form>';
 }
 else
@@ -76,6 +78,9 @@ else
 	$login_button = '<input type="submit" name="login" value="'.$phprlang['logout'].'" style="font-size:10px" class="mainoption">';
 	$login_remember = '';
 	$login_remember_hidden = '';
+	//$BridgeSupportPWDChange came from the bridge
+	if ( ($BridgeSupportPWDChange == TRUE) and isset($BridgeSupportPWDChange) )
+		$login_change_pass = '<a href="login.php?mode=ch_pwd">'.$phprlang['login_chpwd'].'</a>';
 	$login_form_close = '</form>';
 }
 if(($phpraid_config['disable'] == '1') AND ($priv_config == 1))
@@ -88,6 +93,10 @@ if(($phpraid_config['disable'] == '1') AND ($priv_config == 1))
 	</div>
 	';
 } 
+if (isset($ShowLoginForm) and ($ShowLoginForm == FALSE))
+{
+	$login_form_open=$login_username=$login_change_pass=$login_password=$login_button=$login_remember=$login_remember_hidden=$login_form_close = "";
+}
 
 $page->set_var(
 		array(
@@ -105,6 +114,7 @@ $page->set_var(
 			'login_remember' => $login_remember,
 			'login_remember_hidden' => $login_remember_hidden,
 			'login_button' => $login_button,
+			'login_change_pass'=>$login_change_pass,
 			'site_disabled_warning' => $site_disabled_warning,
 			'of_string'=>$phprlang['of'],
 			'rss_feed_string'=>$phprlang['rss_feed_text'],

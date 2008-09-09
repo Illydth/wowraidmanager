@@ -177,13 +177,15 @@ $phprlang['maintenance_header'] = 'Site under vedlikehold';
 $phprlang['maintenance_message'] = 'Vedlikehold pågår. Prøv igjen senere.';
 $phprlang['disabled_header'] = 'Site Disabled Notice!';
 $phprlang['disabled_message'] = 'Please note, your site is disabled. Visitors can\'t use the system right now!<br>Go to <u>Configuration</u> and then uncheck <u>Disable phpRaid</u>';
-$phprlang['login_title'] = 'Login feilet';
-$phprlang['login_msg'] = 'Feil brukernavn og/eller passord, prøv igjen.';
 $phprlang['userclass_msg'] = 'Din bruker er ikke autorisert til å bruke WRM, kontakt en admin.';
 $phprlang['priv_title'] = 'Ikke nok tilgang';
 $phprlang['priv_msg'] = 'Du har ikke tilgang til å vise denne siden. Hvis du mener dette er feil, ta kontakt med en admin.';
 $phprlang['remember'] = 'Husk meg';
 $phprlang['welcome'] = 'Velkommen ';
+
+// Login Information
+$phprlang['login_fail_title'] = 'Login feilet';
+$phprlang['login_msg'] = 'Feil brukernavn og/eller passord, prøv igjen.';
 
 // Days of the Week
 $phprlang['sunday'] = 'Søndag';
