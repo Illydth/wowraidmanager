@@ -88,9 +88,9 @@ class PasswordHash {
 		return $output;
 	}
 
-	function gensalt_private($input)
+	function gensalt_private($input, $initString = '$P$')
 	{
-		$output = '$P$';
+		$output = $initString; //------ Originally $P$
 		$output .= $this->itoa64[min($this->iteration_count_log2 +
 			((PHP_VERSION >= '5') ? 5 : 3), 30)];
 		$output .= $this->encode64($input, 6);
@@ -98,13 +98,13 @@ class PasswordHash {
 		return $output;
 	}
 
-	function crypt_private($password, $setting)
+	function crypt_private($password, $setting, $initString = '$P$')
 	{
 		$output = '*0';
 		if (substr($setting, 0, 2) == $output)
 			$output = '*1';
 
-		if (substr($setting, 0, 3) != '$P$')//--------if (substr($setting, 0, 3) != '$P$')
+		if (substr($setting, 0, 3) != $initString)//--------if (substr($setting, 0, 3) != '$P$')
 			return $output;
 
 		$count_log2 = strpos($this->itoa64, $setting[3]);
@@ -200,7 +200,7 @@ class PasswordHash {
 		return $output;
 	}
 
-	function HashPassword($password)
+	function HashPassword($password, $initString = '$P$')
 	{
 		$random = '';
 
@@ -225,7 +225,7 @@ class PasswordHash {
 			$random = $this->get_random_bytes(6);
 		$hash =
 		    $this->crypt_private($password,
-		    $this->gensalt_private($random));
+		    $this->gensalt_private($random,$initString),$initString);
 		if (strlen($hash) == 34)
 			return $hash;
 
@@ -235,9 +235,9 @@ class PasswordHash {
 		return '*';
 	}
 
-	function CheckPassword($password, $stored_hash)
+	function CheckPassword($password, $stored_hash, $initString = '$P$')
 	{
-		$hash = $this->crypt_private($password, $stored_hash);
+		$hash = $this->crypt_private($password, $stored_hash, $initString);
 		if ($hash[0] == '*')
 			$hash = crypt($password, $stored_hash);
 
