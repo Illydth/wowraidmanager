@@ -118,7 +118,7 @@ if($mode == 'view')
 	{
 		// set delete permissions
 		if($_SESSION['priv_raids'] == 1) {
-			$delete = '<a href="teams.php?mode=remove&amp;raid_id=' . $raid_id . '&char_id='.$team['char_id'].'">
+			$delete = '<a href="teams.php?mode=remove&amp;raid_id=' . $raid_id . '&amp;char_id='.$team['char_id'].'">
 						<img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0"
 						onMouseover="ddrivetip(\''.$phprlang['remove_user'].'\');" onMouseout="hideddrivetip();" alt="delete icon"></a>';
 		} else {

@@ -152,7 +152,7 @@ else if($mode == 'details')
 				'Frost'=>$data['frost'],
 				'Nature'=>$data['nature'],
 				'Shadow'=>$data['shadow'],
-				''=>'<a href="users.php?mode=remove_char&amp;n='.$data['name'].'&char_id='.$data['char_id'].'&amp;user_id='.$data['profile_id'].'"><img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''. $phprlang['delete'] .'\');" onMouseout="hideddrivetip();" alt="delete icon"></a>')
+				''=>'<a href="users.php?mode=remove_char&amp;n='.$data['name'].'&amp;char_id='.$data['char_id'].'&amp;user_id='.$data['profile_id'].'"><img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''. $phprlang['delete'] .'\');" onMouseout="hideddrivetip();" alt="delete icon"></a>')
 			);
 	}
 
@@ -235,7 +235,7 @@ else if($mode == 'remove_char')
 	$delete_name = scrub_input($_GET['n']);
 
 	if(!isset($_POST['submit'])) {
-		$form_action = 'users.php?mode=remove_char&char_id='.$char_id.'&amp;user_id='.$user_id.'&amp;n='.$delete_name;
+		$form_action = 'users.php?mode=remove_char&amp;char_id='.$char_id.'&amp;user_id='.$user_id.'&amp;n='.$delete_name;
 		$confirm_button = '<input type="submit" value="'.$phprlang['confirm'].'" name="submit" class="post">';
 
 		$page->set_file('output',$phpraid_config['template'] . '/delete.htm');

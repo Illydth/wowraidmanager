@@ -49,7 +49,6 @@ isset($_GET['mode']) ? $mode = scrub_input($_GET['mode']) : $mode = '';
 if($mode == '')
 	log_hack();
 
-
 // check for invalid raid passed
 isset($_GET['raid_id']) ? $raid_id = scrub_input($_GET['raid_id']) : $raid_id = '';
 
@@ -1356,7 +1355,7 @@ elseif($mode == 'delete')
 	if($user_perm_group['admin'] == 1 or $user_perm_group['RL'] == 1 or $S_profile_id == $profile_id) {
 		// they have permission to delete
 		if(!isset($_POST['submit'])) {
-			$form_action = 'view.php?mode=delete&profile_id=' . $profile_id . '&amp;raid_id=' . $raid_id . '&char_id=' . $char_id;
+			$form_action = 'view.php?mode=delete&profile_id=' . $profile_id . '&amp;raid_id=' . $raid_id . '&amp;char_id=' . $char_id;
 			$confirm_button = '<input type="submit" value="'.$phprlang['confirm'].'" name="submit" class="post">';
 
 			$page->set_file('output',$phpraid_config['template'] . '/delete.htm');
