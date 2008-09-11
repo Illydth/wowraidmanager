@@ -1,0 +1,65 @@
+<div align="center">
+<div class="errorHeader">{sendnewpwd_header}</div>
+<div class="errorBody">
+<br/>
+<form action="{form_action}" method="post" >
+
+	<div align="center">{password_reset_msg}</div>
+	<br/>
+	<br/>
+	<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" >
+	  <tr>
+		<td>&nbsp;</td>
+	  </tr>
+	  <tr>
+		<td ><div align="center">
+		  <table width="100%" border="0" cellspacing="2" cellpadding="2">
+			<tr>
+			  <td><div align="right">{username_text}</div></td>
+			  <td><div align="left"><h2>{username}</h2></div></td>
+			</tr>
+			<tr>
+			  <td><div align="right">{curr_password}</div></td>
+			  <td><div align="left">
+			  	<input name="curr_password" type="password" value="" size="25" class="post">
+				</div></td>
+			</tr>
+			<tr>
+			  <td><div align="right">{new_password}</div></td>
+			  <td><div align="left">
+			  	<input name="new_password" type="password" value="" size="25" class="post">
+				</div></td>
+			</tr>
+			<tr>
+			  <td><div align="right">{confirm_password}</div></td>
+			  <td><div align="left">
+			  	<input name="confirm_password" type="password" value="" size="25" class="post">
+				</div></td>
+			</tr>
+		  </table>
+		</div>
+		</td>
+	  </tr>
+	  <tr>
+		<td>&nbsp;</td>
+	  </tr>
+	  <tr>
+		<td>&nbsp;</td>
+	  </tr>
+
+	  <tr>
+		<td>
+			<div align="center">
+				<input type="submit" name="login" value="{bd_submit}" style="font-size:10px" class="mainoption">
+				&nbsp;&nbsp;
+				<input type="reset" name="login" value="{bd_reset}" style="font-size:10px" class="mainoption">
+			</div>
+		</td>
+	  </tr>
+	</table>
+	<br/>
+	<input type="hidden" name="substep" value="{hidden_substep}" class="post">
+	<input type="hidden" name="username" value="{username}" class="post">
+</form>
+</div>
+</div>
