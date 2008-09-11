@@ -140,7 +140,7 @@ else
 }
 
 // This is the Month and Year Header for the Calendar.
-$monthHead = date("F", $timestamp) . " " . date("Y", $timestamp);
+$monthHead = $phprlang['month'.date("n", $timestamp)] . " " . date("Y", $timestamp);
 
 // Get Day of Week Number for First Day of Month and the Offset Number to Add.
 $dayOfWeekFirst = date("w", $timestamp);
