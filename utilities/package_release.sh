@@ -34,6 +34,11 @@ cd includes
 chmod a-x *.php
 cd ..
 
+# Scripts
+cd scripts
+chmod a-x *.js
+cd ..
+
 # Install
 cd install
 chmod a-x *.php
@@ -100,9 +105,6 @@ chmod a-x *.jpg
 chmod a-x *.ico
 chmod a-x *.png
 cd ..
-cd ..
-cd scripts
-chmod a-x *.js
 cd ..
 cd style
 chmod a-x *.php
