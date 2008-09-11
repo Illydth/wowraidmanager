@@ -30,11 +30,106 @@
 *
 ****************************************************************************/
 
+$BridgeSupportPWDChange = FALSE;
+
+/******************************
+ * NOTE: Bridges SHOULD NOT be changing passwords in upstream systems. Enable the above at your own risk.
+ ******************************/
+
+//change password in WRM DB
+function db_password_change($profile_id, $dbusernewpassword)
+{
+	global $db_raid, $phpraid_config;
+
+	//table and column name
+	$db_user_id = "user_id";
+	$db_user_password = "user_password";
+	$db_table_user_name = "user";
+	$table_prefix = $phpraid_config['e107_table_prefix'];
+
+	//convert pwd
+	$dbusernewpassword = md5($dbusernewpassword);
+
+	//check: is user_id in WRM DB
+	$sql = sprintf(	"SELECT ".$db_user_id." FROM " . $table_prefix . $db_table_user_name . 
+					" WHERE ".$db_user_id." = %s", 
+					quote_smart($profile_id)
+			);
+	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	if (mysql_num_rows($result) != 1) {
+		//user not found in WRM DB
+		return 2;
+	}
+
+	$sql = sprintf(	"UPDATE " . $table_prefix . $db_table_user_name . 
+					" SET ".$db_user_password." = %s WHERE " . $db_user_id . " = %s", 
+					quote_smart($dbusernewpassword), quote_smart($profile_id)
+			);
+
+	if (($db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1)) == true)
+	{
+		//pwd change
+		return 1;
+	}
+	else
+	{
+		//pwd NOT change
+		return 0;
+	} 
+}
+//compare password
+//return value -> 0 equal ;1 Not equal
+function password_check($oldpassword, $profile_id)
+{
+	global $db_raid, $phpraid_config;
+
+	$table_prefix = $phpraid_config['e107_table_prefix'];
+	$db_user_id = "user_id";
+	$db_user_name = "user_loginname";
+	$db_user_password = "user_password";
+	$db_table_user_name = "user";
+	
+	$sql = sprintf("SELECT username FROM " . $phpraid_config['db_prefix'] . "profile WHERE profile_id = %s",
+					quote_smart($profile_id)
+			);
+	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$data = $db_raid->sql_fetchrow($result, true);
+	
+	$sql = sprintf(	"SELECT " . $db_user_password . 
+					" FROM " . $table_prefix . $db_table_user_name . 
+					" WHERE %s = %s",
+					quote_smart($db_user_name), quote_smart($data['username'])
+			);
+	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$data = $db_raid->sql_fetchrow($result, true);
+
+	if ( md5($oldpassword) == $data[$db_user_password])
+	{
+		return 0;
+	}
+	else
+		return 1;
+}
+
 function phpraid_login() {
 	global $groups, $db_raid, $phpraid_config;
+	$wrmuserpassword = $username = $password = "";
+
+	// Set e107 Configuration Options
+	$table_prefix = $phpraid_config['e107_table_prefix'];
+	$auth_user_class = $phpraid_config['e107_auth_user_class'];
+	$auth_alt_user_class = $phpraid_config['alt_auth_user_class'];
+
+	//table and column name
+	$db_user_id = "user_id";
+	$db_user_name = "user_loginname";
+	$db_user_password = "user_password";
+	$db_user_email = "user_email";
+	$db_group_id = "user_class";
+	$db_table_user_name = "user";
 
 	if(isset($_POST['username'])) 	{
-		$username = scrub_input(strtolower($_POST['username']));
+		$username = scrub_input(strtolower(utf8_decode($_POST['username'])));
 		$password = md5($_POST['password']);
 	} elseif(isset($_COOKIE['username']) && isset($_COOKIE['password'])) {
 		$username = scrub_input(strtolower($_COOKIE['username']));
@@ -43,25 +138,28 @@ function phpraid_login() {
 		phpraid_logout();
 	}
 
-	// Set e107 Configuration Options
-	$e107_table_prefix = $phpraid_config['e107_table_prefix'];
-	$e107_auth_user_class = $phpraid_config['e107_auth_user_class'];
-	$alt_auth_user_class = $phpraid_config['alt_auth_user_class'];
-
 	// Get the user_loginname and password and the various user classes that the user belongs to.
-	$sql = "SELECT user_id, user_loginname, user_password, user_email, user_class FROM " . $e107_table_prefix . "user";
-	$result = $db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	//e107 database
+	$sql = sprintf(	"SELECT ".$db_user_id." , ". $db_user_name ." , ". $db_user_email . " , ".$db_group_id. " , ".$db_user_password.
+					" FROM " . $table_prefix . $db_table_user_name. 
+					" WHERE ".$db_user_name." = %s", quote_smart($username)
+			);
+
+	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 
 	while($data = $db_raid->sql_fetchrow($result, true)) {
-		//echo "<br>Processing: " . $data['user_loginname'] . " : " . $data['user_password'];
-		if($username == strtolower($data['user_loginname']) && $password == $data['user_password']) {
+		//echo "<br>Processing: " . $data[$db_user_name] . " : " . $data[$db_user_password];
+		if($username == strtolower($data[$db_user_name]) && $password == $data[$db_user_password]) {
+		
+			$wrmuserpassword = $data[$db_user_password];
+
 			// The user has a matching username and proper password in the e107 database.
 			// We need to validate the users class.  If it does not contain the user class that has been set as
-			//	authorized to use phpRaid, we need to fail the login with a proper message.
-			$user_class = $data['user_class'];
-			$pos = strpos($user_class, $e107_auth_user_class);
-			$pos2 = strpos($user_class, $alt_auth_user_class);
-			if ($pos === false && $e107_auth_user_class != 0)
+			//	authorized to use WRM, we need to fail the login with a proper message.
+			$user_class = $data[$db_group_id];
+			$pos = strpos($user_class, $auth_user_class);
+			$pos2 = strpos($user_class, $auth_alt_user_class);
+			if ($pos === false && $auth_user_class != 0)
 			{
 				if ($pos2 === false)
 				{
@@ -70,40 +168,56 @@ function phpraid_login() {
 				}
 			}
 
-			// User is properly logged in and is allowed to use phpRaid, go ahead and process his login.
-			$autologin=scrub_input($_POST['autologin']);
+			// User is properly logged in and is allowed to use WRM, go ahead and process his login.
+			$autologin = scrub_input($_POST['autologin']);
 			if(isset($autologin)) {
 				// they want automatic logins so set the cookie
 				// set to expire in one month
-				setcookie('username', $data['user_loginname'], time() + 2629743);
-				setcookie('password', $data['user_password'], time() + 2629743);
+				setcookie('username', $data[$db_user_name], time() + 2629743);
+				setcookie('password', $wrmuserpassword, time() + 2629743);
 			}
 
 			// set user profile variables
-			$_SESSION['username'] = strtolower($data['user_loginname']);
+			$_SESSION['username'] = strtolower($data[$db_user_name]);
 			$_SESSION['session_logged_in'] = 1;
-			$_SESSION['profile_id'] = $data['user_id'];
-			$_SESSION['email'] = $data['user_email'];
-			$user_password = $data['user_password'];
+			$_SESSION['profile_id'] = $data[$db_user_id];
+			$_SESSION['email'] = $data[$db_user_email];
+
 			if($phpraid_config['default_group'] != 'nil')
 				$user_priv = $phpraid_config['default_group'];
 			else
 				$user_priv = '0';
 
 			// User is all logged in and setup, the session is initialized properly.  Now we need to create the users
-			//    profile in the phpRaid database if it does not already exist.
-			$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "profile WHERE profile_id=%s", quote_smart($_SESSION['profile_id']));
-			$result = $db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+			//    profile in the WRM database if it does not already exist.
+			$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "profile WHERE profile_id = %s",
+							quote_smart($_SESSION['profile_id'])
+					);
+			$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 			if ($data = $db_raid->sql_fetchrow($result))
-			{ //We found the profile in the database, update.
-				$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "profile SET email=%s,password=%s,last_login_time=%s WHERE profile_id=%s",quote_smart($_SESSION['email']),quote_smart($user_password),quote_smart(time()),quote_smart($_SESSION['profile_id']));
+			{
+				//We found the profile in the database, update.
+				$sql = sprintf(	"UPDATE " . $phpraid_config['db_prefix'] . 
+								"profile SET email = %s, password = %s, last_login_time = %s WHERE profile_id = %s",
+								quote_smart($_SESSION['email']),quote_smart($wrmuserpassword),
+								quote_smart(time()),quote_smart($_SESSION['profile_id'])
+						);
 				$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 			}
 			else
-			{ //Profile not found in the database or DB Error, insert.
-				$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "profile VALUES (%s, %s, %s, %s, %s, %s)", quote_smart($_SESSION['profile_id']), quote_smart($_SESSION['email']), quote_smart($user_password), quote_smart($user_priv), quote_smart($_SESSION['username']),quote_smart(time()));
+			{
+				//Profile not found in the database or DB Error, insert.
+				$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "profile VALUES (%s, %s, %s, %s, %s, %s)",
+							quote_smart($_SESSION['profile_id']), quote_smart($_SESSION['email']), quote_smart($wrmuserpassword),
+							quote_smart($user_priv), quote_smart(strtolower($_SESSION['username'])), quote_smart(time())
+						);
 				$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 			}
+			
+			//security fix
+			unset($username);
+			unset($password);
+			unset($wrmuserpassword);
 
 			return 1;
 		}
@@ -121,7 +235,7 @@ function phpraid_logout()
 
 // good ole authentication
 session_start();
-$_SESSION['name'] = "WRM";
+$_SESSION['name'] = "WRM-e107";
 
 // set session defaults
 if (!isset($_SESSION['initiated'])) {

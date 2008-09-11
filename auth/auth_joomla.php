@@ -1,8 +1,8 @@
 <?php
 /***************************************************************************
- *                             auth_wbb.php
+ *                             auth_jommla.php
  *                            -------------------
- *   begin                : June 18, 2008
+ *   begin                : July 23, 2008
  *	 Dev                  : Carsten Hölbing
  *	 email                : hoelbin@gmx.de
  *
@@ -41,6 +41,8 @@ function db_password_change($profile_id, $dbusernewpassword)
 
 	//convert pwd
 	$dbusernewpassword = $pwd_hasher->HashPassword(dbusernewpassword);
+	//$dbusernewpassword = md5($dbusernewpassword);
+
 
 	//check: is profile_id in WRM DB
 	$sql = sprintf("SELECT profile_id FROM " . $phpraid_config['db_prefix'] . "profile WHERE profile_id = %s", 
@@ -90,18 +92,19 @@ function phpraid_login() {
 	global $groups, $db_raid, $phpraid_config;
 	$wrmuserpassword = $username = $password = "";
 
-	// Set wbb Configuration Options
-	$table_prefix = $phpraid_config['wbb_table_prefix'];
-	$auth_user_class = $phpraid_config['wbb_auth_user_class'];
-	$auth_alt_user_class = $phpraid_config['wbb_alt_auth_user_class'];
+	// Set joomla Configuration Options
+	$table_prefix = $phpraid_config['joomla_table_prefix'];
+	$auth_user_class = $phpraid_config['joomla_auth_user_class'];
+	$auth_alt_user_class = $phpraid_config['joomla_auth_alt_user_class'];
 
 	//table and column name
-	$db_user_id = "userid";
+	$db_user_id = "id";
 	$db_user_name = "username";
 	//$db_user_password = "";
 	$db_user_email = "email";
-	$db_group_id = "groupid";
-	$db_table_user_name = "users";
+	$db_group_id = "gid";
+	$db_table_user_name = "jos_users";
+
 
 	# Try to use stronger but system-specific hashes, with a possible fallback to
 	# the weaker portable hashes.
@@ -111,6 +114,7 @@ function phpraid_login() {
 		$username = scrub_input(strtolower($_POST['username']));
 		//pwd hash
 		$password = $pwd_hasher->HashPassword($_POST['password']);
+
 	} elseif(isset($_COOKIE['username']) && isset($_COOKIE['password'])) {
 		$username = scrub_input(strtolower($_COOKIE['username']));
 		$password = scrub_input($_COOKIE['password']);
@@ -118,7 +122,7 @@ function phpraid_login() {
 		phpraid_logout();
 	}
 
-	//wbb database
+	//Joomla database
 	$sql = sprintf(	"SELECT ".$db_user_id." , ". $db_user_name ." , ". $db_user_email . " , ".$db_group_id.
 					" FROM " . $table_prefix . $db_table_user_name. 
 					" WHERE ".$db_user_name." = %s", quote_smart($username)
@@ -137,15 +141,18 @@ function phpraid_login() {
 	}
 
 	while($data = $db_raid->sql_fetchrow($result, true)) {
+
 		if( ($username == strtolower($data[$db_user_name])) && (($pwd_hasher->CheckPassword($password, $wrmuserpassword)==0) or ($data2['password'] == "" ) ) ) {
+
+	//	if( ($username == strtolower($data[$db_user_name])) && (($password == $wrmuserpassword) or ($data2['password'] == "" ) ) ) {
 
 			//first use: password insert in WRM DB
 			if ($wrmuserpassword == ""){
 				$wrmuserpassword = $password;
 			}
 
-			// We need to validate the users class.  If it does not contain the user class that has been set as
-			//	authorized to use WRM, we need to fail the login with a proper message.
+			// We need to validate the users group.  If it does not contain the user group that has been set as
+			//	authorized to use WRM, we need to fail the login with a proper message.		
 			$user_class = $data[$db_group_id];
 			$pos = strpos($user_class, $auth_user_class);
 			$pos2 = strpos($user_class, $auth_alt_user_class);
@@ -157,6 +164,7 @@ function phpraid_login() {
 					return -1;
 				}
 			}
+
 
 			// User is properly logged in and is allowed to use WRM, go ahead and process his login.
 			$autologin = scrub_input($_POST['autologin']);
@@ -226,7 +234,7 @@ require ("includes/functions_pwdhash.php");
 
 // good ole authentication
 session_start();
-$_SESSION['name'] = "WRM-wbb";
+$_SESSION['name'] = "WRM-joomla";
 
 // set session defaults
 if (!isset($_SESSION['initiated'])) {

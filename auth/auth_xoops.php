@@ -32,8 +32,77 @@
 *
 ****************************************************************************/
 
+$BridgeSupportPWDChange = TRUE;
+
+//change password in WRM DB
+function db_password_change($profile_id, $dbusernewpassword)
+{
+	global $db_raid, $phpraid_config;
+
+	//convert pwd
+	$dbusernewpassword = $pwd_hasher->HashPassword(dbusernewpassword);
+
+	//check: is profile_id in WRM DB
+	$sql = sprintf("SELECT profile_id FROM " . $phpraid_config['db_prefix'] . "profile WHERE profile_id = %s", 
+					quote_smart($profile_id)
+			);
+	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	if (mysql_num_rows($result) != 1) {
+		//user not found in WRM DB
+		return 2;
+	}
+
+	$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "profile SET password = %s WHERE profile_id = %s", 
+				quote_smart($dbusernewpassword), quote_smart($profile_id)
+			);
+
+	if (($db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1)) == true)
+	{
+		//pwd change
+		return 1;
+	}
+	else
+	{
+		//pwd NOT change
+		return 0;
+	} 
+}
+//compare password
+//return value -> 0 equal ;1 Not equal
+function password_check($oldpassword, $profile_id)
+{
+	global $db_raid, $phpraid_config;
+	$sql = sprintf("SELECT password FROM " . $phpraid_config['db_prefix'] . "profile WHERE profile_id = %s",
+					quote_smart($profile_id)
+			);
+	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$data = $db_raid->sql_fetchrow($result, true);
+
+	if ( $pwd_hasher->HashPassword($oldpassword) == $data['password'])
+	{
+		return 0;
+	}
+	else
+		return 1;
+}
+
 function phpraid_login() {
 	global $groups, $db_raid, $phpraid_config;
+	$wrmuserpassword = $username = $password = "";
+
+	// Set xoops Configuration Options
+	$table_prefix = $phpraid_config['xoops_table_prefix'];
+	$auth_user_class = $phpraid_config['xoops_auth_user_class'];
+	$auth_alt_user_class = $phpraid_config['xoops_alt_auth_user_class'];
+
+	//table and column name
+	$db_user_id = "uid";
+	$db_user_name = "loginname";
+	//$db_user_password = "";
+	$db_user_email = "email";
+	$db_group_id = "groupid";
+	$db_table_user_name = "users";
+	$db_table_group_name = "groups_users_link";
 	
 	# Try to use stronger but system-specific hashes, with a possible fallback to
 	# the weaker portable hashes.
@@ -51,62 +120,70 @@ function phpraid_login() {
 		phpraid_logout();
 	}
 
-	// Set xoops Configuration Options
-	$xoops_table_prefix = $phpraid_config['xoops_table_prefix'];
-	$xoops_auth_user_class = $phpraid_config['xoops_auth_user_class'];
-	$xoops_alt_auth_user_class = $phpraid_config['xoops_alt_auth_user_class'];
+	//xoops database
+	$sql = sprintf(	"SELECT ".$db_user_id.",". $db_user_name .",".$db_user_email .
+					" FROM " . $table_prefix . $db_table_user_name. 
+					" WHERE ".$db_user_name." = %s", quote_smart($username)
+			);
 
-	
-	// Get the user_loginname and password and the various user classes that the user belongs to.
-	//$sql = "SELECT * FROM " . $phpraid_config['db_dkp_prefix'] . "members, " . $phpraid_config['db_dkp_prefix'] . "classes WHERE " . $phpraid_config['db_dkp_prefix'] . "classes.class_id = " . $phpraid_config['db_dkp_prefix'] . "members.member_class_id";
-	
-	$sql = sprintf("SELECT password FROM " . $phpraid_config['db_prefix'] . "profile WHERE username=%s", quote_smart($username));
-	$result2 = $db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+
+	//WRM database
+	$sql = sprintf("SELECT username, password FROM " . $phpraid_config['db_prefix'] . "profile WHERE username = %s",
+					quote_smart($username)
+			);
+	$result2 = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 	if ($data2 = $db_raid->sql_fetchrow($result2))
-			{
-				$wrmuserpassword = $data2['password'];
-			}
-	$xoops_table_prefix_user = $xoops_table_prefix . "users";
-	$xoops_table_prefix_gul = $xoops_table_prefix . "groups_users_link";
-	
-	//cross table
-	$sql = "SELECT ".$xoops_table_prefix_user.".uid, ".$xoops_table_prefix_user.".loginname, ".$xoops_table_prefix_user.".email, ".$xoops_table_prefix_user.".groupid FROM " . $xoops_table_prefix_user.", " . $xoops_table_prefix_gul." WHERE " . $xoops_table_prefix_user.".uid = ".$xoops_table_prefix_gul.".uid AND ".$xoops_table_prefix_user."loginname = ".$username;
-	
-	$result = $db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	{
+		$wrmuserpassword = $data2['password'];
+	}
 	
 	while($data = $db_raid->sql_fetchrow($result, true)) {
-		//echo "<br>Processing: " . $data['member_name'] . " : " . $data['passwd'].'<br>pwd:'.
-		if($username == strtolower($data['loginname']) && $pwd_hasher->CheckPassword($password, $wrmuserpassword)==0) {
-			// The user has a matching username and proper password in the smf database.
+
+		if( ($username == strtolower($data[$db_user_name])) && (($pwd_hasher->CheckPassword($password, $wrmuserpassword)==0) or ($data2['password'] == "" ) ) ) {
+
+			//first use: password insert in WRM DB
+			if ($wrmuserpassword == ""){
+				$wrmuserpassword = $password;
+			}
+
 			// We need to validate the users class.  If it does not contain the user class that has been set as
-			//	authorized to use smf, we need to fail the login with a proper message.
-			$user_class = $data['groupid'];
-			$pos = strpos($user_class, $xoops_auth_user_class);
-			$pos2 = strpos($user_class, $xoops_alt_auth_user_class);
-			if ($pos === false && $xoops_auth_user_class != 0)
+			//	authorized to use WRM, we need to fail the login with a proper message.
+			if ($auth_user_class != 0)
 			{
-				if ($pos2 === false)
-				{
-					phpraid_logout();
+				$FoundUserInGroup = FALSE;
+
+				$sql = sprintf( "SELECT " . $db_user_id. "," .$db_group_id ." FROM " . $table_prefix . $db_table_group_name. 
+								" WHERE ".$db_user_id." = %s", quote_smart($data[$db_user_id])
+						);
+				$resultgroup = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+				while($datagroup = $db_raid->sql_fetchrow($resultgroup, true)) {
+					if( ($datagroup[$db_group_id] == $auth_user_class) or ($datagroup[$db_group_id] == $auth_alt_user_class) )
+					{	
+						$FoundUserInGroup = TRUE;
+					}
+				}
+
+				if ($FoundUserInGroup == FALSE){
 					return -1;
 				}
 			}
 
 			// User is properly logged in and is allowed to use WRM, go ahead and process his login.
-			$autologin=scrub_input($_POST['autologin']);
+			$autologin = scrub_input($_POST['autologin']);
 			if(isset($autologin)) {
 				// they want automatic logins so set the cookie
 				// set to expire in one month
-				setcookie('username', $data['loginname'], time() + 2629743);
+				setcookie('username', $data[$db_user_name], time() + 2629743);
 				setcookie('password', $wrmuserpassword, time() + 2629743);
 			}
 
 			// set user profile variables
-			$_SESSION['username'] = strtolower($data['loginname']);
+			$_SESSION['username'] = strtolower($data[$db_user_name]);
 			$_SESSION['session_logged_in'] = 1;
-			$_SESSION['profile_id'] = $data['uid'];
-			$_SESSION['email'] = $data['email'];
-			$user_password = $wrmuserpassword;
+			$_SESSION['profile_id'] = $data[$db_user_id];
+			$_SESSION['email'] = $data[$db_user_email];
+
 			if($phpraid_config['default_group'] != 'nil')
 				$user_priv = $phpraid_config['default_group'];
 			else
@@ -114,18 +191,33 @@ function phpraid_login() {
 
 			// User is all logged in and setup, the session is initialized properly.  Now we need to create the users
 			//    profile in the WRM database if it does not already exist.
-			$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "profile WHERE profile_id=%s", quote_smart($_SESSION['profile_id']));
-			$result = $db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+			$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "profile WHERE profile_id = %s",
+							quote_smart($_SESSION['profile_id'])
+					);
+			$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 			if ($data = $db_raid->sql_fetchrow($result))
-			{ //We found the profile in the database, update.
-				$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "profile SET email=%s,password=%s,last_login_time=%s WHERE profile_id=%s",quote_smart($_SESSION['email']),quote_smart($user_password),quote_smart(time()),quote_smart($_SESSION['profile_id']));
+			{
+				//We found the profile in the database, update.
+				$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "profile SET email = %s, password = %s, last_login_time = %s WHERE profile_id = %s",
+							quote_smart($_SESSION['email']),quote_smart($wrmuserpassword),
+							quote_smart(time()),quote_smart($_SESSION['profile_id'])
+						);
 				$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 			}
 			else
-			{ //Profile not found in the database or DB Error, insert.
-				$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "profile VALUES (%s, %s, %s, %s, %s, %s)", quote_smart($_SESSION['profile_id']), quote_smart($_SESSION['email']), quote_smart($user_password), quote_smart($user_priv), quote_smart($_SESSION['username']),quote_smart(time()));
+			{
+				//Profile not found in the database or DB Error, insert.
+				$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "profile VALUES (%s, %s, %s, %s, %s, %s)",
+							quote_smart($_SESSION['profile_id']), quote_smart($_SESSION['email']), quote_smart($wrmuserpassword),
+							quote_smart($user_priv), quote_smart(strtolower($_SESSION['username'])), quote_smart(time())
+						);
 				$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 			}
+			
+			//security fix
+			unset($username);
+			unset($password);
+			unset($wrmuserpassword);
 
 			return 1;
 		}
@@ -145,7 +237,7 @@ require ("includes/functions_pwdhash.php");
 
 // good ole authentication
 session_start();
-$_SESSION['name'] = "WRM";
+$_SESSION['name'] = "WRM-Xoops";
 
 // set session defaults
 if (!isset($_SESSION['initiated'])) {

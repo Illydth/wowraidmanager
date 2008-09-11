@@ -1,12 +1,14 @@
 <?php
 /***************************************************************************
- *                                 auth_phpbb.php
+ *                             auth_phpbb3.php
  *                            -------------------
- *   begin                : Saturday, Jan 16, 2005
- *   copyright            : (C) 2007-2008 Douglas Wagner
- *   email                : douglasw@wagnerweb.org
+ *   begin                : Sep 09, 2008
+ *	 Dev                  : Carsten Hölbing
+ *	 email                : hoelbin@gmx.de
  *
- *   $Id: auth_phpbb.php,v 2.00 2007/11/18 17:35:00 psotfx Exp $
+ *	 based on 			  : auth_e107.php @ Douglas Wagner
+ *   copyright            : (C) 2007-2008 Douglas Wagner
+ *   email                : douglasw0@yahoo.com
  *
  ***************************************************************************/
 
@@ -27,124 +29,236 @@
 *
 *    You should have received a copy of the GNU General Public License
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-* 
+*
 ****************************************************************************/
 
-// define our auth type
-if( isset( $_GET["phpbb_root_path"] ) || isset( $_POST["phpbb_root_path"]) )
-	log_hack();
-		
-// check profile
-// Specific to phpBB authentication only. Checks to see if a profile exists
-// for phpBB user and if not, creates one.
-function check_profile($userdata)
+
+$BridgeSupportPWDChange = TRUE;
+
+//change password in WRM DB
+function db_password_change($profile_id, $dbusernewpassword)
 {
 	global $db_raid, $phpraid_config;
-	
-	$user_id = $userdata['user_id'];
-	$email = $userdata['user_email'];
-	
-	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "profile WHERE profile_id=%s", quote_smart($user_id));
+
+	//convert pwd
+	//$dbusernewpassword = $pwd_hasher->HashPassword(dbusernewpassword);
+	$dbusernewpassword = md5($dbusernewpassword);
+
+
+	//check: is profile_id in WRM DB
+	$sql = sprintf("SELECT profile_id FROM " . $phpraid_config['db_prefix'] . "profile WHERE profile_id = %s", 
+					quote_smart($profile_id)
+			);
+	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(),1);
+	if (mysql_num_rows($result) != 1) {
+		//user not found in WRM DB
+		return 2;
+	}
+
+	$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "profile SET password = %s WHERE profile_id = %s", 
+				quote_smart($dbusernewpassword), quote_smart($profile_id)
+			);
+
+	if (($db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1)) == true)
+	{
+		//pwd change
+		return 1;
+	}
+	else
+	{
+		//pwd NOT change
+		return 0;
+	} 
+}
+//compare password
+//return value -> 0 equal ;1 Not equal
+function password_check($oldpassword, $profile_id)
+{
+	global $db_raid, $phpraid_config;
+	$sql = sprintf("SELECT password FROM " . $phpraid_config['db_prefix'] . "profile WHERE profile_id = %s",
+					quote_smart($profile_id)
+			);
 	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-	
-	//Update email incase it doesn't match phpBB
-	if($userdata['user_email'] != $result['email'])
+	$data = $db_raid->sql_fetchrow($result, true);
+
+	if ( md5($oldpassword) == $data['password'])
 	{
-		$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "profile SET email=%s, last_login_time=%s WHERE profile_id=%s", quote_smart($email), quote_smart(time()), quote_smart($user_id));
-		$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		return 0;
 	}
-	
-	// if nothing returns we need to create profile
-	// otherwise they have a profile so let's set their ID
-	// we'll just use the phpBB user id as the profile ID to simplify things
-	if($db_raid->sql_numrows($result) == 0 && $userdata['username'] != 'Anonymous')
-	{
-		$user_id = $userdata['user_id'];
-		$username = $userdata['username'];
-		
-		if($phpraid_config['default_group'] != 'nil')
-			$default = $phpraid_config['default_group'];
-		else
-			$default = '0';
-		
-		// nothing returned, create profile
-		$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "profile (`profile_id`,`email`,`password`,`priv`,`username`,`last_login_time`)" .
-						"VALUES (%s, %s, '', %s, %s, %s)", quote_smart($user_id), quote_smart($email), quote_smart($default), quote_smart($username), quote_smart(time()));
-		$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-	}
-	
-	return $userdata['user_id'];
+	else
+		return 1;
 }
 
-// login function for phpBB
-function phpraid_login()
-{
-	global $db, $user_ip;
-	
-	$username = isset($_POST['username']) ? phpbb_clean_username($_POST['username']) : '';
-	$password = isset($_POST['password']) ? $_POST['password'] : '';
-		$sql = "SELECT user_id, username, user_password, user_active, user_level
-		FROM " . USERS_TABLE . "
-		WHERE username = '" . str_replace("\\'", "''", $username) . "'";
-		
-	if ( !($result = $db->sql_query($sql)) )
-		message_die(GENERAL_ERROR, 'Error in obtaining userdata', '', __LINE__, __FILE__, $sql);
-		
-	if( $row = $db->sql_fetchrow($result, true) )
+function phpraid_login() {
+	global $groups, $db_raid, $phpraid_config;
+	$wrmuserpassword = $username = $password = "";
+
+	// Set phpbb Configuration Options
+	$table_prefix = $phpraid_config['phpbb_prefix'];
+	$auth_user_class = $phpraid_config['phpBB_auth_user_class'];
+	$auth_alt_user_class = $phpraid_config['phpBB_alt_auth_user_class'];
+
+	//table and column name
+	$db_user_id = "user_id";
+	$db_user_name = "username";
+	//$db_user_password = "";
+	$db_user_email = "user_email";
+	$db_group_id = "group_id";
+	$db_table_user_name = "users";
+	$db_table_group_name = "user_group";
+
+
+	# Try to use stronger but system-specific hashes, with a possible fallback to
+	# the weaker portable hashes.
+	//$pwd_hasher = new PasswordHash(8, FALSE);
+
+	if(isset($_POST['username'])){
+		$username = scrub_input(strtolower($_POST['username']));
+		//pwd hash
+		//$password = $pwd_hasher->HashPassword($_POST['password']);
+		$password = md5($_POST['password']);
+
+	} elseif(isset($_COOKIE['username']) && isset($_COOKIE['password'])) {
+		$username = scrub_input(strtolower($_COOKIE['username']));
+		$password = scrub_input($_COOKIE['password']);
+	} else {
+		phpraid_logout();
+	}
+
+	//phpbb database
+	$sql = sprintf(	"SELECT ".$db_user_id.",". $db_user_name .",".$db_user_email .
+					" FROM " . $table_prefix . $db_table_user_name. 
+					" WHERE ".$db_user_name." = %s", quote_smart($username)
+			);
+
+	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+
+	//WRM database
+	$sql = sprintf("SELECT username, password FROM " . $phpraid_config['db_prefix'] . "profile WHERE username = %s",
+					quote_smart($username)
+			);
+	$result2 = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	if ($data2 = $db_raid->sql_fetchrow($result2))
 	{
-		if( md5($password) == $row['user_password'] && $row['user_active'] )
-		{ 
-			// success
-			$autologin = ( isset($_POST['autologin']) ) ? TRUE : 0;
-			$admin = (isset($_POST['admin'])) ? 1 : 0;
-			$session_id = session_begin($row['user_id'], $user_ip, PAGE_INDEX, FALSE, $autologin, $admin);
+		$wrmuserpassword = $data2['password'];
+	}
+
+	while($data = $db_raid->sql_fetchrow($result, true)) {
+
+	//	if( ($username == strtolower($data['username_clean'])) && (($pwd_hasher->CheckPassword($password, $wrmuserpassword)==0) or ($data2['password'] == "" ) ) ) {
+
+		if( ($username == strtolower($data[$db_user_name])) && (($password == $wrmuserpassword) or ($data2['password'] == "" ) ) ) {
+
+			//first use: password insert in WRM DB
+			if ($wrmuserpassword == ""){
+				$wrmuserpassword = $password;
+			}
+
+			// The user has a matching username and proper password in the phpbb database.
+			// We need to validate the users group.  If it does not contain the user group that has been set as
+			//	authorized to use WRM, we need to fail the login with a proper message.
+			if ($auth_user_class != 0)
+			{
+				$FoundUserInGroup = FALSE;
+
+				$sql = sprintf( "SELECT " . $db_user_id. "," .$db_group_id ." FROM " . $table_prefix . $db_table_group_name. 
+								" WHERE ".$db_user_id." = %s", quote_smart($data[$db_user_id])
+						);
+				$resultgroup = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+				while($datagroup = $db_raid->sql_fetchrow($resultgroup, TRUE)) {
+					if( ($datagroup[$db_group_id] == $auth_user_class) or ($datagroup[$db_group_id] == $auth_alt_user_class) )
+					{	
+						$FoundUserInGroup = TRUE;
+					}
+				}
+
+				if ($FoundUserInGroup == FALSE){
+					return -1;
+				}
+			}
+
+
+			// User is properly logged in and is allowed to use WRM, go ahead and process his login.
+			$autologin = scrub_input($_POST['autologin']);
+			if(isset($autologin)) {
+				// they want automatic logins so set the cookie
+				// set to expire in one month
+				setcookie('username', $data[$db_user_name], time() + 2629743);
+				setcookie('password', $wrmuserpassword, time() + 2629743);
+			}
+
+			// set user profile variables
+			$_SESSION['username'] = strtolower($data[$db_user_name]);
+			$_SESSION['session_logged_in'] = 1;
+			$_SESSION['profile_id'] = $data[$db_user_id];
+			$_SESSION['email'] = $data[$db_user_email];
+
+			if($phpraid_config['default_group'] != 'nil')
+				$user_priv = $phpraid_config['default_group'];
+			else
+				$user_priv = '0';
+
+			// User is all logged in and setup, the session is initialized properly.  Now we need to create the users
+			//    profile in the WRM database if it does not already exist.
+			$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "profile WHERE profile_id = %s",
+							quote_smart($_SESSION['profile_id'])
+					);
+			$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+			if ($data = $db_raid->sql_fetchrow($result))
+			{
+				//We found the profile in the database, update.
+				$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "profile SET email = %s, password = %s, last_login_time = %s WHERE profile_id = %s",
+							quote_smart($_SESSION['email']),quote_smart($wrmuserpassword),
+							quote_smart(time()),quote_smart($_SESSION['profile_id'])
+						);
+				$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+			}
+			else
+			{
+				//Profile not found in the database or DB Error, insert.
+				$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "profile VALUES (%s, %s, %s, %s, %s, %s)",
+							quote_smart($_SESSION['profile_id']), quote_smart($_SESSION['email']), quote_smart($wrmuserpassword),
+							quote_smart($user_priv), quote_smart(strtolower($_SESSION['username'])), quote_smart(time())
+						);
+				$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+			}
 			
-			$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "profile SET last_login_time=%s WHERE profile_id=%s",
-							quote_smart(time()),quote_smart($_SESSION['profile_id']));
-			$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+			//security fix
+			unset($username);
+			unset($password);
+			unset($wrmuserpassword);
 			
 			return 1;
 		}
-		else
-		{
-			// login failure
-			return 0;
-		}
+	}
+	return 0;
+}
+
+function phpraid_logout()
+{
+	// unset the session and remove all cookies
+	clear_session();
+	setcookie('username', '', time() - 2629743);
+	setcookie('password', '', time() - 2629743);
+}
+
+//require ("includes/functions_pwdhash.php");
+
+// good ole authentication
+session_start();
+$_SESSION['name'] = "WRM-phpbb";
+
+// set session defaults
+if (!isset($_SESSION['initiated'])) {
+	if(isset($_COOKIE['username']) && isset($_COOKIE['password'])) {
+		phpraid_login();
+	} else {
+		session_regenerate_id();
+		$_SESSION['initiated'] = true;
+		$_SESSION['username'] = 'Anonymous';
+		$_SESSION['session_logged_in'] = 0;
+		$_SESSION['profile_id'] = -1;
 	}
 }
 
-// logout function for phpBB
-function phpraid_logout()
-{
-	global $userdata;
-	
-	session_end($userdata['session_id'], $userdata['user_id']);
-	clear_session();
-}
-
-// database connection
-$phpbb_prefix = $phpraid_config['phpbb_prefix'];
-
-global $user_group_table;
-$user_group_table = $phpbb_prefix . "user_group";
-
-// setup phpBB user integration
-define('IN_PHPBB', true);
-
-$phpbb_root_path = $phpraid_config['phpbb_root_path'];
-		
-// set this as the path to your phpBB installation
-include($phpbb_root_path . 'extension.inc');
-include($phpbb_root_path . 'common.'.$phpEx);
-	
-$userdata = session_pagestart($user_ip, PAGE_INDEX);
-init_userprefs($userdata);
-
-// set user variables
-$_SESSION['username'] = $userdata['username'];
-$_SESSION['session_logged_in'] = $userdata['session_logged_in'];
-
-// check if they have a phpRaid profile yet
-// if not, create one if so set profile_id to correct
-$_SESSION['profile_id'] = check_profile($userdata);
 ?>
