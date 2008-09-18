@@ -174,44 +174,44 @@ $phprlang['signup'] = 'Iscriviti';
 $phprlang['delete_msg'] = 'ATTENZIONE: l\'eliminazione è permanente e non reversibile.<br>Clicka il pulsante sottostante se sei sicuro di voler procedere.';
 $phprlang['maintenance_header'] = 'Lavori in corso';
 $phprlang['maintenance_message'] = 'WowRaidManager è momentaneamente non disponibile per lavori in corso. Riprova più tardi.';
-$phprlang['disabled_header'] = 'Site Disabled Notice!';
-$phprlang['disabled_message'] = 'Please note, your site is disabled. Visitors can\'t use the system right now!<br>Go to <u>Configuration</u> and then uncheck <u>Disable phpRaid</u>';
+$phprlang['disabled_header'] = 'Avviso disabilitazione sito!';
+$phprlang['disabled_message'] = 'Attenzione, il sito è attualmente disabilitato: gli utenti non possono accedere al sistema!<br>Vai in <u>Configurazione</u> e deseleziona l\'opzione <u>Disabilita WowRaidManager</u>';
 $phprlang['userclass_msg'] = 'Il tuo utente non è autorizzato ad utilizzare WowRaidManager: contatta un Amministratore per risolvere il problema.';
 $phprlang['priv_title'] = 'Permessi insufficienti';
 $phprlang['priv_msg'] = 'Non hai permessi sufficienti per visualizzare questa pagina. Accedi a WowRaidManager con i tuoi username e password se non l\'hai ancora fatto, oppure contatta un Amministratore se il problema persiste.';
 $phprlang['remember'] = 'Ricorda il mio Utente su questo PC';
 $phprlang['welcome'] = 'Benvenuto/a ';
 
-// Login Fail
+// Login Information
 $phprlang['login_fail_title'] = 'Accesso fallito';
 $phprlang['login_fail'] = 'Username e/o password inesistenti o non validi. Riprova nuovamente.';
-$phprlang['login_forgot_password'] = 'Forgot Your Password?';
-$phprlang['login_pwdreset_fail_title'] = 'Failed to Send/Reset Password';
-$phprlang['login_pwdreset_title'] = 'Reset Password';
-$phprlang['login_password_reset_msg']= 'To Reset Your Password Please Enter the Following Information';
-$phprlang['login_username_email_incorrect'] = 'The Entered Username and/or Email Address is Incorrect.<br><br>Please Click the Back Button and Try Again.';
-$phprlang['login_password_sent'] = 'Your WRM password has been reset and the new password has been sent to:<br><br>';
-$phprlang['login_password_sent2'] = '<br><br>Please check the E-Mail address listed above for a message from this system. ' .
-									'If you do not see the message please check your spam folder and/or turn off ' .
-									'your spam filter and use the "Forgot My Password" link again.';
-$phprlang['login_password_email_msg'] = 'THIS MESSAGE IS NOT SPAM!<br><br>Someone (hopefully you) has clicked the ' .
-										'"Forgot My Password" link on a WRM installation and entered an account with ' .
-										'your e-mail address.  Your WRM Password has been reset by the WRM system.  The ' .
-										'new password is:<br><br>';
-$phprlang['login_password_email_msg2'] = '<br><br>Please login to the WRM system using the above supplied password and click the ' .
-										 '"Click to Change Password" link under the Log Out button to reset your password ' .
-										 'to something more memorable.<br><br>If you were NOT the one to click this link please ' .
-										 'contact your WRM administrator to inform them that the reset link is being abused.<br><br>' .
-										 'You will still need to use the new password supplied above to access your WRM account.';
-$phprlang['login_password_email_sub'] = 'WRM Password Reset Notification'.										 
-$phprlang['login_chpass_text'] = 'Change Password For User: ';
-$phprlang['login_chpwd'] = 'Click to Change Password';
-$phprlang['login_curr_password'] = 'Current Password';
-$phprlang['login_password_conf'] = 'Confirm Password';
-$phprlang['login_password_incorrect'] = 'Either the current password for the listed username is incorrect or the new password and ' .
-										'confirm password do not match.<br><br>Please Click the Back Button and Try Again.';
-$phprlang['login_password_new'] = 'New Password';
-$phprlang['login_pwdreset_success'] = 'Your password HAS BEEN correctly reset.<br><br>You will need to use the new password the next time you login.';
+$phprlang['login_forgot_password'] = 'Password dimenticata?';
+$phprlang['login_pwdreset_fail_title'] = 'Invio/reset della password fallito';
+$phprlang['login_pwdreset_title'] = 'Resetta password';
+$phprlang['login_password_reset_msg']= 'Per resettare la password compila il seguente modulo';
+$phprlang['login_username_email_incorrect'] = 'Lo username o l\'indirizzo e-mail specificati non sono validi.<br><br>Torna indietro e riprova.';
+$phprlang['login_password_sent'] = 'La tua password di accesso a WRM è stata resettata, e la nuova password è stata inviata a:<br><br>';
+$phprlang['login_password_sent2'] = '<br><br>Una mail è stata inviata all\'indirizzo e-mail sopra riportato. ' .
+									'Se non l\'hai ricevuta, controlla o disattiva eventuali filtri anti-spam ' .
+									'e riutilizza la funzione "Password dimenticata".';
+$phprlang['login_password_email_msg'] = 'QUESTO MESSAGGIO NON E\' SPAM!<br><br>Qualcuno (presumibilmente tu) ha utilizzato ' .
+										'la funzione "Password dimenticata" in un\'installazione di WRM per un account ' .
+										'associato al tuo indirizzo e-mail. La password di accesso a WRM è stata resettata. ' .
+										'La nuova password è:<br><br>';
+$phprlang['login_password_email_msg2'] = '<br><br>Accedi a WRM utilizzando la password sopra riportata, e clicka il link ' .
+										 '"Modifica password" sotto il pulsante di disconnessione se desideri modificarla. ' .
+										 '<br><br>Se NON sei stato tu a richiedere il reset della password contatta gli ' .
+										 'amministratori di WRM per informarli dell\'abuso.<br><br>' .
+										 'Dovrai in ogni caso utilizzare la nuova password sopra riportata per accedere a WRM.';
+$phprlang['login_password_email_sub'] = 'Notifica di reset della password di WRM'.										 
+$phprlang['login_chpass_text'] = 'Modifica la password dell\'utente: ';
+$phprlang['login_chpwd'] = 'Modifica password';
+$phprlang['login_curr_password'] = 'Password corrente';
+$phprlang['login_password_conf'] = 'Conferma password';
+$phprlang['login_password_incorrect'] = 'Password corrente non valida, oppure la nuova password e la password di conferma ' .
+										'non combaciano.<br><br>Torna indietro e riprova.';
+$phprlang['login_password_new'] = 'Nuova password';
+$phprlang['login_pwdreset_success'] = 'La tua password è stata resettata.<br><br>Dovrai utilizzare la nuova password al prossimo accesso a WRM.';
 
 // Days of the Week
 $phprlang['sunday'] = 'Domenica';
