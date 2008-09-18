@@ -108,6 +108,16 @@ $localstr['step5iumsdesc'] = 'integrated User Management System';
 $localstr['step5iumssub1desc'] = 'You have selected "integrated User Management System" authentication';
 $localstr['step5sub1iumsfilladmindesc'] = 'All that is left is to enter your Super Administrator information by filling out the information below.';
 
+// Joomla
+$localstr['step5joomladesc'] = 'Joomla';
+$localstr['step5joomlasub1desc'] = 'You have selected Joomla authentication';
+$localstr['step5joomlasub1inputdir'] = 'Input the relative path to your Joomla directory (including trailing slash!)';
+$localstr['step5joomlasub2failincdir'] = 'your Joomla directory is incorect';
+$localstr['step5joomlasub2readconffile'] = 'read Joomla config file';
+$localstr['step5joomlasub3errorretusername'] = 'Error retrieving username from Joomla';
+$localstr['step5joomlasub3errorretuserclass'] = 'Error retrieving userclass from Joomla';
+$localstr['step5joomlafailconejoomla'] = 'Unable to connect to Joomla DB';
+
 // SMF = Simple Machines Forum
 $localstr['step5smfdesc'] = 'SMF';
 $localstr['step5smfsub1desc'] = 'You have selected SMF authentication';
