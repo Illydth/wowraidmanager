@@ -110,13 +110,13 @@ $localstr['step5sub1iumsfilladmindesc'] = 'Inserisci i dati per il profilo di Su
 
 // Joomla
 $localstr['step5joomladesc'] = 'Joomla';
-$localstr['step5joomlasub1desc'] = 'You have selected Joomla authentication';
-$localstr['step5joomlasub1inputdir'] = 'Input the relative path to your Joomla directory (including trailing slash!)';
-$localstr['step5joomlasub2failincdir'] = 'your Joomla directory is incorect';
-$localstr['step5joomlasub2readconffile'] = 'read Joomla config file';
-$localstr['step5joomlasub3errorretusername'] = 'Error retrieving username from Joomla';
-$localstr['step5joomlasub3errorretuserclass'] = 'Error retrieving userclass from Joomla';
-$localstr['step5joomlafailconejoomla'] = 'Unable to connect to Joomla DB';
+$localstr['step5joomlasub1desc'] = 'Hai selezionato l\'autenticazione Joomla';
+$localstr['step5joomlasub1inputdir'] = 'Percorso della cartella base di Joomla (relativo alla cartella di WRM, inclusa la barra finale!)';
+$localstr['step5joomlasub2failincdir'] = 'il percorso della cartella di Joomla è arrato';
+$localstr['step5joomlasub2readconffile'] = 'Lettura del file di configurazione di Joomla';
+$localstr['step5joomlasub3errorretusername'] = 'Errore durante la lettura degli username di Joomla';
+$localstr['step5joomlasub3errorretuserclass'] = 'Errore durante la lettura dei gruppi Utenti di Joomla';
+$localstr['step5joomlafailconejoomla'] = 'Impossibile connettersi al database di Joomla';
 
 // SMF = Simple Machines Forum
 $localstr['step5smfdesc'] = 'Simple Machines Forum (SMF)';
