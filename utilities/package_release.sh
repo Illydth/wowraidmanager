@@ -159,7 +159,7 @@ cd package
 #Remove Misc Stuff
 rm -rf wrm/utilities
 rm -rf wrm/package
-rm -f wrm/config.php
+rm -f wrm/config.php.*
 
 #Build the Packages
 tar -czvf wowRaidManager_v$1.tar.gz wrm/*
