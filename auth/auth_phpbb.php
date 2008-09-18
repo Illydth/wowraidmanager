@@ -216,6 +216,7 @@ function phpraid_login()
 				}
 
 				if ($FoundUserInGroup == FALSE){
+					phpraid_logout();
 					return -1;
 				}
 			}

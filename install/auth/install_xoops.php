@@ -122,7 +122,7 @@ function step5($auth_type)
 		// all users -> select boxes.
 		$xoopsusernametable = '<select name="xoops_useradmin_name" class="post">';
 
-		$sql = "SELECT uname, email FROM " . $xoops_prefix . "users ORDER BY uname";
+		$sql = "SELECT uname, email FROM " . $xoops_prefix . "_users ORDER BY uname";
 		
 		$result = mysql_query($sql) or die($localstr['step5xoopssub3errorretusername'] . mysql_error());
 		if (mysql_num_rows($result) > 0) {
@@ -183,7 +183,7 @@ function step5($auth_type)
 		$altuserclass .= '<option value="0">'.$localstr['step5sub3noaddus'].'</option>';
 		
 		// Get Userclasses from xoops database.
-		$sql = "SELECT groupid, name FROM " . $xoops_prefix . "groups ORDER BY groupid";
+		$sql = "SELECT groupid, name FROM " . $xoops_prefix . "_groups ORDER BY groupid";
 		$result = mysql_query($sql) or die($localstr['step5xoopssub3errorretuserclass'].':' . mysql_error());
 		if (mysql_num_rows($result) > 0) {
 			while ($data = mysql_fetch_assoc($result)) {
@@ -194,7 +194,7 @@ function step5($auth_type)
 		$userclasses .= '</select>';
 		$altuserclass .= '</select>';
 		
-		$sql = "SELECT name, email, uid FROM ".$xoops_prefix."users WHERE name  = '$xoops_useradmin_name'";
+		$sql = "SELECT name, email, uid FROM ".$xoops_prefix."_users WHERE name  = '$xoops_useradmin_name'";
 		//echo ':datenbank:'.$mySQLdefaultdb.'::<br>::'.$sql;
 		$result = mysql_query($sql) or die($localstr['step5xoopssub3errorretusername'].': <br>' .$sql. '<br>'. mysql_error());
 		
