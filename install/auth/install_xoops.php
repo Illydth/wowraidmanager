@@ -100,14 +100,13 @@ function step5($auth_type)
 			// check for valid entry of previous form
 		if(!is_file($xoops_base_path.$xoops_config_name))
 		{
-			echo '<font color=red>'.$localstr['step5sub2failfindfile'].' ("'.$xoops_root_path.$xoops_config_name.'").<br>';
+			echo '<font color=red>'.$localstr['step5sub2failfindfile'].' ("'.$xoops_base_path.$xoops_config_name.'").<br>';
 			echo $localstr['step5sub2checkdir'].'<br>';
 			echo $localstr['pressbrowserpack'].'</font>';
 			exit;
 		}
-		
 		require($xoops_base_path.$xoops_config_name);
-		
+
 		$xoops_prefix = XOOPS_DB_PREFIX;
 		
 		//check if db available
@@ -123,13 +122,13 @@ function step5($auth_type)
 		// all users -> select boxes.
 		$xoopsusernametable = '<select name="xoops_useradmin_name" class="post">';
 
-		$sql = "SELECT loginname, email FROM " . $xoops_prefix . "users ORDER BY loginname";
+		$sql = "SELECT uname, email FROM " . $xoops_prefix . "users ORDER BY uname";
 		
 		$result = mysql_query($sql) or die($localstr['step5xoopssub3errorretusername'] . mysql_error());
 		if (mysql_num_rows($result) > 0) {
 			while ($data = mysql_fetch_assoc($result)) {
-				$xoopsusernametable .= '<option value="' . $data['loginname']. '">' .$data['loginname']. ': '.$data['email'] . '</option>';
-//				$xoops_useradmin_name = $data['loginname'];
+				$xoopsusernametable .= '<option value="' . $data['uname']. '">' .$data['uname']. ': '.$data['email'] . '</option>';
+//				$xoops_useradmin_name = $data['uname'];
 //				$xoops_useradmin_email = $data['email'];
 			}
 		}
@@ -195,7 +194,7 @@ function step5($auth_type)
 		$userclasses .= '</select>';
 		$altuserclass .= '</select>';
 		
-		$sql = "SELECT loginname, email, uid FROM ".$xoops_prefix."users WHERE loginname  = '$xoops_useradmin_name'";
+		$sql = "SELECT name, email, uid FROM ".$xoops_prefix."users WHERE name  = '$xoops_useradmin_name'";
 		//echo ':datenbank:'.$mySQLdefaultdb.'::<br>::'.$sql;
 		$result = mysql_query($sql) or die($localstr['step5xoopssub3errorretusername'].': <br>' .$sql. '<br>'. mysql_error());
 		
