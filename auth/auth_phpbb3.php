@@ -270,7 +270,7 @@ function phpraid_logout()
 	setcookie('password', '', time() - 2629743);
 }
 
-require ("includes/functions_pwdhash.php");
+require ($phpraid_dir . "includes/functions_pwdhash.php");
 
 // setup Password Hasher Routine
 $pwd_hasher = new PasswordHash(8, FALSE);
