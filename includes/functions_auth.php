@@ -197,8 +197,8 @@ function permissions($report) {
 		$report->addOutputColumn('actions','','','right',__NOLINK__);
 		$add_body .= $report->getListFromArray($users);
 		
-		$buttons = '<input type="submit" value="Submit" name="submit" class="mainoption"> 
-					<input type="reset" value="Reset" name="reset" class="liteoption"></form>';
+		$buttons = '<input type="submit" value="Submit" name="'.$phprlang['submit'].'" class="mainoption"> 
+					<input type="reset" value="'.$phprlang['reset'].'" name="reset" class="liteoption"></form>';
 		
 		$page->set_var(
 			array(
