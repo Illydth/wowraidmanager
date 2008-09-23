@@ -253,6 +253,8 @@ $page->set_var(
 		'month_select'=>$monthSelect,
 		'year_select'=>$yearSelect,
 		'buttons'=>$buttons,
+		'month_text'=>$phprlang['month'],
+		'year_text'=>$phprlang['year'],
 		'monthhead'=>$monthHead,
 		'prevmonth'=>$prevMonth,
 		'prevmonthyear'=>$prevMonthYear,
