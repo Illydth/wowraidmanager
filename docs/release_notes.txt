@@ -3,287 +3,147 @@ at:
 
 * http://www.wowraidmanager.net/wiki/index.php?title=Installation
 
-Release of 3.5.0 of WoW Raid Manager
+Release of 3.5.1 of WoW Raid Manager
 -----------------------------------
-What an update!  Roles, Internationalization, Date Sort fixes, and a whole SLEW of other changes mark this
-version as a fairly major update.  As always, this release supercedes any prior release of WRM.
+At least a few new changes to WRM since 3.5.0.  As always, this release supercedes any prior release of WRM.
 
-LOTS of changes to this one, please see the notes below for information on what all has been changed/fixed.
+First and foremost, we have "staffing" changes:
 
-I'd like to thank Diska, Neme, Nimo and Nalumis of the WRM boards for their code contributions.  Much/Most
-of the code changes in this release come from one of these 4, implemented/modified/changed by me.  There 
-were also other more minor code contributions by a large segment of the community and I'd like to thank 
-EVERYONE of you out there for your help and assistance for making this project what it is.
-
-Because of the mass amount of user contributed code in this release I am going to refrain from tagging 
-specific changes to specific people as in a lot of cases a large amount of these changes were contributed
-and worked on by multiple people or contributions built upon other contributions.  That said I would be 
-amiss if I did not identify up front that the new installer is entirely Neme's with a few minor 
-modifications by me, and a large amount of the other code (including the implementation for Roles) came 
-from Nalimus's personal code base.  Major thanks to both of you.
-
-Release Notes for Final Release of WRM 3.5.0
----------------------------------------------
-Bug 0000047 and 0000048: Fix to the "Update" statement bugs and a bug in PHPBB3 that 
-removed the ability to display pages anonymously...as well as allowed raid creation to
-users that weren't supposed to be able to create raids.
-
-Bug 0000046: SMF 1 Bridge sets admin permissions on the wrong user.
-This bug is fixed.  There were some additional lines left in that were
-removed for the other bridges.
-
-Bug 0000051: Localization Error - Hunters unable to be promoted.
-There was a problem with one of the characters in this file, this has been
-fixed.
-
-Multiple Language Updates
-
-Bug 0000043: Guild Tag in Guilds sections doesn't get validated.
-Fix for bug 43 where the guild tag (and guild name) don't get validated
-upon creation and thus can cause character creation and other problems
-down the line.
-
-Fix for Bug 0000052: View Profiles not signed up error.
-There is a bug with the "view profiles not signed up" for MySQL 
-4.0 users. The original code used a "NOT IN" query (subquery) which is not 
-supported by MySQL 4.0.  The new code uses a "LEFT JOIN" to do basically 
-the same thing.
-
-Bug: Date/Time Not displayed correctly in user.php
-The Date/Time displayed in User.php was not properly being shown.  This is
-because the formatting codes (wrmdate, wrmtime) were not properly 
-applied to the report column, this is now fixed.
-
-Bug: Error Adding raids with less than 6 defined roles.
-There's a bug where less than 6 defined roles will cause the raids.php
-interface to output: "Incorrect integer value: '' for column 
-'role5_lmt' at row 1". Forcing 0's into undefined limit fields to fix this.
-
-Template Update/Addition
-The included are all changes needed to support the new m9wowLK template.
-The above changes are all modifications of spacing and modifications of
-minor parts of the htm files to support the new Template.
-
-Release Notes for RC2:
---------------------------
-Bug 0000030: Localization Error for Announcements Header Fixed.
-Added code to fix the localization of the word "announcements" 
-above the announcements display box on the front page and in the calendar page.
-
-Fixed Italian Installation Localization
-Fix to several installation and message strings for the italian l10n.
-Italian l10n of sort_desc and sort_asc strings.
-
-Bug 0000031: Text for Title and Message headers do not show up.
-There was an issue with the langauge files for all languages that had the
-wrong keys for announcements_title_text and announcements_messages_text.
-The keys were announcements_title_txt and announcements_msg_txt in the
-language file and as above in the code.
-Note: Italian is not included in this patch due to there being other
-changes for the italian language files.
-
-Bug 0000034: Character Armory Links do not show up on Logs page.
-There was a bug with the logs page where the armory call didn't include 
-the server name or language and thus could not properly retrieve information
-from the WOW Armory.
-
-Bug 0000035: Parse error with unexpected & for php v4.
-There was a parse error using pass by reference to desanitize and sanitize
-the data comming from and to the database.  This only happened for phpV4
-because it doesn't support foreach and pass by reference.  Used a
-different method of handling this from the PHP boards.
-
-Bug 0000037: Inserts to Profile Table in Bridge fails.
-Failure in inserting new folks to the profile table due to only attempting
-to insert into 5 fields (the last_login_time field was forgotten and thus
-caused a failure on insert).
-
-i18n Error: reports.php sort strings untranslated.
-There were hard coded strings for sort in descending and ascending order
-that are now translated for i18n.
-
-l10n of the ampm string for german.
-
-Fix for bug 0000038: Missing config.php file.
-Redirect in common.php was done after the load of the config.php file
-which, for a default installation, would blow up since it didn't exist.
-
-Bug 0000039: HTMLSPECIALCHARS_DECODE Fails on PHP4.
-The htmlspecialchars_decode function is PHP5 (5.1.0) only and doesn't work
-for php4.  There is a new function definition at the top of the file to define the
-function for php4 folks.
-
-Bug Fix: 0000040 - PWDHASH throwing errors on load in SMF, SMF2 and XOOPS
-The SMF, SMF2 and XOOPS bridges are failing when loading the pwdhash
-functions.  The include is incorrect.  This has been updated, please see
-bug.
-
-Additional l10n: French, updates to other languages.
-This is an addition of the French language translation to WRM.  Also
-updated a phpraid/spiffyJr string to wowraid manager.
-
-Removed the unixdatetime.js from the header.
-
-Bug 0000041: Problem with v4.0 of MySQL and Collation/Character Set fixed.
-This is a fix for the issue where MySQL 4.0 folks fail installation with
-the CHARACTER SET and COLLATE commands on the end of the table creation
-script.
-
-Modified upgrade string from "Upgrade from XXX" to "Upgrade 
-to XXX".
-
-Bug 0000039: Fix for raid description tooltips.
-This is a fix for the raid description mouse over tooltips.
-
-Release Notes for RC1:
-----------------------
-
-* BUG: Sorting by International Date has been fixed!  This one has been open for quite some time and has
-finally been quashed.  The original implementation used a javascript to generate the proper formatting.  I
-have, on the recommendations of the maintainer of the reports.php file, totally re-written the handling of
-this bugfix.  At this point, all dates in WRM follow the configuration settings for formatting.  HOWEVER
-all dates are SORTED using the ISO date format (YYYY/MM/DD HH:MM:SS).  There is a technical document being
-written at http://www.wowraidmanager.net/wiki/index.php?title=Technical documenting the process of creating
-and managing dates and times within WoW Raid Manager.  For any developers who dig into this code, I encourage
-you to read this information to avoid making the same mistakes that were made in the past with regards to
-dates and date sorting. 
-
-* BUG: Date Format in Configuration only partially Useful.  In relation to the above bug, it used to be that
-the date format and time format strings in the configuration section were only partially useful.  Changing
-those strings did change the display of some dates but also hosed up the date sorting.  With this date fix, 
-ALL Date / Time Strings should now correspond to the formatting as set in the configuration setting while 
-still maintaining their proper "order" in a sort.  This fixes bug 00000012 and 00000014 and feeds into the
-fix for bug 00000015.
-
-* FEATURE:  Time frame Choice for Viewing Logs.  The "logs" section has been updated to include a dropdown
-list of time frames for viewing logs.  This limits the logs visible and makes the screen smaller and more
-manageable.  This code allows users to choose a time frame for what logs to view.  By default the logs 
-display one day's worth of data, this can go up to multiple months or the "whole" log.
-
-* FEATURE: Checks on Profile/Character creation. - This code checks for proper information when creating 
-characters on the profile page.  Items were always checked but no error message was being displayed due to 
-failed checks.  A new error box is now created upon submission detailing the failed checks.
-
-* FEATURE: Profile Name and Link in Roster Page - On the guild Roster page, those with the "users" 
-privilege (should be just admins) have the ability to see each character and the WRM Profile they are 
-attached to.  A new profile column and link have been added.
-
-* FEATURE: Last Login Time: User List Displays Last Login.  The user list now captures and displays the 
-last login date/time of the profile, allowing the admin to see who's using the system and who isn't.
-
-* FEATURE: Multiple Signup Notification - There is now a display of multiple characters signed up on one 
-raid, i.e. if one person signs up for a raid with two characters (assuming the options to do so are checked)
-there will be an identifier tagged next to their name that notes that the character belongs to an account
-that is already signed up to the raid.
-
-* FEATURE: Screen Width "Fix".  Removed the 875 px hard coded width of the center column and allowing it to
-float now based upon the size of the screen and the size specified in the css file.  This is half a fix 
-that is intended to lengthen the raid screen to full screen size.  The other half of the fix is in 
-templates/SpiffyJr/style/stylesheet.css line 221.  The 1000px width needs to be removed and a percentage 
-added (95% for full screen).
-
-* BUG: Tooltip Java Changes for Armory Tooltips.  Used a more standard suggested method for creating the 
-HttpHeader object for IE6 through ActiveX controls.
-
-* FEATURE: Role Based Signups.  Yes, it's finally here.  This allows users to sign up for raids by ROLE
-instead of by class.  There are too many changes here to document in a set of release notes.  There is new
-documentation at http://www.wowraidmanager.net/wiki/index.php?title=Installation regarding role based
-signups and their use.  Several new options have been added to the configuration section to support this.
-
-* FEATURE: Major Internationalization Updates.  The vast majority of the WRM code base has now been
-fully internationalized.  The code base has been parsed and combed for "hard coded strings" and all of them
-have been removed and added to the language files to make for a fully internationalized application.
-
-* FEATURE: Totally Re-Written Installer.  The installation process for WRM has been TOTALLY re-written and
-re-worked.  The upgrade process is now alive and well and should be used every time a new upgrade comes
-down the pike for WRM.  The initial screen does all the desk checking needed to verify and validate that
-all of the local directories are writable and usable.  There are also new authentication types that have
-been added to the code: WRM now supports the following CMS Systems:
-
-	* e107
-	* phpbb2/3
-	* smf v1 / v2
-	* wbb
-	* xoops
+* Neme has been added as an official developer with a focus on the Installation and Bridge files.
+* TheMuffinMan has been added as an official developer and front end guy with focus on the Java source
+	as well as general overall html/php code health (one of the major "behind the scenes changes in this
+	release is that the vast majority of the code is now HTML 4.0 Compliant thanks to the work of Muffin).
+* JonnyB was recruited for the "Look and Feel" part of WRM, he's an HTML/Graphics Designer with a focus
+	on the templates, Themes, Layout, CSS, etc. behind WRM.  You'll see alot more of his work over the 
+	comming releases.
 	
-as well as the standard built in authentication system.  This system, however, has been renamed from 
-phpRaid to iUMS (Integrated User Management System).  
+As always this isn't a full list of everyone responsible for the code that's gone into WRM this version.
+Many of you have helped, either in reporting bugs, testing the software, or in actually writing and 
+contributing code fixes, my hats off to all of you.
 
-* FEATURE: New Languages Added.  The code base has been localized into several new languages:  Italian, 
-Traditional Chinese and Norwegian along with the standard two English and German.  The installer has been
-internationalized as well and localized into German and Italian, as well as the standard English.
+Secondly, there are several additions to the software itself:
 
-* FEATURE: Disable Freeze Checking for a specific Raid.  There is now a "0" choice when creating a specific
-raid in the "Freeze" dropdown box.  Setting this to "0" Disables the freeze check for that raid without
-having to disable freeze checking for all raids.
+* The Calendar View has been COMPLETELY re-written.  The calendar now supports looking ahead month by
+	month, month selection (jump to any specific month within the current or next year), and other more 
+	minor features.  Possibly the most important: All of the HTML has been removed and pushed into a 
+	template file for better themeing.  The look may be the same, but the functionality is greatly
+	enhanced. 
 
-* FEATURE: Link to display who has not signed up for a raid.  There is a new link in the raid view (under
-the link for teams) that, when clicked by a raid lead or system admin, can see what profiles have NOT 
-signed up for the raid.  This gives a raid leader some understanding/information on who is not showing 
-up to the specific raid.
+* Brand New Armory Lookup Code.  I've replaced the armory lookup system with a brand new system.  There
+	are some goods and bads to this.  The good side is it's ALOT less complicated, and it will likely
+	work on more systems than it used to.  The down side is alot of the caching mechanisms are gone: 
+	thus if the armory happens to be down there's not much you can do to get an armory lookup.  I also
+	liked the look and feel of the old armory system better than I do this one, but this one generates
+	MUCH more clean HTML code.  I welcome any feedback on the new armory lookup system.
+	
+* View by Role or View by Class.  The Raid View has been changed to allow for two different views, 
+	depending upon which is more helpful to the guild using it.  There is a new configuration option
+	"Select Raid View Type" that will allow a display by class or by role in the raid view window.
+	
+* Bridge Re-write: ALL Bridges have been COMPLETELY re-written to properly support the external CMS
+	systems.
 
-* FEATURE: eqDKP Integration into WRM.  WRM is now integrated with EQDKP.  By turning on the EQDKP link
-in the configuration section (and filling in the appropriate information on database in the config.php
-file) a new "DKP" button will appear that will allow the users to see their DKP information from the 
-eqDKP system within WRM, also the profiles are linked to the profiles in eqDKP to display user by user
-information by clicking links from within WRM.  See "eqdkp_link.htm" in the "docs" directory or the help
-link in the configuration section for more information on turning this on.
+* Password Changing and "I forgot my password" implementation for all bridges. (See Notes Below).
 
-* FEATURE: Schedule raids in 12/24 hour format.  There is now an option in the configuration area that
-allows you to schedule raids in a 24 hour format regardless of the display settings for date and time.
-This allows a guild to schedule raids in 24 hour format but display them in 12 hour (am/pm) format.
+* Several Bugs have been fixed.
 
-* FEATURE/BUG: Turn off/on WoW Armory Lookups.  For those who are having issues/trouble with getting the
-WoW Armory Lookups to work, there is an option to turn them off now in the configuration section.  This 
-will bypass the armory lookup if turned off and will simply display an unlinked character name.
+TEMPLATE CREATORS PLEASE NOTE
+------------------------------
+The scripts directory that used to be in templates/XXXXXXX/scripts has been removed.  This scripts
+directory now resides in the root of the WRM installation (same place as the "auth" or "templates"
+directory).  Please update your templates to remove your local scripts directory.
 
-* BUG: Header Image Hard Coded.  There was a bug where the header image (the image that displays to the
-upper left corner of WRM) was hard coded.  There has always been a configuration option to change that 
-image based upon it's setting, but that setting was never used.  Users up till now had to overwrite the
-default logo image with their own to get their guild specific image to display.  Now, changing the config
-item in the configuration section will change the header image (or remove it completely).
+PASSWORD CHANGING IMPLEMENTED
+-----------------------------
+Two brand new features have been added for password changing.  First is a "Forgot Your Password?" link
+that shows up when a user is not logged in.  This link takes you to a form to fill out that will randomly
+generate and e-mail a new WRM password to a user.  The username and associated e-mail address are
+required.
 
-* BUG: Max Raid Signups not used to limit raid signups.  Setting the "maximum raiders" for a raid had no
-affect on raid signups.  The code allowed users to continue signing up to drafted status beyond the raid
-maximum number.  This has now been changed to be a hard limit within the software.
+The second feature is a "Click to Change Password" link that has been added to a logged in user.  Clicking
+this link will take you to another form that requires current password and New and Confirm passwords for
+the current user (only the current user's password can be changed).
 
-* BUG: Log Deletion Broken.  Logs are now able to be deleted from the system again.  There was a bug with
-the SQL being generated incorrectly that caused this to be broken...it is now fixed.
+BOTH of these functions are controlled by a flag current set in the bridge authentication file itself.
+In any bridge file (<wrm_base_dir>/auth) is a line "$BridgeSupportPWDChange = FALSE;".  This line
+determines the ability of WRM to change passwords.  For the iUMS (Integrated User Management System) this
+is turned ON by default.  For all other bridges this is turned off (FALSE).  Turning this on for any
+bridge other than iUMS causes the WRM system to be able to change the password IN THE CMS SYSTEMS TABLES.
+And thus change the password not only for WRM but for the CMS/BB System as well.
 
-Offical Bugs Fixed:
+In my opinion, I do not believe that WRM should be changing passwords in a CMS system.  If the user wants
+a WRM password change they should change their CMS password and it will filter down to WRM.  That said
+there is some convenience to allowing users to change passwords in EITHER WRM or the CMS and have them
+synced.
+
+** NOTE ** IT IS NOT POSSIBLE TO HAVE DIFFERENT PASSWORDS FOR WRM AND A CMS WHEN USING A CMS BRIDGE.
+If you choose to use a bridge other than iUMS, the passwords between WRM and the CMS must ALWAYS be the 
+same.  It is impossible using the supplied code not to meet this condition.
+
+If you wish to have WRM allowed to change the CMS system password, you can edit the above BridgeSupport
+variable to "TRUE" in place of the "FALSE" and the password change links will start showing up at the 
+next page reload.  
+
+Note that ALL SUPPORTED CMS/BB SYSTEMS have been FULLY tested with the password change ability and all
+password changes for all bridges with one exception work flawlessly.  HOWEVER for phpBB3 the generated 
+password has NEVER been tested and is expected not to work.  The phpBB3 Password change SHOULD REMIAIN
+OFF (FALSE).  Unpredictable results could happen if you turn on password change ability when using the 
+phpBB3 bridge.
+
+As always I and WRM are NOT RESPONSIBLE for any damage or any problems you encounter by turning on
+the password change functionality.  The WRM team will provide LIMITED support for issues encountered
+through the use of password change problems related to CMS systems.  If you turn on password changes for
+a CMS/BB Bridge, you are taking responsiblity for any problems encountered by the CMS.   
+
+Please see http://www.wowraidmanager.net/wiki/index.php?title=WRM_Password_Change_System for more
+information.
+
+Release Notes for Final Release of WRM 3.5.1 RC1
+-----------------------------------------------------
+FEATURE: Raid View by Class or by Role
+LANGUAGE UPDATE: Removal of all occurrences of phpRaid and replaced with WRM/WoW Raid Manager.
+BUG: Fixed an issue where the phpBB3 Bridge was failing to use phpBB3 groups to restrict access to WRM.
+BUG: Fixed an issue with the locations.php file where users with less than 6 roles defined would see an
+	issue inserting locations into their database.
+BUG: Fixed an issue with get_char_count() failing to recognize role names with capital letters in them.
+FEATURE: Complete Calendar Re-Write.
+FEATURE: New Armory System Implemented.
+LANGUAGE UPDATE: The "disabled" and "maintenance" messages have been moved to language files.
+BUG: Forced Relative paths in the installer (the ../ in front of many of the values in the install code)
+	have been removed.
+BUG: Missing Signups List showing Unixtime instead of Date.
+FEATURE: Users/Details page updated to show user's role.
+BUG: Fixed an issue where the Users view was incorrectly showing last login date due.
+BUG: Fix for phpBB3 (all bridges) to properly support Mutli-Byte characters.
+BUG: Fixed display of raid comments with apostrophies.
+CHANGE: Moved the "Scripts" Directory out of the templates and into the base WRM directory.
+FEATURE: Password Change and "I forgot my password" added to WRM.
+BUG: Fixed issues with Users.php deleting users with characters still attached.
+CHANGE: The internal functions for pwdhash have been changed to allow phpbb3 style passwords to be
+	generated.
+FEATURE: Added Joomla Bridge Support.
+BUG: Fixed issue in bridges using the pwdhash functions to use $phpraid_dir as their base path.
+LANGUAGE UPDATE: Fix for hardcoded strings for Submit and Reset buttons on the "Permissions" function.
+
+Official Bugs Fixed:
 -----------------------
-0000002 - Header Image Hard Coded
-0000003 - Wrong Website Link in Configuration Error Messages
-0000005 - Authentication Type Documentation link wrong in Installer.
-0000011 - .htaccess showing up as authentication type in Installer.
-0000012 - International Date Sorting is Incorrect
-0000014 - International Date Sorting is Incorrect
-0000015 - Generic Internationalization Errors
-0000019 - Female Display for all Classes
-0000023 - Max Limit of Users in Raids does not limit raid signup.
-0000025 - Log Deletion Broken
-0000027 - Multi character signup fails with get_dupesignup_symbol()
-0000028 - Turn off Armory Lookups
-0000029 - Error on Display (Header) - Missing Argument 5 for get_coloredcount().
-0000030 - Localization Error: ANNOUNCEMENTS header above displayed annoucements are not localized.
-0000031 - Text for Title and Message do not show on left side of Announcements Page
-0000034 - Character Armory Links do not show up in Logs section - Produces Errors
-0000035 - Parse error: syntax error, unexpected '&', expecting T_VARIABLE or '$' in includes/functions.php on line 278
-0000037 - Inserts to Profile Table fail with error.
-0000038 - Installation Fails if config.php is not there...config.php is removed in 3.5
-0000039 - htmlspecialchars_decode() Fails on PHP4.
-0000040 - SMF, SMF2 and XOOPS bridges fail when loading functions_pwdhash.php
-0000041 - Install Crashes with MySQL v4.0 due to inability to handle Collation/Character Set modification on table create.
-0000043 - Guild create doesn't force guild tag to be properly filled in, causes problems in char create.
-0000044 - Bug with Update SQL to update character retrieved from foreign system. (phpbb auth)
-0000045 - General Bridge Failures (All) - Security Issues, Xoops issue.
-0000046 - SMF1 Bridge Incorrectly sets admin permissions on last user pulled from SMF
-0000048 - Anonymous Viewing Does not Take with PHPBB3 Bridge
-0000049 - SQL Errors in phpbb and phpbb3 authentication.
-0000051 - Localization Error: German lang_wow.php file not in "utf8" format.
-0000052 - View Profiles Not Signed Up Crashes on MySQL 4.0.
+0000032 - Month names are not localized in the Calendar View page.
+0000053 - Function get_char_count() fails when role names are Capitalized.
+0000055 - PHPBB3 Bridge Fails with Multi-Byte Characters
+0000056 - Delete Users Bugs
+0000057 - The name of the month is not shown in the correct language (calendar).
+0000058 - Month and Year tag in calendar view are not shown in set locale.
+
+New Bridges Supported
+-----------------------
+* Joomla
 
 Unfinished/Incomplete
 ----------------------
-* While classes can sign up to raids by role, they are still DISPLAYED by class in the raid view.  There
-needs to be a configuration option implemented to display signups by either class or by role. 
+* Starting Day is set inside the calendar file, not as a dropdown in configuration.  To change the "first"
+day of the week, you need to modify the calendar.  On line 100, change the word "Sunday" to the localized
+name of the day of the week to start on (the only two supported days are "Sunday" and "Monday" at the
+moment.)
+* CMS Bridges supporting password changing should not be a variable in the bridge but should be a
+configuration option.  At this point, however, to turn on password changes for bridges you will need to
+modify the <wrm_base_dir>/auth/*.php file related to the bridge you have installed.

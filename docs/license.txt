@@ -38,40 +38,12 @@ For version 3.2.x and above the license has changed to the GNU v3.0 license and 
 will be released via that license from now on.  The full text of the GNU 3.0 license can be
 be found in the Docs/gpl-3.0.txt file or on www.gnu.org/licenses.
 
-*** Overlib/WOW Armory Popups: ***
+*** WOW Armory Popups: ***
 ------------------------------------
-With the addition of the WoW Armory Popups and Overlib to the WRM code, it needs to be noted
-that the GPL v3 license no longer applies to the ENTIRE code base.  To start with overLIB is
-distributed under an "Artistic" license from www.bosrup.com which you can read about Here:
-http://www.bosrup.com/web/overlib/?License.  The license does allow it's use in this software, 
-but is NOT GPL v3 like the rest of my code.  Please be aware when creating derivative works of 
-WRM that the code here may or may not be supported (Overlib can be re-distributed and "derived" 
-from according to the license above).
-
-More problematic is the wow armory code itself.  This was originally obtained as a phpBB MOD to
-add additional bb codes to a phpBB board to obtain information from the armory.  However, the
-character and item retrieval code is VERY stable and very portable, it being developed as an 
-underlying interface to the armory where the BB code simply calls the retrieval code through 
-a pre-described manor making this suitable for use for pretty much any online application, not 
-just phpBB.  The problem is that the code is distributed completely without copyright or license
-attached to it anywhere.  While, legally, this allows me to use this code with impunity, it 
-makes me quite uncomfortable to do so, however the benefit to the WRM code to implement something 
-like this is huge.  As such I have decided to go ahead with the distribution of this tool and 
-integration into WRM.  I will note that the code was originally written by Shantalya of the 
-armory.deluxe-board.com site and I attribute everything under the wowchar-tooltip and 
-wowitem-tooltip directories to him/her.  I have posted a message under the appropriate thread
-(you can see it on page 9 at http://armory.deluxe-board.com/forum/viewtopic.php?f=2&t=2) asking
-the developer's permission to implement this with regards to WRM, but as it is right now without
-copyright or license I should be within full rights to do so.  Also note that phpBB's own license
-(Creative Commons) would give me the right to distribute this with WRM if mods for phpBB are
-encompassed by the CC License.
-
-If, at some point, I get an e-mail or post back to this thread telling me to remove it or
-otherwise asking me not to use this software I will remove this from the base distribution of WRM
-and identify this as a "modification" that can be made by users to the software at their own 
-risk.  For now, however, I am formally stating that this code IS NOT MINE however I feel I have 
-a right to distribute it with WRM and given it's value add to my software and my users, I feel 
-this is the right thing to do.
+* CHANGED FOR 3.5.1 *
+The new Armory code (from phparmory.sourceforge.net) is released under the GPL v2 or at my discretion
+any later version.  Due to this, this brings the entire code base back under the GPL.  The header above, 
+though not attached to the wowarmory code, applies to the entire code base again.
 
 If there are any questions about the above or other license questions, please
 direct them to douglasw at wagnerweb dot org or to the www.wowraidmanager.net website.

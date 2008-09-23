@@ -25,22 +25,20 @@ Quick Upgrade
 	including the phpRaid directory.
 * Change the Ownership of all files to match that of your web server.  Check the list above
 	to ensure that everything listed in step 4 above is writable.  
-* Run the Installation application and select "Upgrade to 3.5.0".  Follow the installer all
+* Run the Installation application and select "Upgrade to 3.5.1".  Follow the installer all
     the way through to the end (much of your prior information should be already set) and 
     make sure to properly re-set your authentication method (if it's not pre-selected for you)
-    already).   
+    already).
+* Note: Templates other than "SpiffyJr" are likely NOT to work with 3.5.1 for a while till the template
+	editors get a chance to upgrade them.  Please switch back to SpiffyJr till the templates get updated.
+* Note: You can remove the "Scripts" directory under any templates you are using, they are no longer used.
 
-Upgrading from a Release Candidate of 3.5
--------------------------------------------
-If you are upgrading from another release candidate of 3.5 (RC1, RC2) you should only need to
-upload the files to your directory.  There is no real need to run the installer to upgrade your
-database as no database changes have taken place.
-	
-Installing phpRaid into a supported CMS system
+Installing WRM into a supported CMS system
 -----------------------------------------------
-At the time of this writing 3.5.0 supports the following CMS systems:
+At the time of this writing 3.5.1 supports the following CMS systems:
 
 * e107 from http://www.e107.org
+* Joomla from http://www.joomla.org (NEW)
 * phpBB from http://www.phpbb.com (v2 and v3)
 * SMF from http://www.simplemachines.org/ (v1 and v2)
 * WBB from http://www.woltlab.com/products/burning_board/index_en.php
@@ -50,26 +48,34 @@ Also supported, if you do not have a supported CMS system, is the "iUMS" (previo
 which is the default non-CMS supported installation.  
 
 If you do intend to install this application into a CMS please note that it is a
-REQUIREMENT that you install your phpRaid database INTO your CMS database, at the
+REQUIREMENT that you install your WRM database INTO your CMS database, at the
 moment you CANNOT separate the databases and have everything work.  
 
 When entering the database information to install to, please ensure that you install
 into your CMS database to get CMS integration to work.
 
-Template Changes - v3.5.0
+Template Changes - v3.5.1
 ------------------------------
-This version makes minor changes to the WRM template system.  Particularly there are two
-major changes:
+This version makes minor changes to the WRM template system.  
 
-* header.htm has been changed to support header graphics and a few other modifications.
-	
+Particularly here are the major changes:
+
+* scripts directory removed from template system and moved to WRM root.  Please remove your scripts dir.
+* calendar.htm has been added to support the new calendar.
+* view_raid.htm has been removed and view_raid_class.htm and view_raid_role.htm have been added instead.	
 * configuration.htm had several new lines added and a few moved.
+* error_chpwd.htm and error_resetpwd.htm have been added to support the password reset functionality.
 
-* MANY .htm files have changed to have new strings added to them, please diff against the v3.2.1 for all
-changes to all template files.	
-	
-Language Changes - v3.5.0
+Other more minor changes have been made to other .htm files diff against the 3.5.0 template files for
+information on what has changed.
+
+Language Changes - v3.5.1
 ------------------------------
-Major Language Re-Working.  Some of the strings, particularly in the Chinese and Norwegian language 
-files are not translated and are still english based.  Most of the strings in German and Italian translations
-however are good to go.
+More language changes, not nearly as major as 3.5.1 however.  That said, many of the languages are
+not often maintained and are somewhat incomplete.  The French and Chinese language is badly out of date 
+and many of it's strings are still in English.  The Norwegian and German translations are mostly up to 
+date though they are still missing a smattering of strings.  The Italian translation is also mostly up to 
+date with very few "missing" strings.
+
+Installation is still only translated into English, German and Italian, and of those the German language
+is slightly behind while Italian and English should be up to date.
