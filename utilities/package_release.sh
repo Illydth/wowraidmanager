@@ -159,6 +159,7 @@ cd package
 #Remove Misc Stuff
 rm -rf wrm/utilities
 rm -rf wrm/package
+rm -f wrm/config.php
 rm -f wrm/config.php.*
 
 #Build the Packages
