@@ -230,6 +230,8 @@ $phprlang['2ltrfriday'] = 'Ve';
 $phprlang['2ltrsaturday'] = 'Sa';
 
 // Months
+$phprlang['month'] = 'Month';
+$phprlang['year'] = 'Year';
 $phprlang['month1'] = 'January';
 $phprlang['month2'] = 'February';
 $phprlang['month3'] = 'March';

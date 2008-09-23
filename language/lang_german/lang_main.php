@@ -216,6 +216,8 @@ $phprlang['login_password_new'] = 'Neues Passwort';
 $phprlang['login_pwdreset_success'] = 'Dein Passwort WURDE korrekt zurückgesetzt.<br><br>Du benötigst das neue Passwort, wenn du dich das nächste Mal anmeldest.';
 
 // Days of the Week
+$phprlang['month'] = 'Month';
+$phprlang['year'] = 'Year';
 $phprlang['sunday'] = 'Sonntag';
 $phprlang['monday'] = 'Montag';
 $phprlang['tuesday'] = 'Dienstag';

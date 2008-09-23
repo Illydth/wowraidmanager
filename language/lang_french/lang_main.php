@@ -219,6 +219,8 @@ $phprlang['login_password_new'] = 'New Password';
 $phprlang['login_pwdreset_success'] = 'Your password HAS BEEN correctly reset.<br><br>You will need to use the new password the next time you login.';
 
 // Days of the Week
+$phprlang['month'] = 'Month';
+$phprlang['year'] = 'Year';
 $phprlang['sunday'] = 'Dimanche';
 $phprlang['monday'] = 'Lundi';
 $phprlang['tuesday'] = 'Mardi';
