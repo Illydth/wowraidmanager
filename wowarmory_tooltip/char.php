@@ -17,12 +17,15 @@
 include("includes/common.php");
 
 // Get the URL GET And decode
-$var  = urldecode($_GET['v']);
-$var2 = urldecode($_GET['z']);
-$var3 = urldecode($_GET['l']);
+$var  = $_GET['v']; // Character Name
+$var2 = $_GET['z']; // Realm/Server
+$var3 = $_GET['l']; // Language
+$var4 = $_GET['u']; // Armory URL
 
 // Set the armory language
-$armory->setlang($var3);
+//$armory->setlang($var3);
+$armory->lang = $var3;
+$armory->armory = $var4 . "/";
 
 // Get the char data from Armory
 $char = $armory->characterFetch($var, $var2);

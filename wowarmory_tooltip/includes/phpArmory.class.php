@@ -42,41 +42,47 @@
  */
 class phpArmory {
 
-   
-      /**
-     * the language items get fetched
-     * courtesy from flokohlert
-     * @var de/en/fr/es
+	/* Armory Variable Structure */ 
+    
+    /** 
+     * the language items get fetched - courtesy from flokohlert 
+     * 
+     * @var string: de/en/fr/es 
      */
-        var $lang = "en";
-
-	/**
-     * The URL of the Armory website
-     *
-     * @var string
-     */
-	var $armory = "http://www.wowarmory.com/";
-//	 var $armory = "http://eu.wowarmory.com/";
+    var $lang = "en";  	
+    //var $lang = "de";  	
+    //var $lang = "fr";  	
+    //var $lang = "es";  	
+	 
+	/** 
+	 * The URL of the Armory website 
+	 * 
+	 * @var string 
+	 */
+	var $armory = "http://www.wowarmory.com/"; 
+	//var $armory = "http://eu.wowarmory.com/";
+	//var $armory = "http://kr.wowarmory.com/";
+	//var $armory = "http://tw.wowarmory.com/";
 	
 	/**
-     * The case sensitive name of a realm.
-     *
-     * @var string
-     */
+	 * The case sensitive name of a realm.
+	 *
+	 * @var string
+	 */
 	var $realm = FALSE;
 	
 	/**
-     * The case sensitive name of a guild.
-     *
-     * @var string
-     */
+	 * The case sensitive name of a guild.
+	 *
+	 * @var string
+	 */
 	var $guild = FALSE;
 	
 	/**
-     * The case sensitive name of a character.
-     *
-     * @var string
-     */
+	 * The case sensitive name of a character.
+	 *
+	 * @var string
+	 */
 	var $character = FALSE;
 	
 	/**
@@ -85,16 +91,18 @@ class phpArmory {
      * @var string
      */
 //	var $userAgent = "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.1) Gecko/20061204 Firefox/2.0.0.1";
-        var $userAgent = "Mozilla/5.0 (Windows; U; Windows NT 5.1; pt-BR; rv:1.8.1.12) Gecko/20080201 Firefox/2.0.0.12";
+    var $userAgent = "Mozilla/5.0 (Windows; U; Windows NT 5.1; pt-BR; rv:1.8.1.12) Gecko/20080201 Firefox/2.0.0.12";
 	
 	/**
-     * The amounto of time in senconds after which to consider
+	 * The amounto of time in senconds after which to consider
 	 * a connection timed out if not data has been yet been
 	 * received.
-     *
-     * @var integer
-     */
+	 *
+	 * @var integer
+	 */
 	var $timeout = 30;
+
+	/* End: Armory Variable Structure */
 	 
 	/**#@-*/
 	/**
@@ -107,41 +115,12 @@ class phpArmory {
 	*
 	* @param string	$armory	URL of the Armory website
 	*/
-	function armory($armory = NULL){
+	function phpArmory($armory = NULL){
 	
 		if ($armory){
 			$this->armory = $armory;
 		}
 		
-	}
-
-	/*
-	*
-	* setlang and getlang for multilanguage suport
-	*
-	*/
-	function setlang($l) {
-		switch($l)
-		{
-			case 'de':
-				$this->lang = 'de';
-				$this->armory = 'http://eu.wowarmory.com/';
-			break;
-                        case 'es':
-                                $this->lang = 'es';
-                                $this->armory = 'http://eu.wowarmory.com/';
-                        break;
-
-                        case 'fr':
-                                $this->lang = 'fr';
-                                $this->armory = 'http://eu.wowarmory.com/';
-                        break;
-                        case 'uk':
-                                $this->lang = 'en';
-                                $this->armory = 'http://eu.wowarmory.com/';
-                        break;
-		}
-
 	}
 
 	function getlang(){
@@ -169,13 +148,39 @@ class phpArmory {
 		
 		if(($character==NULL)&&($this->character)) $character = $this->character;
 		if(($realm==NULL)&&($this->realm)) $realm = $this->realm;
-
-		$realm = str_replace("\'", "%27",$realm);
-		$url = $this->armory."character-sheet.xml?r=".str_replace(" ", "+",$realm)."&n=".str_replace(" ", "+",$character);
-		return $this->xmlToArray($this->xmlFetch($url));
 		
+		$realm = str_replace("\'", "%27",$realm);
+		$url = $this->armory."character-%s.xml?r=".str_replace(" ", "+",$realm)."&n=".str_replace(" ", "+",$character);
+		$result = $this->xmlToArray($this->xmlFetch(sprintf($url, "sheet")));
+		
+		$pages = array("reputation", "skills", "talents");
+		foreach ($pages as $page) {
+			$temp = $this->xmlToArray($this->xmlFetch(sprintf($url, $page)));
+			unset($temp['characterinfo']['character']);
+			$result['characterinfo'] = array_merge($result['characterinfo'], reset($temp));
+		}
+
+		return $result;
+
 	}
 	
+	/**
+	* characterIconURL
+	*
+	* This function returns the url of a portrait icon for a
+	* character from the Armory.
+	*
+	* @param string[]	$info		The character info array including level, gender, race, and class
+	* @return string				The URL of the icon
+	* @author Claire Matthews <poeticdragon@stormblaze.net>
+	*/
+	function characterIconURL($info) {
+
+		$dir = "wow" . ($info['level'] < 60 ? "-default" : ($info['level'] < 70 ? "" : "-70"));
+		return $this->armory."images/portraits/$dir/{$info['genderid']}-{$info['raceid']}-{$info['classid']}.gif";
+
+	}
+
 	/**
 	* guildFetch
 	* 
@@ -219,42 +224,55 @@ class phpArmory {
 		return $this->xmlToArray($this->xmlFetch($url));
 	
 	}
-
+	
 	/**
-	* itemnameFetch
-	*
+	* itemNameFetch
+	* 
 	* This function returns the unserialized XML data
-        * for an item from the Armory. But now you can use the Item Name instead of the Item ID
-        * @return string[]                              An associative array
-        * @param string 	$itemNAME         The NAME of the item
-        */
-        function itemnameFetch($itemNAME){
+	* for an item from the Armory. The item parameter
+	* is required. The second parameter filters search
+	* results by the specified string and is optional.
+	*
+	* @return string[]			An associative array
+	* @param string		$item	The name of the item
+	* @param string[]	$filter	Associative array of search parameters
+	* @author Thiago Melo <http://thiago.oxente.org/>
+	* @author Claire Matthews <poeticdragon@stormblaze.net>
+	* 
+	* This function returns the unserialized XML data
+	* for an item from the Armory. The item parameter
+	* is required. The second parameter filters search
+	* results by the specified string and is optional.
+	*
+	*/
+	function itemNameFetch($item, $filter = NULL) {
 
-		// Fix for the "-" Minux character
-		$itemNAME = str_replace("-", "+ ",$itemNAME);
-                $url = $this->armory."search.xml?searchQuery=".str_replace(" ", "+",$itemNAME)."&searchType=items";
-                 //return $this->xmlToArray($this->xmlFetch($url));
-                $item_ary = $this->xmlToArray($this->xmlFetch($url));
-                $item_ary_value = $item_ary['armorysearch']['searchresults']['items']['item'];
-                if (is_array($item_ary_value[0]))
-		{
-			foreach($item_ary_value as $x_item)
-			{
-				if (isset($x_item['name']))
-				{
-					if ($lang != 'en')
-					{
-					   $x_item['name'] = utf8_decode($x_item['name']);
+		$item = str_replace("-", "+ ",$item);
+		$url = $this->armory."search.xml?searchQuery=".str_replace(" ", "+",$item)."&searchType=items";
+		$items = $this->xmlToArray($this->xmlFetch($url));
+		$items = $items['armorysearch']['searchresults']['items']['item'];
+
+		if (!is_array($items[0])) $items = array($items);
+
+		foreach ($items as $x_item) {
+			if (strtolower($x_item['name']) == strtolower($item)) {
+				$itemID = $x_item['id'];
+				if ($filter==NULL) {
+					return $this->itemFetch($itemID);
+				} elseif (is_array($filter)) {
+					$x_item = $this->itemFetch($itemID);
+					$tooltip = $x_item['itemtooltip'];
+					foreach ($filter as $attrib => $x_filter) {
+						if ($tooltip[$attrib] != $x_filter) {
+							unset($x_item); break;
+						}
 					}
-					if (strtoupper($x_item['name']) == strtoupper($itemNAME))
-                			$url = $this->armory."item-tooltip.xml?i=".$x_item['id'];
+					if ($x_item) return $x_item;
 				}
 			}
 		}
-		else
-			$url = $this->armory."item-tooltip.xml?i=".$item_ary_value['id'];
-                return $this->xmlToArray($this->xmlFetch($url));
-        }
+
+	}
 
 	/**
 	* xmlFetch
@@ -284,22 +302,44 @@ class phpArmory {
 			$ch = curl_init();
 			$timeout = $this->timeout;
 			$userAgent = $this->userAgent;
-					
+			
+			$stderrfptr = fopen(getcwd() . "/get_log/stderr.log", "w+");
+
 			curl_setopt ($ch, CURLOPT_URL, $url);
+			curl_setopt ($ch, CURLOPT_VERBOSE, 1);
+			curl_setopt ($ch, CURLOPT_STDERR, $stderrfptr);
 			curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
 			curl_setopt ($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
 			curl_setopt ($ch, CURLOPT_USERAGENT, $userAgent);
-		        curl_setopt ($ch, CURLOPT_HTTPHEADER, array("Accept-Language: ".$lang.",".$lang."-".$lang.";"));  
+		    curl_setopt ($ch, CURLOPT_HTTPHEADER, array("Accept-Language: ".$lang.",".$lang."-".$lang.";"));  
 
 			$f = curl_exec($ch);
 			
 			curl_close($ch);
-		} else {
+        } elseif(ini_get('allow_url_fopen') == 1) {
+        		echo "Gets to Allow URL";
+                $contextOptions = array('http'=>array('method'=>"GET",'header'=>"Accept-language: ".$lang."\r\n" . $userAgent . "\r\n"));
+                $context = stream_context_create($contextOptions);
+                $f = '';
+                $handle = fopen($url, 'r', false, $context);
+                while(!feof($handle))
+                {
+                        $f .= fgets($handle);
+                }
+                fclose ($handle);
+                return $f;
+        } elseif(function_exists('stream_context_create') && function_exists('file_get_contents')) {
+        	echo "Gets to Stream Create";
+                $contextOptions = array('http'=>array('method'=>"GET",'header'=>"Accept-language: ".$lang."\r\n" . $userAgent . "\r\n"));
+                $context = stream_context_create($contextOptions);
+                $f = file_get_contents($url,false, $context);
+        } else {
+                die('There couldn\'t be found any function on your server, whichwork!<br /><br />Try this functions:<br />- curl<br />- file_get_contents with stream_context_create<br />- fopen with stream_context_create<br /><br />Ask your hoster to activate these functions.');
+        }
 
-		}
 		return $f;
 	}
-	
+
 	/**
 	* xmlToArray
 	* 
