@@ -139,7 +139,13 @@ function setup_output() {
 
 function get_armorychar($name, $language, $server)
 {
-	$javascript = '<a href="' . $phpraid_config['armory_link'] . '/character-sheet.xml?r=' . ucfirst($server) . '&amp;n=' . ucfirst($name) . '" target="new" onmouseover=\'tooltip.show("wowarmory_tooltip/char.php?v=' . ucfirst($name) . '&amp;z=' . ucfirst($server) . '&amp;l=' . ucfirst($language) . '");\' onmouseout="tooltip.hide();"><strong>&lt;' . ucfirst($name) . '&gt;</strong></a>';
+	global $phpraid_config;
+	
+	$realm = str_replace(" ", "+", ucfirst($server));
+	$lang = strtolower($language);
+	
+	//$javascript = '<a href="' . $phpraid_config['armory_link'] . '/character-sheet.xml?r=' . ucfirst($server) . '&amp;n=' . ucfirst($name) . '" target="new" onmouseover=\'tooltip.show("wowarmory_tooltip/char.php?v=' . ucfirst($name) . '&amp;z=' . ucfirst($server) . '&amp;l=' . ucfirst($language) . '");\' onmouseout="tooltip.hide();"><strong>&lt;' . ucfirst($name) . '&gt;</strong></a>';
+	$javascript = '<a href="' . $phpraid_config['armory_link'] . '/character-sheet.xml?r=' . $realm . '&amp;n=' . ucfirst($name) . '" target="new" onmouseover=\'tooltip.show("wowarmory_tooltip/char.php?v=' . ucfirst($name) . '&amp;z=' . $realm . '&amp;l=' . $lang . '&amp;u='. $phpraid_config['armory_link'] .'");\' onmouseout="tooltip.hide();"><strong>&lt;' . ucfirst($name) . '&gt;</strong></a>';
 	if(substr($name, 0, 1) == '_')
 	{
 		$name = substr($name, 1);
