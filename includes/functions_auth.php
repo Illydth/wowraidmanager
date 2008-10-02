@@ -76,7 +76,7 @@ function get_permissions()
 function delete_permissions() {
 	global $db_raid, $phpraid_config;
 	
-	$id = scrub_input($_GET['id']);
+	$id = scrub_input($_GET['perm_id']);
 	
 	$sql = sprintf("DELETE FROM " . $phpraid_config['db_prefix'] . "permissions WHERE permission_id=%s", quote_smart($id));
 	$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
@@ -90,19 +90,19 @@ function permissions($report) {
 	
 	if(!isset($_POST['submit'])) {
 		$users = array();
-		$id = scrub_input($_GET['id']);
-		
+		$permission_id = scrub_input($_GET['perm_id']);
+
 		// display users for phpraid authentication and this permission set
-		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "profile WHERE priv=%s", quote_smart($id));
+		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "profile WHERE priv=%s", quote_smart($permission_id));
 		$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 		
 		while($data = $db_raid->sql_fetchrow($result, true)) {	
 			// set delete permissions 
 			if($_SESSION['priv_permissions'] == 1) {
-				if($id == 1 && $data['profile_id'] == 1) {
+				if($permission_id == 1 && $data['profile_id'] == 1) {
 					$delete = '';
 				} else {
-					$delete = '<a href="permissions.php?mode=remove_user&priv_id=' . $id . '&amp;user_id='.$data['profile_id'].'">
+					$delete = '<a href="permissions.php?mode=remove_user&perm_id=' . $permission_id . '&amp;user_id='.$data['profile_id'].'">
 								<img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" 
 								onMouseover="ddrivetip(\''.$phprlang['remove_user'].'\');" onMouseout="hideddrivetip();" alt="delete icon"></a>';
 				}
@@ -126,18 +126,18 @@ function permissions($report) {
 		setup_output();
 		
 		$report->showRecordCount(true);
-		$report->allowPaging(true, $_SERVER['PHP_SELF'] . '?mode=details&amp;id='.$id.'&Base=');
+		$report->allowPaging(true, $_SERVER['PHP_SELF'] . '?mode=details&amp;perm_id='.$permission_id.'&Base=');
 		$report->setListRange($_GET['Base'], 25);
 		$report->allowLink(ALLOW_HOVER_INDEX,'',array());	
 		
 		//Default sorting
 		if(!$_GET['Sort'])
 		{
-			$report->allowSort(true, 'username', 'ASC', 'permissions.php?mode=details&amp;id=' . $id);
+			$report->allowSort(true, 'username', 'ASC', 'permissions.php?mode=details&amp;perm_id=' . $permission_id);
 		}
 		else
 		{
-			$report->allowSort(true, $_GET['Sort'], $_GET['SortDescending'], 'permissions.php?mode=details&amp;id=' . $id);
+			$report->allowSort(true, $_GET['Sort'], $_GET['SortDescending'], 'permissions.php?mode=details&amp;perm_id=' . $permission_id);
 		}
 		
 		if($phpraid_config['show_id'] == 1)
@@ -170,23 +170,23 @@ function permissions($report) {
 			array_push($users, array('id'=>$data['profile_id'],'username'=>ucwords(strtolower($data['username'])), 'email'=>$data['email'], 'actions'=>$actions));
 		}
 				
-		$add_body = '<form action="permissions.php?mode=details&amp;id=' . $id . '" method="POST">';
+		$add_body = '<form action="permissions.php?mode=details&amp;perm_id=' . $permission_id . '" method="POST">';
 		
 		// setup report (users)
 		$report->clearOutputColumns();
 		//Default sorting
 		if(!$_GET['Sort'])
 		{
-			$report->allowSort(true, 'username', 'ASC', 'permissions.php?mode=details&amp;id=' . $id);
+			$report->allowSort(true, 'username', 'ASC', 'permissions.php?mode=details&amp;perm_id=' . $permission_id);
 		}
 		else
 		{
-			$report->allowSort(true, $_GET['Sort'], $_GET['SortDescending'], 'permissions.php?mode=details&amp;id=' . $id);
+			$report->allowSort(true, $_GET['Sort'], $_GET['SortDescending'], 'permissions.php?mode=details&amp;perm_id=' . $permission_id);
 		}
 		setup_output();
 		
 		$report->showRecordCount(true);
-		$report->allowPaging(true, $_SERVER['PHP_SELF'] . '?mode=details&amp;id=' . $id . '&Base=');
+		$report->allowPaging(true, $_SERVER['PHP_SELF'] . '?mode=details&amp;perm_id=' . $permission_id . '&Base=');
 		$report->setListRange($_GET['Base'], 25);
 		$report->allowLink(ALLOW_HOVER_INDEX,'',array());
 		
@@ -197,7 +197,7 @@ function permissions($report) {
 		$report->addOutputColumn('actions','','','right',__NOLINK__);
 		$add_body .= $report->getListFromArray($users);
 		
-		$buttons = '<input type="submit" value="Submit" name="'.$phprlang['submit'].'" class="mainoption"> 
+		$buttons = '<input type="submit" value="'.$phprlang['submit'].'" name="submit" class="mainoption"> 
 					<input type="reset" value="'.$phprlang['reset'].'" name="reset" class="liteoption"></form>';
 		
 		$page->set_var(
@@ -210,26 +210,26 @@ function permissions($report) {
 			
 		$page->parse('output','add',true);
 	} else {
-		$priv_id = scrub_input($_GET['id']);
+		$priv_id = scrub_input($_GET['perm_id']);
 		foreach($_POST as $key=>$value) {
 			if($key != 'submit') {
 					$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "profile SET priv=%s WHERE profile_id=%s", quote_smart($priv_id), quote_smart($value));
 					$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 			}
 		}
-		header("Location: permissions.php?mode=details&id=$priv_id");
+		header("Location: permissions.php?mode=details&perm_id=". $priv_id);
 	}
 }
 
 function remove_user() {
 	global $db_raid, $phpraid_config;
-	
+
 	$user_id = scrub_input($_GET['user_id']);
-	$priv_id = scrub_input($_GET['priv_id']);
+	$perm_id = scrub_input($_GET['perm_id']);
 	
 	$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "profile SET priv='0' WHERE profile_id=%s", quote_smart($user_id));
 	$sql = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-	header("Location: permissions.php?mode=details&id=$priv_id");
+	header("Location: permissions.php?mode=details&perm_id=". $perm_id);
 }
 
 ?>

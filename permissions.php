@@ -37,10 +37,10 @@ require_once('./common.php');
 define("PAGE_LVL","permissions");
 require_once("includes/authentication.php");
 
-if(isset($_GET['id']))
-	$id = scrub_input($_GET['id']);
+if(isset($_GET['perm_id']))
+	$perm_id = scrub_input($_GET['perm_id']);
 else
-	$id = '';
+	$perm_id = '';
 
 if($_GET['mode'] == 'view') 
 {
@@ -51,10 +51,10 @@ if($_GET['mode'] == 'view')
 	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 	
 	while($data = $db_raid->sql_fetchrow($result, true)) {
-		$edit = '<a href="permissions.php?mode=edit&amp;id='.$data['permission_id'].'"><img src="templates/' . $phpraid_config['template'] . 
+		$edit = '<a href="permissions.php?mode=edit&amp;perm_id='.$data['permission_id'].'"><img src="templates/' . $phpraid_config['template'] . 
 					'/images/icons/icon_edit.gif" border="0" onMouseover="ddrivetip(\'' . $phprlang['edit'] . '\');" onMouseout="hideddrivetip();" alt="edit icon"></a>';
 				
-		$delete = '<a href="permissions.php?mode=delete&amp;id='.$data['permission_id'].'"><img src="templates/' . 
+		$delete = '<a href="permissions.php?mode=delete&amp;perm_id='.$data['permission_id'].'"><img src="templates/' . 
 					$phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\'' . $phprlang['delete'] . '\');" 
 					onMouseout="hideddrivetip();" alt="delete icon"></a>';
 
@@ -120,10 +120,19 @@ if($_GET['mode'] == 'view')
 			$users = '';
 				
 		array_push($perm, 
-			array('id'=>$data['permission_id'],'name'=>'<a href="permissions.php?mode=details&amp;id=' . $data['permission_id'] . '">' . $data['name'] . '</a>','desc'=>$data['description'],
-				  'announcements'=>$announcements,'configuration'=>$phpraid_configuration,'guilds'=>$guilds,
-				  'locations'=>$locations,'profile'=>$profile,'raids'=>$raids,'permissions'=>$permissions,
-				  'logs'=>$logs,'users'=>$users,'admin'=>$admin
+			array('id'=>$data['permission_id'],
+				  'name'=>'<a href="permissions.php?mode=details&amp;perm_id=' . $data['permission_id'] . '">' . $data['name'] . '</a>',
+				  'desc'=>$data['description'],
+				  'announcements'=>$announcements,
+				  'configuration'=>$phpraid_configuration,
+				  'guilds'=>$guilds,
+				  'locations'=>$locations,
+				  'profile'=>$profile,
+				  'raids'=>$raids,
+				  'permissions'=>$permissions,
+				  'logs'=>$logs,
+				  'users'=>$users,
+				  'admin'=>$admin
 			)
 		);
 	}
@@ -228,7 +237,7 @@ elseif(isset($_POST['submit']) && ($_GET['mode'] == 'edit' || $_GET['mode'] == '
 			$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "permissions SET name=%s, description=%s, announcements=%s, configuration=%s, 
 				guilds=%s,	locations=%s, permissions=%s, profile=%s, raids=%s, logs=%s, users=%s WHERE permission_id=%s",	quote_smart($name),quote_smart($description),
 				quote_smart($announcements),quote_smart($phpraid_configuration),quote_smart($guilds),quote_smart($locations),
-				quote_smart($permissions),quote_smart($profile),quote_smart($raids),quote_smart($logs),quote_smart($users),quote_smart($id));
+				quote_smart($permissions),quote_smart($profile),quote_smart($raids),quote_smart($logs),quote_smart($users),quote_smart($perm_id));
 					
 			$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 			
@@ -240,13 +249,13 @@ elseif($_GET['mode'] == 'details')
 	permissions($report);
 elseif($_GET['mode'] == 'delete') 
 {
-	$id = scrub_input($_GET['id']);
+	$perm_id = scrub_input($_GET['perm_id']);
 	
 	if($_SESSION['priv_permissions'] == 1) 
 	{
 		if(!isset($_POST['submit'])) 
 		{			
-			$form_action = 'permissions.php?mode=delete&amp;id=' . $id;
+			$form_action = 'permissions.php?mode=delete&amp;perm_id=' . $perm_id;
 			$confirm_button = '<input type="submit" value="'.$phprlang['confirm_deletion'].'" name="submit" class="post">';
 			
 			$page->set_file('output',$phpraid_config['template'] . '/delete.htm');
@@ -263,7 +272,7 @@ elseif($_GET['mode'] == 'delete')
 		} 
 		else 
 		{
-			$sql = sprintf("DELETE FROM " . $phpraid_config['db_prefix'] . "permissions WHERE permission_id=%s",quote_smart($id));
+			$sql = sprintf("DELETE FROM " . $phpraid_config['db_prefix'] . "permissions WHERE permission_id=%s",quote_smart($perm_id));
 			$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 			
 			header("Location: permissions.php?mode=view");
@@ -290,7 +299,7 @@ if($_GET['mode'] != 'delete' && $_GET['mode'] != 'details')
 	if($_GET['mode'] == 'edit') 
 	{
 		// grab from DB
-		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "permissions WHERE permission_id=%s",quote_smart($id));
+		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "permissions WHERE permission_id=%s",quote_smart($perm_id));
 		$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 		$data = $db_raid->sql_fetchrow($result, true);
 		
@@ -387,7 +396,7 @@ if($_GET['mode'] != 'delete' && $_GET['mode'] != 'details')
 		$name = '<input type="text" name="name" class="post" value="' . $data['name'] . '">';
 		$description = '<input type="text" name="description" class="post" value="' . $data['description'] . '"style="width:300px">';
 		
-		$form_action = "permissions.php?mode=edit&amp;id=$id";
+		$form_action = "permissions.php?mode=edit&amp;perm_id=$perm_id";
 		
 		$page->set_var('header_text',$phprlang['permissions_edit_header']);	
 	} else {
@@ -439,7 +448,7 @@ if($_GET['mode'] != 'delete' && $_GET['mode'] != 'details')
 		$name = '<input type="text" name="name" class="post">';
 		$description = '<input type="text" name="description" class="post" style="width:300px">';
 		
-		$form_action = "permissions.php?mode=new&amp;id=$id";
+		$form_action = "permissions.php?mode=new&amp;perm_id=$perm_id";
 		
 		$page->set_var('header_text',$phprlang['permissions_new']);
 	}
