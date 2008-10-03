@@ -50,6 +50,7 @@ $localstr['step3errorversion'] = 'The software version in version.php doesn\'t m
 $localstr['step4auttype'] = 'authorization type';
 $localstr['step4desc'] = 'Description';
 $localstr['step4desc_e107'] = 'e107 CMS System';
+$localstr['step4desc_joomla'] = 'Joomla 1.5.x (not 1.0.x)';
 $localstr['step4desc_phpBB'] = 'phpBB2 or phpBB3';
 $localstr['step4desc_iums'] = 'integrated User Management System';
 $localstr['step4desc_smf'] = 'Simple Machines Forum 1.x';

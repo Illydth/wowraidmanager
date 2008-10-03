@@ -27,24 +27,24 @@
 *    GNU General Public License for more details.
 *
 *    You should have received a copy of the GNU General Public License
-* 
+*
 ****************************************************************************/
 	error_reporting(0);
 
 	$stepstr = $_GET['s'];
-	
+
 	//multilanguage stuff
 	$lang = $_GET['lang'];
-	
+
 	if ($stepstr == 2){
 			$lang = $_POST['classlang_type'];
 	}
-	if( !is_file('language/locale-'.$lang.'.php')) 
+	if( !is_file('language/locale-'.$lang.'.php'))
 		{
 			$lang ='english';//en == default language
 		}
 	require_once('language/locale-'.$lang.'.php');
-	
+
 	// Is Writeable function is bugged beyond belief, it has issues with ACL and Group accesses, use this instead.
 	//    will work in despite of Windows ACLs bug.
 	//NOTE: use a trailing slash for folders!!!
@@ -67,20 +67,21 @@
                 unlink($checkpath);
         return true;
 	}
-	
+
 	function get_mysql_version_from_phpinfo()
 	{
-		ob_start();
-		phpinfo(INFO_MODULES);
-		$info = ob_get_contents();
-		ob_end_clean();
-		$info = stristr($info, 'Client API version');
-		preg_match('@[0-9]+\.[0-9]+\.[0-9]+@', $info, $match);
-		$gd = $match[0];
-		
-		return $gd; 
+		global $link;
+
+		if (function_exists('mysql_get_server_info')) {
+			$gd = mysql_get_server_info($link);
+		} else {
+			$result = @mysql_query('SELECT version()',$link);
+			$gd = @mysql_result($result,0);
+			@mysql_free_result($result);
+		}
+		return $gd;
 	}
-	
+
 	//header
 	function print_header()
 	{
@@ -96,23 +97,23 @@
                   <tr>
                     <td><img src="logo_phpRaid.jpg" align="right"></td>
                     <!-- <td><div class="installheadBigtxt">Wow Raid Manager</div></td> -->
-                  </tr> 
+                  </tr>
                  </table>
 			     <table width="500" border="0" align="center" cellspacing="5">
                   <tr>
 					'.$localstr['headtitle'].'<br/>
 				    <strong>'.$localstr['headbodyinfo'].'</strong>
-                  </tr> 
+                  </tr>
                  </table>
 			  </div>
 			  <br/>';
 	}
-	
+
 	//menu with css-style (stylesheet/stylesheet.css)
 	function step($header,$c1,$c2,$c3,$c4,$c5,$c6,$content)
 	{
 		global $localstr;
-		
+
 		//create menu
 		$installnavmenu = '
 		<div align="left" class="installnavmenu">
@@ -128,9 +129,9 @@
 			</ul>
 		  </ul>
 		</div>';
-		
+
 		$installmaindiv ='<div class="installmaindiv"><h1>'.$header.'</h1><br/>'.$content.'</div>';
-		
+
 		//create table
 		echo '<table width="790" border="0" align="center" cellspacing="3" cellpadding="1"
 		 style="font-size:11px; color:#ffffff; border:1px solid #cccccc; background-color:#000000">
@@ -145,7 +146,7 @@
 	}
 
 	print_header();
-	
+
 	//step 0
 	if(!isset($_GET['s']))
 	{
@@ -162,7 +163,7 @@
 		$content .= '  <td width="50%" class="normaltxt"><strong><div align="center">Description</div></strong></td>';
 		$content .= '</tr>';
 		$content .= '<tr>';
-		
+
 		// NOTE: BE CAREFUL WITH IS__WRITEABLE, that is NOT the built in is_writeable function. (See Double Underscore)
 		if(!is__writeable('../config.php'))
 		{
@@ -180,9 +181,9 @@
 		}
 		$content .= '</tr>';
 		$content .= '</table>';
-		
+
 		$content .= '<br/><br/>';
-		
+
 		if(!is_dir('./database_schema'))
 		{
 			$error = 1;
@@ -191,19 +192,6 @@
 		else
 		{
 			$content .= '<br/><font color=#00ff00>Success: directory <strong>database_schema</strong> exists.</font>';
-		}
-		
-		// Get the MySQL Version and Print It.
-		$gd = get_mysql_version_from_phpinfo();
-		if ($gd < "4.1.0")
-		{
-			$content .= '<br/><font color=yellow>Warning: MySQL Version too low to set Character Set and Collation upon table installation' .
-					', <br/>ensure international characters are storeable to the database or upgrade to MySQL 4.1 or above.' .
-					'<br/>Current MySQL Version: ' . $gd . '</font>';
-		}
-		else
-		{
-			$content .= '<br/><font color=#00ff00>Current MySQL Version: ' . $gd . '</font>';			
 		}
 
 		if($error == 0)
@@ -214,7 +202,7 @@
 				while(false != ($filename = readdir($dh))) {
 					$files[] = $filename;
 				}
-		
+
 				sort($files);
 				array_shift($files);
 				array_shift($files);
@@ -229,7 +217,7 @@
 						$langtype .= '<option value="'.$value.'">'.$value.'</option>';
 					}
 				}
-		
+
 			$langtype .= '</select>';
 			$content .= '<br/><br/><form action="install.php?s=2" method="POST">';
 			$content .= '<br/><br/>Select your Language: '.$langtype.'<br/><br/><br/>';
@@ -242,7 +230,7 @@
 	{
 		$dir = './database_schema/upgrade';
 		$dh = opendir($dir);
-		while(false != ($filename = readdir($dh))) {
+		while(false !== ($filename = readdir($dh))) {
 			$files[] = $filename;
 		}
 
@@ -292,7 +280,7 @@
 		$content .= '<input type="hidden" name="eqdkp_db_user" class="post" value="'.$phpraid_config['eqdkp_db_user'].'"></td></tr>';
 		$content .= '<input type="hidden" name="eqdkp_db_pass" class="post" value="'.$phpraid_config['eqdkp_db_pass'].'"></td></tr>';
 		$content .= '<input type="hidden" name="eqdkp_db_prefix" class="post" value="'.$phpraid_config['eqdkp_db_prefix'].'"></td></tr>';
-					
+
 		$content .= '<tr><td>&nbsp;</td><td>&nbsp;</td></tr>';
 		$content .= '<tr><td class="normaltxt" align="right">'.$localstr['step2installtype'].': </td><td>';
 		$content .= $type.'</td></tr>';
@@ -316,7 +304,7 @@
 		$eqdkp_user = $_POST['eqdkp_db_user'];
 		$eqdkp_pass = $_POST['eqdkp_db_pass'];
 		$eqdkp_prefix = $_POST['eqdkp_db_prefix'];
-		
+
 		$sql_file = $_POST['type'];
 
 		$sql = '';
@@ -326,7 +314,7 @@
 		if(!$link){
 				die('<font color=red>'.$localstr['step3errordbcon'].$localstr['pressbrowserpack'].'</font>');
 			}
-		
+
 		include('../version.php');
 
 		// write config file (config.php)
@@ -371,19 +359,19 @@
 			}
 			fclose($fd);
 		}
-		
+
 		// Run the alter_tables.sql for setting Character Set and Collation if MySQL version > 4.1.0
 		$gd = get_mysql_version_from_phpinfo();
-		if ($gd >= "4.1.0")
+		if (version_compare("4.1.0",$gd) == -1)
 		{
 			if(!$fd = fopen('./database_schema/install/alter_tables.sql', 'r'))
 				die('<font color=red>'.$localstr['step3errorschema'].'.</font>');
-	
+
 			if ($fd) {
 				while (!feof($fd)) {
 					$line = fgetc($fd);
 					$sql .= $line;
-	
+
 					if($line == ';')
 					{
 				  		$sql = substr(str_replace('`phpraid_','`' . $prefix, $sql), 0, -1);
@@ -394,13 +382,13 @@
 				fclose($fd);
 			}
 		}
-			
+
 		// Make a Version Check
 		$sql = "select max(version_number) from `phpraid_version`";
 		$sql = str_replace('`phpraid_', '`' . $prefix, $sql);
 		$result = mysql_query($sql) or die($localstr['step3errorsql'].' ' . mysql_error());
 		$data = mysql_fetch_assoc($result);
-		
+
 		if($data['max(version_number)'] != $version)
 			die('<font color=red>'.$localstr['step3errorversion'].'.</font>');
 
@@ -444,13 +432,17 @@
                             <td class="normaltxt">e107</td>
                             <td class="normaltxt">'.$localstr['step4desc_e107'].'</td>
                           </tr>
+						  <tr>
+                            <td class="normaltxt">iUMS</td>
+                            <td class="normaltxt">'.$localstr['step4desc_iums'].'</td>
+                          </tr>
                           <tr>
-                            <td class="normaltxt">phpBB</td>
+                            <td class="normaltxt">Joomla</td>
                             <td class="normaltxt">'.$localstr['step4desc_phpBB'].'</td>
                           </tr>
                           <tr>
-                            <td class="normaltxt">XOOPS</td>
-                            <td class="normaltxt">'.$localstr['step4desc_xoops'].'</td>
+                            <td class="normaltxt">phpBB</td>
+                            <td class="normaltxt">'.$localstr['step4desc_phpBB'].'</td>
                           </tr>
 						  <tr>
                             <td class="normaltxt">SMF</td>
@@ -464,22 +456,22 @@
                             <td class="normaltxt">WBB</td>
                             <td class="normaltxt">'.$localstr['step4desc_wbb'].'</td>
                           </tr>
-						  <tr>
-                            <td class="normaltxt">iUMS</td>
-                            <td class="normaltxt">'.$localstr['step4desc_iums'].'</td>
+                          <tr>
+                            <td class="normaltxt">XOOPS</td>
+                            <td class="normaltxt">'.$localstr['step4desc_xoops'].'</td>
                           </tr>
                         </table>';
-						
+
 		$content .= '<form action="install.php?s=5&lang='.$lang.'" method="POST">';
 		$content .= '<br/><br/>'.$localstr['step4chooseauth'].'<br/>'.$localstr['step4unkownauth'].'<br/><br/>';
 		$content .= $auth;
 		$content .= '<br/><br/><br/><input type="submit" value="'.$localstr['bd_submit'].'" class="mainoption"> ';
 		$content .= '</form>';
-		
+
 		step($localstr['menustep4auth'],'lime','lime','lime','red','white','white',$content);
 	}
 
-	
+
 	else if($stepstr == 5)
 	{
 		$auth_type = $_POST['auth_type'];
@@ -493,11 +485,11 @@
 	else if($stepstr == 'done')
 	{
 		include ("../config.php");
-		
+
 		//insert default values
 		$wrmserver = 'http://'.$_SERVER['SERVER_NAME'];
 		$wrmserverfile = str_replace("/install/install.php","",$wrmserver. $_SERVER['PHP_SELF']);;
-		
+
 		$linkWRM = mysql_connect($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass']);
 		mysql_select_db($phpraid_config['db_name']);
 		$sql = "SELECT * FROM " . $phpraid_config['db_prefix']. "config WHERE config_name = 'header_link'";
