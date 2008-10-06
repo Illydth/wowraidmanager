@@ -31,6 +31,13 @@
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *
 ****************************************************************************/
+
+if ( !defined('IN_PHPRAID'))
+	print_error("Hacking Attempt", "Invalid access detected", 1);
+
+if(isset($_GET['phpraid_dir']) || isset($_POST['phpraid_dir']))
+	die("Hacking attempt detected!");
+
 //This is NOT SAFE to turn on.
 $BridgeSupportPWDChange = FALSE;
 

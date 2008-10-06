@@ -32,6 +32,12 @@
 *
 ****************************************************************************/
 
+if ( !defined('IN_PHPRAID'))
+	print_error("Hacking Attempt", "Invalid access detected", 1);
+
+if(isset($_GET['phpraid_dir']) || isset($_POST['phpraid_dir']))
+	die("Hacking attempt detected!");
+
 // THIS IS SAFE TO TURN ON.
 $BridgeSupportPWDChange = FALSE;
 
