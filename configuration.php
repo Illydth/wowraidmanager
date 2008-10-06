@@ -806,6 +806,38 @@ else
 	$role5_name = scrub_input($_POST['role5_name']);
 	$role6_name = scrub_input($_POST['role6_name']);
 
+	// Check for changes in role name.  If the Role Name changes, we need to update the characters table.
+	if ($phpraid_config['role1_name'] != $role1_name)
+	{
+		$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."chars` SET `role` = %s WHERE `role`= %s;", quote_smart($role1_name), quote_smart($phpraid_config['role1_name']));
+		$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	}
+	if ($phpraid_config['role2_name'] != $role2_name)
+	{
+		$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."chars` SET `role` = %s WHERE `role`= %s;", quote_smart($role2_name), quote_smart($phpraid_config['role2_name']));
+		$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);		
+	}
+	if ($phpraid_config['role3_name'] != $role3_name)
+	{
+		$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."chars` SET `role` = %s WHERE `role`= %s;", quote_smart($role3_name), quote_smart($phpraid_config['role3_name']));
+		$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);		
+	}
+	if ($phpraid_config['role4_name'] != $role4_name)
+	{
+		$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."chars` SET `role` = %s WHERE `role`= %s;", quote_smart($role4_name), quote_smart($phpraid_config['role4_name']));
+		$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	}
+	if ($phpraid_config['role5_name'] != $role5_name)
+	{
+		$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."chars` SET `role` = %s WHERE `role`= %s;", quote_smart($role5_name), quote_smart($phpraid_config['role5_name']));
+		$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	}
+	if ($phpraid_config['role6_name'] != $role6_name)
+	{
+		$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."chars` SET `role` = %s WHERE `role`= %s;", quote_smart($role6_name), quote_smart($phpraid_config['role6_name']));
+		$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	}
+
 	if(isset($_POST['multiple_signups']))
 		$allow_multiple = 1;
 	else

@@ -396,37 +396,37 @@ if($mode == 'view')
 		{
 			switch($data['role'])
 			{
-				case strtolower($phpraid_config['role1_name']):
+				case $phpraid_config['role1_name']:
 					array_push($role1,
 						array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,'role'=>$role,
 							  'race'=>$race,'name'=>$name,'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
 							  'date'=>$date,'time'=>$time,'team_name'=>$team_name,'guild'=>$guildname));
 					break;
-				case strtolower($phpraid_config['role2_name']):
+				case $phpraid_config['role2_name']:
 					array_push($role2,
 						array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,'role'=>$role,
 							  'race'=>$race,'name'=>$name,'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
 							  'date'=>$date,'time'=>$time,'team_name'=>$team_name,'guild'=>$guildname));
 					break;
-				case strtolower($phpraid_config['role3_name']):
+				case $phpraid_config['role3_name']:
 					array_push($role3,
 						array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,'role'=>$role,
 							  'race'=>$race,'name'=>$name,'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
 							  'date'=>$date,'time'=>$time,'team_name'=>$team_name,'guild'=>$guildname));
 					break;
-				case strtolower($phpraid_config['role4_name']):
+				case $phpraid_config['role4_name']:
 					array_push($role4,
 						array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,'role'=>$role,
 							  'race'=>$race,'name'=>$name,'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
 							  'date'=>$date,'time'=>$time,'team_name'=>$team_name,'guild'=>$guildname));
 					break;
-				case strtolower($phpraid_config['role5_name']):
+				case $phpraid_config['role5_name']:
 					array_push($role5,
 						array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,'role'=>$role,
 							  'race'=>$race,'name'=>$name,'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
 							  'date'=>$date,'time'=>$time,'team_name'=>$team_name,'guild'=>$guildname));
 					break;
-				case strtolower($phpraid_config['role6_name']):
+				case $phpraid_config['role6_name']:
 					array_push($role6,
 						array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,'role'=>$role,
 							  'race'=>$race,'name'=>$name,'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
