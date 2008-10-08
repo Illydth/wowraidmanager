@@ -3,7 +3,22 @@ at:
 
 * http://www.wowraidmanager.net/wiki/index.php?title=Installation
 
-Release of 3.5.1 of WoW Raid Manager
+Release of 3.5.1 Final of WoW Raid Manager
+-----------------------------------
+* Armory Lookup Code has been updated to the 0.2 version from Sourceforge.  The groundwork has been laid to
+re-implement some of the caching features in future versions.
+
+* Permissions Groups fixed.  There was a bug with permission groups and users failing to be added to 
+permissions groups.
+
+* Minor Installation Update: Added Joomla text to the installation at the point of selecting a bridge.
+
+* XSS (Cross Site Scripting) bug fixed in WRM bridges.
+
+* The error where modification of Roles produces an inability to signup or show up as a signed up
+user of a raid has been fixed. 
+
+Release of 3.5.1 (RC1) of WoW Raid Manager
 -----------------------------------
 At least a few new changes to WRM since 3.5.0.  As always, this release supercedes any prior release of WRM.
 

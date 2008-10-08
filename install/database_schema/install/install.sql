@@ -296,3 +296,4 @@ INSERT INTO `phpraid_version` VALUES ('3.1.2','Version 3.1.2 of WoW Raid Manager
 INSERT INTO `phpraid_version` VALUES ('3.2.0','Version 3.2.0 of WoW Raid Manager');
 INSERT INTO `phpraid_version` VALUES ('3.2.1','Version 3.2.1 of WoW Raid Manager');
 INSERT INTO `phpraid_version` VALUES ('3.5.0','Version 3.5.0 of WoW Raid Manager');
+INSERT INTO `phpraid_version` VALUES ('3.5.1','Version 3.5.1 of WoW Raid Manager');

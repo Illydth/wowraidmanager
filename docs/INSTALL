@@ -8,12 +8,12 @@ Quick Installation
 	web server user:
 	* config.php
 	* raid_lua
-* Open a web browser and go to http://www.yourdomain.com/phpRaid
-* Choose your installation method and follow the steps to install your phpRaid server.
+* Open a web browser and go to your WRM installation (e.g. http://www.yourdomain.com/wrm)
+* Choose your installation method and follow the steps to install your WoW Raid Manager server.
 * At the end of the installation please remove your Install directory (delete it completely)
 * Change the permissions on your config.php file back to read only to the world (you can 
 	leave it writable by your web server if you so choose, but it is recommended that
-	you make it read only...(444 permissions in Unix).  Keep the permisions of the other
+	you make it read only...(444 permissions in Unix).  Keep the permissions of the other
 	files and folders listed above writable.
 	
 Please see phpRaid_install_doc.pdf for more information.
@@ -38,7 +38,7 @@ Installing WRM into a supported CMS system
 At the time of this writing 3.5.1 supports the following CMS systems:
 
 * e107 from http://www.e107.org
-* Joomla from http://www.joomla.org (NEW)
+* Joomla from http://www.joomla.org (v1.5 ONLY) (NEW)
 * phpBB from http://www.phpbb.com (v2 and v3)
 * SMF from http://www.simplemachines.org/ (v1 and v2)
 * WBB from http://www.woltlab.com/products/burning_board/index_en.php
@@ -47,7 +47,7 @@ At the time of this writing 3.5.1 supports the following CMS systems:
 Also supported, if you do not have a supported CMS system, is the "iUMS" (previously phpRaid) installation,
 which is the default non-CMS supported installation.  
 
-If you do intend to install this application into a CMS please note that it is a
+If you DO intend to install this application into a CMS please note that it is a
 REQUIREMENT that you install your WRM database INTO your CMS database, at the
 moment you CANNOT separate the databases and have everything work.  
 
@@ -71,7 +71,7 @@ information on what has changed.
 
 Language Changes - v3.5.1
 ------------------------------
-More language changes, not nearly as major as 3.5.1 however.  That said, many of the languages are
+More language changes, not nearly as major as 3.5.0 however.  That said, many of the languages are
 not often maintained and are somewhat incomplete.  The French and Chinese language is badly out of date 
 and many of it's strings are still in English.  The Norwegian and German translations are mostly up to 
 date though they are still missing a smattering of strings.  The Italian translation is also mostly up to 
