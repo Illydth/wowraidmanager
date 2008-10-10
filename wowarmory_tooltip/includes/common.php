@@ -15,6 +15,15 @@
 @error_reporting(E_ALL ^ E_NOTICE);
 // ini_set('display_errors',1);
 
+// Setup Include Directories to get around open_basedir problems.
+$include_list .= "./";
+$include_list .= ":./includes/";
+$include_list .= ":./stats_conf/";
+$include_list .= ":./template/css/";
+$include_list .= ":./languages/";
+$include_list .= ":" . ini_get('include_path');
+ini_set('include_path',  $include_list);
+
 // Include the Php Armory Class
 require_once("includes/phpArmory.class.php");
 //require_once("includes/phpArmoryCache.class.php");

@@ -26,9 +26,9 @@
 *    GNU General Public License for more details.
 *
 *    You should have received a copy of the GNU General Public License
-* 
+*
 ****************************************************************************/
- 
+
 if ( !defined('IN_PHPRAID'))
 	print_error("Hacking Attempt", "Invalid access detected", 1);
 
@@ -41,14 +41,24 @@ error_reporting(E_ALL ^ E_NOTICE);
 // feel free to set this to absolute if necessary
 $phpraid_dir = './';
 
+// Sanity Check the Config File
+require_once($phpraid_dir."sanity.php");
+
 // redirect to setup if it exists
 if(file_exists($phpraid_dir.'install/')) {
 	header("Location: install/install.php");
 }
 
-require_once($phpraid_dir.'version.php');
+// Get list of Includes and Add them to ini_set for include path.
+$include_list .= $phpraid_dir . "auth/";
+$include_list .= ":" . $phpraid_dir . "db/";
+$include_list .= ":" . $phpraid_dir . "includes/";
+$include_list .= ":" . ini_get('include_path');
+
+ini_set('include_path',  $include_list);
 
 // Class require_onces
+require_once($phpraid_dir.'version.php');
 require_once($phpraid_dir.'config.php');
 require_once($phpraid_dir.'db/mysql.php');
 require_once($phpraid_dir.'includes/functions.php');
@@ -59,7 +69,7 @@ require_once($phpraid_dir.'includes/functions_users.php');
 require_once($phpraid_dir.'includes/report.php');
 require_once($phpraid_dir.'includes/template.php');
 require_once($phpraid_dir.'includes/ubb.php');
-	
+
 // reports for all data listing
 global $report;
 $report = &new ReportList;
@@ -70,13 +80,12 @@ $db_raid = &new sql_db($phpraid_config['db_host'],$phpraid_config['db_user'],$ph
 
 if(!$db_raid->db_connect_id)
 {
-	die('<div align="center"><strong>There appears to be a problem with the database server.<br>We should be back up shortly.</strong></div>');	
+	die('<div align="center"><strong>There appears to be a problem with the database server.<br>We should be back up shortly.</strong></div>');
 }
 
 // unset database password for security reasons
 // we won't use it after this point
 unset($phpraid_config['db_pass']);
-
 
 //
 // Populate the $phpraid_config array
@@ -91,6 +100,11 @@ while($data = $db_raid->sql_fetchrow($result, true))
 // templates
 $page = &new wrmTemplate();
 $page->set_root($phpraid_dir.'templates');
+
+// Setup the Include for the Language Files.
+$include_list = $phpraid_dir . "language/lang_" . $phpraid_config['language'] . "/";
+$include_list .= ":" . ini_get('include_path');
+ini_set('include_path',  $include_list);
 
 if(!is_file($phpraid_dir."language/lang_{$phpraid_config['language']}/lang_main.php"))
 {
@@ -117,4 +131,5 @@ if($phpraid_config['disable'] == 1 && $_SESSION['priv_configuration'] == 0)
 	$errorMsg = $phprlang['maintenance_message'];
 	$errorDie = 1;
 }
+
 ?>
