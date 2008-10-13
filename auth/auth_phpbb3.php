@@ -124,11 +124,12 @@ function password_check($oldpassword, $profile_id)
 	$db_pass = $data_passchk[$db_user_password];
 	
 	$initString = '$H$';
-	$testVal = $pwd_hasher->CheckPassword($oldpassword, $db_pass);
+	$testVal = $pwd_hasher->CheckPassword($oldpassword, $db_pass, $initString);
+
 	if ($testVal)
-		return 0;
+		return TRUE;
 	else
-		return 1;
+		return FALSE;
 }
 
 function phpraid_login() 
@@ -162,7 +163,6 @@ function phpraid_login()
 			);
 
 	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-
 	//WRM database
 	//$sql = sprintf("SELECT username, password FROM " . $phpraid_config['db_prefix'] . "profile WHERE username = %s",
 	//				quote_smart($username)
