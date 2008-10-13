@@ -438,7 +438,7 @@
                           </tr>
                           <tr>
                             <td class="normaltxt">Joomla</td>
-                            <td class="normaltxt">'.$localstr['step4desc_phpBB'].'</td>
+                            <td class="normaltxt">'.$localstr['step4desc_joomla'].'</td>
                           </tr>
                           <tr>
                             <td class="normaltxt">phpBB</td>
