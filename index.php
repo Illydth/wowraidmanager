@@ -59,10 +59,10 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true)) {
 	$count2 = get_char_count($raids['raid_id'], $type='queue');
 
 	//Drafted maximum
-	$max = $count['dr'] + $count['hu'] + $count['ma'] + $count['pa'] + $count['pr'] + $count['ro'] + $count ['sh'] + $count['wk'] + $count['wa'];
+	$max = $count['dk'] + $count['dr'] + $count['hu'] + $count['ma'] + $count['pa'] + $count['pr'] + $count['ro'] + $count ['sh'] + $count['wk'] + $count['wa'];
 	
 	//Queued Additional
-	$max2 = $count2['dr'] + $count2['hu'] + $count2['ma'] + $count2['pa'] + $count2['pr'] + $count2['ro'] + $count2['sh'] + $count2['wk'] + $count2['wa'];
+	$max2 = $count2['dk'] + $count2['dr'] + $count2['hu'] + $count2['ma'] + $count2['pa'] + $count2['pr'] + $count2['ro'] + $count2['sh'] + $count2['wk'] + $count2['wa'];
 
 	if($max == "")
 	{
@@ -112,6 +112,7 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true)) {
 	
 	if($phpraid_config['class_as_min'])
 	{
+		$dk_text = get_coloredcount('death knight', $count['dk'], $raids['dk_lmt'], $count2['dk'], true);
 		$dr_text = get_coloredcount('druid', $count['dr'], $raids['dr_lmt'], $count2['dr'], true);
 		$hu_text = get_coloredcount('hunter', $count['hu'], $raids['hu_lmt'], $count2['hu'], true);
 		$ma_text = get_coloredcount('mage', $count['ma'], $raids['ma_lmt'], $count2['ma'], true);
@@ -130,6 +131,7 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true)) {
 	}
 	else
 	{
+		$dk_text = get_coloredcount('death knight', $count['dk'], $raids['dk_lmt'], $count2['dk']);
 		$dr_text = get_coloredcount('druid', $count['dr'], $raids['dr_lmt'], $count2['dr']);
 		$hu_text = get_coloredcount('hunter', $count['hu'], $raids['hu_lmt'], $count2['hu']);
 		$ma_text = get_coloredcount('mage', $count['ma'], $raids['ma_lmt'], $count2['ma']);
@@ -158,6 +160,7 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true)) {
 				'Invite Time'=>$invite,
 				'Start Time'=>$start,
 				'Officer'=>$raids['officer'],
+				'dk'=>$dk_text,
 				'dr'=>$dr_text,
 				'hu'=>$hu_text,
 				'ma'=>$ma_text,
@@ -189,6 +192,7 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true)) {
 				'Invite Time'=>$invite,
 				'Start Time'=>$start,
 				'Officer'=>$raids['officer'],
+				'dk'=>$count['dk'] . '/' . $raids['dk_lmt'],
 				'dr'=>$count['dr'] . '/' . $raids['dr_lmt'],
 				'hu'=>$count['hu'] . '/' . $raids['hu_lmt'],
 				'ma'=>$count['ma'] . '/' . $raids['ma_lmt'],
@@ -243,6 +247,7 @@ $report->addOutputColumn('Location',$phprlang['location'],'','center');
 $report->addOutputColumn('Invite Time',$phprlang['invite_time'],'wrmtime','center');
 $report->addOutputColumn('Start Time',$phprlang['start_time'],'wrmtime','center');
 $report->addOutputColumn('Officer',$phprlang['officer'],'','center');
+$report->addOutputColumn('dk', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/deathknight_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['deathknight'] . '\');" onMouseout="hideddrivetip();" alt="death knight">', '', 'center');
 $report->addOutputColumn('dr', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/druid_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['druid'] . '\');" onMouseout="hideddrivetip();" alt="druid">', '', 'center');
 $report->addOutputColumn('hu', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/hunter_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['hunter'] . '\');" onMouseout="hideddrivetip();" alt="hunter">', '', 'center');
 $report->addOutputColumn('ma', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/mage_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['mage'] . '\');" onMouseout="hideddrivetip();" alt="mage">', '', 'center');
@@ -252,12 +257,6 @@ $report->addOutputColumn('ro', '<img src="templates/' . $phpraid_config['templat
 $report->addOutputColumn('sh', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/shaman_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['shaman'] . '\');" onMouseout="hideddrivetip();" alt="shaman">', '', 'center');
 $report->addOutputColumn('wk', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/warlock_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['warlock'] . '\');" onMouseout="hideddrivetip();" alt="warlock">', '', 'center');
 $report->addOutputColumn('wa', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/warrior_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['warrior'] . '\');" onMouseout="hideddrivetip();" alt="warrior">', '', 'center');
-//$report->addOutputColumn('Tank',$phprlang['role_tanks'],'','center');
-//$report->addOutputColumn('Tank','<img src="templates/' . $phpraid_config['template'] . '/images/classes/warrior_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['role_tanks'] . '\')"; onMouseout="hideddrivetip()">','','center');
-//$report->addOutputColumn('Heal','<img src="templates/' . $phpraid_config['template'] . '/images/classes/priest_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['role_heals'] . '\')"; onMouseout="hideddrivetip()">','','center');
-//$report->addOutputColumn('Melee','<img src="templates/' . $phpraid_config['template'] . '/images/classes/rogue_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['role_melees'] . '\')"; onMouseout="hideddrivetip()">','','center');
-//$report->addOutputColumn('Ranged','<img src="templates/' . $phpraid_config['template'] . '/images/classes/mage_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['role_ranges'] . '\')"; onMouseout="hideddrivetip()">','','center');
-//$report->addOutputColumn('TkMel','<img src="templates/' . $phpraid_config['template'] . '/images/classes/druid_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['role_tankmelees'] . '\')"; onMouseout="hideddrivetip()">','','center');
 if ($phpraid_config['role1_name'] != '')
 	$report->addOutputColumn('role1',$phpraid_config['role1_name'],'','center');
 if ($phpraid_config['role2_name'] != '')
