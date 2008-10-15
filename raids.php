@@ -86,7 +86,7 @@ if($_GET['mode'] == 'view')
 		$new_raid_link = '<a href="raids.php?mode=new"><img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_new_raid.gif" border="0"  onMouseover="ddrivetip(\''.$phprlang['raids_new_header'].'\');" onMouseout="hideddrivetip();" alt="new raid icon"></a>';
 
 		//setup the count array
-		$count = array('dr'=>'0','hu'=>'0','ma'=>'0','pa'=>'0','pr'=>'0','ro'=>'0','sh'=>'0','wk'=>'0','wa'=>'0','role1'=>'0','role2'=>'0','role3'=>'0','role4'=>'0','role5'=>'0','role6'=>'0');
+		$count = array('dk'=>'0','dr'=>'0','hu'=>'0','ma'=>'0','pa'=>'0','pr'=>'0','ro'=>'0','sh'=>'0','wk'=>'0','wa'=>'0','role1'=>'0','role2'=>'0','role3'=>'0','role4'=>'0','role5'=>'0','role6'=>'0');
 
 		$desc = scrub_input($data['description']);
 		$desc = str_replace("'", "\'", $desc);
@@ -102,10 +102,10 @@ if($_GET['mode'] == 'view')
 		$count2 = get_char_count($data['raid_id'], $type='queue');
 
 		//Raid maximum
-		$total = $count['dr'] + $count['hu'] + $count['ma'] + $count['pa'] + $count['pr'] + $count['ro'] + $count['sh'] + $count['wk'] + $count['wa'];
+		$total = $count['dk'] + $count['dr'] + $count['hu'] + $count['ma'] + $count['pa'] + $count['pr'] + $count['ro'] + $count['sh'] + $count['wk'] + $count['wa'];
 
 		//Backup
-		$total2 = $count2['dr'] + $count2['hu'] + $count2['ma'] + $count2['pa'] + $count2['pr'] + $count2['ro'] + $count2['sh'] + $count2['wk'] + $count2['wa'];
+		$total2 = $count2['dk'] + $count2['dr'] + $count2['hu'] + $count2['ma'] + $count2['pa'] + $count2['pr'] + $count2['ro'] + $count2['sh'] + $count2['wk'] + $count2['wa'];
 
 		if($total == "")
 		{
@@ -132,6 +132,7 @@ if($_GET['mode'] == 'view')
 
 		if($phpraid_config['class_as_min'])
 		{
+			$dk_text = get_coloredcount('death knight', $count['dk'], $data['dk_lmt'], $count2['dk'], true);
 			$dr_text = get_coloredcount('druid', $count['dr'], $data['dr_lmt'], $count2['dr'], true);
 			$hu_text = get_coloredcount('hunter', $count['hu'], $data['hu_lmt'], $count2['hu'], true);
 			$ma_text = get_coloredcount('mage', $count['ma'], $data['ma_lmt'], $count2['ma'], true);
@@ -150,6 +151,7 @@ if($_GET['mode'] == 'view')
 		}
 		else
 		{
+			$dk_text = get_coloredcount('death knight', $count['dk'], $data['dk_lmt'], $count2['dk']);
 			$dr_text = get_coloredcount('druid', $count['dr'], $data['dr_lmt'], $count2['dr']);
 			$hu_text = get_coloredcount('hunter', $count['hu'], $data['hu_lmt'], $count2['hu']);
 			$ma_text = get_coloredcount('mage', $count['ma'], $data['ma_lmt'], $count2['ma']);
@@ -174,6 +176,7 @@ if($_GET['mode'] == 'view')
 					'id'=>$data['raid_id'],
 					'Date'=>$date,'Location'=>$location,'Invite Time'=>$invite,'Start Time'=>$start,'Officer'=>$data['officer'],
 					'Max'=>$total.'/'.$data['max']  . '' . $total2,
+					'DtK'=>$dk_text,
 					'Dru'=>$dr_text,
 					'Hun'=>$hu_text,
 					'Mag'=>$ma_text,
@@ -200,6 +203,7 @@ if($_GET['mode'] == 'view')
 				array(
 					'id'=>$data['raid_id'],'Date'=>$date,'Location'=>UBB2($location),'Invite Time'=>$invite,'Start Time'=>$start,'Officer'=>$data['officer'],
 					'Max'=>$total.'/'.$data['max']  . '' . $total2,
+					'DtK'=>$dk_text,
 					'Dru'=>$dr_text,
 					'Hun'=>$hu_text,
 					'Mag'=>$ma_text,
@@ -253,6 +257,7 @@ if($_GET['mode'] == 'view')
 	$report->addOutputColumn('Invite Time',$phprlang['invite_time'],'wrmtime','center');
 	$report->addOutputColumn('Start Time',$phprlang['start_time'],'wrmtime','center');
 	$report->addOutputColumn('Officer',$phprlang['officer'],'','center');
+	$report->addOutputColumn('DtK', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/deathknight_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['deathknight'] . '\');" onMouseout="hideddrivetip();" alt="death knight">', '', 'center');
 	$report->addOutputColumn('Dru', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/druid_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['druid'] . '\');" onMouseout="hideddrivetip();" alt="druid">', '', 'center');
 	$report->addOutputColumn('Hun', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/hunter_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['hunter'] . '\');" onMouseout="hideddrivetip();" alt="hunter">', '', 'center');
 	$report->addOutputColumn('Mag', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/mage_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['mage'] . '\');" onMouseout="hideddrivetip();" alt="mage">', '', 'center');
@@ -262,12 +267,6 @@ if($_GET['mode'] == 'view')
 	$report->addOutputColumn('Sha', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/shaman_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['shaman'] . '\');" onMouseout="hideddrivetip();" alt="shaman">', '', 'center');
 	$report->addOutputColumn('Wlk', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/warlock_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['warlock'] . '\');" onMouseout="hideddrivetip();" alt="warlock">', '', 'center');
 	$report->addOutputColumn('War', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/warrior_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['warrior'] . '\');" onMouseout="hideddrivetip();" alt="warrior">', '', 'center');
-	//$report->addOutputColumn('Tank',$phprlang['role_tanks'],'','center');
-	//$report->addOutputColumn('Tank','<img src="templates/' . $phpraid_config['template'] . '/images/classes/warrior_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['role_tanks'] . '\');" onMouseout="hideddrivetip();">','','center');
-	//$report->addOutputColumn('Heal','<img src="templates/' . $phpraid_config['template'] . '/images/classes/priest_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['role_heals'] . '\');" onMouseout="hideddrivetip();">','','center');
-	//$report->addOutputColumn('Melee','<img src="templates/' . $phpraid_config['template'] . '/images/classes/rogue_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['role_melees'] . '\');" onMouseout="hideddrivetip();">','','center');
-	//$report->addOutputColumn('Ranged','<img src="templates/' . $phpraid_config['template'] . '/images/classes/mage_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['role_ranges'] . '\');" onMouseout="hideddrivetip();">','','center');
-	//$report->addOutputColumn('TkMel','<img src="templates/' . $phpraid_config['template'] . '/images/classes/druid_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['role_tankmelees'] . '\');" onMouseout="hideddrivetip();">','','center');
 	if ($phpraid_config['role1_name'] != '')
 		$report->addOutputColumn('role1',$phpraid_config['role1_name'],'','center');
 	if ($phpraid_config['role2_name'] != '')
@@ -311,6 +310,7 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 		$max = scrub_input($_POST['max']);
 		$min_lvl = scrub_input($_POST['min_lvl']);
 		$max_lvl = scrub_input($_POST['max_lvl']);
+		$dk = scrub_input($_POST['dk']);
 		$dr = scrub_input($_POST['dr']);
 		$hu = scrub_input($_POST['hu']);
 		$ma = scrub_input($_POST['ma']);
@@ -356,9 +356,9 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 			if (!is_numeric($role6))
 				$bad_role_limit = TRUE;
 		if($location == "" || $date == "" || $max == "" || $min_lvl == "" || $max_lvl == "" ||
-		   $dr == "" || $hu == "" || $ma == "" || $pa == "" || $pr == "" || $ro == "" || $sh == "" || $wk == "" || $wa == "" ||
+		   $dk == "" || $dr == "" || $hu == "" || $ma == "" || $pa == "" || $pr == "" || $ro == "" || $sh == "" || $wk == "" || $wa == "" ||
 		   !is_numeric($max) || !is_numeric($min_lvl) || !is_numeric($max_lvl) ||
-		   !is_numeric($dr) || !is_numeric($hu) || !is_numeric($ma) || !is_numeric($pa) || !is_numeric($pr) || !is_numeric($ro) || !is_numeric($sh) || !is_numeric($wk) || !is_numeric($wa) ||
+		   !is_numeric($dk) || !is_numeric($dr) || !is_numeric($hu) || !is_numeric($ma) || !is_numeric($pa) || !is_numeric($pr) || !is_numeric($ro) || !is_numeric($sh) || !is_numeric($wk) || !is_numeric($wa) ||
 		   $bad_role_limit)
 		{
 			$errorTitle = $phprlang['form_error'];
@@ -370,13 +370,10 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 			if($date == "")
 				$errorMsg .= '<li>' . $phprlang['raid_error_date'] . '</li>';
 
-            //if($description == "")  													//Commented
-            //	$errorMsg .= '<li>' . $phprlang['raid_error_description'] . '</li>';	//Commented
-
 			if($max == "" || $min_lvl == "" || $max_lvl == "" ||
-			$dr == "" || $hu == "" || $ma == "" || $pa == "" || $pr == "" || $ro == "" || $sh == ""  || $wk == "" || $wa == "" ||
+			$dk == "" || $dr == "" || $hu == "" || $ma == "" || $pa == "" || $pr == "" || $ro == "" || $sh == ""  || $wk == "" || $wa == "" ||
 			!is_numeric($max) || !is_numeric($min_lvl) || !is_numeric($max_lvl) ||
-			!is_numeric($dr) || !is_numeric($hu) || !is_numeric($ma) || !is_numeric($pa) ||!is_numeric($pr) || !is_numeric($ro) || !is_numeric($sh) || !is_numeric($wk) || !is_numeric($wa) ||
+			!is_numeric($dk) || !is_numeric($dr) || !is_numeric($hu) || !is_numeric($ma) || !is_numeric($pa) ||!is_numeric($pr) || !is_numeric($ro) || !is_numeric($sh) || !is_numeric($wk) || !is_numeric($wa) ||
 			$bad_role)
 				$errorMsg .= '<li>' . $phprlang['raid_error_limits'] . '</li>';
 		}
@@ -406,6 +403,7 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 		}
 
 		$max = $data['max'];
+		$dk = $data['dk'];
 		$dr = $data['dr'];
 		$hu = $data['hu'];
 		$ma = $data['ma'];
@@ -460,6 +458,7 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 				}
 
 	            $max = $data['max'];
+	            $dk = $data['dk'];
 			    $dr = $data['dr'];
 			    $hu = $data['hu'];
 			    $ma = $data['ma'];
@@ -508,6 +507,7 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 	            $data = $db_raid->sql_fetchrow($result, true);
 	            
 	            $max = $data['max'];
+	            $dk = $data['dk_lmt'];
 	            $dr = $data['dr_lmt'];
 	            $hu = $data['hu_lmt'];
 	            $ma = $data['ma_lmt'];
@@ -547,6 +547,7 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 		{
 			// or it could be they screwed up the form, let's put those values back in because we're nice like that
 			$max = scrub_input($_POST['max']);
+			$dk = scrub_input($_POST['dk']);
 			$dr = scrub_input($_POST['dr']);
 			$hu = scrub_input($_POST['hu']);
 			$ma = scrub_input($_POST['ma']);
@@ -770,6 +771,7 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 			$maximum = '<input name="max" type="text" class="post" style="width:20px" value="' . $max . '" maxlength="2">';
 			$minimum_level = '<input name="min_lvl" type="text" class="post" style="width:20px" value="' . $min_lvl_value . '" maxlength="2">';
 			$maximum_level =  '<input name="max_lvl" type="text" class="post" style="width:20px" value="' . $max_lvl_value . '" maxlength="2">';
+			$deathknight_limit = '<input name="dk" type="text" class="post" style="width:20px" value="' . $dk . '" maxlength="2">';
 			$druid_limit = '<input name="dr" type="text" class="post" style="width:20px" value="' . $dr . '" maxlength="2">';
 			$hunter_limit = '<input name="hu" type="text" class="post" style="width:20px" value="' . $hu . '" maxlength="2">';
 			$mage_limit = '<input name="ma" type="text" class="post" style="width:20px" value="' . $ma . '" maxlength="2">';
@@ -807,6 +809,7 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 			$maximum = '<input name="max" type="text" class="post" style="width:20px" maxlength="2">';
 			$minimum_level = '<input name="min_lvl" type="text" class="post" style="width:20px" maxlength="2">';
 			$maximum_level =  '<input name="max_lvl" type="text" class="post" style="width:20px" maxlength="2">';
+			$deathknight_limit = '<input name="dk" type="text" class="post" style="width:20px" maxlength="2">';
 			$druid_limit = '<input name="dr" type="text" class="post" style="width:20px" maxlength="2">';
 			$hunter_limit = '<input name="hu" type="text" class="post" style="width:20px" maxlength="2">';
 			$mage_limit = '<input name="ma" type="text" class="post" style="width:20px" maxlength="2">';
@@ -862,6 +865,7 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 				'maximum'=>$maximum,
 				'minimum_level'=>$minimum_level,
 				'maximum_level'=>$maximum_level,
+				'deathknight_limit'=>$deathknight_limit,
 				'druid_limit'=>$druid_limit,
 				'hunter_limit'=>$hunter_limit,
 				'mage_limit'=>$mage_limit,
@@ -889,6 +893,7 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 				'max_text'=>$phprlang['raids_max'],
 				'minlvl_text'=>$phprlang['raids_min_lvl'],
 				'maxlvl_text'=>$phprlang['raids_max_lvl'],
+				'deathknight_text'=>$phprlang['deathknight'],
 				'druid_text'=>$phprlang['druid'],
 				'hunter_text'=>$phprlang['hunter'],
 				'mage_text'=>$phprlang['mage'],
@@ -906,13 +911,13 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 				'role6_text'=>$phpraid_config['role6_name']
 			)
 		);
-
 	}
 	else
 	{
 		// holy crap, time to put it into the database
 		// variables first
 		$max = scrub_input($_POST['max']);
+		$dk = scrub_input($_POST['dk']);
 		$dr = scrub_input($_POST['dr']);
 		$hu = scrub_input($_POST['hu']);
 		$ma = scrub_input($_POST['ma']);
@@ -975,14 +980,13 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 
 		if($_GET['mode'] == 'new')
 		{
-
 			$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "raids (`description`,`freeze`,`invite_time`,
-					`location`,`officer`,`old`,`start_time`,`dr_lmt`,`hu_lmt`,`ma_lmt`,`pa_lmt`,`pr_lmt`,`ro_lmt`,`sh_lmt`,`wk_lmt`,`wa_lmt`,
+					`location`,`officer`,`old`,`start_time`,`dk_lmt`,`dr_lmt`,`hu_lmt`,`ma_lmt`,`pa_lmt`,`pr_lmt`,`ro_lmt`,`sh_lmt`,`wk_lmt`,`wa_lmt`,
 					`role1_lmt`,`role2_lmt`,`role3_lmt`,`role4_lmt`,`role5_lmt`,`role6_lmt`,
-					`min_lvl`,`max_lvl`,`max`)	VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
+					`min_lvl`,`max_lvl`,`max`)	VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
 					quote_smart($description),quote_smart($freeze),quote_smart($invite_time),quote_smart($location),
 					quote_smart($username),quote_smart('0'),quote_smart($start_time),
-					quote_smart($dr),quote_smart($hu),quote_smart($ma),quote_smart($pa),quote_smart($pr),quote_smart($ro),quote_smart($sh),
+					quote_smart($dk),quote_smart($dr),quote_smart($hu),quote_smart($ma),quote_smart($pa),quote_smart($pr),quote_smart($ro),quote_smart($sh),
 					quote_smart($wk),quote_smart($wa),quote_smart($role1),quote_smart($role2),quote_smart($role3),quote_smart($role4),
 					quote_smart($role5),quote_smart($role6),quote_smart($min_lvl),quote_smart($max_lvl),quote_smart($max));
 
@@ -992,12 +996,11 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 		}
 		else
 		{
-
 			$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "raids SET location=%s,description=%s,invite_time=%s,start_time=%s,
-					freeze=%s,max=%s,old='0',dr_lmt=%s,hu_lmt=%s,ma_lmt=%s,pa_lmt=%s,pr_lmt=%s,ro_lmt=%s,sh_lmt=%s,wk_lmt=%s,wa_lmt=%s,
+					freeze=%s,max=%s,old='0',dk_lmt=%s,dr_lmt=%s,hu_lmt=%s,ma_lmt=%s,pa_lmt=%s,pr_lmt=%s,ro_lmt=%s,sh_lmt=%s,wk_lmt=%s,wa_lmt=%s,
 					role1_lmt=%s,role2_lmt=%s,role3_lmt=%s,role4_lmt=%s,role5_lmt=%s,role6_lmt=%s,min_lvl=%s,max_lvl=%s WHERE raid_id=%s",
 					quote_smart($location),quote_smart($description),quote_smart($invite_time),quote_smart($start_time), quote_smart($freeze),
-					quote_smart($max),quote_smart($dr),quote_smart($hu),quote_smart($ma),quote_smart($pa),quote_smart($pr),quote_smart($ro),
+					quote_smart($max),quote_smart($dk),quote_smart($dr),quote_smart($hu),quote_smart($ma),quote_smart($pa),quote_smart($pr),quote_smart($ro),
 					quote_smart($sh),quote_smart($wk),quote_smart($wa),quote_smart($role1),quote_smart($role2),quote_smart($role3),
 					quote_smart($role4),quote_smart($role5),quote_smart($role6),quote_smart($min_lvl),quote_smart($max_lvl),quote_smart($id));
 
