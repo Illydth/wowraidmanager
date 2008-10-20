@@ -306,6 +306,9 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 	{
 		$location = scrub_input($_POST['location']);
 		$date = str_replace(" ", "", scrub_input($_POST['date']));
+		$tag = scrub_input($_POST['tag']);
+		if ($tag == '')
+			$tag = "1";
 		$description = scrub_input($_POST['description']);
 		$max = scrub_input($_POST['max']);
 		$min_lvl = scrub_input($_POST['min_lvl']);
@@ -326,7 +329,7 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 		$role4 = scrub_input($_POST['role4']);
 		$role5 = scrub_input($_POST['role5']);
 		$role6 = scrub_input($_POST['role6']);		
-
+		
 		//~@@**** Change - Douglas Wagner, 6/23/2007 ****
 		//Allowing for a Blank Raid Description.  This shouldn't be a required field.  The field is still checked but if it isn't there
 		//   the descripton is manually set to "None" and we move on.
@@ -402,6 +405,7 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 			$data = $db_raid->sql_fetchrow($result, true);
 		}
 
+		$tag = $data['event_type'];
 		$max = $data['max'];
 		$dk = $data['dk'];
 		$dr = $data['dr'];
@@ -457,6 +461,7 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 					$data = $db_raid->sql_fetchrow($result, true);
 				}
 
+				$tag = $data['event_type'];
 	            $max = $data['max'];
 	            $dk = $data['dk'];
 			    $dr = $data['dr'];
@@ -506,6 +511,7 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 	            $result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 	            $data = $db_raid->sql_fetchrow($result, true);
 	            
+	            $tag = $data['event_type'];
 	            $max = $data['max'];
 	            $dk = $data['dk_lmt'];
 	            $dr = $data['dr_lmt'];
@@ -546,6 +552,7 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 		elseif(isset($_POST['submit']))
 		{
 			// or it could be they screwed up the form, let's put those values back in because we're nice like that
+			$tag = scrub_input($_POST['tag']);
 			$max = scrub_input($_POST['max']);
 			$dk = scrub_input($_POST['dk']);
 			$dr = scrub_input($_POST['dr']);
@@ -706,6 +713,15 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 		}
 		$freeze .= '</select>';
 
+		// Event Type for WoW Calendar
+		$freeze = '<select name="tag" class="post">';
+		$freeze .= '<option value="1" selected>' . $i . '</option>';
+		$freeze .= '<option value="2" selected>' . $i . '</option>';
+		$freeze .= '<option value="3" selected>' . $i . '</option>';
+		$freeze .= '<option value="4" selected>' . $i . '</option>';
+		$freeze .= '<option value="5" selected>' . $i . '</option>';
+		$freeze .= '</select>';
+		
 		// location
 		if(isset($location_value))
 			$location = '<input type="text" name="location" class="post" value="' . $location_value . '">';
