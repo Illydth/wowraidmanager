@@ -30,6 +30,7 @@
 *
 ****************************************************************************/
 // classes　職業
+$phprlang['deathknight'] = 'Death Knight';
 $phprlang['druid'] = '德魯伊';
 $phprlang['hunter'] = '獵人';
 $phprlang['mage'] = '法師';

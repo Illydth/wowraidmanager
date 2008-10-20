@@ -30,6 +30,7 @@
 *
 ****************************************************************************/
 // classes
+$phprlang['deathknight'] = 'Death Knight';
 $phprlang['druid'] = 'Druid';
 $phprlang['hunter'] = 'Hunter';
 $phprlang['mage'] = 'Mage';

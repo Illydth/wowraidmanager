@@ -42,7 +42,7 @@ require_once('lang_wow.php');
 
 // data output headers (Reports.php)
 $phprlang['add_team']='Zum Team hinzufügen';
-$phprlang['add_team_dropdown_text']='Team, zu dem Mitglieder hinzugefügt werdensollen';
+$phprlang['add_team_dropdown_text']='Team, zu dem Mitglieder hinzugefügt werden sollen';
 $phprlang['team_global']='Team für alle Raids verfügbar machen';
 $phprlang['male'] = 'männlich';
 $phprlang['female'] = 'weiblich';
@@ -109,23 +109,23 @@ $phprlang['max_tkmels'] = 'Erwünschte Tanks oder Nahkämpfer';
 
 // errors
 $phprlang['connect_socked_error'] = 'Fehler beim Aufbau der Socket-Verbindung:  %s';
-// unused: $phprlang['invalid_group_title'] = 'Group exists';
-// unused: $phprlang['invalid_group_message'] = 'The group selected is already part of this set. Press your browsers BACK button to try again.';
+// unused: $phprlang['invalid_group_title'] = 'Gruppe existiert';
+// unused: $phprlang['invalid_group_message'] = 'Die ausgewählte Gruppe ist bereits ein Teil dieses Sets. Bitte benutze in deinem Browser die "Zurück"-Taste und versuche es erneut.';
 $phprlang['invalid_option_title'] = 'Ungültigte Eingabe für die Seite';
-$phprlang['invalid_option_msg'] = 'Du hast versucht, diese Seite mit ungültigenEingabe aufzurufen.';
+$phprlang['invalid_option_msg'] = 'Du hast versucht, diese Seite mit ungültigen Eingaben aufzurufen.';
 $phprlang['no_user_msg'] = 'Der Benutzer, den du dir ansehen möchtest, existiert nicht oder wurde gelöscht.';
 $phprlang['no_user_title'] = 'Benutzer existiert nicht';
 $phprlang['print_error_critical'] = 'kritischen Fehler entdeckt!';
 $phprlang['print_error_details'] = 'Details';
 $phprlang['print_error_minor'] = 'kleinen Fehler entdeckt!';
-$phprlang['print_error_msg_begin'] = 'Entschuldigung, phhRaid hat einen ';
-$phprlang['print_error_msg_end'] = 'Wenn der Fehler weiter auftritt, erzeuge bitte ein Posting 
+$phprlang['print_error_msg_begin'] = 'Entschuldigung, WRM hat einen ';
+$phprlang['print_error_msg_end'] = 'Wenn der Fehler weiter auftritt, erzeuge bitte ein Posting
 									mit dieser Nachricht <br>in den <a href="http://www.wowraidmanager.net/">wowraidmanager.net-Forums</a> und
 									wir werden unser Bestes geben, um ihn zu beheben. Danke!';
 $phprlang['print_error_page'] = 'Seite';
 $phprlang['print_error_query'] = 'Anfrage';
 $phprlang['print_error_title'] = 'Oh-oh! Da ist ein Fehler passiert';
-$phprlang['socket_functions_disabled'] = 'Die Versionsprüfung konnte den Servernicht erreichen.';
+$phprlang['socket_functions_disabled'] = 'Die Versionsprüfung konnte den Server nicht erreichen.';
 
 // forms
 $phprlang['asc'] = 'aufsteigender';
@@ -141,7 +141,7 @@ $phprlang['permissions_form_description'] = 'Du musst eine Beschreibung eingeben
 $phprlang['permissions_form_name'] = 'Du musst einen Namen eingeben';
 $phprlang['profile_error_arcane'] = 'Arkanwiderstand muss nummerisch sein';
 $phprlang['profile_error_class'] = 'Du musst eine Klasse auswählen';
-$phprlang['profile_error_dupe'] = 'Ein Character mit diesem Namen existiert bereits';
+$phprlang['profile_error_dupe'] = 'Ein Charakter mit diesem Namen existiert bereits';
 $phprlang['profile_error_fire'] = 'Feuerwiderstand muss nummerisch sein';
 $phprlang['profile_error_frost'] = 'Frostwiderstand muss nummerisch sein';
 $phprlang['profile_error_guild'] = 'Du musst eine Gilde auswählen';
@@ -162,12 +162,12 @@ $phprlang['yes'] = 'Ja';
 // Buttons
 $phprlang['submit'] = 'Übernehmen';
 $phprlang['reset'] = 'Zurücksetzen';
-$phprlang['confirm'] = 'Confirm';
-$phprlang['update'] = 'Update';
+$phprlang['confirm'] = 'Bestätigen';
+$phprlang['update'] = 'Aktualisieren';
 $phprlang['confirm_deletion'] = 'Löschen bestätigen';
 $phprlang['filter'] = 'Filter';
-$phprlang['addchar'] = 'Add Character';
-$phprlang['updatechar'] = 'Update Character';
+$phprlang['addchar'] = 'Charakter hinzufügen';
+$phprlang['updatechar'] = 'Charakter aktualisieren';
 $phprlang['login'] = 'Anmelden';
 $phprlang['logout'] = 'Abmelden';
 $phprlang['signup'] = 'Anmelden';
@@ -177,7 +177,7 @@ $phprlang['delete_msg'] = 'ACHTUNG: Die Löschung ist permanent und kann nicht r
 $phprlang['maintenance_header'] = 'Wartungsarbeiten';
 $phprlang['maintenance_message'] = 'WoW Raid Manager wird gerade Wartungsarbeiten unterzogen. Bitte versuche es später noch einmal.';
 $phprlang['disabled_header'] = 'Webseite deaktiviert!';
-$phprlang['disabled_message'] = 'Die Webseite ist deaktiviert. Besucher können das System im Moment nicht benutzen!<br>Gehe in die <u>Konfiguration</u> und entferne den Haken bei <u>phpRaid deaktivieren</u>';
+$phprlang['disabled_message'] = 'Die Webseite ist deaktiviert. Besucher können das System im Moment nicht benutzen!<br>Gehe in die <u>Konfiguration</u> und entferne den Haken bei <u>WRM deaktivieren</u>';
 $phprlang['userclass_msg'] = 'Dein Benutzer hat nicht die Berechtigung, WoW Raid Manager zu benutzen. Bitte benachrichtige den System-Administrator.';
 $phprlang['priv_title'] = 'Ungenügende Rechte';
 $phprlang['priv_msg'] = 'Du hast nicht die Berechtigung, diese Seite aufzurufen. Wenn du glaubst, dass es sich dabei um einen Fehler handelt, benachrichtige bitte den Administrator.';
@@ -185,14 +185,14 @@ $phprlang['remember'] = 'Mich bei jedem Besuch von diesem Computer automatisch a
 $phprlang['welcome'] = 'Willkommen ';
 
 // Login Information
-$phprlang['login_fail_title'] = 'Login fehlgeschlagen';
+$phprlang['login_fail_title'] = 'Anmeldung fehlgeschlagen';
 $phprlang['login_fail'] = 'Du hast einen ungültigen Benutzernamen oder ein falsches Passwort eingegeben. Bitte versuche es noch einmal.';
 $phprlang['login_forgot_password'] = 'Passwort vergessen?';
 $phprlang['login_pwdreset_fail_title'] = 'Das Passwort konnte nicht gesendet/zurückgesetzt werden';
 $phprlang['login_pwdreset_title'] = 'Passwort zurücksetzen';
 $phprlang['login_password_reset_msg']= 'Um dein Passwort zurückzusetzen, gib die folgenden Informationen ein';
-$phprlang['login_username_email_incorrect'] = 'Der eingegebene Benutzername und/oder E-Mail-Adresse sind ungültig.<br><br>Bitte klicke auf Zurück und versuche es erneut.';
-$phprlang['login_password_sent'] = 'Dein WRM-Passwort wurde zurückgesetzt, und das neue Passwort wurde gesendet an:<br><br>';
+$phprlang['login_username_email_incorrect'] = 'Der eingegebene Benutzername und/oder E-Mail-Adresse sind ungültig.<br><br>Bitte klicke auf die "Zurück"-Taste in deinem Browser und versuche es erneut.';
+$phprlang['login_password_sent'] = 'Dein WRM-Passwort wurde zurückgesetzt und das neue Passwort wurde gesendet an:<br><br>';
 $phprlang['login_password_sent2'] = '<br><br>Bitte überprüfe die oben angegebene E-Mail-Adresse auf eine Nachricht vom System. ' .
 									'Wenn du die Nachricht nicht findest, prüfe bitte den Spam-Ordner und/oder schalte den ' .
 									'Spam-Filter ab und klicke erneut auf "Passwort vergessen".';
@@ -205,19 +205,19 @@ $phprlang['login_password_email_msg2'] = '<br><br>Bitte logge dich im WRM-System
 										 'etwas zu ändern, das sich leichter merken lässt.<br><br>Wenn du NICHT der warst, der auf den Link geklickt hat, ' .
 										 'kontaktiere bitte deinen WRM-Administrator, um ihn darüber zu informieren, dass der Zurücksetzen-Link missbraucht wurde.<br><br>' .
 										 'Du wirst das oben angegebene, neue Passwort benötigen, um auf deinen WRM-Account zuzugreifen.';
-$phprlang['login_password_email_sub'] = 'WRM-Passwort zurückgesetzt'.										 
+$phprlang['login_password_email_sub'] = 'WRM-Passwort zurückgesetzt'.
 $phprlang['login_chpass_text'] = 'Passwort für Benutzer ändern: ';
 $phprlang['login_chpwd'] = 'Passwort ändern';
 $phprlang['login_curr_password'] = 'Aktuelles Passwort';
 $phprlang['login_password_conf'] = 'Passwort bestätigen';
-$phprlang['login_password_incorrect'] = 'Entweder ist das aktuelle Passwort für den angegebenen Benutzernamen falsch oder das neue ' .
-										'Passwort und das Bestätigungs-Passwort stimmen nicht überein.<br><br>Bitte klicke auf Zurück und versuche es noch mal.';
+$phprlang['login_password_incorrect'] = 'Entweder ist das aktuelle Passwort für den angegebenen Benutzernamen falsch, oder das neue ' .
+										'Passwort und das Bestätigungs-Passwort stimmen nicht überein.<br><br>Bitte klicke auf die "Zurück"-Taste in deinem Browser und versuche es noch mal.';
 $phprlang['login_password_new'] = 'Neues Passwort';
 $phprlang['login_pwdreset_success'] = 'Dein Passwort WURDE korrekt zurückgesetzt.<br><br>Du benötigst das neue Passwort, wenn du dich das nächste Mal anmeldest.';
 
 // Days of the Week
-$phprlang['month'] = 'Month';
-$phprlang['year'] = 'Year';
+$phprlang['month'] = 'Monat';
+$phprlang['year'] = 'Jahr';
 $phprlang['sunday'] = 'Sonntag';
 $phprlang['monday'] = 'Montag';
 $phprlang['tuesday'] = 'Dienstag';
@@ -234,19 +234,19 @@ $phprlang['2ltrfriday'] = 'Fr';
 $phprlang['2ltrsaturday'] = 'Sa';
 
 // Months
-$phprlang['month1'] = 'January';
-$phprlang['month2'] = 'February';
-$phprlang['month3'] = 'March';
+$phprlang['month1'] = 'Januar';
+$phprlang['month2'] = 'Februar';
+$phprlang['month3'] = 'März';
 $phprlang['month4'] = 'April';
-$phprlang['month5'] = 'May';
-$phprlang['month6'] = 'June';
-$phprlang['month7'] = 'July';
+$phprlang['month5'] = 'Mai';
+$phprlang['month6'] = 'Juni';
+$phprlang['month7'] = 'Juli';
 $phprlang['month8'] = 'August';
 $phprlang['month9'] = 'September';
-$phprlang['month10'] = 'October';
+$phprlang['month10'] = 'Oktober';
 $phprlang['month11'] = 'November';
-$phprlang['month12'] = 'December';
-							
+$phprlang['month12'] = 'Dezember';
+
 // links
 $phprlang['announcements_link'] = '&raquo; Ankündigungen';
 $phprlang['configuration_link'] = '&raquo; Konfiguration';
@@ -267,8 +267,8 @@ $phprlang['dkp_link'] = '&raquo; DKP';
 
 // sorting information
 $phprlang['sort_text'] = 'Sortieren nach ';
-$phprlang['sort_desc']='Klicken Sie hier, um die Reihenfolge zu sortieren (absteigender) nach ';
-$phprlang['sort_asc']='Klicken Sie hier, um die Reihenfolge zu sortieren (aufsteigend) nach '; 
+$phprlang['sort_desc']='Klicke hier, um die Reihenfolge absteigend zu sortieren nach: ';
+$phprlang['sort_asc']='Klicke hier, um die Reihenfolge aufsteigend zu sortieren nach: ';
 
 // tooltips
 $phprlang['add'] = 'Hinzufügen';
@@ -277,11 +277,11 @@ $phprlang['arcane'] = 'Arkan';
 $phprlang['calendar'] = 'Kalender';
 $phprlang['cancel'] = 'Anmeldung abbrechen';
 $phprlang['cancel_msg'] = 'Du hast deine Anmeldung für diesen Raid abgebrochen';
-$phprlang['comments'] = 'Kommentare';
+$phprlang['comments'] = 'Kommentar';
 $phprlang['configuration'] = 'Konfiguration';
 $phprlang['delete'] = 'Löschen';
 $phprlang['description'] = 'Beschreibung';
-$phprlang['druid_icon'] = 'Klick, um Druiden zu sehen';
+$phprlang['druid_icon'] = 'Klicke, um Druiden zu sehen';
 $phprlang['edit'] = 'Bearbeiten';
 $phprlang['edit_comment'] = 'Kommentar bearbeiten';
 $phprlang['fire'] = 'Feuer';
@@ -291,35 +291,35 @@ $phprlang['group_name'] = 'Gruppenname';
 $phprlang['group_description'] = 'Gruppenbeschreibung';
 $phprlang['guilds'] = 'Gilden';
 $phprlang['has_permission'] = 'Hat Berechtigung';
-$phprlang['hunter_icon'] = 'Klick, um Jäger zu sehen';
+$phprlang['hunter_icon'] = 'Klicke, um Jäger zu sehen';
 $phprlang['in_queue'] = 'Benutzer in die Warteschlange setzen';
 $phprlang['last_login_date'] = 'Letzter Login';
 $phprlang['last_login_time'] = 'Uhrzeit';
 $phprlang['locations'] = 'Instanzen';
 $phprlang['logs'] = 'Protokoll';
 $phprlang['lua'] = 'LUA- und Makroausgabe';
-$phprlang['mage_icon'] = 'Klick, um Magier zu sehen';
+$phprlang['mage_icon'] = 'Klicke, um Magier zu sehen';
 $phprlang['mark'] = 'Raid als veraltet markieren';
 $phprlang['nature'] = 'Natur';
 $phprlang['new'] = 'Raid als aktuell markieren';
 $phprlang['not_signed_up'] = 'Klicke hier, um dich für den Raid anzumelden';
 $phprlang['out_queue'] = 'Benutzer in die Anmeldeliste setzen';
-$phprlang['paladin_icon'] = 'Klick, um Paladine zu sehen';
+$phprlang['paladin_icon'] = 'Klicke, um Paladine zu sehen';
 $phprlang['permissions'] = 'Berechtigungen';
-$phprlang['priest_icon'] = 'Klick, um Priester zu sehen';
+$phprlang['priest_icon'] = 'Klicke, um Priester zu sehen';
 $phprlang['priv'] = 'Berechtigungsgruppe';
 $phprlang['profile'] = 'Profil';
 $phprlang['raids'] = 'Raids';
-// unused: $phprlang['remove_group'] = 'Remove group from set';
+// unused: $phprlang['remove_group'] = 'Entferne Gruppe aus dem Set';
 $phprlang['remove_user'] = 'Benutzer aus Berechtigungsgruppe entfernen';
-$phprlang['rogue_icon'] = 'Klick, um Schurken zu sehen';
+$phprlang['rogue_icon'] = 'Klicke, um Schurken zu sehen';
 $phprlang['shadow'] = 'Schatten';
-$phprlang['shaman_icon'] = 'Klick, um Schamanen zu sehen';
+$phprlang['shaman_icon'] = 'Klicke, um Schamanen zu sehen';
 $phprlang['signed_up'] = 'Du bist für diesen Raid angemeldet';
-$phprlang['signup_add'] = 'Benutzer der Anmeldung hinzufügen';
+$phprlang['signup_add'] = 'Benutzer der Anmeldung hinzufügen'; // wo wird das benutzt!?!?
 $phprlang['signup_delete'] = 'Benutzer von der Anmeldung entfernen (permanent)';
 $phprlang['users'] = 'Benutzer';
-$phprlang['warlock_icon'] = 'Klick, um Hexenmeister zu sehen';
-$phprlang['warrior_icon'] = 'Klick, um Krieger zu sehen';
+$phprlang['warlock_icon'] = 'Klicke, um Hexenmeister zu sehen';
+$phprlang['warrior_icon'] = 'Klicke, um Krieger zu sehen';
 
 ?>
