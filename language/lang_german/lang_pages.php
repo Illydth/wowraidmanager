@@ -36,10 +36,10 @@ $phprlang['announcements_message_text'] = 'Nachricht';
 $phprlang['announcements_title_text'] = 'Titel';
 
 // Calendar
-$phprlang['invites'] = 'Invites';
+$phprlang['invites'] = 'Einladungen';
 $phprlang['start'] = 'Start';
-$phprlang['key'] = 'Key:<br>(*) = Signed Up & Drafted<br>(#) = Signed Up, Not Drafted (queued or cancelled)<br><font color="#FFFFFF">White</font> dates are in the past.<br><font color="#FF0000">Red</font> date is today.<br><font color="#000000">Black</font> dates are in the future.';
-$phprlang['calendar_month_select_header'] = 'Select Month and Year to View';
+$phprlang['key'] = 'Legende:<br>(*) = Angemeldet & vorgesehen<br>(#) = Angemeldet, nicht vorgesehen (Warteliste oder abgebrochen)<br><font color="#FFFFFF">Weiß</font>: Datum liegt in der Vergangenheit.<br><font color="#FF0000">Rot</font>: Datum ist heute.<br><font color="#000000">Schwarz</font>: Datum liegt in der Zukunft.';
+$phprlang['calendar_month_select_header'] = 'Wähle das anzuzeigende Jahr und Monat';
 
 // configuration
 $phprlang['configuration_addon'] = 'Addon-URL';
@@ -48,8 +48,8 @@ $phprlang['configuration_admin_email'] = 'Administrator-E-Mail';
 $phprlang['configuration_ampm'] = '24-Stunden-Format verwenden';
 $phprlang['configuration_anonymous'] = 'Anonymes Betrachten erlauben';
 $phprlang['configuration_armory_enable'] = 'Arsenal-Hints aktivieren';
-$phprlang['configuration_armory_link_text'] = 'Correct Armory Link for Server';
-$phprlang['configuration_armory_language_text'] = 'Language Code for Armory';
+$phprlang['configuration_armory_link_text'] = 'Genauer Arsenal-Link für den Server';
+$phprlang['configuration_armory_language_text'] = 'Sprach-Code für Arsenal';
 $phprlang['configuration_autoqueue'] = 'Anmeldungen nur in Warteschlange erlauben';
 $phprlang['configuration_cancel'] = 'Abbrechen';
 $phprlang['configuration_cancel_def'] = 'Abbrechen = Benutzer in Bereich der abgebrochenen Anmeldungen platzieren';
@@ -62,7 +62,7 @@ $phprlang['configuration_debug'] = 'Debugmodus';
 $phprlang['configuration_default'] = 'Standardgruppe';
 $phprlang['configuration_delete'] = 'Löschen';
 $phprlang['configuration_delete_def'] = 'Löschen = Benutzer aus der Anmeldung komplett entfernen';
-$phprlang['configuration_disable'] = 'phpRaid deaktivieren';
+$phprlang['configuration_disable'] = 'WRM deaktivieren';
 $phprlang['configuration_draft'] = 'Anmelden';
 $phprlang['configuration_draft_def'] = 'Anmelden = Benutzer in den Bereich der Anmeldungen platzieren';
 $phprlang['configuration_drafted'] = 'Bestätigt';
@@ -84,26 +84,26 @@ $phprlang['configuration_multiple'] = 'Mehrfachanmeldungen erlauben';
 $phprlang['configuration_on_queue'] = 'in Warteschlange';
 $phprlang['configuration_queue'] = 'Warteschlange';
 $phprlang['configuration_queue_def'] = 'Warteschlange = Benutzer in Warteschlange platzieren';
-$phprlang['configuration_raid_settings_header'] = 'Raid Settings';
-$phprlang['configuration_raid_view_type_text'] = 'Select Raid View Type';
-$phprlang['configuration_raid_view_type_class'] = 'Display Raid View By Class';
-$phprlang['configuration_raid_view_type_role'] = 'Display Raid View By Role';
+$phprlang['configuration_raid_settings_header'] = 'Raideinstellungen';
+$phprlang['configuration_raid_view_type_text'] = 'Wähle die Anzeigeart der Raids';
+$phprlang['configuration_raid_view_type_class'] = 'Zeige Raids nach Klassen';
+$phprlang['configuration_raid_view_type_role'] = 'Zeige Raids nach Rollen';
 $phprlang['configuration_raidlead'] = 'Raidleiter';
 $phprlang['configuration_resop'] = 'Eingabe der Widerstände optional';
 $phprlang['configuration_register_text'] = 'Registrierungs-URL';
-$phprlang['configuration_role_header'] = 'Raideinstellungen';
-$phprlang['configuration_role1_text'] = 'Class Role #1';
-$phprlang['configuration_role2_text'] = 'Class Role #2';
-$phprlang['configuration_role3_text'] = 'Class Role #3';
-$phprlang['configuration_role4_text'] = 'Class Role #4';
-$phprlang['configuration_role5_text'] = 'Class Role #5';
-$phprlang['configuration_role6_text'] = 'Class Role #6';
-$phprlang['configuration_role_limit_text'] = 'Enforce Role Limits for Raid';
-$phprlang['configuration_class_limit_text'] = 'Enforce Class Limits for Raid';
-$phprlang['configuration_class_as_min'] = 'Use Class Limits as Minimums';
+$phprlang['configuration_role_header'] = 'Konfiguration der Rollen';
+$phprlang['configuration_role1_text'] = 'Rolle #1';
+$phprlang['configuration_role2_text'] = 'Rolle #2';
+$phprlang['configuration_role3_text'] = 'Rolle #3';
+$phprlang['configuration_role4_text'] = 'Rolle #4';
+$phprlang['configuration_role5_text'] = 'Rolle #5';
+$phprlang['configuration_role6_text'] = 'Rolle #6';
+$phprlang['configuration_role_limit_text'] = 'Erzwinge Rollen-Limit für Raids';
+$phprlang['configuration_class_limit_text'] = 'Erzwinge Klassen-Limit für Raids';
+$phprlang['configuration_class_as_min'] = 'Benutze Klassen-Limit als Minimum';
 $phprlang['configuration_roster_text'] = 'In WoW-Gildendatenbank integrieren';
-$phprlang['configuration_rss_site'] = 'RSS: URL zur phpRaid-Installation (ohne abschließenden /)';
-$phprlang['configuration_rss_export'] = 'RSS: Site to export RSS feed to'; /* FIX */
+$phprlang['configuration_rss_site'] = 'RSS: URL zur WRM-Installation (ohne abschließenden /)';
+$phprlang['configuration_rss_export'] = 'RSS: Seite des RSS-Feeds'; /* FIX */
 $phprlang['configuration_rss_feed_amt'] = 'RSS: Anzahl der Raids, die im Feed angezeigt werden sollen';
 $phprlang['configuration_server'] = 'Server';
 $phprlang['configuration_show_addon'] = 'Addon-Link zeigen';
@@ -120,14 +120,14 @@ $phprlang['configuration_version_info_header'] = 'Version Information';
 $phprlang['configuration_version_outdated_header'] = 'Eine neuere Version von WoW Raid Manager ist verfügbar!';
 $phprlang['configuration_version_outdated_message'] = 'Deine Version von WoW Raid Manager ist nicht aktuell. Ein Update wird empfohlen.<br>
 													   Die aktuellste Version ist %s, und du benutzt Version %s.<br>
-													   Zum Herunterladen besuche bitte den <a href="http://www.wowraidmanager.net/">offizielle WRM - Downloadbereich</a>.';
+													   Zum Herunterladen besuche bitte den <a href="http://www.wowraidmanager.net/">offiziellen WRM - Downloadbereich</a>.';
 
 // DKP
-$phprlang['eqdkp_system_link'] = 'Der Link zu unserem DKP - System:'; 
+$phprlang['eqdkp_system_link'] = 'Der Link zu unserem DKP - System:';
 
 // guilds
 $phprlang['guilds_header'] = 'Gildenliste';
-$phprlang['guilds_new_header'] = 'New Guild';
+$phprlang['guilds_new_header'] = 'Neue Gilde';
 $phprlang['guilds_master'] = 'Gildenmeister';
 $phprlang['guilds_name'] = 'Kompletter Gildenname';
 $phprlang['guilds_tag'] = 'Gildenkürzel';
@@ -207,12 +207,12 @@ $phprlang['roster_header'] = 'Mitgliederliste';
 
 // registration
 $phprlang['register_complete_header'] = 'Registrierung erfolgreich!';
-$phprlang['register_complete_msg'] = 'Du bist nun registriert. Klicke nun auf "Profil", um deine(n) Charakter(e) zu erstellen.';
+$phprlang['register_complete_msg'] = 'Du bist nun registriert. Klicke jetzt auf "Profil", um deine(n) Charakter(e) zu erstellen.';
 $phprlang['register_confirm'] = 'Die Passwörter stimmen nicht überein.';
 $phprlang['register_confirm_text'] = 'Passwort erneut eingeben';
 $phprlang['register_email_header'] = 'Deine Registrierung bei';
 $phprlang['register_email_empty'] = 'Du musst eine (gültige) E-Mail-Adresse eingeben';
-$phprlang['register_email_exists'] = 'Diese E-Mail-Adresse wird bereits benutzt';
+$phprlang['register_email_exists'] = 'Diese E-Mail-Adresse kannst du nicht benutzen';
 $phprlang['register_email_greeting'] = 'Willkommen';
 $phprlang['register_email_subject'] = 'Diese E-Mail dient nur als Registrierungsbestätigung. Bitte antworte nicht darauf.';
 $phprlang['register_email_text'] = 'E-Mail-Adresse';
@@ -233,7 +233,7 @@ $phprlang['users_header'] = 'Benutzer';
 $phprlang['view_approved'] = 'Bestätigte Mitglieder';
 $phprlang['view_cancel_header'] = 'Abgemeldete Benutzer';
 $phprlang['view_character'] = 'Charakter';
-$phprlang['view_comments'] = 'Kommentare';
+$phprlang['view_comments'] = 'Kommentar';
 $phprlang['view_create'] = 'Charakter erstellen';
 $phprlang['view_date'] = 'Datum';
 $phprlang['view_description_header'] = 'Raid-Beschreibung';
@@ -255,9 +255,9 @@ $phprlang['view_queued'] = 'Mitglieder auf der Warteliste';
 $phprlang['view_raid_cancel_text'] = 'Zurückgezogene Anmeldungen';
 $phprlang['view_signed'] = 'Bereits angemeldet';
 $phprlang['view_signup'] = 'Anmeldeinformation';
-$phprlang['view_signup_queue'] = 'Anmelden';
-$phprlang['view_signup_cancel'] = 'Abmelden';
-$phprlang['view_signup_draft'] = 'Signup as In Raid (Drafted)';
+$phprlang['view_signup_queue'] = 'In die Warteschlage anmelden';
+$phprlang['view_signup_cancel'] = 'Als nicht verfügbar anmelden';
+$phprlang['view_signup_draft'] = 'Für den Raid anmelden';
 $phprlang['view_start'] = 'Startzeit';
 $phprlang['view_statistics_header'] = 'Statistiken';
 $phprlang['view_teams_link_text'] = 'Teams für diesen Raid erzeugen und zuweisen';
