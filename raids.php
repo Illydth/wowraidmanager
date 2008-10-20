@@ -336,7 +336,7 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 //		   !is_numeric($wk) || !is_numeric($wa))
 
 		// Check Role Numbers
-		$bad_role = FALSE;
+		$bad_role_limit = FALSE;
 		if($phpraid_config['role1_name'] != '')
 			if (!is_numeric($role1))
 				$bad_role_limit = TRUE;
@@ -374,7 +374,7 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 			$dk == "" || $dr == "" || $hu == "" || $ma == "" || $pa == "" || $pr == "" || $ro == "" || $sh == ""  || $wk == "" || $wa == "" ||
 			!is_numeric($max) || !is_numeric($min_lvl) || !is_numeric($max_lvl) ||
 			!is_numeric($dk) || !is_numeric($dr) || !is_numeric($hu) || !is_numeric($ma) || !is_numeric($pa) ||!is_numeric($pr) || !is_numeric($ro) || !is_numeric($sh) || !is_numeric($wk) || !is_numeric($wa) ||
-			$bad_role)
+			$bad_role_limit)
 				$errorMsg .= '<li>' . $phprlang['raid_error_limits'] . '</li>';
 		}
 		if($description == "")				//Moved
