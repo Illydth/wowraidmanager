@@ -564,12 +564,12 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 			$sh = scrub_input($_POST['sh']);
 			$wk = scrub_input($_POST['wk']);
 			$wa = scrub_input($_POST['wa']);
-			$role1 = $data['role1'];
-			$role2 = $data['role2'];
-			$role3 = $data['role3'];
-			$role4 = $data['role4'];
-			$role5 = $data['role5'];
-			$role6 = $data['role6'];
+			$role1 = scrub_input($_POST['role1']);
+			$role2 = scrub_input($_POST['role2']);
+			$role3 = scrub_input($_POST['role3']);
+			$role4 = scrub_input($_POST['role4']);
+			$role5 = scrub_input($_POST['role5']);
+			$role6 = scrub_input($_POST['role6']);
 			$min_lvl_value = scrub_input($_POST['min_lvl']);
 			$max_lvl_value = scrub_input($_POST['max_lvl']);
 			$location_value = scrub_input($_POST['location']);
@@ -712,15 +712,30 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 				$freeze .= '<option value="' . $i . '">' . $i . '</option>';
 		}
 		$freeze .= '</select>';
-
+		
 		// Event Type for WoW Calendar
-		$freeze = '<select name="tag" class="post">';
-		$freeze .= '<option value="1" selected>' . $i . '</option>';
-		$freeze .= '<option value="2" selected>' . $i . '</option>';
-		$freeze .= '<option value="3" selected>' . $i . '</option>';
-		$freeze .= '<option value="4" selected>' . $i . '</option>';
-		$freeze .= '<option value="5" selected>' . $i . '</option>';
-		$freeze .= '</select>';
+		$eventtype = '<select name="tag" class="post">';
+		if ($tag == "1")
+			$eventtype .= '<option value="1" selected>' . $phprlang['raids_type_raid'] . '</option>';
+		else
+			$eventtype .= '<option value="1">' . $phprlang['raids_type_raid'] . '</option>';
+		if ($tag == "2")
+			$eventtype .= '<option value="2" selected>' . $phprlang['raids_type_dungeon'] . '</option>';
+		else
+			$eventtype .= '<option value="2">' . $phprlang['raids_type_dungeon'] . '</option>';
+		if ($tag == "3")
+			$eventtype .= '<option value="3" selected>' . $phprlang['raids_type_pvp'] . '</option>';
+		else
+			$eventtype .= '<option value="3">' . $phprlang['raids_type_pvp'] . '</option>';
+		if ($tag == "4")
+			$eventtype .= '<option value="4" selected>' . $phprlang['raids_type_meeting'] . '</option>';
+		else
+			$eventtype .= '<option value="4">' . $phprlang['raids_type_meeting'] . '</option>';
+		if ($tag == "5")
+			$eventtype .= '<option value="5" selected>' . $phprlang['raids_type_other'] . '</option>';
+		else
+			$eventtype .= '<option value="5">' . $phprlang['raids_type_other'] . '</option>';
+		$eventtype .= '</select>';
 		
 		// location
 		if(isset($location_value))
@@ -876,6 +891,7 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 				's_time_minute'=>$s_time_minute,
 				's_time_ampm'=>$s_time_ampm,
 				'freeze'=>$freeze,
+				'event_type'=>$eventtype,
 				'location'=>$location,
 				'description'=>$description,
 				'maximum'=>$maximum,
@@ -903,6 +919,7 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 				'invite_text'=>$phprlang['raids_invite'],
 				'start_text'=>$phprlang['raids_start'],
 				'freeze_text'=>$phprlang['raids_freeze'],
+				'eventtype_text'=>$phprlang['raids_eventtype_text'],
 				'location_text'=>$phprlang['raids_location'],
 				'description_text'=>$phprlang['raids_description'],
 				'limits_text'=>$phprlang['raids_limits'],
@@ -974,6 +991,7 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 		$s_time_minute_value = scrub_input($_POST['s_time_minute']);
 		$s_time_ampm_value = scrub_input($_POST['s_time_ampm']);
 		$freeze = scrub_input($_POST['freeze']);
+		$tag = scrub_input($_POST['tag']);
 		$description = scrub_input(DEUBB($_POST['description']));
 		if(isset($_GET['id']))
 			$id = scrub_input($_GET['id']);
@@ -999,12 +1017,12 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 			$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "raids (`description`,`freeze`,`invite_time`,
 					`location`,`officer`,`old`,`start_time`,`dk_lmt`,`dr_lmt`,`hu_lmt`,`ma_lmt`,`pa_lmt`,`pr_lmt`,`ro_lmt`,`sh_lmt`,`wk_lmt`,`wa_lmt`,
 					`role1_lmt`,`role2_lmt`,`role3_lmt`,`role4_lmt`,`role5_lmt`,`role6_lmt`,
-					`min_lvl`,`max_lvl`,`max`)	VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
+					`min_lvl`,`max_lvl`,`max`,`event_type`)	VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
 					quote_smart($description),quote_smart($freeze),quote_smart($invite_time),quote_smart($location),
 					quote_smart($username),quote_smart('0'),quote_smart($start_time),
 					quote_smart($dk),quote_smart($dr),quote_smart($hu),quote_smart($ma),quote_smart($pa),quote_smart($pr),quote_smart($ro),quote_smart($sh),
 					quote_smart($wk),quote_smart($wa),quote_smart($role1),quote_smart($role2),quote_smart($role3),quote_smart($role4),
-					quote_smart($role5),quote_smart($role6),quote_smart($min_lvl),quote_smart($max_lvl),quote_smart($max));
+					quote_smart($role5),quote_smart($role6),quote_smart($min_lvl),quote_smart($max_lvl),quote_smart($max),quote_smart($tag));
 
 			$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
 
@@ -1013,10 +1031,10 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 		else
 		{
 			$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "raids SET location=%s,description=%s,invite_time=%s,start_time=%s,
-					freeze=%s,max=%s,old='0',dk_lmt=%s,dr_lmt=%s,hu_lmt=%s,ma_lmt=%s,pa_lmt=%s,pr_lmt=%s,ro_lmt=%s,sh_lmt=%s,wk_lmt=%s,wa_lmt=%s,
+					freeze=%s,max=%s,event_type=%s,old='0',dk_lmt=%s,dr_lmt=%s,hu_lmt=%s,ma_lmt=%s,pa_lmt=%s,pr_lmt=%s,ro_lmt=%s,sh_lmt=%s,wk_lmt=%s,wa_lmt=%s,
 					role1_lmt=%s,role2_lmt=%s,role3_lmt=%s,role4_lmt=%s,role5_lmt=%s,role6_lmt=%s,min_lvl=%s,max_lvl=%s WHERE raid_id=%s",
 					quote_smart($location),quote_smart($description),quote_smart($invite_time),quote_smart($start_time), quote_smart($freeze),
-					quote_smart($max),quote_smart($dk),quote_smart($dr),quote_smart($hu),quote_smart($ma),quote_smart($pa),quote_smart($pr),quote_smart($ro),
+					quote_smart($max),quote_smart($tag),quote_smart($dk),quote_smart($dr),quote_smart($hu),quote_smart($ma),quote_smart($pa),quote_smart($pr),quote_smart($ro),
 					quote_smart($sh),quote_smart($wk),quote_smart($wa),quote_smart($role1),quote_smart($role2),quote_smart($role3),
 					quote_smart($role4),quote_smart($role5),quote_smart($role6),quote_smart($min_lvl),quote_smart($max_lvl),quote_smart($id));
 
