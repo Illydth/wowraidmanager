@@ -67,6 +67,7 @@ CREATE TABLE  `phpraid_locations` (
   `role6` int(2) NOT NULL default '0',
   `max` int(2) NOT NULL default '0',
   `locked` tinyint(1) NOT NULL default '0',
+  `event_type` tinyint(1) NOT NULL default '1',
   PRIMARY KEY  (`location_id`)
 ) ;
 
@@ -171,6 +172,7 @@ CREATE TABLE  `phpraid_raids` (
   `min_lvl` int(2) NOT NULL default '0',
   `max_lvl` int(2) NOT NULL default '0',
   `max` varchar(255) NOT NULL default '',
+  `event_type` tinyint(1) NOT NULL default '1',
   PRIMARY KEY  (`raid_id`)
 ) ;
 
@@ -299,3 +301,4 @@ INSERT INTO `phpraid_version` VALUES ('3.2.0','Version 3.2.0 of WoW Raid Manager
 INSERT INTO `phpraid_version` VALUES ('3.2.1','Version 3.2.1 of WoW Raid Manager');
 INSERT INTO `phpraid_version` VALUES ('3.5.0','Version 3.5.0 of WoW Raid Manager');
 INSERT INTO `phpraid_version` VALUES ('3.5.1','Version 3.5.1 of WoW Raid Manager');
+INSERT INTO `phpraid_version` VALUES ('3.6.0','Version 3.6.0 of WoW Raid Manager');

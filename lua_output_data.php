@@ -281,7 +281,9 @@ class Output_Data
 		$lua_output .= "\t[\"lua_version\"] = \"{$lua_version}\",\n";
 		if ($format == "1")
 		{
-			$lua_output .= "\t[\"file_stamp\"] = \"{$file_date_stamp}\",\n";			
+			$lua_output .= "\t[\"file_stamp\"] = \"{$file_date_stamp}\",\n";
+			$lua_output .= "\t[\"guild\"] = \"{$phpraid_config['guild_name']}\",\n";
+			$lua_output .= "\t[\"server\"] = \"{$phpraid_config['guild_server']}\",\n";			
 		}
 		$lua_output .= "\t[\"raid_count\"] = \"".$db_raid->sql_numrows($raids_result)."\",\n";
 		$lua_output .= "\t[\"raids\"] = {\n";
@@ -484,7 +486,8 @@ class Output_Data
 		// end - add data to lua output
 		
 		// write to file
-		fwrite($file,utf8_encode($lua_output));
+		//fwrite($file,utf8_encode($lua_output));
+		fwrite($file, $lua_output);
 		
 		// output to textarea
 		if ( $failed_to_open == TRUE)

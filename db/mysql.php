@@ -76,6 +76,17 @@ class sql_db
 					$this->db_connect_id = $db_raidselect;
 				}
 			}
+			
+			//Force a UTF-8 connection to the Database.  Information comes from a writeup at:
+			// http://www.adviesenzo.nl/examples/php_mysql_charset_fix/
+			// http://marc.info/?l=php-db&m=120760127026719&w=2
+			
+			// Make sure any results we retrieve or commands we send use the same charset and collation as the database:
+			//$db_charset = mysql_query( "SHOW VARIABLES LIKE 'character_set_database'" );
+			//$charset_row = mysql_fetch_assoc( $db_charset );
+			//mysql_query( "SET NAMES '" . $charset_row['Value'] . "'" );
+			//unset( $db_charset, $charset_row );
+			
 			return $this->db_connect_id;
 		}
 		else

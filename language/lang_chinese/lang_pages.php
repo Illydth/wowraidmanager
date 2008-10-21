@@ -201,6 +201,12 @@ $phprlang['raids_old'] = '活動歷史';
 $phprlang['raids_new'] = '最新活動';
 $phprlang['raids_new_header'] = '新增活動';
 $phprlang['raids_start'] = '開始時間';
+$phprlang['raids_type_raid'] = 'Raid (10/25 man)';
+$phprlang['raids_type_dungeon'] = 'Dungeon (5 man Instance)';
+$phprlang['raids_type_pvp'] = 'PvP Event';
+$phprlang['raids_type_meeting'] = 'Meeting (online/offline)';
+$phprlang['raids_type_other'] = 'Other';
+$phprlang['raids_eventtype_text'] = 'Event Type';
 
 // roster
 $phprlang['roster_header'] = '公會名冊';

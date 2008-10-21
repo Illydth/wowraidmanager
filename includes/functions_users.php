@@ -92,7 +92,7 @@ function check_frozen($raid_id) {
 function get_char_count($id, $type) {
 	global $db_raid, $phpraid_config, $phprlang;
 
-	$count = array('dr'=>'0','hu'=>'0','ma'=>'0','pa'=>'0','pr'=>'0','ro'=>'0','sh'=>'0','wk'=>'0','wa'=>'0','role1'=>'0','role2'=>'0','role3'=>'0','role4'=>'0','role5'=>'0','role6'=>'0');
+	$count = array('dk'=>'0','dr'=>'0','hu'=>'0','ma'=>'0','pa'=>'0','pr'=>'0','ro'=>'0','sh'=>'0','wk'=>'0','wa'=>'0','role1'=>'0','role2'=>'0','role3'=>'0','role4'=>'0','role5'=>'0','role6'=>'0');
 
 	if($type == "queue") //Count Queued Signups
 	{
@@ -115,6 +115,9 @@ function get_char_count($id, $type) {
 		$char = $db_raid->sql_fetchrow($result_char, true);
 
 		switch($char['class']) {
+			case $phprlang['deathknight']:
+				$count['dk']++;
+				break;
 			case $phprlang['druid']:
 				$count['dr']++;
 				break;

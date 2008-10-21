@@ -29,6 +29,8 @@
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *
 ****************************************************************************/
+// Set Page content type header:
+header('Content-Type: text/html; charset=utf-8');
 
 //
 // Parse and show the overall header.
