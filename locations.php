@@ -52,14 +52,30 @@ if($_GET['mode'] == 'view')
 		$delete = '<a href="locations.php?mode=delete&amp;n='.$data['name'].'&amp;id='.$data['location_id'].'"><img src="templates/' .
 					$phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\'' . $phprlang['delete'] . '\');" onMouseout="hideddrivetip();" alt="delete icon"></a>';
 
+		$event_type_id = $data['event_type'];
+		if ($event_type_id == '1')
+			$event_type_text = $phprlang['raids_type_raid'];
+		elseif ($event_type_id == '2')
+			$event_type_text = $phprlang['raids_type_dungeon'];
+		elseif ($event_type_id == '3')
+			$event_type_text = $phprlang['raids_type_pvp'];
+		elseif ($event_type_id == '4')
+			$event_type_text = $phprlang['raids_type_meeting'];
+		elseif ($event_type_id == '5')
+			$event_type_text = $phprlang['raids_type_other'];
+		else
+			$event_type_text = $phprlang['raids_type_raid'];
+			
 		array_push($loc,
 			array(
 				'id'=>$data['location_id'],
 				'name'=>$data['name'],
+				'event_type_id'=>$event_type_text,
 				'location'=>$data['location'],
 				'min_lvl'=>$data['min_lvl'],
 				'max_lvl'=>$data['max_lvl'],
 				'max_chars'=>$data['max'],
+				'dk'=>$data['dk'],
 				'dr'=>$data['dr'],
 				'hu'=>$data['hu'],
 				'ma'=>$data['ma'],
@@ -102,8 +118,10 @@ if($_GET['mode'] == 'view')
 		$report->addOutputColumn('id',$phprlang['id'],'','center');
 	$report->addOutputColumn('name',$phprlang['name'],'','center');
 	$report->addOutputColumn('location',$phprlang['location'],'','center');
+	$report->addOutputColumn('event_type_id',$phprlang['raids_eventtype_text'],'','center');
 	$report->addOutputColumn('min_lvl',$phprlang['min_lvl'],'','center');
 	$report->addOutputColumn('max_lvl',$phprlang['max_lvl'],'','center');
+	$report->addOutputColumn('dk', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/deathknight_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['deathknight'] . '\');" onMouseout="hideddrivetip();" alt="death knight">', '', 'center');
 	$report->addOutputColumn('dr', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/druid_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['druid'] . '\');" onMouseout="hideddrivetip();" alt="druid">', '', 'center');
 	$report->addOutputColumn('hu', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/hunter_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['hunter'] . '\');" onMouseout="hideddrivetip();" alt="hunter">', '', 'center');
 	$report->addOutputColumn('ma', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/mage_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['mage'] . '\');" onMouseout="hideddrivetip();" alt="mage">', '', 'center');
@@ -148,9 +166,10 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 	// slashes
 	$name =scrub_input($_POST['name']);
 	$loc = scrub_input($_POST['location']);
-
+	$eventtype = scrub_input($_POST['tag']);
 	$min_lvl = scrub_input($_POST['min_lvl']);
 	$max_lvl = scrub_input($_POST['max_lvl']);
+	$dk = scrub_input($_POST['dk']);
 	$dr = scrub_input($_POST['dr']);
 	$hu = scrub_input($_POST['hu']);
 	$ma = scrub_input($_POST['ma']);
@@ -188,11 +207,11 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 	if($_GET['mode'] == 'new')
 	{
 		$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "locations (`location`,`min_lvl`,`max_lvl`,
-		`name`,`dr`,`hu`,`ma`,`pa`,`pr`,`ro`,`sh`,`wk`,`wa`,`role1`,`role2`,`role3`,`role4`,`role5`,`role6`,`max`,`locked`) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
-		quote_smart($loc),quote_smart($min_lvl),quote_smart($max_lvl),quote_smart($name),quote_smart($dr),quote_smart($hu),
+		`name`,`dk`,`dr`,`hu`,`ma`,`pa`,`pr`,`ro`,`sh`,`wk`,`wa`,`role1`,`role2`,`role3`,`role4`,`role5`,`role6`,`max`,`locked`,`event_type`) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
+		quote_smart($loc),quote_smart($min_lvl),quote_smart($max_lvl),quote_smart($name),quote_smart($dk),quote_smart($dr),quote_smart($hu),
 		quote_smart($ma),quote_smart($pa),quote_smart($pr),quote_smart($ro),quote_smart($sh),quote_smart($wk),quote_smart($wa),
 		quote_smart($role1),quote_smart($role2),quote_smart($role3),quote_smart($role4),quote_smart($role5),quote_smart($role6),
-		quote_smart($max),quote_smart($locked));
+		quote_smart($max),quote_smart($locked),quote_smart($eventtype));
 
 		$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
 
@@ -205,11 +224,11 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 		else
 			$id = '';
 
-		$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "locations SET name=%s,max=%s,dr=%s,hu=%s,ma=%s,pa=%s,pr=%s,ro=%s,sh=%s,wk=%s,
-		wa=%s,role1=%s,role2=%s,role3=%s,role4=%s,role5=%s,role6=%s,min_lvl=%s,max_lvl=%s,location=%s,locked=%s WHERE location_id=%s",quote_smart($name),quote_smart($max),quote_smart($dr),
-		quote_smart($hu),quote_smart($ma),quote_smart($pa),quote_smart($pr),quote_smart($ro),quote_smart($sh),quote_smart($wk),quote_smart($wa),
+		$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "locations SET name=%s,max=%s,dk=%s,dr=%s,hu=%s,ma=%s,pa=%s,pr=%s,ro=%s,sh=%s,wk=%s,
+		wa=%s,role1=%s,role2=%s,role3=%s,role4=%s,role5=%s,role6=%s,min_lvl=%s,max_lvl=%s,location=%s,locked=%s,event_type=%s WHERE location_id=%s",quote_smart($name),quote_smart($max),
+		quote_smart($dk),quote_smart($dr),quote_smart($hu),quote_smart($ma),quote_smart($pa),quote_smart($pr),quote_smart($ro),quote_smart($sh),quote_smart($wk),quote_smart($wa),
 		quote_smart($role1),quote_smart($role2),quote_smart($role3),quote_smart($role4),quote_smart($role5),quote_smart($role6),quote_smart($min_lvl),
-		quote_smart($max_lvl),quote_smart($loc),quote_smart($locked),quote_smart($id));
+		quote_smart($max_lvl),quote_smart($loc),quote_smart($locked),quote_smart($eventtype),quote_smart($id));
 
 		$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 	}
@@ -258,11 +277,22 @@ if($_GET['mode'] != 'delete')
 	if($_GET['mode'] == 'view')
 	{
 		// setup new form information
+
+		// Event Type for WoW Calendar
+		$eventtype = '<select name="tag" class="post">';
+		$eventtype .= '<option value="1" selected>' . $phprlang['raids_type_raid'] . '</option>';
+		$eventtype .= '<option value="2">' . $phprlang['raids_type_dungeon'] . '</option>';
+		$eventtype .= '<option value="3">' . $phprlang['raids_type_pvp'] . '</option>';
+		$eventtype .= '<option value="4">' . $phprlang['raids_type_meeting'] . '</option>';
+		$eventtype .= '<option value="5">' . $phprlang['raids_type_other'] . '</option>';
+		$eventtype .= '</select>';
+
 		$form_action = 'locations.php?mode=new';
 		$name = '<input name="name" type="text" id="name" class="post">';
 		$location = '<input name="location" type="text" id="location" class="post">';
 		$min_lvl = '<input name="min_lvl" type="text" class="post" style="width:20px" maxlength="2">';
 		$max_lvl = '<input name="max_lvl" type="text" class="post" style="width:20px" maxlength="2">';
+		$dk = '<input name="dk" type="text" class="post" style="width:20px" maxlength="2">';
 		$dr = '<input name="dr" type="text" class="post" style="width:20px" maxlength="2">';
 		$hu = '<input name="hu" type="text" class="post" style="width:20px" maxlength="2">';
 		$ma = '<input name="ma" type="text" class="post" style="width:20px" maxlength="2">';
@@ -309,11 +339,35 @@ if($_GET['mode'] != 'delete')
 		$data = $db_raid->sql_fetchrow($result, true);
 		
 		// it's an edit... joy
+		// Event Type for WoW Calendar
+		$eventtype = '<select name="tag" class="post">';
+		if ($data['event_type'] == "1")
+			$eventtype .= '<option value="1" selected>' . $phprlang['raids_type_raid'] . '</option>';
+		else
+			$eventtype .= '<option value="1">' . $phprlang['raids_type_raid'] . '</option>';
+		if ($data['event_type'] == "2")
+			$eventtype .= '<option value="2" selected>' . $phprlang['raids_type_dungeon'] . '</option>';
+		else
+			$eventtype .= '<option value="2">' . $phprlang['raids_type_dungeon'] . '</option>';
+		if ($data['event_type'] == "3")
+			$eventtype .= '<option value="3" selected>' . $phprlang['raids_type_pvp'] . '</option>';
+		else
+			$eventtype .= '<option value="3">' . $phprlang['raids_type_pvp'] . '</option>';
+		if ($data['event_type'] == "4")
+			$eventtype .= '<option value="4" selected>' . $phprlang['raids_type_meeting'] . '</option>';
+		else
+			$eventtype .= '<option value="4">' . $phprlang['raids_type_meeting'] . '</option>';
+		if ($data['event_type'] == "5")
+			$eventtype .= '<option value="5" selected>' . $phprlang['raids_type_other'] . '</option>';
+		else
+			$eventtype .= '<option value="5">' . $phprlang['raids_type_other'] . '</option>';
+		$eventtype .= '</select>';
 		$form_action = "locations.php?mode=edit&amp;id=$id";
 		$name = '<input name="name" type="text" id="name" value="' . $data['name'] . '" class="post">';
 		$location = '<input name="location" type="text" id="name" value="' . $data['location'] . '"  class="post">';
 		$min_lvl = '<input name="min_lvl" type="text" value="' . $data['min_lvl'] . '"  class="post" style="width:20px" maxlength="2">';
 		$max_lvl = '<input name="max_lvl" type="text" value="' . $data['max_lvl'] . '"  class="post" style="width:20px" maxlength="2">';
+		$dk = '<input name="dk" type="text" value="' . $data['dk'] . '"  class="post" style="width:20px" maxlength="2">';
 		$dr = '<input name="dr" type="text" value="' . $data['dr'] . '"  class="post" style="width:20px" maxlength="2">';
 		$hu = '<input name="hu" type="text" value="' . $data['hu'] . '"  class="post" style="width:20px" maxlength="2">';
 		$ma = '<input name="ma" type="text" value="' . $data['ma'] . '"  class="post" style="width:20px" maxlength="2">';
@@ -359,10 +413,13 @@ if($_GET['mode'] != 'delete')
 	$page->set_var(
 		array(
 			'form_action'=>$form_action,
+			'event_type'=>$eventtype,
+			'eventtype_text'=>$phprlang['raids_eventtype_text'],
 			'name'=>$name,
 			'location'=>$location,
 			'min_lvl'=>$min_lvl,
 			'max_lvl'=>$max_lvl,
+			'dk'=>$dk,
 			'dr'=>$dr,
 			'hu'=>$hu,
 			'ma'=>$ma,
@@ -381,6 +438,7 @@ if($_GET['mode'] != 'delete')
 			'max'=>$max,
 			'locked'=>$locked,
 			'buttons'=>$buttons,
+			'deathknight_name'=>$phprlang['deathknight'],
 			'druid_name'=>$phprlang['druid'],
 			'hunter_name'=>$phprlang['hunter'],
 			'mage_name'=>$phprlang['mage'],
