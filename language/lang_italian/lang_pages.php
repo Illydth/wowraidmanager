@@ -200,6 +200,12 @@ $phprlang['raids_old'] = 'Raid passati';
 $phprlang['raids_new'] = 'Raid in programma';
 $phprlang['raids_new_header'] = 'Nuovo Raid';
 $phprlang['raids_start'] = 'Ora di inizio';
+$phprlang['raids_type_raid'] = 'Raid (10/25 man)';
+$phprlang['raids_type_dungeon'] = 'Dungeon (5 man Instance)';
+$phprlang['raids_type_pvp'] = 'PvP Event';
+$phprlang['raids_type_meeting'] = 'Meeting (online/offline)';
+$phprlang['raids_type_other'] = 'Other';
+$phprlang['raids_eventtype_text'] = 'Event Type';
 
 // roster
 $phprlang['roster_header'] = 'Roster di Gilda';

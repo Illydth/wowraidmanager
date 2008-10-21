@@ -201,6 +201,12 @@ $phprlang['raids_old'] = 'Tidligere begivenhet';
 $phprlang['raids_new'] = 'Kommende begivenhet';
 $phprlang['raids_new_header'] = 'Nytt Raid';
 $phprlang['raids_start'] = 'Start tid';
+$phprlang['raids_type_raid'] = 'Raid (10/25 man)';
+$phprlang['raids_type_dungeon'] = 'Dungeon (5 man Instance)';
+$phprlang['raids_type_pvp'] = 'PvP Event';
+$phprlang['raids_type_meeting'] = 'Meeting (online/offline)';
+$phprlang['raids_type_other'] = 'Other';
+$phprlang['raids_eventtype_text'] = 'Event Type';
 
 // roster
 $phprlang['roster_header'] = 'Guild Roster';
