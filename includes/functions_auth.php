@@ -73,6 +73,24 @@ function get_permissions()
 	$data_priv['permissions'] ? $_SESSION['priv_permissions'] = 1 : $_SESSION['priv_permissions'] = 0;
 }
 
+function check_permission($perm_type, $profile_id) {
+	global $db_raid, $phpraid_config;
+	
+	$sql = "SELECT ".$phpraid_config['db_prefix']."permissions." . $perm_type . " AS perm_val
+		FROM ".$phpraid_config['db_prefix']."permissions
+		LEFT JOIN ".$phpraid_config['db_prefix']."profile ON
+			".$phpraid_config['db_prefix']."profile.priv = ".$phpraid_config['db_prefix']."permissions.permission_id
+		WHERE ".$phpraid_config['db_prefix']."profile.profile_id = ".$profile_id;
+
+	$perm_data = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$permission_val = $db_raid->sql_fetchrow($perm_data, true);
+	
+	if ($permission_val['perm_val'] == "1")
+		return TRUE;
+	else
+		return FALSE;
+}
+
 function delete_permissions() {
 	global $db_raid, $phpraid_config;
 	
