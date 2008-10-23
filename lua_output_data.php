@@ -168,6 +168,8 @@ class Output_Data
 				return 8;
 			case strtolower($phprlang['warrior']):
 				return 9;
+			case strtolower($phprlang['deathknight']);
+				return 10;
 		}
 	}
 	
@@ -197,6 +199,8 @@ class Output_Data
 				return 'warlocks';
 			case 9:
 				return 'warriors';
+			case 10:
+				return 'deathknights';
 		}
 	}
 	
@@ -469,7 +473,7 @@ class Output_Data
 			}
 			
 			// begin - add data to lua output
-			for($i=0; $i<10; $i++)
+			for($i=0; $i<11; $i++)
 				$lua_signups[$i] = "\t\t\t[\"".$this->GetClassNameByClassId($i)."\"] = {\n";
 				
 			// init counter vars
@@ -533,7 +537,7 @@ class Output_Data
 			$lua_output .= "\t\t\t[\"warlocks_count\"] = \"".$cnt[8]."\",\n";
 			$lua_output .= "\t\t\t[\"warriors_count\"] = \"".$cnt[9]."\",\n";
 			
-			for($i=0; $i<10; $i++)
+			for($i=0; $i<11; $i++)
 				$lua_output .= $lua_signups[$i] . "\t\t\t},\n";
 			$lua_output .= "\t\t},\n";
 			

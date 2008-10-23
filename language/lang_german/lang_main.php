@@ -279,6 +279,7 @@ $phprlang['cancel'] = 'Anmeldung abbrechen';
 $phprlang['cancel_msg'] = 'Du hast deine Anmeldung für diesen Raid abgebrochen';
 $phprlang['comments'] = 'Kommentar';
 $phprlang['configuration'] = 'Konfiguration';
+$phprlang['druid_icon'] = 'Klicke, um Todesritter zu sehen';
 $phprlang['delete'] = 'Löschen';
 $phprlang['description'] = 'Beschreibung';
 $phprlang['druid_icon'] = 'Klicke, um Druiden zu sehen';

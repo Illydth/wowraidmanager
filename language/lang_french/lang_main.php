@@ -282,6 +282,7 @@ $phprlang['cancel'] = 'Annuler inscription';
 $phprlang['cancel_msg'] = 'Vouz avez annulé votre inscription pour ce raid';
 $phprlang['comments'] = 'Commentaires';
 $phprlang['configuration'] = 'Configuration';
+$phprlang['deathknight_icon'] = 'Cliquez pour voir les Death Knights';
 $phprlang['delete'] = 'Supprimer';
 $phprlang['description'] = 'Description';
 $phprlang['druid_icon'] = 'Cliquez pour voir les Druides';

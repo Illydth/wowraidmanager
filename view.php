@@ -148,6 +148,7 @@ if($mode == 'view')
 	// now, get the actual class information and put them into their arrays
 	if ($phpraid_config['raid_view_type'] == 'by_class')
 	{
+		$deathknight = array();
 		$druid = array();
 		$hunter = array();
 		$mage = array();
@@ -170,6 +171,7 @@ if($mode == 'view')
 	$raid_queue = array();
 	$raid_cancel = array();
 
+	$deathknight_count = 0;
 	$druid_count = 0;
 	$hunter_count = 0;
 	$mage_count = 0;
@@ -336,100 +338,150 @@ if($mode == 'view')
 		{		
 			switch($data['class'])
 			{
+				case $phprlang['deathknight']:
+					$class = ' <img src="templates/' . $phpraid_config['template'] . '/images/classes/deathknight_icon.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['deathknight'].'\');" onMouseout="hideddrivetip();" alt="death knight">';
+					array_push($deathknight,
+						array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,'role'=>$role,
+							  'race'=>$race,'class'=>$class,'name'=>$name,'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
+							  'date'=>$date,'time'=>$time,'team_name'=>$team_name,'guild'=>$guildname));
+					break;
 				case $phprlang['druid']:
+					$class = ' <img src="templates/' . $phpraid_config['template'] . '/images/classes/druid_icon.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['druid'].'\');" onMouseout="hideddrivetip();" alt="duird">';
 					array_push($druid,
 						array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,'role'=>$role,
-							  'race'=>$race,'name'=>$name,'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
+							  'race'=>$race,'class'=>$class,'name'=>$name,'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
 							  'date'=>$date,'time'=>$time,'team_name'=>$team_name,'guild'=>$guildname));
 					break;
 				case $phprlang['hunter']:
+					$class = ' <img src="templates/' . $phpraid_config['template'] . '/images/classes/hunter_icon.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['hunter'].'\');" onMouseout="hideddrivetip();" alt="hunter">';
 					array_push($hunter,
 						array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,'role'=>$role,
-							  'race'=>$race,'name'=>$name,'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
+							  'race'=>$race,'class'=>$class,'name'=>$name,'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
 							  'date'=>$date,'time'=>$time,'team_name'=>$team_name,'guild'=>$guildname));
 					break;
 				case $phprlang['mage']:
+					$class = ' <img src="templates/' . $phpraid_config['template'] . '/images/classes/mage_icon.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['mage'].'\');" onMouseout="hideddrivetip();" alt="mage">';
 					array_push($mage,
 						array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,'role'=>$role,
-							  'race'=>$race,'name'=>$name,'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
+							  'race'=>$race,'class'=>$class,'name'=>$name,'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
 							  'date'=>$date,'time'=>$time,'team_name'=>$team_name,'guild'=>$guildname));
 					break;
 				case $phprlang['paladin']:
+					$class = ' <img src="templates/' . $phpraid_config['template'] . '/images/classes/paladin_icon.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['paladin'].'\');" onMouseout="hideddrivetip();" alt="paladin">';
 					array_push($paladin,
 						array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,'role'=>$role,
-							  'race'=>$race,'name'=>$name,'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
+							  'race'=>$race,'class'=>$class,'name'=>$name,'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
 							  'date'=>$date,'time'=>$time,'team_name'=>$team_name,'guild'=>$guildname));
 					break;
 				case $phprlang['priest']:
+					$class = ' <img src="templates/' . $phpraid_config['template'] . '/images/classes/priest_icon.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['priest'].'\');" onMouseout="hideddrivetip();" alt="priest">';
 					array_push($priest,
 						array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,'role'=>$role,
-							  'race'=>$race,'name'=>$name,'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
+							  'race'=>$race,'class'=>$class,'name'=>$name,'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
 							  'date'=>$date,'time'=>$time,'team_name'=>$team_name,'guild'=>$guildname));
 					break;
 				case $phprlang['rogue']:
+					$class = ' <img src="templates/' . $phpraid_config['template'] . '/images/classes/rogue_icon.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['rogue'].'\');" onMouseout="hideddrivetip();" alt="rogue">';
 					array_push($rogue,
 						array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,'role'=>$role,
-							  'race'=>$race,'name'=>$name,'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
+							  'race'=>$race,'class'=>$class,'name'=>$name,'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
 							  'date'=>$date,'time'=>$time,'team_name'=>$team_name,'guild'=>$guildname));
 					break;
 				case $phprlang['shaman']:
+					$class = ' <img src="templates/' . $phpraid_config['template'] . '/images/classes/shaman_icon.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['shaman'].'\');" onMouseout="hideddrivetip();" alt="shaman">';
 					array_push($shaman,
 						array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,'role'=>$role,
-							  'race'=>$race,'name'=>$name,'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
+							  'race'=>$race,'class'=>$class,'name'=>$name,'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
 							  'date'=>$date,'time'=>$time,'team_name'=>$team_name,'guild'=>$guildname));
 					break;
 				case $phprlang['warlock']:
+					$class = ' <img src="templates/' . $phpraid_config['template'] . '/images/classes/warlock_icon.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['warlock'].'\');" onMouseout="hideddrivetip();" alt="warlock">';
 					array_push($warlock,
 						array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,'role'=>$role,
-							  'race'=>$race,'name'=>$name,'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
+							  'race'=>$race,'class'=>$class,'name'=>$name,'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
 							  'date'=>$date,'time'=>$time,'team_name'=>$team_name,'guild'=>$guildname));
 					break;
 				case $phprlang['warrior']:
+					$class = ' <img src="templates/' . $phpraid_config['template'] . '/images/classes/warrior_icon.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['warrior'].'\')"; onMouseout="hideddrivetip()" alt="warrior">';
 					array_push($warrior,
 						array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,'role'=>$role,
-							  'race'=>$race,'name'=>$name,'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
+							  'race'=>$race,'class'=>$class,'name'=>$name,'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
 							  'date'=>$date,'time'=>$time,'team_name'=>$team_name,'guild'=>$guildname));
 					break;
 			}
 		}
 		else
 		{
+			switch($data['class'])
+			{
+				case $phprlang['deathknight']:
+					$class = ' <img src="templates/' . $phpraid_config['template'] . '/images/classes/deathknight_icon.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['deathknight'].'\');" onMouseout="hideddrivetip();" alt="death knight">';
+					break;
+				case $phprlang['druid']:
+					$class = ' <img src="templates/' . $phpraid_config['template'] . '/images/classes/druid_icon.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['druid'].'\');" onMouseout="hideddrivetip();" alt="duird">';
+					break;
+				case $phprlang['hunter']:
+					$class = ' <img src="templates/' . $phpraid_config['template'] . '/images/classes/hunter_icon.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['hunter'].'\');" onMouseout="hideddrivetip();" alt="hunter">';
+					break;
+				case $phprlang['mage']:
+					$class = ' <img src="templates/' . $phpraid_config['template'] . '/images/classes/mage_icon.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['mage'].'\');" onMouseout="hideddrivetip();" alt="mage">';
+					break;
+				case $phprlang['paladin']:
+					$class = ' <img src="templates/' . $phpraid_config['template'] . '/images/classes/paladin_icon.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['paladin'].'\');" onMouseout="hideddrivetip();" alt="paladin">';
+					break;
+				case $phprlang['priest']:
+					$class = ' <img src="templates/' . $phpraid_config['template'] . '/images/classes/priest_icon.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['priest'].'\');" onMouseout="hideddrivetip();" alt="priest">';
+					break;
+				case $phprlang['rogue']:
+					$class = ' <img src="templates/' . $phpraid_config['template'] . '/images/classes/rogue_icon.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['rogue'].'\');" onMouseout="hideddrivetip();" alt="rogue">';
+					break;
+				case $phprlang['shaman']:
+					$class = ' <img src="templates/' . $phpraid_config['template'] . '/images/classes/shaman_icon.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['shaman'].'\');" onMouseout="hideddrivetip();" alt="shaman">';
+					break;
+				case $phprlang['warlock']:
+					$class = ' <img src="templates/' . $phpraid_config['template'] . '/images/classes/warlock_icon.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['warlock'].'\');" onMouseout="hideddrivetip();" alt="warlock">';
+					break;
+				case $phprlang['warrior']:
+					$class = ' <img src="templates/' . $phpraid_config['template'] . '/images/classes/warrior_icon.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['warrior'].'\')"; onMouseout="hideddrivetip()" alt="warrior">';
+					break;
+			}
+			
 			switch($data['role'])
 			{
 				case $phpraid_config['role1_name']:
 					array_push($role1,
 						array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,'role'=>$role,
-							  'race'=>$race,'name'=>$name,'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
+							  'race'=>$race,'class'=>$class,'name'=>$name,'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
 							  'date'=>$date,'time'=>$time,'team_name'=>$team_name,'guild'=>$guildname));
 					break;
 				case $phpraid_config['role2_name']:
 					array_push($role2,
 						array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,'role'=>$role,
-							  'race'=>$race,'name'=>$name,'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
+							  'race'=>$race,'class'=>$class,'name'=>$name,'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
 							  'date'=>$date,'time'=>$time,'team_name'=>$team_name,'guild'=>$guildname));
 					break;
 				case $phpraid_config['role3_name']:
 					array_push($role3,
 						array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,'role'=>$role,
-							  'race'=>$race,'name'=>$name,'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
+							  'race'=>$race,'class'=>$class,'name'=>$name,'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
 							  'date'=>$date,'time'=>$time,'team_name'=>$team_name,'guild'=>$guildname));
 					break;
 				case $phpraid_config['role4_name']:
 					array_push($role4,
 						array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,'role'=>$role,
-							  'race'=>$race,'name'=>$name,'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
+							  'race'=>$race,'class'=>$class,'name'=>$name,'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
 							  'date'=>$date,'time'=>$time,'team_name'=>$team_name,'guild'=>$guildname));
 					break;
 				case $phpraid_config['role5_name']:
 					array_push($role5,
 						array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,'role'=>$role,
-							  'race'=>$race,'name'=>$name,'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
+							  'race'=>$race,'class'=>$class,'name'=>$name,'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
 							  'date'=>$date,'time'=>$time,'team_name'=>$team_name,'guild'=>$guildname));
 					break;
 				case $phpraid_config['role6_name']:
 					array_push($role6,
 						array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,'role'=>$role,
-							  'race'=>$race,'name'=>$name,'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
+							  'race'=>$race,'class'=>$class,'name'=>$name,'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
 							  'date'=>$date,'time'=>$time,'team_name'=>$team_name,'guild'=>$guildname));
 					break;
 			}
@@ -528,6 +580,9 @@ if($mode == 'view')
 
 		switch($data['class'])
 		{
+			case $phprlang['deathknight']:
+				$class = ' <img src="templates/' . $phpraid_config['template'] . '/images/classes/deathknight_icon.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['deathknight'].'\');" onMouseout="hideddrivetip();" alt="death knight">';
+				break;
 			case $phprlang['druid']:
 				$class = ' <img src="templates/' . $phpraid_config['template'] . '/images/classes/druid_icon.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['druid'].'\');" onMouseout="hideddrivetip();" alt="duird">';
 				break;
@@ -678,6 +733,9 @@ if($mode == 'view')
 
 		switch($data['class'])
 		{
+			case $phprlang['deathknight']:
+				$class = ' <img src="templates/' . $phpraid_config['template'] . '/images/classes/deathknight_icon.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['deathknight'].'\');" onMouseout="hideddrivetip();" alt="death knight">';
+				break;
 			case $phprlang['druid']:
 				$class = ' <img src="templates/' . $phpraid_config['template'] . '/images/classes/druid_icon.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['druid'].'\');" onMouseout="hideddrivetip();" alt="druid">';
 				break;
@@ -764,6 +822,7 @@ if($mode == 'view')
 	$report->addOutputColumn('team_name',$phprlang['team_name'],'','left');
 	$report->addOutputColumn('lvl',$phprlang['level'],'','center');
 	$report->addOutputColumn('race',$phprlang['race'],'','center');
+	$report->addOutputColumn('class',$phprlang['class'],'','center');	
 	$report->addOutputColumn('role',$phprlang['role'],'','center');	
 	$report->addOutputColumn('arcane','<img border="0" src="templates/' . $phpraid_config['template'] .
 									  '/images/resistances/arcane_resistance.gif" onMouseover=
@@ -791,6 +850,7 @@ if($mode == 'view')
 
 	if ($phpraid_config['raid_view_type'] == 'by_class')
 	{
+		$deathknight = $report->getListFromArray($deathknight);
 		$druid = $report->getListFromArray($druid);
 		$hunter = $report->getListFromArray($hunter);
 		$mage = $report->getListFromArray($mage);
@@ -858,6 +918,7 @@ if($mode == 'view')
 	
 	if($phpraid_config['class_as_min'])
 	{
+		$deathknight_count = get_coloredcount('deathknight', $count['dk'], $data['dk_lmt'], $count2['dk'], true);
 		$druid_count = get_coloredcount('druid', $count['dr'], $data['dr_lmt'], $count2['dr'], true);
 		$hunter_count = get_coloredcount('hunter', $count['hu'], $data['hu_lmt'], $count2['hu'], true);
 		$mage_count = get_coloredcount('mage', $count['ma'], $data['ma_lmt'], $count2['ma'], true);
@@ -870,6 +931,7 @@ if($mode == 'view')
 	}
 	else
 	{
+		$deathknight_count = get_coloredcount('deathknight', $count['dk'], $data['dk_lmt'], $count2['dk']);
 		$druid_count = get_coloredcount('druid', $count['dr'], $data['dr_lmt'], $count2['dr']);
 		$hunter_count = get_coloredcount('hunter', $count['hu'], $data['hu_lmt'], $count2['hu']);
 		$mage_count = get_coloredcount('mage', $count['ma'], $data['ma_lmt'], $count2['ma']);
@@ -986,6 +1048,7 @@ if($mode == 'view')
 	}
 
 	// finally, icons
+	$deathknight_icon = '<a href="#deathknights" onMouseover="ddrivetip(\''.$phprlang['deathknight_icon'].'\');" onMouseout="hideddrivetip();"><img src="templates/'.$phpraid_config['template'].'/images/classes/deathknight_icon.gif" width="24" height="24" border="0" alt="death knight"></a>';
 	$druid_icon = '<a href="#druids" onMouseover="ddrivetip(\''.$phprlang['druid_icon'].'\');" onMouseout="hideddrivetip();"><img src="templates/'.$phpraid_config['template'].'/images/classes/druid_icon.gif" width="24" height="24" border="0" alt="druid"></a>';
 	$hunter_icon = '<a href="#hunters" onMouseover="ddrivetip(\''.$phprlang['hunter_icon'].'\');" onMouseout="hideddrivetip();"><img src="templates/'.$phpraid_config['template'].'/images/classes/hunter_icon.gif" width="24" height="24" border="0" alt="hunter"></a>';
 	$mage_icon = '<a href="#mages" onMouseover="ddrivetip(\''.$phprlang['mage_icon'].'\');" onMouseout="hideddrivetip();"><img src="templates/'.$phpraid_config['template'].'/images/classes/mage_icon.gif" width="24" height="24" border="0" alt="mage"></a>';
@@ -1023,6 +1086,7 @@ if($mode == 'view')
 			'raid_date'=>$raid_date,
 			'raid_invite_time'=>$raid_invite_time,
 			'raid_start_time'=>$raid_start_time,
+			'deathknight_count'=>$deathknight_count,
 			'druid_count'=>$druid_count,
 			'hunter_count'=>$hunter_count,
 			'mage_count'=>$mage_count,
@@ -1052,6 +1116,7 @@ if($mode == 'view')
 			'raid_queue_count_percentage'=>$raid_queue_count_percentage,
 			'raid_total'=>$raid_total,
 			'raid_open'=>$raid_open,
+			'deathknights'=>$deathknight,
 			'druids'=>$druid,
 			'hunters'=>$hunter,
 			'mages'=>$mage,
@@ -1093,6 +1158,7 @@ if($mode == 'view')
 			'raid_queue_header'=>$phprlang['view_queue_header'],
 			'information_header'=>$phprlang['view_information_header'],
 			'statistics_header'=>$phprlang['view_statistics_header'],
+			'deathknight_header'=>$phprlang['deathknight'],
 			'druid_header'=>$phprlang['druid'],
 			'hunter_header'=>$phprlang['hunter'],
 			'mage_header'=>$phprlang['mage'],
@@ -1102,6 +1168,7 @@ if($mode == 'view')
 			'shaman_header'=>$phprlang['shaman'],
 			'warrior_header'=>$phprlang['warrior'],
 			'warlock_header'=>$phprlang['warlock'],
+			'deathknight_icon'=>$deathknight_icon,
 			'druid_icon'=>$druid_icon,
 			'hunter_icon'=>$hunter_icon,
 			'mage_icon'=>$mage_icon,
@@ -1153,7 +1220,7 @@ elseif($mode == 'signup')
 		{
 			// now check class limits
 			// setup the count array
-			$count = array('dr'=>'0','hu'=>'0','ma'=>'0','pa'=>'0','pr'=>'0','ro'=>'0','sh'=>'0','wk'=>'0','wa'=>'0','role1'=>'0','role2'=>'0','role3'=>'0','role4'=>'0','role5'=>'0','role6'=>'0','total'=>'0');
+			$count = array('dk'=>'0','dr'=>'0','hu'=>'0','ma'=>'0','pa'=>'0','pr'=>'0','ro'=>'0','sh'=>'0','wk'=>'0','wa'=>'0','role1'=>'0','role2'=>'0','role3'=>'0','role4'=>'0','role5'=>'0','role6'=>'0','total'=>'0');
 			$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id=%s AND queue='0' AND cancel='0'",quote_smart($raid_id));
 			$result_char = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 			while($char = $db_raid->sql_fetchrow($result_char, true))
@@ -1165,6 +1232,9 @@ elseif($mode == 'signup')
 				
 				switch($tmp['class'])
 				{
+					case $phprlang['deathknight']:
+						$count['dk']++;
+						break;
 					case $phprlang['druid']:
 						$count['dr']++;
 						break;
@@ -1217,7 +1287,7 @@ elseif($mode == 'signup')
 				$count['total']++;			
 			}
 
-			$sql = sprintf("SELECT dr_lmt,hu_lmt,ma_lmt,pa_lmt,pr_lmt,ro_lmt,sh_lmt,wk_lmt,wa_lmt,role1_lmt,role2_lmt,role3_lmt,role4_lmt,role5_lmt,role6_lmt,max FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id=%s", quote_smart($raid_id));
+			$sql = sprintf("SELECT dk_lmt,dr_lmt,hu_lmt,ma_lmt,pa_lmt,pr_lmt,ro_lmt,sh_lmt,wk_lmt,wa_lmt,role1_lmt,role2_lmt,role3_lmt,role4_lmt,role5_lmt,role6_lmt,max FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id=%s", quote_smart($raid_id));
 			$result_raid = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 			$total = $db_raid->sql_fetchrow($result_raid, true);
 
@@ -1233,6 +1303,10 @@ elseif($mode == 'signup')
 				{
 					switch($class['class'])
 					{
+						case $phprlang['deathknight']:
+							if($count['dk'] >= $total['dk_lmt'])
+								$queue = 1;
+							break;
 						case $phprlang['druid']:
 							if($count['dr'] >= $total['dr_lmt'])
 								$queue = 1;
@@ -1456,7 +1530,7 @@ elseif($mode == 'draft')
 
 	// now check class limits to prevent users cheating the cancel/queue signup
 	// setup the count array
-	$count = array('dr'=>'0','hu'=>'0','ma'=>'0','pa'=>'0','pr'=>'0','ro'=>'0','sh'=>'0','wk'=>'0','wa'=>'0','role1'=>'0','role2'=>'0','role3'=>'0','role4'=>'0','role5'=>'0','role6'=>'0','total'=>'0');
+	$count = array('dk'=>'0','dr'=>'0','hu'=>'0','ma'=>'0','pa'=>'0','pr'=>'0','ro'=>'0','sh'=>'0','wk'=>'0','wa'=>'0','role1'=>'0','role2'=>'0','role3'=>'0','role4'=>'0','role5'=>'0','role6'=>'0','total'=>'0');
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id=%s AND queue='0' AND cancel='0'",quote_smart($raid_id));
 	$result_char = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 	while($char = $db_raid->sql_fetchrow($result_char, true))
@@ -1467,6 +1541,9 @@ elseif($mode == 'draft')
 
 		switch($tmp['class'])
 		{
+			case $phprlang['deathknight']:
+				$count['dk']++;
+				break;
 			case $phprlang['druid']:
 				$count['dr']++;
 				break;
@@ -1518,7 +1595,7 @@ elseif($mode == 'draft')
 		}				
 		$count['total']++;
 	}
-	$sql = sprintf("SELECT dr_lmt,hu_lmt,ma_lmt,pa_lmt,pr_lmt,ro_lmt,sh_lmt,wk_lmt,wa_lmt,role1_lmt,role2_lmt,role3_lmt,role4_lmt,role5_lmt,role6_lmt,max FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id=%s", quote_smart($raid_id));
+	$sql = sprintf("SELECT dk_lmt,dr_lmt,hu_lmt,ma_lmt,pa_lmt,pr_lmt,ro_lmt,sh_lmt,wk_lmt,wa_lmt,role1_lmt,role2_lmt,role3_lmt,role4_lmt,role5_lmt,role6_lmt,max FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id=%s", quote_smart($raid_id));
 	$result_raid = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 	$total = $db_raid->sql_fetchrow($result_raid, true);
 
@@ -1531,6 +1608,10 @@ elseif($mode == 'draft')
 	{
 		switch($class['class'])
 		{
+			case $phprlang['deathknight']:
+				if($count['dk'] >= $total['dk_lmt'])
+					$queue = 1;
+				break;
 			case $phprlang['druid']:
 				if($count['dr'] >= $total['dr_lmt'])
 					$queue = 1;
