@@ -208,7 +208,7 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true))
 	{
 		while($signups = $db_raid->sql_fetchrow($resultz, true)) 
 		{
-			if (($signups['queue'] == '0') and ($data2['cancel'] == '0')) {
+			if (($signups['queue'] == '0') and ($signups['cancel'] == '0')) {
 				$issignedup = "*";
 			} elseif ($issignedup == '') {
 				$issignedup = "#";
