@@ -60,7 +60,7 @@ if($mode == 'view')
 		if($data['priv'] == 0)
 			$priv = '<a href="permissions.php?mode=view">'.$phprlang['users_assign'].'</a>';
 		else
-			$priv = '<a href="permissions.php?mode=details&amp;id='.$data['priv'].'">'.get_priv_name($data['priv']).'</a>';
+			$priv = '<a href="permissions.php?mode=details&amp;perm_id='.$data['priv'].'">'.get_priv_name($data['priv']).'</a>';
 
 		$actions = '<a href="users.php?mode=remove_user&amp;n='.$data['username'].'&amp;user_id='.$data['profile_id'].'">
 					<img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0"
