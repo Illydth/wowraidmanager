@@ -280,6 +280,7 @@ $phprlang['cancel'] = 'Cancel signup';
 $phprlang['cancel_msg'] = 'You have cancelled your signup for this raid';
 $phprlang['comments'] = 'Comments';
 $phprlang['configuration'] = 'Configuration';
+$phprlang['deathknight_icon'] = 'Click to see Death Knights';
 $phprlang['delete'] = 'Delete';
 $phprlang['description'] = 'Description';
 $phprlang['druid_icon'] = 'Click to see druids';

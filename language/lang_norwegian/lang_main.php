@@ -251,6 +251,7 @@ $phprlang['cancel'] = 'Kanseller påmelding';
 $phprlang['cancel_msg'] = 'Du har kansellert påmeldingen til dette raidet';
 $phprlang['comments'] = 'Kommentarer';
 $phprlang['configuration'] = 'Konfigurer';
+$phprlang['druid_icon'] = 'Klikk for å se Death Knights';
 $phprlang['delete'] = 'Slett';
 $phprlang['description'] = 'Beskrivelse';
 $phprlang['druid_icon'] = 'Klikk for å se druider';

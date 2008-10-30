@@ -168,6 +168,8 @@ class Output_Data
 				return 8;
 			case strtolower($phprlang['warrior']):
 				return 9;
+			case strtolower($phprlang['deathknight']);
+				return 10;
 		}
 	}
 	
@@ -197,6 +199,8 @@ class Output_Data
 				return 'warlocks';
 			case 9:
 				return 'warriors';
+			case 10:
+				return 'deathknights';
 		}
 	}
 	
@@ -293,17 +297,24 @@ class Output_Data
 		while($raid_data = $db_raid->sql_fetchrow($raids_result, true))
 		{
 			$location_data=addslashes($raid_data['location']);
+			$description_data=addslashes($raid_data['description']);
 			$lua_output .= "\t\t[{$count}] = {\n";
 			$lua_output .= "\t\t\t[\"location\"] = \"$location_data\",\n";
 			$lua_output .= "\t\t\t[\"date\"] = \"" . new_date($phpraid_config['date_format'],$raid_data['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']) . "\",\n";
-			$lua_output .= "\t\t\t[\"invite_time\"] = \"" . new_date($phpraid_config['time_format'],$raid_data['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']) . "\",\n";
-			$lua_output .= "\t\t\t[\"start_time\"] = \"" . new_date($phpraid_config['time_format'],$raid_data['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']) . "\",\n";
-			
+			$lua_output .= "\t\t\t[\"invite_time\"] = \"" . new_date("Hi",$raid_data['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']) . "\",\n";
+			$lua_output .= "\t\t\t[\"start_time\"] = \"" . new_date("Hi",$raid_data['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']) . "\",\n";
+			if ($format == "1")
+			{
+				$lua_output .= "\t\t\t[\"event_type\"] = \"" . $raid_data['event_type'] . "\",\n";
+				$lua_output .= "\t\t\t[\"description\"] = \"$description_data\",\n";
+			}
+						
 			// sql string for signups
 			if ($format == "1")
 			{
 				$sql = "SELECT ".$phpraid_config['db_prefix']."signups.comments AS comment,
 							   ".$phpraid_config['db_prefix']."signups.timestamp AS timestamp,
+							   ".$phpraid_config['db_prefix']."signups.profile_id AS profile_id,
 							   ".$phpraid_config['db_prefix']."chars.char_id AS ID,
 							   ".$phpraid_config['db_prefix']."chars.name AS name,
 							   ".$phpraid_config['db_prefix']."chars.lvl AS lvl,
@@ -350,14 +361,36 @@ class Output_Data
 					$team_result = $db_raid->sql_query($sql2) or print_error($sql2, mysql_error(), 1);
 					$team = $db_raid->sql_fetchrow($team_result, true);
 
+					// Determine access_type for each character for each raid.
+					$profile_id = $signup['profile_id'];
+					$raid_officer = $raid_data['officer'];
+					
+					$sql3 = "SELECT profile_id " .
+							"FROM ".$phpraid_config['db_prefix']."profile " .
+							"WHERE username='".$raid_officer."'";
+					$officer_profile = $db_raid->sql_query($sql3) or print_error($sql3, mysql_error(), 1);
+					$raid_officer_profile_id = $db_raid->sql_fetchrow($officer_profile, true);
+					
+					// Check for Admin Privs for Signup Profile
+					$raids_perm = check_permission("raids", $profile_id);
+					
+					// Set Access Type Priv
+					if ($raids_perm)
+						$access_type = "Admin";
+					elseif ($profile_id == $raid_officer_profile_id['profile_id'])
+						$access_type = "Moderator";
+					else
+						$access_type = "User";
+						
 					array_push($signups, array(
-						'name'		=> ucfirst(strtolower($signup['name'])),
-						'level'		=> $signup['lvl'],
-						'race'		=> $signup['race'],
-						'class'		=> $signup['class'],
-						'team_name' => $team['team_name'],
-						'comment'	=> strip_linebreaks(addslashes($signup['comment'])),
-						'timestamp'	=> new_date($phpraid_config['date_format'],$signup['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']) . ' - ' . new_date($phpraid_config['time_format'],$signup['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']),
+						'name'		 => ucfirst(strtolower($signup['name'])),
+						'level'		 => $signup['lvl'],
+						'race'		 => $signup['race'],
+						'class'		 => $signup['class'],
+						'team_name'  => $team['team_name'],
+						'access_type'=> $access_type,
+						'comment'	 => strip_linebreaks(addslashes($signup['comment'])),
+						'timestamp'	 => new_date($phpraid_config['date_format'],$signup['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']) . ' - ' . new_date($phpraid_config['time_format'],$signup['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']),
 					));
 				}
 				else
@@ -393,15 +426,37 @@ class Output_Data
 							"WHERE raid_id=".$raid_data['raid_id']." and char_id=".$signup['ID'];
 					$team_result = $db_raid->sql_query($sql2) or print_error($sql2, mysql_error(), 1);
 					$team = $db_raid->sql_fetchrow($team_result, true);
-	
+
+					// Determine access_type for each character for each raid.
+					$profile_id = $signup['profile_id'];
+					$raid_officer = $raid_data['officer'];
+					
+					$sql3 = "SELECT profile_id " .
+							"FROM ".$phpraid_config['db_prefix']."profile " .
+							"WHERE username='".$raid_officer."'";
+					$officer_profile = $db_raid->sql_query($sql3) or print_error($sql3, mysql_error(), 1);
+					$raid_officer_profile_id = $db_raid->sql_fetchrow($officer_profile, true);
+
+					// Check for Admin Privs for Signup Profile
+					$raids_perm = check_permission("raids", $profile_id);
+					
+					// Set Access Type Priv
+					if ($raids_perm)
+						$access_type = "Admin";
+					elseif ($profile_id == $raid_officer_profile_id['profile_id'])
+						$access_type = "Moderator";
+					else
+						$access_type = "User";
+					
 					array_push($queue, array(
-						'name'		=> ucfirst(strtolower($signup['name'])),
-						'level'		=> $signup['lvl'],
-						'race'		=> $signup['race'],
-						'class'		=> $signup['class'],
-						'team_name' => $team['team_name'],
-						'comment'	=> strip_linebreaks(addslashes($signup['comment'])),
-						'timestamp'	=> new_date($phpraid_config['date_format'],$signup['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']) . ' - ' . new_date($phpraid_config['time_format'],$signup['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']),
+						'name'		 => ucfirst(strtolower($signup['name'])),
+						'level'		 => $signup['lvl'],
+						'race'		 => $signup['race'],
+						'class'		 => $signup['class'],
+						'access_type'=> $access_type,
+						'team_name'  => $team['team_name'],
+						'comment'	 => strip_linebreaks(addslashes($signup['comment'])),
+						'timestamp'	 => new_date($phpraid_config['date_format'],$signup['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']) . ' - ' . new_date($phpraid_config['time_format'],$signup['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']),
 					));
 				}
 				else
@@ -418,7 +473,7 @@ class Output_Data
 			}
 			
 			// begin - add data to lua output
-			for($i=0; $i<10; $i++)
+			for($i=0; $i<11; $i++)
 				$lua_signups[$i] = "\t\t\t[\"".$this->GetClassNameByClassId($i)."\"] = {\n";
 				
 			// init counter vars
@@ -441,7 +496,10 @@ class Output_Data
 				$lua_signups[0] .= "\t\t\t\t\t[\"class\"] = \"".$char['class']."\",\n";
 				$lua_signups[0] .= "\t\t\t\t\t[\"race\"] = \"{$char['race']}\",\n";
 				if ($format == "1")
+				{
 					$lua_signups[0] .= "\t\t\t\t\t[\"team_name\"] = \"{$char['team_name']}\",\n";
+					$lua_signups[0] .= "\t\t\t\t\t[\"access_type\"] = \"{$char['access_type']}\",\n";
+				}
 				$lua_signups[0] .= "\t\t\t\t\t[\"comment\"] = \"{$char['comment']}\",\n";
 				$lua_signups[0] .= "\t\t\t\t\t[\"timestamp\"] = \"{$char['timestamp']}\",\n";
 				$lua_signups[0] .= "\t\t\t\t},\n";
@@ -457,7 +515,10 @@ class Output_Data
 				$lua_signups[$class_id] .= "\t\t\t\t\t[\"class\"] = \"".$char['class']."\",\n";
 				$lua_signups[$class_id] .= "\t\t\t\t\t[\"race\"] = \"{$char['race']}\",\n";
 				if ($format == "1")
+				{
 					$lua_signups[$class_id] .= "\t\t\t\t\t[\"team_name\"] = \"{$char['team_name']}\",\n";
+					$lua_signups[$class_id] .= "\t\t\t\t\t[\"access_type\"] = \"{$char['access_type']}\",\n";
+				}
 				$lua_signups[$class_id] .= "\t\t\t\t\t[\"comment\"] = \"{$char['comment']}\",\n";
 				$lua_signups[$class_id] .= "\t\t\t\t\t[\"timestamp\"] = \"{$char['timestamp']}\",\n";
 				$lua_signups[$class_id] .= "\t\t\t\t},\n";
@@ -476,7 +537,7 @@ class Output_Data
 			$lua_output .= "\t\t\t[\"warlocks_count\"] = \"".$cnt[8]."\",\n";
 			$lua_output .= "\t\t\t[\"warriors_count\"] = \"".$cnt[9]."\",\n";
 			
-			for($i=0; $i<10; $i++)
+			for($i=0; $i<11; $i++)
 				$lua_output .= $lua_signups[$i] . "\t\t\t},\n";
 			$lua_output .= "\t\t},\n";
 			

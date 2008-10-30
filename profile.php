@@ -119,7 +119,7 @@ if($_GET['mode'] == 'view') {
 	while($signups = $db_raid->sql_fetchrow($result, true))
 	{
 		// setup the count array
-		$count = array('dr'=>'0','hu'=>'0','ma'=>'0','pa'=>'0','pr'=>'0','ro'=>'0','sh'=>'0','wk'=>'0','wa'=>'0','role1'=>'0','role2'=>'0','role3'=>'0','role4'=>'0','role5'=>'0','role6'=>'0');
+		$count = array('dk'=>'0','dr'=>'0','hu'=>'0','ma'=>'0','pa'=>'0','pr'=>'0','ro'=>'0','sh'=>'0','wk'=>'0','wa'=>'0','role1'=>'0','role2'=>'0','role3'=>'0','role4'=>'0','role5'=>'0','role6'=>'0');
 
 		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id=%s", quote_smart($signups['raid_id']));
 		$result_raid = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
@@ -140,8 +140,8 @@ if($_GET['mode'] == 'view') {
 		$count = get_char_count($data['raid_id'], $type='');
 		$count2 = get_char_count($data['raid_id'], $type='queue');
 
-		$total = $count['dr'] + $count['hu'] + $count['ma'] + $count['pa'] +$count['pr'] + $count['ro'] + $count['sh'] + $count['wk'] + $count['wa'];
-		$total2 = $count2['dr'] + $count2['hu'] + $count2['ma'] + $count2['pa'] + $count2['pr'] + $count2['ro'] + $count2['sh'] + $count2['wk'] + $count2['wa'];
+		$total = $count['dk'] + $count['dr'] + $count['hu'] + $count['ma'] + $count['pa'] +$count['pr'] + $count['ro'] + $count['sh'] + $count['wk'] + $count['wa'];
+		$total2 = $count2['dk'] + $count2['dr'] + $count2['hu'] + $count2['ma'] + $count2['pa'] + $count2['pr'] + $count2['ro'] + $count2['sh'] + $count2['wk'] + $count2['wa'];
 
 		if($total == "")
 		{
@@ -158,6 +158,7 @@ if($_GET['mode'] == 'view') {
 
 		if($phpraid_config['class_as_min'])
 		{
+			$dk_text = get_coloredcount('deathknight', $count['dk'], $data['dk_lmt'], $count2['dk'], true);
 			$dr_text = get_coloredcount('druid', $count['dr'], $data['dr_lmt'], $count2['dr'], true);
 			$hu_text = get_coloredcount('hunter', $count['hu'], $data['hu_lmt'], $count2['hu'], true);
 			$ma_text = get_coloredcount('mage', $count['ma'], $data['ma_lmt'], $count2['ma'], true);
@@ -176,6 +177,7 @@ if($_GET['mode'] == 'view') {
 		}
 		else
 		{
+			$dk_text = get_coloredcount('deathknight', $count['dk'], $data['dk_lmt'], $count2['dk']);
 			$dr_text = get_coloredcount('druid', $count['dr'], $data['dr_lmt'], $count2['dr']);
 			$hu_text = get_coloredcount('hunter', $count['hu'], $data['hu_lmt'], $count2['hu']);
 			$ma_text = get_coloredcount('mage', $count['ma'], $data['ma_lmt'], $count2['ma']);
@@ -202,6 +204,7 @@ if($_GET['mode'] == 'view') {
 					'Invite Time'=>$invite,
 					'Start Time'=>$start,'Officer'=>$data['officer'],
 					'Max'=>$total.'/'.$data['max']  . '' . $total2,
+					'DtK'=>$dk_text,
 					'Dru'=>$dr_text,
 					'Hun'=>$hu_text,
 					'Mag'=>$ma_text,
@@ -252,6 +255,7 @@ if($_GET['mode'] == 'view') {
 	$report->addOutputColumn('Invite Time',$phprlang['invite_time'],'wrmtime','center');
 	$report->addOutputColumn('Start Time',$phprlang['start_time'],'wrmtime','center');
 	$report->addOutputColumn('Officer',$phprlang['officer'],'','center');
+	$report->addOutputColumn('DtK', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/deathknight_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['deathknight'] . '\');" onMouseout="hideddrivetip();" alt="death knight">', '', 'center');
 	$report->addOutputColumn('Dru', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/druid_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['druid'] . '\');" onMouseout="hideddrivetip();" alt="druid">', '', 'center');
 	$report->addOutputColumn('Hun', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/hunter_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['hunter'] . '\');" onMouseout="hideddrivetip();" alt="hunter">', '', 'center');
 	$report->addOutputColumn('Mag', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/mage_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['mage'] . '\');" onMouseout="hideddrivetip();" alt="mage">', '', 'center');
@@ -643,6 +647,12 @@ if($db_raid->sql_numrows($result) == 0) {
 		}
 
 		// now that we have the race, let's show them what classes pertain to that race
+		//Death Knight - Available to All Races, no IF check.
+		if($class == $phprlang['deathknight'])
+			$class_options .= "<option value=\"".$phprlang['deathknight']."\" selected>".$phprlang['deathknight']."</option>";
+		else
+			$class_options .= "<option value=\"".$phprlang['deathknight']."\">".$phprlang['deathknight']."</option>";
+		
 		//Druid
 		if($race == $phprlang['night_elf'] || $race == $phprlang['tauren']) {
 			if($class == $phprlang['druid'])

@@ -280,6 +280,7 @@ $phprlang['cancel'] = 'Avboka';
 $phprlang['cancel_msg'] = 'Du har nu tagit bort din bokning för detta raid';
 $phprlang['comments'] = 'Kommentarer';
 $phprlang['configuration'] = 'Konfiguration';
+$phprlang['druid_icon'] = 'Klicka för att se Death Knights';
 $phprlang['delete'] = 'Radera';
 $phprlang['description'] = 'Beskrivning';
 $phprlang['druid_icon'] = 'Klicka för att se Druider';

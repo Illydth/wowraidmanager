@@ -280,6 +280,7 @@ $phprlang['cancel'] = '取消報名';
 $phprlang['cancel_msg'] = '您已經取消這次活動的報名';
 $phprlang['comments'] = '備註';
 $phprlang['configuration'] = '設定';
+$phprlang['deathknight_icon'] = 'Click to see Death Knights';
 $phprlang['delete'] = '刪除';
 $phprlang['description'] = '活動內容';
 $phprlang['druid_icon'] = '點擊這裡查看德魯伊';
