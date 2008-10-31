@@ -113,7 +113,7 @@ cd ..
 cd ..
 
 # wowchar-tooltip
-cd wowarmory_tooltip
+cd includes/wowarmory
 chmod a-x *.php
 cd images
 chmod a-x *.gif
@@ -145,20 +145,20 @@ cd ..
 cd ..
 cd ..
 cd ..
+cd ..
 
 ##################################################
 # File Mods are now set, package up the release.
 ##################################################
 
 #Creating Working Directories and Files
-mkdir package
-mkdir package/wrm
-cp -R * package/wrm
-cd package
+mkdir utilities/package
+mkdir utilities/package/wrm
+cp -R * utilities/package/wrm
+cd utilities/package
 
 #Remove Misc Stuff
 rm -rf wrm/utilities
-rm -rf wrm/package
 rm -f wrm/config.php
 rm -f wrm/config.php.*
 
@@ -166,5 +166,5 @@ rm -f wrm/config.php.*
 tar -czvf wowRaidManager_v$1.tar.gz wrm/*
 zip -r wowRaidManager_v$1.zip wrm
 
-#Final Packages should be in <root>/package at this point, ready for disbursal, remove temp directories
+#Final Packages should be in <root>/utilities/package at this point, ready for disbursal, remove temp directories
 rm -rf wrm
