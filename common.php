@@ -60,7 +60,7 @@ ini_set('include_path',  $include_list);
 // Class require_onces
 require_once($phpraid_dir.'version.php');
 require_once($phpraid_dir.'config.php');
-require_once($phpraid_dir.'db/mysql.php');
+require_once($phpraid_dir.'includes/functions_mysql.php');
 require_once($phpraid_dir.'includes/functions.php');
 require_once($phpraid_dir.'includes/functions_auth.php');
 require_once($phpraid_dir.'includes/functions_date.php');
