@@ -29,6 +29,9 @@
 *
 ****************************************************************************/
 
+/******************************************
+ * Hacking Protection Section 
+ ******************************************/
 if ( !defined('IN_PHPRAID'))
 	print_error("Hacking Attempt", "Invalid access detected", 1);
 
@@ -44,11 +47,17 @@ $phpraid_dir = './';
 // Sanity Check the Config File
 require_once($phpraid_dir."sanity.php");
 
+/*************************************************
+ * Installation Redirect if Needed (Deprecated)
+ *************************************************/
 // redirect to setup if it exists
 if(file_exists($phpraid_dir.'install/')) {
 	header("Location: install/install.php");
 }
 
+/**************************************************
+ * System Includes and Requires
+ **************************************************/
 // Get list of Includes and Add them to ini_set for include path.
 $include_list .= $phpraid_dir . "auth/";
 $include_list .= ":" . $phpraid_dir . "db/";
@@ -70,10 +79,16 @@ require_once($phpraid_dir.'includes/report.php');
 require_once($phpraid_dir.'includes/template.php');
 require_once($phpraid_dir.'includes/ubb.php');
 
+/****************************************************
+ * Report Output Setup (Deprecated)
+ ****************************************************/
 // reports for all data listing
 global $report;
 $report = &new ReportList;
 
+/************************************************
+ * Database Connection and phpraid_config Load
+ ************************************************/
 // database connection
 global $db_raid, $errorTitle, $errorMsg, $errorDie;
 $db_raid = &new sql_db($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass'],$phpraid_config['db_name']);
@@ -87,9 +102,7 @@ if(!$db_raid->db_connect_id)
 // we won't use it after this point
 unset($phpraid_config['db_pass']);
 
-//
 // Populate the $phpraid_config array
-//
 $sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "config";
 $result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 while($data = $db_raid->sql_fetchrow($result, true))
@@ -97,10 +110,32 @@ while($data = $db_raid->sql_fetchrow($result, true))
 	$phpraid_config["{$data['0']}"] = $data['1'];
 }
 
-// templates
+/**********************************************************
+ * Load Template System Here (Smarty/phpLib)
+ **********************************************************/
+//Load Smarty Library
+define('SMARTY_DIR', dirname(__FILE__).'/includes/smarty/libs/');
+require(SMARTY_DIR . 'Smarty.class.php');
+
+$smarty = new Smarty();
+$smarty->template_dir = 'templates/' . $phpraid_config['template'] . '/';
+$smarty->compile_dir  = 'cache/templates_c/';
+$smarty->config_dir   = 'includes/smarty/configs/';
+$smarty->cache_dir    = 'cache/smarty_cache/';
+// Turning on Caching will cause many pages not to display dynamic changes properly.
+$smarty->caching = false;
+$smarty->compile_check = true;
+/* Turn on/off Smarty Template Debugging by commenting/uncommenting the lines below. */
+$smarty->debugging = false;
+//$smarty->debugging = true;
+
+//Load phpLib Template System (Deprecated)
 $page = &new wrmTemplate();
 $page->set_root($phpraid_dir.'templates');
 
+/**************************************************
+ * Load Language Files
+ **************************************************/
 // Setup the Include for the Language Files.
 $include_list = $phpraid_dir . "language/lang_" . $phpraid_config['language'] . "/";
 $include_list .= ":" . ini_get('include_path');
@@ -121,10 +156,17 @@ else
 //	$phprlang[$key] = htmlentities($value, ENT_QUOTES, "UTF-8", false);
 //}
 
+/***************************************************
+ * Set Authentication Method and Load Auth Files
+ ***************************************************/
 // get auth type
 require_once($phpraid_dir.'auth/auth_' . $phpraid_config['auth_type'] . '.php');
 get_permissions();
 
+
+/****************************************************
+ * Maintenance Flag Disable Site
+ ****************************************************/
 if($phpraid_config['disable'] == 1 && $_SESSION['priv_configuration'] == 0)
 {
 	$errorTitle = $phprlang['maintenance_header'];
