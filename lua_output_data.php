@@ -265,7 +265,7 @@ class Output_Data
 		$text .= "<b>Beginning LUA output</b><br>";
 		
 		// open/create file
-		$file = fopen('./raid_lua/phpRaid_Data.lua','w');
+		$file = fopen('cache/raid_lua/phpRaid_Data.lua','w');
 		if ($file == FALSE)
 			$failed_to_open=TRUE;
 		
@@ -553,9 +553,9 @@ class Output_Data
 		// output to textarea
 		if ( $failed_to_open == TRUE)
 		{
-			$text .= 'LUA file could not be created due to failure to write.</b></br>';
-			$text .= 'Please set logging level to display warnings (E_WARNING or better)</br>';
-			$text .= 'To see the issue.';
+			$text .= 'LUA file could not be created due to failure to write.</b><br/>';
+			$text .= 'Please set logging level to display warnings (E_WARNING or better) ';
+			$text .= 'to see the issue.<br>';
 			$text .= '<br>';
 			$text .= 'Use this for copy+paste:<br>';
 			$text .= '<textarea rows="10" cols="60" style="width: 100%">';
@@ -567,7 +567,7 @@ class Output_Data
 		else
 		{
 			$text .= '<b>LUA file created.</b><br>';
-			$text .= 'Download <a href="./raid_lua/phpRaid_Data.lua">phpRaid_Data.lua</a> and save it to [wow-dir]\interface\addons\phpraidviewer\<br>';
+			$text .= 'Download <a href="cache/raid_lua/phpRaid_Data.lua">phpRaid_Data.lua</a> and save it to [wow-dir]\interface\addons\phpraidviewer\<br>';
 			$text .= 'or use this for copy+paste:<br>';
 			$text .= '<textarea rows="10" cols="60" style="width: 100%">';
 			$text .= $lua_output;
