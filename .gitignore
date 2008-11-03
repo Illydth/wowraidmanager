@@ -3,4 +3,3 @@ config.*
 package
 package/*
 includes/wowarmory/get_log/*
-cache/*
