@@ -2,6 +2,5 @@ config.php
 config.*
 package
 package/*
-raid_lua
 raid_lua/*
 wowarmory_tooltip/get_log/*
