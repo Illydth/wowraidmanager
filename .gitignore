@@ -2,4 +2,5 @@ config.php
 config.*
 package
 package/*
-includes/wowarmory/get_log/*
+raid_lua/*
+wowarmory_tooltip/get_log/*
