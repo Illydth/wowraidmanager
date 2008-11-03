@@ -2,5 +2,7 @@ config.php
 config.*
 package
 package/*
-raid_lua/*
-wowarmory_tooltip/get_log/*
+cache/templates_c/*
+cache/smarty_cache/*
+cache/raid_lua/*
+includes/wowarmory/get_log/*
