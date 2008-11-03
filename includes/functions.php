@@ -264,6 +264,11 @@ function linebreak_to_br($str) {
   return $str;
 }
 
+function linebreak_to_bslash_n($str) {
+  $str = preg_replace("/(\r\n?)|(\n\r?)/s", "\\n", $str);
+  return $str;
+}
+
 function strip_linebreaks($str) {
   $str = preg_replace("/(\r\n?)+|(\n\r?)+/s", " ", $str);
   
