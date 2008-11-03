@@ -317,7 +317,7 @@ if($db_raid->sql_numrows($result) > 0)
 				'announcement_author'=>$data['posted_by'],
 				'announcement_date'=>$date,
 				'announcement_time'=>$time,
-				'announcement_msg'=>$data['message'],
+				'announcement_msg'=>linebreak_to_br($data['message']),
 				'announcement_title'=>$data['title'],
 			)
 		);
