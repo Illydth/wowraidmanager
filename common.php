@@ -55,17 +55,6 @@ if(file_exists($phpraid_dir.'install/')) {
 	header("Location: install/install.php");
 }
 
-/**************************************************
- * System Includes and Requires
- **************************************************/
-// Get list of Includes and Add them to ini_set for include path.
-$include_list .= $phpraid_dir . "auth/";
-$include_list .= ":" . $phpraid_dir . "db/";
-$include_list .= ":" . $phpraid_dir . "includes/";
-$include_list .= ":" . ini_get('include_path');
-
-ini_set('include_path',  $include_list);
-
 // Class require_onces
 require_once($phpraid_dir.'version.php');
 require_once($phpraid_dir.'config.php');
@@ -136,11 +125,6 @@ $page->set_root($phpraid_dir.'templates');
 /**************************************************
  * Load Language Files
  **************************************************/
-// Setup the Include for the Language Files.
-$include_list = $phpraid_dir . "language/lang_" . $phpraid_config['language'] . "/";
-$include_list .= ":" . ini_get('include_path');
-ini_set('include_path',  $include_list);
-
 if(!is_file($phpraid_dir."language/lang_{$phpraid_config['language']}/lang_main.php"))
 {
 	die("The language file <i>" . $phpraid_config['language'] . "</i> could not be found!");

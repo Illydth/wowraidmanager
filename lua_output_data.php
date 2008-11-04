@@ -297,7 +297,7 @@ class Output_Data
 		while($raid_data = $db_raid->sql_fetchrow($raids_result, true))
 		{
 			$location_data=addslashes($raid_data['location']);
-			$description_data=addslashes($raid_data['description']);
+			$description_data=linebreak_to_bslash_n(addslashes($raid_data['description']));
 			$lua_output .= "\t\t[{$count}] = {\n";
 			$lua_output .= "\t\t\t[\"location\"] = \"$location_data\",\n";
 			$lua_output .= "\t\t\t[\"date\"] = \"" . new_date($phpraid_config['date_format'],$raid_data['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']) . "\",\n";
@@ -389,7 +389,7 @@ class Output_Data
 						'class'		 => $signup['class'],
 						'team_name'  => $team['team_name'],
 						'access_type'=> $access_type,
-						'comment'	 => strip_linebreaks(addslashes($signup['comment'])),
+						'comment'	 => linebreak_to_bslash_n(addslashes($signup['comment'])),
 						'timestamp'	 => new_date($phpraid_config['date_format'],$signup['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']) . ' - ' . new_date($phpraid_config['time_format'],$signup['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']),
 					));
 				}
@@ -455,7 +455,7 @@ class Output_Data
 						'class'		 => $signup['class'],
 						'access_type'=> $access_type,
 						'team_name'  => $team['team_name'],
-						'comment'	 => strip_linebreaks(addslashes($signup['comment'])),
+						'comment'	 => linebreak_to_bslash_n(addslashes($signup['comment'])),
 						'timestamp'	 => new_date($phpraid_config['date_format'],$signup['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']) . ' - ' . new_date($phpraid_config['time_format'],$signup['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']),
 					));
 				}
@@ -547,8 +547,9 @@ class Output_Data
 		// end - add data to lua output
 		
 		// write to file
+		$output = "\xEF\xBB\xBF" . $lua_output;
 		//fwrite($file,utf8_encode($lua_output));
-		fwrite($file, $lua_output);
+		fwrite($file, $output);
 		
 		// output to textarea
 		if ( $failed_to_open == TRUE)
