@@ -1,0 +1,8 @@
+{* Smarty Template *}
+<div class="contentHeader">{$header_data.new_raids_header}</div><br>
+<div class="contentBody">
+	{$header_data.new_raid_link}<br><br>
+</div>
+<div class="contentBody">{include file='raids_table.html' raid_data=$new_data}</div><br>
+<div class="contentHeader">{$header_data.old_raids_header}</div><br>
+<div class="contentBody">{include file='raids_table.html' raid_data=$old_data}</div><br>

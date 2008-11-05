@@ -1,0 +1,38 @@
+{* Smarty Template *}
+<div class="contentBody">
+	{if !empty($raid_data)}
+		<center>{$header_data.record_header}</center>
+		<table width="100%" cellpadding="3" cellspacing="0" border="0" class="dataOutline">
+			<tr class="listHeader">
+				{section name=create_columns loop=$column_name}
+					{if $column_name[create_columns].visible}
+						{if $column_name[create_columns].img_url != NULL}
+							<th><img src="templates/{$header_data.template_name}/{$column_name[create_columns].img_url}" border="0" height="18" width="18" onMouseover="ddrivetip(\'Click here to sort by {$column_name[create_columns].column_name}\');" onMouseout="hideddrivetip();" alt="{$column_name[create_columns].column_name}"></img></th>
+						{elseif $column_name[create_columns].column_name == "Buttons"}
+							<th>&nbsp;</th>
+						{else}
+							<th>{$column_name[create_columns].column_name}</th>
+						{/if}
+					{/if}
+				{/section}
+			</tr>
+			{section name=raids_data_sec loop=$raid_data}
+			{cycle name='classname' assign='classname' values="row1,row2"}
+			<tr class="{$classname}" onmouseover="this.className='rowHover';" onmouseout="this.className='{$classname}';">
+				{section name=display_column_data loop=$column_name}
+					{assign var=foo value="`$column_name[display_column_data].column_name`"}
+					{if $column_name[display_column_data].visible}
+						<td>{$raid_data[raids_data_sec].$foo}</td>
+					{/if}
+				{/section}
+			</tr>
+			{/section}
+		</table>
+	{else}
+		<table width="100%" cellpadding="3" cellspacing="0" border="0" class="dataOutline">
+			<tr class="listHeader">
+				<th>Empty</th>
+			</tr>
+		</table>
+	{/if}
+</div><br>
