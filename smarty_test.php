@@ -11,7 +11,7 @@ else
 	
 require_once("includes/authentication.php");
 
-$smarty->assign('name','Doug2');
-$smarty->display('smartytest.html');
+$wrmsmarty->assign('name','Doug2');
+$wrmsmarty->display('smartytest.html');
 
 ?>
