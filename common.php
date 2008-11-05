@@ -63,6 +63,7 @@ require_once($phpraid_dir.'includes/functions.php');
 require_once($phpraid_dir.'includes/functions_auth.php');
 require_once($phpraid_dir.'includes/functions_date.php');
 require_once($phpraid_dir.'includes/functions_logging.php');
+require_once($phpraid_dir.'includes/functions_tables.php');
 require_once($phpraid_dir.'includes/functions_users.php');
 require_once($phpraid_dir.'includes/report.php');
 require_once($phpraid_dir.'includes/template.php');
@@ -106,17 +107,17 @@ while($data = $db_raid->sql_fetchrow($result, true))
 define('SMARTY_DIR', dirname(__FILE__).'/includes/smarty/libs/');
 require(SMARTY_DIR . 'Smarty.class.php');
 
-$smarty = new Smarty();
-$smarty->template_dir = 'templates/' . $phpraid_config['template'] . '/';
-$smarty->compile_dir  = 'cache/templates_c/';
-$smarty->config_dir   = 'includes/smarty/configs/';
-$smarty->cache_dir    = 'cache/smarty_cache/';
+$wrmsmarty = new Smarty();
+$wrmsmarty->template_dir = 'templates/' . $phpraid_config['template'] . '/';
+$wrmsmarty->compile_dir  = 'cache/templates_c/';
+$wrmsmarty->config_dir   = 'includes/smarty/configs/';
+$wrmsmarty->cache_dir    = 'cache/smarty_cache/';
 // Turning on Caching will cause many pages not to display dynamic changes properly.
-$smarty->caching = false;
-$smarty->compile_check = true;
+$wrmsmarty->caching = false;
+$wrmsmarty->compile_check = true;
 /* Turn on/off Smarty Template Debugging by commenting/uncommenting the lines below. */
-$smarty->debugging = false;
-//$smarty->debugging = true;
+//$wrmsmarty->debugging = false;
+$wrmsmarty->debugging = true;
 
 //Load phpLib Template System (Deprecated)
 $page = &new wrmTemplate();
