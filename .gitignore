@@ -5,4 +5,4 @@ package/*
 cache/templates_c/*
 cache/smarty_cache/*
 cache/raid_lua/*
-includes/wowarmory/get_log/*
+cache/armory_log/*

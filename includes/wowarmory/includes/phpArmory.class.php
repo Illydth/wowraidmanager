@@ -303,8 +303,7 @@ class phpArmory {
 			$timeout = $this->timeout;
 			$userAgent = $this->userAgent;
 			
-			$stderrfptr = fopen(getcwd() . "/get_log/stderr.log", "w+");
-
+			$stderrfptr = fopen(getcwd() . "../../../cache/armory_log/stderr.log", "w+");
 			curl_setopt ($ch, CURLOPT_URL, $url);
 			curl_setopt ($ch, CURLOPT_VERBOSE, 1);
 			curl_setopt ($ch, CURLOPT_STDERR, $stderrfptr);
