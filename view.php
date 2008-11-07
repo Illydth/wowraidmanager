@@ -303,10 +303,9 @@ if($mode == 'view')
 			}
 
 		$comments = DEUBB2(scrub_input($signups['comments']));
-		$comments = str_replace("'", "\'", $comments);
 
 		if(strlen($signups['comments']) > 25)
-			$comments = '<a href="#" onMouseover="ddrivetip(\'<span class=tooltip_title>'.$phprlang['comments'].'</span><br>'.$comments.'\',\'\',\'150\')" onMouseout="hideddrivetip();">' . substr($signups['comments'], 0, 22) . '...</a>';
+			$comments = '<a href="#" onMouseover="fixedtooltip(\'<span class=tooltip_title>'.$phprlang['comments'].'</span><br>'.$comments.'\',this,event,\'150\')" onMouseout="delayhidetip();">' . substr($signups['comments'], 0, 22) . '...</a>';
 		else
 			$comments = UBB(scrub_input($signups['comments']));
 
@@ -655,7 +654,7 @@ if($mode == 'view')
 		$comments = DEUBB2(scrub_input($signups['comments']));
 
 		if(strlen($signups['comments']) > 25)
-			$comments = '<a href="#" onMouseover="ddrivetip(\'<span class=tooltip_title>'.$phprlang['comments'].'</span><br>'.$comments.'\',\'\',\'150\')" onMouseout="hideddrivetip();">' . substr($signups['comments'], 0, 22) . '...</a>';
+			$comments = '<a href="#" onMouseover="fixedtooltip(\'<span class=tooltip_title>'.$phprlang['comments'].'</span><br>'.$comments.'\',this,event,\'150\')" onMouseout="delayhidetip();">' . substr($signups['comments'], 0, 22) . '...</a>';
 		else
 			$comments = UBB(scrub_input($signups['comments']));
 
