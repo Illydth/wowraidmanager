@@ -95,4 +95,186 @@ function getVisibleColumns($view_name)
 	return $table_headers;
 }
 
+/**
+* Takes in an inital array of data, sorts the data based upon an input field, paginates
+* the data according to a start record and the $phpraid_config['records_per_page'] config
+* item, and then formats each of the columns according to the database format field.
+* @param array $dataArray - Array holding the data for formatting.
+* @param string $sortField - Field Name to Sort By, blank is an unsorted array.
+* @param boolean $sortDesc - A True/False flag for whether or not to sort in descending order (TRUE = Descending Sort).
+* @param int $startRecord - The Record Number to start at.
+* @param string $viewName - The name of the report view the data pertains to, used for formatting fields.
+* @return array $formattedArray - The array of data sorted, trimmed for pagination, and formatted.
+* @access public
+*/
+function paginate_sort_and_format($dataArray, $sortField, $sortDesc, $startRecord, $viewName)
+{
+	$sortedArray = array();
+	$trimmedArray = array();
+	$formattedArray = array();
+	
+	// First we need to sort the data in the array.
+	$sortedArray = sortData($dataArray, $sortField, $sortDesc);
+	
+	// Next we Paginate and limit the data returned for display
+	$trimmedArray = paginateData($sortedArray, $startRecord);
+	
+	// Finally we parse each column on it's format type and apply formatting properly
+	//$formattedArray = $trimmedArray;
+	// We're done, Return the Data array for display.
+	//return $formattedArray;
+	return $trimmedArray;
+}
+
+/**
+* Takes in an inital array of data and sorts the data based upon an input field.  Should be
+* called only by "paginate_sort_and_format()".
+* @param array $dataArray - Array holding the data for sorting.
+* @param string $sortField - Field Name to Sort By, blank is an unsorted array.
+* @param boolean $sortDesc - A True/False flag for whether or not to sort in descending order (TRUE = Descending Sort).
+* @return array $dataArray - The array of sorted data.
+* @access private
+*/
+function sortData($dataArray, $sortField, $sortDesc)
+{
+	$sortarray = array();
+	
+	// Sort results before displaying, if necessary
+    if ($sortField != '') 
+    {
+    	// Sort the array on the specified value
+		foreach ($dataArray as $curRecord)
+		   	$sortarray[] = $curRecord[$sortField];
+
+		array_multisort($sortarray, $dataArray);
+		
+		// Sort descending, if necessary
+		if ($sortDesc) 
+			$dataArray = array_reverse($dataArray);
+  	}
+  	
+  	return $dataArray;
+}
+
+/**
+* Takes in an inital array of data and paginates the data based upon a max records per page
+* parameter set by the user.  Should be called only by "paginate_sort_and_format()".
+* @param array $dataArray - Array holding the data for pagination.
+* @param string $startRecord - Record Number to Start with. (this is a "1" based number).
+* @return array $dataArray - The array of paginated data...only the data belonging to the correct "page" will be returned.
+* @access private
+*/
+function paginateData($dataArray, $startRecord)
+{
+	global $phpraid_config;
+	
+	$pagedData = array();
+	//$maxPerPage = $phpraid_config['records_per_page'];
+	$maxPerPage = 2;
+	
+	$intTotalRecords = count($dataArray);
+	if ($intTotalRecords == 0) 
+	{
+		// No records to work with
+		return($dataArray);
+	}
+
+	// Figure out how many of the results we're actually supposed to show
+	$intFirstRecord = $startRecord;
+	if ($intFirstRecord + $maxPerPage >= $intTotalRecords) 
+	{
+		// Show all the records
+		$intLastRecord = $intTotalRecords;
+	}
+	else 
+	{
+		// Show only the specified number of records per page
+		$intLastRecord = $intFirstRecord + $maxPerPage - 1;
+		if ($intLastRecord > $intTotalRecords)  
+			$intLastRecord = $intTotalRecords; 
+	}
+	
+	// At this point we have $intFirstRecord, $intLastRecord set, process $dataArray to 
+	//    $pagedData to write sorted records for the page.
+	$X = 0; // Set Paged Data Index.
+	for ($i = $intFirstRecord; $i <= $intLastRecord; $i++)
+	{
+		$pagedData[$X] = $dataArray[$i-1];
+		$X=$X+1;
+	}
+	
+	return $pagedData;
+}
+
+/**
+* Takes in an inital array of data and formats the data based upon a formatting code attached
+* to the column in the wrm_column_headers table.  Should be called only by "paginate_sort_and_format()".
+* @param array $dataArray - Array holding the data for formatting...the data should already be sorted.
+* @param string $viewName - "view_name" from the wrm_column_headers table for what view to work with. 
+* @return array $formattedData - The array of data for which all columns are formatted according to the database value.
+* @access private
+*/
+function formatData($dataArray, $viewName)
+{
+	$formattedData = array();
+	return $formattedData;
+}
+
+/**
+* Takes an inital array of data and calculates the "jump to" links for the page.  This should
+* return a string of links with | in between for each page.  Previous and Next buttons included.
+* @param array $dataArray - Array holding the data for which pagination should occur.
+* @param string $startRecord - The "current page" start record to calculate which page should not be linked. 
+* @return string $jumpMenu - The string of anchor tags to jump between the various data.
+* @access public
+*/
+function getPageNavigation($dataArray, $startRecord, $pageURL, $sortField, $sortDesc)
+{	
+	global $phpraid_config;
+	
+	//$recPerPage = $phpraid_config['records_per_page'];
+	$recPerPage = 2;
+	$intTotalRecords = count($dataArray); // Gets the total number of records to page.
+	$totalPages = ceil($intTotalRecords / $recPerPage); // Gets the total number of pages.
+	$currPage = ceil($startRecord / $recPerPage); // Gets the Current Page Number
+	$prevPage = $currPage - 1; // Get the page number for the "<< Prev" link.
+	$nextPage = $currPage + 1; // Get the page number for teh "Next >>" link.
+	
+	if (($currPage == $totalPages)||($totalPages == 0))
+		return;
+	
+	// Start Calculating the HRefs.
+	
+	//Add Prev Link
+	if ($prevPage == 0)
+		$jumpMenu = "<< Prev | ";
+	else
+	{
+		$recordBase = (($prevPage - 1) * $recPerPage) + 1;
+		$jumpMenu = '<a href="' . $pageURL . 'Base=' . $recordBase . '&amp;Sort=' . $sortField . '&SortDescending=' . $sortDesc . '">&lt;&lt; Prev</a>';
+	}
+	//Add Page Number Links 
+	for ($i = 1; $i <= $totalPages; $i++)
+	{
+		if ($i == $currPage)
+		{
+			$jumpMenu .= $i . ' | ';
+		}
+		else
+		{
+			$recordBase = (($i - 1) * $recPerPage) + 1;
+			$jumpMenu = '<a href="' . $pageURL . 'Base=' . $recordBase . '&amp;Sort=' . $sortField . '&SortDescending=' . $sortDesc . '">' . $i . '</a>';			
+		}
+	}
+	//Add Next Link
+	if ($currPage == $totalPages)
+		$jumpMenu .= "Next >>";
+	else
+	{
+		$recordBase = ($currPage * $recPerPage) + 1;
+		$jumpMenu .= '<a href="' . $pageURL . 'Base=' . $recordBase . '&amp;Sort=' . $sortField . '&SortDescending=' . $sortDesc . '">Next &gt;&gt;</a>';
+	}
+	
+	return $jumpMenu;
+}
 ?>
