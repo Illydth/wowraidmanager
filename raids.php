@@ -201,7 +201,6 @@ if($_GET['mode'] == 'view')
 					'Buttons'=>$edit . $delete,
 				)
 			);
-			$wrmsmarty->assign('new_data', $current); 
 		}
 		else
 		{
@@ -232,7 +231,6 @@ if($_GET['mode'] == 'view')
 					$phpraid_config['role6_name']=>$role6_text,
 					//'Tank'=>$tank,'Heal'=>$heal,'Melee'=>$melee,'Ranged'=>$ranged,'TkMel'=>$tkmel,
 					'Buttons'=> $mark_new . $old_delete));
-				$wrmsmarty->assign('old_data', $previous); 
 		}
 		$edit = "";
 		$delete= "";
@@ -311,14 +309,34 @@ if($_GET['mode'] == 'view')
 	//	)
 	//);
 
-	//Setup Headers
+	//Setup Columns
 	$raid_headers = array();
 	$raid_headers = getVisibleColumns('raids1');
 	$raid_column_count = count($raid_headers);
 	
+	// REMOVE THIS
+	$sortField = '';
+	$sortDesc = 0;
+	$startRecord = 1;
+	$viewName='raids1';
+	$pageURL = 'raids.php?mode=view&';
+	
+	//Get the Jump Menu and pass it down
+	$currJumpMenu = getPageNavigation($current, $startRecord, $pageURL, $sortField, $sortDesc);
+	$prevJumpMenu = getPageNavigation($previous, $startRecord, $pageURL, $sortField, $sortDesc);
+	
+	//Setup Data
+	$current = paginate_sort_and_format($current, $sortField, $sortDesc, $startRecord, $viewName);
+	$previous = paginate_sort_and_format($previous);
+	
 	//@@TAKE ME OUT
 	$intFirstRecord=0;
 
+	/* -------------------------------------------------- */
+	/* UPDATE THE TEMPLATE FILES TO USE THE NEW JUMP MENU */
+	/* -------------------------------------------------- */
+	$wrmsmarty->assign('new_data', $current); 
+	$wrmsmarty->assign('old_data', $previous); 
 	$wrmsmarty->assign('column_name', $raid_headers);
 	$wrmsmarty->assign('header_data',
 		array(
@@ -329,6 +347,8 @@ if($_GET['mode'] == 'view')
 			'new_raid_link' => $new_raid_link,
 			'old_raids_header' => $phprlang['raids_old'],
 			'new_raids_header' => $phprlang['raids_new'],
+			'current_jump_menu' => $currJumpMenu,
+			'previous_jump_menu' => $prevJumpMenu,
 		)
 	);
 }
