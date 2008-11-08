@@ -88,7 +88,8 @@ function getVisibleColumns($view_name)
 			array(
 				'column_name'=>$column_name,
 				'visible'=>$data['visible'],
-				'img_url'=>$data['img_url']
+				'img_url'=>$data['img_url'],
+				'format_code'=>$data['format_code'],
 			)
 		);
 	}
@@ -107,24 +108,120 @@ function getVisibleColumns($view_name)
 * @return array $formattedArray - The array of data sorted, trimmed for pagination, and formatted.
 * @access public
 */
-function paginate_sort_and_format($dataArray, $sortField, $sortDesc, $startRecord, $viewName)
+function paginateSortAndFormat($dataArray, $sortField, $sortDesc, $startRecord, $viewName)
 {
 	$sortedArray = array();
 	$trimmedArray = array();
 	$formattedArray = array();
 	
+	if (empty($dataArray))
+		return $dataArray;
+		
 	// First we need to sort the data in the array.
-	$sortedArray = sortData($dataArray, $sortField, $sortDesc);
+	$sortedArray = _sortData($dataArray, $sortField, $sortDesc);
 	
 	// Next we Paginate and limit the data returned for display
-	$trimmedArray = paginateData($sortedArray, $startRecord);
-	
+	$trimmedArray = _paginateData($sortedArray, $startRecord);
+
 	// Finally we parse each column on it's format type and apply formatting properly
-	//$formattedArray = $trimmedArray;
+	$formattedArray = _formatData($trimmedArray, $viewName);
+	
 	// We're done, Return the Data array for display.
-	//return $formattedArray;
-	return $trimmedArray;
+	return $formattedArray;
 }
+
+/**
+* Calculates Start, End, and Total records in data set, as well as the count of columns of data.
+* @param array $dataArray - Array holding the data for which counting should occur.
+* @param array $headerArray - Array holding the column headers for which counting should occur. 
+* @param number $startRecord - The Starting Record for the page.
+* @return array $recCountArr - Array holding the various needed counts.
+* @access public
+*/
+function getRecordCounts($dataArray, $headerArray, $startRecord)
+{
+	global $phpraid_config, $phprlang;
+	
+	$recCountArr = array();
+
+	$totalRecords = count($dataArray);
+	$endRecord = $startRecord + $phpraid_config['records_per_page'] - 1;
+	if ($endRecord > $totalRecords) 
+		$endRecord = $totalRecords;
+	
+	$column_count = count($headerArray);
+		
+	$recCountArr['startRecord'] = $startRecord;
+	$recCountArr['endRecord'] = $endRecord;
+	$recCountArr['totalRecords'] = $totalRecords;
+	$recCountArr['columnCount'] = $column_count;
+	$recCountArr['recordHeader'] =$phprlang['records'] . " " . $startRecord . " " . $phprlang['to'] . " " . 
+								$endRecord . " " . $phprlang['of'] . " " . $totalRecords . " " . $phprlang['total'] . ".";		
+		
+	return $recCountArr;
+}
+
+/**
+* Takes an inital array of data and calculates the "jump to" links for the page.  This should
+* return a string of links with | in between for each page.  Previous and Next buttons included.
+* @param array $dataArray - Array holding the data for which pagination should occur.
+* @param string $startRecord - The "current page" start record to calculate which page should not be linked. 
+* @return string $jumpMenu - The string of anchor tags to jump between the various data.
+* @access public
+*/
+function getPageNavigation($dataArray, $startRecord, $pageURL, $sortField, $sortDesc)
+{	
+	global $phpraid_config;
+	
+	$maxPerPage = $phpraid_config['records_per_page'];
+	$intTotalRecords = count($dataArray); // Gets the total number of records to page.
+	$totalPages = ceil($intTotalRecords / $maxPerPage); // Gets the total number of pages.
+	$currPage = ceil($startRecord / $maxPerPage); // Gets the Current Page Number
+	$prevPage = $currPage - 1; // Get the page number for the "<< Prev" link.
+	$nextPage = $currPage + 1; // Get the page number for teh "Next >>" link.
+	
+	if ((($currPage == $totalPages)&&$currPage == 1)||($totalPages == 0))
+		return;
+	
+	// Start Calculating the HRefs.
+	
+	//Add Prev Link
+	if ($prevPage == 0)
+		$jumpMenu = "<< Prev | ";
+	else
+	{
+		$recordBase = (($prevPage - 1) * $maxPerPage) + 1;
+		$jumpMenu = '<a href="' . $pageURL . 'Base=' . $recordBase . '&amp;Sort=' . $sortField . '&SortDescending=' . $sortDesc . '">&lt;&lt; Prev</a> | ';
+	}
+	//Add Page Number Links 
+	for ($i = 1; $i <= $totalPages; $i++)
+	{
+		if ($i == $currPage)
+		{
+			$jumpMenu .= $i . ' | ';
+		}
+		else
+		{
+			$recordBase = (($i - 1) * $maxPerPage) + 1;
+			$jumpMenu .= '<a href="' . $pageURL . 'Base=' . $recordBase . '&amp;Sort=' . $sortField . '&SortDescending=' . $sortDesc . '">' . $i . '</a> | ';			
+		}
+	}
+	//Add Next Link
+	if ($currPage == $totalPages)
+		$jumpMenu .= "Next >>";
+	else
+	{
+		$recordBase = ($currPage * $maxPerPage) + 1;
+		$jumpMenu .= '<a href="' . $pageURL . 'Base=' . $recordBase . '&amp;Sort=' . $sortField . '&SortDescending=' . $sortDesc . '">Next &gt;&gt;</a>';
+	}
+	
+	return $jumpMenu;
+}
+
+
+/*******************************
+ * Internal Targets
+ * *****************************/
 
 /**
 * Takes in an inital array of data and sorts the data based upon an input field.  Should be
@@ -135,7 +232,7 @@ function paginate_sort_and_format($dataArray, $sortField, $sortDesc, $startRecor
 * @return array $dataArray - The array of sorted data.
 * @access private
 */
-function sortData($dataArray, $sortField, $sortDesc)
+function _sortData($dataArray, $sortField, $sortDesc)
 {
 	$sortarray = array();
 	
@@ -164,13 +261,12 @@ function sortData($dataArray, $sortField, $sortDesc)
 * @return array $dataArray - The array of paginated data...only the data belonging to the correct "page" will be returned.
 * @access private
 */
-function paginateData($dataArray, $startRecord)
+function _paginateData($dataArray, $startRecord)
 {
 	global $phpraid_config;
 	
 	$pagedData = array();
-	//$maxPerPage = $phpraid_config['records_per_page'];
-	$maxPerPage = 2;
+	$maxPerPage = $phpraid_config['records_per_page'];
 	
 	$intTotalRecords = count($dataArray);
 	if ($intTotalRecords == 0) 
@@ -181,7 +277,7 @@ function paginateData($dataArray, $startRecord)
 
 	// Figure out how many of the results we're actually supposed to show
 	$intFirstRecord = $startRecord;
-	if ($intFirstRecord + $maxPerPage >= $intTotalRecords) 
+	if ($intTotalRecords <= $maxPerPage) 
 	{
 		// Show all the records
 		$intLastRecord = $intTotalRecords;
@@ -214,67 +310,208 @@ function paginateData($dataArray, $startRecord)
 * @return array $formattedData - The array of data for which all columns are formatted according to the database value.
 * @access private
 */
-function formatData($dataArray, $viewName)
+function _formatData($dataArray, $viewName)
 {
+	global $phpraid_config, $db_raid;
+	
+	$formattedArray = array();
+	
+	$tableColumns = getVisibleColumns($viewName);
+	
 	$formattedData = array();
-	return $formattedData;
+	$x=0;
+
+	for ($x = 0; $x < $phpraid_config['records_per_page']; $x++)
+	{
+		foreach($tableColumns as $colName)
+		{
+			if ($colName['format_code'] != '')
+			{
+				$formattedData = _formatListValue($dataArray[$x][$colName['column_name']], $colName['format_code']);
+				$dataArray[$x][$colName['column_name']] = $formattedData;
+			}
+		}
+	}
+	
+	return $dataArray;
 }
 
 /**
-* Takes an inital array of data and calculates the "jump to" links for the page.  This should
-* return a string of links with | in between for each page.  Previous and Next buttons included.
-* @param array $dataArray - Array holding the data for which pagination should occur.
-* @param string $startRecord - The "current page" start record to calculate which page should not be linked. 
-* @return string $jumpMenu - The string of anchor tags to jump between the various data.
-* @access public
+*Used to obtain a two letter representation of the day of the week that is internationalized.
+* @param array $varDate An array of date data obtained from the "GetDate" function.
+* @return string - The two letter representation of the day of the week, obtaned from the language files.
+* @access private
 */
-function getPageNavigation($dataArray, $startRecord, $pageURL, $sortField, $sortDesc)
-{	
+function _getDayString($varDate)
+{
+	global $phprlang;
+		
+	$dayofweek = $varDate['wday'];
+		
+	switch ($dayofweek) {
+		case '0' :
+			$daystr = $phprlang['2ltrsunday'];
+			break;
+		case '1' :
+			$daystr = $phprlang['2ltrmonday'];
+			break;
+		case '2' :
+			$daystr = $phprlang['2ltrtuesday'];
+			break;
+		case '3' :
+			$daystr = $phprlang['2ltrwednesday'];
+			break;
+		case '4' :
+			$daystr = $phprlang['2ltrthursday'];
+			break;
+		case '5' :
+			$daystr = $phprlang['2ltrfriday'];
+			break;
+		case '6' :
+			$daystr = $phprlang['2ltrsaturday'];
+			break;
+		default :
+			$daystr = '';
+			break;
+	}
+	return $daystr;
+}
+
+/**
+* Formats a given string value for display, to the specified format type.  Currently
+* 	supported formats are: phone, ucase, lcase, pcase, decimal, money, dollars, date,
+* 	datetime, and wrapped.  Date and datetime formats suffer the same limitations
+* 	as many date formatters in *nix, i.e. dates prior to the Unix date epoch are often
+* 	problematic.  Wrapped breaks lines at 100 characters using <br> tags.  Dollars
+*	will use American dollar signs in front of money values (ex: $3.54 or ($546.78) for
+*	negative values).
+* @param string $strValue The current value to format
+* @param string $strFormat The format type to conform to (phone, ucase, etc.)
+* @return string The formatted value for dispaly
+* @access private
+*/
+function _formatListValue($strValue, $strFormat)
+{
 	global $phpraid_config;
-	
-	//$recPerPage = $phpraid_config['records_per_page'];
-	$recPerPage = 2;
-	$intTotalRecords = count($dataArray); // Gets the total number of records to page.
-	$totalPages = ceil($intTotalRecords / $recPerPage); // Gets the total number of pages.
-	$currPage = ceil($startRecord / $recPerPage); // Gets the Current Page Number
-	$prevPage = $currPage - 1; // Get the page number for the "<< Prev" link.
-	$nextPage = $currPage + 1; // Get the page number for teh "Next >>" link.
-	
-	if (($currPage == $totalPages)||($totalPages == 0))
-		return;
-	
-	// Start Calculating the HRefs.
-	
-	//Add Prev Link
-	if ($prevPage == 0)
-		$jumpMenu = "<< Prev | ";
-	else
-	{
-		$recordBase = (($prevPage - 1) * $recPerPage) + 1;
-		$jumpMenu = '<a href="' . $pageURL . 'Base=' . $recordBase . '&amp;Sort=' . $sortField . '&SortDescending=' . $sortDesc . '">&lt;&lt; Prev</a>';
+
+	switch ($strFormat) {
+		case 'phone' :
+			$strValue = trim($strValue);
+			switch (strlen($strValue)) {
+				case 7 :
+					// 6060801 -> 606-0801
+					$strValue = substr($strValue, 0, 3) . '-' .
+								substr($strValue, 3);
+					break;
+				case 10 :
+					// 8016060801 -> (801) 606-0801
+					$strValue = '(' . substr($strValue, 0, 3) . ') ' .
+									substr($strValue, 3, 3) . '-' .
+									substr($strValue, 6);
+					break;
+				default :
+					break;
+			}
+			break;
+		case 'ucase' :
+			$strValue = strtoupper($strValue);
+			break;
+		case 'lcase' :
+			$strValue = strtolower($strValue);
+			break;
+		case 'pcase' :
+			$strValue = ucwords(strtolower($strValue));
+			break;
+		case 'money' :
+			$strValue = number_format($strValue, 2);
+			break;
+		case 'dollars' :
+			$dblValue = doubleval($strValue);
+			if ($dblValue < 0) {
+				$strValue = number_format(-1 * $dblValue, 2);
+				$strValue = '($' . $strValue . ')';
+			}
+			else {
+				$strValue = number_format($dblValue, 2);
+				$strValue = '$' . $strValue;
+			}
+			break;
+		case 'decimal' :
+		case 'wrapped' :
+			$strValue = wordwrap($strValue, 100, '<br />');
+			break;
+		case 'date' :
+			if ($strValue == '') {
+				$strValue = '';
+			}
+			else {
+				if (strlen($strValue) < 6) {
+					$strValue = '';
+				}
+				else {
+					$varDate = getDate(strtotime($strValue));
+					$strValue = sprintf('%\'02d', $varDate['mon']) . '/' .
+								sprintf('%\'02d', $varDate['mday']) . '/' .
+								sprintf('%\'04d', $varDate['year']);
+				}
+			}
+			break;
+		case 'datetime' :
+			if ($strValue == '') {
+				$strValue = '';
+			}
+			else {
+				if (strlen($strValue) < 6) {
+					$strValue = '';
+				}
+				else {
+					$varDate = getDate(strtotime($strValue));
+					$strValue = sprintf('%\'02d', $varDate['mon']) . '/' .
+								sprintf('%\'02d', $varDate['mday']) . '/' .
+								sprintf('%\'04d', $varDate['year']) . ' ' .
+								sprintf('%\'02d', $varDate['hours']) . ':' .
+								sprintf('%\'02d', $varDate['minutes']);
+				}
+			}
+			break;
+		case 'wrmdate' :
+			if ($strValue == '') {
+				$strValue = '';
+			}
+			else {
+				$varDate = strtotime($strValue);
+				$daystr = _getDayString(getDate($varDate));
+				$date_format = $phpraid_config['date_format'];
+				$strValue = date($date_format, $varDate);
+				$strValue = $daystr . ": " . $strValue;
+			}
+			break;
+		case 'wrmtime' :
+			if ($strValue == '') {
+				$strValue = '';
+			}
+			else {
+				$varDate = strtotime($strValue);
+				$date_format = $phpraid_config['time_format'];
+				$strValue = date($date_format, $varDate);
+			}
+			break;
+		case 'wrmdatetime' :
+			if ($strValue == '') {
+				$strValue = '';
+			}
+			else {
+				$varDate = strtotime($strValue);
+				$daystr = _getDayString(getDate($varDate));
+				$date_format = $phpraid_config['date_format'] . " " . $phpraid_config['time_format'];
+				$strValue = date($date_format, $varDate);
+				$strValue = $daystr . ": " . $strValue;
+			}
+			break;
+		default :
+			break;
 	}
-	//Add Page Number Links 
-	for ($i = 1; $i <= $totalPages; $i++)
-	{
-		if ($i == $currPage)
-		{
-			$jumpMenu .= $i . ' | ';
-		}
-		else
-		{
-			$recordBase = (($i - 1) * $recPerPage) + 1;
-			$jumpMenu = '<a href="' . $pageURL . 'Base=' . $recordBase . '&amp;Sort=' . $sortField . '&SortDescending=' . $sortDesc . '">' . $i . '</a>';			
-		}
-	}
-	//Add Next Link
-	if ($currPage == $totalPages)
-		$jumpMenu .= "Next >>";
-	else
-	{
-		$recordBase = ($currPage * $recPerPage) + 1;
-		$jumpMenu .= '<a href="' . $pageURL . 'Base=' . $recordBase . '&amp;Sort=' . $sortField . '&SortDescending=' . $sortDesc . '">Next &gt;&gt;</a>';
-	}
-	
-	return $jumpMenu;
+
+	return $strValue;
 }
 ?>
