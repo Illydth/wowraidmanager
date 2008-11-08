@@ -59,3 +59,5 @@ INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible
 VALUES (NULL , 'raids1', 'Totals', '1', '23', NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url` )
 VALUES (NULL , 'raids1', 'Buttons', '1', '24', NULL);
+
+INSERT INTO `wrm_config` VALUES ('records_per_page','2');
