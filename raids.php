@@ -43,6 +43,24 @@ else
 }
 require_once("includes/authentication.php");
 
+// Set StartRecord for Page
+if(!isset($_GET['Base']) || !is_numeric($_GET['Base']))
+	$startRecord = 1;
+else
+	$startRecord = scrub_input($_GET['Base']);
+
+// Set Sort Field for Page
+if(!isset($_GET['Sort']))
+	$sortField="";
+else
+	$sortField = scrub_input($_GET['Sort']);
+	
+// Set Sort Descending Mark
+if(!isset($_GET['SortDescending']) || !is_numeric($_GET['SortDescending']))
+	$sortDesc = 1;
+else
+	$sortDesc = scrub_input($_GET['SortDescending']);
+
 $priv_raids = scrub_input($_SESSION['priv_raids']);
 $username = scrub_input($_SESSION['username']);
 
@@ -60,7 +78,6 @@ if($_GET['mode'] == 'view')
 	if (!$db_raid->sql_numrows($result) || $db_raid->sql_numrows($result) < 1)
 		$new_raid_link = '<a href="raids.php?mode=new"><img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_new_raid.gif" border="0"  onMouseover="ddrivetip(\''.$phprlang['raids_new_header'].'\');" onMouseout="hideddrivetip();" alt="new raid icon"></a>';		
 
-	$intTotalRecords = $db_raid->sql_numrows($result);
 	while($data = $db_raid->sql_fetchrow($result, true)) {
 		if ($priv_raids or $username == $data['officer'])
 		{
@@ -309,46 +326,42 @@ if($_GET['mode'] == 'view')
 	//	)
 	//);
 
-	//Setup Columns
-	$raid_headers = array();
-	$raid_headers = getVisibleColumns('raids1');
-	$raid_column_count = count($raid_headers);
-	
 	// REMOVE THIS
-	$sortField = '';
-	$sortDesc = 0;
-	$startRecord = 1;
 	$viewName='raids1';
 	$pageURL = 'raids.php?mode=view&';
+	$raid_headers = array();
+	$record_count_array = array();
 	
+	//Setup Columns
+	$raid_headers = getVisibleColumns($viewName);
+
+	//Get Record Counts
+	$record_count_array = getRecordCounts($current, $raid_headers, $startRecord);
+
 	//Get the Jump Menu and pass it down
 	$currJumpMenu = getPageNavigation($current, $startRecord, $pageURL, $sortField, $sortDesc);
 	$prevJumpMenu = getPageNavigation($previous, $startRecord, $pageURL, $sortField, $sortDesc);
-	
-	//Setup Data
-	$current = paginate_sort_and_format($current, $sortField, $sortDesc, $startRecord, $viewName);
-	$previous = paginate_sort_and_format($previous);
-	
-	//@@TAKE ME OUT
-	$intFirstRecord=0;
 
-	/* -------------------------------------------------- */
-	/* UPDATE THE TEMPLATE FILES TO USE THE NEW JUMP MENU */
-	/* -------------------------------------------------- */
+	//Setup Data
+	$current = paginateSortAndFormat($current, $sortField, $sortDesc, $startRecord, $viewName);
+	$previous = paginateSortAndFormat($previous, $sortField, $sortDesc, $startRecord, $viewName);
+
+	// Assign Smarty Data
 	$wrmsmarty->assign('new_data', $current); 
-	$wrmsmarty->assign('old_data', $previous); 
+	$wrmsmarty->assign('old_data', $previous);
+	$wrmsmarty->assign('current_jump_menu', $currJumpMenu);
+	$wrmsmarty->assign('previous_jump_menu', $prevJumpMenu);
 	$wrmsmarty->assign('column_name', $raid_headers);
+	$wrmsmarty->assign('record_counts', $record_count_array);
 	$wrmsmarty->assign('header_data',
 		array(
 			'template_name'=>$phpraid_config['template'],
-			'column_count'=>$raid_column_count,
-			'record_header'=>$phprlang['records'] . " " . ($intFirstRecord + 1) . " " . $phprlang['to'] . " " . 
-								$intLastRecord . " " . $phprlang['of'] . " " . $intTotalRecords . " " . $phprlang['total'] . ".",
 			'new_raid_link' => $new_raid_link,
 			'old_raids_header' => $phprlang['raids_old'],
 			'new_raids_header' => $phprlang['raids_new'],
-			'current_jump_menu' => $currJumpMenu,
-			'previous_jump_menu' => $prevJumpMenu,
+			'sort_url_base' => $pageURL,
+			'sort_descending' => $sortDesc,
+			'sort_text' => $phprlang['sort_text'],
 		)
 	);
 }

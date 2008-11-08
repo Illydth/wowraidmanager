@@ -3,6 +3,6 @@
 <div class="contentBody">
 	{$header_data.new_raid_link}<br><br>
 </div>
-<div class="contentBody">{include file='raids_table.html' raid_data=$new_data}</div><br>
+<div class="contentBody">{include file='raids_table.html' raid_data=$new_data jump_menu=$current_jump_menu}</div><br>
 <div class="contentHeader">{$header_data.old_raids_header}</div><br>
-<div class="contentBody">{include file='raids_table.html' raid_data=$old_data}</div><br>
+<div class="contentBody">{include file='raids_table.html' raid_data=$old_data jump_menu=$previous_jump_menu}</div><br>

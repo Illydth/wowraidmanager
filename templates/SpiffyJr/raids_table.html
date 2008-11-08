@@ -1,17 +1,36 @@
 {* Smarty Template *}
 <div class="contentBody">
 	{if !empty($raid_data)}
-		<center>{$header_data.record_header}</center>
 		<table width="100%" cellpadding="3" cellspacing="0" border="0" class="dataOutline">
+			<caption>{$record_counts.recordHeader}</caption>
+			<tr>
+				<td align="left" colspan="{$record_counts.columnCount}">{$jump_menu}</td>
+			</tr>
 			<tr class="listHeader">
 				{section name=create_columns loop=$column_name}
 					{if $column_name[create_columns].visible}
 						{if $column_name[create_columns].img_url != NULL}
-							<th><img src="templates/{$header_data.template_name}/{$column_name[create_columns].img_url}" border="0" height="18" width="18" onMouseover="ddrivetip(\'Click here to sort by {$column_name[create_columns].column_name}\');" onMouseout="hideddrivetip();" alt="{$column_name[create_columns].column_name}"></img></th>
+							{if $header_data.sort_descending}
+								<th>
+									<a href="{$header_data.sort_url_base}Sort={$column_name[create_columns].column_name}&SortDescending=0">
+										<img border="0" height="18" width="18" alt="{$column_name[create_columns].column_name}" onMouseout="hideddrivetip();" onMouseover="ddrivetip('{$header_data.sort_text} {$column_name[create_columns].column_name}');" src="templates/{$header_data.template_name}/{$column_name[create_columns].img_url}"></img>
+									</a>
+								</th>
+							{else}
+								<th>
+									<a href="{$header_data.sort_url_base}Sort={$column_name[create_columns].column_name}&SortDescending=1">
+										<img border="0" height="18" width="18" alt="{$column_name[create_columns].column_name}" onMouseout="hideddrivetip();" onMouseover="ddrivetip('{$header_data.sort_text} {$column_name[create_columns].column_name}');" src="templates/{$header_data.template_name}/{$column_name[create_columns].img_url}"></img>
+									</a>
+								</th>
+							{/if}							
 						{elseif $column_name[create_columns].column_name == "Buttons"}
 							<th>&nbsp;</th>
 						{else}
-							<th>{$column_name[create_columns].column_name}</th>
+							{if $header_data.sort_descending}
+								<th><a href="{$header_data.sort_url_base}Sort={$column_name[create_columns].column_name}&SortDescending=0">{$column_name[create_columns].column_name}</a></th>
+							{else}
+								<th><a href="{$header_data.sort_url_base}Sort={$column_name[create_columns].column_name}&SortDescending=1">{$column_name[create_columns].column_name}</a></th>
+							{/if}							
 						{/if}
 					{/if}
 				{/section}
