@@ -122,20 +122,20 @@ function step5($auth_type)
 		}
 
 		mysql_select_db($phpraid_config['db_name']);
-	
-		$sql = printf("SELECT username FROM " . $phpraid_config['db_prefix']. "profile WHERE username = %s", quote_smart($iums_useradmin_name));
-		
+
+		$sql = sprintf("SELECT username FROM " . $phpraid_config['db_prefix']. "profile WHERE username = %s", quote_smart($iums_useradmin_name));
+
 		$result = mysql_query($sql) or die("Error verifying " . mysql_error());
 		$sqlresultdata = mysql_fetch_assoc($result);
 		
 		if((mysql_num_rows($result) == 0))
 		{
-			$sql = printf("INSERT INTO " . $phpraid_config['db_prefix'] . "profile ( `username`, `email`,`password`, `priv`) VALUES(%s,%s,%s,'1')", quote_smart($iums_useradmin_name), quote_smart($iums_useradmin_email), quote_smart($iums_useradmin_password));
+			$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "profile ( `username`, `email`,`password`, `priv`) VALUES(%s,%s,%s,'1')", quote_smart($iums_useradmin_name), quote_smart($iums_useradmin_email), quote_smart($iums_useradmin_password));
 			$result = mysql_query($sql) or die("Error inserting " . mysql_error());
 		}
 		else
 		{
-			$sql = printf("UPDATE " . $phpraid_config['db_prefix'] . "profile SET priv='1' WHERE username=%s", quote_smart($iums_useradmin_name));
+			$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "profile SET priv='1' WHERE username=%s", quote_smart($iums_useradmin_name));
 			mysql_query($sql)or die("Error updating " . mysql_error());
 		}
 	
