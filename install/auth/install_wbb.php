@@ -194,7 +194,7 @@ function step5($auth_type)
 		$userclasses .= '</select>';
 		$altuserclass .= '</select>';
 		
-		$sql = "SELECT username, email, userid FROM ".$wbb_prefix."users WHERE username  = '$wbb_useradmin_name'";
+		$sql = pritnf("SELECT username, email, userid FROM ".$wbb_prefix."users WHERE username  = %s", quote_smart($wbb_useradmin_name));
 		//echo ':datenbank:'.$mySQLdefaultdb.'::<br>::'.$sql;
 		$result = mysql_query($sql) or die($localstr['step5wbbsub3errorretusername'].': <br>' .$sql. '<br>'. mysql_error());
 		
@@ -222,20 +222,21 @@ function step5($auth_type)
 		mysql_select_db($phpraid_config['db_name']);
 
 		// verified user, might as well throw him in profile now if they don't already exist
-		$sql = "SELECT username FROM " . $phpraid_config['db_prefix']. "profile WHERE username = '$wbb_useradmin_name'";
+		$sql = printf("SELECT username FROM " . $phpraid_config['db_prefix']. "profile WHERE username = %s", quote_smart($wbb_useradmin_name));
 		
 		$result = mysql_query($sql) or die("Error verifying " . mysql_error());
 		//$sqlresultdata = mysql_fetch_assoc($result);
 		
 		if((mysql_num_rows($result) == 0))
 		{
-			$sql = "INSERT INTO " . $phpraid_config['db_prefix'] . "profile (`profile_id`,`username`,`email`,`password`,`priv`) ";
-			$sql.= "VALUES('$wbb_useradmin_id','$wbb_useradmin_name','$wbb_useradmin_email','$wbb_useradmin_password','1')";
+			$sql = printf("INSERT INTO " . $phpraid_config['db_prefix'] . "profile (`profile_id`,`username`,`email`,`password`,`priv`) " .
+					"VALUES(%s,%s,%s,%s,'1')", quote_smart($wbb_useradmin_id), quote_smart($wbb_useradmin_name), 
+					quote_smart($wbb_useradmin_email), quote_smart($wbb_useradmin_password));
 			$result = mysql_query($sql) or die("Error inserting " . mysql_error());
 		}
 		else
 		{
-			$sql = "UPDATE " . $phpraid_config['db_prefix'] . "profile SET priv='1' WHERE username='$wbb_useradmin_name'";
+			$sql = printf("UPDATE " . $phpraid_config['db_prefix'] . "profile SET priv='1' WHERE username=%s", quote_smart($wbb_useradmin_name));
 			mysql_query($sql)or die("Error updating " . mysql_error());
 		}
 	
@@ -281,19 +282,19 @@ function step5($auth_type)
 		if(mysql_num_rows($result) > 0)
 		{
 			// update
-			$sql = "UPDATE " . $phpraid_config['db_prefix'] . "config SET config_value='$wbb_base_path' WHERE config_name='wbb_base_path'";
+			$sql = printf("UPDATE " . $phpraid_config['db_prefix'] . "config SET config_value=%s WHERE config_name='wbb_base_path'", quote_smart($wbb_base_path));
 			mysql_query($sql) or die("Error updateing wbb_base_path in config table. " . mysql_error());
 			
-			$sql = "UPDATE " . $phpraid_config['db_prefix'] . "config SET config_value='$wbb_prefix' WHERE config_name='wbb_table_prefix'";
+			$sql = printf("UPDATE " . $phpraid_config['db_prefix'] . "config SET config_value=%s WHERE config_name='wbb_table_prefix'", quote_smart($wbb_prefix));
 			mysql_query($sql) or die("Error updateing wbb_prefix in config table. " . mysql_error());
 			
 			$sql = "UPDATE " . $phpraid_config['db_prefix'] . "config SET config_value='wbb' WHERE config_name='auth_type'";
 			mysql_query($sql) or die("Error updateing auth_type in config table. " . mysql_error());
 			
-			$sql = "UPDATE " . $phpraid_config['db_prefix'] . "config SET config_value='$wbb_auth_user_class' WHERE config_name='wbb_auth_user_class'";
+			$sql = printf("UPDATE " . $phpraid_config['db_prefix'] . "config SET config_value=%s WHERE config_name='wbb_auth_user_class'", quote_smart($wbb_auth_user_class));
 			mysql_query($sql) or die("Error updateing wbb_auth_user_class in config table. " . mysql_error());
 			
-			$sql = "UPDATE " . $phpraid_config['db_prefix'] . "config SET config_value='$wbb_alt_auth_user_class' WHERE config_name='wbb_alt_auth_user_class'";
+			$sql = printf("UPDATE " . $phpraid_config['db_prefix'] . "config SET config_value=%s WHERE config_name='wbb_alt_auth_user_class'", quote_smart($wbb_alt_auth_user_class));
 			mysql_query($sql) or die("Error updateing wbb_alt_auth_user_class in config table. " . mysql_error());
 			
 		}
@@ -302,16 +303,16 @@ function step5($auth_type)
 			// install
 			$sql = "INSERT INTO " . $phpraid_config['db_prefix'] . "config VALUES('auth_type','wbb')";
 			mysql_query($sql);
-			$sql = "INSERT INTO " . $phpraid_config['db_prefix'] . "config VALUES('wbb_base_path','$wbb_base_path')";
+			$sql = printf("INSERT INTO " . $phpraid_config['db_prefix'] . "config VALUES('wbb_base_path',%s)", quote_smart($wbb_base_path));
 			mysql_query($sql) or die("BOO5");
-			$sql = "INSERT INTO " . $phpraid_config['db_prefix'] . "config VALUES('wbb_table_prefix','$wbb_prefix')";
+			$sql = printf("INSERT INTO " . $phpraid_config['db_prefix'] . "config VALUES('wbb_table_prefix',%s)", quote_smart($wbb_prefix));
 			mysql_query($sql) or die("Error inserting wbb_table_prefix in config table. " . mysql_error());
 			// Insert the wbb_auth_user_class
-			$sql = "INSERT INTO " . $phpraid_config['db_prefix'] . "config VALUES('wbb_auth_user_class', '" . $wbb_auth_user_class . "')";
+			$sql = printf("INSERT INTO " . $phpraid_config['db_prefix'] . "config VALUES('wbb_auth_user_class', %s)", quote_smart($wbb_auth_user_class));
 			mysql_query($sql) or die("Error inserting wbb_auth_user_class in config table. " . mysql_error());
 		
 			// Insert the wbb_auth_user_class
-			$sql = "INSERT INTO " . $phpraid_config['db_prefix'] . "config VALUES('wbb_alt_auth_user_class', '" . $wbb_alt_auth_user_class . "')";
+			$sql = printf("INSERT INTO " . $phpraid_config['db_prefix'] . "config VALUES('wbb_alt_auth_user_class', %s)", quote_smart($wbb_alt_auth_user_class));
 			mysql_query($sql) or die("Error inserting wbb_alt_auth_user_class in config table. " . mysql_error());
 		}
 	

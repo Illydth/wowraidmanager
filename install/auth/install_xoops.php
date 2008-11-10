@@ -194,7 +194,7 @@ function step5($auth_type)
 		$userclasses .= '</select>';
 		$altuserclass .= '</select>';
 		
-		$sql = "SELECT name, email, uid FROM ".$xoops_prefix."_users WHERE name  = '$xoops_useradmin_name'";
+		$sql = printf("SELECT name, email, uid FROM ".$xoops_prefix."_users WHERE name  = %s", quote_smart($xoops_useradmin_name));
 		//echo ':datenbank:'.$mySQLdefaultdb.'::<br>::'.$sql;
 		$result = mysql_query($sql) or die($localstr['step5xoopssub3errorretusername'].': <br>' .$sql. '<br>'. mysql_error());
 		
@@ -222,20 +222,21 @@ function step5($auth_type)
 		mysql_select_db($phpraid_config['db_name']);
 
 		// verified user, might as well throw him in profile now if they don't already exist
-		$sql = "SELECT username FROM " . $phpraid_config['db_prefix']. "profile WHERE username = '$xoops_useradmin_name'";
+		$sql = printf("SELECT username FROM " . $phpraid_config['db_prefix']. "profile WHERE username = %s", quote_smart($xoops_useradmin_name));
 		
 		$result = mysql_query($sql) or die("Error verifying " . mysql_error());
 		//$sqlresultdata = mysql_fetch_assoc($result);
 		
 		if((mysql_num_rows($result) == 0))
 		{
-			$sql = "INSERT INTO " . $phpraid_config['db_prefix'] . "profile (`profile_id`,`username`,`email`,`password`,`priv`) ";
-			$sql.= "VALUES('$xoops_useradmin_id','$xoops_useradmin_name','$xoops_useradmin_email','$xoops_useradmin_password','1')";
+			$sql = pritnf("INSERT INTO " . $phpraid_config['db_prefix'] . "profile (`profile_id`,`username`,`email`,`password`,`priv`) " .
+						"VALUES(%s,%s,%s,%s,'1')", quote_smart($xoops_useradmin_id), quote_smart($xoops_useradmin_name), 
+						quote_smart($xoops_useradmin_email), quote_smart($xoops_useradmin_password));
 			$result = mysql_query($sql) or die("Error inserting " . mysql_error());
 		}
 		else
 		{
-			$sql = "UPDATE " . $phpraid_config['db_prefix'] . "profile SET priv='1' WHERE username='$xoops_useradmin_name'";
+			$sql = printf("UPDATE " . $phpraid_config['db_prefix'] . "profile SET priv='1' WHERE username=%s", quote_smart($xoops_useradmin_name));
 			mysql_query($sql)or die("Error updating " . mysql_error());
 		}
 	
@@ -281,19 +282,19 @@ function step5($auth_type)
 		if(mysql_num_rows($result) > 0)
 		{
 			// update
-			$sql = "UPDATE " . $phpraid_config['db_prefix'] . "config SET config_value='$xoops_base_path' WHERE config_name='xoops_base_path'";
+			$sql = printf("UPDATE " . $phpraid_config['db_prefix'] . "config SET config_value=%s WHERE config_name='xoops_base_path'", quote_smart($xoops_base_path));
 			mysql_query($sql) or die("Error updateing xoops_base_path in config table. " . mysql_error());
 			
-			$sql = "UPDATE " . $phpraid_config['db_prefix'] . "config SET config_value='$xoops_prefix' WHERE config_name='xoops_table_prefix'";
+			$sql = printf("UPDATE " . $phpraid_config['db_prefix'] . "config SET config_value=%s WHERE config_name='xoops_table_prefix'", quote_smart($xoops_prefix));
 			mysql_query($sql) or die("Error updateing xoops_prefix in config table. " . mysql_error());
 			
 			$sql = "UPDATE " . $phpraid_config['db_prefix'] . "config SET config_value='xoops' WHERE config_name='auth_type'";
 			mysql_query($sql) or die("Error updateing auth_type in config table. " . mysql_error());
 			
-			$sql = "UPDATE " . $phpraid_config['db_prefix'] . "config SET config_value='$xoops_auth_user_class' WHERE config_name='xoops_auth_user_class'";
+			$sql = printf("UPDATE " . $phpraid_config['db_prefix'] . "config SET config_value=%s WHERE config_name='xoops_auth_user_class'", quote_smart($xoops_auth_user_class));
 			mysql_query($sql) or die("Error updateing xoops_auth_user_class in config table. " . mysql_error());
 			
-			$sql = "UPDATE " . $phpraid_config['db_prefix'] . "config SET config_value='$xoops_alt_auth_user_class' WHERE config_name='xoops_alt_auth_user_class'";
+			$sql = printf("UPDATE " . $phpraid_config['db_prefix'] . "config SET config_value=%s WHERE config_name='xoops_alt_auth_user_class'", quote_smart($xoops_alt_auth_user_class));
 			mysql_query($sql) or die("Error updateing xoops_alt_auth_user_class in config table. " . mysql_error());
 			
 		}
@@ -302,16 +303,15 @@ function step5($auth_type)
 			// install
 			$sql = "INSERT INTO " . $phpraid_config['db_prefix'] . "config VALUES('auth_type','xoops')";
 			mysql_query($sql);
-			$sql = "INSERT INTO " . $phpraid_config['db_prefix'] . "config VALUES('xoops_base_path','$xoops_base_path')";
+			$sql = printf("INSERT INTO " . $phpraid_config['db_prefix'] . "config VALUES('xoops_base_path',%s)", quote_smart($xoops_base_path));
 			mysql_query($sql) or die("BOO5");
-			$sql = "INSERT INTO " . $phpraid_config['db_prefix'] . "config VALUES('xoops_table_prefix','$xoops_prefix')";
+			$sql = printf("INSERT INTO " . $phpraid_config['db_prefix'] . "config VALUES('xoops_table_prefix',%s)", quote_smart($xoops_prefix));
 			mysql_query($sql) or die("Error inserting xoops_table_prefix in config table. " . mysql_error());
 			// Insert the xoops_auth_user_class
-			$sql = "INSERT INTO " . $phpraid_config['db_prefix'] . "config VALUES('xoops_auth_user_class', '" . $xoops_auth_user_class . "')";
-			mysql_query($sql) or die("Error inserting xoops_auth_user_class in config table. " . mysql_error());
-		
+			$sql = printf("INSERT INTO " . $phpraid_config['db_prefix'] . "config VALUES('xoops_auth_user_class', %s)", quote_smart($xoops_auth_user_class));
+			mysql_query($sql) or die("Error inserting xoops_auth_user_class in config table. " . mysql_error());		
 			// Insert the xoops_auth_user_class
-			$sql = "INSERT INTO " . $phpraid_config['db_prefix'] . "config VALUES('xoops_alt_auth_user_class', '" . $xoops_alt_auth_user_class . "')";
+			$sql = printf("INSERT INTO " . $phpraid_config['db_prefix'] . "config VALUES('xoops_alt_auth_user_class', %s)", quote_smart($xoops_alt_auth_user_class));
 			mysql_query($sql) or die("Error inserting xoops_alt_auth_user_class in config table. " . mysql_error());
 		}
 	
@@ -332,7 +332,6 @@ function step5($auth_type)
 
 	return 1;
 }
-dbname
 
 /***********************************************************************************************
  * 					UserClass and Alternate User Class/Group Documentation

@@ -224,7 +224,7 @@ function step5($auth_type)
 		$userclasses .= '</select>';
 		$altuserclass .= '</select>';
 		
-		$sql = "SELECT username, user_email, user_id FROM " . $phpbb_prefix . "users WHERE username = '".$phpbb_useradmin_name ."'";
+		$sql = printf("SELECT username, user_email, user_id FROM " . $phpbb_prefix . "users WHERE username = %s", quote_smart($phpbb_useradmin_name));
 		$result = mysql_query($sql) or die($localstr['step5phpBBsub3errorretusername'].': <br>'. $sql. '<br>'. mysql_error());
 		$data = mysql_fetch_assoc($result);
 		$phpbb_useradmin_email = $data['user_email'];
@@ -250,20 +250,21 @@ function step5($auth_type)
 		mysql_select_db($phpraid_config['db_name']);
 
 		// verified user, might as well throw him in profile now if they don't already exist
-		$sql = "SELECT username FROM " . $phpraid_config['db_prefix']. "profile WHERE username = '$phpbb_useradmin_name'";
+		$sql = printf("SELECT username FROM " . $phpraid_config['db_prefix']. "profile WHERE username = %s", quote_smart($phpbb_useradmin_name));
 		
 		$result = mysql_query($sql) or die("Error verifying " . mysql_error());
 		//$sqlresultdata = mysql_fetch_assoc($result);
 		
 		if((mysql_num_rows($result) == 0))
 		{
-			$sql = "INSERT INTO " . $phpraid_config['db_prefix'] . "profile (`profile_id`, `username`, `email`, `priv`) ";
-			$sql.= "VALUES('$phpbb_useradmin_id','$phpbb_useradmin_name','$phpbb_useradmin_email','1')";
+			$sql = printf("INSERT INTO " . $phpraid_config['db_prefix'] . "profile (`profile_id`, `username`, `email`, `priv`) " .
+							"VALUES(%s,%s,%s,'1')", quote_smart($phpbb_useradmin_id), quote_smart($phpbb_useradmin_name), 
+							quote_smart($phpbb_useradmin_email));
 			$result = mysql_query($sql) or die("Error inserting " . mysql_error());
 		}
 		else
 		{
-			$sql = "UPDATE " . $phpraid_config['db_prefix'] . "profile SET priv='1' WHERE username='$phpbb_useradmin_name'";
+			$sql = printf("UPDATE " . $phpraid_config['db_prefix'] . "profile SET priv='1' WHERE username=%s", quote_smart($phpbb_useradmin_name));
 			mysql_query($sql)or die("Error updating " . mysql_error());
 		}
 	
@@ -358,37 +359,37 @@ function step5($auth_type)
 		if(mysql_num_rows($result) > 0)
 		{
 			// update
-			$sql = "UPDATE " . $phpraid_config['db_prefix'] . "config SET config_value='$phpbb_root_path' WHERE config_name='phpbb_root_path'";
+			$sql = printf("UPDATE " . $phpraid_config['db_prefix'] . "config SET config_value=%s WHERE config_name='phpbb_root_path'", quote_smart($phpbb_root_path));
 			mysql_query($sql) or die("Error updateing phpbb_root_path in config table. " . mysql_error());
 			
-			$sql = "UPDATE " . $phpraid_config['db_prefix'] . "config SET config_value='$phpbb_prefix' WHERE config_name='phpbb_prefix'";
+			$sql = printf("UPDATE " . $phpraid_config['db_prefix'] . "config SET config_value=%s WHERE config_name='phpbb_prefix'", quote_smart($phpbb_prefix));
 			mysql_query($sql) or die("Error updateing phpbb_prefix in config table. " . mysql_error());
-			$sql = "UPDATE " . $phpraid_config['db_prefix'] . "config SET config_value='$authstring' WHERE config_name='auth_type'";
+			$sql = printf("UPDATE " . $phpraid_config['db_prefix'] . "config SET config_value=%s WHERE config_name='auth_type'", quote_smart($authstring));
 			mysql_query($sql) or die("Error updateing auth_type in config table. " . mysql_error());
-			$sql = "UPDATE " . $phpraid_config['db_prefix'] . "config SET config_value='$phpBB_auth_user_class' WHERE config_name='phpBB_auth_user_class'";
+			$sql = printf("UPDATE " . $phpraid_config['db_prefix'] . "config SET config_value=%s WHERE config_name='phpBB_auth_user_class'", quote_smart($phpBB_auth_user_class));
 			mysql_query($sql) or die("Error updateing phpBB_auth_user_class in config table. " . mysql_error());
-			$sql = "UPDATE " . $phpraid_config['db_prefix'] . "config SET config_value='$phpBB_alt_auth_user_class' WHERE config_name='phpBB_alt_auth_user_class'";
+			$sql = printf("UPDATE " . $phpraid_config['db_prefix'] . "config SET config_value=%s WHERE config_name='phpBB_alt_auth_user_class'", quote_smart($phpBB_alt_auth_user_class));
 			mysql_query($sql) or die("Error updateing phpBB_alt_auth_user_class in config table. " . mysql_error());
 			
 		}
 		else
 		{
 			// install
-			$sql = "INSERT INTO " . $phpraid_config['db_prefix'] . "config VALUES('auth_type','$authstring')";
+			$sql = printf("INSERT INTO " . $phpraid_config['db_prefix'] . "config VALUES('auth_type',%s)", quote_smart($authstring));
 			mysql_query($sql) or die("Error inserting auth_type in config table. " . mysql_error());
 			
-			$sql = "INSERT INTO " . $phpraid_config['db_prefix'] . "config VALUES('phpbb_root_path','$phpbb_root_path')";
+			$sql = printf("INSERT INTO " . $phpraid_config['db_prefix'] . "config VALUES('phpbb_root_path',%s)", quote_smart($phpbb_root_path));
 			mysql_query($sql) or die("Error inserting phpbb_root_path in config table. " . mysql_error());
 			
-			$sql = "INSERT INTO " . $phpraid_config['db_prefix'] . "config VALUES('phpbb_prefix','$phpbb_prefix')";
+			$sql = printf("INSERT INTO " . $phpraid_config['db_prefix'] . "config VALUES('phpbb_prefix',%s)", quote_smart($phpbb_prefix));
 			mysql_query($sql) or die("Error inserting phpbb_prefix in config table. " . mysql_error());
 			
 			// Insert the phpBB_auth_user_class
-			$sql = "INSERT INTO " . $phpraid_config['db_prefix'] . "config VALUES('phpBB_auth_user_class', '" . $phpBB_auth_user_class . "')";
+			$sql = printf("INSERT INTO " . $phpraid_config['db_prefix'] . "config VALUES('phpBB_auth_user_class', %s)", quote_smart($phpBB_auth_user_class));
 			mysql_query($sql) or die("Error inserting phpBB_auth_user_class in config table. " . mysql_error());
 		
 			// Insert the phpBB_alt_auth_user_class
-			$sql = "INSERT INTO " . $phpraid_config['db_prefix'] . "config VALUES('phpBB_alt_auth_user_class', '" . $phpBB_alt_auth_user_class . "')";
+			$sql = printf("INSERT INTO " . $phpraid_config['db_prefix'] . "config VALUES('phpBB_alt_auth_user_class', %s)", quote_smart($phpBB_alt_auth_user_class));
 			mysql_query($sql) or die("Error inserting phpBB_alt_auth_user_class in config table. " . mysql_error());
 		}
 	
@@ -451,8 +452,8 @@ function importUserfromDB($phpbb_root_path, $phpbb_prefix, $phpraid_config,$admi
 			$email = $rows[1]; 
 			$username = $rows[2];
 			
-			$sql = "INSERT INTO " . $phpraid_config['db_prefix'] . "profile (`profile_id`, `email`, `password`,`priv`,`username`)
-				 VALUES('$profile_id','$email','','$defaultuserPriv','$username')";
+			$sql = printf("INSERT INTO " . $phpraid_config['db_prefix'] . "profile (`profile_id`, `email`, `password`,`priv`,`username`) " .
+				 			"VALUES(%s,%s,'',%s,%s)", quote_smart($profile_id), quote_smart($email), quote_smart($defaultuserPriv), quote_smart($username));
 			mysql_query($sql) or die("Error @ User Import (phpBB3)" . mysql_error());
 		}
 			
@@ -461,8 +462,6 @@ function importUserfromDB($phpbb_root_path, $phpbb_prefix, $phpraid_config,$admi
 	mysql_close($linkDB);
 	mysql_close($linkWRM);
 }
-
-dbname
 
 /***********************************************************************************************
  * 					UserClass and Alternate User Class/Group Documentation

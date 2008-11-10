@@ -243,7 +243,7 @@ function step5($auth_type)
 		$userclasses .= '</select>';
 		$altuserclass .= '</select>';
 		
-		$sql = "SELECT username, email, id FROM ".$joomla_prefix."users WHERE username  = '$joomla_useradmin_name'";
+		$sql = printf("SELECT username, email, id FROM ".$joomla_prefix."users WHERE username  = %s", quote_smart($joomla_useradmin_name));
 		//echo ':datenbank:'.$mySQLdefaultdb.'::<br>::'.$sql;
 		$result = mysql_query($sql) or die($localstr['step5joomlasub3errorretusername'].': <br>' .$sql. '<br>'. mysql_error());
 		
@@ -269,20 +269,21 @@ function step5($auth_type)
 		mysql_select_db($phpraid_config['db_name']);
 
 		// verified user, might as well throw him in profile now if they don't already exist
-		$sql = "SELECT username FROM " . $phpraid_config['db_prefix']. "profile WHERE username = '$joomla_useradmin_name'";
+		$sql = printf("SELECT username FROM " . $phpraid_config['db_prefix']. "profile WHERE username = %s", quote_smart($joomla_useradmin_name));
 		
 		$result = mysql_query($sql) or die("Error verifying " . mysql_error());
 		//$sqlresultdata = mysql_fetch_assoc($result);
 		
 		if((mysql_num_rows($result) == 0))
 		{
-			$sql = "INSERT INTO " . $phpraid_config['db_prefix'] . "profile (`profile_id`,`username`,`email`,`password`,`priv`) ";
-			$sql.= "VALUES('$joomla_useradmin_id','$joomla_useradmin_name','$joomla_useradmin_email','$joomla_useradmin_password','1')";
+			$sql = printf("INSERT INTO " . $phpraid_config['db_prefix'] . "profile (`profile_id`,`username`,`email`,`password`,`priv`)" . 
+			       "VALUES(%s,%s,%s,%s,'1')", quote_smart($joomla_useradmin_id), quote_smart($joomla_useradmin_name), quote_smart($joomla_useradmin_email), 
+					quote_smart($joomla_useradmin_password));
 			$result = mysql_query($sql) or die("Error inserting " . mysql_error());
 		}
 		else
 		{
-			$sql = "UPDATE " . $phpraid_config['db_prefix'] . "profile SET priv='1' WHERE username='$joomla_useradmin_name'";
+			$sql = printf("UPDATE " . $phpraid_config['db_prefix'] . "profile SET priv='1' WHERE username=%s", quote_smart($joomla_useradmin_name));
 			mysql_query($sql)or die("Error updating " . mysql_error());
 		}
 	
@@ -328,19 +329,19 @@ function step5($auth_type)
 		if(mysql_num_rows($result) > 0)
 		{
 			// update
-			$sql = "UPDATE " . $phpraid_config['db_prefix'] . "config SET config_value='$joomla_base_path' WHERE config_name='joomla_base_path'";
+			$sql = pritnf("UPDATE " . $phpraid_config['db_prefix'] . "config SET config_value=%s WHERE config_name='joomla_base_path'", quote_smart($joomla_base_path));
 			mysql_query($sql) or die("Error updateing joomla_base_path in config table. " . mysql_error());
 			
-			$sql = "UPDATE " . $phpraid_config['db_prefix'] . "config SET config_value='$joomla_prefix' WHERE config_name='joomla_table_prefix'";
+			$sql = printf("UPDATE " . $phpraid_config['db_prefix'] . "config SET config_value=%s WHERE config_name='joomla_table_prefix'", quote_smart($joomla_prefix));
 			mysql_query($sql) or die("Error updateing joomla_prefix in config table. " . mysql_error());
 			
 			$sql = "UPDATE " . $phpraid_config['db_prefix'] . "config SET config_value='joomla' WHERE config_name='auth_type'";
 			mysql_query($sql) or die("Error updateing auth_type in config table. " . mysql_error());
 			
-			$sql = "UPDATE " . $phpraid_config['db_prefix'] . "config SET config_value='$joomla_auth_user_class' WHERE config_name='joomla_auth_user_class'";
+			$sql = printf("UPDATE " . $phpraid_config['db_prefix'] . "config SET config_value=%s WHERE config_name='joomla_auth_user_class'", quote_smart($joomla_auth_user_class));
 			mysql_query($sql) or die("Error updateing joomla_auth_user_class in config table. " . mysql_error());
 			
-			$sql = "UPDATE " . $phpraid_config['db_prefix'] . "config SET config_value='$joomla_auth_alt_user_class' WHERE config_name='joomla_auth_alt_user_class'";
+			$sql = printf("UPDATE " . $phpraid_config['db_prefix'] . "config SET config_value=%s WHERE config_name='joomla_auth_alt_user_class'", quote_smart($joomla_auth_alt_user_class));
 			mysql_query($sql) or die("Error updateing joomla_auth_alt_user_class in config table. " . mysql_error());
 		}
 		else
@@ -348,16 +349,16 @@ function step5($auth_type)
 			// install
 			$sql = "INSERT INTO " . $phpraid_config['db_prefix'] . "config VALUES('auth_type','joomla')";
 			mysql_query($sql);
-			$sql = "INSERT INTO " . $phpraid_config['db_prefix'] . "config VALUES('joomla_base_path','$joomla_base_path')";
+			$sql = printf("INSERT INTO " . $phpraid_config['db_prefix'] . "config VALUES('joomla_base_path',%s)", quote_smart($joomla_base_path));
 			mysql_query($sql) or die("BOO5");
-			$sql = "INSERT INTO " . $phpraid_config['db_prefix'] . "config VALUES('joomla_table_prefix','$joomla_prefix')";
+			$sql = printf("INSERT INTO " . $phpraid_config['db_prefix'] . "config VALUES('joomla_table_prefix',%s)", quote_smart($joomla_prefix));
 			mysql_query($sql) or die("Error inserting joomla_table_prefix in config table. " . mysql_error());
 			// Insert the joomla_auth_user_class
-			$sql = "INSERT INTO " . $phpraid_config['db_prefix'] . "config VALUES('joomla_auth_user_class', '" . $joomla_auth_user_class . "')";
+			$sql = printf("INSERT INTO " . $phpraid_config['db_prefix'] . "config VALUES('joomla_auth_user_class', %s)", quote_smart($joomla_auth_user_class));
 			mysql_query($sql) or die("Error inserting joomla_auth_user_class in config table. " . mysql_error());
 		
 			// Insert the joomla_auth_user_class
-			$sql = "INSERT INTO " . $phpraid_config['db_prefix'] . "config VALUES('joomla_alt_auth_user_class', '" . $joomla_alt_auth_user_class . "')";
+			$sql = printf("INSERT INTO " . $phpraid_config['db_prefix'] . "config VALUES('joomla_alt_auth_user_class', %s)", quote_smart($joomla_alt_auth_user_class));
 			mysql_query($sql) or die("Error inserting joomla_auth_alt_user_class in config table. " . mysql_error());
 		}
 	
