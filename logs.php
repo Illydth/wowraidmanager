@@ -65,8 +65,7 @@ if($_GET['mode'] == 'delete')
 		$form_action = "logs.php?mode=delete&amp;section=$section";
 		$confirm_button = '<input name="submit" type="submit" id="submit" value="'.$phprlang['confirm_deletion'].'" class="mainoption">';
 
-		$page->set_file('output',$phpraid_config['template'] . '/delete.htm');
-		$page->set_var(
+		$wrmsmarty->assign('page',
 			array(
 				'form_action'=>$form_action,
 				'confirm_button'=>$confirm_button,
@@ -74,9 +73,12 @@ if($_GET['mode'] == 'delete')
 				'delete_msg'=>$phprlang['delete_msg'],
 			)
 		);
+		//
+		// Start output of Delete Page
+		//
 		require_once('includes/page_header.php');
-		$page->pparse('output','output');
-		require_once('includes/page_footer.php');
+		$wrmsmarty->display('delete.html');
+		require_once('includes/page_footer.php');	
 	}
 	else
 	{

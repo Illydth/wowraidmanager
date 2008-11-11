@@ -1431,9 +1431,7 @@ elseif($mode == 'delete')
 			$form_action = 'view.php?mode=delete&profile_id=' . $profile_id . '&amp;raid_id=' . $raid_id . '&amp;char_id=' . $char_id;
 			$confirm_button = '<input type="submit" value="'.$phprlang['confirm'].'" name="submit" class="post">';
 
-			$page->set_file('output',$phpraid_config['template'] . '/delete.htm');
-
-			$page->set_var(
+			$wrmsmarty->assign('page',
 				array(
 					'form_action'=>$form_action,
 					'confirm_button'=>$confirm_button,
@@ -1441,7 +1439,12 @@ elseif($mode == 'delete')
 					'delete_msg'=>$phprlang['delete_msg'],
 				)
 			);
-			$page->parse('output','output');
+			//
+			// Start output of Delete Page
+			//
+			require_once('includes/page_header.php');
+			$wrmsmarty->display('delete.html');
+			require_once('includes/page_footer.php');
 		} else {
 			$sql = sprintf("DELETE FROM " . $phpraid_config['db_prefix'] . "signups WHERE char_id=%s AND raid_id=%s", quote_smart($char_id), quote_smart($raid_id));
 			$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);

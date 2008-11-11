@@ -202,9 +202,7 @@ else if($mode == 'remove_user')
 		$form_action = 'users.php?mode=remove_user&amp;user_id='.$user_id.'&amp;n='.$delete_name;
 		$confirm_button = '<input type="submit" value="'.$phprlang['confirm'].'" name="submit" class="post">';
 
-		$page->set_file('output',$phpraid_config['template'] . '/delete.htm');
-
-		$page->set_var(
+		$wrmsmarty->assign('page',
 			array(
 				'form_action'=>$form_action,
 				'confirm_button'=>$confirm_button,
@@ -212,7 +210,12 @@ else if($mode == 'remove_user')
 				'delete_msg'=>$phprlang['delete_msg'],
 			)
 		);
-		$page->parse('output','output');
+		//
+		// Start output of Delete Page
+		//
+		require_once('includes/page_header.php');
+		$wrmsmarty->display('delete.html');
+		require_once('includes/page_footer.php');		
 	} else {
 		log_delete('user',$delete_name);
 
@@ -238,9 +241,7 @@ else if($mode == 'remove_char')
 		$form_action = 'users.php?mode=remove_char&amp;char_id='.$char_id.'&amp;user_id='.$user_id.'&amp;n='.$delete_name;
 		$confirm_button = '<input type="submit" value="'.$phprlang['confirm'].'" name="submit" class="post">';
 
-		$page->set_file('output',$phpraid_config['template'] . '/delete.htm');
-
-		$page->set_var(
+		$wrmsmarty->assign('page',
 			array(
 				'form_action'=>$form_action,
 				'confirm_button'=>$confirm_button,
@@ -248,7 +249,12 @@ else if($mode == 'remove_char')
 				'delete_msg'=>$phprlang['delete_msg'],
 			)
 		);
-		$page->parse('output','output');
+		//
+		// Start output of Delete Page
+		//
+		require_once('includes/page_header.php');
+		$wrmsmarty->display('delete.html');
+		require_once('includes/page_footer.php');		
 	} else {
 		log_delete('character',$delete_name);
 

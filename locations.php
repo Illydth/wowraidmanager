@@ -245,9 +245,7 @@ elseif($_GET['mode'] == 'delete')
 			$form_action = 'locations.php?mode=delete&amp;n='.$n.'&amp;id=' . $id;
 			$confirm_button = '<input type="submit" value="'.$phprlang['confirm'].'" name="submit" class="post">';
 
-			$page->set_file('output',$phpraid_config['template'] . '/delete.htm');
-
-			$page->set_var(
+			$wrmsmarty->assign('page',
 				array(
 					'form_action'=>$form_action,
 					'confirm_button'=>$confirm_button,
@@ -255,7 +253,12 @@ elseif($_GET['mode'] == 'delete')
 					'delete_msg'=>$phprlang['delete_msg'],
 				)
 			);
-			$page->parse('output','output');
+			//
+			// Start output of Delete Page
+			//
+			require_once('includes/page_header.php');
+			$wrmsmarty->display('delete.html');
+			require_once('includes/page_footer.php');
 		} else {
 			log_delete('location',$n);
 

@@ -306,8 +306,7 @@ if($_GET['mode'] == 'view') {
 		$form_action = "profile.php?mode=remove&amp;n=$n&amp;id=$id";
 		$confirm_button = '<input name="submit" type="submit" id="submit" value="'.$phprlang['confirm_deletion'].'" class="mainoption">';
 
-		$page->set_file('output',$phpraid_config['template'] . '/delete.htm');
-		$page->set_var(
+		$wrmsmarty->assign('page',
 			array(
 				'form_action'=>$form_action,
 				'confirm_button'=>$confirm_button,
@@ -315,7 +314,12 @@ if($_GET['mode'] == 'view') {
 				'delete_msg'=>$phprlang['delete_msg'],
 				)
 			);
-		$page->parse('output','output');
+		//
+		// Start output of delete page.
+		//
+		require_once('includes/page_header.php');
+		$wrmsmarty->display('delete.html');
+		require_once('includes/page_footer.php');
 	}
 	else
 	{

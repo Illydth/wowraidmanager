@@ -315,13 +315,14 @@ function _formatData($dataArray, $viewName)
 	global $phpraid_config, $db_raid;
 	
 	$formattedArray = array();
+	$formattedData = array();
 	
 	$tableColumns = getVisibleColumns($viewName);
 	
-	$formattedData = array();
+	$numRecs = count($dataArray);
+	
 	$x=0;
-
-	for ($x = 0; $x < $phpraid_config['records_per_page']; $x++)
+	for ($x = 0; $x < $numRecs; $x++)
 	{
 		foreach($tableColumns as $colName)
 		{
