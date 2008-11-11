@@ -35,7 +35,7 @@ Quick Upgrade
 
 Installing WRM into a supported CMS system
 -----------------------------------------------
-At the time of this writing 3.5.1 supports the following CMS systems:
+At the time of this writing 3.6.0 supports the following CMS systems:
 
 * e107 from http://www.e107.org
 * Joomla from http://www.joomla.org (v1.5 ONLY) (NEW)
@@ -53,29 +53,3 @@ moment you CANNOT separate the databases and have everything work.
 
 When entering the database information to install to, please ensure that you install
 into your CMS database to get CMS integration to work.
-
-Template Changes - v3.5.1
-------------------------------
-This version makes minor changes to the WRM template system.  
-
-Particularly here are the major changes:
-
-* scripts directory removed from template system and moved to WRM root.  Please remove your scripts dir.
-* calendar.htm has been added to support the new calendar.
-* view_raid.htm has been removed and view_raid_class.htm and view_raid_role.htm have been added instead.	
-* configuration.htm had several new lines added and a few moved.
-* error_chpwd.htm and error_resetpwd.htm have been added to support the password reset functionality.
-
-Other more minor changes have been made to other .htm files diff against the 3.5.0 template files for
-information on what has changed.
-
-Language Changes - v3.5.1
-------------------------------
-More language changes, not nearly as major as 3.5.0 however.  That said, many of the languages are
-not often maintained and are somewhat incomplete.  The French and Chinese language is badly out of date 
-and many of it's strings are still in English.  The Norwegian and German translations are mostly up to 
-date though they are still missing a smattering of strings.  The Italian translation is also mostly up to 
-date with very few "missing" strings.
-
-Installation is still only translated into English, German and Italian, and of those the German language
-is slightly behind while Italian and English should be up to date.
