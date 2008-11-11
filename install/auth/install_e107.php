@@ -210,7 +210,7 @@ function step5($auth_type)
 		$userclasses .= '</select>';
 		$altuserclass .= '</select>';
 		
-		$sql = "SELECT user_loginname, user_email, user_id FROM ".$e107_prefix."user WHERE user_loginname = '$e107_useradmin_name'";
+		$sql = sprintf("SELECT user_loginname, user_email, user_id FROM ".$e107_prefix."user WHERE user_loginname = %s", quote_smart($e107_useradmin_name));
 		//echo ':datenbank:'.$mySQLdefaultdb.'::<br>::'.$sql;
 		$result = mysql_query($sql) or die($localstr['step5e107sub3errorretusername'].': <br>' .$sql. '<br>'. mysql_error());
 		
@@ -238,7 +238,7 @@ function step5($auth_type)
 		mysql_select_db($phpraid_config['db_name']);
 
 		// verified user, might as well throw him in profile now if they don't already exist
-		$sql = "SELECT username FROM " . $phpraid_config['db_prefix']. "profile WHERE username = '$e107_useradmin_name'";
+		$sql = sprintf("SELECT username FROM " . $phpraid_config['db_prefix']. "profile WHERE username = %s", quote_smart($e107_useradmin_name));
 		
 		$result = mysql_query($sql) or die("Error verifying " . mysql_error());
 		//$sqlresultdata = mysql_fetch_assoc($result);
@@ -297,33 +297,31 @@ function step5($auth_type)
 		if(mysql_num_rows($result) > 0)
 		{
 			// update
-			$sql = "UPDATE " . $phpraid_config['db_prefix'] . "config SET config_value='$e107_base_path' WHERE config_name='e107_base_path'";
+			$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "config SET config_value=%s WHERE config_name='e107_base_path'", quote_smart($e107_base_path));
 			mysql_query($sql) or die("Error updateing e107_base_path in config table. " . mysql_error());
-			$sql = "UPDATE " . $phpraid_config['db_prefix'] . "config SET config_value='$e107_prefix' WHERE config_name='e107_table_prefix'";
+			$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "config SET config_value=%s WHERE config_name='e107_table_prefix'", quote_smart($e107_prefix));
 			mysql_query($sql) or die("Error updateing e107_prefix in config table. " . mysql_error());
 			$sql = "UPDATE " . $phpraid_config['db_prefix'] . "config SET config_value='e107' WHERE config_name='auth_type'";
 			mysql_query($sql) or die("Error updateing auth_type in config table. " . mysql_error());
-			$sql = "UPDATE " . $phpraid_config['db_prefix'] . "config SET config_value='$e107_auth_user_class' WHERE config_name='e107_auth_user_class'";
+			$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "config SET config_value=%s WHERE config_name='e107_auth_user_class'", quote_smart($e107_auth_user_class));
 			mysql_query($sql) or die("Error updateing e107_auth_user_class in config table. " . mysql_error());
-			$sql = "UPDATE " . $phpraid_config['db_prefix'] . "config SET config_value='$alt_auth_user_class' WHERE config_name='alt_auth_user_class'";
-			mysql_query($sql) or die("Error updateing alt_auth_user_class in config table. " . mysql_error());
-			
+			$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "config SET config_value=%s WHERE config_name='alt_auth_user_class'", quote_smart($alt_auth_user_class));
+			mysql_query($sql) or die("Error updateing alt_auth_user_class in config table. " . mysql_error());			
 		}
 		else
 		{
 			// install
 			$sql = "INSERT INTO " . $phpraid_config['db_prefix'] . "config VALUES('auth_type','e107')";
 			mysql_query($sql);
-			$sql = "INSERT INTO " . $phpraid_config['db_prefix'] . "config VALUES('e107_base_path','$e107_base_path')";
-			mysql_query($sql) or die("BOO5");
-			$sql = "INSERT INTO " . $phpraid_config['db_prefix'] . "config VALUES('e107_table_prefix','$e107_prefix')";
+			$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "config VALUES('e107_base_path',%s)", quote_smart($e107_base_path));
+			mysql_query($sql) or die("Error inserting e107 Base Path in config table.");
+			$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "config VALUES('e107_table_prefix',%s)", quote_smart($e107_prefix));
 			mysql_query($sql) or die("Error inserting e107_table_prefix in config table. " . mysql_error());
 			// Insert the e107_auth_user_class
-			$sql = "INSERT INTO " . $phpraid_config['db_prefix'] . "config VALUES('e107_auth_user_class', '" . $e107_auth_user_class . "')";
+			$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "config VALUES('e107_auth_user_class', %s)", quote_smart($e107_auth_user_class));
 			mysql_query($sql) or die("Error inserting e107_auth_user_class in config table. " . mysql_error());
-		
 			// Insert the e107_auth_user_class
-			$sql = "INSERT INTO " . $phpraid_config['db_prefix'] . "config VALUES('alt_auth_user_class', '" . $alt_auth_user_class . "')";
+			$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "config VALUES('alt_auth_user_class', %s)", quote_smart($alt_auth_user_class));
 			mysql_query($sql) or die("Error inserting alt_auth_user_class in config table. " . mysql_error());
 		}
 	

@@ -15,7 +15,12 @@
 @error_reporting(E_ALL ^ E_NOTICE);
 // ini_set('display_errors',1);
 
+// FIX FOR OPEN BASEDIR ISSUES.
+// No Win here, some people aren't allowed to include files not listed in the include list, 
+//     others aren't able to modify their ini variables with INI set.  End result?  Someone
+//     blows up on this code.
 // Setup Include Directories to get around open_basedir problems.
+//     - COMMNET THIS OUT IF YOU HAVE ISSUES WITH INI_SET ON YOUR HOST.
 $include_list .= "./";
 $include_list .= ":./includes/";
 $include_list .= ":./stats_conf/";

@@ -3,155 +3,129 @@ at:
 
 * http://www.wowraidmanager.net/wiki/index.php?title=Installation
 
-Release of 3.5.1 Final of WoW Raid Manager
+Release of 3.6.0 Final of WoW Raid Manager
 -----------------------------------
-* Armory Lookup Code has been updated to the 0.2 version from Sourceforge.  The groundwork has been laid to
-re-implement some of the caching features in future versions.
+* Addition of a .htaccess file in the WRM root directory to turn on proper error logging for
+the WRM site.  If users have problems with this or if this interfears with a current .htaccess
+file it is OK to turn off/modify/remove this .htaccess file, with the caveaut that they may
+have problems with error reporting.
 
-* Permissions Groups fixed.  There was a bug with permission groups and users failing to be added to 
-permissions groups.
+* This is a 3.5.1 fix that got merged to 3.6.0.  "Sanity Checking" of the config.php file.
+The sanity checker looks for some "badness" in the config files and stops the use of WRM if
+it finds any.  This should help protect against certain types of web based attacks.
 
-* Minor Installation Update: Added Joomla text to the installation at the point of selecting a bridge.
+* Open Basedir Fix (again 3.5.1 -> 3.6.0 Merge).  PLEASE READ THE SECTION BELOW FOR
+INFORMATION ON THE OPEN BASEDIR VS SET INI ISSUES!!!  See: "Damned if you do, damned if you
+don't Issue" below.
 
-* XSS (Cross Site Scripting) bug fixed in WRM bridges.
+* Installation Update: The Joomla installation now properly reports "Joomla" installation
+instead of a phpBB installation...the Joomla installer has received counciling and is doing
+much better with it's schitzophrenia.  It just needs to stay on it's medication and it'll be
+fine...
 
-* The error where modification of Roles produces an inability to signup or show up as a signed up
-user of a raid has been fixed. 
+* Added Swedish Language for both Installation and Use.
 
-Release of 3.5.1 (RC1) of WoW Raid Manager
------------------------------------
-At least a few new changes to WRM since 3.5.0.  As always, this release supercedes any prior release of WRM.
+* PHPBB3 Bridge Fix: Fixed password/login issue allowing access to unauthorized users.
 
-First and foremost, we have "staffing" changes:
+* German Language updated for better/more current text in both installation and usage language
+files.
 
-* Neme has been added as an official developer with a focus on the Installation and Bridge files.
-* TheMuffinMan has been added as an official developer and front end guy with focus on the Java source
-	as well as general overall html/php code health (one of the major "behind the scenes changes in this
-	release is that the vast majority of the code is now HTML 4.0 Compliant thanks to the work of Muffin).
-* JonnyB was recruited for the "Look and Feel" part of WRM, he's an HTML/Graphics Designer with a focus
-	on the templates, Themes, Layout, CSS, etc. behind WRM.  You'll see alot more of his work over the 
-	comming releases.
-	
-As always this isn't a full list of everyone responsible for the code that's gone into WRM this version.
-Many of you have helped, either in reporting bugs, testing the software, or in actually writing and 
-contributing code fixes, my hats off to all of you.
+* Death Knights added: Death Knights should now be fully supported by WRM.  Create them as
+any other character through the profile section of WRM.  They will properly show up on both
+raid and class views as well as in the tables where other class information shows.
 
-Secondly, there are several additions to the software itself:
+* Fix for Role Limit checking, invalid variable name caused limits to be ignored.
 
-* The Calendar View has been COMPLETELY re-written.  The calendar now supports looking ahead month by
-	month, month selection (jump to any specific month within the current or next year), and other more 
-	minor features.  Possibly the most important: All of the HTML has been removed and pushed into a 
-	template file for better themeing.  The look may be the same, but the functionality is greatly
-	enhanced. 
+* UTF-8 Character set update.  An ongoing struggle to get WRM to support Multi-byte characters
+from the UTF-8 character set is still ongoing.  While not "fixed" this should hopefully make
+things 'better'.
 
-* Brand New Armory Lookup Code.  I've replaced the armory lookup system with a brand new system.  There
-	are some goods and bads to this.  The good side is it's ALOT less complicated, and it will likely
-	work on more systems than it used to.  The down side is alot of the caching mechanisms are gone: 
-	thus if the armory happens to be down there's not much you can do to get an armory lookup.  I also
-	liked the look and feel of the old armory system better than I do this one, but this one generates
-	MUCH more clean HTML code.  I welcome any feedback on the new armory lookup system.
-	
-* View by Role or View by Class.  The Raid View has been changed to allow for two different views, 
-	depending upon which is more helpful to the guild using it.  There is a new configuration option
-	"Select Raid View Type" that will allow a display by class or by role in the raid view window.
-	
-* Bridge Re-write: ALL Bridges have been COMPLETELY re-written to properly support the external CMS
-	systems.
+* Major Update to the phpRaid_output.lua file produced through the Lua output raids link.  
+Please see information below for information on the output file.
 
-* Password Changing and "I forgot my password" implementation for all bridges. (See Notes Below).
+* Added Event Type to raid and location templates to assist in syncronizing data with the 
+in game blizzard calendar.
 
-* Several Bugs have been fixed.
+* Minor HTML updates in wowarmory_tooltip area to fix minor HTML Incompatibilities.  
 
-TEMPLATE CREATORS PLEASE NOTE
-------------------------------
-The scripts directory that used to be in templates/XXXXXXX/scripts has been removed.  This scripts
-directory now resides in the root of the WRM installation (same place as the "auth" or "templates"
-directory).  Please update your templates to remove your local scripts directory.
+* Bug Fix: Users in permissions sets not showing up when viewed by clicking link from
+users.php.  The link had a bad parameter in it, this is now fixed.
 
-PASSWORD CHANGING IMPLEMENTED
------------------------------
-Two brand new features have been added for password changing.  First is a "Forgot Your Password?" link
-that shows up when a user is not logged in.  This link takes you to a form to fill out that will randomly
-generate and e-mail a new WRM password to a user.  The username and associated e-mail address are
-required.
+* Calendar Fix: A varible misuse in calendar file caused all signups to show as "queued but not
+signed up", has been fixed.  The correct mark should now show up properly next to a raid 
+event on the calendar when a user is signed up to the event.
 
-The second feature is a "Click to Change Password" link that has been added to a logged in user.  Clicking
-this link will take you to another form that requires current password and New and Confirm passwords for
-the current user (only the current user's password can be changed).
+* Announcements Bug Fix: Announcements will now properly recognize a "return" character in
+the type in box and translate that to <br> for you.  There is no longer a need to use 
+<br> at the end of each line in the announcement to show multi-line announcmenents properly.
+Or beter put, the Announcements box is more "WYSIWYG".
 
-BOTH of these functions are controlled by a flag current set in the bridge authentication file itself.
-In any bridge file (<wrm_base_dir>/auth) is a line "$BridgeSupportPWDChange = FALSE;".  This line
-determines the ability of WRM to change passwords.  For the iUMS (Integrated User Management System) this
-is turned ON by default.  For all other bridges this is turned off (FALSE).  Turning this on for any
-bridge other than iUMS causes the WRM system to be able to change the password IN THE CMS SYSTEMS TABLES.
-And thus change the password not only for WRM but for the CMS/BB System as well.
+* Bug Fix: Hacking Attempt in rss.php is fixed.  More use of "&amp;" in a header instead of
+the proper & use.
 
-In my opinion, I do not believe that WRM should be changing passwords in a CMS system.  If the user wants
-a WRM password change they should change their CMS password and it will filter down to WRM.  That said
-there is some convenience to allowing users to change passwords in EITHER WRM or the CMS and have them
-synced.
+* View.php Comment Popups Fixed...hopefully for the last time.  Users were having two issues
+with comment popups in view.php: 1) Comments for "drafted" users simply weren't showing at all
+and 2) Comments for Queued and Cancelled users were popping up only till a user moused over
+an armory popup link, then they stopped popping up till page refresh.  This is now fixed.  
+All view.php comments will properly pop up regardless of what status you are and they work 
+with the armory popups again.
 
-** NOTE ** IT IS NOT POSSIBLE TO HAVE DIFFERENT PASSWORDS FOR WRM AND A CMS WHEN USING A CMS BRIDGE.
-If you choose to use a bridge other than iUMS, the passwords between WRM and the CMS must ALWAYS be the 
-same.  It is impossible using the supplied code not to meet this condition.
+* Installation Bug Fix/Security Fix: Installation into windows based machines was failing if the user tried
+to use "\" to specify path structure to other files (for instance when trying to specify the
+path to the config.php file of phpbb3 if the user were to type in, for instance "C:\Junk" they
+would get an error from the MySQL database.  Installation type ins were not being properly
+escaped and quoted.  They are now.
 
-If you wish to have WRM allowed to change the CMS system password, you can edit the above BridgeSupport
-variable to "TRUE" in place of the "FALSE" and the password change links will start showing up at the 
-next page reload.  
+* Level 80 Configuration Supported.  Max level for WRM is now set to 80.  This is still a 
+hard coded string but will not be beyond 4.0.
 
-Note that ALL SUPPORTED CMS/BB SYSTEMS have been FULLY tested with the password change ability and all
-password changes for all bridges with one exception work flawlessly.  HOWEVER for phpBB3 the generated 
-password has NEVER been tested and is expected not to work.  The phpBB3 Password change SHOULD REMIAIN
-OFF (FALSE).  Unpredictable results could happen if you turn on password change ability when using the 
-phpBB3 bridge.
 
-As always I and WRM are NOT RESPONSIBLE for any damage or any problems you encounter by turning on
-the password change functionality.  The WRM team will provide LIMITED support for issues encountered
-through the use of password change problems related to CMS systems.  If you turn on password changes for
-a CMS/BB Bridge, you are taking responsiblity for any problems encountered by the CMS.   
+"Damned if you do, damned if you don't Issue" (Open Basedir vs. Set INI)
+-------------------------------------------------------------------------
+At the beginning of this version a couple users reported a problem with including files
+within WRM.  When the WRM common.php file went to include the various functions needed by 
+the application to run they had issues with their PHP Server throwing back problems at them
+identifying that a specific php.ini setting was set that removed the ability to include files
+that were not on the "include path" set by PHP.  This "open basedir" issue resulted in me
+putting in a fix that included a "set_ini" parameter update to put the various WRM directories
+into the PHP include path, thus allowing those affected by the open basedir issue to work.
 
-Please see http://www.wowraidmanager.net/wiki/index.php?title=WRM_Password_Change_System for more
-information.
+HOWEVER nothing can be easy.  In doing so I opened up another segment of users to problems:
+specificaly those whose host does not allow modification of the php.ini variables on the fly
+(they have "set_ini" restricted).  At this point the application is NOT written to support
+both kinds of users.  I suppose it would be simple enough to check the open_basedir parameter
+and run the "set_ini" stuff if it's set, however this is NOT done.  And if anyone has a better
+way to handle this please let me know.
 
-Release Notes for Final Release of WRM 3.5.1 RC1
------------------------------------------------------
-FEATURE: Raid View by Class or by Role
-LANGUAGE UPDATE: Removal of all occurrences of phpRaid and replaced with WRM/WoW Raid Manager.
-BUG: Fixed an issue where the phpBB3 Bridge was failing to use phpBB3 groups to restrict access to WRM.
-BUG: Fixed an issue with the locations.php file where users with less than 6 roles defined would see an
-	issue inserting locations into their database.
-BUG: Fixed an issue with get_char_count() failing to recognize role names with capital letters in them.
-FEATURE: Complete Calendar Re-Write.
-FEATURE: New Armory System Implemented.
-LANGUAGE UPDATE: The "disabled" and "maintenance" messages have been moved to language files.
-BUG: Forced Relative paths in the installer (the ../ in front of many of the values in the install code)
-	have been removed.
-BUG: Missing Signups List showing Unixtime instead of Date.
-FEATURE: Users/Details page updated to show user's role.
-BUG: Fixed an issue where the Users view was incorrectly showing last login date due.
-BUG: Fix for phpBB3 (all bridges) to properly support Mutli-Byte characters.
-BUG: Fixed display of raid comments with apostrophies.
-CHANGE: Moved the "Scripts" Directory out of the templates and into the base WRM directory.
-FEATURE: Password Change and "I forgot my password" added to WRM.
-BUG: Fixed issues with Users.php deleting users with characters still attached.
-CHANGE: The internal functions for pwdhash have been changed to allow phpbb3 style passwords to be
-	generated.
-FEATURE: Added Joomla Bridge Support.
-BUG: Fixed issue in bridges using the pwdhash functions to use $phpraid_dir as their base path.
-LANGUAGE UPDATE: Fix for hardcoded strings for Submit and Reset buttons on the "Permissions" function.
+As it sits, the application is default configured to correct the Open Basedir problem as more
+people have issues with this than the set_ini issues.  For those of you who are affected by
+the SET_INI issue, you can comment out a couple sections of code in 2 files and you will be
+working again.
 
-Official Bugs Fixed:
------------------------
-0000032 - Month names are not localized in the Calendar View page.
-0000053 - Function get_char_count() fails when role names are Capitalized.
-0000055 - PHPBB3 Bridge Fails with Multi-Byte Characters
-0000056 - Delete Users Bugs
-0000057 - The name of the month is not shown in the correct language (calendar).
-0000058 - Month and Year tag in calendar view are not shown in set locale.
+In the common.php file (wrm base directory), you will find lines 58-62 and lines 114-116 need
+commented to remove the SET INI problems.  Also in wowarmory_tooltip/includes/common.php lines
+24-30 need commented.  This should remove all the "open basedir" fix stuff and allow the 
+set ini problems to go away.
 
-New Bridges Supported
------------------------
-* Joomla
+If you are on a host that restricts both open_basedir and set_ini you're hosed...find a better
+host amoung the 10s of thousands out there...or ask your host what the hell they're thinking, 
+and why they're so inconsiderate to me...yes, me personally. :)
+
+
+phpRaid_data.lua file Update
+-------------------------------
+For those of you who export/import your raids and use a raid manager UI mod (Like RIM) there
+have been some MAJOR changes to the output LUA file.  Unfortunately this likely means that 
+RIM is now "broken" till the next update by Elayne...I don't know if the file will load up
+in her current released version or not.  HOWEVER all the changes bring about some love for
+RIM's users.  More data is being passed down and we may have the UTF-8 Issue with RIM either
+fixed or at least better.  Also, RIM is now positioned to support the in game calendar to 
+import WRM data to RIM and RIM then imports that data to the Calendar.  This should allow 
+users to see WRM scheduled raids on their personal in game calendars.
+
+Keep in mind that RIM is still a work in progress and is supported on the wowraidmanager.net
+forums by Elayne in the RIM specific support forums.  Please check out the mod it's great.
+
 
 Unfinished/Incomplete
 ----------------------

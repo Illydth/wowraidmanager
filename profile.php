@@ -399,7 +399,7 @@ if($_GET['mode'] == 'view') {
 				$errorMsg .= '<li>'.$phprlang['profile_error_race'].'</li>';
 			if($name == '')
 				$errorMsg .= '<li>'.$phprlang['profile_error_name'].'</li>';
-			if($level == '' || !is_numeric($level) || $level < 1 || $level > 70)
+			if($level == '' || !is_numeric($level) || $level < 1 || $level > 80)
 				$errorMsg .= '<li>'.$phprlang['profile_error_level'].'</li>';
 			if($role == '' || $role == $phprlang['role_none'])
 				$errorMsg .= '<li>'.$phprlang['profile_error_role'].'</li>';
@@ -450,7 +450,7 @@ if($_GET['mode'] == 'view') {
 			if($dupeChar || $guild == '' || $class == '' || $race == $phprlang['form_select'] || $name == '' ||
 				!is_numeric($arcane) || !is_numeric($fire) || !is_numeric($frost) ||
 				!is_numeric($nature) || !is_numeric($shadow) || !is_numeric($level) ||
-				$level < 1 || $level > 70 || $role == '' || $role == $phprlang['role_none'])
+				$level < 1 || $level > 80 || $role == '' || $role == $phprlang['role_none'])
 			{
 				$errorSpace = 1;
 				$errorTitle = $phprlang['form_error'];
@@ -466,7 +466,7 @@ if($_GET['mode'] == 'view') {
 					$errorMsg .= '<li>'.$phprlang['profile_error_race'].'</li>';
 				if($name == '')
 					$errorMsg .= '<li>'.$phprlang['profile_error_name'].'</li>';
-				if($level == '' || !is_numeric($level) || $level < 1 || $level > 70)
+				if($level == '' || !is_numeric($level) || $level < 1 || $level > 80)
 					$errorMsg .= '<li>'.$phprlang['profile_error_level'].'</li>';
 				if(!is_numeric($arcane))
 					$errorMsg .= '<li>'.$phprlang['profile_error_arcane'].'</li>';
