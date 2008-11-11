@@ -66,6 +66,8 @@ $username = scrub_input($_SESSION['username']);
 
 if($_GET['mode'] == 'view')
 {
+	$pageURL = 'raids.php?mode=view&';
+	
 	// two arrays to pass to our report class, current and previous raids
 	$current = array();
 	$previous = array();
@@ -255,89 +257,20 @@ if($_GET['mode'] == 'view')
 		$mark_new="";
 	}
 
-	// setup formatting for report class (THANKS to www.thecalico.com)
-	// generic settings
-	//setup_output();
-
-	//$report->showRecordCount(true);
-	//$report->allowPaging(true, $_SERVER['PHP_SELF'] . '?mode=view&Base=');
-	//$report->setListRange($_GET['Base'], 25);
-	//$report->allowLink(ALLOW_HOVER_INDEX,'',array());
-
-	//Default sorting
-	//if(!$_GET['Sort'])
-	//{
-	//	$report->allowSort(true, 'Date', 'ASC', 'raids.php?mode=view');
-	//}
-	//else
-	//{
-	//	$report->allowSort(true, $_GET['Sort'], $_GET['SortDescending'], 'raids.php?mode=view');
-	//}
-
-	//$report->showRecordCount(true);
-	// and now to format each column output
-	// the report class makes it very easy to use icons (or whatever) instead of just text
-	//if($phpraid_config['show_id'] == 1)
-	//	$report->addOutputColumn('id',$phprlang['id'],'','center');
-	//$report->addOutputColumn('Date',$phprlang['date'],'wrmdate','center');
-	//$report->addOutputColumn('Location',$phprlang['location'],'','center');
-	//$report->addOutputColumn('InviteTime',$phprlang['invite_time'],'wrmtime','center');
-	//$report->addOutputColumn('StartTime',$phprlang['start_time'],'wrmtime','center');
-	//$report->addOutputColumn('Officer',$phprlang['officer'],'','center');
-	//$report->addOutputColumn('DtK', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/deathknight_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['deathknight'] . '\');" onMouseout="hideddrivetip();" alt="death knight">', '', 'center');
-	//$report->addOutputColumn('Dru', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/druid_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['druid'] . '\');" onMouseout="hideddrivetip();" alt="druid">', '', 'center');
-	//$report->addOutputColumn('Hun', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/hunter_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['hunter'] . '\');" onMouseout="hideddrivetip();" alt="hunter">', '', 'center');
-	//$report->addOutputColumn('Mag', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/mage_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['mage'] . '\');" onMouseout="hideddrivetip();" alt="mage">', '', 'center');
-	//$report->addOutputColumn('Pal', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/paladin_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['paladin'] . '\');" onMouseout="hideddrivetip();" alt="paladin">', '', 'center');
-	//$report->addOutputColumn('Pri', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/priest_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['priest'] . '\');" onMouseout="hideddrivetip();" alt="priest">', '', 'center');
-	//$report->addOutputColumn('Rog', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/rogue_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['rogue'] . '\');" onMouseout="hideddrivetip();" alt="rogue">', '', 'center');
-	//$report->addOutputColumn('Sha', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/shaman_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['shaman'] . '\');" onMouseout="hideddrivetip();" alt="shaman">', '', 'center');
-	//$report->addOutputColumn('Wlk', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/warlock_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['warlock'] . '\');" onMouseout="hideddrivetip();" alt="warlock">', '', 'center');
-	//$report->addOutputColumn('War', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/warrior_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['warrior'] . '\');" onMouseout="hideddrivetip();" alt="warrior">', '', 'center');
-	//if ($phpraid_config['role1_name'] != '')
-	//	$report->addOutputColumn('role1',$phpraid_config['role1_name'],'','center');
-	//if ($phpraid_config['role2_name'] != '')
-	//	$report->addOutputColumn('role2',$phpraid_config['role2_name'],'','center');
-	//if ($phpraid_config['role3_name'] != '')
-	//	$report->addOutputColumn('role3',$phpraid_config['role3_name'],'','center');
-	//if ($phpraid_config['role4_name'] != '')
-	//	$report->addOutputColumn('role4',$phpraid_config['role4_name'],'','center');
-	//if ($phpraid_config['role5_name'] != '')
-	//	$report->addOutputColumn('role5',$phpraid_config['role5_name'],'','center');
-	//if ($phpraid_config['role6_name'] != '')
-	//	$report->addOutputColumn('role6',$phpraid_config['role6_name'],'','center');
-	//$report->addOutputColumn('Max',$phprlang['totals'],'','center');
-	//$report->addOutputColumn('buttons','','','right');
-
-	// and finally, put the data into the variables to be read
-	//$current = $report->getListFromArray($current);
-	//$previous = $report->getListFromArray($previous);
-	//$page->set_file(array(
-	//	'output' => $phpraid_config['template'] . '/raids.htm')
-	//);
-
-	//$page->set_var(
-	//	array(
-	//		'new_raid_link' => $new_raid_link,
-	//		'old_raids' => $previous,
-	//		'new_raids' => $current,
-	//		'old_raids_header' => $phprlang['raids_old'],
-	//		'new_raids_header' => $phprlang['raids_new']
-	//	)
-	//);
-
-	// REMOVE THIS
-	$viewName='raids1';
-	$pageURL = 'raids.php?mode=view&';
-	$raid_headers = array();
-	$record_count_array = array();
+	/**************************************************************
+	 * Code to setup for a Dynamic Table Create: raids1 View.
+	 **************************************************************/
+	$viewName = 'raids1';
 	
 	//Setup Columns
+	$raid_headers = array();
+	$record_count_array = array();
 	$raid_headers = getVisibleColumns($viewName);
 
 	//Get Record Counts
-	$record_count_array = getRecordCounts($current, $raid_headers, $startRecord);
-
+	$curr_record_count_array = getRecordCounts($current, $raid_headers, $startRecord);
+	$prev_record_count_array = getRecordCounts($previous, $raid_headers, $startRecord);
+	
 	//Get the Jump Menu and pass it down
 	$currJumpMenu = getPageNavigation($current, $startRecord, $pageURL, $sortField, $sortDesc);
 	$prevJumpMenu = getPageNavigation($previous, $startRecord, $pageURL, $sortField, $sortDesc);
@@ -346,13 +279,16 @@ if($_GET['mode'] == 'view')
 	$current = paginateSortAndFormat($current, $sortField, $sortDesc, $startRecord, $viewName);
 	$previous = paginateSortAndFormat($previous, $sortField, $sortDesc, $startRecord, $viewName);
 
-	// Assign Smarty Data
+	/****************************************************************
+	 * Data Assign for Template.
+	 ****************************************************************/
 	$wrmsmarty->assign('new_data', $current); 
 	$wrmsmarty->assign('old_data', $previous);
 	$wrmsmarty->assign('current_jump_menu', $currJumpMenu);
 	$wrmsmarty->assign('previous_jump_menu', $prevJumpMenu);
 	$wrmsmarty->assign('column_name', $raid_headers);
-	$wrmsmarty->assign('record_counts', $record_count_array);
+	$wrmsmarty->assign('curr_record_counts', $curr_record_count_array);
+	$wrmsmarty->assign('prev_record_counts', $prev_record_count_array);
 	$wrmsmarty->assign('header_data',
 		array(
 			'template_name'=>$phpraid_config['template'],
@@ -364,6 +300,13 @@ if($_GET['mode'] == 'view')
 			'sort_text' => $phprlang['sort_text'],
 		)
 	);
+	
+	//
+	// Start output of delete page.
+	//
+	require_once('includes/page_header.php');
+	$wrmsmarty->display('raids.html');
+	require_once('includes/page_footer.php');
 }
 elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 {
@@ -446,10 +389,10 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 			$bad_role_limit)
 				$errorMsg .= '<li>' . $phprlang['raid_error_limits'] . '</li>';
 		}
-		if($description == "")				//Moved
-		{									//Added
-        	$description="-";			//Change
-        	$_POST['description']="-";	//Added
+		if($description == "")				
+		{									
+        	$description="-";			
+        	$_POST['description']="-";	
 		}
 
 	}
@@ -881,27 +824,27 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 			if ($phpraid_config['role1_name'] != '')
 				$role1_limit = '<input name="role1" type="text" class="post" style="width:20px" value="' . $role1 . '" maxlength="2">';
 			else
-				$role1_limit = '<input name="role1" type="hidden" value="" class="post" style="width:20px" maxlength="2">';
+				$role1_limit = '';
 			if ($phpraid_config['role2_name'] != '')
 				$role2_limit = '<input name="role2" type="text" class="post" style="width:20px" value="' . $role2 . '" maxlength="2">';
 			else
-				$role2_limit = '<input name="role2" type="hidden" value="" class="post" style="width:20px" maxlength="2">';
+				$role2_limit = '';
 			if ($phpraid_config['role3_name'] != '')
 				$role3_limit = '<input name="role3" type="text" class="post" style="width:20px" value="' . $role3 . '" maxlength="2">';
 			else
-				$role3_limit = '<input name="role3" type="hidden" value="" class="post" style="width:20px" maxlength="2">';
+				$role3_limit = '';
 			if ($phpraid_config['role4_name'] != '')
 				$role4_limit = '<input name="role4" type="text" class="post" style="width:20px" value="' . $role4 . '" maxlength="2">';
 			else
-				$role4_limit = '<input name="role4" type="hidden" value="" class="post" style="width:20px" maxlength="2">';
+				$role4_limit = '';
 			if ($phpraid_config['role5_name'] != '')
 				$role5_limit = '<input name="role5" type="text" class="post" style="width:20px" value="' . $role5 . '" maxlength="2">';
 			else
-				$role5_limit = '<input name="role5" type="hidden" value="" class="post" style="width:20px" maxlength="2">';
+				$role5_limit = '';
 			if ($phpraid_config['role6_name'] != '')
 				$role6_limit = '<input name="role6" type="text" class="post" style="width:20px" value="' . $role6 . '" maxlength="2">';
 			else
-				$role6_limit = '<input name="role6" type="hidden" value="" class="post" style="width:20px" maxlength="2">';			$tank_limit = '<input name="tank" type="text" class="post" style="width:20px" value="' . $tank . '" maxlength="2">';
+				$role6_limit = '';			
 		} else {
 			$maximum = '<input name="max" type="text" class="post" style="width:20px" maxlength="2">';
 			$minimum_level = '<input name="min_lvl" type="text" class="post" style="width:20px" maxlength="2">';
@@ -919,32 +862,34 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 			if ($phpraid_config['role1_name'] != '')
 				$role1_limit = '<input name="role1" type="text" class="post" style="width:20px" maxlength="2">';
 			else
-				$role1_limit = '<input name="role1" type="hidden" value="" class="post" style="width:20px" maxlength="2">';
+				$role1_limit = '';
 			if ($phpraid_config['role2_name'] != '')
 				$role2_limit = '<input name="role2" type="text" class="post" style="width:20px" maxlength="2">';
 			else
-				$role2_limit = '<input name="role2" type="hidden" value="" class="post" style="width:20px" maxlength="2">';
+				$role2_limit = '';
 			if ($phpraid_config['role3_name'] != '')
 				$role3_limit = '<input name="role3" type="text" class="post" style="width:20px" maxlength="2">';
 			else
-				$role3_limit = '<input name="role3" type="hidden" value="" class="post" style="width:20px" maxlength="2">';
+				$role3_limit = '';
 			if ($phpraid_config['role4_name'] != '')
 				$role4_limit = '<input name="role4" type="text" class="post" style="width:20px" maxlength="2">';
 			else
-				$role4_limit = '<input name="role4" type="hidden" value="" class="post" style="width:20px" maxlength="2">';
+				$role4_limit = '';
 			if ($phpraid_config['role5_name'] != '')
 				$role5_limit = '<input name="role5" type="text" class="post" style="width:20px" maxlength="2">';
 			else
-				$role5_limit = '<input name="role5" type="hidden" value="" class="post" style="width:20px" maxlength="2">';
+				$role5_limit = '';
 			if ($phpraid_config['role6_name'] != '')
 				$role6_limit = '<input name="role6" type="text" class="post" style="width:20px" maxlength="2">';
 			else
-				$role6_limit = '<input name="role6" type="hidden" value="" class="post" style="width:20px" maxlength="2">';
+				$role6_limit = '';
 		}
 		$buttons = '<input type="submit" name="submit" value="'.$phprlang['submit'].'" class="mainoption"> <input type="reset" name="reset" value="'.$phprlang['reset'].'" class="liteoption">';			
 		
-		$page->set_file('output',$phpraid_config['template'] . '/raids_new.htm');
-		$page->set_var(
+		/****************************************************************
+		 * Data Assign for Template.
+		 ****************************************************************/		
+		$wrmsmarty->assign('page',
 			array(
 				'buttons'=>$buttons,
 				'form_action'=>$form_action,
@@ -1010,6 +955,13 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 				'role6_text'=>$phpraid_config['role6_name']
 			)
 		);
+		
+		//
+		// Start output of New Raid Or Edit Raid Page
+		//
+		require_once('includes/page_header.php');
+		$wrmsmarty->display('raids_new.html');
+		require_once('includes/page_footer.php');		
 	}
 	else
 	{
@@ -1119,8 +1071,7 @@ elseif($_GET['mode'] == 'delete')
 		$form_action = "raids.php?mode=delete&amp;n=$n&amp;id=$id";
 		$confirm_button = '<input name="submit" type="submit" id="submit" value="'.$phprlang['confirm_deletion'].'" class="mainoption">';
 
-		$page->set_file('output',$phpraid_config['template'] . '/delete.htm');
-		$page->set_var(
+		$wrmsmarty->assign('page',
 			array(
 				'form_action'=>$form_action,
 				'confirm_button'=>$confirm_button,
@@ -1128,7 +1079,12 @@ elseif($_GET['mode'] == 'delete')
 				'delete_msg'=>$phprlang['delete_msg'],
 			)
 		);
-		$page->parse('output','output');
+		//
+		// Start output of Delete Page
+		//
+		require_once('includes/page_header.php');
+		$wrmsmarty->display('delete.html');
+		require_once('includes/page_footer.php');		
 	}
 	else
 	{
@@ -1164,12 +1120,4 @@ elseif($_GET['mode'] == 'mark')
 	header("Location: raids.php?mode=view");
 }
 
-//
-// Start output of page
-//
-require_once('includes/page_header.php');
-
-//$page->pparse('output','output');
-$wrmsmarty->display('raids.html');
-require_once('includes/page_footer.php');
 ?>

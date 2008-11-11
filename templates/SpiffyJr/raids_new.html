@@ -1,0 +1,154 @@
+<a name="new"></a>
+<div class="contentHeader">
+	{$page.raids_new}
+</div>
+<br>
+<div class="contentBody">
+	<form action="{$page.form_action}" method="post" name="new_raid" id="new_raid">
+		<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+			<tr>
+				<td> 
+					<table width="100%" border="0" cellspacing="1" cellpadding="3" class="dataOutline">
+						<tr>
+							<td width="200" class="row1"><strong>{$page.location_text}</strong></td>
+							<td class="row2">{$page.raid_name}</td>
+						</tr>
+						<tr>
+							<td width="200" class="row1"><strong>{$page.date_text}</strong></td>
+							<td class="row2">{$page.date}</td>
+						</tr>
+						<tr>
+							<td width="200" class="row1"><strong>{$page.invite_text}</strong></td>
+							<td class="row2">{$page.i_time_hour} {$page.i_time_minute} {$page.i_time_ampm}</td>
+						</tr>
+						<tr>
+							<td width="200" class="row1"><strong>{$page.start_text}</strong></td>
+							<td class="row2">{$page.s_time_hour} {$page.s_time_minute} {$page.s_time_ampm}</td>
+						</tr>
+						<tr>
+							<td class="row1"><strong>{$page.freeze_text}</strong></td>
+							<td class="row2">{$page.freeze}</td>
+						</tr>
+						<tr>
+							<td class="row1"><strong>{$page.eventtype_text}</strong></td>
+							<td class="row2">{$page.event_type}</td>
+						</tr>
+						<tr>
+							<td class="row1"><strong>{$page.dungeon_text}</strong></td>
+							<td class="row2">{$page.location}</td>
+						</tr>
+						<tr>
+							<td class="row1"><strong>{$page.description_text}</strong></td>
+							<td class="row2">{$page.description}</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+		</table>
+		<br>
+		<div class="contentHeader">
+			{$page.limits_text}
+		</div>
+		<br>
+		<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+			<tr>
+				<td>
+					<table width="100%" border="0" cellspacing="1" cellpadding="3" class="dataOutline">
+						<tr>
+							<td width="200" class="row1"><strong>{$page.max_text}</strong></td>
+							<td class="row2">{$page.maximum}</td>
+						</tr>
+						<tr>
+							<td width="200" class="row1"><strong>{$page.minlvl_text}</strong></td>
+							<td class="row2">{$page.minimum_level}</td>
+						</tr>
+						<tr>
+							<td width="200" class="row1"><strong>{$page.maxlvl_text}</strong></td>
+							<td class="row2">{$page.maximum_level}</td>
+						</tr>
+						<tr> 
+							<td width="200" class="row1"><strong>{$page.deathknight_text}</strong></td>
+							<td class="row2">{$page.deathknight_limit}</td>
+						</tr>
+						<tr> 
+							<td width="200" class="row1"><strong>{$page.druid_text}</strong></td>
+							<td class="row2">{$page.druid_limit}</td>
+						</tr>
+						<tr>
+							<td class="row1"><strong>{$page.hunter_text}</strong></td>
+							<td class="row2">{$page.hunter_limit}</td>
+						</tr>
+						<tr>
+							<td class="row1"><strong>{$page.mage_text}</strong></td>
+							<td class="row2">{$page.mage_limit}</td>
+						</tr>
+						<tr>
+							<td class="row1"><strong>{$page.paladin_text}</strong></td>
+							<td class="row2">{$page.paladin_limit}</td>
+						</tr>
+						<tr>
+							<td class="row1"><strong>{$page.priest_text}</strong></td>
+							<td class="row2">{$page.priest_limit}</td>
+						</tr>
+						<tr>
+							<td class="row1"><strong>{$page.rogue_text}</strong></td>
+							<td class="row2">{$page.rogue_limit}</td>
+						</tr>
+						<tr>
+							<td class="row1"><strong>{$page.shaman_text}</strong></td>
+							<td class="row2">{$page.shaman_limit}</td>
+						</tr>
+						<tr>
+							<td class="row1"><strong>{$page.warlock_text}</strong></td>
+							<td class="row2">{$page.warlock_limit}</td>
+						</tr>
+						<tr> 
+							<td class="row1"><strong>{$page.warrior_text}</strong></td>
+							<td class="row2">{$page.warrior_limit}</td>
+						</tr>
+						{if $page.role1_limit != ""}
+						<tr>
+							<td width="200" class="row1"><strong>{$page.role1_text}</strong></td>
+							<td class="row2">{$page.role1_limit}</td>
+						</tr>
+						{/if}
+						{if $page.role2_limit != ""}
+						<tr>
+							<td width="200" class="row1"><strong>{$page.role2_text}</strong></td>
+							<td class="row2">{$page.role2_limit}</td>
+						</tr>
+						{/if}
+						{if $page.role3_limit != ""}
+						<tr>
+							<td width="200" class="row1"><strong>{$page.role3_text}</strong></td>
+							<td class="row2">{$page.role3_limit}</td>
+						</tr>
+						{/if}
+						{if $page.role4_limit != ""}
+						<tr>
+							<td width="200" class="row1"><strong>{$page.role4_text}</strong></td>
+							<td class="row2">{$page.role4_limit}</td>
+						</tr>
+						{/if}
+						{if $page.role5_limit != ""}
+						<tr>
+							<td width="200" class="row1"><strong>{$page.role5_text}</strong></td>
+							<td class="row2">{$page.role5_limit}</td>
+						</tr>          
+						{/if}
+						{if $page.role6_limit != ""}
+						<tr>
+							<td width="200" class="row1"><strong>{$page.role6_text}</strong></td>
+							<td class="row2">{$page.role6_limit}</td>
+						</tr>
+						{/if}
+					</table>
+				</td>
+			</tr>
+		</table>
+	<br>
+	<div align="center" class="button">
+		{$page.buttons}
+	</div>
+	</form>
+</div>	
