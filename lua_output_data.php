@@ -487,6 +487,7 @@ class Output_Data
 			$cnt[7] = 0;
 			$cnt[8] = 0;
 			$cnt[9] = 0;
+			$cnt[10] = 0;
 			
 			foreach($queue as $char)
 			{
@@ -527,6 +528,7 @@ class Output_Data
 			
 			// add class counts
 			$lua_output .= "\t\t\t[\"queue_count\"] = \"".$cnt[0]."\",\n";
+			$lua_output .= "\t\t\t[\"deathknight_count\"] = \"".$cnt[10]."\",\n";
 			$lua_output .= "\t\t\t[\"druids_count\"] = \"".$cnt[1]."\",\n";
 			$lua_output .= "\t\t\t[\"hunters_count\"] = \"".$cnt[2]."\",\n";
 			$lua_output .= "\t\t\t[\"mages_count\"] = \"".$cnt[3]."\",\n";
