@@ -272,8 +272,7 @@ elseif($_GET['mode'] == 'delete')
 		} 
 		else 
 		{
-			$sql = sprintf("DELETE FROM " . $phpraid_config['db_prefix'] . "permissions WHERE permission_id=%s",quote_smart($perm_id));
-			$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+			delete_permissions();
 			
 			header("Location: permissions.php?mode=view");
 		}
@@ -285,7 +284,6 @@ elseif($_GET['mode'] == 'delete')
 		else
 			header("Location: index.php");
 	}
-	delete_permissions();
 } 
 elseif($_GET['mode'] == 'remove_user') {
 	remove_user();
