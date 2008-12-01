@@ -302,7 +302,7 @@ if($mode == 'view')
 				break;
 			}
 
-		$comments = DEUBB2(scrub_input($signups['comments']));
+		$comments = escapePOPUP(scrub_input($signups['comments']));
 
 		if(strlen($signups['comments']) > 25)
 			$comments = '<a href="#" onMouseover="fixedtooltip(\'<span class=tooltip_title>'.$phprlang['comments'].'</span><br>'.$comments.'\',this,event,\'150\')" onMouseout="delayhidetip();">' . substr($signups['comments'], 0, 22) . '...</a>';
@@ -498,7 +498,7 @@ if($mode == 'view')
 		$data_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 		$data = $db_raid->sql_fetchrow($data_result, true);
 
-		$comments = DEUBB2(scrub_input($signups['comments']));
+		$comments = escapePOPUP(scrub_input($signups['comments']));
 
 		if(strlen($signups['comments']) > 25)
 			$comments = '<a href="#" onMouseover="fixedtooltip(\'<span class=tooltip_title>'.$phprlang['comments'].'</span><br>'.$comments.'\',this,event,\'150\')" onMouseout="delayhidetip();">' . substr($signups['comments'], 0, 22) . '...</a>';
@@ -651,7 +651,7 @@ if($mode == 'view')
 		$data_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 		$data = $db_raid->sql_fetchrow($data_result, true);
 
-		$comments = DEUBB2(scrub_input($signups['comments']));
+		$comments = escapePOPUP(scrub_input($signups['comments']));
 
 		if(strlen($signups['comments']) > 25)
 			$comments = '<a href="#" onMouseover="fixedtooltip(\'<span class=tooltip_title>'.$phprlang['comments'].'</span><br>'.$comments.'\',this,event,\'150\')" onMouseout="delayhidetip();">' . substr($signups['comments'], 0, 22) . '...</a>';
@@ -1379,7 +1379,7 @@ elseif($mode == 'signup')
 			}
 		}
 
-		$comments = DEUBB(scrub_input($_POST['comments']));
+		$comments = escapePOPUP(scrub_input($_POST['comments']));
 		$timestamp = scrub_input($_POST['timestamp']);
 		$profile_id = scrub_input($_SESSION['profile_id']);
 
@@ -1809,7 +1809,7 @@ else if($mode == 'edit_comment')
 	}
 	else
 	{
-		$comments = DEUBB(scrub_input($_POST['comments']));
+		$comments = escapePOPUP(scrub_input($_POST['comments']));
 
 		$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "signups SET comments=%s WHERE signup_id=%s", quote_smart($comments), quote_smart($signup_id));
 		$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
