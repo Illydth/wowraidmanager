@@ -275,6 +275,12 @@ function strip_linebreaks($str) {
   return $str;
 }
 
+// properly escapes HTML characters in Javascript popups so they don't break javascript
+function escapePOPUP($arg) {
+    $arg = str_replace("'", "\'", $arg);
+    return $arg;
+} 
+
 // Sanitizes data for entry into the database. Escapes special
 // characters and encodes html entities.
 function sanitize($array) {

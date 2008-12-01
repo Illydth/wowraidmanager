@@ -85,6 +85,9 @@ function id_to_name($v)
 		case 2: return 'paladin';
 		// Druid
 		case 11: return 'druid';
+		
+		// DK
+		case 6: return 'deathknight';
 	}
 
 }
@@ -174,6 +177,16 @@ global $icons_url;
                                 case $tree['treetwo']: $talent = LANG_TALENT_FERAL; $img = 2; break;
                                 case $tree['treethree']: $talent = LANG_TALENT_REST;$img = 3; break;
                         }
+		break;
+		
+		// DK
+		case 6:
+						switch(max($tree['treeone'], $tree['treetwo'], $tree['treethree']))
+						{
+								case $tree['treeone']: $talent = LANG_TALENT_BLOOD;$img = 1; break;
+                                case $tree['treetwo']: $talent = LANG_TALENT_FROST; $img = 2; break;
+                                case $tree['treethree']: $talent = LANG_TALENT_UNHOLY;$img = 3; break;
+						}
 		break;
 	}
 
