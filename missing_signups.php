@@ -85,7 +85,7 @@ while($data = $db_raid->sql_fetchrow($result, true))
 // setup output
 setup_output();
 $report->showRecordCount(true);
-$report->allowPaging(true, $_SERVER['PHP_SELF'] . '?mode=view&Base=');
+$report->allowPaging(true, $_SERVER['PHP_SELF'] . '?raid_id='. $raid_id . '&Base=');
 $report->setListRange($_GET['Base'], 25);
 $report->allowLink(ALLOW_HOVER_INDEX,'',array());
 
