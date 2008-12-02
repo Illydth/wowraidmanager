@@ -30,15 +30,15 @@ $include_list .= ":" . ini_get('include_path');
 ini_set('include_path',  $include_list);
 
 // Include the Php Armory Class
-require_once("includes/phpArmory.class.php");
+require_once("phpArmory.class.php");
 //require_once("includes/phpArmoryCache.class.php");
-require_once("includes/template.class.php");
+require_once("template.class.php");
 
 // Create a new Armory Object
 $armory = new phpArmory();
 
 // Select the lang file
-include("languages/lang_en.php");
+include("./languages/lang_en.php");
 
 // Set template
 $conf_template = 'default';

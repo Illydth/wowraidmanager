@@ -149,7 +149,7 @@ class phpArmory {
 		if(($character==NULL)&&($this->character)) $character = $this->character;
 		if(($realm==NULL)&&($this->realm)) $realm = $this->realm;
 		
-		$realm = str_replace("\'", "%27",$realm);
+		$realm = str_replace("\'", "%%27",$realm);
 		$url = $this->armory."character-%s.xml?r=".str_replace(" ", "+",$realm)."&n=".str_replace(" ", "+",$character);
 		$result = $this->xmlToArray($this->xmlFetch(sprintf($url, "sheet")));
 		
