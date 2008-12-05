@@ -39,7 +39,7 @@ $phprlang['announcements_title_text'] = 'Titolo';
 $phprlang['invites'] = 'Inviti';
 $phprlang['start'] = 'Inizio';
 $phprlang['key'] = 'Legenda:<br>(*) = Iscritto e confermato<br>(#) = Iscritto (in coda o annullato)<br>Giorni <font color="#FFFFFF">bianchi</font> = eventi passati.<br>Giorno <font color="#FF0000">rosso</font> = eventi odierni.<br>Giorni <font color="#000000">neri</font> = eventi futuri.';
-$phprlang['calendar_month_select_header'] = 'Select Month and Year to View';
+$phprlang['calendar_month_select_header'] = 'Seleziona mese ed anno da visualizzare';
 
 // configuration
 $phprlang['configuration_addon'] = 'Sito ufficiale di WowRaidManager';
@@ -85,9 +85,9 @@ $phprlang['configuration_on_queue'] = 'Iscrizioni in coda';
 $phprlang['configuration_queue'] = 'Accoda';
 $phprlang['configuration_queue_def'] = 'Accoda = Consenti l\'inserimento fra le iscrizioni in coda';
 $phprlang['configuration_raid_settings_header'] = 'Impostazioni inerenti i Raid';
-$phprlang['configuration_raid_view_type_text'] = 'Select Raid View Type';
-$phprlang['configuration_raid_view_type_class'] = 'Display Raid View By Class';
-$phprlang['configuration_raid_view_type_role'] = 'Display Raid View By Role';
+$phprlang['configuration_raid_view_type_text'] = 'Visualizzazione Raid';
+$phprlang['configuration_raid_view_type_class'] = 'Visualizzazione Raid per classe';
+$phprlang['configuration_raid_view_type_role'] = 'Visualizzazione Raid per ruolo';
 $phprlang['configuration_raidlead'] = 'Gestori Raid';
 $phprlang['configuration_resop'] = 'Rendi opzionali i dati delle resistenze';
 $phprlang['configuration_register_text'] = 'Indirizzo di registrazione';
@@ -122,11 +122,11 @@ $phprlang['configuration_version_outdated_message'] = 'La versione in uso di Wow
 													   L\'ultima versione è %s, mentre quella in uso è %s.<br>
 													   Per scaricare l\'ultima versione, fare riferimento all\'area Download di <a href="http://www.wowraidmanager.net">WowRaidManager.net</a>.';
 // DKP View
-$phprlang['eqdkp_system_link'] = 'Link al sistema DKP:';
+$phprlang['eqdkp_system_link'] = 'Link al sistema DKP';
 
 // guilds
 $phprlang['guilds_header'] = 'Lista delle Gilde';
-$phprlang['guilds_new_header'] = 'New Guild';
+$phprlang['guilds_new_header'] = 'Nuova Gilda';
 $phprlang['guilds_master'] = 'GuildMaster';
 $phprlang['guilds_name'] = 'Nome della Gilda';
 $phprlang['guilds_tag']	= 'Abbreviazione della Gilda';						
@@ -181,7 +181,7 @@ $phprlang['profile_header'] = 'Personaggi';
 $phprlang['profile_level'] = 'Livello';
 $phprlang['profile_name'] = 'Nome';
 $phprlang['profile_nature'] = 'Resistenza Nature';
-$phprlang['profile_raid'] = 'Storico Raid';
+$phprlang['profile_raid'] = 'Iscrizioni';
 $phprlang['profile_race'] = 'Razza';
 $phprlang['profile_shadow'] = 'Resistenza Shadow';
 
@@ -200,12 +200,12 @@ $phprlang['raids_old'] = 'Raid passati';
 $phprlang['raids_new'] = 'Raid in programma';
 $phprlang['raids_new_header'] = 'Nuovo Raid';
 $phprlang['raids_start'] = 'Ora di inizio';
-$phprlang['raids_type_raid'] = 'Raid (10/25 man)';
-$phprlang['raids_type_dungeon'] = 'Dungeon (5 man Instance)';
-$phprlang['raids_type_pvp'] = 'PvP Event';
-$phprlang['raids_type_meeting'] = 'Meeting (online/offline)';
-$phprlang['raids_type_other'] = 'Other';
-$phprlang['raids_eventtype_text'] = 'Event Type';
+$phprlang['raids_type_raid'] = 'Raid (10/25 persone)';
+$phprlang['raids_type_dungeon'] = 'Dungeon (5 persone)';
+$phprlang['raids_type_pvp'] = 'Evento PvP';
+$phprlang['raids_type_meeting'] = 'Incontro (online/offline)';
+$phprlang['raids_type_other'] = 'Altro';
+$phprlang['raids_eventtype_text'] = 'Tipo di evento';
 
 // roster
 $phprlang['roster_header'] = 'Roster di Gilda';
