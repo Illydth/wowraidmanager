@@ -48,6 +48,8 @@ $BridgeSupportPWDChange = FALSE;
 $db_user_id = "ID_MEMBER";
 // Column Name for the ID field for the Group the User belongs to.
 $db_group_id = "ID_GROUP";
+// Column Name for Additional Groups User belongs to.
+$db_add_group_ids = "additionalGroups";
 // Column Name for the UserName field.
 $db_user_name = "memberName";
 // Column Name for the User's E-Mail Address
@@ -240,10 +242,18 @@ function phpraid_login()
 						);
 				$resultgroup = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 				while($datagroup = $db_raid->sql_fetchrow($resultgroup, true)) {
-					if( ($datagroup[$db_group_id] == $auth_user_class) or ($datagroup[$db_group_id] == $auth_alt_user_class) )
-					{	
-						$FoundUserInGroup = TRUE;
+					$user_class = $datagroup[$db_group_id] . "," . $datagroup[$db_add_group_ids];
+					$pos = strpos($user_class, $auth_user_class);
+					$pos2 = strpos($user_class, $auth_alt_user_class);
+					if ($pos === false && $auth_user_class != 0)
+					{
+						if ($pos2 === false)
+							$FoundUserInGroup = FALSE;
+						else
+							$FoundUserInGroup = TRUE;
 					}
+					else
+						$FoundUserInGroup = TRUE;
 				}
 
 				if ($FoundUserInGroup == FALSE){
@@ -251,7 +261,6 @@ function phpraid_login()
 					return -1;
 				}
 			}
-
 
 			// User is properly logged in and is allowed to use WRM, go ahead and process his login.
 			$autologin = scrub_input($_POST['autologin']);
@@ -322,7 +331,7 @@ function phpraid_logout()
 
 // good ole authentication
 session_start();
-$_SESSION['name'] = "WRM-SMF";
+$_SESSION['name'] = "WRM-SMF2";
 
 // set session defaults
 if (!isset($_SESSION['initiated'])) {
