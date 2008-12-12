@@ -43,6 +43,9 @@ else
 }
 require_once("includes/authentication.php");
 
+/*************************************************************
+ * Setup Record Output Information for Data Table
+ *************************************************************/
 // Set StartRecord for Page
 if(!isset($_GET['Base']) || !is_numeric($_GET['Base']))
 	$startRecord = 1;
@@ -60,14 +63,17 @@ if(!isset($_GET['SortDescending']) || !is_numeric($_GET['SortDescending']))
 	$sortDesc = 1;
 else
 	$sortDesc = scrub_input($_GET['SortDescending']);
-
+	
+$pageURL = 'raids.php?mode=view&';
+/**************************************************************
+ * End Record Output Setup for Data Table
+ **************************************************************/
+		
 $priv_raids = scrub_input($_SESSION['priv_raids']);
 $username = scrub_input($_SESSION['username']);
 
 if($_GET['mode'] == 'view')
 {
-	$pageURL = 'raids.php?mode=view&';
-	
 	// two arrays to pass to our report class, current and previous raids
 	$current = array();
 	$previous = array();
@@ -140,16 +146,6 @@ if($_GET['mode'] == 'view')
 			$total2 = " (+$total2)";
 		}
 		
-		//Code Specific to Nalumis
-		//$minustkmel = 0;
-		//$tank = get_coloredcount($count['tank'], $count2['tank'], $data['tank_lmt'], 0, $count['tkmel'] + $count2['tkmel'], 0, 0, 0, $minustkmel);
-		//$heal = get_coloredcount($count['heal'], $count2['heal'], $data['heal_lmt'], 0, 0, 0, 0, 0, $minustkmel);
-		//$merk_minustkmel = $minustkmel;
-		//$melee = get_coloredcount($count['melee'], $count2['melee'], $data['melee_lmt'], 2, $count['tkmel'] + $count2['tkmel'] - $minustkmel, $count['melee'] + $count['ranged'], $count2['melee'] + $count2['ranged'], $data['melee_lmt'] + $data['ranged_lmt'], $minustkmel);
-		//$minustkmel = $merk_minustkmel;
-		//$ranged = get_coloredcount($count['ranged'], $count2['ranged'], $data['ranged_lmt'], 2, $count['tkmel'] + $count2['tkmel'] - $minustkmel, $count['melee'] + $count['ranged'], $count2['melee'] + $count2['ranged'], $data['melee_lmt'] + $data['ranged_lmt'], $minustkmel);
-		//$tkmel = get_coloredcount($count['tkmel'], $count2['tkmel'], $data['tkmel_lmt'], 1, 0, 0, 0, 0, $minustkmel);
-
 		if($phpraid_config['class_as_min'])
 		{
 			$dk_text = get_coloredcount('death knight', $count['dk'], $data['dk_lmt'], $count2['dk'], true);
@@ -216,7 +212,6 @@ if($_GET['mode'] == 'view')
 					$phpraid_config['role4_name']=>$role4_text,
 					$phpraid_config['role5_name']=>$role5_text,
 					$phpraid_config['role6_name']=>$role6_text,
-					//'Tank'=>$tank,'Heal'=>$heal,'Melee'=>$melee,'Ranged'=>$ranged,'TkMel'=>$tkmel,
 					'Buttons'=>$edit . $delete,
 				)
 			);
@@ -248,7 +243,6 @@ if($_GET['mode'] == 'view')
 					$phpraid_config['role4_name']=>$role4_text,
 					$phpraid_config['role5_name']=>$role5_text,
 					$phpraid_config['role6_name']=>$role6_text,
-					//'Tank'=>$tank,'Heal'=>$heal,'Melee'=>$melee,'Ranged'=>$ranged,'TkMel'=>$tkmel,
 					'Buttons'=> $mark_new . $old_delete));
 		}
 		$edit = "";
