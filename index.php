@@ -41,6 +41,32 @@ else
 	
 require_once("includes/authentication.php");
 
+/*************************************************************
+ * Setup Record Output Information for Data Table
+ *************************************************************/
+// Set StartRecord for Page
+if(!isset($_GET['Base']) || !is_numeric($_GET['Base']))
+	$startRecord = 1;
+else
+	$startRecord = scrub_input($_GET['Base']);
+
+// Set Sort Field for Page
+if(!isset($_GET['Sort']))
+	$sortField="";
+else
+	$sortField = scrub_input($_GET['Sort']);
+	
+// Set Sort Descending Mark
+if(!isset($_GET['SortDescending']) || !is_numeric($_GET['SortDescending']))
+	$sortDesc = 1;
+else
+	$sortDesc = scrub_input($_GET['SortDescending']);
+	
+$pageURL = 'index.php?mode=view&';
+/**************************************************************
+ * End Record Output Setup for Data Table
+ **************************************************************/
+
 // arrays to old raid information
 $current = array();
 $previous = array();
@@ -59,23 +85,23 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true)) {
 	$count2 = get_char_count($raids['raid_id'], $type='queue');
 
 	//Drafted maximum
-	$max = $count['dk'] + $count['dr'] + $count['hu'] + $count['ma'] + $count['pa'] + $count['pr'] + $count['ro'] + $count ['sh'] + $count['wk'] + $count['wa'];
+	$total = $count['dk'] + $count['dr'] + $count['hu'] + $count['ma'] + $count['pa'] + $count['pr'] + $count['ro'] + $count ['sh'] + $count['wk'] + $count['wa'];
 	
 	//Queued Additional
-	$max2 = $count2['dk'] + $count2['dr'] + $count2['hu'] + $count2['ma'] + $count2['pa'] + $count2['pr'] + $count2['ro'] + $count2['sh'] + $count2['wk'] + $count2['wa'];
+	$total2 = $count2['dk'] + $count2['dr'] + $count2['hu'] + $count2['ma'] + $count2['pa'] + $count2['pr'] + $count2['ro'] + $count2['sh'] + $count2['wk'] + $count2['wa'];
 
-	if($max == "")
+	if($total == "")
 	{
-		$max = "0";
+		$total = "0";
 	}		
 	
-	if($max2 == "")
+	if($total2 == "")
 	{
-		$max2 = "";
+		$total2 = "";
 	}
 	else
 	{
-		$max2 = " (+$max2)";
+		$total2 = " (+$total2)";
 	}
 
 	$logged_in=scrub_input($_SESSION['session_logged_in']);
@@ -99,16 +125,6 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true)) {
 	$desc = scrub_input($raids['description']);
 	$ddrivetiptxt = "'<span class=tooltip_title>" . $phprlang['description'] ."</span><br>" . DEUBB2($desc) . "'";
 	$location = '<a href="view.php?mode=view&amp;raid_id=' . $raids['raid_id'] . '" onMouseover="ddrivetip('.$ddrivetiptxt.');" onMouseout="hideddrivetip();">'.$raids['location'].'</a>';
-	
-	//Code Specific to Nalumis	
-	//$minustkmel = 0;
-	//$tank = get_coloredcount($count['tank'], $count2['tank'], $raids['tank_lmt'], 0, $count['tkmel'] + $count2['tkmel'], 0, 0, 0, $minustkmel);
-	//$heal = get_coloredcount($count['heal'], $count2['heal'], $raids['heal_lmt'], 0, 0, 0, 0, 0, $minustkmel);
-	//$merk_minustkmel = $minustkmel;
-	//$melee = get_coloredcount($count['melee'], $count2['melee'], $raids['melee_lmt'], 2, $count['tkmel'] + $count2['tkmel'] - $minustkmel, $count['melee'] + $count['ranged'], $count2['melee'] + $count2['ranged'], $raids['melee_lmt'] + $raids['ranged_lmt'], $minustkmel);
-	//$minustkmel = $merk_minustkmel;
-	//$ranged = get_coloredcount($count['ranged'], $count2['ranged'], $raids['ranged_lmt'], 2, $count['tkmel'] + $count2['tkmel'] - $minustkmel, $count['melee'] + $count['ranged'], $count2['melee'] + $count2['ranged'], $raids['melee_lmt'] + $raids['ranged_lmt'], $minustkmel);
-	//$tkmel = get_coloredcount($count['tkmel'], $count2['tkmel'], $raids['tkmel_lmt'], 1, 0, 0, 0, 0, $minustkmel);
 	
 	if($phpraid_config['class_as_min'])
 	{
@@ -153,184 +169,145 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true)) {
 	if($raids['old'] == 0) {
 		array_push($current,
 			array(
-				'id'=>$raids['raid_id'],
-				'Info'=>$info,
+				'ID'=>$raids['raid_id'],
+				'Signup'=>$info,
 				'Date'=>$date,
-				'Location'=>UBB2($location),
+				//'Dungeon'=>UBB2($location),
+				'Dungeon'=>$location,
 				'Invite Time'=>$invite,
 				'Start Time'=>$start,
-				'Officer'=>$raids['officer'],
-				'dk'=>$dk_text,
-				'dr'=>$dr_text,
-				'hu'=>$hu_text,
-				'ma'=>$ma_text,
-				'pa'=>$pa_text,
-				'pr'=>$pr_text,
-				'ro'=>$ro_text,
-				'sh'=>$sh_text,
-				'wk'=>$wk_text,
-				'wa'=>$wa_text,
-				'role1'=>$role1_text,
-				'role2'=>$role2_text,
-				'role3'=>$role3_text,
-				'role4'=>$role4_text,
-				'role5'=>$role5_text,
-				'role6'=>$role6_text,
-				//'Tank'=>$tank,'Heal'=>$heal,'Melee'=>$melee,'Ranged'=>$ranged,'TkMel'=>$tkmel,
-				'max'=>$max . '/' . $raids['max'] . '' . $max2,
-				'info'=>$info,
-				'raid'=>$raids['raid_id']
+				'Creator'=>$raids['officer'],
+				'Death Knight'=>$dk_text,
+				'Druid'=>$dr_text,
+				'Hunter'=>$hu_text,
+				'Mage'=>$ma_text,
+				'Paladin'=>$pa_text,
+				'Priest'=>$pr_text,
+				'Rogue'=>$ro_text,
+				'Shaman'=>$sh_text,
+				'Warlock'=>$wk_text,
+				'Warrior'=>$wa_text,
+				$phpraid_config['role1_name']=>$role1_text,
+				$phpraid_config['role2_name']=>$role2_text,
+				$phpraid_config['role3_name']=>$role3_text,
+				$phpraid_config['role4_name']=>$role4_text,
+				$phpraid_config['role5_name']=>$role5_text,
+				$phpraid_config['role6_name']=>$role6_text,
+				'Totals'=>$total.'/'.$raids['max']  . '' . $total2,
 			)
 		);
 	} else {
 		array_push($previous,
 			array(
-				'id'=>$raids['raid_id'],
-				'Info'=>$info,
+				'ID'=>$raids['raid_id'],
+				'Signup'=>$info,
 				'Date'=>$date,
-				'Location'=>UBB2($raids['location']),
+				'Dungeon'=>$raids['location'],
 				'Invite Time'=>$invite,
 				'Start Time'=>$start,
-				'Officer'=>$raids['officer'],
-				'dk'=>$count['dk'] . '/' . $raids['dk_lmt'],
-				'dr'=>$count['dr'] . '/' . $raids['dr_lmt'],
-				'hu'=>$count['hu'] . '/' . $raids['hu_lmt'],
-				'ma'=>$count['ma'] . '/' . $raids['ma_lmt'],
-				'pa'=>$count['pa'] . '/' . $raids['pa_lmt'],
-				'pr'=>$count['pr'] . '/' . $raids['pr_lmt'],
-				'ro'=>$count['ro'] . '/' . $raids['ro_lmt'],
-				'sh'=>$count['sh'] . '/' . $raids['sh_lmt'],
-				'wk'=>$count['wk'] . '/' . $raids['wk_lmt'],
-				'wa'=>$count['wa'] . '/' . $raids['wa_lmt'],
-				'role1'=>$count['role1'] . '/' . $raids['role1_lmt'],
-				'role2'=>$count['role2'] . '/' . $raids['role2_lmt'],
-				'role3'=>$count['role3'] . '/' . $raids['role3_lmt'],
-				'role4'=>$count['role4'] . '/' . $raids['role4_lmt'],
-				'role5'=>$count['role5'] . '/' . $raids['role5_lmt'],
-				'role6'=>$count['role6'] . '/' . $raids['role6_lmt'],
-				//'Tank'=>$tank,'Heal'=>$heal,'Melee'=>$melee,'Ranged'=>$ranged,'TkMel'=>$tkmel,
-				'max'=>$max . '/' . $raids['max'] . '' . $max2,
-				'info'=>$info,
-				'raid'=>$raids['raid_id']
+				'Creator'=>$raids['officer'],
+				'Death Knight'=>$dk_text,
+				'Druid'=>$dr_text,
+				'Hunter'=>$hu_text,
+				'Mage'=>$ma_text,
+				'Paladin'=>$pa_text,
+				'Priest'=>$pr_text,
+				'Rogue'=>$ro_text,
+				'Shaman'=>$sh_text,
+				'Warlock'=>$wk_text,
+				'Warrior'=>$wa_text,
+				$phpraid_config['role1_name']=>$role1_text,
+				$phpraid_config['role2_name']=>$role2_text,
+				$phpraid_config['role3_name']=>$role3_text,
+				$phpraid_config['role4_name']=>$role4_text,
+				$phpraid_config['role5_name']=>$role5_text,
+				$phpraid_config['role6_name']=>$role6_text,
+				'Totals'=>$total.'/'.$raids['max']  . '' . $total2,
 			)
 		);
 	}
 }
-// setup formatting for report class (THANKS to www.thecalico.com)
-// generic settings
-setup_output();
 
-$report->showRecordCount(true);
-$report->allowPaging(true, $_SERVER['PHP_SELF'] . '?mode=view&Base=');
-$report->setListRange($_GET['Base'], 25);
-$report->allowLink(ALLOW_HOVER_INDEX,'',array());
-
-//Default sorting
-$sort=scrub_input($_GET['Sort']);
-$sort_desc=scrub_input($_GET['SortDescending']);
-if(!$sort)
-{
-	$report->allowSort(true, 'Date', 'ASC', 'index.php');
-}
-else
-{
-	$report->allowSort(true, $sort, $sort_desc, 'index.php');
-}
-
-// and now to format each column output
-// the report class makes it very easy to use icons (or whatever) instead of just text
-$report->addOutputColumn('info','','','left');
-if($phpraid_config['show_id'] == 1)
-	$report->addOutputColumn('id',$phprlang['id'],'','center');
-$report->addOutputColumn('Date',$phprlang['date'],'wrmdate','center');
-$report->addOutputColumn('Location',$phprlang['location'],'','center');
-$report->addOutputColumn('Invite Time',$phprlang['invite_time'],'wrmtime','center');
-$report->addOutputColumn('Start Time',$phprlang['start_time'],'wrmtime','center');
-$report->addOutputColumn('Officer',$phprlang['officer'],'','center');
-$report->addOutputColumn('dk', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/deathknight_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['deathknight'] . '\');" onMouseout="hideddrivetip();" alt="death knight">', '', 'center');
-$report->addOutputColumn('dr', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/druid_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['druid'] . '\');" onMouseout="hideddrivetip();" alt="druid">', '', 'center');
-$report->addOutputColumn('hu', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/hunter_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['hunter'] . '\');" onMouseout="hideddrivetip();" alt="hunter">', '', 'center');
-$report->addOutputColumn('ma', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/mage_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['mage'] . '\');" onMouseout="hideddrivetip();" alt="mage">', '', 'center');
-$report->addOutputColumn('pa', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/paladin_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['paladin'] . '\');" onMouseout="hideddrivetip();" alt="paladin">', '', 'center');
-$report->addOutputColumn('pr', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/priest_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['priest'] . '\');" onMouseout="hideddrivetip();" alt="priest">', '', 'center');
-$report->addOutputColumn('ro', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/rogue_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['rogue'] . '\');" onMouseout="hideddrivetip();" alt="rogue">', '', 'center');
-$report->addOutputColumn('sh', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/shaman_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['shaman'] . '\');" onMouseout="hideddrivetip();" alt="shaman">', '', 'center');
-$report->addOutputColumn('wk', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/warlock_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['warlock'] . '\');" onMouseout="hideddrivetip();" alt="warlock">', '', 'center');
-$report->addOutputColumn('wa', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/warrior_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['warrior'] . '\');" onMouseout="hideddrivetip();" alt="warrior">', '', 'center');
-if ($phpraid_config['role1_name'] != '')
-	$report->addOutputColumn('role1',$phpraid_config['role1_name'],'','center');
-if ($phpraid_config['role2_name'] != '')
-	$report->addOutputColumn('role2',$phpraid_config['role2_name'],'','center');
-if ($phpraid_config['role3_name'] != '')
-	$report->addOutputColumn('role3',$phpraid_config['role3_name'],'','center');
-if ($phpraid_config['role4_name'] != '')
-	$report->addOutputColumn('role4',$phpraid_config['role4_name'],'','center');
-if ($phpraid_config['role5_name'] != '')
-	$report->addOutputColumn('role5',$phpraid_config['role5_name'],'','center');
-if ($phpraid_config['role6_name'] != '')
-	$report->addOutputColumn('role6',$phpraid_config['role6_name'],'','center');
-$report->addOutputColumn('max',$phprlang['totals'],'','center');
-
-// and finally, put the data into the variables to be read
-$current = $report->getListFromArray($current);
-$previous = $report->getListFromArray($previous);
-
-//
-// Start output of page
-//
-require_once('includes/page_header.php');
-
-$page->set_file(array(
-	'body_file' => $phpraid_config['template'] . '/main_page.htm')
-);
-
-$page->set_var(
-	array(
-		'new_raids'=>$current,
-		'old_raids'=>$previous,
-		'upcoming_raids'=>$phprlang['main_upcoming_raids'],
-		'previous_raids'=>$phprlang['main_previous_raids'],
-		)
-);
-
-// now for announcements
-// get announcements
-$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "announcements";
-$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-if($db_raid->sql_numrows($result) > 0)
-{
-	$page->set_file('announceFile',$phpraid_config['template'] . '/announcements_msg.htm');
-	$page->set_block('announceFile','announcement_row','ARow');
+	/**************************************************************
+	 * Code to setup for a Dynamic Table Create: raids1 View.
+	 **************************************************************/
+	$viewName = 'index1';
 	
-	/* fetch rows in reverse order */
-	$i = $db_raid->sql_numrows($result) - 1;
-	while($i >= 0) 
+	//Setup Columns
+	$raid_headers = array();
+	$record_count_array = array();
+	$raid_headers = getVisibleColumns($viewName);
+
+	//Get Record Counts
+	$curr_record_count_array = getRecordCounts($current, $raid_headers, $startRecord);
+	$prev_record_count_array = getRecordCounts($previous, $raid_headers, $startRecord);
+	
+	//Get the Jump Menu and pass it down
+	$currJumpMenu = getPageNavigation($current, $startRecord, $pageURL, $sortField, $sortDesc);
+	$prevJumpMenu = getPageNavigation($previous, $startRecord, $pageURL, $sortField, $sortDesc);
+
+	//Setup Data
+	$current = paginateSortAndFormat($current, $sortField, $sortDesc, $startRecord, $viewName);
+	$previous = paginateSortAndFormat($previous, $sortField, $sortDesc, $startRecord, $viewName);
+
+	/****************************************************************
+	 * Data Assign for Template.
+	 ****************************************************************/
+	$wrmsmarty->assign('new_data', $current); 
+	$wrmsmarty->assign('old_data', $previous);
+	$wrmsmarty->assign('current_jump_menu', $currJumpMenu);
+	$wrmsmarty->assign('previous_jump_menu', $prevJumpMenu);
+	$wrmsmarty->assign('column_name', $raid_headers);
+	$wrmsmarty->assign('curr_record_counts', $curr_record_count_array);
+	$wrmsmarty->assign('prev_record_counts', $prev_record_count_array);
+	$wrmsmarty->assign('header_data',
+		array(
+			'template_name'=>$phpraid_config['template'],
+			'old_raids_header' => $phprlang['raids_old'],
+			'new_raids_header' => $phprlang['raids_new'],
+			'sort_url_base' => $pageURL,
+			'sort_descending' => $sortDesc,
+			'sort_text' => $phprlang['sort_text'],
+		)
+	);
+	
+	// now for announcements
+	// get announcements
+	$announcements = array();
+	$announcement_header=$phprlang['announcements_header'];
+	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "announcements";
+	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	if($db_raid->sql_numrows($result) > 0)
 	{
-		$db_raid->sql_rowseek($i, $result);
-		$data = $db_raid->sql_fetchrow($result, true);
-		$time = new_date($phpraid_config['time_format'], $data['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']);
-		$date = new_date($phpraid_config['date_format'], $data['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+		/* fetch rows in reverse order */
+		$i = $db_raid->sql_numrows($result) - 1;
+		while($i >= 0) 
+		{
+			$db_raid->sql_rowseek($i, $result);
+			$data = $db_raid->sql_fetchrow($result, true);
+			$time = new_date($phpraid_config['time_format'], $data['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+			$date = new_date($phpraid_config['date_format'], $data['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']);
 		
-		$page->set_var(
-			array(
-				'announcement_header'=>$phprlang['announcements_header'],
-				'announcement_author'=>$data['posted_by'],
-				'announcement_date'=>$date,
-				'announcement_time'=>$time,
-				'announcement_msg'=>linebreak_to_br($data['message']),
-				'announcement_title'=>$data['title'],
-			)
-		);
+			array_push($announcements,
+				array(
+					'announcement_author'=>$data['posted_by'],
+					'announcement_date'=>$date,
+					'announcement_time'=>$time,
+					'announcement_msg'=>linebreak_to_br($data['message']),
+					'announcement_title'=>$data['title'],
+				)
+			);
+			
+			$i--;
+		}
 		
-		$page->parse('ARow','announcement_row',true);
-		
-		$i--;
+		$wrmsmarty->assign('announcement_header', $announcement_header);	
+		$wrmsmarty->assign('announcement_data', $announcements);	
 	}
-	$page->parse('body','announceFile',true);
-}
-$page->parse('body','body_file',true);
-
-$page->p('body');
-
-require_once('includes/page_footer.php');
+	//
+	// Start output of the page.
+	//
+	require_once('includes/page_header.php');
+	$wrmsmarty->display('main_page.html');
+	require_once('includes/page_footer.php');
 ?>
