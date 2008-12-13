@@ -1,0 +1,9 @@
+{* Smarty Template *}
+<div class="contentHeader">{$announcement_header}</div>
+<br>
+{* Display the Announcements Table Unless display_data_table is set false.*}
+{if $display_data_table}
+	<div class="contentBody">{include file='raids_table.html' raid_data=$announcement_data jump_menu=$current_jump_menu record_counts=$curr_record_counts}</div><br>
+{/if}
+{* Display the "Create New Announcement" Section *}
+<div class="contentBody">{include file='announcements_new.html'}</div>

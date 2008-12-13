@@ -38,6 +38,34 @@ require_once('./common.php');
 define("PAGE_LVL","announcements");
 require_once("includes/authentication.php");
 
+/*************************************************************
+ * Setup Record Output Information for Data Table
+ *************************************************************/
+// Set StartRecord for Page
+if(!isset($_GET['Base']) || !is_numeric($_GET['Base']))
+	$startRecord = 1;
+else
+	$startRecord = scrub_input($_GET['Base']);
+
+// Set Sort Field for Page
+if(!isset($_GET['Sort']))
+	$sortField="";
+else
+	$sortField = scrub_input($_GET['Sort']);
+	
+// Set Sort Descending Mark
+if(!isset($_GET['SortDescending']) || !is_numeric($_GET['SortDescending']))
+	$sortDesc = 1;
+else
+	$sortDesc = scrub_input($_GET['SortDescending']);
+	
+$pageURL = 'announcements.php?mode=view&';
+$announcement_header = $phprlang['announcements_header'];
+
+/**************************************************************
+ * End Record Output Setup for Data Table
+ **************************************************************/
+
 if($_GET['mode'] == 'view')
 {
 	$announcements = array();
@@ -68,62 +96,67 @@ if($_GET['mode'] == 'view')
 
 		array_push($announcements,
 			array(
-				'id'=>$id,
-				'title'=>$title,
-				'message'=>$message,
-				'posted_by'=>$posted_by,
-				'date'=>$date,
-				'time'=>$time,
-				''=>$edit . $delete,
+				'ID'=>$id,
+				'Title'=>$title,
+				'Message'=>$message,
+				'Posted By'=>$posted_by,
+				'Create Date'=>$date,
+				'Create Time'=>$time,
+				'Buttons'=>$edit . $delete,
 			)
 		);
 	}
 
-	// setup output
-	setup_output();
-	$report->showRecordCount(true);
-	$report->allowPaging(true, $_SERVER['PHP_SELF'] . '?mode=view&Base=');
-	$report->setListRange($_GET['Base'], 25);
-	$report->allowLink(ALLOW_HOVER_INDEX,'',array());
+	/**************************************************************
+	 * Code to setup for a Dynamic Table Create: raids1 View.
+	 **************************************************************/
+	$viewName = 'announcements1';
+	
+	//Setup Columns
+	$raid_headers = array();
+	$record_count_array = array();
+	$raid_headers = getVisibleColumns($viewName);
 
-	//Default sorting
-	if(!$_GET['Sort'])
-	{
-		$report->allowSort(true, 'date', 'ASC', 'announcements.php?mode=view');
-	}
-	else
-	{
-		$report->allowSort(true, $_GET['Sort'], $_GET['SortDescending'], 'announcements.php?mode=view');
-	}
+	//Get Record Counts
+	$curr_record_count_array = getRecordCounts($announcements, $raid_headers, $startRecord);
+	
+	//Get the Jump Menu and pass it down
+	$currJumpMenu = getPageNavigation($announcements, $startRecord, $pageURL, $sortField, $sortDesc);
 
-	if($phpraid_config['show_id'] == 1)
-		$report->addOutputColumn('id',$phprlang['id'],'','center');
-	$report->addOutputColumn('title',$phprlang['title'],'','center');
-	$report->addOutputColumn('message',$phprlang['message'],'','center');
-	$report->addOutputColumn('posted_by',$phprlang['posted_by'],'','center');
-	$report->addOutputColumn('date',$phprlang['date'],'wrmdate','center');
-	$report->addOutputColumn('time',$phprlang['time'],'wrmtime','center');
-	$report->addOutputColumn('','','','right');
-	$announcements = $report->getListFromArray($announcements);
-	$page->set_file('output',$phpraid_config['template'] . '/announcements.htm');
-	$page->set_var(
+	//Setup Data
+	$announcements = paginateSortAndFormat($announcements, $sortField, $sortDesc, $startRecord, $viewName);
+
+	/****************************************************************
+	 * Data Assign for Template.
+	 ****************************************************************/
+	$wrmsmarty->assign('announcement_data', $announcements);
+	$wrmsmarty->assign('announcement_header', $announcement_header); 
+	$wrmsmarty->assign('current_jump_menu', $currJumpMenu);
+	$wrmsmarty->assign('column_name', $raid_headers);
+	$wrmsmarty->assign('curr_record_counts', $curr_record_count_array);
+	$wrmsmarty->assign('display_data_table', TRUE);
+	$wrmsmarty->assign('header_data',
 		array(
-			'header'=>$phprlang['announcements_header'],
-			'announcements'=>$announcements
+			'template_name'=>$phpraid_config['template'],
+			'sort_url_base' => $pageURL,
+			'sort_descending' => $sortDesc,
+			'sort_text' => $phprlang['sort_text'],
 		)
 	);
-	$page->parse('output','output');
+	
 }
 elseif($_GET['mode'] == 'delete')
 {
 	$id = scrub_input($_GET['id'], false);
 	$delete_name = scrub_input($_GET['n'], false);
-
-	if($_SESSION['priv_announcements'] == 1) {
-		if(!isset($_POST['submit'])) {
+	
+	if($_SESSION['priv_announcements'] == 1) 
+	{
+		if(!isset($_POST['submit'])) 
+		{
 			$form_action = 'announcements.php?mode=delete&amp;n='.$delete_name.'&amp;id=' . $id;
 			$confirm_button = '<input type="submit" value="'. $phprlang['confirm'] .'" name="submit" class="post">';
-
+	
 			$wrmsmarty->assign('page',
 				array(
 					'form_action'=>$form_action,
@@ -140,10 +173,10 @@ elseif($_GET['mode'] == 'delete')
 			require_once('includes/page_footer.php');
 		} else {
 			log_delete('announcement',$delete_name);
-
+	
 			$sql = sprintf("DELETE FROM " . $phpraid_config['db_prefix'] . "announcements WHERE announcements_id=%s", quote_smart($id));
 			$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-
+	
 			header("Location: announcements.php?mode=view");
 		}
 	} else {
@@ -165,10 +198,9 @@ elseif(($_GET['mode'] == 'new' || $_GET['mode'] = 'edit') && isset($_POST['submi
 	$posted_by = $_SESSION['username'];
 	if($_GET['mode'] == 'new')
 	{
-
 		$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "announcements (`title`,`message`,`timestamp`,`posted_by`)
 		VALUES (%s,%s,%s,%s)", quote_smart($title),quote_smart($message),quote_smart($timestamp),quote_smart($posted_by));
-
+	
 		$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 
 		log_create('announcement',mysql_insert_id(),$title);
@@ -181,19 +213,20 @@ elseif(($_GET['mode'] == 'new' || $_GET['mode'] = 'edit') && isset($_POST['submi
 	}
 	header("Location: announcements.php?mode=view");
 }
-
+	
 // and the form
 if($_GET['mode'] != 'delete')
 {
 	if($_GET['mode'] == 'edit')
 	{
+		$wrmsmarty->assign('display_data_table', FALSE);
 		// grab from DB
 		$id = scrub_input($_GET['id']);
-
+	
 		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "announcements WHERE announcements_id=%s",quote_smart($id));
 		$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 		$data = $db_raid->sql_fetchrow($result, true);
-
+	
 		$form_action = 'announcements.php?mode=edit&amp;id=' . $id;
 		$title = '<input type="text" size="69" name="title" class="post" value="' . $data['title'] . '">';
  		$message = '<textarea name="message" class="post" cols="57" rows="10">' . $data['message'] . '</textarea>';
@@ -206,10 +239,10 @@ if($_GET['mode'] != 'delete')
 		$message = '<textarea name="message" class="post" cols="57" rows="10"></textarea>';
 		$buttons = '<input type="submit" name="submit" value="'.$phprlang['submit'].'" class="mainoption"> <input type="reset" name="reset" value="'.$phprlang['reset'].'" class="liteoption">';
 	}
-
+	
 	// set variables
-	$page->set_file('new_file',$phpraid_config['template'] . '/announcements_new.htm');
-	$page->set_var(
+	$wrmsmarty->assign('announcement_header', $announcement_header); 
+	$wrmsmarty->assign('new_announcement',
 		array(
 			'form_action'=>$form_action,
 			'title'=>$title,
@@ -221,15 +254,11 @@ if($_GET['mode'] != 'delete')
 		)
 	);
 
-	$page->parse('output','new_file',true);
+	//
+	// Start output of page
+	//
+	require_once('includes/page_header.php');
+	$wrmsmarty->display('announcements.html');
+	require_once('includes/page_footer.php');
 }
-
-//
-// Start output of page
-//
-require_once('includes/page_header.php');
-
-$page->p('output');
-
-require_once('includes/page_footer.php');
 ?>

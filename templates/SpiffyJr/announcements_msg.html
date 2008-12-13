@@ -1,0 +1,36 @@
+<div class="contentHeader">{$announcement_header}</div>
+<br>
+<!-- BEGIN announcement_row -->
+{section name=display_announcements loop=$announcement_data}
+	<table width="96%"  border="0" align="center" cellpadding="0" cellspacing="0">
+	  <tr>
+	    <td width="32" height="32" rowspan="3">
+		  <img src="templates/SpiffyJr/images/gryphon.gif" border="0" height="32" width="32" alt="announcement icon">
+		</td>
+	    <td width="600">
+			<div class="announceHeader">{$announcement_data[display_announcements].announcement_title}</div>
+	    </td>
+	  </tr>
+	  <tr>
+	    <td><hr></td>
+	  </tr>
+	  <tr>
+	    <td>
+			<div class="announceSubHeader">
+				{$announcement_data[display_announcements].announcement_author} @ {$announcement_data[display_announcements].announcement_date} - {$announcement_data[display_announcements].announcement_time}
+			</div>
+		</td>
+	  </tr>
+	  <tr>
+	    <td colspan="2">&nbsp;</td>
+	  </tr>
+	  <tr>
+	    <td colspan="2"><div class="announceText">{$announcement_data[display_announcements].announcement_msg}</div></td>
+	  </tr>
+	  <tr>
+	    <td colspan="2">&nbsp;</td>
+	  </tr>
+	</table>
+	<br>
+	<!-- END announcement_row -->
+{/section}
