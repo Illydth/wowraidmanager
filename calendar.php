@@ -237,14 +237,8 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true))
 	$$varname .= "</div>";
 }
 
-include("includes/page_header.php");
-
-$page->set_file(array(
-	'body_file' => $phpraid_config['template'] . '/calendar.htm')
-);
-
 // Array for Calendar Part Here.
-$page->set_var(
+$wrmsmarty->assign('calendar_data',
 	array(
 		'key'=>$phprlang['key'],
 		'submit_text'=>$phprlang['submit'],
@@ -314,13 +308,12 @@ $page->set_var(
 
 // now for announcements
 // get announcements
+$announcements = array();
+$announcement_header=$phprlang['announcements_header'];
 $sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "announcements";
 $result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 if($db_raid->sql_numrows($result) > 0)
 {
-	$page->set_file('announceFile',$phpraid_config['template'] . '/announcements_msg.htm');
-	$page->set_block('announceFile','announcement_row','ARow');
-
 	/* fetch rows in reverse order */
 	$i = $db_raid->sql_numrows($result) - 1;
 	while($i >= 0)
@@ -330,9 +323,8 @@ if($db_raid->sql_numrows($result) > 0)
 		$time = new_date($phpraid_config['time_format'], $data['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']);
 		$date = new_date($phpraid_config['date_format'], $data['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']);
 
-		$page->set_var(
+		array_push($announcements,
 			array(
-				'announcement_header'=>$phprlang['announcements_header'],
 				'announcement_author'=>$data['posted_by'],
 				'announcement_date'=>$date,
 				'announcement_time'=>$time,
@@ -340,17 +332,18 @@ if($db_raid->sql_numrows($result) > 0)
 				'announcement_title'=>$data['title'],
 			)
 		);
-
-		$page->parse('ARow','announcement_row',true);
-
+			
 		$i--;
 	}
-	$page->parse('body','announceFile',true);
+		
+	$wrmsmarty->assign('announcement_header', $announcement_header);	
+	$wrmsmarty->assign('announcement_data', $announcements);			
 }
-$page->parse('body','body_file',true);
-
-$page->p('body');
-
-include('includes/page_footer.php');
+//
+// Start output of the page.
+//
+require_once('includes/page_header.php');
+$wrmsmarty->display('calendar.html');
+require_once('includes/page_footer.php');
 
 ?>
