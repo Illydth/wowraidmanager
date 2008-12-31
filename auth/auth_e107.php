@@ -110,8 +110,8 @@ function db_password_change($profile_id, $dbusernewpassword)
 }
 
 //compare password
-//return value -> 1 equal ;0 Not equal
-function password_check($oldpassword, $profile_id)
+//return value -> $db_pass (Password from CMS database) upon success, FALSE upon fail.
+function password_check($oldpassword, $profile_id, $encryptflag)
 {
 	global $db_user_id, $db_group_id, $db_user_name, $db_user_email, $db_user_password, $db_table_user_name; 
 	global $db_table_group_name, $auth_user_class, $auth_alt_user_class, $table_prefix, $db_raid, $phpraid_config;
@@ -131,22 +131,24 @@ function password_check($oldpassword, $profile_id)
 	$data_passchk = $db_raid->sql_fetchrow($result_passchk, true);
 	$db_pass = $data_passchk[$db_user_password];
 	
-	//We have the password now, now for e107 Specific Password Mangling
-	/* 
-	 * For e107 we simply need to take the input password, run it through MD5 and check the output
-	 */
-
-	$dbusernewpassword = md5($oldpassword);
-	
-	if ($dbusernewpassword == $db_pass)
-		$testVal = TRUE;
+	if ($encryptflag)
+	{ // Encrypted Password Sent in, Check directly against DB.
+		if ($oldpassword == $db_pass)
+			return $db_pass;
+		else
+			return FALSE;
+	}
 	else
-		$testVal = FALSE;
-	
-	if ($testVal)
-		return 1;
-	else
-		return 0;
+	{ // Non-encrypted password sent in, encrypt and check against DB.
+		//We have the password now, now for e107 Specific Password Mangling
+		/* 
+		 * For e107 we simply need to take the input password, run it through MD5 and check the output
+		 */
+		if (md5($oldpassword) == $db_pass)
+			return $db_pass;
+		else
+			return FALSE;
+	}
 }
 
 function phpraid_login() 
@@ -154,14 +156,20 @@ function phpraid_login()
 	global $db_user_id, $db_group_id, $db_user_name, $db_user_email, $db_user_password, $db_table_user_name; 
 	global $db_table_group_name, $auth_user_class, $auth_alt_user_class, $table_prefix, $db_raid, $phpraid_config;
 
-	$wrmuserpassword = $username = $password = "";
+	$username = $password = "";
 
 	if(isset($_POST['username'])){
+		// User is logging in, set encryption flag to 0 to identify login with plain text password.
+		$pwdencrypt = FALSE;
 		$username = scrub_input(strtolower(utf8_decode($_POST['username'])));
 		$password = $_POST['password'];
+		$wrmpass = md5($_POST['password']);
 	} elseif(isset($_COOKIE['username']) && isset($_COOKIE['password'])) {
+		// User is not logging in but processing cooking, set encryption flag to 1 to identify login with encrypted password.
+		$pwdencrypt = TRUE;
 		$username = scrub_input(strtolower($_COOKIE['username']));
-		$password = scrub_input($_COOKIE['password']);
+		$password = $_COOKIE['password'];
+		$wrmpass = '';
 	} else {
 		phpraid_logout();
 	}
@@ -194,14 +202,8 @@ function phpraid_login()
 	while($data = $db_raid->sql_fetchrow($result, true)) {
 		//$testVal = password_check($password, $data[$db_user_id]);
 		//echo "<br>Processing: " . $data[$db_user_name] . " : Password Check: " . $testVal;
-		if( ($username == strtolower($data[$db_user_name])) && (password_check($password, $data[$db_user_id])) ) 
+		if( ($username == strtolower($data[$db_user_name])) && ($cmspass = password_check($password, $data[$db_user_id], $pwdencrypt)) ) 
 		{
-			// Password Deconstruction:
-			// Before we store the password, we really want to de-convert it from the "advanced" passwords
-			// that are used by phpBB.  We'll take the entered password (since it checks and MD5 it for the
-			// db.
-			$wrmuserpassword = md5($password);
-
 			// The user has a matching username and proper password in the phpbb database.
 			// We need to validate the users group.  If it does not contain the user group that has been set as
 			//	authorized to use WRM, we need to fail the login with a proper message.
@@ -241,7 +243,7 @@ function phpraid_login()
 				// they want automatic logins so set the cookie
 				// set to expire in one month
 				setcookie('username', $data[$db_user_name], time() + 2629743);
-				setcookie('password', $password, time() + 2629743);
+				setcookie('password', $cmspass, time() + 2629743);
 			}
 
 			// set user profile variables
@@ -264,18 +266,29 @@ function phpraid_login()
 			if ($data = $db_raid->sql_fetchrow($result))
 			{
 				//We found the profile in the database, update.
-				$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . 
-								"profile SET email = %s, password = %s, last_login_time = %s WHERE profile_id = %s",
-								quote_smart($_SESSION['email']),quote_smart($wrmuserpassword),
-								quote_smart(time()),quote_smart($_SESSION['profile_id'])
-						);
+				if ($wrmpass != '')
+				{
+					$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . 
+									"profile SET email = %s, password = %s, last_login_time = %s WHERE profile_id = %s",
+									quote_smart($_SESSION['email']),quote_smart($wrmpass),
+									quote_smart(time()),quote_smart($_SESSION['profile_id'])
+							);
+				}
+				else
+				{
+					$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . 
+									"profile SET email = %s, last_login_time = %s WHERE profile_id = %s",
+									quote_smart($_SESSION['email']),
+									quote_smart(time()),quote_smart($_SESSION['profile_id'])
+							);	
+				}
 				$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 			}
 			else
 			{
 				//Profile not found in the database or DB Error, insert.
 				$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "profile VALUES (%s, %s, %s, %s, %s, %s)",
-							quote_smart($_SESSION['profile_id']), quote_smart($_SESSION['email']), quote_smart($wrmuserpassword),
+							quote_smart($_SESSION['profile_id']), quote_smart($_SESSION['email']), quote_smart($wrmpass),
 							quote_smart($user_priv), quote_smart(strtolower($_SESSION['username'])), quote_smart(time())
 						);
 				$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
@@ -286,7 +299,8 @@ function phpraid_login()
 			//security fix
 			unset($username);
 			unset($password);
-			unset($wrmuserpassword);
+			unset($cmspass);
+			unset($wrmpass);
 
 			return 1;
 		}
@@ -303,14 +317,30 @@ function phpraid_logout()
 }
 
 // good ole authentication
+$lifetime = get_cfg_var("session.gc_maxlifetime"); 
+$temp = session_name("WRM-e107");
+$temp = session_set_cookie_params($lifetime, getCookiePath());
 session_start();
 $_SESSION['name'] = "WRM-e107";
 
 // set session defaults
-if (!isset($_SESSION['initiated'])) {
-	if(isset($_COOKIE['username']) && isset($_COOKIE['password'])) {
-		phpraid_login();
-	} else {
+if (!isset($_SESSION['initiated'])) 
+{
+	if(isset($_COOKIE['username']) && isset($_COOKIE['password']))
+	{ 
+		$testval = phpraid_login();
+		if (!$testval)
+		{
+			phpraid_logout();
+			session_regenerate_id();
+			$_SESSION['initiated'] = true;
+			$_SESSION['username'] = 'Anonymous';
+			$_SESSION['session_logged_in'] = 0;
+			$_SESSION['profile_id'] = -1;
+		}
+	}
+	else 
+	{
 		session_regenerate_id();
 		$_SESSION['initiated'] = true;
 		$_SESSION['username'] = 'Anonymous';
@@ -318,5 +348,4 @@ if (!isset($_SESSION['initiated'])) {
 		$_SESSION['profile_id'] = -1;
 	}
 }
-
 ?>
