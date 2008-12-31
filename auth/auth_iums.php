@@ -75,8 +75,8 @@ function db_password_change($profile_id, $dbusernewpassword)
 }
 
 //compare password
-//return value -> 0 equal ;1 Not equal
-function password_check($oldpassword, $profile_id)
+//return value -> $data['password'] (Password from CMS database) upon success, FALSE upon fail.
+function password_check($oldpassword, $profile_id, $encryptflag)
 {
 	global $db_raid, $phpraid_config;
 	$sql = sprintf("SELECT password FROM " . $phpraid_config['db_prefix'] . "profile WHERE profile_id = %s",
@@ -84,18 +84,26 @@ function password_check($oldpassword, $profile_id)
 			);
 	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 	$data = $db_raid->sql_fetchrow($result, true);
-
-	if ( md5($oldpassword) == $data['password'])
-	{
-		return 0;
+	
+	if ($encryptflag)
+	{ // Encrypted Password Sent In.
+		if ($oldpassword == $data['password'])
+			return $data['password'];
+		else
+			return FALSE;
 	}
-	else
-		return 1;
+	else 
+	{ // Plain text password sent in.
+		if (md5($oldpassword) == $data['password'])
+			return $data['password'];
+		else
+			return FALSE;
+	}
 }
 
 function phpraid_login() {
 	global $groups, $db_raid, $phpraid_config;
-	$wrmuserpassword = $username = $password = "";
+	$username = $password = "";
 
 	$table_prefix = $phpraid_config['db_prefix'];
 
@@ -107,16 +115,20 @@ function phpraid_login() {
 	$db_table_user_name = "profile";
 
 	if(isset($_POST['username'])) 	{
-		$username = strtolower(scrub_input($_POST['username']));
-		$password = md5($_POST['password']);
+		// User is logging in, set encryption flag to 0 to identify login with plain text password.
+		$pwdencrypt = FALSE;
+		$username = scrub_input(strtolower(utf8_decode($_POST['username'])));
+		//$username = strtolower(scrub_input($_POST['username']));
+		$password = $_POST['password'];
 	} elseif(isset($_COOKIE['username']) && isset($_COOKIE['password'])) {
+		// User is not logging in but processing cooking, set encryption flag to 1 to identify login with encrypted password.
+		$pwdencrypt = TRUE;
 		$username = strtolower(scrub_input($_COOKIE['username']));
-		$password = scrub_input($_COOKIE['password']);
+		$password = $_COOKIE['password'];
 	} else {
 		phpraid_logout();
 	}
 	
-
 	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "profile";
 	
 	$sql = sprintf(	"SELECT ".$db_user_id." , ". $db_user_name ." , ". $db_user_email . " , " . $db_user_password .
@@ -126,18 +138,17 @@ function phpraid_login() {
 
 	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 	
-	while($data = $db_raid->sql_fetchrow($result, true)) {
-		if($username == strtolower($data[$db_user_name]) && $password == $data[$db_user_password]) {
-
-			$wrmuserpassword = $data[$db_user_password];
-		
+	while($data = $db_raid->sql_fetchrow($result, true)) 
+	{
+		if($username == strtolower($data[$db_user_name]) && ($cmspass = password_check($password, $data[$db_user_id], $pwdencrypt)) ) 
+		{
 			// User is properly logged in and is allowed to use WRM, go ahead and process his login.
 			$autologin = scrub_input($_POST['autologin']);
 			if(isset($autologin)) {
 				// they want automatic logins so set the cookie
 				// set to expire in one month
 				setcookie('username', $data[$db_user_name], time() + 2629743);
-				setcookie('password', $wrmuserpassword, time() + 2629743);
+				setcookie('password', $cmspass, time() + 2629743);
 			}
 
 			// set user profile variables
@@ -186,13 +197,13 @@ function phpraid_login() {
 
 			$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "profile SET last_login_time=%s WHERE profile_id=%s",
 							quote_smart(time()),quote_smart($_SESSION['profile_id']));
-
+	
 			$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 			
 			//security fix
 			unset($username);
 			unset($password);
-			unset($wrmuserpassword);
+			unset($cmspass);
 			
 			return 1;
 		}
@@ -209,14 +220,30 @@ function phpraid_logout()
 }
 
 // good ole authentication
+$lifetime = get_cfg_var("session.gc_maxlifetime"); 
+$temp = session_name("WRM-iums");
+$temp = session_set_cookie_params($lifetime, getCookiePath());
 session_start();
 $_SESSION['name'] = "WRM-iums";
 
 // set session defaults
-if (!isset($_SESSION['initiated'])) {
-	if(isset($_COOKIE['username']) && isset($_COOKIE['password'])) {
-		phpraid_login();
-	} else {
+if (!isset($_SESSION['initiated'])) 
+{
+	if(isset($_COOKIE['username']) && isset($_COOKIE['password']))
+	{ 
+		$testval = phpraid_login();
+		if (!$testval)
+		{
+			phpraid_logout();
+			session_regenerate_id();
+			$_SESSION['initiated'] = true;
+			$_SESSION['username'] = 'Anonymous';
+			$_SESSION['session_logged_in'] = 0;
+			$_SESSION['profile_id'] = -1;
+		}
+	}
+	else 
+	{
 		session_regenerate_id();
 		$_SESSION['initiated'] = true;
 		$_SESSION['username'] = 'Anonymous';
@@ -224,5 +251,4 @@ if (!isset($_SESSION['initiated'])) {
 		$_SESSION['profile_id'] = -1;
 	}
 }
-
 ?>

@@ -29,6 +29,35 @@
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *
 ****************************************************************************/
+// Gets the current Page URL to determine cookie path.
+function curPageURL() {
+ $pageURL = 'http';
+ if ($_SERVER["HTTPS"] == "on") {$pageURL .= "s";}
+ $pageURL .= "://";
+ if ($_SERVER["SERVER_PORT"] != "80") {
+  $pageURL .= $_SERVER["SERVER_NAME"].":".$_SERVER["SERVER_PORT"].$_SERVER["REQUEST_URI"];
+ } else {
+  $pageURL .= $_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
+ }
+ return $pageURL;
+}
+
+// Creates the cookie storage path.
+function getCookiePath()
+{
+	$cookie_path = parse_url(curPageURL(), PHP_URL_PATH);
+	$pos = strrpos($cookie_path, "/");
+	if ($pos === false) 
+	{ 
+	    // can't find a proper URL, return "/" as the cookie position.
+	    $cookie_path = "/";
+	}
+	else
+	  $cookie_path = substr($cookie_path, 0, $pos) . "/";
+
+	return $cookie_path;
+}
+
 // clears session variables just in case
 function clear_session()
 {
