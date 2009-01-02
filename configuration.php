@@ -103,21 +103,21 @@ else
 }
 
 // Get Text Strings for Configuration Page setup correctly
-$version_info_header = $phprlang['configuration_version_info_header'];
-$site_configure_header = $phprlang['configuration_site_header'];
-$guild_configure_header = $phprlang['configuration_guild_header'];
-$role_configure_header = $phprlang['configuration_role_header'];
-$user_rights_header = $phprlang['configuration_user_rights_header'];
-$external_links_header = $phprlang['configuration_external_links_header'];
-$signup_rights_header = $phprlang['configuration_signup_rights_header'];
-$on_queue_text = $phprlang['configuration_on_queue'];
-$cancelled_text = $phprlang['configuration_cancelled'];
-$drafted_text = $phprlang['configuration_drafted'];
-$draft_row_header = $phprlang['configuration_draft'];
-$comments_row_header = $phprlang['configuration_comments'];
-$cancel_row_header = $phprlang['configuration_cancel'];
-$delete_row_header = $phprlang['configuration_delete'];
-$queue_row_header = $phprlang['configuration_queue'];
+//$version_info_header = $phprlang['configuration_version_info_header'];
+//$site_configure_header = $phprlang['configuration_site_header'];
+//$guild_configure_header = $phprlang['configuration_guild_header'];
+//$role_configure_header = $phprlang['configuration_role_header'];
+//$user_rights_header = $phprlang['configuration_user_rights_header'];
+//$external_links_header = $phprlang['configuration_external_links_header'];
+//$signup_rights_header = $phprlang['configuration_signup_rights_header'];
+//$on_queue_text = $phprlang['configuration_on_queue'];
+//$cancelled_text = $phprlang['configuration_cancelled'];
+//$drafted_text = $phprlang['configuration_drafted'];
+//$draft_row_header = $phprlang['configuration_draft'];
+//$comments_row_header = $phprlang['configuration_comments'];
+//$cancel_row_header = $phprlang['configuration_cancel'];
+//$delete_row_header = $phprlang['configuration_delete'];
+//$queue_row_header = $phprlang['configuration_queue'];
 
 // setup variables based on the forum information
 // start with the checkboxes
@@ -556,7 +556,7 @@ $role6_name='<input name="role6_name" type="text" value="'.$phpraid_config['role
 $eqdkp_url='<input name="eqdkp_url" type="text" value="'.$phpraid_config['eqdkp_url'].'" size="60" class="post">';
 
 // put the variables into the template
-$page->set_var(
+$wrmsmarty->assign('config_data',
 	array(
 		'guild_name' => $guild_name,
 		'guild_description' => $guild_description,
@@ -724,14 +724,7 @@ $page->set_var(
 	)
 );
 
-// show the form
-if(!isset($_POST['submit']))
-{
-	$page->set_file(array(
-		'body' => $phpraid_config['template'] . '/configuration.htm')
-	);
-}
-else
+if(isset($_POST['submit']))
 {
 	// form submission, update the database		
 	if(isset($_POST['dst']))
@@ -1200,7 +1193,7 @@ else
 //
 require_once('includes/page_header.php');
 
-$page->pparse('body','body');
+$wrmsmarty->display('configuration.html');
 
 require_once('includes/page_footer.php');
 ?>
