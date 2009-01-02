@@ -43,7 +43,33 @@ require_once('./common.php');
 define("PAGE_LVL","anonymous");
 require_once("includes/authentication.php");
 
-global $db_dkp, $errorTitle, $errorMsg, $errorDie;
+/*************************************************************
+ * Setup Record Output Information for Data Table
+ *************************************************************/
+// Set StartRecord for Page
+if(!isset($_GET['Base']) || !is_numeric($_GET['Base']))
+	$startRecord = 1;
+else
+	$startRecord = scrub_input($_GET['Base']);
+
+// Set Sort Field for Page
+if(!isset($_GET['Sort']))
+	$sortField="";
+else
+	$sortField = scrub_input($_GET['Sort']);
+	
+// Set Sort Descending Mark
+if(!isset($_GET['SortDescending']) || !is_numeric($_GET['SortDescending']))
+	$sortDesc = 1;
+else
+	$sortDesc = scrub_input($_GET['SortDescending']);
+	
+$pageURL = 'dkp_view.php?';
+/**************************************************************
+ * End Record Output Setup for Data Table
+ **************************************************************/
+
+//global $db_dkp, $errorTitle, $errorMsg, $errorDie;
 
 /*---------- (eqdkp) web link + text -------------------------*/
 
@@ -51,7 +77,7 @@ $eqdkp_text_link = $phprlang['eqdkp_system_link'] . '<a href="'.$phpraid_config[
 
 /*------------------------------------*/
 
-$db_dkp = &new sql_db($phpraid_config['eqdkp_db_host'],$phpraid_config['eqdkp_db_user'],$phpraid_config['eqdkp_db_pass'],$phpraid_config['eqdkp_db_name']);
+$db_dkp = &new sql_db($phpraid_config['eqdkp_db_host'],$phpraid_config['eqdkp_db_user'],$phpraid_config['eqdkp_db_pass'],$phpraid_config['eqdkp_db_name'], TRUE);
 
 if(!$db_dkp->db_connect_id) 
 {
@@ -81,66 +107,96 @@ while($data = $db_dkp->sql_fetchrow($result)) {
 	
 	array_push($members,
 		array(
-			'id'=>$data['member_id'],
+			'ID'=>$data['member_id'],
 			'Name'=>$namelink,
 			'Earned'=>$data['member_earned'],
 			'Spent'=>$data['member_spent'],
 			'Adjustment'=>$data['member_adjustment'],
 			'Class'=>$tmpclass,
-			'Dkp_Now'=> $tmp
+			'DKP'=> $tmp
 		)
 	);
 }
 
-// output the information
-setup_output();
+/**************************************************************
+ * Code to setup for a Dynamic Table Create: raids1 View.
+ **************************************************************/
+$viewName = 'DKP1';
+	
+//Setup Columns
+$members_headers = array();
+$record_count_array = array();
+$members_headers = getVisibleColumns($viewName);
 
-$report->showRecordCount(true);
-$report->allowPaging(true, $_SERVER['PHP_SELF'] . '?mode=view&Base=');
-$report->setListRange($_GET['Base'], 25);
-$report->allowLink(ALLOW_HOVER_INDEX,'',array());
+//Get Record Counts
+$members_record_count_array = getRecordCounts($members, $raid_headers, $startRecord);
+	
+//Get the Jump Menu and pass it down
+$membersJumpMenu = getPageNavigation($members, $startRecord, $pageURL, $sortField, $sortDesc);
+
+//Setup Data
+$members = paginateSortAndFormat($members, $sortField, $sortDesc, $startRecord, $viewName);
+
+/****************************************************************
+ * Data Assign for Template.
+ ****************************************************************/
+$wrmsmarty->assign('members', $members); 
+$wrmsmarty->assign('members_jump_menu', $membersJumpMenu);
+$wrmsmarty->assign('column_name', $members_headers); // "column_name" needs to stay static
+$wrmsmarty->assign('members_record_counts', $members_record_count_array);
+// "header_data" below needs to stay static
+$wrmsmarty->assign('header_data',
+	array(
+		'header' => $phprlang['dkp'],
+		'dkp_link' => $eqdkp_text_link,
+		'template_name'=>$phpraid_config['template'],
+		'sort_url_base' => $pageURL,
+		'sort_descending' => $sortDesc,
+		'sort_text' => $phprlang['sort_text'],
+	)
+);
+
+// output the information
+//setup_output();
+
+//$report->showRecordCount(true);
+//$report->allowPaging(true, $_SERVER['PHP_SELF'] . '?mode=view&Base=');
+//$report->setListRange($_GET['Base'], 25);
+//$report->allowLink(ALLOW_HOVER_INDEX,'',array());
 
 //Default sorting
-if(!$_GET['Sort'])
-{
-	$report->allowSort(true, 'Name', 'ASC', 'dkp_view.php');
-}
-else
-{
-	$report->allowSort(true, $_GET['Sort'], $_GET['SortDescending'], 'dkp_view.php');
-}
+//if(!$_GET['Sort'])
+//{
+//	$report->allowSort(true, 'Name', 'ASC', 'dkp_view.php');
+//}
+//else
+//{
+//	$report->allowSort(true, $_GET['Sort'], $_GET['SortDescending'], 'dkp_view.php');
+//}
 
-$report->showRecordCount(true);
-if($phpraid_config['show_id'] == 1)
-	$report->addOutputColumn('id',$phprlang['id'],'','center');
-$report->addOutputColumn('Name',$phprlang['name'],'','center');
-$report->addOutputColumn('Class',$phprlang['class'],'','center');
-$report->addOutputColumn('Earned',$phprlang['earned'],'','center');
-$report->addOutputColumn('Spent',$phprlang['spent'],'','center');
-$report->addOutputColumn('Adjustment',$phprlang['adjustment'],'','center');
-$report->addOutputColumn('Dkp_Now',$phprlang['dkp'],'','center');
-$report->allowPaging(true, $_SERVER['PHP_SELF'] . '?Base=');
-$report->setListRange($_GET['Base'], 25);
-$body = $report->getListFromArray($members);
+//$report->showRecordCount(true);
+//if($phpraid_config['show_id'] == 1)
+//	$report->addOutputColumn('id',$phprlang['id'],'','center');
+//$report->addOutputColumn('Name',$phprlang['name'],'','center');
+//$report->addOutputColumn('Class',$phprlang['class'],'','center');
+//$report->addOutputColumn('Earned',$phprlang['earned'],'','center');
+//$report->addOutputColumn('Spent',$phprlang['spent'],'','center');
+//$report->addOutputColumn('Adjustment',$phprlang['adjustment'],'','center');
+//$report->addOutputColumn('Dkp_Now',$phprlang['dkp'],'','center');
+//$report->allowPaging(true, $_SERVER['PHP_SELF'] . '?Base=');
+//$report->setListRange($_GET['Base'], 25);
+//$body = $report->getListFromArray($members);
 
 //
 // Start output of page
 //
 require_once('includes/page_header.php');
 	
-$page->set_file(array(
-	'output' => $phpraid_config['template'] . '/dkp_view.htm')
-);
-
-$page->set_var(
-	array(
-		'roster' => $body,
-		'header' => $phprlang['dkp'],
-		'dkp_link' => $eqdkp_text_link
-	)
-);
-
-$page->pparse('output','output');
+//$page->set_file(array(
+//	'output' => $phpraid_config['template'] . '/dkp_view.htm')
+//);
+$wrmsmarty->display('dkp_view.html');
+//$page->pparse('output','output');
 
 require_once('includes/page_footer.php');
 ?>

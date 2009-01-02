@@ -1,0 +1,12 @@
+{* Smarty Template *}
+
+<div class="contentHeader">{$header_data.header}</div>
+
+<br>
+<div class="contentBody">{$header_data.dkp_link}</div>
+<br>
+
+<br>
+{* Prints the Current and Old Raids Tables *}
+<div class="contentBody">{include file='raids_table.html' raid_data=$members jump_menu=$members_jump_menu record_counts=$members_record_counts}</div><br>
+<br>
