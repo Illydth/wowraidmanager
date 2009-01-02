@@ -66,20 +66,14 @@ else
 //
 require_once('includes/page_header.php');
 
-$page->set_file('output',$phpraid_config['template'] . '/lua_output.htm');
-
 if($phpraid_config['showphpraid_addon'] == 1)
-	$page->set_var('output_header',$phprlang['lua_header'] . ' - ' . $phpraid_addon_link);
+	$wrmsmarty->assign('output_header',$phprlang['lua_header'] . ' - ' . $phpraid_addon_link);
 else
-	$page->set_var('output_header',$phprlang['lua_header']);
+	$wrmsmarty->assign('output_header',$phprlang['lua_header']);
 
-$page->set_var(
-	array(
-		'output_data'=>$text,
-		)
-);
+$wrmsmarty->assign('output_data', $text);
 
-$page->pparse('output','output');
+$wrmsmarty->display('lua_output.html');
 
 require_once('includes/page_footer.php');
 ?>
