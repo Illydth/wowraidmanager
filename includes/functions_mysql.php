@@ -47,7 +47,7 @@ class sql_db
 	//
 	// Constructor
 	//
-	function sql_db($sqlserver, $sqluser, $sqlpassword, $database, $persistency = true)
+	function sql_db($sqlserver, $sqluser, $sqlpassword, $database, $new_connection = FALSE, $persistency = TRUE)
 	{
 
 		$this->persistency = $persistency;
@@ -58,11 +58,11 @@ class sql_db
 
 		if($this->persistency)
 		{
-			$this->db_connect_id = @mysql_pconnect($this->server, $this->user, $this->password);
+			$this->db_connect_id = @mysql_pconnect($this->server, $this->user, $this->password, $new_connection);
 		}
 		else
 		{
-			$this->db_connect_id = @mysql_connect($this->server, $this->user, $this->password);
+			$this->db_connect_id = @mysql_connect($this->server, $this->user, $this->password, $new_connection);
 		}
 		if($this->db_connect_id)
 		{
