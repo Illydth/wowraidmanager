@@ -69,7 +69,7 @@ $pageURL = 'dkp_view.php?';
  * End Record Output Setup for Data Table
  **************************************************************/
 
-//global $db_dkp, $errorTitle, $errorMsg, $errorDie;
+global $db_dkp, $errorTitle, $errorMsg, $errorDie;
 
 /*---------- (eqdkp) web link + text -------------------------*/
 
@@ -121,7 +121,7 @@ while($data = $db_dkp->sql_fetchrow($result)) {
 /**************************************************************
  * Code to setup for a Dynamic Table Create: raids1 View.
  **************************************************************/
-$viewName = 'DKP1';
+$viewName = 'dkp1';
 	
 //Setup Columns
 $members_headers = array();
@@ -129,7 +129,7 @@ $record_count_array = array();
 $members_headers = getVisibleColumns($viewName);
 
 //Get Record Counts
-$members_record_count_array = getRecordCounts($members, $raid_headers, $startRecord);
+$members_record_count_array = getRecordCounts($members, $members_headers, $startRecord);
 	
 //Get the Jump Menu and pass it down
 $membersJumpMenu = getPageNavigation($members, $startRecord, $pageURL, $sortField, $sortDesc);
@@ -156,47 +156,10 @@ $wrmsmarty->assign('header_data',
 	)
 );
 
-// output the information
-//setup_output();
-
-//$report->showRecordCount(true);
-//$report->allowPaging(true, $_SERVER['PHP_SELF'] . '?mode=view&Base=');
-//$report->setListRange($_GET['Base'], 25);
-//$report->allowLink(ALLOW_HOVER_INDEX,'',array());
-
-//Default sorting
-//if(!$_GET['Sort'])
-//{
-//	$report->allowSort(true, 'Name', 'ASC', 'dkp_view.php');
-//}
-//else
-//{
-//	$report->allowSort(true, $_GET['Sort'], $_GET['SortDescending'], 'dkp_view.php');
-//}
-
-//$report->showRecordCount(true);
-//if($phpraid_config['show_id'] == 1)
-//	$report->addOutputColumn('id',$phprlang['id'],'','center');
-//$report->addOutputColumn('Name',$phprlang['name'],'','center');
-//$report->addOutputColumn('Class',$phprlang['class'],'','center');
-//$report->addOutputColumn('Earned',$phprlang['earned'],'','center');
-//$report->addOutputColumn('Spent',$phprlang['spent'],'','center');
-//$report->addOutputColumn('Adjustment',$phprlang['adjustment'],'','center');
-//$report->addOutputColumn('Dkp_Now',$phprlang['dkp'],'','center');
-//$report->allowPaging(true, $_SERVER['PHP_SELF'] . '?Base=');
-//$report->setListRange($_GET['Base'], 25);
-//$body = $report->getListFromArray($members);
-
 //
 // Start output of page
 //
 require_once('includes/page_header.php');
-	
-//$page->set_file(array(
-//	'output' => $phpraid_config['template'] . '/dkp_view.htm')
-//);
 $wrmsmarty->display('dkp_view.html');
-//$page->pparse('output','output');
-
 require_once('includes/page_footer.php');
 ?>
