@@ -1,0 +1,13 @@
+<form action="teams.php?mode=delteam&amp;raid_id={$curr_team_fields.raid_id}" method="POST">
+	{section name=del_curr_team loop=$current_teams}
+		{if $current_teams[del_curr_team].char_id == "-2"}
+			<b>{$current_teams[del_curr_team].team_name}</b>&nbsp;&nbsp;
+		{else}
+			{$current_teams[del_curr_team].team_name}&nbsp;&nbsp;
+		{/if}
+		<input type="checkbox" name="delteam{$current_teams[del_curr_team].team_id}" value="{$current_teams[del_curr_team].team_id}"><br>
+	{/section}
+	<br>
+	<input type="submit" name="submit" value="{$curr_team_fields.delbuttontext}" class="mainoption">
+	<input type="reset" name="reset" value="{$curr_team_fields.resetbuttontext}" class="liteoption">
+</form>

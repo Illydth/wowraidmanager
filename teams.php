@@ -60,41 +60,76 @@ isset($_GET['raid_id']) ? $raid_id = scrub_input($_GET['raid_id']) : $raid_id = 
 if($raid_id == '' || !is_numeric($raid_id))
 	log_hack();
 
+/*************************************************************
+ * Setup Record Output Information for Data Table
+ *************************************************************/
+// Set StartRecord for Page
+if(!isset($_GET['Base']) || !is_numeric($_GET['Base']))
+	$startRecord = 1;
+else
+	$startRecord = scrub_input($_GET['Base']);
+
+// Set Sort Field for Page
+if(!isset($_GET['Sort']))
+	$sortField="";
+else
+	$sortField = scrub_input($_GET['Sort']);
+	
+// Set Sort Descending Mark
+if(!isset($_GET['SortDescending']) || !is_numeric($_GET['SortDescending']))
+	$sortDesc = 1;
+else
+	$sortDesc = scrub_input($_GET['SortDescending']);
+	
+$pageURL = 'teams.php?mode=view&raid_id='.$raid_id.'&';
+/**************************************************************
+ * End Record Output Setup for Data Table
+ **************************************************************/
+
 // Set the Guild Server for the Page.
 $server = $phpraid_config['guild_server'];
 
 //View Mode, display the page with Current Data.
 if($mode == 'view')
 {
+	$current_teams = array();
+	
 	//**********************************************
 	//Setup the "New Team" Form
 	//**********************************************
-	$team_new = '<form action="teams.php?mode=new&amp;raid_id='.$raid_id.'" method="POST">';
-	$team_new .= '<input name="team_name" type="text" class="post"><br>';
-	$team_new .= '<input type="checkbox" name="global" value="1">  ';
-	$team_new .= $phprlang['team_global'] . '<br><br>';
-	$team_new .= '<input type="submit" name="submit" value="'.$phprlang['add'].'" class="mainoption"> ';
-	$team_new .= '<input type="reset" name="reset" value="'.$phprlang['reset'].'" class="liteoption">';
-	$team_new .= '</form>';
+	$wrmsmarty->assign('new_team_fields', 
+		array(
+			'team_new_header'=>$phprlang['team_new_header'],
+			'raid_id'=>$raid_id,
+			'global_raid_text'=>$phprlang['team_global'],
+			'addbuttontext'=>$phprlang['add'],
+			'resetbuttontext'=>$phprlang['reset']
+		)
+	); 
 
-	$team_cur_teams = '<form action="teams.php?mode=delteam&amp;raid_id='.$raid_id.'" method="POST">';
-
+	$wrmsmarty->assign('curr_team_fields', 
+		array(
+			'raid_id'=>$raid_id,
+			'delbuttontext'=>$phprlang['delete'],
+			'resetbuttontext'=>$phprlang['reset'],
+			'team_cur_teams_header'=>$phprlang['team_cur_teams_header']
+		)
+	);
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "teams WHERE (raid_id=%s and char_id='-1') or char_id='-2'",quote_smart($raid_id));
 	$teams_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 	while($team = $db_raid->sql_fetchrow($teams_result, true))
 	{
-		if ($team['char_id']=="-2")
-			$team_cur_teams .= "<b>" . $team['team_name'] . "</b>  ";
-		else
-			$team_cur_teams .= $team['team_name'] . "  ";
-
-		$team_cur_teams .= '<input type="checkbox" name="delteam' . $team['team_id'] . '" value="' . $team['team_id'] . '"><br>';
+		array_push($current_teams,
+			array(
+				'team_name'=>$team['team_name'],
+				'char_id'=>$team['char_id'],
+				'team_id'=>$team['team_id']
+			)
+		);
 	}
-	$team_cur_teams .= '<br>';
-	$team_cur_teams .= '<input type="submit" name="submit" value="'.$phprlang['delete'].'" class="mainoption"> ';
-	$team_cur_teams .= '<input type="reset" name="reset" value="'.$phprlang['reset'].'" class="liteoption">';
-	$team_cur_teams .= '</form>';
 
+	$wrmsmarty->assign('current_teams', $current_teams); 
+	
 	//********************************************
 	//Setup the "Remove Users from Team" section.
 	//********************************************
@@ -127,38 +162,50 @@ if($mode == 'view')
 
 		array_push($team_remove,
 			array(
-				'id'=>$team['char_id'],
-				'name'=>get_armorychar($team['name'], $phpraid_config['armory_language'], $server),
-				'class'=>$team['class'],
-				'guild'=>$team['guild'],
-				'level'=>$team['lvl'],
-				'team_name'=>$team['team_name'],
-				'admin'=>$delete
+				'ID'=>$team['char_id'],
+				'Name'=>get_armorychar($team['name'], $phpraid_config['armory_language'], $server),
+				'Class'=>$team['class'],
+				'Guild'=>$team['guild'],
+				'Level'=>$team['lvl'],
+				'Team Name'=>$team['team_name'],
+				'Actions'=>$delete
 			)
 		);
 	}
+	
+	/**************************************************************
+	 * Code to setup for a Dynamic Table Create: team1 View.
+	 **************************************************************/
+	$viewName = 'team1';
+	
+	//Setup Columns
+	$remove_headers = array();
+	$record_count_array = array();
+	$remove_headers = getVisibleColumns($viewName);
 
-	// setup report (users)
-	$report->clearOutputColumns();
-	//Default sorting
-	$report->allowSort(true, 'name', 'ASC', 'teams.php?mode=view&amp;raid_id=' . $raid_id);
-	setup_output();
+	//Get Record Counts
+	$remove_record_count_array = getRecordCounts($team_remove, $remove_headers, $startRecord);
+	
+	//Get the Jump Menu and pass it down
+	$removeJumpMenu = getPageNavigation($team_remove, $startRecord, $pageURL, $sortField, $sortDesc);
 
-	$report->showRecordCount(true);
-	//$report->allowPaging(true, $_SERVER['PHP_SELF'] . '?mode=view&amp;raid_id=' . $raid_id . '&Base=');
-	$report->setListRange($_GET['Base'], 25);
-	$report->allowLink(ALLOW_HOVER_INDEX,'',array());
-
-	if($phpraid_config['show_id'] == 1)
-		$report->addOutputColumn('id',$phprlang['id'],'','center');
-	$report->addOutputColumn('name',$phprlang['username'],'','left');
-	$report->addOutputColumn('class',$phprlang['class'],'','left');
-	$report->addOutputColumn('guild',$phprlang['guild'],'','left');
-	$report->addOutputColumn('level',$phprlang['level'],'','left');
-	$report->addOutputColumn('team_name',$phprlang['team_name'],'','left');
-	$report->addOutputColumn('admin','','','right',__NOLINK__);
-	$team_remove_body .= $report->getListFromArray($team_remove);
-
+	//Setup Data
+	$team_remove = paginateSortAndFormat($team_remove, $sortField, $sortDesc, $startRecord, $viewName);
+	
+	$wrmsmarty->assign('team_remove', $team_remove);
+	$wrmsmarty->assign('remove_jump_menu', $removeJumpMenu);
+	$wrmsmarty->assign('remove_column_names', $remove_headers);
+	$wrmsmarty->assign('remove_record_counts', $remove_record_count_array);
+	$wrmsmarty->assign('team_remove_header', $phprlang['team_remove_header']);
+	$wrmsmarty->assign('remove_header_data',
+		array(
+			'template_name'=>$phpraid_config['template'],
+			'sort_url_base' => $pageURL,
+			'sort_descending' => $sortDesc,
+			'sort_text' => $phprlang['sort_text'],
+		)
+	);
+		
 //******************************************
 //Setup the "Add Users to Team" section.
 //******************************************
@@ -167,13 +214,26 @@ if($mode == 'view')
 	$teamed_users = array();
 	$unteamed_users = array();
 	$team_add = array();
+	$add_data = array();
 
+	// Setup Add Teams Generic Data
+	$wrmsmarty->assign('add_team_fields', 
+		array(
+			'team_add_header'=>$phprlang['team_add_header'],
+			'raid_id'=>$raid_id,
+			'dropdown_text'=>$phprlang['add_team_dropdown_text'],
+			'submitbuttontext'=>$phprlang['submit'],
+			'resetbuttontext'=>$phprlang['reset']
+		)
+	); 
+	
 	//************************************************
-	//  So here we need to get everyone who is NOT already place into a team.  This would be trivial with a
+	//  So here we need to get everyone who is NOT already placed into a team.  This would be trivial with a
 	//    subselect using a NOT IN and checking the char_id in signups vs the char_id in teams.  That said,
 	//    mysql 4.0 DOES NOT support subselects...thus we have to do this the hard way around by getting
 	//    the data from the first table, the second table, and then parsing that data into a third variable
-	//    that contains the differences between the two.
+	//    that contains the differences between the two. 
+	//	     @@@-- We're doing this in other places with left joins - look to replace this.
 	//*************************************************
 	// get everyone signed up for this raid:
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id=%s and cancel='0' and queue='0'",quote_smart($raid_id));
@@ -234,50 +294,63 @@ if($mode == 'view')
 
 		array_push($team_add,
 			array(
-				'id'=>$data['char_id'],
-				'name'=>get_armorychar($data['name'], $phpraid_config['armory_language'], $server),
-				'class'=>$data['class'],
-				'guild'=>$data['guild'],
-				'level'=>$data['lvl'],
-				'action'=>$action
+				'ID'=>$data['char_id'],
+				'Name'=>get_armorychar($data['name'], $phpraid_config['armory_language'], $server),
+				'Class'=>$data['class'],
+				'Guild'=>$data['guild'],
+				'Level'=>$data['lvl'],
+				'Team Name'=>'',
+				'Add To Team'=>$action
 			)
 		);
 	}
 
-	$team_add_body = '<form action="teams.php?mode=add&amp;raid_id=' . $raid_id . '" method="POST">';
-	$team_add_body .= '<center>';
-	$team_add_body .= $phprlang['add_team_dropdown_text'];
-	$team_add_body .= '<br><select name="team_drop_name" class="post">';
+	/**************************************************************
+	 * Code to setup for a Dynamic Table Create: team1 View.
+	 **************************************************************/
+	$viewName = 'team2';
+	
+	//Setup Columns
+	$add_headers = array();
+	$record_count_array = array();
+	$add_headers = getVisibleColumns($viewName);
 
+	//Get Record Counts
+	$add_record_count_array = getRecordCounts($team_add, $add_headers, $startRecord);
+	
+	//Get the Jump Menu and pass it down
+	$addJumpMenu = getPageNavigation($team_add, $startRecord, $pageURL, $sortField, $sortDesc);
+
+	//Setup Data
+	$team_add = paginateSortAndFormat($team_add, $sortField, $sortDesc, $startRecord, $viewName);
+	
+	$wrmsmarty->assign('team_add', $team_add);
+	$wrmsmarty->assign('add_jump_menu', $addJumpMenu);
+	$wrmsmarty->assign('add_column_names', $add_headers);
+	$wrmsmarty->assign('add_record_counts', $add_record_count_array);
+	$wrmsmarty->assign('add_header_data',
+		array(
+			'template_name'=>$phpraid_config['template'],
+			'sort_url_base' => $pageURL,
+			'sort_descending' => $sortDesc,
+			'sort_text' => $phprlang['sort_text'],
+		)
+	);
+	
 	// get character data from the teams table.
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "teams WHERE (raid_id=%s and char_id='-1') or char_id='-2'",quote_smart($raid_id));
 	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 	while ($data = $db_raid->sql_fetchrow($result, true))
-		$team_add_body .= '<option value="' . $data['team_id']. '">' . $data['team_name'] . '</option>';
-	$team_add_body .= '</select></center><br>';
-
-	// setup report (users)
-	$report->clearOutputColumns();
-	//Default sorting
-	$report->allowSort(true, 'name', 'ASC', 'teams.php?mode=view&amp;raid_id=' . $raid_id);
-	setup_output();
-
-	$report->showRecordCount(true);
-	$report->allowPaging(true, $_SERVER['PHP_SELF'] . '?mode=view&amp;raid_id=' . $raid_id . '&Base=');
-	$report->setListRange($_GET['Base'], 25);
-	$report->allowLink(ALLOW_HOVER_INDEX,'',array());
-
-	if($phpraid_config['show_id'] == 1)
-		$report->addOutputColumn('id',$phprlang['id'],'','center');
-	$report->addOutputColumn('name',$phprlang['username'],'','center');
-	$report->addOutputColumn('class',$phprlang['class'],'','center');
-	$report->addOutputColumn('guild',$phprlang['guild'],'','center');
-	$report->addOutputColumn('level',$phprlang['level'],'','center');
-	$report->addOutputColumn('action',$phprlang['add_team'],'','center',__NOLINK__);
-	$team_add_body .= $report->getListFromArray($team_add);
-
-	$team_add_buttons = '<input type="submit" value="'.$phprlang['submit'].'" name="submit" class="mainoption">
-						<input type="reset" value="'.$phprlang['reset'].'" name="reset" class="liteoption"></form>';
+	{
+		array_push($add_data,
+			array(
+				'team_id'=>$data['team_id'],
+				'team_name'=>$data['team_name']
+			)
+		);
+	}
+	
+	$wrmsmarty->assign('add_data', $add_data);
 }
 elseif($mode == 'new')
 {
@@ -370,38 +443,13 @@ else
 $raid_view_link = '<a href="view.php?mode=view&amp;raid_id=' . $raid_id . '">' . $phprlang['teams_raid_view_text'] . '</a>';
 
 require_once('./includes/page_header.php');
-
-$page->set_file('output',$phpraid_config['template'] . '/team_view.htm');
-//	array(
-//		'team_add'=>$team_add,
-//		'character'=>$character,
-//		'queue'=>$queue,
-//		'comments'=>$comments,
-//		'signup_action'=>$signup_action,
-//		'hidden_vars'=>$hidden_vars,
-//		'view_signup_header'=>$phprlang['view_new'],
-//		'username_text'=>$phprlang['view_username'],
-//		'character_text'=>$phprlang['view_character'],
-//		'queue_text'=>$phprlang['view_queue'],
-//		'comments_text'=>$phprlang['view_comments']
-//	)
-//);
-$page->set_var(
+$wrmsmarty->assign('header_data', 
 	array(
 		'team_page_header'=>$phprlang['team_page_header'],
-		'team_new_header'=>$phprlang['team_new_header'],
-		'team_new'=>$team_new,
-		'team_remove_header'=>$phprlang['team_remove_header'],
-		'team_remove_body'=>$team_remove_body,
-		'team_add_header'=>$phprlang['team_add_header'],
-		'team_add_body'=>$team_add_body,
-		'team_add_buttons'=>$team_add_buttons,
-		'raid_view_link'=>$raid_view_link,
-		'team_cur_teams'=>$team_cur_teams,
-		'team_cur_teams_header'=>$phprlang['team_cur_teams_header']
+		'raid_view_link'=>$raid_view_link
 	)
 );
-$page->pparse('output','output');
 
+$wrmsmarty->display('team_main.html');
 require_once('./includes/page_footer.php');
 ?>

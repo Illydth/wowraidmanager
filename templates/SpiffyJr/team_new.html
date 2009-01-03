@@ -1,0 +1,8 @@
+<form action="teams.php?mode=new&amp;raid_id={$new_team_fields.raid_id}" method="POST">
+	<input name="team_name" type="text" class="post"><br>
+	<input type="checkbox" name="global" value="1">
+	{$new_team_fields.global_raid_text}<br>
+	<br>
+	<input type="submit" name="submit" value="{$new_team_fields.addbuttontext}" class="mainoption">
+	<input type="reset" name="reset" value="{$new_team_fields.resetbuttontext}" class="liteoption">
+</form>

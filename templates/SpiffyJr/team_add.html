@@ -1,0 +1,14 @@
+{* Smarty Template *}
+<form action="teams.php?mode=add&amp;raid_id={$add_team_fields.raid_id}" method="POST">
+<center>
+{$add_team_fields.dropdown_text}
+<br><select name="team_drop_name" class="post">
+{section name=add_curr_team loop=$add_data}
+	<option value="{$add_data[add_curr_team].team_id}">{$add_data[add_curr_team].team_name}</option>
+{/section}
+</select></center><br>
+<div class="contentBody">{include file='raids_table.html' raid_data=$team_add jump_menu=$add_jump_menu record_counts=$add_record_counts column_name=$add_column_names header_data=$add_header_data}</div><br>
+<center><dif class="contentBody">
+<input type="submit" value="{$add_team_fields.submitbuttontext}" name="submit" class="mainoption">
+<input type="reset" value="{$add_team_fields.resetbuttontext}" name="reset" class="liteoption"></form>
+</div></center>
