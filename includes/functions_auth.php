@@ -45,7 +45,10 @@ function curPageURL() {
 // Creates the cookie storage path.
 function getCookiePath()
 {
-	$cookie_path = parse_url(curPageURL(), PHP_URL_PATH);
+	$URL_Array = array();
+	$URL_Array = parse_url(curPageURL());
+	$cookie_path = $URL_Array['path'];
+
 	$pos = strrpos($cookie_path, "/");
 	if ($pos === false) 
 	{ 
