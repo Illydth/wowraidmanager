@@ -155,6 +155,49 @@ INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible
 VALUES (NULL , 'announcements1', 'Create Time', '1', '6', NULL, 'wrmtime');
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `format_code`)
 VALUES (NULL , 'announcements1', 'Buttons', '1', '7', NULL, NULL);
+-- Column Header Data - DKP1 View
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `format_code`)
+VALUES (NULL , 'dkp1', 'ID', '1', '1', NULL, NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `format_code`)
+VALUES (NULL , 'dkp1', 'Name', '1', '2', NULL, NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `format_code`)
+VALUES (NULL , 'dkp1', 'Class', '1', '3', NULL, NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `format_code`)
+VALUES (NULL , 'dkp1', 'Earned', '1', '4', NULL, NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `format_code`)
+VALUES (NULL , 'dkp1', 'Spent', '1', '5', NULL, NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `format_code`)
+VALUES (NULL , 'dkp1', 'Adjustment', '1', '6', NULL, NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `format_code`)
+VALUES (NULL , 'dkp1', 'DKP', '1', '7', NULL, NULL);
+-- Column Header Data - Team1 View (Remove)
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `format_code`)
+VALUES (NULL , 'team1', 'ID', '1', '1', NULL, NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `format_code`)
+VALUES (NULL , 'team1', 'Name', '1', '2', NULL, NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `format_code`)
+VALUES (NULL , 'team1', 'Class', '1', '3', NULL, NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `format_code`)
+VALUES (NULL , 'team1', 'Guild', '1', '4', NULL, NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `format_code`)
+VALUES (NULL , 'team1', 'Level', '1', '5', NULL, NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `format_code`)
+VALUES (NULL , 'team1', 'Team Name', '1', '6', NULL, NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `format_code`)
+VALUES (NULL , 'team1', 'Actions', '1', '7', NULL, NULL);
+-- Column Header Data - Team1 View (Remove)
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `format_code`)
+VALUES (NULL , 'team2', 'ID', '1', '1', NULL, NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `format_code`)
+VALUES (NULL , 'team2', 'Name', '1', '2', NULL, NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `format_code`)
+VALUES (NULL , 'team2', 'Class', '1', '3', NULL, NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `format_code`)
+VALUES (NULL , 'team2', 'Guild', '1', '4', NULL, NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `format_code`)
+VALUES (NULL , 'team2', 'Level', '1', '5', NULL, NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `format_code`)
+VALUES (NULL , 'team2', 'Add To Team', '1', '7', NULL, NULL);
 
 -- Config Table Creation
 DROP TABLE IF EXISTS `wrm_config`;
