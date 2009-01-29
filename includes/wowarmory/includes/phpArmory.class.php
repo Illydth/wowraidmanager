@@ -153,7 +153,9 @@ class phpArmory {
 		$url = $this->armory."character-%s.xml?r=".str_replace(" ", "+",$realm)."&n=".str_replace(" ", "+",$character);
 		$result = $this->xmlToArray($this->xmlFetch(sprintf($url, "sheet")));
 		
-		$pages = array("reputation", "skills", "talents");
+		//Character skills page is no longer available.
+		//$pages = array("reputation", "skills", "talents");
+		$pages = array("reputation", "talents");
 		foreach ($pages as $page) {
 			$temp = $this->xmlToArray($this->xmlFetch(sprintf($url, $page)));
 			unset($temp['characterinfo']['character']);
@@ -321,11 +323,13 @@ class phpArmory {
                 $context = stream_context_create($contextOptions);
                 $f = '';
                 $handle = fopen($url, 'r', false, $context);
-                while(!feof($handle))
-                {
-                        $f .= fgets($handle);
+                if ($handle) {
+	                while(!feof($handle))
+	                {
+	                        $f .= fgets($handle);
+	                }
+	                fclose ($handle);
                 }
-                fclose ($handle);
                 return $f;
         } elseif(function_exists('stream_context_create') && function_exists('file_get_contents')) {
         	echo "Gets to Stream Create";
