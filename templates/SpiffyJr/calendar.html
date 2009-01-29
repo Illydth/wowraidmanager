@@ -4,103 +4,95 @@
 {include file='announcements_msg.html'}
 
 {* Display the Calendar *}
-<center>
 <hr>
-</center>
-<div align="left">
 
-<form action="calendar.php" method="post" name="select" id="select">
-	<table width="20%" align="right" cellspacing="3">
-	<tr>
-		<th align="left">{$calendar_data.month_select_header}</th>
-	</tr>
-	<tr>
-		<td>{$calendar_data.month_text}: {$calendar_data.month_select}</td>
-	</tr>
-	<tr>
-		<td>{$calendar_data.year_text}: {$calendar_data.year_select}</td>
-	</tr>
-	<tr>
-		<td><input type="submit" name="submit" value="{$calendar_data.submit_text}" class="mainoption"> <input type="reset" name="Reset" value="{$calendar_data.reset_text}" class="liteoption"></td>
-	</tr>
-	</table>
-</form>
-<br><br><br><br>
-<table width="35%" align="center" cellspacing="3">
+<table width="450px" align="center" cellspacing="0" cellpadding="0" id="calbody" class="calhead" >
 <tr>
-	<th><div align="left"><font color="#0000FF" size="4"><a href="calendar.php?month={$calendar_data.prevmonth}&amp;year={$calendar_data.prevmonthyear}">&lt;&lt;</a></font></div></th>
-	<th><div align="center"><font color="#000000" size="4">{$calendar_data.monthhead}</font></div></th>
-	<th><div align="right"><font color="#0000FF" size="4"><a href="calendar.php?month={$calendar_data.nextmonth}&amp;year={$calendar_data.nextmonthyear}">&gt;&gt;</a></font></div></th>
+    <th><a href="calendar.php?month={$calendar_data.prevmonth}&amp;year={$calendar_data.prevmonthyear}">&lt;&lt;</a></th>
+    <th><H1>{$calendar_data.monthhead}</H1>
+        <form action="calendar.php" method="post" name="select" id="select">
+        <table width="100%" cellspacing="0">
+            <tr>
+                <td class="genmed">{$calendar_data.month_select_header}</td>
+            </tr>
+            <tr>
+                <td>{$calendar_data.month_select}&nbsp;&nbsp;&nbsp;{$calendar_data.year_select}&nbsp;&nbsp;&nbsp;<input type="submit" name="submit" value="{$calendar_data.submit_text}" class="mainoption">&nbsp;&nbsp;&nbsp;<input type="reset" name="Reset" value="{$calendar_data.reset_text}" class="liteoption"></td>
+            </tr>
+        </table>
+        </form>
+    </th>
+    <th><a href="calendar.php?month={$calendar_data.nextmonth}&amp;year={$calendar_data.nextmonthyear}">&gt;&gt;</a></th>
 </tr>
 </table>
+
 <br>
-<table border="4" width="100%" id="table1" align="center" cellspacing="3">
-	<tr>
-		<th height="18" width="14%" align="center"><b>{$calendar_data.day1}</b></th>
-		<th height="18" width="14%" align="center"><b>{$calendar_data.day2}</b></th>
-		<th height="18" width="14%" align="center"><b>{$calendar_data.day3}</b></th>
-		<th height="18" width="14%" align="center"><b>{$calendar_data.day4}</b></th>
-		<th height="18" width="14%" align="center"><b>{$calendar_data.day5}</b></th>
-		<th height="18" width="14%" align="center"><b>{$calendar_data.day6}</b></th>
-		<th height="18" width="14%" align="center"><b>{$calendar_data.day7}</b></th>
-	</tr>
-	<tr>
-		<td height="100" valign="top">{$calendar_data.box1}&nbsp;</td>
-		<td height="100" valign="top">{$calendar_data.box2}&nbsp;</td>
-		<td height="100" valign="top">{$calendar_data.box3}&nbsp;</td>
-		<td height="100" valign="top">{$calendar_data.box4}&nbsp;</td>
-		<td height="100" valign="top">{$calendar_data.box5}&nbsp;</td>
-		<td height="100" valign="top">{$calendar_data.box6}&nbsp;</td>
-		<td height="100" valign="top">{$calendar_data.box7}&nbsp;</td>
-	</tr>
-	<tr>
-		<td height="100" valign="top">{$calendar_data.box8}&nbsp;</td>
-		<td height="100" valign="top">{$calendar_data.box9}&nbsp;</td>
-		<td height="100" valign="top">{$calendar_data.box10}&nbsp;</td>
-		<td height="100" valign="top">{$calendar_data.box11}&nbsp;</td>
-		<td height="100" valign="top">{$calendar_data.box12}&nbsp;</td>
-		<td height="100" valign="top">{$calendar_data.box13}&nbsp;</td>
-		<td height="100" valign="top">{$calendar_data.box14}&nbsp;</td>
-	</tr>
-	<tr>
-		<td height="100" valign="top">{$calendar_data.box15}&nbsp;</td>
-		<td height="100" valign="top">{$calendar_data.box16}&nbsp;</td>
-		<td height="100" valign="top">{$calendar_data.box17}&nbsp;</td>
-		<td height="100" valign="top">{$calendar_data.box18}&nbsp;</td>
-		<td height="100" valign="top">{$calendar_data.box19}&nbsp;</td>
-		<td height="100" valign="top">{$calendar_data.box20}&nbsp;</td>
-		<td height="100" valign="top">{$calendar_data.box21}&nbsp;</td>
-	</tr>
-	<tr>
-		<td height="100" valign="top">{$calendar_data.box22}&nbsp;</td>
-		<td height="100" valign="top">{$calendar_data.box23}&nbsp;</td>
-		<td height="100" valign="top">{$calendar_data.box24}&nbsp;</td>
-		<td height="100" valign="top">{$calendar_data.box25}&nbsp;</td>
-		<td height="100" valign="top">{$calendar_data.box26}&nbsp;</td>
-		<td height="100" valign="top">{$calendar_data.box27}&nbsp;</td>
-		<td height="100" valign="top">{$calendar_data.box28}&nbsp;</td>
-	</tr>
-	<tr>
-		<td height="100" valign="top">{$calendar_data.box29}&nbsp;</td>
-		<td height="100" valign="top">{$calendar_data.box30}&nbsp;</td>
-		<td height="100" valign="top">{$calendar_data.box31}&nbsp;</td>
-		<td height="100" valign="top">{$calendar_data.box32}&nbsp;</td>
-		<td height="100" valign="top">{$calendar_data.box33}&nbsp;</td>
-		<td height="100" valign="top">{$calendar_data.box34}&nbsp;</td>
-		<td height="100" valign="top">{$calendar_data.box35}&nbsp;</td>
-	</tr>
-	<tr>
-		<td height="100" valign="top">{$calendar_data.box36}&nbsp;</td>
-		<td height="100" valign="top">{$calendar_data.box37}&nbsp;</td>
-		<td height="100" valign="top">{$calendar_data.box38}&nbsp;</td>
-		<td height="100" valign="top">{$calendar_data.box39}&nbsp;</td>
-		<td height="100" valign="top">{$calendar_data.box40}&nbsp;</td>
-		<td height="100" valign="top">{$calendar_data.box41}&nbsp;</td>
-		<td height="100" valign="top">{$calendar_data.box42}&nbsp;</td>
-	</tr>
-	<tr>
-		<td colspan="7"><div align="left"><font size="1">{$calendar_data.key}</font></div></td>
-	</tr>
+<table border="0" cellspacing="1" cellpadding="0" width="100%" id="calbody" class="calbody">
+    <tr>
+        <th>{$calendar_data.day1}</th>
+        <th>{$calendar_data.day2}</th>
+        <th>{$calendar_data.day3}</th>
+        <th>{$calendar_data.day4}</th>
+        <th>{$calendar_data.day5}</th>
+        <th>{$calendar_data.day6}</th>
+        <th>{$calendar_data.day7}</th>
+    </tr>
+    <tr>
+        <td>{$calendar_data.box1}&nbsp;</td>
+        <td>{$calendar_data.box2}&nbsp;</td>
+        <td>{$calendar_data.box3}&nbsp;</td>
+        <td>{$calendar_data.box4}&nbsp;</td>
+        <td>{$calendar_data.box5}&nbsp;</td>
+        <td>{$calendar_data.box6}&nbsp;</td>
+        <td>{$calendar_data.box7}&nbsp;</td>
+    </tr>
+    <tr>
+        <td>{$calendar_data.box8}&nbsp;</td>
+        <td>{$calendar_data.box9}&nbsp;</td>
+        <td>{$calendar_data.box10}&nbsp;</td>
+        <td>{$calendar_data.box11}&nbsp;</td>
+        <td>{$calendar_data.box12}&nbsp;</td>
+        <td>{$calendar_data.box13}&nbsp;</td>
+        <td>{$calendar_data.box14}&nbsp;</td>
+    </tr>
+    <tr>
+        <td>{$calendar_data.box15}&nbsp;</td>
+        <td>{$calendar_data.box16}&nbsp;</td>
+        <td>{$calendar_data.box17}&nbsp;</td>
+        <td>{$calendar_data.box18}&nbsp;</td>
+        <td>{$calendar_data.box19}&nbsp;</td>
+        <td>{$calendar_data.box20}&nbsp;</td>
+        <td>{$calendar_data.box21}&nbsp;</td>
+    </tr>
+    <tr>
+        <td>{$calendar_data.box22}&nbsp;</td>
+        <td>{$calendar_data.box23}&nbsp;</td>
+        <td>{$calendar_data.box24}&nbsp;</td>
+        <td>{$calendar_data.box25}&nbsp;</td>
+        <td>{$calendar_data.box26}&nbsp;</td>
+        <td>{$calendar_data.box27}&nbsp;</td>
+        <td>{$calendar_data.box28}&nbsp;</td>
+    </tr>
+    <tr>
+        <td>{$calendar_data.box29}&nbsp;</td>
+        <td>{$calendar_data.box30}&nbsp;</td>
+        <td>{$calendar_data.box31}&nbsp;</td>
+        <td>{$calendar_data.box32}&nbsp;</td>
+        <td>{$calendar_data.box33}&nbsp;</td>
+        <td>{$calendar_data.box34}&nbsp;</td>
+        <td>{$calendar_data.box35}&nbsp;</td>
+    </tr>
+    <tr>
+        <td>{$calendar_data.box36}&nbsp;</td>
+        <td>{$calendar_data.box37}&nbsp;</td>
+        <td>{$calendar_data.box38}&nbsp;</td>
+        <td>{$calendar_data.box39}&nbsp;</td>
+        <td>{$calendar_data.box40}&nbsp;</td>
+        <td>{$calendar_data.box41}&nbsp;</td>
+        <td>{$calendar_data.box42}&nbsp;</td>
+    </tr>
+    <tr>
+        <td colspan="7"><div align="left"><font size="1">{$calendar_data.key}</font></div></td>
+    </tr>
 </table>
 
-</div>
+<!-- </div>  --> 
