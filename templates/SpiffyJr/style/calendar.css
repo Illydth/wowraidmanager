@@ -4,3 +4,49 @@
 .fc_wk {font-family: Verdana; font-size: 10px; text-align: center;}
 .fc_wknd { color: #FF0000; font-weight: bold; font-size: 10px; text-align: center;}
 .fc_head { background: #000066; color: #FFFFFF; font-weight:bold; text-align: left;  font-size: 11px; }
+a {color: #FFF;}
+
+#calbody {
+    text-align:     0 auto;
+    font-family:     Arial; 
+    font-size:     10px;
+    }
+
+.calhead {
+    background:        transparent;
+    text-align:        center;
+    }
+    
+.calhead a    {
+    text-decoration:    none; 
+    font-size:        22px;
+    font-weight:        bolder;
+    }
+
+.calbody {
+    background:        #000;
+    }
+    
+.calbody th{
+    color:            #FCCA00;
+    background-image:    url('../images/banner_bg.jpg');
+    background-repeat:    repeat-x;
+    font-size:         12px;
+    width:            14%;
+    height:         30px;
+    text-align:        center;
+    }
+
+.calbody td {
+    height:            100px;
+    background:        #6b6a79; 
+    vertical-align:        top;
+    }
+
+.calbody td:hover {    
+    background-color:     #1e1c34;
+    background-image:    url(./images/topbg.gif);
+    background-repeat:    no-repeat;
+    background-position:    center bottom;
+    color:             #FFF;
+    } 

@@ -1,100 +1,92 @@
-<center>
 <hr>
-</center>
-<div align="left">
 
-<form action="calendar.php" method="post" name="select" id="select">
-	<table width="20%" align="right" cellspacing="3">
-	<tr>
-		<th align="left">{month_select_header}</th>
-	</tr>
-	<tr>
-		<td>{month_text}: {month_select}</td>
-	</tr>
-	<tr>
-		<td>{year_text}: {year_select}</td>
-	</tr>
-	<tr>
-		<td><input type="submit" name="submit" value="{submit_text}" class="mainoption"> <input type="reset" name="Reset" value="{reset_text}" class="liteoption"></td>
-	</tr>
-	</table>
-</form>
-<br><br><br><br>
-<table width="35%" align="center" cellspacing="3">
+<table width="450px" align="center" cellspacing="0" cellpadding="0" id="calbody" class="calhead" >
 <tr>
-	<th><div align="left"><font color="#0000FF" size="4"><a href="calendar.php?month={prevmonth}&amp;year={prevmonthyear}"><<</a></font></div></th>
-	<th><div align="center"><font color="#000000" size="4">{monthhead}</font></div></th>
-	<th><div align="right"><font color="#0000FF" size="4"><a href="calendar.php?month={nextmonth}&amp;year={nextmonthyear}">>></a></font></div></th>
+    <th><a href="calendar.php?month={prevmonth}&amp;year={prevmonthyear}">&lt;&lt;</a></th>
+    <th><H1>{monthhead}</H1>
+        <form action="calendar.php" method="post" name="select" id="select">
+        <table width="100%" cellspacing="0">
+            <tr>
+                <td class="genmed">{month_select_header}</td>
+            </tr>
+            <tr>
+                <td>{month_select}&nbsp;&nbsp;&nbsp;{year_select}&nbsp;&nbsp;&nbsp;<input type="submit" name="submit" value="{submit_text}" class="mainoption">&nbsp;&nbsp;&nbsp;<input type="reset" name="Reset" value="{reset_text}" class="liteoption"></td>
+            </tr>
+        </table>
+        </form>
+    </th>
+    <th><a href="calendar.php?month={nextmonth}&amp;year={nextmonthyear}">&gt;&gt;</a></th>
 </tr>
 </table>
+
 <br>
-<table border="4" width="100%" id="table1" align="center" cellspacing="3">
-	<tr>
-		<th height="18" width="14%" align="center"><b>{day1}</b></th>
-		<th height="18" width="14%" align="center"><b>{day2}</b></th>
-		<th height="18" width="14%" align="center"><b>{day3}</b></th>
-		<th height="18" width="14%" align="center"><b>{day4}</b></th>
-		<th height="18" width="14%" align="center"><b>{day5}</b></th>
-		<th height="18" width="14%" align="center"><b>{day6}</b></th>
-		<th height="18" width="14%" align="center"><b>{day7}</b></th>
-	</tr>
-	<tr>
-		<td height="100" valign="top">{box1}&nbsp;</td>
-		<td height="100" valign="top">{box2}&nbsp;</td>
-		<td height="100" valign="top">{box3}&nbsp;</td>
-		<td height="100" valign="top">{box4}&nbsp;</td>
-		<td height="100" valign="top">{box5}&nbsp;</td>
-		<td height="100" valign="top">{box6}&nbsp;</td>
-		<td height="100" valign="top">{box7}&nbsp;</td>
-	</tr>
-	<tr>
-		<td height="100" valign="top">{box8}&nbsp;</td>
-		<td height="100" valign="top">{box9}&nbsp;</td>
-		<td height="100" valign="top">{box10}&nbsp;</td>
-		<td height="100" valign="top">{box11}&nbsp;</td>
-		<td height="100" valign="top">{box12}&nbsp;</td>
-		<td height="100" valign="top">{box13}&nbsp;</td>
-		<td height="100" valign="top">{box14}&nbsp;</td>
-	</tr>
-	<tr>
-		<td height="100" valign="top">{box15}&nbsp;</td>
-		<td height="100" valign="top">{box16}&nbsp;</td>
-		<td height="100" valign="top">{box17}&nbsp;</td>
-		<td height="100" valign="top">{box18}&nbsp;</td>
-		<td height="100" valign="top">{box19}&nbsp;</td>
-		<td height="100" valign="top">{box20}&nbsp;</td>
-		<td height="100" valign="top">{box21}&nbsp;</td>
-	</tr>
-	<tr>
-		<td height="100" valign="top">{box22}&nbsp;</td>
-		<td height="100" valign="top">{box23}&nbsp;</td>
-		<td height="100" valign="top">{box24}&nbsp;</td>
-		<td height="100" valign="top">{box25}&nbsp;</td>
-		<td height="100" valign="top">{box26}&nbsp;</td>
-		<td height="100" valign="top">{box27}&nbsp;</td>
-		<td height="100" valign="top">{box28}&nbsp;</td>
-	</tr>
-	<tr>
-		<td height="100" valign="top">{box29}&nbsp;</td>
-		<td height="100" valign="top">{box30}&nbsp;</td>
-		<td height="100" valign="top">{box31}&nbsp;</td>
-		<td height="100" valign="top">{box32}&nbsp;</td>
-		<td height="100" valign="top">{box33}&nbsp;</td>
-		<td height="100" valign="top">{box34}&nbsp;</td>
-		<td height="100" valign="top">{box35}&nbsp;</td>
-	</tr>
-	<tr>
-		<td height="100" valign="top">{box36}&nbsp;</td>
-		<td height="100"valign="top">{box37}&nbsp;</td>
-		<td height="100" valign="top">{box38}&nbsp;</td>
-		<td height="100" valign="top">{box39}&nbsp;</td>
-		<td height="100" valign="top">{box40}&nbsp;</td>
-		<td height="100" valign="top">{box41}&nbsp;</td>
-		<td height="100" valign="top">{box42}&nbsp;</td>
-	</tr>
-	<tr>
-		<td colspan="7"><div align="left"><font size="1">{key}</font></div></td>
-	</tr>
+<table border="0" cellspacing="1" cellpadding="0" width="100%" id="calbody" class="calbody">
+    <tr>
+        <th>{day1}</th>
+        <th>{day2}</th>
+        <th>{day3}</th>
+        <th>{day4}</th>
+        <th>{day5}</th>
+        <th>{day6}</th>
+        <th>{day7}</th>
+    </tr>
+    <tr>
+        <td>{box1}&nbsp;</td>
+        <td>{box2}&nbsp;</td>
+        <td>{box3}&nbsp;</td>
+        <td>{box4}&nbsp;</td>
+        <td>{box5}&nbsp;</td>
+        <td>{box6}&nbsp;</td>
+        <td>{box7}&nbsp;</td>
+    </tr>
+    <tr>
+        <td>{box8}&nbsp;</td>
+        <td>{box9}&nbsp;</td>
+        <td>{box10}&nbsp;</td>
+        <td>{box11}&nbsp;</td>
+        <td>{box12}&nbsp;</td>
+        <td>{box13}&nbsp;</td>
+        <td>{box14}&nbsp;</td>
+    </tr>
+    <tr>
+        <td>{box15}&nbsp;</td>
+        <td>{box16}&nbsp;</td>
+        <td>{box17}&nbsp;</td>
+        <td>{box18}&nbsp;</td>
+        <td>{box19}&nbsp;</td>
+        <td>{box20}&nbsp;</td>
+        <td>{box21}&nbsp;</td>
+    </tr>
+    <tr>
+        <td>{box22}&nbsp;</td>
+        <td>{box23}&nbsp;</td>
+        <td>{box24}&nbsp;</td>
+        <td>{box25}&nbsp;</td>
+        <td>{box26}&nbsp;</td>
+        <td>{box27}&nbsp;</td>
+        <td>{box28}&nbsp;</td>
+    </tr>
+    <tr>
+        <td>{box29}&nbsp;</td>
+        <td>{box30}&nbsp;</td>
+        <td>{box31}&nbsp;</td>
+        <td>{box32}&nbsp;</td>
+        <td>{box33}&nbsp;</td>
+        <td>{box34}&nbsp;</td>
+        <td>{box35}&nbsp;</td>
+    </tr>
+    <tr>
+        <td>{box36}&nbsp;</td>
+        <td>{box37}&nbsp;</td>
+        <td>{box38}&nbsp;</td>
+        <td>{box39}&nbsp;</td>
+        <td>{box40}&nbsp;</td>
+        <td>{box41}&nbsp;</td>
+        <td>{box42}&nbsp;</td>
+    </tr>
+    <tr>
+        <td colspan="7"><div align="left"><font size="1">{key}</font></div></td>
+    </tr>
 </table>
 
-</div>
+<!-- </div>  --> 
