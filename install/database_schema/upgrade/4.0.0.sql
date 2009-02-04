@@ -159,7 +159,7 @@ VALUES (NULL , 'team1', 'Team Name', '1', '6', NULL, NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `format_code`)
 VALUES (NULL , 'team1', 'Actions', '1', '7', NULL, NULL);
 
--- Column Header Data - Team1 View (Remove)
+-- Column Header Data - Team2 View (Add)
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `format_code`)
 VALUES (NULL , 'team2', 'ID', '1', '1', NULL, NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `format_code`)
@@ -172,5 +172,19 @@ INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible
 VALUES (NULL , 'team2', 'Level', '1', '5', NULL, NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `format_code`)
 VALUES (NULL , 'team2', 'Add To Team', '1', '7', NULL, NULL);
+
+-- Column Header Data - Guild1 View
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `format_code`)
+VALUES (NULL , 'guild1', 'ID', '1', '1', NULL, NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `format_code`)
+VALUES (NULL , 'guild1', 'Guild Name', '1', '2', NULL, NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `format_code`)
+VALUES (NULL , 'guild1', 'Guild Tag', '1', '3', NULL, NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `format_code`)
+VALUES (NULL , 'guild1', 'Guild Master', '1', '4', NULL, NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `format_code`)
+VALUES (NULL , 'guild1', 'Actions', '1', '5', NULL, NULL);
+
+
 
 INSERT INTO `wrm_config` VALUES ('records_per_page','2');
