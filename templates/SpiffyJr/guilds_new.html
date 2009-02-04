@@ -1,0 +1,28 @@
+{* Smarty Template *}
+<div class="contentHeader">{$guilds_new.newguild_header}</div><br>
+<div class="contentBody">
+<a name="new"></a>
+<form action="{$guilds_new.form_action}" method="post" name="new_raid" id="new_raid">
+  <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tr> 
+    <td> 
+      <table width="100%" border="0" cellspacing="1" cellpadding="3" class="dataOutline">
+        <tr> 
+          <td width="200" class="row1"><span class="headmed"><strong>{$guilds_new.name_text}</strong></span></td>
+          <td class="row2">{$guilds_new.name}</td>
+        </tr>
+        <tr> 
+          <td width="200" class="row1"><span class="headmed"><strong>{$guilds_new.short_text}</strong></span></td>
+          <td class="row2">{$guilds_new.short}</td>
+        </tr>
+        <tr> 
+          <td width="200" class="row1"><span class="headmed"><strong>{$guilds_new.master_text}</strong></span></td>
+          <td class="row2">{$guilds_new.master}</td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table><br>
+<div align="center" class="button">{$guilds_new.buttons}</div>
+</form>
+</div>

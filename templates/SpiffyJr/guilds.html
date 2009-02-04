@@ -1,0 +1,6 @@
+{* Smarty Template *}
+<div class="contentHeader">{$header_data.header}</div><br>
+<div class="contentBody">{include file='raids_table.html' raid_data=$guild_data jump_menu=$guild_jump_menu record_counts=$guild_record_counts}</div><br>
+<br>
+{* Allows for Adding a Guild *}
+{include file='guilds_new.html'}

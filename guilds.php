@@ -38,9 +38,35 @@ require_once('./common.php');
 define("PAGE_LVL","guilds");
 require_once("includes/authentication.php");
 
+/*************************************************************
+ * Setup Record Output Information for Data Table
+ *************************************************************/
+// Set StartRecord for Page
+if(!isset($_GET['Base']) || !is_numeric($_GET['Base']))
+	$startRecord = 1;
+else
+	$startRecord = scrub_input($_GET['Base']);
+
+// Set Sort Field for Page
+if(!isset($_GET['Sort']))
+	$sortField="";
+else
+	$sortField = scrub_input($_GET['Sort']);
+	
+// Set Sort Descending Mark
+if(!isset($_GET['SortDescending']) || !is_numeric($_GET['SortDescending']))
+	$sortDesc = 1;
+else
+	$sortDesc = scrub_input($_GET['SortDescending']);
+	
+$pageURL = 'guilds.php?mode=view&';
+/**************************************************************
+ * End Record Output Setup for Data Table
+ **************************************************************/
+
 // show the form
-if($_GET['mode'] == 'view') {
-	$loc = array();
+if($_GET['mode'] == 'view' || $_GET['mode'] == 'update') {
+	$guild = array();
 	
 	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "guilds";
 	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(),1);
@@ -54,51 +80,53 @@ if($_GET['mode'] == 'view') {
 				$phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['delete'].'\');" 
 				onMouseout="hideddrivetip();" alt="delete icon"></a>';
 		
-		array_push($loc, 
+		array_push($guild, 
 			array(
-				'id'=>$data['guild_id'],
-				'name'=>$data['guild_name'],
-				'short'=>$data['guild_tag'],
-				'master'=>$data['guild_master'],
-				''=>$edit . $delete,
+				'ID'=>$data['guild_id'],
+				'Guild Name'=>$data['guild_name'],
+				'Guild Tag'=>$data['guild_tag'],
+				'Guild Master'=>$data['guild_master'],
+				'Actions'=>$edit . $delete,
 				)
 		);
 	}
 	
-	// output for listing
-	setup_output();
+	/**************************************************************
+	 * Code to setup for a Dynamic Table Create: guild1 View.
+	 **************************************************************/
+	$viewName = 'guild1';
 	
-	$report->showRecordCount(true);
-	$report->allowPaging(true, $_SERVER['PHP_SELF'] . '?mode=view&Base=');
-	$report->setListRange($_GET['Base'], 25);
-	$report->allowLink(ALLOW_HOVER_INDEX,'',array());
+	//Setup Columns
+	$guild_headers = array();
+	$record_count_array = array();
+	$guild_headers = getVisibleColumns($viewName);
+
+	//Get Record Counts
+	$guild_record_count_array = getRecordCounts($guild, $guild_headers, $startRecord);
 	
-	//Default sorting
-	if(!$_GET['Sort'])
-	{
-		$report->allowSort(true, 'name', 'ASC', 'guilds.php?mode=view');
-	}
-	else
-	{
-		$report->allowSort(true, $_GET['Sort'], $_GET['SortDescending'], 'guilds.php?mode=view');
-	}
-	
-	if($phpraid_config['show_id'] == 1)
-		$report->addOutputColumn('id',$phprlang['id'],'','left');
-	$report->addOutputColumn('name',$phprlang['guild_name'],'','center');
-	$report->addOutputColumn('short',$phprlang['guild_tag'],'','center');
-	$report->addOutputColumn('master',$phprlang['guild_master'],'','center');
-	$report->addOutputColumn('','','','right');
-	$loc = $report->getListFromArray($loc);
-	
-	$page->set_file(array(
-		'output' => $phpraid_config['template'] . '/guilds.htm')
+	//Get the Jump Menu and pass it down
+	$guildJumpMenu = getPageNavigation($guild, $startRecord, $pageURL, $sortField, $sortDesc);
+
+	//Setup Data
+	$guild = paginateSortAndFormat($guild, $sortField, $sortDesc, $startRecord, $viewName);
+
+	/****************************************************************
+	 * Data Assign for Template.
+	 ****************************************************************/
+	$wrmsmarty->assign('guild_data', $guild); 
+	$wrmsmarty->assign('guild_jump_menu', $guildJumpMenu);
+	$wrmsmarty->assign('column_name', $guild_headers);
+	$wrmsmarty->assign('guild_record_counts', $guild_record_count_array);
+	$wrmsmarty->assign('header_data',
+		array(
+			'template_name'=>$phpraid_config['template'],
+			'header' => $phprlang['guilds_header'],
+			'sort_url_base' => $pageURL,
+			'sort_descending' => $sortDesc,
+			'sort_text' => $phprlang['sort_text'],
+		)
 	);
 	
-	$page->set_var('guilds',$loc);
-	$page->set_var('header',$phprlang['guilds_header']);
-	
-	$page->parse('output','output');
 } elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit') {
 	// slashes
 	$name = scrub_input($_POST['name'], false);
@@ -201,8 +229,7 @@ if($_GET['mode'] != 'delete') {
 		$buttons = '<input type="submit" value="'.$phprlang['update'].'" name="submit" class="mainoption"> <input type="reset" value="'.$phprlang['reset'].'" name="reset" class="liteoption">';			
 	}
 	
-	$page->set_file('new_group',$phpraid_config['template'] . '/guilds_new.htm');
-	$page->set_var(
+	$wrmsmarty->assign('guilds_new',
 		array(
 			'form_action'=>$form_action,
 			'name'=>$name,
@@ -215,16 +242,15 @@ if($_GET['mode'] != 'delete') {
 			'master_text'=>$phprlang['guilds_master']
 		)
 	);
-	
-	$page->parse('output','new_group',true);
 }
 
 //
 // Start output of page
 //
-require_once('includes/page_header.php');
-
-$page->p('output','output');
-
-require_once('includes/page_footer.php');
+if($_GET['mode'] != 'delete')
+{
+	require_once('includes/page_header.php');
+	$wrmsmarty->display('guilds.html');
+	require_once('includes/page_footer.php');
+}
 ?>
