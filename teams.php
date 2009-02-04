@@ -306,7 +306,7 @@ if($mode == 'view')
 	}
 
 	/**************************************************************
-	 * Code to setup for a Dynamic Table Create: team1 View.
+	 * Code to setup for a Dynamic Table Create: team2 View.
 	 **************************************************************/
 	$viewName = 'team2';
 	
