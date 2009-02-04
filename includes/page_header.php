@@ -32,17 +32,6 @@
 // Set Page content type header:
 header('Content-Type: text/html; charset=utf-8');
 
-//
-// Parse and show the overall header.
-//
-$page->set_file('headerFile',$phpraid_config['template'] . '/header.htm');
-
-// This looks like dead code due to BC making shaman and paladins all on both sides.
-// setup header variables
-//if($phpraid_config['faction'] == 'alliance')
-//    $page->set_var('other_name',$phprlang['paladin']);
-//else
-//    $page->set_var('other_name',$phprlang['shaman']);
 $priv_announcement=scrub_input($_SESSION['priv_announcements']);
 $priv_config=scrub_input($_SESSION['priv_configuration']);
 $priv_guilds=scrub_input($_SESSION['priv_guilds']);
@@ -100,7 +89,7 @@ if (isset($ShowLoginForm) and ($ShowLoginForm == FALSE))
 	$login_form_open=$login_username=$login_change_pass=$login_password=$login_button=$login_remember=$login_remember_hidden=$login_form_close = "";
 }
 
-$page->set_var(
+$wrmsmarty->assign('page_header_data', 
 		array(
 			'header_link' => $phpraid_config['header_link'],
 			'title_guild_name'=>$phpraid_config['guild_name'],
@@ -265,7 +254,7 @@ if($priv_users == 1)
 
 if($logged_in == 0) {
 	$menu .= '<li>' . $register_link . '</li>';
-	$page->set_var('register_link',$register_link);
+	$wrmsmarty->assign('register_link',$register_link);
 }
 
 if (preg_match("/(.*)roster\.php(.*)/", $_SERVER['PHP_SELF'])) {
@@ -286,10 +275,7 @@ if ($phpraid_config['enable_eqdkp'])
 
 $menu .= '</ul></div>';
 
-$page->set_var('menu',$menu);
-
-// finally, output the header information
-$page->parse('header','headerFile');
+$wrmsmarty->assign('menu',$menu);
 
 // display any errors if they exist
 if(isset($errorMsg))
@@ -300,21 +286,19 @@ if(isset($errorMsg))
 		$errorMsg .= '</div>';
 	}
 
-	$page->set_file('errorFile',$phpraid_config['template'] . '/error.htm');
-	$page->set_var(array(
+	$wrmsmarty->assign('error_data', 
+	  array(
 		'error_msg' => $errorMsg,
 		'error_title' => $errorTitle)
 	);
-
-	$page->parse('header','errorFile',true);
-
+	$wrmsmarty->display('error.html');
+	
 	// is the error fatal?
 	if($errorDie)
 	{
-		$page->p('header');
 		require_once('page_footer.php');
 		exit;
 	}
 }
-$page->p('header');
+$wrmsmarty->display('header.html');
 ?>

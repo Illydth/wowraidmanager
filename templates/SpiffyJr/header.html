@@ -1,8 +1,9 @@
+{* Smarty Template *}
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		<title>WoW Raid Manager :: {title_guild_name} {of_string} {title_guild_server} :: {title_guild_description}</title>
+		<title>WoW Raid Manager :: {$page_header_data.title_guild_name} {$page_header_data.of_string} {$page_header_data.title_guild_server} :: {$page_header_data.title_guild_description}</title>
 		<script src="scripts/cal2.js" type="text/javascript"></script>
 		<script src="scripts/cal2_conf.js" type="text/javascript"></script>
 		<script src="scripts/phpRaid.js" type="text/javascript"></script>
@@ -12,7 +13,7 @@
 		<link rel="stylesheet" href="includes/wowarmory/style.php" type="text/css" title="wow">
 		<link rel="shortcut icon" href="templates/SpiffyJr/images/favicon.ico">
 		<link rel="icon" href="templates/SpiffyJr/images/favicon.ico" type="image/x-icon">
-		<link rel="alternate" title="{title_guild_name} {of_string} {title_guild_server} {rss_feed_string}" type="application/rss+xml" href="rss.php">
+		<link rel="alternate" title="{$page_header_data.title_guild_name} {$page_header_data.of_string} {$page_header_data.title_guild_server} {$page_header_data.rss_feed_string}" type="application/rss+xml" href="rss.php">
 		<link rel="stylesheet" type="text/css" href="templates/SpiffyJr/style/calendar.css">
 		<link rel="stylesheet" type="text/css" href="templates/SpiffyJr/style/stylesheet.css">
 	</head>
@@ -26,14 +27,14 @@
 			<div id="container">
 				<table width="100%" cellpadding="0" cellspacing="0">
 					<tr id="banner">
-						<td width="50%"><a href="{header_link}"><img src="{header_logo}" border="0" alt="Site Logo"></a></td>
-						<td width="50%" valign="top"><div align="right" style="margin-right:3px; font-size:10px; color:#ffffff">{login_form_open} <strong>{login_username}</strong> {login_password} {login_remember_hidden} {login_button}<br>{login_change_pass}{login_form_close}</div></td>
+						<td width="50%"><a href="{$page_header_data.header_link}"><img src="{$page_header_data.header_logo}" border="0" alt="Site Logo"></a></td>
+						<td width="50%" valign="top"><div align="right" style="margin-right:3px; font-size:10px; color:#ffffff">{$page_header_data.login_form_open} <strong>{$page_header_data.login_username}</strong> {$page_header_data.login_password} {$page_header_data.login_remember_hidden} {$page_header_data.login_button}<br>{$page_header_data.login_change_pass}{$page_header_data.login_form_close}</div></td>
 					</tr>
 				</table>
 				<div id="topHeader">
 					<table width="100%" cellpadding="0" cellspacing="0">
 						<tr valign="top">
-							<td width="50%"><div align="left" style="margin-left:10px"><strong>{guild_time_string}:</strong> {guild_date} - {guild_time}</div></td>
+							<td width="50%"><div align="left" style="margin-left:10px"><strong>{$page_header_data.guild_time_string}:</strong> {$page_header_data.guild_date} - {$page_header_data.guild_time}</div></td>
 							<td width="50%"><div align="right" style="margin-right:10px"></div></td>
 						</tr>
 					</table>
@@ -41,9 +42,9 @@
 				<table width="100%" cellpadding="0" cellspacing="0" align="center">
 					<tr valign="top">
 						<td id="leftMenuBackground" width="150px">
-							<div class="menuHeader">{menu_header_text}</div>
-							{menu}
+							<div class="menuHeader">{$page_header_data.menu_header_text}</div>
+							{$menu}
 						</td>
 						<td id="leftMenuBorder" width="5px">&nbsp;</td>
 						<td id="contentContainer">
-						{site_disabled_warning}
+						{$page_header_data.site_disabled_warning}

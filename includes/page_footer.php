@@ -36,9 +36,7 @@ $db_raid->sql_close();
 //
 // Parse and show the overall footer.
 //
-$page->set_file('footer',$phpraid_config['template'] . '/footer.htm');
+$wrmsmarty->assign('version',$version);
 
-$page->set_var('version',$version);
-
-$page->pparse('footer','footer');	
+$wrmsmarty->display('footer.html');
 ?>
