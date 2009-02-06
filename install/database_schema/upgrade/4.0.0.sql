@@ -237,4 +237,32 @@ VALUES (NULL , 'location1', 'Locked', '1', '24', NULL, NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `format_code`)
 VALUES (NULL , 'location1', 'Buttons', '1', '25', NULL, NULL);
 
+-- Column Header Data - Char1 View
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `format_code`)
+VALUES (NULL , 'char1', 'ID', '1', '1', NULL, NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `format_code`)
+VALUES (NULL , 'char1', 'Name', '1', '2', NULL, NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `format_code`)
+VALUES (NULL , 'char1', 'Guild', '1', '3', NULL, NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `format_code`)
+VALUES (NULL , 'char1', 'Level', '1', '4', NULL, NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `format_code`)
+VALUES (NULL , 'char1', 'Race', '1', '5', NULL, NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `format_code`)
+VALUES (NULL , 'char1', 'Class', '1', '6', NULL, NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `format_code`)
+VALUES (NULL , 'char1', 'Arcane', '1', '7', NULL, NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `format_code`)
+VALUES (NULL , 'char1', 'Fire', '1', '8', NULL, NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `format_code`)
+VALUES (NULL , 'char1', 'Frost', '1', '9', NULL, NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `format_code`)
+VALUES (NULL , 'char1', 'Nature', '1', '10', NULL, NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `format_code`)
+VALUES (NULL , 'char1', 'Shadow', '1', '11', NULL, NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `format_code`)
+VALUES (NULL , 'char1', 'Role', '1', '12', NULL, NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `format_code`)
+VALUES (NULL , 'char1', 'Buttons', '1', '13', NULL, NULL);
+
 INSERT INTO `wrm_config` VALUES ('records_per_page','2');

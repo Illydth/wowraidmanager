@@ -37,6 +37,32 @@ require_once('./common.php');
 define("PAGE_LVL","profile");
 require_once("includes/authentication.php");
 
+/*************************************************************
+ * Setup Record Output Information for Data Table
+ *************************************************************/
+// Set StartRecord for Page
+if(!isset($_GET['Base']) || !is_numeric($_GET['Base']))
+	$startRecord = 1;
+else
+	$startRecord = scrub_input($_GET['Base']);
+
+// Set Sort Field for Page
+if(!isset($_GET['Sort']))
+	$sortField="";
+else
+	$sortField = scrub_input($_GET['Sort']);
+	
+// Set Sort Descending Mark
+if(!isset($_GET['SortDescending']) || !is_numeric($_GET['SortDescending']))
+	$sortDesc = 1;
+else
+	$sortDesc = scrub_input($_GET['SortDescending']);
+	
+$pageURL = 'profile.php?mode=view&';
+/**************************************************************
+ * End Record Output Setup for Data Table
+ **************************************************************/
+
 // Set the Guild Server for the Page.
 $server = $phpraid_config['guild_server'];
 
@@ -69,48 +95,38 @@ if($_GET['mode'] == 'view') {
 				'Nature'=>$data['nature'],
 				'Shadow'=>$data['shadow'],
 				'Role'=>$data['role'],
-				''=>'<a href="profile.php?mode=remove&amp;n='.$data['name'].'&amp;id='.$data['char_id'].'"><img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''. $phprlang['delete'] .'\');" onMouseout="hideddrivetip();" alt="delete icon"></a>
+				'Buttons'=>'<a href="profile.php?mode=remove&amp;n='.$data['name'].'&amp;id='.$data['char_id'].'"><img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''. $phprlang['delete'] .'\');" onMouseout="hideddrivetip();" alt="delete icon"></a>
 					 <a href="profile.php?mode=edit&amp;race='.$data['race'].'&amp;id='.$data['char_id'].'"><img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_edit.gif" border="0" onMouseover="ddrivetip(\'' . $phprlang['edit'] .'\');" onMouseout="hideddrivetip();" alt="edit icon"></a>')
 			);
 	}
 
-	// setup formatting for report class (THANKS to www.thecalico.com)
-	// generic settings
-	setup_output();
+	/**************************************************************
+	 * Code to setup for a Dynamic Table Create: guild1 View.
+	 **************************************************************/
+	$viewName = 'char1';
+	
+	//Setup Columns
+	$char_headers = array();
+	$record_count_array = array();
+	$char_headers = getVisibleColumns($viewName);
 
-	$report->showRecordCount(true);
-	$report->allowPaging(true, $_SERVER['PHP_SELF'] . '?mode=view&Base=');
-	$report->setListRange($_GET['Base'], 25);
-	$report->allowLink(ALLOW_HOVER_INDEX,'',array());
+	//Get Record Counts
+	$char_record_count_array = getRecordCounts($chars, $char_headers, $startRecord);
+	
+	//Get the Jump Menu and pass it down
+	$charJumpMenu = getPageNavigation($chars, $startRecord, $pageURL, $sortField, $sortDesc);
 
-	//Default sorting
-	if(!$_GET['Sort'])
-	{
-		$report->allowSort(true, 'Name', 'ASC', 'profile.php?mode=view');
-	}
-	else
-	{
-		$report->allowSort(true, $_GET['Sort'], $_GET['SortDescending'], 'profile.php?mode=view');
-	}
+	//Setup Data
+	$chars = paginateSortAndFormat($chars, $sortField, $sortDesc, $startRecord, $viewName);
 
-	$report->showRecordCount(count);
-	// display settings
-	if($phpraid_config['show_id'] == 1)
-		$report->addOutputColumn('ID',$phprlang['id'],'','center');
-	$report->addOutputColumn('Name',$phprlang['name'],'','center');
-	$report->addOutputColumn('Guild',$phprlang['guild'],'','center');
-	$report->addOutputColumn('Level',$phprlang['level'],'','center');
-	$report->addOutputColumn('Race',$phprlang['race'],'','center');
-	$report->addOutputColumn('Class',$phprlang['class'],'','center');
-	$report->addOutputColumn('Role',$phprlang['role'],'','center');	
-	$report->addOutputColumn('Arcane','<img src="templates/' . $phpraid_config['template'] . '/images/resistances/arcane_resistance.gif" onMouseover="ddrivetip(\''.$phprlang['arcane'].'\');" onMouseout="hideddrivetip();" height="16" width="16" border="0" alt="arcane">','','center');
-	$report->addOutputColumn('Fire','<img src="templates/' . $phpraid_config['template'] . '/images/resistances/fire_resistance.gif" onMouseover="ddrivetip(\''.$phprlang['fire'].'\');" onMouseout="hideddrivetip();" height="16" width="16" border="0" alt="fire">','','center');
-	$report->addOutputColumn('Nature','<img src="templates/' . $phpraid_config['template'] . '/images/resistances/nature_resistance.gif" onMouseover="ddrivetip(\''.$phprlang['nature'].'\');" onMouseout="hideddrivetip();" height="16" width="16" border="0" alt="nature">','','center');
-	$report->addOutputColumn('Frost','<img src="templates/' . $phpraid_config['template'] . '/images/resistances/frost_resistance.gif" onMouseover="ddrivetip(\''.$phprlang['frost'].'\');" onMouseout="hideddrivetip();" height="16" width="16" border="0" alt="frost">','','center');
-	$report->addOutputColumn('Shadow','<img src="templates/' . $phpraid_config['template'] . '/images/resistances/shadow_resistance.gif" onMouseover="ddrivetip(\''.$phprlang['shadow'].'\');" onMouseout="hideddrivetip();" height="16" width="16" border="0" alt="shadow">','','center');
-	$report->addOutputColumn('','','','right');
-	$chars = $report->getListFromArray($chars);
-
+	/****************************************************************
+	 * Data Assign for Template.
+	 ****************************************************************/
+	$wrmsmarty->assign('char_data', $chars); 
+	$wrmsmarty->assign('char_jump_menu', $charJumpMenu);
+	$wrmsmarty->assign('char_column_name', $char_headers);
+	$wrmsmarty->assign('char_record_counts', $char_record_count_array);
+	
 	// time to get a list of raids that they've signed up for
 	$raid_list = array();
 
@@ -199,103 +215,72 @@ if($_GET['mode'] == 'view') {
 		if($data['old'] == 0) {
 			array_push($raid_list,
 				array(
-					'id'=>$data['raid_id'],
-					'Date'=>$date,'Location'=>$location,
+					'ID'=>$data['raid_id'],
+					'Date'=>$date,
+					'Dungeon'=>$location,
 					'Invite Time'=>$invite,
-					'Start Time'=>$start,'Officer'=>$data['officer'],
-					'Max'=>$total.'/'.$data['max']  . '' . $total2,
-					'DtK'=>$dk_text,
-					'Dru'=>$dr_text,
-					'Hun'=>$hu_text,
-					'Mag'=>$ma_text,
-					'Pal'=>$pa_text,
-					'Pri'=>$pr_text,
-					'Rog'=>$ro_text,
-					'Sha'=>$sh_text,
-					'Wlk'=>$wk_text,
-					'War'=>$wa_text,
-					'role1'=>$role1_text,
-					'role2'=>$role2_text,
-					'role3'=>$role3_text,
-					'role4'=>$role4_text,
-					'role5'=>$role5_text,
-					'role6'=>$role6_text,
+					'Start Time'=>$start,
+					'Creator'=>$data['officer'],
+					'Totals'=>$total.'/'.$data['max']  . '' . $total2,
+					'Death Knight'=>$dk_text,
+					'Druid'=>$dr_text,
+					'Hunter'=>$hu_text,
+					'Mage'=>$ma_text,
+					'Paladin'=>$pa_text,
+					'Priest'=>$pr_text,
+					'Rogue'=>$ro_text,
+					'Shaman'=>$sh_text,
+					'Warlock'=>$wk_text,
+					'Warrior'=>$wa_text,
+					$phpraid_config['role1_name']=>$role1_text,
+					$phpraid_config['role2_name']=>$role2_text,
+					$phpraid_config['role3_name']=>$role3_text,
+					$phpraid_config['role4_name']=>$role4_text,
+					$phpraid_config['role5_name']=>$role5_text,
+					$phpraid_config['role6_name']=>$role6_text,
+					'Buttons'=> ''
 				)
 			);
 		}
 	}
 
-	// setup formatting for report class (THANKS to www.thecalico.com)
-	// generic settings
-	$report->clearOutputColumns();
-	setup_output();
+	/**************************************************************
+	 * Code to setup for a Dynamic Table Create: guild1 View.
+	 **************************************************************/
+	$viewName = 'raids1';
+	
+	//Setup Columns
+	$raid_headers = array();
+	$record_count_array = array();
+	$raid_headers = getVisibleColumns($viewName);
 
-	$report->showRecordCount(true);
-	$report->allowPaging(true, $_SERVER['PHP_SELF'] . '?mode=view&Base=');
-	$report->setListRange($_GET['Base'], 25);
-	$report->allowLink(ALLOW_HOVER_INDEX,'',array());
+	//Get Record Counts
+	$raid_record_count_array = getRecordCounts($raid_list, $char_headers, $startRecord);
+	
+	//Get the Jump Menu and pass it down
+	$raidJumpMenu = getPageNavigation($raid_list, $startRecord, $pageURL, $sortField, $sortDesc);
 
-	//Default sorting
-	if(!$_GET['Sort'])
-	{
-		$report->allowSort(true, 'Date', 'ASC', 'profile.php?mode=view');
-	}
-	else
-	{
-		$report->allowSort(true, $_GET['Sort'], $_GET['SortDescending'], 'profile.php?mode=view');
-	}
+	//Setup Data
+	$raid_list = paginateSortAndFormat($raid_list, $sortField, $sortDesc, $startRecord, $viewName);
 
-	$report->showRecordCount(false);
-	// and now to format each column output
-	// the report class makes it very easy to use icons (or whatever) instead of just text
-	if($phpraid_config['show_id'])
-		$report->addOutputColumn('id',$phprlang['id'],'','left');
-	$report->addOutputColumn('Date',$phprlang['date'],'wrmdate','center');
-	$report->addOutputColumn('Location',$phprlang['location'],'','center');
-	$report->addOutputColumn('Invite Time',$phprlang['invite_time'],'wrmtime','center');
-	$report->addOutputColumn('Start Time',$phprlang['start_time'],'wrmtime','center');
-	$report->addOutputColumn('Officer',$phprlang['officer'],'','center');
-	$report->addOutputColumn('DtK', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/deathknight_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['deathknight'] . '\');" onMouseout="hideddrivetip();" alt="death knight">', '', 'center');
-	$report->addOutputColumn('Dru', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/druid_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['druid'] . '\');" onMouseout="hideddrivetip();" alt="druid">', '', 'center');
-	$report->addOutputColumn('Hun', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/hunter_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['hunter'] . '\');" onMouseout="hideddrivetip();" alt="hunter">', '', 'center');
-	$report->addOutputColumn('Mag', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/mage_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['mage'] . '\');" onMouseout="hideddrivetip();" alt="mage">', '', 'center');
-	$report->addOutputColumn('Pal', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/paladin_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['paladin'] . '\');" onMouseout="hideddrivetip();" alt="paladin">', '', 'center');
-	$report->addOutputColumn('Pri', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/priest_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['priest'] . '\');" onMouseout="hideddrivetip();" alt="priest">', '', 'center');
-	$report->addOutputColumn('Rog', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/rogue_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['rogue'] . '\');" onMouseout="hideddrivetip();" alt="rogue">', '', 'center');
-	$report->addOutputColumn('Sha', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/shaman_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['shaman'] . '\');" onMouseout="hideddrivetip();" alt="shaman">', '', 'center');
-	$report->addOutputColumn('Wlk', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/warlock_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['warlock'] . '\');" onMouseout="hideddrivetip();" alt="warlock">', '', 'center');
-	$report->addOutputColumn('War', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/warrior_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['warrior'] . '\');" onMouseout="hideddrivetip();" alt="warrior">', '', 'center');
-	if ($phpraid_config['role1_name'] != '')
-		$report->addOutputColumn('role1',$phpraid_config['role1_name'],'','center');
-	if ($phpraid_config['role2_name'] != '')
-		$report->addOutputColumn('role2',$phpraid_config['role2_name'],'','center');
-	if ($phpraid_config['role3_name'] != '')
-		$report->addOutputColumn('role3',$phpraid_config['role3_name'],'','center');
-	if ($phpraid_config['role4_name'] != '')
-		$report->addOutputColumn('role4',$phpraid_config['role4_name'],'','center');
-	if ($phpraid_config['role5_name'] != '')
-		$report->addOutputColumn('role5',$phpraid_config['role5_name'],'','center');
-	if ($phpraid_config['role6_name'] != '')
-		$report->addOutputColumn('role6',$phpraid_config['role6_name'],'','center');	
-	$report->addOutputColumn('Max',$phprlang['totals'],'','center');
-
-	// and finally, put the data into the variables to be read
-	$raid_list = $report->getListFromArray($raid_list);
-
-	$page->set_file(array(
-		'output' => $phpraid_config['template'] . '/profile.htm')
-	);
-
-	$page->set_var(
+	/****************************************************************
+	 * Data Assign for Template.
+	 ****************************************************************/
+	$wrmsmarty->assign('raid_data', $raid_list); 
+	$wrmsmarty->assign('raid_jump_menu', $raidJumpMenu);
+	$wrmsmarty->assign('raid_column_name', $raid_headers);
+	$wrmsmarty->assign('raid_record_counts', $raid_record_count_array);
+	$wrmsmarty->assign('header_data',
 		array(
-			'character_list' => $chars,
-			'raid_list' => $raid_list,
+			'template_name'=>$phpraid_config['template'],
 			'character_header' => $phprlang['profile_header'],
 			'raid_header' => $phprlang['profile_raid'],
-			)
-		);
-
-	$page->parse('output','output');
+			'sort_url_base' => $pageURL,
+			'sort_descending' => $sortDesc,
+			'sort_text' => $phprlang['sort_text'],
+		)
+	);
+	
 } elseif($_GET['mode'] == 'remove') {
 	$id = scrub_input($_GET['id']);
 	$n = scrub_input($_GET['n']);
@@ -417,7 +402,7 @@ if($_GET['mode'] == 'view') {
 			}
 			else
 			{
-				//So resistance optional and valuas are empty, time to convert
+				//So resistance optional and values are empty, time to convert
 				$shadow = "0";
 				$fire = "0";
 				$frost = "0";
@@ -829,52 +814,55 @@ if($db_raid->sql_numrows($result) == 0) {
 			$buttons = '<input type="submit" name="submit" value="'.$phprlang['updatechar'].'" class="mainoption"> <input type="reset" name="Reset" value="'.$phprlang['reset'].'" class="liteoption">';
 		}
 
-		$page->set_file(array(
-			'new_file' => $phpraid_config['template'] . '/profile_new.htm')
-		);
+		//$page->set_file(array(
+		//	'new_file' => $phpraid_config['template'] . '/profile_new.htm')
+		//);
 
-		$page->set_var(array(
-			'name' => $name,
-			'form_action' => $form_action,
-			'buttons' => $buttons,
-			'race'=>$race_output,
-			'class'=>$class,
-			'gender'=>$gender,
-			'name'=>$name,
-			'arcane_text'=>$phprlang['profile_arcane'],
-			'fire_text'=>$phprlang['profile_fire'],
-			'frost_text'=>$phprlang['profile_frost'],
-			'nature_text'=>$phprlang['profile_nature'],
-			'shadow_text'=>$phprlang['profile_shadow'],
-			'arcane'=>$arcane,
-			'fire'=>$fire,
-			'frost'=>$frost,
-			'nature'=>$nature,
-			'shadow'=>$shadow,
-			'guild_text' => $phprlang['profile_guild'],
-			'guild' => $guild,
-			'role_text' => $phprlang['profile_role'],
-			'role' => $role,
-			'level'=>$level,
-			'new_header'=>$phprlang['profile_new'],
-			'race_text'=>$phprlang['profile_race'],
-			'class_text'=>$phprlang['profile_class'],
-			'gender_text'=>$phprlang['profile_gender'],
-			'name_text'=>$phprlang['profile_name'],
-			'level_text'=>$phprlang['profile_level']
+		$wrmsmarty->assign('guilds_new',
+			array(
+				'name' => $name,
+				'form_action' => $form_action,
+				'buttons' => $buttons,
+				'race'=>$race_output,
+				'class'=>$class,
+				'gender'=>$gender,
+				'name'=>$name,
+				'arcane_text'=>$phprlang['profile_arcane'],
+				'fire_text'=>$phprlang['profile_fire'],
+				'frost_text'=>$phprlang['profile_frost'],
+				'nature_text'=>$phprlang['profile_nature'],
+				'shadow_text'=>$phprlang['profile_shadow'],
+				'arcane'=>$arcane,
+				'fire'=>$fire,
+				'frost'=>$frost,
+				'nature'=>$nature,
+				'shadow'=>$shadow,
+				'guild_text' => $phprlang['profile_guild'],
+				'guild' => $guild,
+				'role_text' => $phprlang['profile_role'],
+				'role' => $role,
+				'level'=>$level,
+				'new_header'=>$phprlang['profile_new'],
+				'race_text'=>$phprlang['profile_race'],
+				'class_text'=>$phprlang['profile_class'],
+				'gender_text'=>$phprlang['profile_gender'],
+				'name_text'=>$phprlang['profile_name'],
+				'level_text'=>$phprlang['profile_level']
 			)
 		);
 
-		$page->parse('output','new_file',true);
+		//$page->parse('output','new_file',true);
 	}
 }
 
 //
 // Start output of page
 //
-require_once('includes/page_header.php');
-
-$page->p('output','output');
-
-require_once('includes/page_footer.php');
+if($_GET['mode'] != 'delete')
+{
+	require_once('includes/page_header.php');
+	$wrmsmarty->display('profile.html');
+	//$page->p('output','output');
+	require_once('includes/page_footer.php');
+}
 ?>
