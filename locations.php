@@ -158,65 +158,6 @@ if($_GET['mode'] == 'view')
 			'sort_text' => $phprlang['sort_text'],
 		)
 	);
-	// setup output for data
-	//setup_output();
-	//$report->showRecordCount(true);
-	//$report->allowPaging(true, $_SERVER['PHP_SELF'] . '?mode=view&Base=');
-	//$report->setListRange($_GET['Base'], 25);
-	//$report->allowLink(ALLOW_HOVER_INDEX,'',array());
-
-	//Default sorting
-	//if(!$_GET['Sort'])
-	//{
-	//	$report->allowSort(true, 'location', 'ASC', 'locations.php?mode=view');
-	//}
-	//else
-	//{
-	//	$report->allowSort(true, $_GET['Sort'], $_GET['SortDescending'], 'locations.php?mode=view');
-	//}
-
-	//if($phpraid_config['show_id'] == 1)
-	//	$report->addOutputColumn('id',$phprlang['id'],'','center');
-	//$report->addOutputColumn('name',$phprlang['name'],'','center');
-	//$report->addOutputColumn('location',$phprlang['location'],'','center');
-	//$report->addOutputColumn('event_type_id',$phprlang['raids_eventtype_text'],'','center');
-	//$report->addOutputColumn('min_lvl',$phprlang['min_lvl'],'','center');
-	//$report->addOutputColumn('max_lvl',$phprlang['max_lvl'],'','center');
-	//$report->addOutputColumn('dk', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/deathknight_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['deathknight'] . '\');" onMouseout="hideddrivetip();" alt="death knight">', '', 'center');
-	//$report->addOutputColumn('dr', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/druid_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['druid'] . '\');" onMouseout="hideddrivetip();" alt="druid">', '', 'center');
-	//$report->addOutputColumn('hu', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/hunter_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['hunter'] . '\');" onMouseout="hideddrivetip();" alt="hunter">', '', 'center');
-	//$report->addOutputColumn('ma', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/mage_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['mage'] . '\');" onMouseout="hideddrivetip();" alt="mage">', '', 'center');
-	//$report->addOutputColumn('pa', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/paladin_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['paladin'] . '\');" onMouseout="hideddrivetip();" alt="paladin">', '', 'center');
-	//$report->addOutputColumn('pr', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/priest_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['priest'] . '\');" onMouseout="hideddrivetip();" alt="priest">', '', 'center');
-	//$report->addOutputColumn('ro', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/rogue_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['rogue'] . '\');" onMouseout="hideddrivetip();" alt="rogue">', '', 'center');
-	//$report->addOutputColumn('sh', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/shaman_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['shaman'] . '\');" onMouseout="hideddrivetip();" alt="shaman">', '', 'center');
-	//$report->addOutputColumn('wk', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/warlock_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['warlock'] . '\');" onMouseout="hideddrivetip();" alt="warlock">', '', 'center');
-	//$report->addOutputColumn('wa', '<img src="templates/' . $phpraid_config['template'] . '/images/classes/warrior_icon.gif" border="0" height="18" width="18" onMouseover="ddrivetip(\'' . $phprlang['sort_text'] . $phprlang['warrior'] . '\');" onMouseout="hideddrivetip();" alt="warrior">', '', 'center');
-	//if ($phpraid_config['role1_name'] != '')
-	//	$report->addOutputColumn('role1',$phpraid_config['role1_name'],'','center');
-	//if ($phpraid_config['role2_name'] != '')
-	//	$report->addOutputColumn('role2',$phpraid_config['role2_name'],'','center');
-	//if ($phpraid_config['role3_name'] != '')
-	//	$report->addOutputColumn('role3',$phpraid_config['role3_name'],'','center');
-	//if ($phpraid_config['role4_name'] != '')
-	//	$report->addOutputColumn('role4',$phpraid_config['role4_name'],'','center');
-	//if ($phpraid_config['role5_name'] != '')
-	//	$report->addOutputColumn('role5',$phpraid_config['role5_name'],'','center');
-	//if ($phpraid_config['role6_name'] != '')
-	//	$report->addOutputColumn('role6',$phpraid_config['role6_name'],'','center');
-	//$report->addOutputColumn('max_chars',$phprlang['max_raiders'],'','center');
-	//$report->addOutputColumn('locked',$phprlang['locked_header'],'','center');
-	//$report->addOutputColumn('','','','right');
-	//$loc = $report->getListFromArray($loc);
-
-	//$page->set_file(array(
-	//	'output' => $phpraid_config['template'] . '/locations.htm')
-	//);
-
-	//$page->set_var('locs',$loc);
-	//$page->set_var('header',$phprlang['locations_header']);
-
-	//$page->parse('output','output');
 }
 elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 {
@@ -473,7 +414,6 @@ if($_GET['mode'] != 'delete')
 		$buttons = '<input type="submit" value="'.$phprlang['update'].'" name="submit" class="mainoption"> <input type="reset" value="'.$phprlang['reset'].'" name="reset" class="liteoption">';
 	}
 
-	//$page->set_file('new_loc',$phpraid_config['template'] . '/locations_new.htm');
 	$wrmsmarty->assign('locations_new',
 		array(
 			'form_action'=>$form_action,
@@ -528,8 +468,6 @@ if($_GET['mode'] != 'delete')
 			'limits_header'=>$phprlang['locations_limits_header'],
 		)
 	);
-
-	//$page->parse('output','new_loc',true);
 }
 
 //
@@ -539,7 +477,6 @@ if($_GET['mode'] != 'delete')
 {
 	require_once('includes/page_header.php');
 	$wrmsmarty->display('locations.html');
-	//$page->p('output','output');
 	require_once('includes/page_footer.php');
 }
 ?>
