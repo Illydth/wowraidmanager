@@ -29,7 +29,7 @@ VALUES (NULL , 'raids1', 'Death Knight', '1', '7', 'images/classes/deathknight_i
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `format_code`)
 VALUES (NULL , 'raids1', 'Druid', '1', '8', 'images/classes/druid_icon.gif', NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `format_code`)
-VALUES (NULL , 'raids1', 'Hunter', '1', '9', 'images/classes/hunter.gif', NULL);
+VALUES (NULL , 'raids1', 'Hunter', '1', '9', 'images/classes/hunter_icon.gif', NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `format_code`)
 VALUES (NULL , 'raids1', 'Mage', '1', '10', 'images/classes/mage_icon.gif', NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `format_code`)
@@ -185,6 +185,56 @@ VALUES (NULL , 'guild1', 'Guild Master', '1', '4', NULL, NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `format_code`)
 VALUES (NULL , 'guild1', 'Actions', '1', '5', NULL, NULL);
 
-
+-- Column Header Data - Location1 View
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `format_code`)
+VALUES (NULL , 'location1', 'ID', '1', '1', NULL, NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `format_code`)
+VALUES (NULL , 'location1', 'Name', '1', '2', NULL, NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `format_code`)
+VALUES (NULL , 'location1', 'Dungeon', '1', '3', NULL, NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `format_code`)
+VALUES (NULL , 'location1', 'Event Type', '1', '4', NULL, NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `format_code`)
+VALUES (NULL , 'location1', 'Min Level', '1', '5', NULL, NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `format_code`)
+VALUES (NULL , 'location1', 'Max Level', '1', '6', NULL, NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `format_code`)
+VALUES (NULL , 'location1', 'Death Knight', '1', '7', 'images/classes/deathknight_icon.gif', NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `format_code`)
+VALUES (NULL , 'location1', 'Druid', '1', '8', 'images/classes/druid_icon.gif', NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `format_code`)
+VALUES (NULL , 'location1', 'Hunter', '1', '9', 'images/classes/hunter_icon.gif', NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `format_code`)
+VALUES (NULL , 'location1', 'Mage', '1', '10', 'images/classes/mage_icon.gif', NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `format_code`)
+VALUES (NULL , 'location1', 'Paladin', '1', '11', 'images/classes/paladin_icon.gif', NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `format_code`)
+VALUES (NULL , 'location1', 'Priest', '1', '12', 'images/classes/priest_icon.gif', NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `format_code`)
+VALUES (NULL , 'location1', 'Rogue', '1', '13', 'images/classes/rogue_icon.gif', NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `format_code`)
+VALUES (NULL , 'location1', 'Shaman', '1', '14', 'images/classes/shaman_icon.gif', NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `format_code`)
+VALUES (NULL , 'location1', 'Warlock', '1', '15', 'images/classes/warlock_icon.gif', NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `format_code`)
+VALUES (NULL , 'location1', 'Warrior', '1', '16', 'images/classes/warrior_icon.gif', NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `format_code`)
+VALUES (NULL , 'location1', '@role1', '1', '17', NULL, NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `format_code`)
+VALUES (NULL , 'location1', '@role2', '1', '18', NULL, NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `format_code`)
+VALUES (NULL , 'location1', '@role3', '1', '19', NULL, NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `format_code`)
+VALUES (NULL , 'location1', '@role4', '1', '20', NULL, NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `format_code`)
+VALUES (NULL , 'location1', '@role5', '1', '21', NULL, NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `format_code`)
+VALUES (NULL , 'location1', '@role6', '1', '22', NULL, NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `format_code`)
+VALUES (NULL , 'location1', 'Raid Max', '1', '23', NULL, NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `format_code`)
+VALUES (NULL , 'location1', 'Locked', '1', '24', NULL, NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `format_code`)
+VALUES (NULL , 'location1', 'Buttons', '1', '25', NULL, NULL);
 
 INSERT INTO `wrm_config` VALUES ('records_per_page','2');
