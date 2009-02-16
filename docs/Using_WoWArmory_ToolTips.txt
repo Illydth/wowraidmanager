@@ -72,7 +72,7 @@ These directories should reside in the same place as the auth, db, docs, include
 already be there if you are using the 3.2.1 or better version of WRM.
 
 When the directories are in place the following needs to be added to the header.htm file in ALL APPROPIRATE INSTALLED
-THEMES: (templates/SpiffyJr/header.htm) 
+THEMES: (templates/default/header.htm) 
 
 		<script type='text/javascript' language='javascript' src='wowchar-tooltip/js/overlib.js'><!-- overLIB (c) Erik Bosrup --></script>
 		<script type='text/javascript' language='javascript' src='wowchar-tooltip/js/tooltipnew.js'></script>

@@ -73,7 +73,7 @@ cd ..
 
 # Templates
 cd templates
-cd SpiffyJr
+cd default
 chmod a-x *.htm
 chmod a-x *.php
 cd images

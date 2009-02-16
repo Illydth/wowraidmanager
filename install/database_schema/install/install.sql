@@ -311,7 +311,7 @@ INSERT INTO `wrm_config` VALUES ('guild_description','raid management made easy'
 INSERT INTO `wrm_config` VALUES ('guild_name','WoW Raid Manager');
 INSERT INTO `wrm_config` VALUES ('guild_server','Illidan');
 INSERT INTO `wrm_config` VALUES ('header_link','http://www.yourdomain.com/');
-INSERT INTO `wrm_config` VALUES ('header_logo','templates/SpiffyJr/images/logo_phpRaid.jpg');
+INSERT INTO `wrm_config` VALUES ('header_logo','templates/default/images/logo_phpRaid.jpg');
 INSERT INTO `wrm_config` VALUES ('language','english');
 INSERT INTO `wrm_config` VALUES ('multiple_signups','0');
 INSERT INTO `wrm_config` VALUES ('phpraid_addon_link','http://www.wowraidmanager.net');
@@ -321,7 +321,7 @@ INSERT INTO `wrm_config` VALUES ('register_url','register.php');
 INSERT INTO `wrm_config` VALUES ('roster_integration','0');
 INSERT INTO `wrm_config` VALUES ('show_id','0');
 INSERT INTO `wrm_config` VALUES ('showphpraid_addon','1');
-INSERT INTO `wrm_config` VALUES ('template','SpiffyJr');
+INSERT INTO `wrm_config` VALUES ('template','default');
 INSERT INTO `wrm_config` VALUES ('time_format','h:i a');
 INSERT INTO `wrm_config` VALUES ('timezone','-0600');
 INSERT INTO `wrm_config` VALUES ('resop', '0');

@@ -29,8 +29,8 @@ Quick Upgrade
     the way through to the end (much of your prior information should be already set) and 
     make sure to properly re-set your authentication method (if it's not pre-selected for you)
     already).
-* Note: Templates other than "SpiffyJr" are likely NOT to work with 3.5.1 for a while till the template
-	editors get a chance to upgrade them.  Please switch back to SpiffyJr till the templates get updated.
+* Note: Templates other than "default" are likely NOT to work with 4.0 for a while till the template
+	editors get a chance to upgrade them.  Please switch back to default till the templates get updated.
 * Note: You can remove the "Scripts" directory under any templates you are using, they are no longer used.
 
 Installing WRM into a supported CMS system
