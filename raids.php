@@ -716,25 +716,25 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 		// Event Type for WoW Calendar
 		$eventtype = '<select name="tag" class="post">';
 		if ($tag == "1")
-			$eventtype .= '<option value="1" selected>' . $phprlang['raids_type_raid'] . '</option>';
+			$eventtype .= '<option value="1" selected>' . $phprlang['event_type_raid'] . '</option>';
 		else
-			$eventtype .= '<option value="1">' . $phprlang['raids_type_raid'] . '</option>';
+			$eventtype .= '<option value="1">' . $phprlang['event_type_raid'] . '</option>';
 		if ($tag == "2")
-			$eventtype .= '<option value="2" selected>' . $phprlang['raids_type_dungeon'] . '</option>';
+			$eventtype .= '<option value="2" selected>' . $phprlang['event_type_dungeon'] . '</option>';
 		else
-			$eventtype .= '<option value="2">' . $phprlang['raids_type_dungeon'] . '</option>';
+			$eventtype .= '<option value="2">' . $phprlang['event_type_dungeon'] . '</option>';
 		if ($tag == "3")
-			$eventtype .= '<option value="3" selected>' . $phprlang['raids_type_pvp'] . '</option>';
+			$eventtype .= '<option value="3" selected>' . $phprlang['event_type_pvp'] . '</option>';
 		else
-			$eventtype .= '<option value="3">' . $phprlang['raids_type_pvp'] . '</option>';
+			$eventtype .= '<option value="3">' . $phprlang['event_type_pvp'] . '</option>';
 		if ($tag == "4")
-			$eventtype .= '<option value="4" selected>' . $phprlang['raids_type_meeting'] . '</option>';
+			$eventtype .= '<option value="4" selected>' . $phprlang['event_type_meeting'] . '</option>';
 		else
-			$eventtype .= '<option value="4">' . $phprlang['raids_type_meeting'] . '</option>';
+			$eventtype .= '<option value="4">' . $phprlang['event_type_meeting'] . '</option>';
 		if ($tag == "5")
-			$eventtype .= '<option value="5" selected>' . $phprlang['raids_type_other'] . '</option>';
+			$eventtype .= '<option value="5" selected>' . $phprlang['event_type_other'] . '</option>';
 		else
-			$eventtype .= '<option value="5">' . $phprlang['raids_type_other'] . '</option>';
+			$eventtype .= '<option value="5">' . $phprlang['event_type_other'] . '</option>';
 		$eventtype .= '</select>';
 		
 		// location
