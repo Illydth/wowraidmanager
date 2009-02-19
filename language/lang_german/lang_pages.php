@@ -201,12 +201,19 @@ $phprlang['raids_old'] = 'Beendete Raids';
 $phprlang['raids_new'] = 'Aktuelle Raids';
 $phprlang['raids_new_header'] = 'Neuer Raid';
 $phprlang['raids_start'] = 'Startzeit';
-$phprlang['raids_type_raid'] = 'Raid (10/25er)';
-$phprlang['raids_type_dungeon'] = 'Dungeon (5er-Instanz)';
-$phprlang['raids_type_pvp'] = 'PvP-Event';
-$phprlang['raids_type_meeting'] = 'Treffen (online/offline)';
-$phprlang['raids_type_other'] = 'Andere';
 $phprlang['raids_eventtype_text'] = 'Eventart';
+
+// event type
+$phprlang['event_type_raid'] = 'Raid (10/25er)';
+$phprlang['event_type_dungeon'] = 'Dungeon (5er-Instanz)';
+$phprlang['event_type_pvp'] = 'PvP-Event';
+$phprlang['event_type_meeting'] = 'Treffen (online/offline)';
+$phprlang['event_type_other'] = 'Andere';
+
+// expansions
+$phprlang['exp_generic_wow'] = 'Generic World of Warcraft';
+$phprlang['exp_burning_crusade'] = 'The Burning Crusade';
+$phprlang['exp_wrath_lich_king'] = 'Wrath of the Lich King';
 
 // roster
 $phprlang['roster_header'] = 'Mitgliederliste';

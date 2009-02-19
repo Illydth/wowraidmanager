@@ -80,17 +80,17 @@ if($_GET['mode'] == 'view')
 
 		$event_type_id = $data['event_type'];
 		if ($event_type_id == '1')
-			$event_type_text = $phprlang['raids_type_raid'];
+			$event_type_text = $phprlang['event_type_raid'];
 		elseif ($event_type_id == '2')
-			$event_type_text = $phprlang['raids_type_dungeon'];
+			$event_type_text = $phprlang['event_type_dungeon'];
 		elseif ($event_type_id == '3')
-			$event_type_text = $phprlang['raids_type_pvp'];
+			$event_type_text = $phprlang['event_type_pvp'];
 		elseif ($event_type_id == '4')
-			$event_type_text = $phprlang['raids_type_meeting'];
+			$event_type_text = $phprlang['event_type_meeting'];
 		elseif ($event_type_id == '5')
-			$event_type_text = $phprlang['raids_type_other'];
+			$event_type_text = $phprlang['event_type_other'];
 		else
-			$event_type_text = $phprlang['raids_type_raid'];
+			$event_type_text = $phprlang['event_type_raid'];
 			
 		array_push($loc,
 			array(
@@ -285,11 +285,11 @@ if($_GET['mode'] != 'delete')
 
 		// Event Type for WoW Calendar
 		$eventtype = '<select name="tag" class="post">';
-		$eventtype .= '<option value="1" selected>' . $phprlang['raids_type_raid'] . '</option>';
-		$eventtype .= '<option value="2">' . $phprlang['raids_type_dungeon'] . '</option>';
-		$eventtype .= '<option value="3">' . $phprlang['raids_type_pvp'] . '</option>';
-		$eventtype .= '<option value="4">' . $phprlang['raids_type_meeting'] . '</option>';
-		$eventtype .= '<option value="5">' . $phprlang['raids_type_other'] . '</option>';
+		$eventtype .= '<option value="1" selected>' . $phprlang['event_type_raid'] . '</option>';
+		$eventtype .= '<option value="2">' . $phprlang['event_type_dungeon'] . '</option>';
+		$eventtype .= '<option value="3">' . $phprlang['event_type_pvp'] . '</option>';
+		$eventtype .= '<option value="4">' . $phprlang['event_type_meeting'] . '</option>';
+		$eventtype .= '<option value="5">' . $phprlang['event_type_other'] . '</option>';
 		$eventtype .= '</select>';
 
 		$form_action = 'locations.php?mode=new';
@@ -347,25 +347,25 @@ if($_GET['mode'] != 'delete')
 		// Event Type for WoW Calendar
 		$eventtype = '<select name="tag" class="post">';
 		if ($data['event_type'] == "1")
-			$eventtype .= '<option value="1" selected>' . $phprlang['raids_type_raid'] . '</option>';
+			$eventtype .= '<option value="1" selected>' . $phprlang['event_type_raid'] . '</option>';
 		else
-			$eventtype .= '<option value="1">' . $phprlang['raids_type_raid'] . '</option>';
+			$eventtype .= '<option value="1">' . $phprlang['event_type_raid'] . '</option>';
 		if ($data['event_type'] == "2")
-			$eventtype .= '<option value="2" selected>' . $phprlang['raids_type_dungeon'] . '</option>';
+			$eventtype .= '<option value="2" selected>' . $phprlang['event_type_dungeon'] . '</option>';
 		else
-			$eventtype .= '<option value="2">' . $phprlang['raids_type_dungeon'] . '</option>';
+			$eventtype .= '<option value="2">' . $phprlang['event_type_dungeon'] . '</option>';
 		if ($data['event_type'] == "3")
-			$eventtype .= '<option value="3" selected>' . $phprlang['raids_type_pvp'] . '</option>';
+			$eventtype .= '<option value="3" selected>' . $phprlang['event_type_pvp'] . '</option>';
 		else
-			$eventtype .= '<option value="3">' . $phprlang['raids_type_pvp'] . '</option>';
+			$eventtype .= '<option value="3">' . $phprlang['event_type_pvp'] . '</option>';
 		if ($data['event_type'] == "4")
-			$eventtype .= '<option value="4" selected>' . $phprlang['raids_type_meeting'] . '</option>';
+			$eventtype .= '<option value="4" selected>' . $phprlang['event_type_meeting'] . '</option>';
 		else
-			$eventtype .= '<option value="4">' . $phprlang['raids_type_meeting'] . '</option>';
+			$eventtype .= '<option value="4">' . $phprlang['event_type_meeting'] . '</option>';
 		if ($data['event_type'] == "5")
-			$eventtype .= '<option value="5" selected>' . $phprlang['raids_type_other'] . '</option>';
+			$eventtype .= '<option value="5" selected>' . $phprlang['event_type_other'] . '</option>';
 		else
-			$eventtype .= '<option value="5">' . $phprlang['raids_type_other'] . '</option>';
+			$eventtype .= '<option value="5">' . $phprlang['event_type_other'] . '</option>';
 		$eventtype .= '</select>';
 		$form_action = "locations.php?mode=edit&amp;id=$id";
 		$name = '<input name="name" type="text" id="name" value="' . $data['name'] . '" class="post">';
