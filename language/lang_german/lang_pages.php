@@ -142,6 +142,9 @@ $phprlang['locations_new'] = 'Neue Instanz erstellen';
 $phprlang['locations_raid_max'] = 'Maximale Teilnehmerzahl';
 $phprlang['locations_short'] = 'Instanzkürzel';
 $phprlang['lock_template'] = 'Gesperrte Raid-Vorlage?';
+$phprlang['locations_ro_text'] = 'Read Only: Populated With WoW Official Name for Instance';
+$phprlang['locations_expansion_text'] = 'Expansion';
+$phprlang['locations_events_text'] = 'Event Name';
 
 // lua_output
 $phprlang['rim_download'] = 'RIM (Raid Information Manager) herunterladen';

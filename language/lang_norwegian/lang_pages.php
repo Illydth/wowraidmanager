@@ -142,6 +142,9 @@ $phprlang['locations_new'] = 'Lag ett nytt sted';
 $phprlang['locations_raid_max'] = 'Raid Maks';
 $phprlang['locations_short'] = 'Identifiserer';
 $phprlang['lock_template'] = 'Lås Raid mal?';
+$phprlang['locations_ro_text'] = 'Read Only: Populated With WoW Official Name for Instance';
+$phprlang['locations_expansion_text'] = 'Expansion';
+$phprlang['locations_events_text'] = 'Event Name';
 
 // lua_output
 $phprlang['rim_download'] = 'Last ned RIM (Raid Information Manager)';
