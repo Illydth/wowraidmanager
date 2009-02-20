@@ -52,20 +52,12 @@ if($_GET['mode'] == 'view')
 		$delete = '<a href="locations.php?mode=delete&amp;n='.$data['name'].'&amp;id='.$data['location_id'].'"><img src="templates/' .
 					$phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\'' . $phprlang['delete'] . '\');" onMouseout="hideddrivetip();" alt="delete icon"></a>';
 
-		$event_type_id = $data['event_type'];
-		if ($event_type_id == '1')
-			$event_type_text = $phprlang['event_type_raid'];
-		elseif ($event_type_id == '2')
-			$event_type_text = $phprlang['event_type_dungeon'];
-		elseif ($event_type_id == '3')
-			$event_type_text = $phprlang['event_type_pvp'];
-		elseif ($event_type_id == '4')
-			$event_type_text = $phprlang['event_type_meeting'];
-		elseif ($event_type_id == '5')
-			$event_type_text = $phprlang['event_type_other'];
-		else
-			$event_type_text = $phprlang['event_type_raid'];
-			
+		$sql = "SELECT event_type_lang_id FROM " . $phpraid_config['db_prefix'] . "event_type WHERE event_type_id =" . $data['event_type'];
+		$result2 = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$event_type_data = $db_raid->sql_fetchrow($result2, true);
+		$event_type_id = $event_type_data['event_type'];
+		$event_type_text = $phprlang[$event_type_data['event_type_lang_id']];
+		
 		array_push($loc,
 			array(
 				'id'=>$data['location_id'],
@@ -165,8 +157,9 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 
 	// slashes
 	$name =scrub_input($_POST['name']);
-	$loc = scrub_input($_POST['location']);
-	$eventtype = scrub_input($_POST['tag']);
+	$loc = scrub_input($_GET['location']);
+	$eventtype = scrub_input($_GET['event_type']);
+	$event_id = scrub_input($_GET['event']);
 	$min_lvl = scrub_input($_POST['min_lvl']);
 	$max_lvl = scrub_input($_POST['max_lvl']);
 	$dk = scrub_input($_POST['dk']);
@@ -207,12 +200,12 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 	if($_GET['mode'] == 'new')
 	{
 		$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "locations (`location`,`min_lvl`,`max_lvl`,
-		`name`,`dk`,`dr`,`hu`,`ma`,`pa`,`pr`,`ro`,`sh`,`wk`,`wa`,`role1`,`role2`,`role3`,`role4`,`role5`,`role6`,`max`,`locked`,`event_type`) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
+		`name`,`dk`,`dr`,`hu`,`ma`,`pa`,`pr`,`ro`,`sh`,`wk`,`wa`,`role1`,`role2`,`role3`,`role4`,`role5`,`role6`,`max`,`locked`,`event_type`,`event_id`) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
 		quote_smart($loc),quote_smart($min_lvl),quote_smart($max_lvl),quote_smart($name),quote_smart($dk),quote_smart($dr),quote_smart($hu),
 		quote_smart($ma),quote_smart($pa),quote_smart($pr),quote_smart($ro),quote_smart($sh),quote_smart($wk),quote_smart($wa),
 		quote_smart($role1),quote_smart($role2),quote_smart($role3),quote_smart($role4),quote_smart($role5),quote_smart($role6),
-		quote_smart($max),quote_smart($locked),quote_smart($eventtype));
-
+		quote_smart($max),quote_smart($locked),quote_smart($eventtype),quote_smart($event_id));
+		
 		$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
 
 		log_create('location',mysql_insert_id(),$name);
@@ -225,10 +218,10 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 			$id = '';
 
 		$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "locations SET name=%s,max=%s,dk=%s,dr=%s,hu=%s,ma=%s,pa=%s,pr=%s,ro=%s,sh=%s,wk=%s,
-		wa=%s,role1=%s,role2=%s,role3=%s,role4=%s,role5=%s,role6=%s,min_lvl=%s,max_lvl=%s,location=%s,locked=%s,event_type=%s WHERE location_id=%s",quote_smart($name),quote_smart($max),
+		wa=%s,role1=%s,role2=%s,role3=%s,role4=%s,role5=%s,role6=%s,min_lvl=%s,max_lvl=%s,location=%s,locked=%s,event_type=%s,event_id=%s WHERE location_id=%s",quote_smart($name),quote_smart($max),
 		quote_smart($dk),quote_smart($dr),quote_smart($hu),quote_smart($ma),quote_smart($pa),quote_smart($pr),quote_smart($ro),quote_smart($sh),quote_smart($wk),quote_smart($wa),
 		quote_smart($role1),quote_smart($role2),quote_smart($role3),quote_smart($role4),quote_smart($role5),quote_smart($role6),quote_smart($min_lvl),
-		quote_smart($max_lvl),quote_smart($loc),quote_smart($locked),quote_smart($eventtype),quote_smart($id));
+		quote_smart($max_lvl),quote_smart($loc),quote_smart($locked),quote_smart($eventtype),quote_smart($event_id),quote_smart($id));
 
 		$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 	}
@@ -274,22 +267,113 @@ elseif($_GET['mode'] == 'delete')
 
 if($_GET['mode'] != 'delete')
 {
+	if (isset($_GET['id'])) // Update
+	{
+		$id = scrub_input($_GET['id']);
+		
+		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "locations WHERE location_id=%s",quote_smart($id));
+		$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$data = $db_raid->sql_fetchrow($result, true);
+
+		isset($_GET['event_type']) ? $event_type_id = scrub_input($_GET['event_type']) : $event_type_id = $data['event_type'];
+		isset($_GET['event']) ? $event_id = scrub_input($_GET['event']) : $event_id = $data['event_id'];		
+		
+		$sql = "SELECT exp_id FROM " . $phpraid_config['db_prefix'] . "events WHERE event_id = " . $data['event_id'];
+		$result2 = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$event_data = $db_raid->sql_fetchrow($result2, true);		
+		
+		isset($_GET['exp_id']) ? $expansion_id = scrub_input($_GET['exp_id']) : $expansion_id = $event_data['exp_id'];		
+	}
+	else // Insert
+	{
+		// Get Default Values for Expansion
+		$sql = "SELECT exp_id FROM " . $phpraid_config['db_prefix'] . "expansion WHERE def = 1";
+		$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$data = $db_raid->sql_fetchrow($result, true);
+		isset($_GET['exp_id']) ? $expansion_id = scrub_input($_GET['exp_id']) : $expansion_id = $data['exp_id'];
+		// Get Default Values for Event Type
+		$sql = "SELECT event_type_id FROM " . $phpraid_config['db_prefix'] . "event_type WHERE def = 1";
+		$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$data = $db_raid->sql_fetchrow($result, true);
+		isset($_GET['event_type']) ? $event_type_id = scrub_input($_GET['event_type']) : $event_type_id = $data['event_type_id'];
+		// Get Default Values for Event
+		$event_id = $_GET['event'];		
+	}
+	
 	if($_GET['mode'] == 'view')
 	{
 		// setup new form information
+		// Setup Event Type Select Box.
+		$eventtype = '<select name="event_type" id="event_type" class="post" onChange="MM_jumpMenu(\'parent\',this,0)">
+					<option value=""></option>';
 
-		// Event Type for WoW Calendar
-		$eventtype = '<select name="tag" class="post">';
-		$eventtype .= '<option value="1" selected>' . $phprlang['event_type_raid'] . '</option>';
-		$eventtype .= '<option value="2">' . $phprlang['event_type_dungeon'] . '</option>';
-		$eventtype .= '<option value="3">' . $phprlang['event_type_pvp'] . '</option>';
-		$eventtype .= '<option value="4">' . $phprlang['event_type_meeting'] . '</option>';
-		$eventtype .= '<option value="5">' . $phprlang['event_type_other'] . '</option>';
-		$eventtype .= '</select>';
+		$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "event_type";
+		$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		while($data = $db_raid->sql_fetchrow($result, true))
+		{		
+			// Event Type for WoW Calendar
+			if ($event_type_id != '' && $data['event_type_id'] == $event_type_id)
+				$eventtype .= '<option value="locations.php?mode=view&amp;event_type='.$data['event_type_id'].'" selected>' . $phprlang[$data['event_type_lang_id']] . '</option>';
+			elseif ($event_type_id == '' && $data['event_type_id'] == 1)
+				$eventtype .= '<option value="locations.php?mode=view&amp;event_type='.$data['event_type_id'].'" selected>' . $phprlang[$data['event_type_lang_id']] . '</option>';
+			else
+				$eventtype .= '<option value="locations.php?mode=view&amp;event_type='.$data['event_type_id'].'">' . $phprlang[$data['event_type_lang_id']] . '</option>';
+		}
+		$eventtype .= '</select>';		
+		// End Event Type Setup
 
-		$form_action = 'locations.php?mode=new';
+		// Setup Expansion Select Box.
+		$expansion = '<select name="expansion" id="expansion" class="post" onChange="MM_jumpMenu(\'parent\',this,0)">
+					<option value=""></option>';
+		
+		$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "expansion";
+		$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		while($data = $db_raid->sql_fetchrow($result, true))
+		{		
+			// Event Type for WoW Calendar
+			if ($expansion_id != '' && $data['exp_id'] == $expansion_id)
+				$expansion .= '<option value="locations.php?mode=view&amp;exp_id='.$data['exp_id'].'&amp;event_type='.$event_type_id.'" selected>' . $phprlang[$data['exp_lang_id']] . '</option>';
+			elseif ($expansion_id == '' && $data['exp_id'] == $db_raid->sql_numrows($result))
+				$expansion .= '<option value="locations.php?mode=view&amp;exp_id='.$data['exp_id'].'&amp;event_type='.$event_type_id.'" selected>' . $phprlang[$data['exp_lang_id']] . '</option>';
+			else
+				$expansion .= '<option value="locations.php?mode=view&amp;exp_id='.$data['exp_id'].'&amp;event_type='.$event_type_id.'">' . $phprlang[$data['exp_lang_id']] . '</option>';
+		}
+		$expansion .= '</select>';		
+		// End Expansion Setup
+
+		// Setup Events Select Box.
+		if ($event_type_id != '' && $expansion_id != '')
+		{
+			$events = '<select name="event" id="event" class="post" onChange="MM_jumpMenu(\'parent\',this,0)">
+						<option value=""></option>';
+			
+			if ($event_type_id == 1 || $event_type_id == 2) // If Dungeons or Raids pull exp_id = 0 also.
+				$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "events WHERE (exp_id =" .$expansion_id . " OR exp_id = 0) AND event_type_id =" .$event_type_id. " ORDER BY zone_desc";
+			elseif ($event_type_id == 3 || $event_type_id == 4) // If Meeting Type, Pull Major Cities
+				$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "events WHERE event_type_id =" .$event_type_id. " ORDER BY zone_desc";
+			elseif ($event_type_id == 5) // Other Type, Pull Everything
+				$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "events WHERE (exp_id =" .$expansion_id . " OR exp_id = 0) ORDER BY zone_desc";	
+			else // By default pull Raids and Dungeons
+				$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "events WHERE (exp_id =" .$expansion_id . " OR exp_id = 0) AND event_type_id =" .$event_type_id. " ORDER BY zone_desc";
+			
+			$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+			while($data = $db_raid->sql_fetchrow($result, true))
+			{		
+				// Event Type for WoW Calendar
+				if ($event_id != '' && $data['event_id'] == $event_id)
+					$events .= '<option value="locations.php?mode=view&amp;exp_id='.$expansion_id.'&amp;event_type='.$event_type_id.'&amp;event='.$data['event_id'].'" selected>' . $data['zone_desc'] . '</option>';
+				else
+					$events .= '<option value="locations.php?mode=view&amp;exp_id='.$expansion_id.'&amp;event_type='.$event_type_id.'&amp;event='.$data['event_id'].'">' . $data['zone_desc'] . '</option>';
+			}
+			$events .= '</select>';		
+			// End Event Type Setup
+		}
+		else
+		{
+			$events = '<select name="events" DISABLED><option></option></select>';
+		}
+		
 		$name = '<input name="name" type="text" id="name" class="post">';
-		$location = '<input name="location" type="text" id="location" class="post">';
 		$min_lvl = '<input name="min_lvl" type="text" class="post" style="width:20px" maxlength="2">';
 		$max_lvl = '<input name="max_lvl" type="text" class="post" style="width:20px" maxlength="2">';
 		$dk = '<input name="dk" type="text" class="post" style="width:20px" maxlength="2">';
@@ -327,44 +411,97 @@ if($_GET['mode'] != 'delete')
 		else
 			$role6 = '<input name="role6" type="hidden" value="" class="post" style="width:20px" maxlength="2">';
 		$locked = '<input name="lock_template" type="checkbox" value="1" class="post">';
-		$max = '<input name="max" type="text" class="post" style="width:20px" maxlength="2">';
+		
+		if ($event_id != '')
+		{
+			$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "events WHERE event_id =" . $event_id;
+			$result2 = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+			$event_data = $db_raid->sql_fetchrow($result2, true);
+			$event_max = $event_data['max'];
+			$wow_name = $event_data['wow_name'];
+			$zone_desc = $event_data['zone_desc'];
+			$max = '<input name="max" value="' .$event_max. '" type="text" class="post" style="width:20px" maxlength="2">';
+			$location = '<input name="location" value="'.$wow_name.'" type="text" id="location" style="width:350px" class="post" DISABLED>';
+			$icon = "templates/" . $phpraid_config['template'] . "/" . $event_data['icon_path'];
+			$form_action = 'locations.php?mode=new&amp;event_type='.$event_type_id.'&amp;event='.$event_id.'&amp;location='.$zone_desc;
+		}
+		else
+		{
+			$max = '<input name="max" type="text" class="post" style="width:20px" maxlength="2">';
+			$location = '<input name="location" valuetype="text" id="location" style="width:350px" class="post" DISABLED>';
+			$icon = "";
+			$form_action = 'locations.php?mode=view';
+		}
+			
 		$buttons = '<input type="submit" value="'.$phprlang['submit'].'" name="submit" class="mainoption"> <input type="reset" value="'.$phprlang['reset'].'" name="reset" class="liteoption">';
 	}
 	elseif($_GET['mode'] == 'update')
 	{
-		$id = scrub_input($_GET['id']);
-
-		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "locations WHERE location_id=%s",quote_smart($id));
-		$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-		$data = $db_raid->sql_fetchrow($result, true);
-		
 		// it's an edit... joy
-		// Event Type for WoW Calendar
-		$eventtype = '<select name="tag" class="post">';
-		if ($data['event_type'] == "1")
-			$eventtype .= '<option value="1" selected>' . $phprlang['event_type_raid'] . '</option>';
-		else
-			$eventtype .= '<option value="1">' . $phprlang['event_type_raid'] . '</option>';
-		if ($data['event_type'] == "2")
-			$eventtype .= '<option value="2" selected>' . $phprlang['event_type_dungeon'] . '</option>';
-		else
-			$eventtype .= '<option value="2">' . $phprlang['event_type_dungeon'] . '</option>';
-		if ($data['event_type'] == "3")
-			$eventtype .= '<option value="3" selected>' . $phprlang['event_type_pvp'] . '</option>';
-		else
-			$eventtype .= '<option value="3">' . $phprlang['event_type_pvp'] . '</option>';
-		if ($data['event_type'] == "4")
-			$eventtype .= '<option value="4" selected>' . $phprlang['event_type_meeting'] . '</option>';
-		else
-			$eventtype .= '<option value="4">' . $phprlang['event_type_meeting'] . '</option>';
-		if ($data['event_type'] == "5")
-			$eventtype .= '<option value="5" selected>' . $phprlang['event_type_other'] . '</option>';
-		else
-			$eventtype .= '<option value="5">' . $phprlang['event_type_other'] . '</option>';
-		$eventtype .= '</select>';
-		$form_action = "locations.php?mode=edit&amp;id=$id";
+		
+		// Setup Event Type Select Box.
+		$eventtype = '<select name="event_type" id="event_type" class="post" onChange="MM_jumpMenu(\'parent\',this,0)">
+					<option value=""></option>';
+
+		$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "event_type";
+		$result2 = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		while($event_type_data = $db_raid->sql_fetchrow($result2, true))
+		{		
+			// Event Type for WoW Calendar
+			if ($event_type_data['event_type_id'] == $event_type_id)
+				$eventtype .= '<option value="locations.php?mode=update&amp;id='.$id.'&amp;event_type='.$event_type_data['event_type_id'].'" selected>' . $phprlang[$event_type_data['event_type_lang_id']] . '</option>';
+			else
+				$eventtype .= '<option value="locations.php?mode=update&amp;id='.$id.'&amp;event_type='.$event_type_data['event_type_id'].'">' . $phprlang[$event_type_data['event_type_lang_id']] . '</option>';
+		}
+		$eventtype .= '</select>';		
+		// End Event Type Setup
+		
+		// Setup Expansion Select Box.
+		$sql = "SELECT exp_id FROM " . $phpraid_config['db_prefix'] . "events WHERE event_id = " . $event_id;
+		$result2 = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$event_data = $db_raid->sql_fetchrow($result2, true);
+		$expansion = '<select name="expansion" id="expansion" class="post" onChange="MM_jumpMenu(\'parent\',this,0)">
+					<option value=""></option>';
+		
+		$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "expansion";
+		$result2 = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		while($expansion_data = $db_raid->sql_fetchrow($result2, true))
+		{		
+			// Event Type for WoW Calendar
+			if ($expansion_data['exp_id'] == $expansion_id)
+				$expansion .= '<option value="locations.php?mode=update&amp;id='.$id.'&amp;exp_id='.$expansion_data['exp_id'].'&amp;event_type='.$event_type_id.'" selected>' . $phprlang[$expansion_data['exp_lang_id']] . '</option>';
+			else
+				$expansion .= '<option value="locations.php?mode=update&amp;id='.$id.'&amp;exp_id='.$expansion_data['exp_id'].'&amp;event_type='.$event_type_id.'">' . $phprlang[$expansion_data['exp_lang_id']] . '</option>';
+		}
+		$expansion .= '</select>';		
+		// End Expansion Setup
+
+		// Setup Events Select Box.
+		$events = '<select name="event" id="event" class="post" onChange="MM_jumpMenu(\'parent\',this,0)">
+					<option value=""></option>';
+
+		if ($event_type_id == 1 || $event_type_id == 2) // If Dungeons or Raids pull exp_id = 0 also.
+			$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "events WHERE (exp_id =" .$expansion_id . " OR exp_id = 0) AND event_type_id =" .$event_type_id. " ORDER BY zone_desc";
+		elseif ($event_type_id == 3 || $event_type_id == 4) // If Meeting Type, Pull Major Cities
+			$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "events WHERE event_type_id =" .$event_type_id. " ORDER BY zone_desc";
+		elseif ($event_type_id == 5) // Other Type, Pull Everything
+			$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "events WHERE (exp_id =" .$expansion_id . " OR exp_id = 0) ORDER BY zone_desc";	
+		else // By default pull Raids and Dungeons
+			$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "events WHERE (exp_id =" .$expansion_id . " OR exp_id = 0) AND event_type_id =" .$event_type_id. " ORDER BY zone_desc";
+			
+		$result2 = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		while($event_data = $db_raid->sql_fetchrow($result2, true))
+		{		
+			// Event Type for WoW Calendar
+			if ($event_data['event_id'] == $event_id)
+				$events .= '<option value="locations.php?mode=update&amp;id='.$id.'&amp;exp_id='.$expansion_id.'&amp;event_type='.$event_type_id.'&amp;event='.$event_data['event_id'].'" selected>' . $event_data['zone_desc'] . '</option>';
+			else
+				$events .= '<option value="locations.php?mode=update&amp;id='.$id.'&amp;exp_id='.$expansion_id.'&amp;event_type='.$event_type_id.'&amp;event='.$event_data['event_id'].'">' . $event_data['zone_desc'] . '</option>';
+		}
+		$events .= '</select>';		
+		// End Event Setup
+		
 		$name = '<input name="name" type="text" id="name" value="' . $data['name'] . '" class="post">';
-		$location = '<input name="location" type="text" id="name" value="' . $data['location'] . '"  class="post">';
 		$min_lvl = '<input name="min_lvl" type="text" value="' . $data['min_lvl'] . '"  class="post" style="width:20px" maxlength="2">';
 		$max_lvl = '<input name="max_lvl" type="text" value="' . $data['max_lvl'] . '"  class="post" style="width:20px" maxlength="2">';
 		$dk = '<input name="dk" type="text" value="' . $data['dk'] . '"  class="post" style="width:20px" maxlength="2">';
@@ -406,6 +543,16 @@ if($_GET['mode'] != 'delete')
 		else
 			$locked = '<input type="checkbox" name="lock_template" value="' . $data['locked'] . '"  class="post" checked>';
 		$max = '<input name="max" type="text" value="' . $data['max'] . '"  class="post" style="width:20px" maxlength="2">';
+		$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "events WHERE event_id =" . $event_id;
+		$result2 = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$event_data = $db_raid->sql_fetchrow($result2, true);
+		$event_max = $event_data['max'];
+		$wow_name = $event_data['wow_name'];
+		$zone_desc = $event_data['zone_desc'];
+		$location = '<input name="location" value="'.$wow_name.'" type="text" id="location" style="width:350px" class="post" DISABLED>';
+		$icon = "templates/" . $phpraid_config['template'] . "/" . $event_data['icon_path'];
+		$form_action = 'locations.php?mode=edit&amp;id='.$id.'&amp;event_type='.$event_type_id.'&amp;event='.$event_id.'&amp;location='.$zone_desc;
+		
 		$buttons = '<input type="submit" value="'.$phprlang['update'].'" name="submit" class="mainoption"> <input type="reset" value="'.$phprlang['reset'].'" name="reset" class="liteoption">';
 	}
 
@@ -414,9 +561,15 @@ if($_GET['mode'] != 'delete')
 		array(
 			'form_action'=>$form_action,
 			'event_type'=>$eventtype,
+			'expansion'=>$expansion,
+			'icon'=>$icon,
+			'event'=>$events,
 			'eventtype_text'=>$phprlang['raids_eventtype_text'],
+			'expansion_text'=>$phprlang['locations_expansion_text'],
+			'event_text'=>$phprlang['locations_events_text'],
 			'name'=>$name,
 			'location'=>$location,
+			'location_read_only_text'=>$phprlang['locations_ro_text'],
 			'min_lvl'=>$min_lvl,
 			'max_lvl'=>$max_lvl,
 			'dk'=>$dk,

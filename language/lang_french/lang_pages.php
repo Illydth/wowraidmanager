@@ -142,6 +142,9 @@ $phprlang['locations_new'] = 'Creer un nouveau lieu de Raid';
 $phprlang['locations_raid_max'] = 'Nombre max de joueurs';
 $phprlang['locations_short'] = 'Identifiant';
 $phprlang['lock_template'] = 'Locked Raid Template?';
+$phprlang['locations_ro_text'] = 'Read Only: Populated With WoW Official Name for Instance';
+$phprlang['locations_expansion_text'] = 'Expansion';
+$phprlang['locations_events_text'] = 'Event Name';
 
 // lua_output
 $phprlang['rim_download'] = 'Download RIM (Raid Information Manager)';

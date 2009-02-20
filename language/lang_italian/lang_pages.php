@@ -141,6 +141,9 @@ $phprlang['locations_new'] = 'Configura una nuova Istanza';
 $phprlang['locations_raid_max'] = 'Numero massimo di PG';
 $phprlang['locations_short'] = 'Nome abbreviato';
 $phprlang['lock_template'] = 'Profilo Istanza non modificabile?';
+$phprlang['locations_ro_text'] = 'Read Only: Populated With WoW Official Name for Instance';
+$phprlang['locations_expansion_text'] = 'Expansion';
+$phprlang['locations_events_text'] = 'Event Name';
 
 // lua_output
 $phprlang['rim_download'] = 'Scarica RIM (Raid Information Manager)';

@@ -142,6 +142,9 @@ $phprlang['locations_new'] = '新增類別';
 $phprlang['locations_raid_max'] = '人數限制';
 $phprlang['locations_short'] = '活動簡稱';	
 $phprlang['lock_template'] = '已鎖定的風格?';
+$phprlang['locations_ro_text'] = 'Read Only: Populated With WoW Official Name for Instance';
+$phprlang['locations_expansion_text'] = 'Expansion';
+$phprlang['locations_events_text'] = 'Event Name';
 
 // lua_output
 $phprlang['rim_download'] = '下載 RIM (團隊資料管理者)';
