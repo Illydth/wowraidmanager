@@ -216,9 +216,33 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true))
 		}
 	}
 
+	//Tip Text Is:
+	//<b>Header</b><br>
+	//Invites: [time]<br>
+	//Start: [time]<br>
+	//<hr>
+	//[desc]
+	
+	// Get the Raid Icon for the Raid Event
+	$sql = sprintf("SELECT icon_path FROM " . $phpraid_config['db_prefix'] . "events WHERE event_id=%s", quote_smart($raids['event_id']));
+	$event_results = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$raid_icon = $raid_results['icon_path'];
+	
 	// Create the link to the raids view.
 	$desc = scrub_input($raids['description']);
-	$ddrivetiptxt = "'<span class=tooltip_title>" . $phprlang['description'] ."</span><br>" . DEUBB2($desc) . "'";
+	$pop_text = "'<span class=tootip_title>" . $phprlang['description'] . "</span><br>";
+	$pop_text .= '<div align="left">';
+	$pop_text .= "<b>" . $raids['location'] . "</b>"; 
+	$pop_text .= "<br>"; 
+	$pop_text .= $phprlang['invites'] . ": " . $invitetime;
+	$pop_text .= "<br>";
+	$pop_text .= $phprlang['start'] . ": " . $starttime;
+	$pop_text .= "<br><hr><br>";
+	$pop_text .= DEUBB2($desc) . "'";
+	$pop_text .= "</div>";
+	
+	$ddrivetiptxt = $pop_text;
+	//$ddrivetiptxt = "'<span class=tooltip_title>" . $phprlang['description'] ."</span><br>" . DEUBB2($desc) . "'";
 	$location = '<a href="view.php?mode=view&amp;raid_id='.$raids['raid_id'].'" onMouseover="ddrivetip('.$ddrivetiptxt.');" onMouseout="hideddrivetip()">'.$raids['location'].'</a> <font color="#0000ff" size="+1">' . $issignedup . '</font>';
 
 	// Start the "display" portion, get the "box" the raid link and information is supposed to go into
