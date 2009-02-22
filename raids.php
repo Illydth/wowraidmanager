@@ -312,6 +312,9 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 		$tag = scrub_input($_POST['tag']);
 		if ($tag == '')
 			$tag = "1";
+		$event_id = scrub_input($_POST['event_id']);
+		if ($event_id == '')
+			$event_id = "0";
 		$description = scrub_input($_POST['description']);
 		$max = scrub_input($_POST['max']);
 		$min_lvl = scrub_input($_POST['min_lvl']);
@@ -409,6 +412,7 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 		}
 
 		$tag = $data['event_type'];
+		$event_id = $data['event_id'];
 		$max = $data['max'];
 		$dk = $data['dk'];
 		$dr = $data['dr'];
@@ -465,6 +469,7 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 				}
 
 				$tag = $data['event_type'];
+				$event_id = $data['event_id'];
 	            $max = $data['max'];
 	            $dk = $data['dk'];
 			    $dr = $data['dr'];
@@ -515,6 +520,7 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 	            $data = $db_raid->sql_fetchrow($result, true);
 	            
 	            $tag = $data['event_type'];
+	            $event_id = $data['event_id'];
 	            $max = $data['max'];
 	            $dk = $data['dk_lmt'];
 	            $dr = $data['dr_lmt'];
@@ -556,6 +562,7 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 		{
 			// or it could be they screwed up the form, let's put those values back in because we're nice like that
 			$tag = scrub_input($_POST['tag']);
+			$event_id = scrub_input($_POST['event_id']);
 			$max = scrub_input($_POST['max']);
 			$dk = scrub_input($_POST['dk']);
 			$dr = scrub_input($_POST['dr']);
@@ -718,28 +725,23 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 		
 		// Event Type for WoW Calendar
 		$eventtype = '<select name="tag" class="post">';
-		if ($tag == "1")
-			$eventtype .= '<option value="1" selected>' . $phprlang['event_type_raid'] . '</option>';
-		else
-			$eventtype .= '<option value="1">' . $phprlang['event_type_raid'] . '</option>';
-		if ($tag == "2")
-			$eventtype .= '<option value="2" selected>' . $phprlang['event_type_dungeon'] . '</option>';
-		else
-			$eventtype .= '<option value="2">' . $phprlang['event_type_dungeon'] . '</option>';
-		if ($tag == "3")
-			$eventtype .= '<option value="3" selected>' . $phprlang['event_type_pvp'] . '</option>';
-		else
-			$eventtype .= '<option value="3">' . $phprlang['event_type_pvp'] . '</option>';
-		if ($tag == "4")
-			$eventtype .= '<option value="4" selected>' . $phprlang['event_type_meeting'] . '</option>';
-		else
-			$eventtype .= '<option value="4">' . $phprlang['event_type_meeting'] . '</option>';
-		if ($tag == "5")
-			$eventtype .= '<option value="5" selected>' . $phprlang['event_type_other'] . '</option>';
-		else
-			$eventtype .= '<option value="5">' . $phprlang['event_type_other'] . '</option>';
-		$eventtype .= '</select>';
+		$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "event_type";
+		$result2 = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		while($event_type_data = $db_raid->sql_fetchrow($result2, true))
+		{		
+			// Event Type for WoW Calendar
+			if (isset($tag) && $event_type_data['event_type_id'] == $tag)
+				$eventtype .= '<option value="'.$event_type_data['event_type_id'].'" selected>' . $phprlang[$event_type_data['event_type_lang_id']] . '</option>';
+			elseif (!isset($tag) && $event_type_data['event_type_id'] == 1)
+				$eventtype .= '<option value="'.$event_type_data['event_type_id'].'" selected>' . $phprlang[$event_type_data['event_type_lang_id']] . '</option>';
+			else
+				$eventtype .= '<option value="'.$event_type_data['event_type_id'].'">' . $phprlang[$event_type_data['event_type_lang_id']] . '</option>';
+		}
+		$eventtype .= '</select>';		
+		// End Event Type Setup		
 		
+		$event_id_info = '<input type="hidden" name="event_id" class="post" value="' . $event_id . '">';
+
 		// location
 		if(isset($location_value))
 			$location = '<input type="text" name="location" class="post" value="' . $location_value . '">';
@@ -897,6 +899,7 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 				's_time_ampm'=>$s_time_ampm,
 				'freeze'=>$freeze,
 				'event_type'=>$eventtype,
+				'event_id_info'=>$event_id_info,
 				'location'=>$location,
 				'description'=>$description,
 				'maximum'=>$maximum,
@@ -1004,6 +1007,7 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 		$s_time_ampm_value = scrub_input($_POST['s_time_ampm']);
 		$freeze = scrub_input($_POST['freeze']);
 		$tag = scrub_input($_POST['tag']);
+		$event_id = scrub_input($_POST['event_id']);
 		$description = scrub_input(DEUBB($_POST['description']));
 		if(isset($_GET['id']))
 			$id = scrub_input($_GET['id']);
@@ -1029,12 +1033,12 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 			$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "raids (`description`,`freeze`,`invite_time`,
 					`location`,`officer`,`old`,`start_time`,`dk_lmt`,`dr_lmt`,`hu_lmt`,`ma_lmt`,`pa_lmt`,`pr_lmt`,`ro_lmt`,`sh_lmt`,`wk_lmt`,`wa_lmt`,
 					`role1_lmt`,`role2_lmt`,`role3_lmt`,`role4_lmt`,`role5_lmt`,`role6_lmt`,
-					`min_lvl`,`max_lvl`,`max`,`event_type`)	VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
+					`min_lvl`,`max_lvl`,`max`,`event_type`,`event_id`)	VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
 					quote_smart($description),quote_smart($freeze),quote_smart($invite_time),quote_smart($location),
 					quote_smart($username),quote_smart('0'),quote_smart($start_time),
 					quote_smart($dk),quote_smart($dr),quote_smart($hu),quote_smart($ma),quote_smart($pa),quote_smart($pr),quote_smart($ro),quote_smart($sh),
 					quote_smart($wk),quote_smart($wa),quote_smart($role1),quote_smart($role2),quote_smart($role3),quote_smart($role4),
-					quote_smart($role5),quote_smart($role6),quote_smart($min_lvl),quote_smart($max_lvl),quote_smart($max),quote_smart($tag));
+					quote_smart($role5),quote_smart($role6),quote_smart($min_lvl),quote_smart($max_lvl),quote_smart($max),quote_smart($tag),quote_smart($event_id));
 
 			$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
 
@@ -1043,11 +1047,11 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 		else
 		{
 			$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "raids SET location=%s,description=%s,invite_time=%s,start_time=%s,
-					freeze=%s,max=%s,event_type=%s,old='0',dk_lmt=%s,dr_lmt=%s,hu_lmt=%s,ma_lmt=%s,pa_lmt=%s,pr_lmt=%s,ro_lmt=%s,sh_lmt=%s,wk_lmt=%s,wa_lmt=%s,
+					freeze=%s,max=%s,event_type=%s,event_id=%s,old='0',dk_lmt=%s,dr_lmt=%s,hu_lmt=%s,ma_lmt=%s,pa_lmt=%s,pr_lmt=%s,ro_lmt=%s,sh_lmt=%s,wk_lmt=%s,wa_lmt=%s,
 					role1_lmt=%s,role2_lmt=%s,role3_lmt=%s,role4_lmt=%s,role5_lmt=%s,role6_lmt=%s,min_lvl=%s,max_lvl=%s WHERE raid_id=%s",
 					quote_smart($location),quote_smart($description),quote_smart($invite_time),quote_smart($start_time), quote_smart($freeze),
-					quote_smart($max),quote_smart($tag),quote_smart($dk),quote_smart($dr),quote_smart($hu),quote_smart($ma),quote_smart($pa),quote_smart($pr),quote_smart($ro),
-					quote_smart($sh),quote_smart($wk),quote_smart($wa),quote_smart($role1),quote_smart($role2),quote_smart($role3),
+					quote_smart($max),quote_smart($tag),quote_smart($event_id),quote_smart($dk),quote_smart($dr),quote_smart($hu),quote_smart($ma),quote_smart($pa),
+					quote_smart($pr),quote_smart($ro),quote_smart($sh),quote_smart($wk),quote_smart($wa),quote_smart($role1),quote_smart($role2),quote_smart($role3),
 					quote_smart($role4),quote_smart($role5),quote_smart($role6),quote_smart($min_lvl),quote_smart($max_lvl),quote_smart($id));
 
 			$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);

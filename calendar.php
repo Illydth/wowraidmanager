@@ -190,6 +190,7 @@ $sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "raids WHERE start_time
 $raids_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 while($raids = $db_raid->sql_fetchrow($raids_result, true)) 
 {
+	echo "<br>Event ID: " . $raids['event_id'];
 	// Calculate the Invite and Start Time for the Raid.
 	$invitetime = new_date($phpraid_config['time_format'], $raids['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
 	$starttime = new_date($phpraid_config['time_format'], $raids['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
@@ -215,12 +216,32 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true))
 			}
 		}
 	}
-
+	
+	// Get the Raid Icon for the Raid Event
+	$sql = sprintf("SELECT icon_path FROM " . $phpraid_config['db_prefix'] . "events WHERE event_id=%s", quote_smart($raids['event_id']));
+	$event_results = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$raid_icon_results = $db_raid->sql_fetchrow($event_results, true);
+	$raid_icon = $raid_icon_results['icon_path'];
+	
 	// Create the link to the raids view.
 	$desc = scrub_input($raids['description']);
-	$ddrivetiptxt = "'<span class=tooltip_title>" . $phprlang['description'] ."</span><br>" . DEUBB2($desc) . "'";
-	$location = '<a href="view.php?mode=view&amp;raid_id='.$raids['raid_id'].'" onMouseover="ddrivetip('.$ddrivetiptxt.');" onMouseout="hideddrivetip()">'.$raids['location'].'</a> <font color="#0000ff" size="+1">' . $issignedup . '</font>';
+	$pop_text = "'";
+	$pop_text .= "<b>" . $raids['location'] . "</b>"; 
+	$pop_text .= "<br>"; 
+	$pop_text .= $phprlang['invites'] . ": " . $invitetime;
+	$pop_text .= "<br>";
+	$pop_text .= $phprlang['start'] . ": " . $starttime;
+	$pop_text .= "<br><hr><br>";
+	$pop_text .= DEUBB2($desc);
+	$pop_text .= "'";
+	$ddrivetiptext = $pop_text;
 
+	$href = '<a href="view.php?mode=view&amp;raid_id='.$raids['raid_id'].'">';
+	$href_close = '</a>';
+	$img = '<img src="templates/'.$phpraid_config['template'].'/'.$raid_icon.'" onMouseout="hideddrivetip();" onMouseover="ddrivetip('.$ddrivetiptext.');" alt="'.$raids['location'].'">';
+	$font = '<font color="#0000ff" size="+1">&nbsp;' . $issignedup . '</font>';
+	$location = $href . $img . $href_close . $font;
+	
 	// Start the "display" portion, get the "box" the raid link and information is supposed to go into
 	//		then append the raid into the box.
 	$raidDayOfMonth = date("j", $raids['start_time']);
@@ -230,10 +251,10 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true))
 	$$varname .= '<div align="left">';
 	$$varname .= $location; 
 	$$varname .= "<br>"; 
-	$$varname .= $phprlang['invites'] . ": " . $invitetime;
-	$$varname .= "<br>";
-	$$varname .= $phprlang['start'] . ": " . $starttime;
-	$$varname .= "<br><br>";
+	//$$varname .= $phprlang['invites'] . ": " . $invitetime;
+	//$$varname .= "<br>";
+	//$$varname .= $phprlang['start'] . ": " . $starttime;
+	//$$varname .= "<br><br>";
 	$$varname .= "</div>";
 }
 
