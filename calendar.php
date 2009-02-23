@@ -190,7 +190,6 @@ $sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "raids WHERE start_time
 $raids_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 while($raids = $db_raid->sql_fetchrow($raids_result, true)) 
 {
-	echo "<br>Event ID: " . $raids['event_id'];
 	// Calculate the Invite and Start Time for the Raid.
 	$invitetime = new_date($phpraid_config['time_format'], $raids['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
 	$starttime = new_date($phpraid_config['time_format'], $raids['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
@@ -225,8 +224,11 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true))
 	
 	// Create the link to the raids view.
 	$desc = scrub_input($raids['description']);
+	$desc = str_replace("'", "\'", $desc);
+	$raid_name = scrub_input($raids['location']);
+	$raid_name = str_replace("'", "\'", $raid_name);
 	$pop_text = "'";
-	$pop_text .= "<b>" . $raids['location'] . "</b>"; 
+	$pop_text .= "<b>" . $raid_name . "</b>"; 
 	$pop_text .= "<br>"; 
 	$pop_text .= $phprlang['invites'] . ": " . $invitetime;
 	$pop_text .= "<br>";
