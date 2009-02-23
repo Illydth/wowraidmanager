@@ -2,11 +2,11 @@ Quick Installation
 -------------------
 * Unpackage the files from this archive into a directory on your local machine.
 * Open your FTP program and upload the entire contents of this archive to your web host,
-	including the phpRaid directory.
+	including the WRM directory.
 * Change the Ownership of all files to match that of your web server.  
 * Change the permissions of the following directories and files to be writable by your
 	web server user:
-	* config.php
+	* config.php (see below)
 	* raid_lua
 * Open a web browser and go to your WRM installation (e.g. http://www.yourdomain.com/wrm)
 * Choose your installation method and follow the steps to install your WoW Raid Manager server.
@@ -18,17 +18,53 @@ Quick Installation
 	
 Please see phpRaid_install_doc.pdf for more information.
 
+NOTE on Config.php: Note that the config.php file no longer ships with the software.  Generally
+it should be created on the fly by the installation program shipping with WRM but in some special
+cases we have found that the config file is NOT created by the installation and the software has
+problems when being executed.  If, after installation, you do not have a valid config.php file in 
+your WRM Root Directory, please create one in the following format:
+
+<?php
+/*
+#**********************************************#
+#                                              #
+#     auto-generated configuration file        #
+#     WoW Raid Manager 3.5.0                   #
+#     date: 2008-09-05 - 16:48:10              #
+#   Do not change anything in this file!       #
+#                                              #
+#**********************************************#
+*/
+
+global $phpraid_config;
+$phpraid_config['db_name'] = '<name of database>';
+$phpraid_config['db_host'] = '<name of database host>';
+$phpraid_config['db_user'] = '<database login user ID>';
+$phpraid_config['db_pass'] = '<database login user password>';
+$phpraid_config['db_prefix'] = 'wrm_'; (Change this only if you have changed the prefix in installation).
+$phpraid_config['eqdkp_db_name'] = '';
+$phpraid_config['eqdkp_db_host'] = '';
+$phpraid_config['eqdkp_db_user'] = '';
+$phpraid_config['eqdkp_db_pass'] = '';
+$phpraid_config['eqdkp_db_prefix'] = '';
+?>
+
+It is safe to leave the eqdkp configuration blank for the moment.  Please see "eqdkp_link.htm" in
+the docs directory for more information on linking WRM with eqdkp.
+
 Quick Upgrade
 -------------------
 * Unpackage the files from this archive into a directory on your local machine.
 * Open your FTP program and upload the entire contents of this archive to your web host,
-	including the phpRaid directory.
+	including the WRM directory.  
+* MAKE SURE TO OVERWRITE ALL FILES, many FTP applications will try to resume upload by default
+    and this WILL screw up the software.  Ensure that your upload of these files FORCABLY overwrites
+    (replaces) the existing copy of WRM on your server.
 * Change the Ownership of all files to match that of your web server.  Check the list above
 	to ensure that everything listed in step 4 above is writable.  
-* Run the Installation application and select "Upgrade to 3.5.1".  Follow the installer all
+* Run the Installation application and select "Upgrade to 3.6.1".  Follow the installer all
     the way through to the end (much of your prior information should be already set) and 
-    make sure to properly re-set your authentication method (if it's not pre-selected for you)
-    already).
+    make sure to properly re-set your authentication method (if it's not pre-selected for you).
 * Note: Templates other than "default" are likely NOT to work with 4.0 for a while till the template
 	editors get a chance to upgrade them.  Please switch back to default till the templates get updated.
 * Note: You can remove the "Scripts" directory under any templates you are using, they are no longer used.

@@ -105,6 +105,22 @@ chmod a-x *.jpg
 chmod a-x *.ico
 chmod a-x *.png
 cd ..
+cd instances
+cd BC_Icons
+chmod a-x *
+cd ..
+cd Classic_Icons
+chmod a-x *
+cd ..
+cd Misc_Icons
+chmod a-x *
+cd ..
+cd source
+chmod a-x *.psd
+cd ..
+cd WotLK_Icons
+chmod a-x *
+cd ..
 cd ..
 cd style
 chmod a-x *.php

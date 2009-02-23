@@ -1,3 +1,4 @@
+<<<<<<< HEAD:install/database_schema/install/install.sql
 -- Announcements Table Creation
 DROP TABLE IF EXISTS `wrm_announcements`;
 CREATE TABLE  `wrm_announcements` (

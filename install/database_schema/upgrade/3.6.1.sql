@@ -10,7 +10,7 @@ CREATE TABLE `phpraid_events` (
   PRIMARY KEY  (`event_id`)
 ) ;
 
-INSERT INTO `wrm_events` (`event_id`, `zone_desc`, `max`, `exp_id`, `event_type_id`, `wow_name`, `icon_path`) VALUES
+INSERT INTO `phpraid_events` (`event_id`, `zone_desc`, `max`, `exp_id`, `event_type_id`, `wow_name`, `icon_path`) VALUES
 (1, 'Stormwind', 99, 1, 0, '', 'images/instances/Misc_Icons/LOC-Stormwind.jpg'),
 (2, 'Thunder Bluff', 99, 1, 0, '', 'images/instances/Misc_Icons/LOC-Thunder-Bluff.jpg'),
 (3, 'Silvermoon', 99, 2, 0, '', 'images/instances/Misc_Icons/LOC-Silvermoon.jpg'),
@@ -160,8 +160,10 @@ INSERT INTO `phpraid_expansion` (`exp_id`, `exp_name`, `exp_lang_id`) VALUES
 (2, 'BC', 'exp_burning_crusade', 0),
 (3, 'WotLK', 'exp_wrath_lich_king', 1);
 
-ALTER TABLE `wrm_locations` ADD `event_id` INT( 10 ) NOT NULL default '119';
-ALTER TABLE `wrm_locations` CHANGE `event_type` `event_type` TINYINT( 2 ) NOT NULL DEFAULT '1';
+ALTER TABLE `phpraid_locations` ADD `event_id` INT( 10 ) NOT NULL default '119';
+ALTER TABLE `phpraid_locations` CHANGE `event_type` `event_type` TINYINT( 2 ) NOT NULL DEFAULT '1';
+
+UPDATE `phpraid_config` SET `config_value` = 'iums' WHERE `config_name` = 'auth_type' AND `config_value` = 'phpraid' LIMIT 1;
 
 INSERT INTO `phpraid_version` VALUES ('3.6.0','Version 3.6.0 of WoW Raid Manager');
 INSERT INTO `phpraid_version` VALUES ('3.6.0.1','Version 3.6.0.1 of WoW Raid Manager');
