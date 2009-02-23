@@ -3,8 +3,208 @@ at:
 
 * http://www.wowraidmanager.net/wiki/index.php?title=Installation
 
-Release of 3.6.0 Final of WoW Raid Manager
+Fast Note: There is ALOT of information in this release note for 3.6.1 since there has been a
+full set of changes implmented since 3.6.0, please browse through at least the 3.6.1 section of 
+these notes for important information regarding 3.6.1, the 3.6.0 sections also have some 
+important information for people upgrading to 3.6.0 who have not already applied any of the
+3.6.0.x patches.
+
+****************************************************
+****************************************************
+****             3.6.1 Release Notes             ***
+****************************************************
+****************************************************
+
+Release of 3.6.1 Final of WoW Raid Manager
 -----------------------------------
+3.6.1 is identical to v3.6.0.2 + Patch except for the addition of an additional feature.  
+
+This update encorporates all "consolidated" patches for 3.6.0 and adds a new feature to the
+calendar.
+
+* Calendar Icons now supported: Instead of the text based calendar I developed for 3.6.0 we
+have a new icon based calendar.  Each raid will now appear as an event specific ICON (assuming
+it is setup, see below) on the calendar with a mouseover denoting the raid, invite and start
+times as well as description.  As with the text link, clicking on the icon will take you to the
+raid to allow you to sign up.   
+
+* Location System Rewrite: Along with the calendar icon addition, the locations section has
+received a MAJOR overhaul.  It now supports and understands all Blizzard Raid and Dungeon zones
+inherently, including Max Raid/Group size, Icon, and the Game Calendar based raid name.  Creating
+a new location is now as easy as selecting the Type (Raid, Dungeon, PvP, Meeting, Other), Expansion 
+(Generic, BC, or Wrath) and then the selecting the zone from the dropdown, relivant information 
+will be filled in for you and the event Icon will be immediately set for the event to appear in 
+the calendar.  See "Calendar Icons and Location Changes" below for more detailed information.
+
+Calendar Icons and Location Changes
+------------------------------------
+As noted in the release announcement, the locations section has been re-written to support
+attaching icons to raid events.  
+
+There is now a new set of database tables (events, event_type and expansion) included that
+assist with the support of managing Blizzard's game information.  The events table now includes a
+listing of all blizzard raid and dungeon instances in the game, including generic, BC and WotLK
+released instances.  This is now the basis for creating a new location.  In the locations section
+the location creator will now select from dropdowns the basic zone and information that the location
+will be based upon.  Once that base information is filled in the location maintainer will be able
+to set or re-set most of the location inforamation (like class and level limits) as well as give
+the location a unique identifier.
+
+Note that this is a LARGE change from the fairly open location design in the past but all possible
+configurations should be accounted for.  If you find that you are missing an "event" of some kind
+that your guild regularly uses, you can add it to the events table by simply adding a record.  If 
+you find a major event missing, please let me know and I will try to add it in the future.
+
+NOTE:  All CURRENTLY CREATED LOCATIONS will need to be updated in your software to support the new
+raid icons and to link them with proper events.  This SHOULD be as easy as going into the locations
+section of your WRM installation and doing an "edit" on each location and selecting the correct zone
+that that location applies to.  Note that any locations not updated in this way will get a "generic"
+icon on the WRM calendar.
+
+
+****************************************************
+****************************************************
+****  3.6.0, 3.6.0.1, and 3.6.0.2 Release Notes  ***
+****************************************************
+****************************************************
+The original 3.6.0 Release Announcement and the 3.6.0.1 and 3.6.0.2 announcements have been
+maintained below to get a full picture of the 3.6.x release version.
+
+=========================================
+   *** 3.6.0.2 Release Information ***
+=========================================
+
+The 3.6.0.2 Release announcement is as follows:
+------------------------------------------------
+This patch represents a set of combined patches and various bugfixes to the 3.6.0 software.
+
+Installation instructions for this patch are contained within the .zip or .tar.gz file in the README.txt file.
+
+PLEASE READ THIS FILE
+
+There is a database update that needs done and instructions on how to apply the database update (it will require you to possibly minorly modify the SQL file).
+
+Note: This patch ONLY applies to 3.6.0/3.6.0.1.  DO NOT attempt to apply this patch to any other release of software besides a 3.6.0.x installation of WRM.
+
+If you are having problems with any other version of WRM, please upgrade to 3.6.0 first before identifying issues.
+
+Quick and Dirty Upgrade Instructions
+------------------------------------------------------------------
+Download the .zip or .tar.gz file.
+Upload the files in the cp2 directory to your WRM root on your webserver OVERWRITE ALL FILES.
+Read the README.txt file for instructions on how to modify the wrm3602.sql file in the wrm360_cp2 directory.
+Execute the wrm3602.sql file to your database.
+
+You should be all patched.
+
+Quick and Dirty New Install Instructions
+-------------------------------------------------------------------
+Download the 3.6.0 base package.
+Unzip to a local directory.
+Download the 3.6.0.1 upgrade package.
+Unzip to a local directory.
+Download the 3.6.0.2 upgrade package.
+Unzip to a local directory.
+Copy all 3.6.0.1 files over the top of all 3.6.0 files.
+Copy all the 3.6.0.2 files over the top of all 3.6.0 files.
+Upload the entire 3.6.0 directory (which should now include the 3.6.0.1 and 3.6.0.2 upgrade files) to a directory on your webserver.
+Run the installer.
+
+Versions Prior to 3.6.0:
+---------------------------
+While versions prior to 3.6.0 are not supported, the security breach DOES affect these versions of the software.  Again, while there is no support for v3.5.x and before it is likely that these auth files will work for prior versions of the WRM software.  While I cannot gaurentee total compatibility, it is likely that unzipping the 3.6.0.2 consolidated patch and overwriting the auth and includes files (DO NOT modify the installer or installation files in the install directories for these versions) for versions at least as far back as 3.5.0 and potentially back to the 3.2 versions will work to update and fix the securty problems inherent in these bridges.
+
+ADMINS ARE ON THEIR OWN if they choose to implement these patch files on versions prior to 3.6.0/3.6.0.1.  I recommend keeping backup copies of the "working" bridges before attempting to overwrite them with the files from 3.6.0.2.
+----------------------------------------------------
+
+3.6.0.2 Change Notes:
+---------------------
+Release Notes
+-------------------
+* SECURITY FIX: This release fixes a major security hole in the WRM application
+where the user password is stored in plain text in a cookie accessible to the en
+tire domain.  User passwords were easily readable by viewing the cookies associa
+ted with connecting to the WRM application.  Using man in the middle attacks or
+other methods of obtaining cookies sent to a domain, a hacker could obtain passw
+ord information for a user using WRM.  In the case of a bridged installation thi
+s password would compromise both WRM's security as well as the security of the b
+ridged application.
+
+* SECURITY FIX: This release fixes a medium/major security hole allowing users of one WRM installation on a domain to freely log in/access/manage another WRM installation on the same domain.  Given two WRM/phpRaid installations on the sameweb host (say under the directories /wrm and /wrm2) the users of WRM2, once logged in to WRM2, would ALSO have access to the same ProfileID (possible for a different user name) in the WRM1 installation.  Due to the way session data is stored on the system, the session cookie for users using WRM2 would also load when using WRM1 (or visa versa), however due to another bug, the user login data is not checked once this sesssion was loaded, causing users to obtain access to the WRM1 installation as the profile ID they are logged in under the WRM2 installation (again, or visa versa).
+
+NOTE: If you have followed the security fix on the WRM boards for this problem (making user cookies expire immediately when the browser window exits) this fix will restore the functionality of allowing users to stay logged in for 30 days before having to log in again, however this time it is a secure method of cookie storage.  Please DO NOT apply the security fix from the WRM post to this installation once you have upgraded to 3.6.0.2.
+
+Session Security Information
+----------------------------
+As a new "feature" (read now that it's written properly), WRM has double session protection.  First, each bridge uses a different session name, and these session names should be "Unique" amoung web applications.  Thus, a WRM installation using the iUMS bridge and one using the e107 bridge can never cross sessions, regardless of their installations, due to the session names being different.  Secondly, the session cookie is now stored in the web path of the WRM installation instead of at the web host root.  This means that even if two WRM installations ofthe same Type (same bridge usage: e.g. an iUMS and an iUMS installation) are installed on the same server, so long as they're not installed in the same web path (which is impossible without using symbolic links) will never share the same session information due to the web path for each installation being different.
+
+With these changes it should be completely safe to have multiple copies of WRM running on any given web host.
+=========================================
+
+
+=========================================
+   *** 3.6.0.1 Release Information ***
+=========================================
+
+The original 3.6.0.1 Release annoncement is as follows:
+----------------------------------------------------------
+This patch represents the combined patches and various bugfixes to the 3.6.0 software.
+
+Installation instructions for this patch are contained within the .zip or .tar.gz file in the README.txt file.
+
+PLEASE READ THIS FILE
+
+There is a database update that needs done and instructions on how to apply the database update (it will require you to possibly minorly modify the SQL file).
+
+Note: This patch ONLY applies to 3.6.0.  DO NOT attempt to apply this patch to any other release of software besides 3.6.0.
+
+If you are having problems with any other version of WRM, please upgrade to 3.6.0 first before identifying issues.
+
+Quick and Dirty Upgrade Instructions
+------------------------------------------------------------------
+Download the .zip or .tar.gz file.
+Upload all files to your WRM root on your webserver OVERWRITE ALL FILES.
+Read the README.txt file for instructions on how to modify the 3.6.0.1.sql file in the install/database_schema/upgrade directory.
+Execute the 3.6.0.1.sql file to your database.
+
+You should be all patched.
+
+Quick and Dirty New Install Instructions
+-------------------------------------------------------------------
+Download the 3.6.0 base package.
+Unzip to a local directory.
+Download the 3.6.0.1 upgrade package.
+Unzip to a local directory.
+Copy all 3.6.0.1 files over the top of all 3.6.0 files.
+Upload the entire 3.6.0 directory (which should now include the 3.6.0.1 upgrade files) to a directory on your webserver.
+Run the installer.
+
+12/30/08 NOTE: This is an updated version of the download including a fixed SMF bridge and with the armory code directory fixed.  If all is working with your site you do not need to download this, however if you use the SMF 1.x bridge or are having problems with the update, please re-download and re-apply as per instructions above.
+-----------------------------------
+
+3.6.0.1 Changes
+-----------------
+Release Notes
+-------------------
+* Death Knight added to LUA Output file.
+* Fix for comment popups when ' is included in the "notes" field in the raid view.
+* Armory Popup code now supports Death Knights.
+* Fix for delete of permissions when user does not click the "Confirm" button on the delete confirmation page (prior to this fix the moment you clicked the delete link it would go ahead and delete the permission set, PRIOR to giving you the confirmation popup).
+* Update of version to 3.6.0.1
+* Bugfix for Hack Attempt Display on page 2+ of missing signups view.
+* Fix for armory lookup code bug with ' in the server name.
+* "Deathknight Icon" description in language files for german, italian, norwegian and swedish languages was wrong.
+* Update for some German String Translations
+* Fixed some Wrong/Invalid include paths for armory lookup includes.
+* Update for Italian Language files.
+* SMF1 and SMF2 bridges now support users in both main and alternate groups instead of JUST the main group being checked for WRM usage.
+
+
+=========================================
+   *** 3.6.0 Release Information ***
+=========================================
+3.6.0 Release Notes:
+----------------------
 * Addition of a .htaccess file in the WRM root directory to turn on proper error logging for
 the WRM site.  If users have problems with this or if this interfears with a current .htaccess
 file it is OK to turn off/modify/remove this .htaccess file, with the caveaut that they may

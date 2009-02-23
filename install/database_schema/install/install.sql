@@ -337,7 +337,7 @@ INSERT INTO `phpraid_version` VALUES ('3.6.0.1','Version 3.6.0.1 of WoW Raid Man
 INSERT INTO `phpraid_version` VALUES ('3.6.0.2','Version 3.6.0.2 of WoW Raid Manager');
 INSERT INTO `phpraid_version` VALUES ('3.6.1','Version 3.6.1 of WoW Raid Manager');
 
-INSERT INTO `wrm_events` (`event_id`, `zone_desc`, `max`, `exp_id`, `event_type_id`, `wow_name`, `icon_path`) VALUES
+INSERT INTO `phpraid_events` (`event_id`, `zone_desc`, `max`, `exp_id`, `event_type_id`, `wow_name`, `icon_path`) VALUES
 (1, 'Stormwind', 99, 1, 0, '', 'images/instances/Misc_Icons/LOC-Stormwind.jpg'),
 (2, 'Thunder Bluff', 99, 1, 0, '', 'images/instances/Misc_Icons/LOC-Thunder-Bluff.jpg'),
 (3, 'Silvermoon', 99, 2, 0, '', 'images/instances/Misc_Icons/LOC-Silvermoon.jpg'),
@@ -457,14 +457,14 @@ INSERT INTO `wrm_events` (`event_id`, `zone_desc`, `max`, `exp_id`, `event_type_
 (120, 'PvP Event', 40, 0, 3, '', 'images/instances/Misc_Icons/GEN-PvP.jpg'),
 (121, 'Meeting', 99, 0, 4, '', 'images/instances/Misc_Icons/GEN-Meeting.jpg');
 
-INSERT INTO `wrm_event_type` (`event_type_id`, `event_type_name`, `event_type_lang_id`, `def`) VALUES
+INSERT INTO `phpraid_event_type` (`event_type_id`, `event_type_name`, `event_type_lang_id`, `def`) VALUES
 (1, 'Raid', 'event_type_raid', 1),
 (2, 'Dungeon', 'event_type_dungeon', 0),
 (3, 'PvP Event', 'event_type_pvp', 0),
 (4, 'Meeting', 'event_type_meeting', 0),
 (5, 'Other', 'event_type_other', 0);
 
-INSERT INTO `wrm_expansion` (`exp_id`, `exp_name`, `exp_lang_id`, `def`) VALUES
+INSERT INTO `phpraid_expansion` (`exp_id`, `exp_name`, `exp_lang_id`, `def`) VALUES
 (1, 'Generic', 'exp_generic_wow', 0),
 (2, 'BC', 'exp_burning_crusade', 0),
 (3, 'WotLK', 'exp_wrath_lich_king', 1);
