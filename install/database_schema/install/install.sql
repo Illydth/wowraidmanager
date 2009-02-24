@@ -204,6 +204,7 @@ CREATE TABLE  `phpraid_raids` (
   `max_lvl` int(2) NOT NULL default '0',
   `max` varchar(255) NOT NULL default '',
   `event_type` tinyint(1) NOT NULL default '1',
+  `event_id` int(10) NOT NULL default '119',
   PRIMARY KEY  (`raid_id`)
 ) ;
 

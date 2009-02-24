@@ -162,6 +162,7 @@ INSERT INTO `phpraid_expansion` (`exp_id`, `exp_name`, `exp_lang_id`) VALUES
 
 ALTER TABLE `phpraid_locations` ADD `event_id` INT( 10 ) NOT NULL default '119';
 ALTER TABLE `phpraid_locations` CHANGE `event_type` `event_type` TINYINT( 2 ) NOT NULL DEFAULT '1';
+ALTER TABLE `phpraid_raids` ADD `event_id` INT( 10 ) NOT NULL DEFAULT '119';
 
 UPDATE `phpraid_config` SET `config_value` = 'iums' WHERE `config_name` = 'auth_type' AND `config_value` = 'phpraid' LIMIT 1;
 
