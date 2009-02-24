@@ -139,7 +139,7 @@ CREATE TABLE `phpraid_event_type` (
   PRIMARY KEY  (`event_type_id`)
 ) ;
 
-INSERT INTO `phpraid_event_type` (`event_type_id`, `event_type_name`, `event_type_lang_id`) VALUES
+INSERT INTO `phpraid_event_type` (`event_type_id`, `event_type_name`, `event_type_lang_id`, `def`) VALUES
 (1, 'Raid', 'event_type_raid', 1),
 (2, 'Dungeon', 'event_type_dungeon', 0),
 (3, 'PvP Event', 'event_type_pvp', 0),
@@ -155,7 +155,7 @@ CREATE TABLE `phpraid_expansion` (
   PRIMARY KEY  (`exp_id`)
 ) ;
 
-INSERT INTO `phpraid_expansion` (`exp_id`, `exp_name`, `exp_lang_id`) VALUES
+INSERT INTO `phpraid_expansion` (`exp_id`, `exp_name`, `exp_lang_id`, `def`) VALUES
 (1, 'Generic', 'exp_generic_wow', 0),
 (2, 'BC', 'exp_burning_crusade', 0),
 (3, 'WotLK', 'exp_wrath_lich_king', 1);
