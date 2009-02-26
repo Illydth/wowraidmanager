@@ -1,4 +1,4 @@
 <?php
 // version information
-$version = "3.6.0.2";
+$version = "3.6.1";
 ?>
