@@ -47,6 +47,32 @@ $server = $phpraid_config['guild_server'];
 
 if($mode == 'view')
 {
+	/*************************************************************
+	 * Setup Record Output Information for Data Table
+	 *************************************************************/
+	// Set StartRecord for Page
+	if(!isset($_GET['Base']) || !is_numeric($_GET['Base']))
+		$startRecord = 1;
+	else
+		$startRecord = scrub_input($_GET['Base']);
+	
+	// Set Sort Field for Page
+	if(!isset($_GET['Sort']))
+		$sortField="";
+	else
+		$sortField = scrub_input($_GET['Sort']);
+		
+	// Set Sort Descending Mark
+	if(!isset($_GET['SortDescending']) || !is_numeric($_GET['SortDescending']))
+		$sortDesc = 1;
+	else
+		$sortDesc = scrub_input($_GET['SortDescending']);
+		
+	$pageURL = 'users.php?mode=view&';
+	/**************************************************************
+	 * End Record Output Setup for Data Table
+	 **************************************************************/
+	
 	$users = array();
 
 	// get a list of all users and assign permissions accordingly
@@ -71,57 +97,89 @@ if($mode == 'view')
 		
 		array_push($users, 
 			array(
-				'id'=>$data['profile_id'],
-				'username'=>$usersname,
-				'priv'=>$priv,
-				'email'=>$data['email'],
-				'last_login_date'=>$date,
-				'last_login_time'=>$time,
-				''=>$actions));
+				'ID'=>$data['profile_id'],
+				'Username'=>$usersname,
+				'Privileges'=>$priv,
+				'E-Mail'=>$data['email'],
+				'Last Login Date'=>$date,
+				'Last Login Time'=>$time,
+				'Buttons'=>$actions));
 	}
 
-	// setup output
-	setup_output();
-	$report->showRecordCount(true);
-	$report->allowPaging(true, $_SERVER['PHP_SELF'] . '?mode=view&Base=');
-	$report->setListRange($_GET['Base'], 25);
-	$report->allowLink(ALLOW_HOVER_INDEX,'',array());
+	/**************************************************************
+	 * Code to setup for a Dynamic Table Create: users1 View.
+	 **************************************************************/
+	$viewName = 'users1';
+	
+	//Setup Columns
+	$users_headers = array();
+	$record_count_array = array();
+	$users_headers = getVisibleColumns($viewName);
 
-	//Default sorting
-	if(!$_GET['Sort'])
-	{
-		$report->allowSort(true, 'id', '0', 'users.php?mode=view');
-	}
-	else
-	{
-		$report->allowSort(true, $_GET['Sort'], $_GET['SortDescending'], 'users.php?mode=view');
-	}
+	//Get Record Counts
+	$users_record_count_array = getRecordCounts($users, $raid_headers, $startRecord);
+	
+	//Get the Jump Menu and pass it down
+	$usersJumpMenu = getPageNavigation($users, $startRecord, $pageURL, $sortField, $sortDesc);
 
-	if($phpraid_config['show_id'] == 1)
-		$report->addOutputColumn('id',$phprlang['id'],'','center');
-	$report->addOutputColumn('username',$phprlang['username'],'','center');
-	$report->addOutputColumn('email',$phprlang['email'],'','center');
-	$report->addOutputColumn('priv',$phprlang['priv'],'','center');
-	$report->addOutputColumn('last_login_date',$phprlang['last_login_date'],'wrmdate','center');
-	$report->addOutputColumn('last_login_time',$phprlang['last_login_time'],'wrmtime','center');
-	$report->addOutputColumn('','','','right');
-	$users = $report->getListFromArray($users);
+	//Setup Data
+	$users = paginateSortAndFormat($users, $sortField, $sortDesc, $startRecord, $viewName);
 
-	$page->set_file('body_file',$phpraid_config['template'] . '/users.htm');
-
-	$page->set_var(
-		array('users'=>$users,
-			'header'=>$phprlang['users_header'])
+	/****************************************************************
+	 * Data Assign for Template.
+	 ****************************************************************/
+	$wrmsmarty->assign('users_data', $users); 
+	$wrmsmarty->assign('users_jump_menu', $usersJumpMenu);
+	$wrmsmarty->assign('column_name', $users_headers);
+	$wrmsmarty->assign('users_record_counts', $users_record_count_array);
+	$wrmsmarty->assign('header_data',
+		array(
+			'template_name'=>$phpraid_config['template'],
+			'users_header' => $phprlang['users_header'],
+			'new_raids_header' => $phprlang['raids_new'],
+			'sort_url_base' => $pageURL,
+			'sort_descending' => $sortDesc,
+			'sort_text' => $phprlang['sort_text'],
+		)
 	);
+	
+	require_once('includes/page_header.php');
+	$wrmsmarty->display('users.html');
+	require_once('includes/page_footer.php');
 
-	$page->parse('output','body_file');
 }
 else if($mode == 'details')
 {
 	// detailed information
 	$chars = array();
 	$user_id = scrub_input($_GET['user_id']);
-
+	
+	/*************************************************************
+	 * Setup Record Output Information for Data Table
+	 *************************************************************/
+	// Set StartRecord for Page
+	if(!isset($_GET['Base']) || !is_numeric($_GET['Base']))
+		$startRecord = 1;
+	else
+		$startRecord = scrub_input($_GET['Base']);
+	
+	// Set Sort Field for Page
+	if(!isset($_GET['Sort']))
+		$sortField="";
+	else
+		$sortField = scrub_input($_GET['Sort']);
+		
+	// Set Sort Descending Mark
+	if(!isset($_GET['SortDescending']) || !is_numeric($_GET['SortDescending']))
+		$sortDesc = 1;
+	else
+		$sortDesc = scrub_input($_GET['SortDescending']);
+		
+	$pageURL = 'users.php?mode=details&user_id='.$user_id.'&';
+	/**************************************************************
+	 * End Record Output Setup for Data Table
+	 **************************************************************/
+	
 	// check valid input
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "profile WHERE profile_id=%s",quote_smart($user_id));
 	$result = $db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
@@ -152,46 +210,49 @@ else if($mode == 'details')
 				'Frost'=>$data['frost'],
 				'Nature'=>$data['nature'],
 				'Shadow'=>$data['shadow'],
-				''=>'<a href="users.php?mode=remove_char&amp;n='.$data['name'].'&amp;char_id='.$data['char_id'].'&amp;user_id='.$data['profile_id'].'"><img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''. $phprlang['delete'] .'\');" onMouseout="hideddrivetip();" alt="delete icon"></a>')
+				'Buttons'=>'<a href="users.php?mode=remove_char&amp;n='.$data['name'].'&amp;char_id='.$data['char_id'].'&amp;user_id='.$data['profile_id'].'"><img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''. $phprlang['delete'] .'\');" onMouseout="hideddrivetip();" alt="delete icon"></a>')
 			);
 	}
 
-	// setup formatting for report class (THANKS to www.thecalico.com)
-	// generic settings
-	setup_output();
+	/**************************************************************
+	 * Code to setup for a Dynamic Table Create: char1 View.
+	 **************************************************************/
+	$viewName = 'char1';
+	
+	//Setup Columns
+	$char_headers = array();
+	$record_count_array = array();
+	$char_headers = getVisibleColumns($viewName);
 
-	$report->showRecordCount(true);
-	$report->allowPaging(true, $_SERVER['PHP_SELF'] . '?mode=view&Base=');
-	$report->setListRange($_GET['Base'], 25);
-	$report->allowLink(ALLOW_HOVER_INDEX,'',array());
+	//Get Record Counts
+	$char_record_count_array = getRecordCounts($chars, $char_headers, $startRecord);
+	
+	//Get the Jump Menu and pass it down
+	$charJumpMenu = getPageNavigation($chars, $startRecord, $pageURL, $sortField, $sortDesc);
 
-	$report->allowSort(true, $_GET['Sort'], $_GET['SortDescending'], 'profile.php?mode=view');
-	$report->showRecordCount(count);
-	// display settings
-	if($phpraid_config['show_id'] == 1)
-		$report->addOutputColumn('ID',$phprlang['id'],'','center');
-	$report->addOutputColumn('Name',$phprlang['name'],'','center');
-	$report->addOutputColumn('Guild',$phprlang['guild'],'','center');
-	$report->addOutputColumn('Level',$phprlang['level'],'','center');
-	$report->addOutputColumn('Race',$phprlang['race'],'','center');
-	$report->addOutputColumn('Class',$phprlang['class'],'','center');
-	$report->addOutputColumn('Role',$phprlang['role'],'','center');	
-	$report->addOutputColumn('Arcane','<img src="templates/' . $phpraid_config['template'] . '/images/resistances/arcane_resistance.gif" onMouseover="ddrivetip(\''.$phprlang['arcane'].'\');" onMouseout="hideddrivetip();" height="16" width="16" border="0" alt="arcane">','','center');
-	$report->addOutputColumn('Fire','<img src="templates/' . $phpraid_config['template'] . '/images/resistances/fire_resistance.gif" onMouseover="ddrivetip(\''.$phprlang['fire'].'\');" onMouseout="hideddrivetip();" height="16" width="16" border="0" alt="fire">','','center');
-	$report->addOutputColumn('Nature','<img src="templates/' . $phpraid_config['template'] . '/images/resistances/nature_resistance.gif" onMouseover="ddrivetip(\''.$phprlang['nature'].'\');" onMouseout="hideddrivetip();" height="16" width="16" border="0" alt="nature">','','center');
-	$report->addOutputColumn('Frost','<img src="templates/' . $phpraid_config['template'] . '/images/resistances/frost_resistance.gif" onMouseover="ddrivetip(\''.$phprlang['frost'].'\');" onMouseout="hideddrivetip();" height="16" width="16" border="0" alt="frost">','','center');
-	$report->addOutputColumn('Shadow','<img src="templates/' . $phpraid_config['template'] . '/images/resistances/shadow_resistance.gif" onMouseover="ddrivetip(\''.$phprlang['shadow'].'\');" onMouseout="hideddrivetip();" height="16" width="16" border="0" alt="shadow">','','center');
-	$report->addOutputColumn('','','','right');
-	$chars = $report->getListFromArray($chars);
+	//Setup Data
+	$chars = paginateSortAndFormat($chars, $sortField, $sortDesc, $startRecord, $viewName);
 
-	$page->set_file('body_file',$phpraid_config['template'] . '/users_details.htm');
-
-	$page->set_var(
-		array('chars'=>$chars,
-			'header'=>$phprlang['users_char_header'])
+	/****************************************************************
+	 * Data Assign for Template.
+	 ****************************************************************/
+	$wrmsmarty->assign('char_data', $chars); 
+	$wrmsmarty->assign('char_jump_menu', $charJumpMenu);
+	$wrmsmarty->assign('column_name', $char_headers);
+	$wrmsmarty->assign('char_record_counts', $char_record_count_array);
+	$wrmsmarty->assign('header_data',
+		array(
+			'template_name'=>$phpraid_config['template'],
+			'char_header' => $phprlang['users_char_header'],
+			'sort_url_base' => $pageURL,
+			'sort_descending' => $sortDesc,
+			'sort_text' => $phprlang['sort_text'],
+		)
 	);
 
-	$page->parse('output','body_file');
+	require_once('includes/page_header.php');
+	$wrmsmarty->display('users_details.html');
+	require_once('includes/page_footer.php');
 }
 else if($mode == 'remove_user')
 {
@@ -274,12 +335,4 @@ else
 	$errorDie = 1;
 }
 
-//
-// Start output of page
-//
-require_once('includes/page_header.php');
-
-$page->p('output');
-
-require_once('includes/page_footer.php');
 ?>
