@@ -1,0 +1,30 @@
+{* Smarty Template *}
+<div class="contentHeader">{$register_data.register_header}</div><br>
+<div class="contentBody">
+<form name="register" method="post" action="{$register_data.form_action}">
+	<table width="100%" border="0" align="center" cellpadding="0" cellspacing="1">
+    <tr> 
+      <td> <table width="100%" border="0" cellspacing="1" cellpadding="3" class="dataOutline">
+          <tr> 
+            <td width="200" class="row1"><span class="headmed"><strong>{$register_data.username_text}</strong></span></td>
+            <td class="row2">{$register_data.username}</td>
+          </tr>
+          <tr> 
+            <td width="200" class="row1"><span class="headmed"><strong>{$register_data.password_text}</strong></span></td>
+            <td class="row2">{$register_data.password}</td>
+          </tr>
+          <tr> 
+            <td width="200" class="row1"><span class="headmed"><strong>{$register_data.confirm_password_text}</strong></span></td>
+            <td class="row2">{$register_data.confirm_password}</td>
+          </tr>
+          <tr> 
+            <td width="200" class="row1"><span class="headmed"><strong>{$register_data.email_text}</strong></span></td>
+            <td class="row2">{$register_data.email}</td>
+          </tr>
+        </table></td>
+    </tr>
+  </table><br>
+  <div align="center" class="button">{$register_data.buttons}</div>
+</form>
+</div>
+

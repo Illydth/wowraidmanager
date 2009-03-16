@@ -118,13 +118,13 @@ if(isset($_POST['submit']))
 		
 		$errorTitle = $phprlang['register_complete_header'];
 		$errorMsg = $phprlang['register_complete_msg'];
-		$errorDie = 1;
+		$errorDie = 0;
 	}
 	else
 	{
 		$errorTitle = $phprlang['register_error'];
 		$errorMsg = '<ul>' . $msg . '</ul>';
-		$errorDie = 0;
+		$errorDie = 1;
 		$errorSpace = 1;
 	}
 }
@@ -136,8 +136,6 @@ require_once('includes/page_header.php');
 
 if(!isset($_POST['submit']) || $form_error == 1)
 {
-	$page->set_file('body',$phpraid_config['template'] . '/register.htm');
-	
 	$form_action = 'register.php';
 	$buttons = '<input type="submit" value="Submit" name="submit" class="mainoption"> 
 				<input type="reset" value="Reset" name="reset" class="liteoption">';
@@ -145,8 +143,7 @@ if(!isset($_POST['submit']) || $form_error == 1)
 	$email = '<input type="text" name="email" value="' . $email . '" class="post">';
 	$password = '<input type="password" name="password" class="post">';
 	$confirm = '<input type="password" name="confirm" class="post">';
-	
-	$page->set_var(
+	$wrmsmarty->assign('register_data',
 		array(
 			'register_header'=>$phprlang['register_header'],
 			'buttons'=>$buttons,
@@ -162,7 +159,7 @@ if(!isset($_POST['submit']) || $form_error == 1)
 		)
 	);
 	
-	$page->pparse('body','body');
+	$wrmsmarty->display('register.html');
 }
 
 require_once('includes/page_footer.php');
