@@ -1,10 +1,11 @@
+{* Smarty Template *}
 <div align="center">
-<div class="errorHeader">{errorlogin_header}</div>
+<div class="errorHeader">{$login_frm.errorlogin_header}</div>
 <div class="errorBody">
 <br/>
-<form action="{form_action}" method="post" >
+<form action="{$login_frm.form_action}" method="post" >
 
-	<div align="center">{login_fail}</div>
+	<div align="center">{$login_frm.login_fail}</div>
 	<br/>
 	<br/>
 	<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" >
@@ -15,13 +16,13 @@
 		<td ><div align="center">
 		  <table width="100%" border="0" cellspacing="2" cellpadding="2">
 			<tr>
-			  <td><div align="right">{username}</div></td>
+			  <td><div align="right">{$login_frm.username}</div></td>
 			  <td><div align="left">
-						<input name="username" type="text" value="{username}" size="15" maxlength="45" onFocus="if(this.value=='{username}')this.value='';"  class="post">
+						<input name="username" type="text" value="{$login_frm.username}" size="15" maxlength="45" onFocus="if(this.value=='{$login_frm.username}')this.value='';"  class="post">
 					</div></td>
 			</tr>
 			<tr>
-			  <td><div align="right">{password}</div></td>
+			  <td><div align="right">{$login_frm.password}</div></td>
 			  <td><div align="left">
 			  	<input name="password" type="password" value="password" size="15" onFocus="this.value='';" class="post">
 				</div></td>
@@ -32,7 +33,7 @@
 	  </tr>
  	  <tr>
 		<td>
-			<div align="center">{forgot_password_line}</div>
+			<div align="center">{$login_frm.forgot_password_line}</div>
 		</td>
 	  </tr>
 	  <tr>
@@ -44,7 +45,7 @@
 
 	  <tr>
 		<td><div align="center">
-			<input type="submit" name="login" value="{bd_login}" style="font-size:10px" class="mainoption"></div>
+			<input type="submit" name="login" value="{$login_frm.bd_login}" style="font-size:10px" class="mainoption"></div>
 		</td>
 	  </tr>
 	</table>

@@ -280,6 +280,8 @@ $wrmsmarty->assign('menu',$menu);
 // display any errors if they exist
 if(isset($errorMsg))
 {
+	$wrmsmarty->display('header.html');
+	
 	if(isset($errorSpace) && $errorSpace == 1) {
 		$errorMsg .= '</div><br>';
 	} else {

@@ -57,11 +57,11 @@ if(!isset($_GET['mode']))
 					$forgot_password_line='<a href="login.php?mode=new_pwd">'.$phprlang['login_forgot_password'].'</a>';
 				}
 
-				$page->set_file(array(
-					'output' => $phpraid_config['template'] . '/error_login.htm')
-				);
+				//$page->set_file(array(
+				//	'output' => $phpraid_config['template'] . '/error_login.htm')
+				//);
 				
-				$page->set_var(
+				$wrmsmarty->assign('login_frm',
 					array(
 							'form_action'=>'login.php',
 							'login_fail'=>$phprlang['login_fail'],
@@ -75,7 +75,7 @@ if(!isset($_GET['mode']))
 				);
 				require_once('includes/page_header.php');
 
-				$page->pparse('output','output');
+				$wrmsmarty->display('error_login.html');
 				
 			}
 			else if ($logged_in == -1)
@@ -110,11 +110,11 @@ if ($_GET['mode'] == "new_pwd"){
 	$ShowLoginForm = FALSE;
 
 	if(!isset($_POST['substep'])) {
-		$page->set_file(array(
-			'output' => $phpraid_config['template'] . '/error_resetpwd.htm')
-		);
+		//$page->set_file(array(
+		//	'output' => $phpraid_config['template'] . '/error_resetpwd.htm')
+		//);
 		
-		$page->set_var(
+		$wrmsmarty->assign('new_pwd',
 			array(
 					'form_action'=>'login.php?mode=new_pwd',
 					'password_reset_msg'=>$phprlang['login_password_reset_msg'],
@@ -129,7 +129,7 @@ if ($_GET['mode'] == "new_pwd"){
 
 		require_once('includes/page_header.php');
 
-		$page->pparse('output','output');
+		$wrmsmarty->display('error_resetpwd.html');
 		$ShowLoginForm = TRUE;
 	}
 	if($_POST['substep'] == 2) {
@@ -175,11 +175,11 @@ if ($_GET['mode'] == "ch_pwd"){
 	$ShowLoginForm = FALSE;
 
 	if(!isset($_POST['substep'])) {
-		$page->set_file(array(
-			'output' => $phpraid_config['template'] . '/error_chpwd.htm')
-		);
+		//$page->set_file(array(
+		//	'output' => $phpraid_config['template'] . '/error_chpwd.htm')
+		//);
 		
-		$page->set_var(
+		$wrmsmarty->assign('ch_pwd',
 			array(
 					'form_action'=>'login.php?mode=ch_pwd',
 					'password_reset_msg'=>$phprlang['login_password_reset_msg'],
@@ -197,18 +197,16 @@ if ($_GET['mode'] == "ch_pwd"){
 
 		require_once('includes/page_header.php');
 
-		$page->pparse('output','output');
+		$wrmsmarty->display('error_chpwd.html');
 		$ShowLoginForm = TRUE;
 	}
 	if($_POST['substep'] == 2) {
-		$errorDie = 2;
-
 		$username = scrub_input($_POST['username']);
 		$curr_pass = scrub_input($_POST['curr_password']);
 		$new_pass = scrub_input($_POST['new_password']);
 		$conf_pass = scrub_input($_POST['confirm_password']);
 		$errorTitle = $phprlang['pwdsend_title'];
-		$errorDie = 2;
+		//$errorDie = 2;
 			
 		//check: is user in WRM DB
 		$sql = sprintf("SELECT  profile_id, password, username FROM " . $phpraid_config['db_prefix'] . "profile WHERE username = %s and password = %s", quote_smart($username),quote_smart(md5($curr_pass)));
@@ -218,6 +216,7 @@ if ($_GET['mode'] == "ch_pwd"){
 		{
 			$errorTitle = $phprlang['login_pwdreset_fail_title'];
 			$errorMsg = $phprlang['login_password_incorrect'];
+			$errorDie=TRUE;
 		}
 		else
 		{
@@ -228,11 +227,13 @@ if ($_GET['mode'] == "ch_pwd"){
 				db_password_change($data['profile_id'],$new_pass);
 				$errorTitle = $phprlang['login_pwdreset_title'];
 				$errorMsg = $phprlang['login_pwdreset_success'];
+				$errorDie = TRUE;
 			}
 			else
 			{
 				$errorTitle = $phprlang['login_pwdreset_fail_title'];
-				$errorMsg = $phprlang['login_password_incorrect'];				
+				$errorMsg = $phprlang['login_password_incorrect'];
+				$errorDie = TRUE;				
 			}
 		}
 	}

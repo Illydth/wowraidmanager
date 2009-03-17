@@ -1,0 +1,55 @@
+{* Smarty Template *}
+<div align="center">
+<div class="errorHeader">{$new_pwd.sendnewpwd_header}</div>
+<div class="errorBody">
+<br/>
+<form action="{$new_pwd.form_action}" method="post" >
+
+	<div align="center">{$new_pwd.password_reset_msg}</div>
+	<br/>
+	<br/>
+	<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" >
+	  <tr>
+		<td>&nbsp;</td>
+	  </tr>
+	  <tr>
+		<td ><div align="center">
+		  <table width="100%" border="0" cellspacing="2" cellpadding="2">
+			<tr>
+			  <td><div align="right">{$new_pwd.username}</div></td>
+			  <td><div align="left">
+						<input name="username" type="text" value="{$new_pwd.username}" size="15" maxlength="45" onFocus="if(this.value=='{$new_pwd.username}')this.value='';"  class="post">
+					</div></td>
+			</tr>
+			<tr>
+			  <td><div align="right">{$new_pwd.email}</div></td>
+			  <td><div align="left">
+			  	<input name="email" type="text" value="{$new_pwd.email}" size="25" onFocus="if(this.value=='{$new_pwd.email}')this.value='';" class="post">
+				</div></td>
+			</tr>
+		  </table>
+		</div>
+		</td>
+	  </tr>
+	  <tr>
+		<td>&nbsp;</td>
+	  </tr>
+	  <tr>
+		<td>&nbsp;</td>
+	  </tr>
+
+	  <tr>
+		<td>
+			<div align="center">
+				<input type="submit" name="login" value="{$new_pwd.bd_submit}" style="font-size:10px" class="mainoption">
+				&nbsp;&nbsp;
+				<input type="reset" name="login" value="{$new_pwd.bd_reset}" style="font-size:10px" class="mainoption">
+			</div>
+		</td>
+	  </tr>
+	</table>
+	<br/>
+	<input type="hidden" name="substep" value="{$new_pwd.hidden_substep}" class="post">
+</form>
+</div>
+</div>
