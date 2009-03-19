@@ -87,6 +87,10 @@ $phprlang['earned'] = 'Gagné';
 $phprlang['spent'] = 'Passé';
 $phprlang['adjustment'] = 'Ajustement';
 $phprlang['dkp'] = 'DKP';
+$phprlang['buttons'] = 'Buttons';
+$phprlang['add_to_team'] = 'Add To Team';
+$phprlang['create_date'] = 'Create Date';
+$phprlang['create_time'] = 'Create Time';
 
 // roles
 $phprlang['role'] = 'Role';

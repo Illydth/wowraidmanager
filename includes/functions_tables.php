@@ -38,7 +38,7 @@
 */
 function getVisibleColumns($view_name) 
 {
-	global $phpraid_config, $db_raid;
+	global $phpraid_config, $db_raid, $phprlang;
 	
 	$table_headers = array();
 	
@@ -84,11 +84,19 @@ function getVisibleColumns($view_name)
 			}
 		}
 
+		// Determine what the Actual Text of the Column Should Be.
+		if ($data['lang_idx_hdr']=='')
+			$col_head_text = $column_name;
+		else
+			$col_head_text = $phprlang[$data['lang_idx_hdr']];
+		
 		array_push($table_headers,
 			array(
 				'column_name'=>$column_name,
 				'visible'=>$data['visible'],
+				'position'=>$data['position'],
 				'img_url'=>$data['img_url'],
+				'col_text'=>$col_head_text,
 				'format_code'=>$data['format_code'],
 			)
 		);
