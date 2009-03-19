@@ -48,7 +48,7 @@ if($_GET['mode'] == 'view')
 		$id = $data['announcements_id'];
 		$title = $data['title'];
 		$message = $data['message'];
-
+		
 		if(strlen($title) > 30)
 			$title = substr($title, 0, 30) . '...';
 
@@ -59,10 +59,11 @@ if($_GET['mode'] == 'view')
 		$date = new_date('Y/m/d H:i:s',$data['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']);
 		$time = new_date('Y/m/d H:i:s',$data['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']);
 
-		$edit = '<a href="announcements.php?mode=edit&amp;id='.$data['announcements_id'].'"><img src="templates/' . $phpraid_config['template'] .
+		$edit = '<a href="announcements.php?mode=edit&amp;id='.$id.'"><img src="templates/' . $phpraid_config['template'] .
 				'/images/icons/icon_edit.gif" border="0" onMouseover="ddrivetip(\'' . $phprlang['edit'] . '\');" onMouseout="hideddrivetip();" alt="edit icon"></a> ';
 
-		$delete = '<a href="announcements.php?mode=delete&amp;n='.$data['title'].'&amp;id='.$data['announcements_id'].'"><img src="templates/' .
+		// Removed "Title" from being passed, no need for it.
+		$delete = '<a href="announcements.php?mode=delete&amp;id='.$id.'"><img src="templates/' .
 					$phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\'' . $phprlang['delete'] . '\');"
 					onMouseout="hideddrivetip();" alt="delete icon"></a>';
 
@@ -117,11 +118,10 @@ if($_GET['mode'] == 'view')
 elseif($_GET['mode'] == 'delete')
 {
 	$id = scrub_input($_GET['id'], false);
-	$delete_name = scrub_input($_GET['n'], false);
 
 	if($_SESSION['priv_announcements'] == 1) {
 		if(!isset($_POST['submit'])) {
-			$form_action = 'announcements.php?mode=delete&amp;n='.$delete_name.'&amp;id=' . $id;
+			$form_action = 'announcements.php?mode=delete&amp;id=' . $id;
 			$confirm_button = '<input type="submit" value="'. $phprlang['confirm'] .'" name="submit" class="post">';
 
 			$page->set_file('output',$phpraid_config['template'] . '/delete.htm');
