@@ -229,7 +229,7 @@ else
 		$data_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 		$data_profdetail = $db_raid->sql_fetchrow($data_result);
 
-		array_push($create, sprintf($phprlang['log_create'],$date,$time,$data['profile_id'],$data_profdetail['username'],$data['ip'],$data['type'],$data['create_id'],$data['create_name']));
+		array_push($create, sprintf($phprlang['log_create'],$date,$time,$data['profile_id'],$data_profdetail['username'],$data['ip'],$data['type'],$data['create_id'],scrub_input($data['create_name'])));
 	}
 
 	// deletion logs
@@ -247,7 +247,7 @@ else
 		$data_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 		$data_profdetail = $db_raid->sql_fetchrow($data_result);
 
-		array_push($delete, sprintf($phprlang['log_delete'],$date,$time,$data['profile_id'],$data_profdetail['username'],$data['ip'],$data['type'],$data['delete_name']));
+		array_push($delete, sprintf($phprlang['log_delete'],$date,$time,$data['profile_id'],$data_profdetail['username'],$data['ip'],$data['type'],scrub_input($data['delete_name'])));
 	}
 
 	// hack logs
@@ -272,7 +272,7 @@ else
 		$date = new_date($phpraid_config['date_format'],$data['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']);
 		$time = new_date($phpraid_config['time_format'],$data['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']);
 
-		array_push($hack, sprintf($phprlang['log_hack'],$date,$time,$data['ip'],$data['message']));
+		array_push($hack, sprintf($phprlang['log_hack'],$date,$time,$data['ip'],scrub_input($data['message'])));
 	}
 
 	// raid logs
