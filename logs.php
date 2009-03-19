@@ -91,8 +91,6 @@ if($_GET['mode'] == 'delete')
 else
 {
 	// setup page sorting first
-	$page->set_file('sort_file',$phpraid_config['template'].'/logs_sort.htm');
-
 	// get checked status and sorting information
 	if(!isset($_POST['submit']))
 	{
@@ -108,6 +106,7 @@ else
 	}
 	else
 	{
+		// Create the Sort/Filter Area above.
 		$_POST['c'] ? $c_check = 'checked' : $c_check = '';
 		$_POST['d'] ? $d_check = 'checked' : $d_check = '';
 		$_POST['h'] ? $h_check = 'checked' : $h_check = '';
@@ -127,56 +126,51 @@ else
 		$_POST['filter'] == $phprlang['log_filter_1_day'] ? $f1_select = 'selected' : $f1_select = '';
 	}
 
-	$sort = '<form action="logs.php?mode=view" method="POST">
-			<table width="450" border="0" cellspacing="0" cellpadding="0">
-			  <tr>
-				<td scope="col"><div align="center">'.$phprlang['log_sort_by'].'
-					  <select name="sort_name" class="post">
+	$sort_by_select = '<select name="sort_name" class="post">
 						  <option value="'.$phprlang['log_date'].'" '.$d_select.'>'.$phprlang['log_date'].'</option>
 						  <option value="'.$phprlang['log_id'].'" '.$i_select.'>'.$phprlang['log_id'].'</option>
 						  <option value="'.$phprlang['log_type'].'" '.$t_select.'>'.$phprlang['log_type'].'</option>
-					  </select>
-					  '.$phprlang['log_in'].'
-					  <select name="order" class="post">
+					  </select>';
+
+	$sort_order_select = '<select name="order" class="post">
 						  <option value="'.$phprlang['asc'].'" '.$a_select.'>'.$phprlang['asc'].'</option>
 						  <option value="'.$phprlang['desc'].'" '.$de_select.'>'.$phprlang['desc'].'</option>
-					  </select>
-					'.$phprlang['log_order'].'</div></td>
-			  </tr>
-			  <tr>
-				<td><div align="center">
-					  <input type="checkbox" name="c" '.$c_check.'>
-					  '.$phprlang['log_create_text'].'
-					  <input type="checkbox" name="d" '.$d_check.'>
-					  '.$phprlang['log_delete_text'].'
-					  <input type="checkbox" name="h" '.$h_check.'>
-					  '.$phprlang['log_hack_text'].'
-					  <input type="checkbox" name="r" '.$r_check.'>
-					  '.$phprlang['log_raid_text'].'
-				  </div></td>
-			  </tr>
-			  <tr>
-				<td><div align="center">'.$phprlang['log_filter_show'].'
-					  <select name="filter" class="post">
+					  </select>';
+
+	$c_checkbox = '<input type="checkbox" name="c" '.$c_check.'>'.$phprlang['log_create_text'];
+	$d_checkbox = '<input type="checkbox" name="d" '.$d_check.'>'.$phprlang['log_delete_text'];
+	$h_checkbox = '<input type="checkbox" name="h" '.$h_check.'>'.$phprlang['log_hack_text'];
+	$r_checkbox = '<input type="checkbox" name="r" '.$r_check.'>'.$phprlang['log_raid_text'];
+	
+	$sort_time_filter_select = '<select name="filter" class="post">
 						  <option value="'.$phprlang['log_filter_all'].'" '.$fa_select.'>'.$phprlang['log_filter_all'].'</option>
 						  <option value="'.$phprlang['log_filter_2_months'].'" '.$f60_select.'>'.$phprlang['log_filter_2_months'].'</option>
 						  <option value="'.$phprlang['log_filter_1_month'].'" '.$f30_select.'>'.$phprlang['log_filter_1_month'].'</option>
 						  <option value="'.$phprlang['log_filter_1_week'].'" '.$f7_select.'>'.$phprlang['log_filter_1_week'].'</option>
 						  <option value="'.$phprlang['log_filter_1_day'].'" '.$f1_select.'>'.$phprlang['log_filter_1_day'].'</option>
-					  </select>
-				  </div></td>
-			  </tr>
-			  <tr>
-				<td><br><div align="center"><input type="submit" value="'.$phprlang['filter'].'" name="submit" class="mainoption"> <input type="reset" value="'.$phprlang['reset'].'" name="reset" class="liteoption"></div></td>
-			  </tr>
-			</table>
-			</form>
-			';
+					  </select>';
 
-	$page->set_var('sort',$sort);
-	$page->set_var('log_sort_header',$phprlang['log_sort_header']);
-	$page->parse('output','sort_file');
-
+	$wrmsmarty->assign('sort',
+		array(
+			'sort_by'=>$phprlang['log_sort_by'],
+			'sort_by_select'=>$sort_by_select,
+			'log_in'=>$phprlang['log_in'],
+			'sort_order_select'=>$sort_order_select,
+			'log_order'=>$phprlang['log_order'],
+			'c_checkbox'=>$c_checkbox,
+			'd_checkbox'=>$d_checkbox,
+			'h_checkbox'=>$h_checkbox,
+			'r_checkbox'=>$r_checkbox,
+			'log_filter_show'=>$phprlang['log_filter_show'],
+			'sort_time_filter_select'=>$sort_time_filter_select,
+			'filter_text'=>$phprlang['filter'],
+			'reset_text'=>$phprlang['reset'],
+		)
+	);
+	
+	$wrmsmarty->assign('log_sort_header', $phprlang['log_sort_header']);
+	// End Sort/Filter Creation, Now display logs.
+	
 	$sql_where = '';
 
 	if($f60_select == 'selected')
@@ -382,11 +376,7 @@ else
 	//
 	require_once('includes/page_header.php');
 
-	$page->set_file(array(
-		'log_file' => $phpraid_config['template'] . '/logs.htm')
-	);
-
-	$page->set_var(
+	$wrmsmarty->assign('logs',
 		array(
 			'create' => $create_output,
 			'delete'=>$delete_output,
@@ -395,9 +385,9 @@ else
 			'header' => $phprlang['log_header']
 		)
 	);
-	$page->parse('output','log_file',true);
-	$page->p('output');
 
+	$wrmsmarty->display('logs.html');
+	
 	require_once('includes/page_footer.php');
 }
 ?>

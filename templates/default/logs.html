@@ -1,0 +1,41 @@
+{* Smarty Template *}
+{* Create the Sort/Filter Area*}
+<div id="content">
+	<div align="center">
+		<div class="contentHeader">{$log_sort_header}</div>
+		<br>
+		<div class="contentBody">
+			<form action="logs.php?mode=view" method="POST">
+				<table width="450" border="0" cellspacing="0" cellpadding="0">
+				  <tr>
+					<td scope="col">
+						<div align="center">{$sort.sort_by}&nbsp;{$sort.sort_by_select}&nbsp;{$sort.log_in}&nbsp;{$sort.sort_order_select}&nbsp;{$sort.log_order}</div>
+					</td>
+				  </tr>
+				  <tr>
+					<td><div align="center">
+						{$sort.c_checkbox}&nbsp;{$sort.d_checkbox}&nbsp;{$sort.h_checkbox}&nbsp;{$sort.r_checkbox}
+					</div></td>
+				  </tr>
+				  <tr>
+					<td><div align="center">{$sort.log_filter_show}
+						{$sort.sort_time_filter_select}
+					</div></td>
+				  </tr>
+				  <tr>
+					<td><br><div align="center"><input type="submit" value="{$sort.filter_text}" name="submit" class="mainoption"> <input type="reset" value="{$sort.reset_text}" name="reset" class="liteoption"></div></td>
+				  </tr>
+				</table>
+			</form>
+		</div>
+	</div>
+</div>
+<br>
+{* End Sort/Filter, Start Log Output *}
+<div class="contentHeader">{$logs.header}</div>
+<br>
+{$logs.create}
+{$logs.delete}
+{$logs.hack}
+{$logs.raid}
+{* End Log Output *}
