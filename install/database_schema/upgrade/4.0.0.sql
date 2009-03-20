@@ -338,4 +338,14 @@ VALUES (NULL , 'permissions1', 'Ra', '1', '12', NULL, 'raids', NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
 VALUES (NULL , 'permissions1', 'Buttons', '1', '13', NULL, 'buttons', NULL);
 
+-- Column Header Data - Permissions2 View - User Details
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
+VALUES (NULL , 'permissions2', 'ID', '1', '1', NULL, 'id', NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
+VALUES (NULL , 'permissions2', 'Username', '1', '2', NULL, 'username', NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
+VALUES (NULL , 'permissions2', 'E-Mail', '1', '3', NULL, 'email', NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
+VALUES (NULL , 'permissions2', 'Buttons', '1', '4', NULL, 'buttons', NULL);
+
 INSERT INTO `wrm_config` VALUES ('records_per_page','2');

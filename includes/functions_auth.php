@@ -135,12 +135,38 @@ function delete_permissions() {
 	$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 }
 
-function permissions($report) {
-	global $db_raid, $page, $phprlang, $phpraid_config;
+function permissions() {
+	global $db_raid, $wrmsmarty, $phprlang, $phpraid_config;
 	
 	if(!isset($_POST['submit'])) {
 		$users = array();
 		$permission_id = scrub_input($_GET['perm_id']);
+	
+		/*************************************************************
+		 * Setup Record Output Information for Data Table
+		 *************************************************************/
+		// Set StartRecord for Page
+		if(!isset($_GET['Base']) || !is_numeric($_GET['Base']))
+			$startRecord = 1;
+		else
+			$startRecord = scrub_input($_GET['Base']);
+			
+		// Set Sort Field for Page
+		if(!isset($_GET['Sort']))
+			$sortField="";
+		else
+			$sortField = scrub_input($_GET['Sort']);
+				
+		// Set Sort Descending Mark
+		if(!isset($_GET['SortDescending']) || !is_numeric($_GET['SortDescending']))
+			$sortDesc = 1;
+		else
+			$sortDesc = scrub_input($_GET['SortDescending']);
+				
+		$pageURL = 'permissions.php?mode=details&amp;perm_id=' . $permission_id . '&';
+		/**************************************************************
+		 * End Record Output Setup for Data Table
+		 **************************************************************/
 
 		// display users for phpraid authentication and this permission set
 		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "profile WHERE priv=%s", quote_smart($permission_id));
@@ -164,52 +190,51 @@ function permissions($report) {
 			
 			array_push($users,
 				array(
-					'id'=>$data['profile_id'],
-					'username'=>$data['username'],
-					'email'=>$data['email'],
-					'admin'=>$delete
+					'ID'=>$data['profile_id'],
+					'Username'=>$data['username'],
+					'E-Mail'=>$data['email'],
+					'Buttons'=>$delete
 				)
 			);
 		}
 		
-		// setup report (users)
-		setup_output();
+		/******************************************************************************
+		 * Code to setup for a Dynamic Table Create: permissions2 View. (User Details)
+		 ******************************************************************************/
+		$viewName = 'permissions2';
+			
+		//Setup Columns
+		$perm2_headers = array();
+		$record_count_array = array();
+		$perm2_headers = getVisibleColumns($viewName);
 		
-		$report->showRecordCount(true);
-		$report->allowPaging(true, $_SERVER['PHP_SELF'] . '?mode=details&amp;perm_id='.$permission_id.'&Base=');
-		$report->setListRange($_GET['Base'], 25);
-		$report->allowLink(ALLOW_HOVER_INDEX,'',array());	
+		//Get Record Counts
+		$perm2_record_count_array = getRecordCounts($users, $perm2_headers, $startRecord);
+			
+		//Get the Jump Menu and pass it down
+		$perm2JumpMenu = getPageNavigation($users, $startRecord, $pageURL, $sortField, $sortDesc);
 		
-		//Default sorting
-		if(!$_GET['Sort'])
-		{
-			$report->allowSort(true, 'username', 'ASC', 'permissions.php?mode=details&amp;perm_id=' . $permission_id);
-		}
-		else
-		{
-			$report->allowSort(true, $_GET['Sort'], $_GET['SortDescending'], 'permissions.php?mode=details&amp;perm_id=' . $permission_id);
-		}
+		//Setup Data
+		$users = paginateSortAndFormat($users, $sortField, $sortDesc, $startRecord, $viewName);
 		
-		if($phpraid_config['show_id'] == 1)
-			$report->addOutputColumn('id',$phprlang['id'],'','center');
-		$report->addOutputColumn('username',$phprlang['username'],'','left');
-		$report->addOutputColumn('email',$phprlang['email'],'','left');
-		$report->addOutputColumn('admin','','','right');
-		$users = $report->getListFromArray($users);
-		
-		$page->set_file('details',$phpraid_config['template'] . '/permissions_details.htm');
-		$page->set_var(
+		/****************************************************************
+		 * Data Assign for Template.
+		 ****************************************************************/
+		$wrmsmarty->assign('perm2_data', $users); 
+		$wrmsmarty->assign('perm2_jump_menu', $perm2JumpMenu);
+		$wrmsmarty->assign('column_name', $perm2_headers);
+		$wrmsmarty->assign('perm2_record_counts', $perm2_record_count_array);
+		$wrmsmarty->assign('header_data',
 			array(
+				'template_name'=>$phpraid_config['template'],
 				'users_header'=>$phprlang['permissions_users_header'],
-				'users'=>$users,
+				'sort_url_base' => $pageURL,
+				'sort_descending' => $sortDesc,
+				'sort_text' => $phprlang['sort_text'],
 			)
 		);
 		
-		$page->parse('output','details',true);
-			
-		// show add information
-		$page->set_file('add',$phpraid_config['template'] . '/permissions_add.htm');
-		
+		// *** ADD USERS TO SET START ***
 		$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "profile WHERE priv='0'";
 		$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 		
@@ -217,48 +242,63 @@ function permissions($report) {
 		
 		while($data = $db_raid->sql_fetchrow($result, true)) {
 			$actions = '<input type="checkbox" name="addtolist' . $data['profile_id'] . '" value="' . $data['profile_id'] . '">';
-			array_push($users, array('id'=>$data['profile_id'],'username'=>ucwords(strtolower($data['username'])), 'email'=>$data['email'], 'actions'=>$actions));
+			array_push($users, 
+				array(
+					'ID'=>$data['profile_id'],
+					'Username'=>ucwords(strtolower($data['username'])), 
+					'E-Mail'=>$data['email'], 
+					'Buttons'=>$actions
+					)
+			);
 		}
-				
-		$add_body = '<form action="permissions.php?mode=details&amp;perm_id=' . $permission_id . '" method="POST">';
-		
-		// setup report (users)
-		$report->clearOutputColumns();
-		//Default sorting
-		if(!$_GET['Sort'])
-		{
-			$report->allowSort(true, 'username', 'ASC', 'permissions.php?mode=details&amp;perm_id=' . $permission_id);
-		}
-		else
-		{
-			$report->allowSort(true, $_GET['Sort'], $_GET['SortDescending'], 'permissions.php?mode=details&amp;perm_id=' . $permission_id);
-		}
-		setup_output();
-		
-		$report->showRecordCount(true);
-		$report->allowPaging(true, $_SERVER['PHP_SELF'] . '?mode=details&amp;perm_id=' . $permission_id . '&Base=');
-		$report->setListRange($_GET['Base'], 25);
-		$report->allowLink(ALLOW_HOVER_INDEX,'',array());
-		
-		if($phpraid_config['show_id'] == 1)
-			$report->addOutputColumn('id',$phprlang['id'],'','center');
-		$report->addOutputColumn('username',$phprlang['username'],'','left');
-		$report->addOutputColumn('email',$phprlang['email'],'','left');
-		$report->addOutputColumn('actions','','','right',__NOLINK__);
-		$add_body .= $report->getListFromArray($users);
-		
+						
 		$buttons = '<input type="submit" value="'.$phprlang['submit'].'" name="submit" class="mainoption"> 
 					<input type="reset" value="'.$phprlang['reset'].'" name="reset" class="liteoption"></form>';
+
+		/******************************************************************************
+		 * Code to setup for a Dynamic Table Create: permissions2 View. (User Details)
+		 ******************************************************************************/
+		$viewName = 'permissions2';
+			
+		//Setup Columns
+		$perm3_headers = array();
+		$perm3_record_count_array = array();
+		$perm3_headers = getVisibleColumns($viewName);
 		
-		$page->set_var(
+		//Get Record Counts
+		$perm3_record_count_array = getRecordCounts($users, $perm3_headers, $startRecord);
+			
+		//Get the Jump Menu and pass it down
+		$perm3JumpMenu = getPageNavigation($users, $startRecord, $pageURL, $sortField, $sortDesc);
+		
+		//Setup Data
+		$users = paginateSortAndFormat($users, $sortField, $sortDesc, $startRecord, $viewName);
+		
+		/****************************************************************
+		 * Data Assign for Template.
+		 ****************************************************************/
+		$wrmsmarty->assign('perm3_data', $users); 
+		$wrmsmarty->assign('perm3_jump_menu', $perm3JumpMenu);
+		$wrmsmarty->assign('column3_name', $perm3_headers);
+		$wrmsmarty->assign('perm3_record_counts', $perm3_record_count_array);
+		$wrmsmarty->assign('header3_data',
 			array(
+				'template_name'=>$phpraid_config['template'],
 				'add_header'=>$phprlang['permissions_add'],
-				'add_body'=>$add_body,
+				'sort_url_base' => $pageURL,
+				'sort_descending' => $sortDesc,
+				'sort_text' => $phprlang['sort_text'],
 				'buttons'=>$buttons,
+				'permission_id'=>$permission_id,
 			)
 		);
-			
-		$page->parse('output','add',true);
+		
+		// page output
+		require_once('includes/page_header.php');
+		$wrmsmarty->display('permissions_details.html');
+		require_once('includes/page_footer.php');
+		exit;
+
 	} else {
 		$priv_id = scrub_input($_GET['perm_id']);
 		foreach($_POST as $key=>$value) {

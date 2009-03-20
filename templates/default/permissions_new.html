@@ -1,0 +1,46 @@
+{* Smarty Template *}
+<a name="new"></a>
+<div class="contentHeader">{$header_text}</div><br>
+<div class="contentBody">
+<form action="{$perms_new.form_action}" method="post" name="new_announcement" id="new_announcement">
+  <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tr valign="top"> 
+    <td><table width="100%" border="0" cellpadding="3" cellspacing="1" class="dataOutline">
+		  <tr valign="top">
+            <td class="row1" colspan="1"><div align="left"><strong>{$perms_new.name_text}</strong></div></td>
+            <td class="row2" colspan="10"><div align="left">{$perms_new.name}</div></td>
+		  </tr>
+		  <tr valign="top">
+            <td class="row1" colspan="1"><div align="left"><strong>{$perms_new.description_text}</strong></div></td>
+            <td class="row2" colspan="10"><div align="left">{$perms_new.description}</div></td>
+		  </tr>
+	      <tr valign="top">
+            <td class="row2"><div align="center"><strong>{$perms_new.announcements_text}</strong></div></td>
+			<td class="row2"><div align="center"><strong>{$perms_new.configuration_text}</strong></div></td>
+            <td class="row2"><div align="center"><strong>{$perms_new.guilds_text}</strong></div></td>
+            <td class="row2"><div align="center"><strong>{$perms_new.logs_text}</strong></div></td>
+            <td class="row2"><div align="center"><strong>{$perms_new.locations_text}</strong></div></td>
+            <td class="row2"><div align="center"><strong>{$perms_new.permissions_text}</strong></div></td>
+            <td class="row2"><div align="center"><strong>{$perms_new.profile_text}</strong></div></td>
+            <td class="row2"><div align="center"><strong>{$perms_new.users_text}</strong></div></td>
+            <td class="row2"><div align="center"><strong>{$perms_new.raids_text}</strong></div></td>
+          </tr>
+          <tr valign="top"> 
+            <td class="row1"><div align="center">{$perms_new.announcements}</div></td>
+			<td class="row1"><div align="center">{$perms_new.configuration}</div></td>
+            <td class="row1"><div align="center">{$perms_new.guilds}</div></td>
+            <td class="row1"><div align="center">{$perms_new.logs}</div></td>
+            <td class="row1"><div align="center">{$perms_new.locations}</div></td>
+            <td class="row1"><div align="center">{$perms_new.permissions}</div></td>
+            <td class="row1"><div align="center">{$perms_new.profile}</div></td>
+            <td class="row1"><div align="center">{$perms_new.users}</div></td>
+            <td class="row1"><div align="center">{$perms_new.raids}</div></td>
+          </tr>
+        </table></td>
+  </tr>
+  <tr> 
+    <td><br><div align="center" class="button">{$buttons}</div></td>
+  </tr>
+</table>
+</form>
+</div>

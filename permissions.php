@@ -37,6 +37,32 @@ require_once('./common.php');
 define("PAGE_LVL","permissions");
 require_once("includes/authentication.php");
 
+/*************************************************************
+ * Setup Record Output Information for Data Table
+ *************************************************************/
+// Set StartRecord for Page
+if(!isset($_GET['Base']) || !is_numeric($_GET['Base']))
+	$startRecord = 1;
+else
+	$startRecord = scrub_input($_GET['Base']);
+	
+// Set Sort Field for Page
+if(!isset($_GET['Sort']))
+	$sortField="";
+else
+	$sortField = scrub_input($_GET['Sort']);
+		
+// Set Sort Descending Mark
+if(!isset($_GET['SortDescending']) || !is_numeric($_GET['SortDescending']))
+	$sortDesc = 1;
+else
+	$sortDesc = scrub_input($_GET['SortDescending']);
+		
+$pageURL = 'permissions.php?mode=view&amp;';
+/**************************************************************
+ * End Record Output Setup for Data Table
+ **************************************************************/
+
 if(isset($_GET['perm_id']))
 	$perm_id = scrub_input($_GET['perm_id']);
 else
@@ -120,68 +146,58 @@ if($_GET['mode'] == 'view')
 			$users = '';
 				
 		array_push($perm, 
-			array('id'=>$data['permission_id'],
-				  'name'=>'<a href="permissions.php?mode=details&amp;perm_id=' . $data['permission_id'] . '">' . $data['name'] . '</a>',
-				  'desc'=>$data['description'],
-				  'announcements'=>$announcements,
-				  'configuration'=>$phpraid_configuration,
-				  'guilds'=>$guilds,
-				  'locations'=>$locations,
-				  'profile'=>$profile,
-				  'raids'=>$raids,
-				  'permissions'=>$permissions,
-				  'logs'=>$logs,
-				  'users'=>$users,
-				  'admin'=>$admin
+			array('ID'=>$data['permission_id'],
+				  'Name'=>'<a href="permissions.php?mode=details&amp;perm_id=' . $data['permission_id'] . '">' . $data['name'] . '</a>',
+				  'Description'=>$data['description'],
+				  'An'=>$announcements,
+				  'Co'=>$phpraid_configuration,
+				  'Gu'=>$guilds,
+				  'Lo'=>$locations,
+				  'Pr'=>$profile,
+				  'Ra'=>$raids,
+				  'Pe'=>$permissions,
+				  'Lg'=>$logs,
+				  'Us'=>$users,
+				  'Buttons'=>$admin
 			)
 		);
 	}
 	
-	// setup report
-	setup_output();
+	/**************************************************************
+	 * Code to setup for a Dynamic Table Create: permissions1 View.
+	 **************************************************************/
+	$viewName = 'permissions1';
+		
+	//Setup Columns
+	$perm_headers = array();
+	$perm_record_count_array = array();
+	$perm_headers = getVisibleColumns($viewName);
 	
-	$report->showRecordCount(true);
-	$report->allowPaging(true, $_SERVER['PHP_SELF'] . '?mode=view&Base=');
-	$report->setListRange($_GET['Base'], 25);
-	$report->allowLink(ALLOW_HOVER_INDEX,'',array());
+	//Get Record Counts
+	$perm_record_count_array = getRecordCounts($perm, $perm_headers, $startRecord);
+		
+	//Get the Jump Menu and pass it down
+	$permJumpMenu = getPageNavigation($perm, $startRecord, $pageURL, $sortField, $sortDesc);
 	
-	//Default sorting
-	if(!$_GET['Sort'])
-	{
-		$report->allowSort(true, 'id', 'ASC', 'permissions.php?mode=view');
-	}
-	else
-	{
-		$report->allowSort(true, $_GET['Sort'], $_GET['SortDescending'], 'permissions.php?mode=view');
-	}
+	//Setup Data
+	$perm = paginateSortAndFormat($perm, $sortField, $sortDesc, $startRecord, $viewName);
 	
-	$report->showRecordCount(true);
-	if($phpraid_config['show_id'] == 1)
-		$report->addOutputColumn('id',$phprlang['id'],'','center');
-	
-	$report->addOutputColumn('name',$phprlang['name'],'','left');
-	$report->addOutputColumn('desc',$phprlang['description'],'','left');
-	$report->addOutputColumn('announcements','<span onMouseover="ddrivetip(\''.$phprlang['announcements'].'\');" onMouseout="hideddrivetip();">An</span>','','center');
-	$report->addOutputColumn('configuration','<span onMouseover="ddrivetip(\''.$phprlang['configuration'].'\');" onMouseout="hideddrivetip();">Co</span>','','center');
-	$report->addOutputColumn('guilds','<span onMouseover="ddrivetip(\''.$phprlang['guilds'].'\');" onMouseout="hideddrivetip();">Gu</span>','','center');
-	$report->addOutputColumn('locations','<span onMouseover="ddrivetip(\''.$phprlang['locations'].'\');" onMouseout="hideddrivetip();">Lo</span>','','center');
-	$report->addOutputColumn('logs','<span onMouseover="ddrivetip(\''.$phprlang['logs'].'\');" onMouseout="hideddrivetip();">Lg</span>','','center');
-	$report->addOutputColumn('permissions','<span onMouseover="ddrivetip(\''.$phprlang['permissions'].'\');" onMouseout="hideddrivetip();">Pe</span>','','center');
-	$report->addOutputColumn('profile','<span onMouseover="ddrivetip(\''.$phprlang['profile'].'\');" onMouseout="hideddrivetip();">Pr</span>','','center');
-	$report->addOutputColumn('users','<span onMouseover="ddrivetip(\''.$phprlang['users'].'\');" onMouseout="hideddrivetip();">Us</span>','','center');
-	$report->addOutputColumn('raids','<span onMouseover="ddrivetip(\''.$phprlang['raids'].'\');" onMouseout="hideddrivetip();">Ra</span>','','center');
-	$report->addOutputColumn('admin','','','right');
-	$perm = $report->getListFromArray($perm);
-	
-	// output
-	$page->set_file('output',$phpraid_config['template'] . '/permissions.htm');
-	$page->set_var(
+	/****************************************************************
+	 * Data Assign for Template.
+	 ****************************************************************/
+	$wrmsmarty->assign('perm_data', $perm); 
+	$wrmsmarty->assign('perm_jump_menu', $permJumpMenu);
+	$wrmsmarty->assign('column_name', $perm_headers);
+	$wrmsmarty->assign('perm_record_counts', $perm_record_count_array);
+	$wrmsmarty->assign('header_data',
 		array(
-			'permissions_header'=>$phprlang['permissions_header'],
-			'permissions'=>$perm
+			'template_name'=>$phpraid_config['template'],
+			'permissions_header' => $phprlang['permissions_header'],
+			'sort_url_base' => $pageURL,
+			'sort_descending' => $sortDesc,
+			'sort_text' => $phprlang['sort_text'],
 		)
 	);
-	$page->parse('output','output');
 } 
 elseif(isset($_POST['submit']) && ($_GET['mode'] == 'edit' || $_GET['mode'] == 'new')) 
 {
@@ -246,7 +262,7 @@ elseif(isset($_POST['submit']) && ($_GET['mode'] == 'edit' || $_GET['mode'] == '
 	}
 } 
 elseif($_GET['mode'] == 'details')
-	permissions($report);
+	permissions();
 elseif($_GET['mode'] == 'delete') 
 {
 	$perm_id = scrub_input($_GET['perm_id']);
@@ -272,6 +288,7 @@ elseif($_GET['mode'] == 'delete')
 			require_once('includes/page_header.php');
 			$wrmsmarty->display('delete.html');
 			require_once('includes/page_footer.php');
+			exit;
 		} 
 		else 
 		{
@@ -295,7 +312,7 @@ elseif($_GET['mode'] == 'remove_user') {
 // new/edit details
 if($_GET['mode'] != 'delete' && $_GET['mode'] != 'details') 
 {
-	$page->set_file('new_file',$phpraid_config['template'] . '/permissions_new.htm');
+	//$page->set_file('new_file',$phpraid_config['template'] . '/permissions_new.htm');
 
 	if($_GET['mode'] == 'edit') 
 	{
@@ -451,10 +468,10 @@ if($_GET['mode'] != 'delete' && $_GET['mode'] != 'details')
 		
 		$form_action = "permissions.php?mode=new&amp;perm_id=$perm_id";
 		
-		$page->set_var('header_text',$phprlang['permissions_new']);
+		$wrmsmarty->assign('header_text',$phprlang['permissions_new']);
 	}
 	
-	$page->set_var(
+	$wrmsmarty->assign('perms_new',
 		array(
 			'announcements'=>$announcements,
 			'configuration'=>$phpraid_configuration,
@@ -481,12 +498,11 @@ if($_GET['mode'] != 'delete' && $_GET['mode'] != 'details')
 			'form_action'=>$form_action
 		)
 	);
-	$page->set_var('buttons','<input type="submit" value="'.$phprlang['submit'].'" name="submit" class="mainoption"> <input type="reset" value="'.$phprlang['reset'].'" name="reset" class="liteoption">');
-	$page->parse('output','new_file',true);
+	$wrmsmarty->assign('buttons','<input type="submit" value="'.$phprlang['submit'].'" name="submit" class="mainoption"> <input type="reset" value="'.$phprlang['reset'].'" name="reset" class="liteoption">');
 }
 
 // page output
 require_once('includes/page_header.php');
-$page->pparse('output','output');
+$wrmsmarty->display('permissions.html');
 require_once('includes/page_footer.php');
 ?>
