@@ -77,16 +77,19 @@ require_once($phpraid_dir.'includes/functions_date.php');
 require_once($phpraid_dir.'includes/functions_logging.php');
 require_once($phpraid_dir.'includes/functions_tables.php');
 require_once($phpraid_dir.'includes/functions_users.php');
-require_once($phpraid_dir.'includes/report.php');
-require_once($phpraid_dir.'includes/template.php');
 require_once($phpraid_dir.'includes/ubb.php');
 
 /****************************************************
  * Report Output Setup (Deprecated)
+ *      The information in this section is deprecated from 4.x on
+ *      users should NOT uncomment these values unless otherwise told.
+ *      This section will be removed as of 4.0.
  ****************************************************/
+//require_once($phpraid_dir.'includes/report.php');
+
 // reports for all data listing
-global $report;
-$report = &new ReportList;
+//global $report;
+//$report = &new ReportList;
 
 /************************************************
  * Database Connection and phpraid_config Load
@@ -115,7 +118,7 @@ while($data = $db_raid->sql_fetchrow($result, true))
 }
 
 /**********************************************************
- * Load Template System Here (Smarty/phpLib)
+ * Load Template System Here (Smarty)
  **********************************************************/
 //Load Smarty Library
 define('SMARTY_DIR', dirname(__FILE__).'/includes/smarty/libs/');
@@ -133,9 +136,18 @@ $wrmsmarty->compile_check = true;
 //$wrmsmarty->debugging = false;
 $wrmsmarty->debugging = true;
 
-//Load phpLib Template System (Deprecated)
-$page = &new wrmTemplate();
-$page->set_root($phpraid_dir.'templates');
+//
+/**********************************************************
+ * Load phpLib Template System (Deprecated)
+ *      The phpLib Template System has now been removed.  
+ *      4.0 fully migrates to the Smarty Template System
+ *      and will no longer use phpLib.
+ *      
+ *      This section will be removed upon 4.0 release.
+ **********************************************************/
+//require_once($phpraid_dir.'includes/template.php');
+//$page = &new wrmTemplate();
+//$page->set_root($phpraid_dir.'templates');
 
 /***************************************************
  * Load Language Files
