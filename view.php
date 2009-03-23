@@ -55,6 +55,32 @@ isset($_GET['raid_id']) ? $raid_id = scrub_input($_GET['raid_id']) : $raid_id = 
 if($raid_id == '' || !is_numeric($raid_id))
 	log_hack();
 
+/*************************************************************
+ * Setup Record Output Information for Data Table
+ *************************************************************/
+// Set StartRecord for Page
+if(!isset($_GET['Base']) || !is_numeric($_GET['Base']))
+	$startRecord = 1;
+else
+	$startRecord = scrub_input($_GET['Base']);
+	
+// Set Sort Field for Page
+if(!isset($_GET['Sort']))
+	$sortField="";
+else
+	$sortField = scrub_input($_GET['Sort']);
+		
+// Set Sort Descending Mark
+if(!isset($_GET['SortDescending']) || !is_numeric($_GET['SortDescending']))
+	$sortDesc = 1;
+else
+	$sortDesc = scrub_input($_GET['SortDescending']);
+		
+$pageURL = 'users.php?mode=view&raid_id=' . $raid_id . '&';
+/**************************************************************
+ * End Record Output Setup for Data Table
+ **************************************************************/
+
 $profile_id = scrub_input($_SESSION['profile_id']);
 
 // Set the Guild Server for the Page.
@@ -340,72 +366,72 @@ if($mode == 'view')
 				case $phprlang['deathknight']:
 					$class = ' <img src="templates/' . $phpraid_config['template'] . '/images/classes/deathknight_icon.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['deathknight'].'\');" onMouseout="hideddrivetip();" alt="death knight">';
 					array_push($deathknight,
-						array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,'role'=>$role,
-							  'race'=>$race,'class'=>$class,'name'=>$name,'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
-							  'date'=>$date,'time'=>$time,'team_name'=>$team_name,'guild'=>$guildname));
+						array('ID'=>$data['char_id'],'Arcane'=>$arcane,'Fire'=>$fire,'Nature'=>$nature,'Frost'=>$frost,'Shadow'=>$shadow,'Role'=>$role,
+							  'Race'=>$race,'Class'=>$class,'Name'=>$name,'Comments'=>$comments,'Level'=>$data['lvl'],'Buttons'=>$actions,
+							  'Date'=>$date,'Time'=>$time,'Team Name'=>$team_name,'Guild'=>$guildname));
 					break;
 				case $phprlang['druid']:
 					$class = ' <img src="templates/' . $phpraid_config['template'] . '/images/classes/druid_icon.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['druid'].'\');" onMouseout="hideddrivetip();" alt="duird">';
 					array_push($druid,
-						array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,'role'=>$role,
-							  'race'=>$race,'class'=>$class,'name'=>$name,'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
-							  'date'=>$date,'time'=>$time,'team_name'=>$team_name,'guild'=>$guildname));
+						array('ID'=>$data['char_id'],'Arcane'=>$arcane,'Fire'=>$fire,'Nature'=>$nature,'Frost'=>$frost,'Shadow'=>$shadow,'Role'=>$role,
+							  'Race'=>$race,'Class'=>$class,'Name'=>$name,'Comments'=>$comments,'Level'=>$data['lvl'],'Buttons'=>$actions,
+							  'Date'=>$date,'Time'=>$time,'Team Name'=>$team_name,'Guild'=>$guildname));
 					break;
 				case $phprlang['hunter']:
 					$class = ' <img src="templates/' . $phpraid_config['template'] . '/images/classes/hunter_icon.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['hunter'].'\');" onMouseout="hideddrivetip();" alt="hunter">';
 					array_push($hunter,
-						array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,'role'=>$role,
-							  'race'=>$race,'class'=>$class,'name'=>$name,'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
-							  'date'=>$date,'time'=>$time,'team_name'=>$team_name,'guild'=>$guildname));
+						array('ID'=>$data['char_id'],'Arcane'=>$arcane,'Fire'=>$fire,'Nature'=>$nature,'Frost'=>$frost,'Shadow'=>$shadow,'Role'=>$role,
+							  'Race'=>$race,'Class'=>$class,'Name'=>$name,'Comments'=>$comments,'Level'=>$data['lvl'],'Buttons'=>$actions,
+							  'Date'=>$date,'Time'=>$time,'Team Name'=>$team_name,'Guild'=>$guildname));
 					break;
 				case $phprlang['mage']:
 					$class = ' <img src="templates/' . $phpraid_config['template'] . '/images/classes/mage_icon.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['mage'].'\');" onMouseout="hideddrivetip();" alt="mage">';
 					array_push($mage,
-						array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,'role'=>$role,
-							  'race'=>$race,'class'=>$class,'name'=>$name,'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
-							  'date'=>$date,'time'=>$time,'team_name'=>$team_name,'guild'=>$guildname));
+						array('ID'=>$data['char_id'],'Arcane'=>$arcane,'Fire'=>$fire,'Nature'=>$nature,'Frost'=>$frost,'Shadow'=>$shadow,'Role'=>$role,
+							  'Race'=>$race,'Class'=>$class,'Name'=>$name,'Comments'=>$comments,'Level'=>$data['lvl'],'Buttons'=>$actions,
+							  'Date'=>$date,'Time'=>$time,'Team Name'=>$team_name,'Guild'=>$guildname));
 					break;
 				case $phprlang['paladin']:
 					$class = ' <img src="templates/' . $phpraid_config['template'] . '/images/classes/paladin_icon.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['paladin'].'\');" onMouseout="hideddrivetip();" alt="paladin">';
 					array_push($paladin,
-						array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,'role'=>$role,
-							  'race'=>$race,'class'=>$class,'name'=>$name,'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
-							  'date'=>$date,'time'=>$time,'team_name'=>$team_name,'guild'=>$guildname));
+						array('ID'=>$data['char_id'],'Arcane'=>$arcane,'Fire'=>$fire,'Nature'=>$nature,'Frost'=>$frost,'Shadow'=>$shadow,'Role'=>$role,
+							  'Race'=>$race,'Class'=>$class,'Name'=>$name,'Comments'=>$comments,'Level'=>$data['lvl'],'Buttons'=>$actions,
+							  'Date'=>$date,'Time'=>$time,'Team Name'=>$team_name,'Guild'=>$guildname));
 					break;
 				case $phprlang['priest']:
 					$class = ' <img src="templates/' . $phpraid_config['template'] . '/images/classes/priest_icon.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['priest'].'\');" onMouseout="hideddrivetip();" alt="priest">';
 					array_push($priest,
-						array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,'role'=>$role,
-							  'race'=>$race,'class'=>$class,'name'=>$name,'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
-							  'date'=>$date,'time'=>$time,'team_name'=>$team_name,'guild'=>$guildname));
+						array('ID'=>$data['char_id'],'Arcane'=>$arcane,'Fire'=>$fire,'Nature'=>$nature,'Frost'=>$frost,'Shadow'=>$shadow,'Role'=>$role,
+							  'Race'=>$race,'Class'=>$class,'Name'=>$name,'Comments'=>$comments,'Level'=>$data['lvl'],'Buttons'=>$actions,
+							  'Date'=>$date,'Time'=>$time,'Team Name'=>$team_name,'Guild'=>$guildname));
 					break;
 				case $phprlang['rogue']:
 					$class = ' <img src="templates/' . $phpraid_config['template'] . '/images/classes/rogue_icon.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['rogue'].'\');" onMouseout="hideddrivetip();" alt="rogue">';
 					array_push($rogue,
-						array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,'role'=>$role,
-							  'race'=>$race,'class'=>$class,'name'=>$name,'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
-							  'date'=>$date,'time'=>$time,'team_name'=>$team_name,'guild'=>$guildname));
+						array('ID'=>$data['char_id'],'Arcane'=>$arcane,'Fire'=>$fire,'Nature'=>$nature,'Frost'=>$frost,'Shadow'=>$shadow,'Role'=>$role,
+							  'Race'=>$race,'Class'=>$class,'Name'=>$name,'Comments'=>$comments,'Level'=>$data['lvl'],'Buttons'=>$actions,
+							  'Date'=>$date,'Time'=>$time,'Team Name'=>$team_name,'Guild'=>$guildname));
 					break;
 				case $phprlang['shaman']:
 					$class = ' <img src="templates/' . $phpraid_config['template'] . '/images/classes/shaman_icon.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['shaman'].'\');" onMouseout="hideddrivetip();" alt="shaman">';
 					array_push($shaman,
-						array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,'role'=>$role,
-							  'race'=>$race,'class'=>$class,'name'=>$name,'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
-							  'date'=>$date,'time'=>$time,'team_name'=>$team_name,'guild'=>$guildname));
+						array('ID'=>$data['char_id'],'Arcane'=>$arcane,'Fire'=>$fire,'Nature'=>$nature,'Frost'=>$frost,'Shadow'=>$shadow,'Role'=>$role,
+							  'Race'=>$race,'Class'=>$class,'Name'=>$name,'Comments'=>$comments,'Level'=>$data['lvl'],'Buttons'=>$actions,
+							  'Date'=>$date,'Time'=>$time,'Team Name'=>$team_name,'Guild'=>$guildname));
 					break;
 				case $phprlang['warlock']:
 					$class = ' <img src="templates/' . $phpraid_config['template'] . '/images/classes/warlock_icon.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['warlock'].'\');" onMouseout="hideddrivetip();" alt="warlock">';
 					array_push($warlock,
-						array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,'role'=>$role,
-							  'race'=>$race,'class'=>$class,'name'=>$name,'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
-							  'date'=>$date,'time'=>$time,'team_name'=>$team_name,'guild'=>$guildname));
+						array('ID'=>$data['char_id'],'Arcane'=>$arcane,'Fire'=>$fire,'Nature'=>$nature,'Frost'=>$frost,'Shadow'=>$shadow,'Role'=>$role,
+							  'Race'=>$race,'Class'=>$class,'Name'=>$name,'Comments'=>$comments,'Level'=>$data['lvl'],'Buttons'=>$actions,
+							  'Date'=>$date,'Time'=>$time,'Team Name'=>$team_name,'Guild'=>$guildname));
 					break;
 				case $phprlang['warrior']:
 					$class = ' <img src="templates/' . $phpraid_config['template'] . '/images/classes/warrior_icon.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['warrior'].'\')"; onMouseout="hideddrivetip()" alt="warrior">';
 					array_push($warrior,
-						array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,'role'=>$role,
-							  'race'=>$race,'class'=>$class,'name'=>$name,'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
-							  'date'=>$date,'time'=>$time,'team_name'=>$team_name,'guild'=>$guildname));
+						array('ID'=>$data['char_id'],'Arcane'=>$arcane,'Fire'=>$fire,'Nature'=>$nature,'Frost'=>$frost,'Shadow'=>$shadow,'Role'=>$role,
+							  'Race'=>$race,'Class'=>$class,'Name'=>$name,'Comments'=>$comments,'Level'=>$data['lvl'],'Buttons'=>$actions,
+							  'Date'=>$date,'Time'=>$time,'Team Name'=>$team_name,'Guild'=>$guildname));
 					break;
 			}
 		}
@@ -449,39 +475,39 @@ if($mode == 'view')
 			{
 				case $phpraid_config['role1_name']:
 					array_push($role1,
-						array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,'role'=>$role,
-							  'race'=>$race,'class'=>$class,'name'=>$name,'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
-							  'date'=>$date,'time'=>$time,'team_name'=>$team_name,'guild'=>$guildname));
+						array('ID'=>$data['char_id'],'Arcane'=>$arcane,'Fire'=>$fire,'Nature'=>$nature,'Frost'=>$frost,'shadow'=>$Shadow,'Role'=>$role,
+							  'Race'=>$race,'Class'=>$class,'Name'=>$name,'Comments'=>$comments,'Level'=>$data['lvl'],'Buttons'=>$actions,
+							  'Date'=>$date,'Time'=>$time,'Team Name'=>$team_name,'Guild'=>$guildname));
 					break;
 				case $phpraid_config['role2_name']:
 					array_push($role2,
-						array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,'role'=>$role,
-							  'race'=>$race,'class'=>$class,'name'=>$name,'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
-							  'date'=>$date,'time'=>$time,'team_name'=>$team_name,'guild'=>$guildname));
+						array('ID'=>$data['char_id'],'Arcane'=>$arcane,'Fire'=>$fire,'Nature'=>$nature,'Frost'=>$frost,'shadow'=>$Shadow,'Role'=>$role,
+							  'Race'=>$race,'Class'=>$class,'Name'=>$name,'Comments'=>$comments,'Level'=>$data['lvl'],'Buttons'=>$actions,
+							  'Date'=>$date,'Time'=>$time,'Team Name'=>$team_name,'Guild'=>$guildname));
 					break;
 				case $phpraid_config['role3_name']:
 					array_push($role3,
-						array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,'role'=>$role,
-							  'race'=>$race,'class'=>$class,'name'=>$name,'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
-							  'date'=>$date,'time'=>$time,'team_name'=>$team_name,'guild'=>$guildname));
+						array('ID'=>$data['char_id'],'Arcane'=>$arcane,'Fire'=>$fire,'Nature'=>$nature,'Frost'=>$frost,'shadow'=>$Shadow,'Role'=>$role,
+							  'Race'=>$race,'Class'=>$class,'Name'=>$name,'Comments'=>$comments,'Level'=>$data['lvl'],'Buttons'=>$actions,
+							  'Date'=>$date,'Time'=>$time,'Team Name'=>$team_name,'Guild'=>$guildname));
 					break;
 				case $phpraid_config['role4_name']:
 					array_push($role4,
-						array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,'role'=>$role,
-							  'race'=>$race,'class'=>$class,'name'=>$name,'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
-							  'date'=>$date,'time'=>$time,'team_name'=>$team_name,'guild'=>$guildname));
+						array('ID'=>$data['char_id'],'Arcane'=>$arcane,'Fire'=>$fire,'Nature'=>$nature,'Frost'=>$frost,'shadow'=>$Shadow,'Role'=>$role,
+							  'Race'=>$race,'Class'=>$class,'Name'=>$name,'Comments'=>$comments,'Level'=>$data['lvl'],'Buttons'=>$actions,
+							  'Date'=>$date,'Time'=>$time,'Team Name'=>$team_name,'Guild'=>$guildname));
 					break;
 				case $phpraid_config['role5_name']:
 					array_push($role5,
-						array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,'role'=>$role,
-							  'race'=>$race,'class'=>$class,'name'=>$name,'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
-							  'date'=>$date,'time'=>$time,'team_name'=>$team_name,'guild'=>$guildname));
+						array('ID'=>$data['char_id'],'Arcane'=>$arcane,'Fire'=>$fire,'Nature'=>$nature,'Frost'=>$frost,'shadow'=>$Shadow,'Role'=>$role,
+							  'Race'=>$race,'Class'=>$class,'Name'=>$name,'Comments'=>$comments,'Level'=>$data['lvl'],'Buttons'=>$actions,
+							  'Date'=>$date,'Time'=>$time,'Team Name'=>$team_name,'Guild'=>$guildname));
 					break;
 				case $phpraid_config['role6_name']:
 					array_push($role6,
-						array('id'=>$data['char_id'],'arcane'=>$arcane,'fire'=>$fire,'nature'=>$nature,'frost'=>$frost,'shadow'=>$shadow,'role'=>$role,
-							  'race'=>$race,'class'=>$class,'name'=>$name,'comments'=>$comments,'lvl'=>$data['lvl'],'actions'=>$actions,
-							  'date'=>$date,'time'=>$time,'team_name'=>$team_name,'guild'=>$guildname));
+						array('ID'=>$data['char_id'],'Arcane'=>$arcane,'Fire'=>$fire,'Nature'=>$nature,'Frost'=>$frost,'shadow'=>$Shadow,'Role'=>$role,
+							  'Race'=>$race,'Class'=>$class,'Name'=>$name,'Comments'=>$comments,'Level'=>$data['lvl'],'Buttons'=>$actions,
+							  'Date'=>$date,'Time'=>$time,'Team Name'=>$team_name,'Guild'=>$guildname));
 					break;
 			}
 		}
@@ -637,7 +663,21 @@ if($mode == 'view')
 			$guildname = $data['guild'];
 		}
 
-		array_push($raid_queue, array('id'=>$data['char_id'],'race'=>$race,'class'=>$class,'name'=>$name,'lvl'=>$data['lvl'],'role'=>$data['role'],'actions'=>$actions,'date'=>$date,'time'=>$time,'comments'=>$comments,'guild'=>$guildname));
+		array_push($raid_queue, 
+			array(
+				'ID'=>$data['char_id'],
+				'Race'=>$race,
+				'Class'=>$class,
+				'Name'=>$name,
+				'Level'=>$data['lvl'],
+				'Role'=>$data['role'],
+				'Buttons'=>$actions,
+				'Date'=>$date,
+				'Time'=>$time,
+				'Comments'=>$comments,
+				'Guild'=>$guildname
+			)
+		);
 	}
 
 	// parse the cancel array and seperate to classes
@@ -790,123 +830,667 @@ if($mode == 'view')
 			$guildname = $data['guild'];
 		}
 
-		array_push($raid_cancel, array('id'=>$data['char_id'],'race'=>$race,'class'=>$class,'name'=>$name,'lvl'=>$data['lvl'],'role'=>$data['role'],'actions'=>$actions,'date'=>$date,'time'=>$time,'comments'=>$comments,'guild'=>$guildname));
+		array_push($raid_cancel, 
+			array(
+				'ID'=>$data['char_id'],
+				'Race'=>$race,
+				'Class'=>$class,
+				'Name'=>$name,
+				'Level'=>$data['lvl'],
+				'Role'=>$data['role'],
+				'Buttons'=>$actions,
+				'Date'=>$date,
+				'Time'=>$time,
+				'Comments'=>$comments,
+				'Guild'=>$guildname
+			)
+		);
 	}
 
-	// setup formatting for report class (THANKS to www.thecalico.com)
-	// generic settings
-	setup_output();
-
-	$report->showRecordCount(false);
-	$report->allowLink(ALLOW_HOVER_INDEX,'',array());
-
-	//Default sorting
-	if(!$_GET['Sort'])
-	{
-		$report->allowSort(true, 'name', 'ASC', 'view.php?mode=view&amp;raid_id='.$raid_id);
-	}
-	else
-	{
-		$report->allowSort(true, $_GET['Sort'], $_GET['SortDescending'], 'view.php?mode=view&amp;raid_id='.$raid_id);
-	}
-
-	if($phpraid_config['show_id'] == 1)
-		$report->addOutputColumn('id',$phprlang['id'],'','center');
-	$report->addOutputColumn('name',$phprlang['name'],'','left');
-	if($priv_raids == 1 || $user_perm_group['RL'] == 1)
-	{
-		$report->addOutputColumn('guild',$phprlang['guild'],'','left');
-	}
-	$report->addOutputColumn('comments',$phprlang['comments'],'','left');
-	$report->addOutputColumn('team_name',$phprlang['team_name'],'','left');
-	$report->addOutputColumn('lvl',$phprlang['level'],'','center');
-	$report->addOutputColumn('race',$phprlang['race'],'','center');
-	$report->addOutputColumn('class',$phprlang['class'],'','center');	
-	$report->addOutputColumn('role',$phprlang['role'],'','center');	
-	$report->addOutputColumn('arcane','<img border="0" src="templates/' . $phpraid_config['template'] .
-									  '/images/resistances/arcane_resistance.gif" onMouseover=
-									  "ddrivetip(\''.$phprlang['arcane'].'\');" onMouseout="hideddrivetip();"
-									  height="16" width="16" alt="arcane">','','center');
-	$report->addOutputColumn('fire','<img border="0" src="templates/' . $phpraid_config['template'] .
-									  '/images/resistances/fire_resistance.gif" onMouseover=
-									  "ddrivetip(\''.$phprlang['fire'].'\');" onMouseout="hideddrivetip();"
-									  height="16" width="16" alt="fire">','','center');
-	$report->addOutputColumn('nature','<img border="0" src="templates/' . $phpraid_config['template'] .
-									  '/images/resistances/nature_resistance.gif" onMouseover=
-									  "ddrivetip(\''.$phprlang['nature'].'\');" onMouseout="hideddrivetip();"
-									  height="16" width="16" alt="nature">','','center');
-	$report->addOutputColumn('frost','<img border="0" src="templates/' . $phpraid_config['template'] .
-									  '/images/resistances/frost_resistance.gif" onMouseover=
-									  "ddrivetip(\''.$phprlang['frost'].'\');" onMouseout="hideddrivetip();"
-									  height="16" width="16" alt="frost">','','center');
-	$report->addOutputColumn('shadow','<img border="0" src="templates/' . $phpraid_config['template'] .
-									  '/images/resistances/shadow_resistance.gif" onMouseover=
-									  "ddrivetip(\''.$phprlang['shadow'].'\');" onMouseout="hideddrivetip();"
-									  height="16" width="16" alt="shadow">','','center');
-	$report->addOutputColumn('date',$phprlang['date'],'wrmdate','center');
-	$report->addOutputColumn('time',$phprlang['time'],'wrmtime','center');
-	$report->addOutputColumn('actions','','','right');
-
+	//************************  ADD THIS!!!!!! ***********************************
+	//if($priv_raids == 1 || $user_perm_group['RL'] == 1)
+	//{
+	//	$report->addOutputColumn('guild',$phprlang['guild'],'','left');
+	//}
+	//****************************************************************************
+	
 	if ($phpraid_config['raid_view_type'] == 'by_class')
 	{
-		$deathknight = $report->getListFromArray($deathknight);
-		$druid = $report->getListFromArray($druid);
-		$hunter = $report->getListFromArray($hunter);
-		$mage = $report->getListFromArray($mage);
-		$paladin = $report->getListFromArray($paladin);
-		$priest = $report->getListFromArray($priest);
-		$rogue = $report->getListFromArray($rogue);
-		$shaman = $report->getListFromArray($shaman);
-		$warlock = $report->getListFromArray($warlock);
-		$warrior = $report->getListFromArray($warrior);
+		/**************  DEATH KNIGHT *****************/
+		/**************************************************************
+		 * Code to setup for a Dynamic Table Create: raidview1 View.
+		 **************************************************************/
+		$viewName = 'raidview1';
+		
+		//Setup Columns
+		$dk_headers = array();
+		$record_count_array = array();
+		$dk_headers = getVisibleColumns($viewName);
+	
+		//Get Record Counts
+		$dk_record_count_array = getRecordCounts($deathknight, $dk_headers, $startRecord);
+		
+		//Get the Jump Menu and pass it down
+		$dkJumpMenu = getPageNavigation($deathknight, $startRecord, $pageURL, $sortField, $sortDesc);
+	
+		//Setup Data
+		$deathknight = paginateSortAndFormat($deathknight, $sortField, $sortDesc, $startRecord, $viewName);
+		/****************************************************************
+		 * Data Assign for Template.
+		 ****************************************************************/
+		$wrmsmarty->assign('dk_data', $deathknight); 
+		$wrmsmarty->assign('dk_jump_menu', $dkJumpMenu);
+		$wrmsmarty->assign('dk_column_name', $dk_headers);
+		$wrmsmarty->assign('dk_record_counts', $dk_record_count_array);
+		$wrmsmarty->assign('dk_header_data',
+			array(
+				'template_name'=>$phpraid_config['template'],
+				'deathknight_header'=>$phprlang['deathknight'],
+				'sort_url_base' => $pageURL,
+				'sort_descending' => $sortDesc,
+				'sort_text' => $phprlang['sort_text'],
+			)
+		);
+		/**************  DRUID *****************/
+		/**************************************************************
+		 * Code to setup for a Dynamic Table Create: raidview1 View.
+		 **************************************************************/
+		$viewName = 'raidview1';
+		
+		//Setup Columns
+		$dr_headers = array();
+		$record_count_array = array();
+		$dr_headers = getVisibleColumns($viewName);
+	
+		//Get Record Counts
+		$dr_record_count_array = getRecordCounts($druid, $dr_headers, $startRecord);
+		
+		//Get the Jump Menu and pass it down
+		$drJumpMenu = getPageNavigation($druid, $startRecord, $pageURL, $sortField, $sortDesc);
+	
+		//Setup Data
+		$druid = paginateSortAndFormat($druid, $sortField, $sortDesc, $startRecord, $viewName);
+		/****************************************************************
+		 * Data Assign for Template.
+		 ****************************************************************/
+		$wrmsmarty->assign('dr_data', $druid); 
+		$wrmsmarty->assign('dr_jump_menu', $drJumpMenu);
+		$wrmsmarty->assign('dr_column_name', $dr_headers);
+		$wrmsmarty->assign('dr_record_counts', $dr_record_count_array);
+		$wrmsmarty->assign('dr_header_data',
+			array(
+				'template_name'=>$phpraid_config['template'],
+				'druid_header'=>$phprlang['druid'],
+				'sort_url_base' => $pageURL,
+				'sort_descending' => $sortDesc,
+				'sort_text' => $phprlang['sort_text'],
+			)
+		);
+		/**************  HUNTER *****************/
+		/**************************************************************
+		 * Code to setup for a Dynamic Table Create: raidview1 View.
+		 **************************************************************/
+		$viewName = 'raidview1';
+		
+		//Setup Columns
+		$hu_headers = array();
+		$record_count_array = array();
+		$hu_headers = getVisibleColumns($viewName);
+	
+		//Get Record Counts
+		$hu_record_count_array = getRecordCounts($hunter, $hu_headers, $startRecord);
+		
+		//Get the Jump Menu and pass it down
+		$huJumpMenu = getPageNavigation($hunter, $startRecord, $pageURL, $sortField, $sortDesc);
+	
+		//Setup Data
+		$hunter = paginateSortAndFormat($hunter, $sortField, $sortDesc, $startRecord, $viewName);
+		/****************************************************************
+		 * Data Assign for Template.
+		 ****************************************************************/
+		$wrmsmarty->assign('hu_data', $hunter); 
+		$wrmsmarty->assign('hu_jump_menu', $huJumpMenu);
+		$wrmsmarty->assign('hu_column_name', $hu_headers);
+		$wrmsmarty->assign('hu_record_counts', $hu_record_count_array);
+		$wrmsmarty->assign('hu_header_data',
+			array(
+				'template_name'=>$phpraid_config['template'],
+				'hunter_header'=>$phprlang['hunter'],
+				'sort_url_base' => $pageURL,
+				'sort_descending' => $sortDesc,
+				'sort_text' => $phprlang['sort_text'],
+			)
+		);
+		/**************  MAGE *****************/
+		/**************************************************************
+		 * Code to setup for a Dynamic Table Create: raidview1 View.
+		 **************************************************************/
+		$viewName = 'raidview1';
+		
+		//Setup Columns
+		$ma_headers = array();
+		$record_count_array = array();
+		$ma_headers = getVisibleColumns($viewName);
+	
+		//Get Record Counts
+		$ma_record_count_array = getRecordCounts($mage, $ma_headers, $startRecord);
+		
+		//Get the Jump Menu and pass it down
+		$maJumpMenu = getPageNavigation($mage, $startRecord, $pageURL, $sortField, $sortDesc);
+	
+		//Setup Data
+		$mage = paginateSortAndFormat($mage, $sortField, $sortDesc, $startRecord, $viewName);
+		/****************************************************************
+		 * Data Assign for Template.
+		 ****************************************************************/
+		$wrmsmarty->assign('ma_data', $mage); 
+		$wrmsmarty->assign('ma_jump_menu', $maJumpMenu);
+		$wrmsmarty->assign('ma_column_name', $ma_headers);
+		$wrmsmarty->assign('ma_record_counts', $ma_record_count_array);
+		$wrmsmarty->assign('ma_header_data',
+			array(
+				'template_name'=>$phpraid_config['template'],
+				'mage_header'=>$phprlang['mage'],
+				'sort_url_base' => $pageURL,
+				'sort_descending' => $sortDesc,
+				'sort_text' => $phprlang['sort_text'],
+			)
+		);
+		/**************  PALADIN *****************/
+		/**************************************************************
+		 * Code to setup for a Dynamic Table Create: raidview1 View.
+		 **************************************************************/
+		$viewName = 'raidview1';
+		
+		//Setup Columns
+		$pa_headers = array();
+		$record_count_array = array();
+		$pa_headers = getVisibleColumns($viewName);
+	
+		//Get Record Counts
+		$pa_record_count_array = getRecordCounts($paladin, $pa_headers, $startRecord);
+		
+		//Get the Jump Menu and pass it down
+		$paJumpMenu = getPageNavigation($paladin, $startRecord, $pageURL, $sortField, $sortDesc);
+	
+		//Setup Data
+		$paladin = paginateSortAndFormat($paladin, $sortField, $sortDesc, $startRecord, $viewName);
+		/****************************************************************
+		 * Data Assign for Template.
+		 ****************************************************************/
+		$wrmsmarty->assign('pa_data', $paladin); 
+		$wrmsmarty->assign('pa_jump_menu', $paJumpMenu);
+		$wrmsmarty->assign('pa_column_name', $pa_headers);
+		$wrmsmarty->assign('pa_record_counts', $pa_record_count_array);
+		$wrmsmarty->assign('pa_header_data',
+			array(
+				'template_name'=>$phpraid_config['template'],
+				'paladin_header'=>$phprlang['paladin'],
+				'sort_url_base' => $pageURL,
+				'sort_descending' => $sortDesc,
+				'sort_text' => $phprlang['sort_text'],
+			)
+		);
+		/**************  PRIEST *****************/
+		/**************************************************************
+		 * Code to setup for a Dynamic Table Create: raidview1 View.
+		 **************************************************************/
+		$viewName = 'raidview1';
+		
+		//Setup Columns
+		$pr_headers = array();
+		$record_count_array = array();
+		$pr_headers = getVisibleColumns($viewName);
+	
+		//Get Record Counts
+		$pr_record_count_array = getRecordCounts($priest, $pr_headers, $startRecord);
+		
+		//Get the Jump Menu and pass it down
+		$prJumpMenu = getPageNavigation($priest, $startRecord, $pageURL, $sortField, $sortDesc);
+	
+		//Setup Data
+		$priest = paginateSortAndFormat($priest, $sortField, $sortDesc, $startRecord, $viewName);
+		/****************************************************************
+		 * Data Assign for Template.
+		 ****************************************************************/
+		$wrmsmarty->assign('pr_data', $priest); 
+		$wrmsmarty->assign('pr_jump_menu', $prJumpMenu);
+		$wrmsmarty->assign('pr_column_name', $pr_headers);
+		$wrmsmarty->assign('pr_record_counts', $pr_record_count_array);
+		$wrmsmarty->assign('pr_header_data',
+			array(
+				'template_name'=>$phpraid_config['template'],
+				'priest_header'=>$phprlang['priest'],
+				'sort_url_base' => $pageURL,
+				'sort_descending' => $sortDesc,
+				'sort_text' => $phprlang['sort_text'],
+			)
+		);
+		/**************  ROGUE *****************/
+		/**************************************************************
+		 * Code to setup for a Dynamic Table Create: raidview1 View.
+		 **************************************************************/
+		$viewName = 'raidview1';
+		
+		//Setup Columns
+		$ro_headers = array();
+		$record_count_array = array();
+		$ro_headers = getVisibleColumns($viewName);
+	
+		//Get Record Counts
+		$ro_record_count_array = getRecordCounts($rogue, $ro_headers, $startRecord);
+		
+		//Get the Jump Menu and pass it down
+		$roJumpMenu = getPageNavigation($rogue, $startRecord, $pageURL, $sortField, $sortDesc);
+	
+		//Setup Data
+		$rogue = paginateSortAndFormat($rogue, $sortField, $sortDesc, $startRecord, $viewName);
+		/****************************************************************
+		 * Data Assign for Template.
+		 ****************************************************************/
+		$wrmsmarty->assign('ro_data', $rogue); 
+		$wrmsmarty->assign('ro_jump_menu', $roJumpMenu);
+		$wrmsmarty->assign('ro_column_name', $ro_headers);
+		$wrmsmarty->assign('ro_record_counts', $ro_record_count_array);
+		$wrmsmarty->assign('ro_header_data',
+			array(
+				'template_name'=>$phpraid_config['template'],
+				'rogue_header'=>$phprlang['rogue'],
+				'sort_url_base' => $pageURL,
+				'sort_descending' => $sortDesc,
+				'sort_text' => $phprlang['sort_text'],
+			)
+		);
+		/**************  SHAMAN *****************/
+		/**************************************************************
+		 * Code to setup for a Dynamic Table Create: raidview1 View.
+		 **************************************************************/
+		$viewName = 'raidview1';
+		
+		//Setup Columns
+		$sh_headers = array();
+		$record_count_array = array();
+		$sh_headers = getVisibleColumns($viewName);
+	
+		//Get Record Counts
+		$sh_record_count_array = getRecordCounts($shaman, $sh_headers, $startRecord);
+		
+		//Get the Jump Menu and pass it down
+		$shJumpMenu = getPageNavigation($shaman, $startRecord, $pageURL, $sortField, $sortDesc);
+	
+		//Setup Data
+		$shaman = paginateSortAndFormat($shaman, $sortField, $sortDesc, $startRecord, $viewName);
+		/****************************************************************
+		 * Data Assign for Template.
+		 ****************************************************************/
+		$wrmsmarty->assign('sh_data', $shaman); 
+		$wrmsmarty->assign('sh_jump_menu', $shJumpMenu);
+		$wrmsmarty->assign('sh_column_name', $sh_headers);
+		$wrmsmarty->assign('sh_record_counts', $sh_record_count_array);
+		$wrmsmarty->assign('sh_header_data',
+			array(
+				'template_name'=>$phpraid_config['template'],
+				'shaman_header'=>$phprlang['shaman'],
+				'sort_url_base' => $pageURL,
+				'sort_descending' => $sortDesc,
+				'sort_text' => $phprlang['sort_text'],
+			)
+		);
+		/**************  WARLOCK *****************/
+		/**************************************************************
+		 * Code to setup for a Dynamic Table Create: raidview1 View.
+		 **************************************************************/
+		$viewName = 'raidview1';
+		
+		//Setup Columns
+		$wl_headers = array();
+		$record_count_array = array();
+		$wl_headers = getVisibleColumns($viewName);
+	
+		//Get Record Counts
+		$wl_record_count_array = getRecordCounts($warlock, $wl_headers, $startRecord);
+		
+		//Get the Jump Menu and pass it down
+		$wlJumpMenu = getPageNavigation($warlock, $startRecord, $pageURL, $sortField, $sortDesc);
+	
+		//Setup Data
+		$warlock = paginateSortAndFormat($warlock, $sortField, $sortDesc, $startRecord, $viewName);
+		/****************************************************************
+		 * Data Assign for Template.
+		 ****************************************************************/
+		$wrmsmarty->assign('wl_data', $warlock); 
+		$wrmsmarty->assign('wl_jump_menu', $wlJumpMenu);
+		$wrmsmarty->assign('wl_column_name', $wl_headers);
+		$wrmsmarty->assign('wl_record_counts', $wl_record_count_array);
+		$wrmsmarty->assign('wl_header_data',
+			array(
+				'template_name'=>$phpraid_config['template'],
+				'warlock_header'=>$phprlang['warlock'],
+				'sort_url_base' => $pageURL,
+				'sort_descending' => $sortDesc,
+				'sort_text' => $phprlang['sort_text'],
+			)
+		);
+		/**************  WARRIOR *****************/
+		/**************************************************************
+		 * Code to setup for a Dynamic Table Create: raidview1 View.
+		 **************************************************************/
+		$viewName = 'raidview1';
+		
+		//Setup Columns
+		$wa_headers = array();
+		$record_count_array = array();
+		$wa_headers = getVisibleColumns($viewName);
+	
+		//Get Record Counts
+		$wa_record_count_array = getRecordCounts($warrior, $wa_headers, $startRecord);
+		
+		//Get the Jump Menu and pass it down
+		$waJumpMenu = getPageNavigation($warrior, $startRecord, $pageURL, $sortField, $sortDesc);
+	
+		//Setup Data
+		$warrior = paginateSortAndFormat($warrior, $sortField, $sortDesc, $startRecord, $viewName);
+		/****************************************************************
+		 * Data Assign for Template.
+		 ****************************************************************/
+		$wrmsmarty->assign('wa_data', $warrior); 
+		$wrmsmarty->assign('wa_jump_menu', $waJumpMenu);
+		$wrmsmarty->assign('wa_column_name', $wa_headers);
+		$wrmsmarty->assign('wa_record_counts', $wa_record_count_array);
+		$wrmsmarty->assign('wa_header_data',
+			array(
+				'template_name'=>$phpraid_config['template'],
+				'warrior_header'=>$phprlang['warrior'],
+				'sort_url_base' => $pageURL,
+				'sort_descending' => $sortDesc,
+				'sort_text' => $phprlang['sort_text'],
+			)
+		);
 	}
 	else
 	{
-		$role1 = $report->getListFromArray($role1);
-		$role2 = $report->getListFromArray($role2);
-		$role3 = $report->getListFromArray($role3);
-		$role4 = $report->getListFromArray($role4);
-		$role5 = $report->getListFromArray($role5);
-		$role6 = $report->getListFromArray($role6);
+		/**************  ROLE1 *****************/
+		/**************************************************************
+		 * Code to setup for a Dynamic Table Create: raidview1 View.
+		 **************************************************************/
+		$viewName = 'raidview1';
+		
+		//Setup Columns
+		$ro1_headers = array();
+		$record_count_array = array();
+		$ro1_headers = getVisibleColumns($viewName);
+	
+		//Get Record Counts
+		$ro1_record_count_array = getRecordCounts($role1, $ro1_headers, $startRecord);
+		
+		//Get the Jump Menu and pass it down
+		$ro1JumpMenu = getPageNavigation($role1, $startRecord, $pageURL, $sortField, $sortDesc);
+	
+		//Setup Data
+		$role1 = paginateSortAndFormat($role1, $sortField, $sortDesc, $startRecord, $viewName);
+		/****************************************************************
+		 * Data Assign for Template.
+		 ****************************************************************/
+		$wrmsmarty->assign('ro1_data', $role1); 
+		$wrmsmarty->assign('ro1_jump_menu', $ro1JumpMenu);
+		$wrmsmarty->assign('ro1_column_name', $ro1_headers);
+		$wrmsmarty->assign('ro1_record_counts', $ro1_record_count_array);
+		$wrmsmarty->assign('ro1_header_data',
+			array(
+				'template_name'=>$phpraid_config['template'],
+				'role1_header'=>$phpraid_config['role1_name'],
+				'sort_url_base' => $pageURL,
+				'sort_descending' => $sortDesc,
+				'sort_text' => $phprlang['sort_text'],
+			)
+		);
+		/**************  ROLE2 *****************/
+		/**************************************************************
+		 * Code to setup for a Dynamic Table Create: raidview1 View.
+		 **************************************************************/
+		$viewName = 'raidview1';
+		
+		//Setup Columns
+		$ro2_headers = array();
+		$record_count_array = array();
+		$ro2_headers = getVisibleColumns($viewName);
+	
+		//Get Record Counts
+		$ro2_record_count_array = getRecordCounts($role2, $ro2_headers, $startRecord);
+		
+		//Get the Jump Menu and pass it down
+		$ro2JumpMenu = getPageNavigation($role2, $startRecord, $pageURL, $sortField, $sortDesc);
+	
+		//Setup Data
+		$role2 = paginateSortAndFormat($role2, $sortField, $sortDesc, $startRecord, $viewName);
+		/****************************************************************
+		 * Data Assign for Template.
+		 ****************************************************************/
+		$wrmsmarty->assign('ro2_data', $role2); 
+		$wrmsmarty->assign('ro2_jump_menu', $ro2JumpMenu);
+		$wrmsmarty->assign('ro2_column_name', $ro2_headers);
+		$wrmsmarty->assign('ro2_record_counts', $ro2_record_count_array);
+		$wrmsmarty->assign('ro2_header_data',
+			array(
+				'template_name'=>$phpraid_config['template'],
+				'role2_header'=>$phpraid_config['role2_name'],
+				'sort_url_base' => $pageURL,
+				'sort_descending' => $sortDesc,
+				'sort_text' => $phprlang['sort_text'],
+			)
+		);
+		/**************  ROLE3 *****************/
+		/**************************************************************
+		 * Code to setup for a Dynamic Table Create: raidview1 View.
+		 **************************************************************/
+		$viewName = 'raidview1';
+		
+		//Setup Columns
+		$ro3_headers = array();
+		$record_count_array = array();
+		$ro3_headers = getVisibleColumns($viewName);
+	
+		//Get Record Counts
+		$ro3_record_count_array = getRecordCounts($role3, $ro3_headers, $startRecord);
+		
+		//Get the Jump Menu and pass it down
+		$ro3JumpMenu = getPageNavigation($role3, $startRecord, $pageURL, $sortField, $sortDesc);
+	
+		//Setup Data
+		$role3 = paginateSortAndFormat($role3, $sortField, $sortDesc, $startRecord, $viewName);
+		/****************************************************************
+		 * Data Assign for Template.
+		 ****************************************************************/
+		$wrmsmarty->assign('ro3_data', $role3); 
+		$wrmsmarty->assign('ro3_jump_menu', $ro3JumpMenu);
+		$wrmsmarty->assign('ro3_column_name', $ro3_headers);
+		$wrmsmarty->assign('ro3_record_counts', $ro3_record_count_array);
+		$wrmsmarty->assign('ro3_header_data',
+			array(
+				'template_name'=>$phpraid_config['template'],
+				'role3_header'=>$phpraid_config['role3_name'],
+				'sort_url_base' => $pageURL,
+				'sort_descending' => $sortDesc,
+				'sort_text' => $phprlang['sort_text'],
+			)
+		);
+		/**************  ROLE4 *****************/
+		/**************************************************************
+		 * Code to setup for a Dynamic Table Create: raidview1 View.
+		 **************************************************************/
+		$viewName = 'raidview1';
+		
+		//Setup Columns
+		$ro4_headers = array();
+		$record_count_array = array();
+		$ro4_headers = getVisibleColumns($viewName);
+	
+		//Get Record Counts
+		$ro4_record_count_array = getRecordCounts($role4, $ro4_headers, $startRecord);
+		
+		//Get the Jump Menu and pass it down
+		$ro4JumpMenu = getPageNavigation($role4, $startRecord, $pageURL, $sortField, $sortDesc);
+	
+		//Setup Data
+		$role4 = paginateSortAndFormat($role4, $sortField, $sortDesc, $startRecord, $viewName);
+		/****************************************************************
+		 * Data Assign for Template.
+		 ****************************************************************/
+		$wrmsmarty->assign('ro4_data', $role4); 
+		$wrmsmarty->assign('ro4_jump_menu', $ro4JumpMenu);
+		$wrmsmarty->assign('ro4_column_name', $ro4_headers);
+		$wrmsmarty->assign('ro4_record_counts', $ro4_record_count_array);
+		$wrmsmarty->assign('ro4_header_data',
+			array(
+				'template_name'=>$phpraid_config['template'],
+				'role4_header'=>$phpraid_config['role4_name'],
+				'sort_url_base' => $pageURL,
+				'sort_descending' => $sortDesc,
+				'sort_text' => $phprlang['sort_text'],
+			)
+		);
+		/**************  ROLE5 *****************/
+		/**************************************************************
+		 * Code to setup for a Dynamic Table Create: raidview1 View.
+		 **************************************************************/
+		$viewName = 'raidview1';
+		
+		//Setup Columns
+		$ro5_headers = array();
+		$record_count_array = array();
+		$ro5_headers = getVisibleColumns($viewName);
+	
+		//Get Record Counts
+		$ro5_record_count_array = getRecordCounts($role5, $ro5_headers, $startRecord);
+		
+		//Get the Jump Menu and pass it down
+		$ro5JumpMenu = getPageNavigation($role5, $startRecord, $pageURL, $sortField, $sortDesc);
+	
+		//Setup Data
+		$role5 = paginateSortAndFormat($role5, $sortField, $sortDesc, $startRecord, $viewName);
+		/****************************************************************
+		 * Data Assign for Template.
+		 ****************************************************************/
+		$wrmsmarty->assign('ro5_data', $role5); 
+		$wrmsmarty->assign('ro5_jump_menu', $ro5JumpMenu);
+		$wrmsmarty->assign('ro5_column_name', $ro5_headers);
+		$wrmsmarty->assign('ro5_record_counts', $ro5_record_count_array);
+		$wrmsmarty->assign('ro5_header_data',
+			array(
+				'template_name'=>$phpraid_config['template'],
+				'role5_header'=>$phpraid_config['role5_name'],
+				'sort_url_base' => $pageURL,
+				'sort_descending' => $sortDesc,
+				'sort_text' => $phprlang['sort_text'],
+			)
+		);
+		/**************  ROLE6 *****************/
+		/**************************************************************
+		 * Code to setup for a Dynamic Table Create: raidview1 View.
+		 **************************************************************/
+		$viewName = 'raidview1';
+		
+		//Setup Columns
+		$ro6_headers = array();
+		$record_count_array = array();
+		$ro6_headers = getVisibleColumns($viewName);
+	
+		//Get Record Counts
+		$ro6_record_count_array = getRecordCounts($role6, $ro6_headers, $startRecord);
+		
+		//Get the Jump Menu and pass it down
+		$ro6JumpMenu = getPageNavigation($role6, $startRecord, $pageURL, $sortField, $sortDesc);
+	
+		//Setup Data
+		$role6 = paginateSortAndFormat($role6, $sortField, $sortDesc, $startRecord, $viewName);
+		/****************************************************************
+		 * Data Assign for Template.
+		 ****************************************************************/
+		$wrmsmarty->assign('ro6_data', $role6); 
+		$wrmsmarty->assign('ro6_jump_menu', $ro6JumpMenu);
+		$wrmsmarty->assign('ro6_column_name', $ro6_headers);
+		$wrmsmarty->assign('ro6_record_counts', $ro6_record_count_array);
+		$wrmsmarty->assign('ro6_header_data',
+			array(
+				'template_name'=>$phpraid_config['template'],
+				'role6_header'=>$phpraid_config['role6_name'],
+				'sort_url_base' => $pageURL,
+				'sort_descending' => $sortDesc,
+				'sort_text' => $phprlang['sort_text'],
+			)
+		);
 	}
-	$report->clearOutputColumns();
-	// setup formatting for report class (THANKS to www.thecalico.com)
-	// generic settings
-	setup_output();
 
-	$report->showRecordCount(true);
-	$report->allowPaging(true, $_SERVER['PHP_SELF'] . '?raid_id='.$raid_id.'&mode=view&Base=');
-	$report->setListRange($_GET['Base'], 25);
-	$report->allowLink(ALLOW_HOVER_INDEX,'',array());
+	/**************************************************************
+	 * Code to setup for a Dynamic Table Create: raidview2 View.
+	 **************************************************************/
+	$viewName = 'raidview2';
+	
+	//Setup Columns
+	$queue_headers = array();
+	$record_count_array = array();
+	$queue_headers = getVisibleColumns($viewName);
+	
+	//Get Record Counts
+	$queue_record_count_array = getRecordCounts($raid_queue, $queue_headers, $startRecord);
+		
+	//Get the Jump Menu and pass it down
+	$queueJumpMenu = getPageNavigation($raid_queue, $startRecord, $pageURL, $sortField, $sortDesc);
+	
+	//Setup Data
+	$raid_queue = paginateSortAndFormat($raid_queue, $sortField, $sortDesc, $startRecord, $viewName);
+	/****************************************************************
+	 * Data Assign for Template.
+	 ****************************************************************/
+	$wrmsmarty->assign('queue_data', $raid_queue); 
+	$wrmsmarty->assign('queue_jump_menu', $queueJumpMenu);
+	$wrmsmarty->assign('queue_column_name', $queue_headers);
+	$wrmsmarty->assign('queue_record_counts', $queue_record_count_array);
+	$wrmsmarty->assign('queue_header_data',
+		array(
+			'template_name'=>$phpraid_config['template'],
+			'raid_queue_header'=>$phprlang['view_queue_header'],
+			'sort_url_base' => $pageURL,
+			'sort_descending' => $sortDesc,
+			'sort_text' => $phprlang['sort_text'],
+		)
+	);
 
-	//Default sorting
-	if(!$_GET['Sort'])
-	{
-		$report->allowSort(true, 'name', 'ASC', 'view.php?mode=view&amp;raid_id='.$raid_id);
-	}
-	else
-	{
-		$report->allowSort(true, $_GET['Sort'], $_GET['SortDescending'], 'view.php?mode=view&amp;raid_id='.$raid_id);
-	}
-
-	if($phpraid_config['show_id'] == 1)
-		$report->addOutputColumn('id',$phprlang['id'],'','center');
-	$report->addOutputColumn('name',$phprlang['name'],'','left');
-	if($priv_raids == 1 || $user_perm_group['RL'] == 1)
-	{
-		$report->addOutputColumn('guild',$phprlang['guild'],'','left');
-	}
-	$report->addOutputColumn('comments',$phprlang['comments'],'','left');
-	$report->addOutputColumn('lvl',$phprlang['level'],'','center');
-	$report->addOutputColumn('race',$phprlang['race'],'','center');
-	$report->addOutputColumn('class',$phprlang['class'],'','center');
-	$report->addOutputColumn('role',$phprlang['role'],'','center');
-	$report->addOutputColumn('date',$phprlang['date'],'wrmdate','center');
-	$report->addOutputColumn('time',$phprlang['time'],'wrmtime','center');
-	$report->addOutputColumn('actions','','','right');
-	$raid_queue = $report->getListFromArray($raid_queue);
-	$raid_cancel = $report->getListFromArray($raid_cancel);
-
+	/**************************************************************
+	 * Code to setup for a Dynamic Table Create: raidview2 View.
+	 **************************************************************/
+	$viewName = 'raidview2';
+	
+	//Setup Columns
+	$cancel_headers = array();
+	$record_count_array = array();
+	$cancel_headers = getVisibleColumns($viewName);
+	
+	//Get Record Counts
+	$cancel_record_count_array = getRecordCounts($raid_cancel, $cancel_headers, $startRecord);
+		
+	//Get the Jump Menu and pass it down
+	$cancelJumpMenu = getPageNavigation($raid_cancel, $startRecord, $pageURL, $sortField, $sortDesc);
+	
+	//Setup Data
+	$raid_cancel = paginateSortAndFormat($raid_cancel, $sortField, $sortDesc, $startRecord, $viewName);
+	/****************************************************************
+	 * Data Assign for Template.
+	 ****************************************************************/
+	$wrmsmarty->assign('cancel_data', $raid_cancel); 
+	$wrmsmarty->assign('cancel_jump_menu', $cancelJumpMenu);
+	$wrmsmarty->assign('cancel_column_name', $cancel_headers);
+	$wrmsmarty->assign('cancel_record_counts', $cancel_record_count_array);
+	$wrmsmarty->assign('cancel_header_data',
+		array(
+			'template_name'=>$phpraid_config['template'],
+			'raid_cancel_header'=>$phprlang['view_cancel_header'],
+			'sort_url_base' => $pageURL,
+			'sort_descending' => $sortDesc,
+			'sort_text' => $phprlang['sort_text'],
+		)
+	);
+	
 	// last but not least, tooltips for class breakdown
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id=%s",quote_smart($raid_id));
 	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
@@ -1070,13 +1654,7 @@ if($mode == 'view')
 		$missing_link = "";
 	}
 
-	// output
-	if ($phpraid_config['raid_view_type'] == 'by_class')
-		$page->set_file('output',$phpraid_config['template'] . '/view_raid_class.htm');
-	else
-		$page->set_file('output',$phpraid_config['template'] . '/view_raid_role.htm');
-	
-	$page->set_var(
+	$wrmsmarty->assign('view_raid_info',
 		array(
 			'team_link'=>$team_link,
 			'missing_link'=>$missing_link,
@@ -1108,25 +1686,20 @@ if($mode == 'view')
 			'raid_max_lvl'=>$raid_max_lvl,
 			'raid_count'=>$raid_count,
 			'raid_count_percentage'=>$raid_count_percentage,
-			'raid_queue'=>$raid_queue,
 			'raid_cancel_count'=>$raid_cancel_count,
 			'raid_cancel_percentage'=>$raid_cancel_count_percentage,
 			'raid_queue_count'=>$raid_queue_count,
 			'raid_queue_count_percentage'=>$raid_queue_count_percentage,
 			'raid_total'=>$raid_total,
 			'raid_open'=>$raid_open,
-			'deathknights'=>$deathknight,
-			'druids'=>$druid,
-			'hunters'=>$hunter,
-			'mages'=>$mage,
-			'priests'=>$priest,
-			'paladins'=>$paladin,
-			'rogues'=>$rogue,
-			'shamans'=>$shaman,
-			'warlocks'=>$warlock,
-			'warriors'=>$warrior,
 			'raid_notice'=>$raid_notice,
 			'raid_description'=>$raid_description,
+			'role1_text'=>$role1_text,
+			'role2_text'=>$role2_text,
+			'role3_text'=>$role3_text,
+			'role4_text'=>$role4_text,
+			'role5_text'=>$role5_text,
+			'role6_text'=>$role6_text,
 			'cancel_text'=>$phprlang['view_raid_cancel_text'],
 			'raid_description_header'=>$phprlang['view_description_header'],
 			'location_text'=>$phprlang['view_location'],
@@ -1137,36 +1710,12 @@ if($mode == 'view')
 			'signup_text'=>$phprlang['view_signup'],
 			'minlvl_text'=>$phprlang['view_min_lvl'],
 			'maxlvl_text'=>$phprlang['view_max_lvl'],
-			'role1_text'=>$role1_text,
-			'role2_text'=>$role2_text,
-			'role3_text'=>$role3_text,
-			'role4_text'=>$role4_text,
-			'role5_text'=>$role5_text,
-			'role6_text'=>$role6_text,
-			'role1'=>$role1,
-			'role2'=>$role2,
-			'role3'=>$role3,
-			'role4'=>$role4,
-			'role5'=>$role5,
-			'role6'=>$role6,
 			'maxattendees_text'=>$phprlang['view_max'],
 			'approved_text'=>$phprlang['view_approved'],
 			'queued_text'=>$phprlang['view_queued'],
-			'raid_cancel_header'=>$phprlang['view_cancel_header'],
 			'total_text'=>$phprlang['view_total'],
-			'raid_queue_header'=>$phprlang['view_queue_header'],
 			'information_header'=>$phprlang['view_information_header'],
 			'statistics_header'=>$phprlang['view_statistics_header'],
-			'deathknight_header'=>$phprlang['deathknight'],
-			'druid_header'=>$phprlang['druid'],
-			'hunter_header'=>$phprlang['hunter'],
-			'mage_header'=>$phprlang['mage'],
-			'priest_header'=>$phprlang['priest'],
-			'paladin_header'=>$phprlang['paladin'],
-			'rogue_header'=>$phprlang['rogue'],
-			'shaman_header'=>$phprlang['shaman'],
-			'warrior_header'=>$phprlang['warrior'],
-			'warlock_header'=>$phprlang['warlock'],
 			'deathknight_icon'=>$deathknight_icon,
 			'druid_icon'=>$druid_icon,
 			'hunter_icon'=>$hunter_icon,
@@ -1181,7 +1730,6 @@ if($mode == 'view')
 			'reset_button_text'=>$phprlang['reset']
 		)
 	);
-
 }
 elseif($mode == 'signup')
 {
@@ -1820,14 +2368,16 @@ else if($mode == 'edit_comment')
 		header("Location: view.php?mode=view&raid_id=$raid_id");
 	}
 
-	$page->set_file('view_output',$phpraid_config['template'].'/view_edit.htm');
-	$page->set_var(
+	$wrmsmarty->assign('edit_comment_data',
 		array(
 			'header'=>$phprlang['view_comments'],
 			'view_edit'=>$view_edit
 		)
 	);
-	$page->parse('output','view_output',true);
+	require_once('./includes/page_header.php');
+	$wrmsmarty->display('view_edit.html');
+	require_once('./includes/page_footer.php');
+	exit;
 }
 else
 {
@@ -1838,7 +2388,11 @@ else
 
 require_once('./includes/page_header.php');
 
-$page->pparse('output','output');
+// output
+if ($phpraid_config['raid_view_type'] == 'by_class')
+	$wrmsmarty->display('view_raid_class.html');
+else
+	$wrmsmarty->display('view_raid_role.html');	
 
 $priv_profile = scrub_input($_SESSION['priv_profile']);
 
@@ -1896,8 +2450,7 @@ if($show_signup == 1 && $priv_profile == 1)
 
 	$hidden_vars = '<input name="timestamp" type="hidden" value="' . $timestamp . '">';
 
-	$page->set_file('signup_output',$phpraid_config['template'] . '/view_signup.htm');
-	$page->set_var(
+	$wrmsmarty->assign('view_signup_data',
 		array(
 			'username'=>$username,
 			'character'=>$character,
@@ -1912,7 +2465,7 @@ if($show_signup == 1 && $priv_profile == 1)
 			'comments_text'=>$phprlang['view_comments']
 		)
 	);
-	$page->pparse('signup_output','signup_output');
+	$wrmsmarty->display('view_signup.html');
 }
 
 require_once('./includes/page_footer.php');

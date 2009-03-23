@@ -1,0 +1,39 @@
+{* Smarty Template *}
+<a name="signup"></a>
+<div class="contentHeader">{$view_signup_data.view_signup_header}</div>
+<br>
+<div class="contentBody">
+<form name="signup" method="post" action="{$view_signup_data.signup_action}">
+  <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+    <tr>
+      <td valign="top"> 
+        <table width="100%" border="0" align="center" cellpadding="3" cellspacing="1" class="dataOutline">
+          <tr> 
+            <td width="30%" height="28" align="center" valign="middle" class="row1"><div align="left" class="headmed"> 
+                <div align="left"><b>{$view_signup_data.username_text}</b></div>
+              </div></td>
+            <td width="70%" align="center" valign="middle" class="row2"><div align="left"><span class="genmed">{$view_signup_data.username} 
+                </span></div></td>
+          </tr>
+          <tr> 
+            <td height="28" align="center" valign="middle" class="row1"><div align="left" class="headmed"> 
+                <div align="left"><b>{$view_signup_data.character_text}</b></div>
+              </div></td>
+            <td align="center" valign="middle" class="row2"><div align="left"><span class="genmed">{$view_signup_data.character}</span></div></td>
+          </tr>
+          <tr> 
+            <td height="28" align="center" valign="middle" class="row1"><div align="left"><b><span class="headmed">{$view_signup_data.queue_text}</span></b></div></td>
+            <td align="center" valign="middle" class="row2"><div align="left"><span class="genmed">{$view_signup_data.queue}</span></div></td>
+          </tr>
+          <tr> 
+            <td height="28" align="center" valign="middle" class="row1"><div align="left"><b>{$view_signup_data.comments_text}</b></div></td>
+            <td align="center" valign="middle" class="row2"><div align="left"><span class="genmed">{$view_signup_data.comments}</span></div></td>
+          </tr>
+        </table></td></tr>
+  </table>
+  <br>
+  <div class="button" style="text-align:center">{$view_signup_data.hidden_vars} 
+          <input name="submit" type="submit" value="{$view_signup_data.signup_button_text}" class="mainoption">
+          <input name="reset" type="reset" value="{$view_signup_data.reset_button_text}" class="liteoption">
+  </div>
+</form>
