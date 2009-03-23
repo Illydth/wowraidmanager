@@ -137,61 +137,10 @@ $wrmsmarty->assign('header_data',
 	)
 );
 
-// output the information
-//setup_output();
-
-//$report->showRecordCount(true);
-//$report->allowPaging(true, $_SERVER['PHP_SELF'] . '?mode=view&Base=');
-//$report->setListRange($_GET['Base'], 25);
-//$report->allowLink(ALLOW_HOVER_INDEX,'',array());
-
-//Default sorting
-//if(!$_GET['Sort'])
-//{
-//	$report->allowSort(true, 'Name', 'ASC', 'roster.php');
-//}
-//else
-//{
-//	$report->allowSort(true, $_GET['Sort'], $_GET['SortDescending'], 'roster.php');
-//}
-
-//$report->showRecordCount(true);
-//if($phpraid_config['show_id'] == 1)
-//	$report->addOutputColumn('id',$phprlang['id'],'','center');
-//$report->addOutputColumn('Name',$phprlang['name'],'','center');
-//$report->addOutputColumn('Guild',$phprlang['guild'],'','center');
-//$report->addOutputColumn('Level',$phprlang['level'],'','center');
-//$report->addOutputColumn('Race',$phprlang['race'],'','center');
-//$report->addOutputColumn('Class',$phprlang['class'],'','center');
-//$report->addOutputColumn('Role',$phprlang['role'],'','center');
-//$report->addOutputColumn('Arcane','<img border="0" src="templates/' . $phpraid_config['template'] . '/images/resistances/arcane_resistance.gif" onMouseover="ddrivetip(\''.$phprlang['arcane'].'\');" onMouseout="hideddrivetip();" height="16" width="16" alt="arcane">','','center');
-//$report->addOutputColumn('Fire','<img border="0" src="templates/' . $phpraid_config['template'] . '/images/resistances/fire_resistance.gif" onMouseover="ddrivetip(\''.$phprlang['fire'].'\');" onMouseout="hideddrivetip();" height="16" width="16" alt="fire">','','center');
-//$report->addOutputColumn('Nature','<img border="0" src="templates/' . $phpraid_config['template'] . '/images/resistances/nature_resistance.gif" onMouseover="ddrivetip(\''.$phprlang['nature'].'\');" onMouseout="hideddrivetip();" height="16" width="16" alt="nature">','','center');
-//$report->addOutputColumn('Frost','<img border="0" src="templates/' . $phpraid_config['template'] . '/images/resistances/frost_resistance.gif" onMouseover="ddrivetip(\''.$phprlang['frost'].'\');" onMouseout="hideddrivetip();" height="16" width="16" alt="frost">','','center');
-//$report->addOutputColumn('Shadow','<img border="0" src="templates/' . $phpraid_config['template'] . '/images/resistances/shadow_resistance.gif" onMouseover="ddrivetip(\''.$phprlang['shadow'].'\');" onMouseout="hideddrivetip();" height="16" width="16" alt="shadow">','','center');
-//if (scrub_input($_SESSION['priv_users']) == 1)
-//	$report->addOutputColumn('Profile', $phprlang['profile'], '', 'center');
-//$report->allowPaging(true, $_SERVER['PHP_SELF'] . '?Base=');
-//$report->setListRange($_GET['Base'], 25);
-//$body = $report->getListFromArray($chars);
-
 //
 // Start output of page
 //
 require_once('includes/page_header.php');
-	
-//$page->set_file(array(
-//	'output' => $phpraid_config['template'] . '/roster.htm')
-//);
-
-//$page->set_var(
-//	array(
-//		'roster' => $body,
-//		'header' => $phprlang['roster_header']
-//	)
-//);
-
-//$page->pparse('output','output');
 $wrmsmarty->display('roster.html');
 require_once('includes/page_footer.php');
 ?>
