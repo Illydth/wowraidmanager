@@ -42,6 +42,32 @@ isset($_GET['raid_id']) ? $raid_id = scrub_input($_GET['raid_id']) : $raid_id = 
 if($raid_id == '')
 	log_hack();
 
+/*************************************************************
+ * Setup Record Output Information for Data Table
+ *************************************************************/
+// Set StartRecord for Page
+if(!isset($_GET['Base']) || !is_numeric($_GET['Base']))
+	$startRecord = 1;
+else
+	$startRecord = scrub_input($_GET['Base']);
+	
+// Set Sort Field for Page
+if(!isset($_GET['Sort']))
+	$sortField="";
+else
+	$sortField = scrub_input($_GET['Sort']);
+		
+// Set Sort Descending Mark
+if(!isset($_GET['SortDescending']) || !is_numeric($_GET['SortDescending']))
+	$sortDesc = 1;
+else
+	$sortDesc = scrub_input($_GET['SortDescending']);
+		
+$pageURL = 'missing_signups.php?raid_id=' . $raid_id;
+/**************************************************************
+ * End Record Output Setup for Data Table
+ **************************************************************/
+	
 // Set the Guild Server for the Page.
 //$server = $phpraid_config['guild_server'];
 
@@ -75,52 +101,53 @@ while($data = $db_raid->sql_fetchrow($result, true))
 	
 	array_push($users, 
 		array(
-			'id'=>$data['profile_id'],
-			'username'=>$usersname,
-			'last_login_date'=>$date,
-			'last_login_time'=>$time,
+			'ID'=>$data['profile_id'],
+			'Username'=>$usersname,
+			'Last Login Date'=>$date,
+			'Last Login Time'=>$time,
 			));
 }
 
-// setup output
-setup_output();
-$report->showRecordCount(true);
-$report->allowPaging(true, $_SERVER['PHP_SELF'] . '?raid_id='. $raid_id . '&Base=');
-$report->setListRange($_GET['Base'], 25);
-$report->allowLink(ALLOW_HOVER_INDEX,'',array());
+/**************************************************************
+ * Code to setup for a Dynamic Table Create: roster1 View.
+ **************************************************************/
+$viewName = 'users1';
+	
+//Setup Columns
+$missing_headers = array();
+$missing_record_count_array = array();
+$missing_headers = getVisibleColumns($viewName);
 
-//Default sorting
-if(!$_GET['Sort'])
-{
-	$report->allowSort(true, 'id', '0', 'users.php?mode=view');
-}
-else
-{
-	$report->allowSort(true, $_GET['Sort'], $_GET['SortDescending'], 'users.php?mode=view');
-}
+//Get Record Counts
+$missing_record_count_array = getRecordCounts($users, $raid_headers, $startRecord);
+	
+//Get the Jump Menu and pass it down
+$missingJumpMenu = getPageNavigation($users, $startRecord, $pageURL, $sortField, $sortDesc);
 
-if($phpraid_config['show_id'] == 1)
-	$report->addOutputColumn('id',$phprlang['id'],'','center');
-$report->addOutputColumn('username',$phprlang['username'],'','center');
-$report->addOutputColumn('last_login_date',$phprlang['last_login_date'],'wrmdate','center');
-$report->addOutputColumn('last_login_time',$phprlang['last_login_time'],'wrmtime','center');
-$users = $report->getListFromArray($users);
+//Setup Data
+$users = paginateSortAndFormat($users, $sortField, $sortDesc, $startRecord, $viewName);
 
-$page->set_file('body_file',$phpraid_config['template'] . '/users.htm');
-
-$page->set_var(
-	array('users'=>$users,
-		'header'=>$phprlang['users_header'])
+/****************************************************************
+ * Data Assign for Template.
+ ****************************************************************/
+$wrmsmarty->assign('users_data', $users); 
+$wrmsmarty->assign('users_jump_menu', $missingJumpMenu);
+$wrmsmarty->assign('column_name', $missing_headers);
+$wrmsmarty->assign('users_record_counts', $missing_record_count_array);
+$wrmsmarty->assign('header_data',
+	array(
+		'template_name'=>$phpraid_config['template'],
+		'users_header'=>$phprlang['users_header'],
+		'sort_url_base' => $pageURL,
+		'sort_descending' => $sortDesc,
+		'sort_text' => $phprlang['sort_text'],
+	)
 );
-
-$page->parse('output','body_file');
 
 //
 // Start output of page
 //
 require_once('includes/page_header.php');
-
-$page->p('output');
-
+$wrmsmarty->display('users.html');
 require_once('includes/page_footer.php');
 ?>
