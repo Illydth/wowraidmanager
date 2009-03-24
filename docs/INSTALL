@@ -1,3 +1,9 @@
+INSTALLATION OF THE WRM 4.0 BETA:
+----------------------------------
+Please skip to "Beta Installation" Below.  Do NOT follow the installation steps in either Quick 
+Install or Quick Upgrade.  This note and the Beta Installation below will be removed as of 4.0
+release.
+
 Quick Installation
 -------------------
 * Unpackage the files from this archive into a directory on your local machine.
@@ -7,13 +13,13 @@ Quick Installation
 * Change the permissions of the following directories and files to be writable by your
 	web server user:
 	* config.php (see below)
-	* raid_lua
+	* cache/ (and all below directories)
 * Open a web browser and go to your WRM installation (e.g. http://www.yourdomain.com/wrm)
 * Choose your installation method and follow the steps to install your WoW Raid Manager server.
 * At the end of the installation please remove your Install directory (delete it completely)
 * Change the permissions on your config.php file back to read only to the world (you can 
 	leave it writable by your web server if you so choose, but it is recommended that
-	you make it read only...(444 permissions in Unix).  Keep the permissions of the other
+	you make it read only...(400 permissions in Unix).  Keep the permissions of the other
 	files and folders listed above writable.
 	
 Please see phpRaid_install_doc.pdf for more information.
@@ -62,7 +68,7 @@ Quick Upgrade
     (replaces) the existing copy of WRM on your server.
 * Change the Ownership of all files to match that of your web server.  Check the list above
 	to ensure that everything listed in step 4 above is writable.  
-* Run the Installation application and select "Upgrade to 3.6.1".  Follow the installer all
+* Run the Installation application and select "Upgrade to 4.0.0".  Follow the installer all
     the way through to the end (much of your prior information should be already set) and 
     make sure to properly re-set your authentication method (if it's not pre-selected for you).
 * Note: Templates other than "default" are likely NOT to work with 4.0 for a while till the template
@@ -89,3 +95,126 @@ moment you CANNOT separate the databases and have everything work.
 
 When entering the database information to install to, please ensure that you install
 into your CMS database to get CMS integration to work.
+
+========================================================================================================================
+
+Beta Installation
+--------------------------
+The WRM Beta of 4.0, as noted on the WRM Boards, is a major re-write of the 3.x versions of WRM.  Due to this
+and due to the ever changing nature of beta applications, it is entirely possible that this software should
+NOT be used on production/live WRM websites.  It is HIGHLY recommended, then, to create a SEPARATE installation
+of WRM on your webhost and to test on this installation.  Doing this will gaurentee that the below instructions
+for installing beta applications will always work.
+
+Installation of Beta:
+
+* Unpackage the files from this archive into a directory on your local machine.
+* Open your FTP program and DELETE any old beta versions of WRM.  Ensure that all files
+    and folders from any prior WRM BETA version have been completely deleted.  ALL WRM
+    BETA INSTALLATIONS SHOULD BE DONE AS INSTALLS NOT UPGRADES.  
+* Open your FTP program and upload the entire contents of this archive to your web host,
+	including the WRM directory.  MAKE SURE TO UPLOAD TO A BRAND NEW DIRECTORY.  DO NOT
+	and I repeat, DO NOT upload into a production version of WRM. 
+* Change the Ownership of all files to match that of your web server.  
+* Change the permissions of the following directories and files to be writable by your
+	web server user:
+	* config.php (see below)
+	* cache/ (and all below directories)
+* Open a Database Management Tool (like phpMyAdmin) and DELETE any existing WRM BETA
+	databases.  DO NOT DELETE ANY PRODUCTION DATABASES YOU HAVE.
+* While still in the Database Management Tool, please create a new database for your
+	new beta installation.
+* Open a web browser and go to your WRM installation (e.g. http://www.yourdomain.com/wrm)
+* Choose your installation method (ALWAYS INSTALL) and follow the steps to install your 
+	WoW Raid Manager server.  FOR NOW please use *iUMS* as your authentication method.
+	The other bridges should still work, but I would like to rule out problems produced by
+	the other bridges at least at the onset of the beta testing period.  
+* At the end of the installation please remove your Install directory (delete it completely)
+* Change the permissions on your config.php file back to read only to the world (you can 
+	leave it writable by your web server if you so choose, but it is recommended that
+	you make it read only...(400 permissions in Unix).  Keep the permissions of the other
+	files and folders listed above writable.
+	
+Basically, any time a new beta is being tested please delete your old beta database, your
+old beta software and re-install from scratch.
+
+Advanced Installation (Maintaining a Working WRM through Beta):
+-----------------------------------------------------------------
+I am a software developer.  I know that EVERY beta program I get into includes the lines 
+I write above that says "don't use this on a production site."  And I know every time I 
+read these I laugh and do it anyway. 
+
+SOMONE out there is going to ignore my words of warning above and they're going to decide
+either to update their main/production site to 4.0 beta or they're going to migrate users
+to the new version and use the new beta as production.
+
+Again, I DO NOT RECOMMEND THIS.  I have NO idea what kinds of changes will be comming in 
+to the database for 4.0, particularly on this next phase where I start adding a whole SLEW
+of changes to WRM.  That said, you all know my stance on releasing quality software, even 
+BETA versions will work an should contain working functionality for all of the basic stuff.
+
+If you so choose to run your production site on the beta verision of 4.0 you MAY very well
+likely get away with it, and as you're also sure, even if I tell you I won't support it, I 
+will.  Note that the first beta release is, in essence, 3.6.1 + bugfixes with a new backend.
+All the 3.6.1 features and functionality exist and work.
+
+If you DO choose to do this, please make sure you meet the following criteria:
+
+* You are running PHP5
+* You are good with MySQL (i.e. you can read and modify existing SQL statements to make sense)
+* You are no noob with software installation and maintenance.
+* You are willing to keep up to date release to release.
+
+The first statement is VERY important, already I have a piece of code I am considering
+implementing that is incompatable with php4.  I have not yet decided whether 4.0 will be
+php4 backward compatable or not but I am starting to lean toward not.  If you try to run
+this software on a php4 site as your production you may at some point loose either pieces
+of functionality or loose the entire software all together.
+
+Note that you also MUST be able to read and modify SQL statements.  THe SQL database changes
+that I will be releasing with WRM 4.0 as it progresses through beta will be consolidated
+changes that will NOT take into account prior versions of the BETA...in other words they will
+assume you are starting over from scratch or starting from a 3.6.1 release.  If you are
+maintaining a 4.0 database beta version to beta version you will have to be able to figure out
+what pieces of the "upgrade" SQL to run.  A Visual DIFF tool (such as kdiff, CompareIt!, etc.) 
+is extremely helpful in doing this and I highly recommend using one.
+
+Lastly, your best success will be achieved if you keep your installation up to date beta to beta
+release.  If you fall behind you may find it impossible to upgrade.
+
+Process:  
+
+To start with, use the instructions above as a guideline.  Note that I will not be providing step
+by step installation instructions for this process.  Consider this your first test of being able
+to manage this.  If you can install the betas without instructions you are probably savy enough
+to manage maintaining the database and software beta to beta.
+
+In regards to the software, there have been MANY changes in file structure and you SHOULD, version
+to version, delete all of the files in your WRM directory other than your config.php and re-upload
+the entire archive EVERY time a new beta is released.  For 3.6.1 -> 4.0 the entire wowarmory archive
+got moved under the "includes" directory, as well as an entire Smarty release.  "Cache" is a new top
+level directory that now holds the compilation information for Smarty as well as the LUA Output and
+armory lookup output files.  Make SURE that this cache directory (all of it) is writeable by your
+webserver or the app will blow up SPECTACTULARLY in your face.
+
+In regards to the database, do yourself a HUGE favor and back it up periodically during this beta
+phase.  I don't suspect I will be corrupting databases but my development work gets done pretty
+haphazardly and I almost NEVER run an entire installation or upgrade SQL at one time, so there is
+a small potential for an installation or upgrade SQL to bork something.  Just make periodic backups
+ESEPCIALLY before upgrading to a new beta and you'll probably be fine.  Also, do yourself a favor and
+keep a copy of 3.6.1 and your old 3.6.1 database laying around if you decide to run this on your
+production site.  You never know when we'll hit a snag and you'll have to quickly re-install SOMETHING
+to get your guild working while I fix the problem.  If I were you, I would keep a 4.0 and a 3.6.1 
+site up and running.  Point your users at 4.0 if you wish, but make SURE that any new users signing into
+4.0 ALSO sign into the old 3.6.1 just in case you have to revert.
+
+In regards to the authentication system.  If you MUST do so, feel free to run bridged authentication
+to external applciations.  My PREFERENCE at this point is for you to use iUMS auth on the beta to 
+ensure that any bugs reported are not caused by external applications, but there is some use to having
+the bridges tested during this phase of the process as well.  Too, and more importantly, it's damn
+near impossible to switch to a new bridge once you start getting users logging in on the old bridge
+due to UIDs being wrong beween profiles.  If you intend to use this in replacement of your current
+site, go ahead and select your bridge, but in any bug reports MAKE SURE you note that you are using
+a bridge and which bridge.  Of course my preference is for you to migrate your users to 4.0, let them
+use this through the entire beta, and then blow away the thing and re-install the final version but
+I suspect I won't get many takers on this.

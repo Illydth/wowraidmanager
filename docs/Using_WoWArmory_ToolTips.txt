@@ -2,22 +2,21 @@ Using the WOW Armory Tooltips in WOW Raid Manager:
 
 Attribution:
 ---------------
-The tooltip code has been shamelessly stolen from armory.deluxe-board.com from code written by Shantalya which is 
-built upon overLIB, originally written and copyrighted by Erik Bosrup.  Shantalya's code was originally written 
-for phpBB and has been minimally modified to work within WoW Raid Manager.  
+The new tooltip code now comes from the phparmory.sourceforge.net website and is a full implimentation of a php
+library for pulling and retrieving information from the WoW Armory.  There are many versions of the software, 
 
-Unfortunately, I cannot find a license or other copyright information in the body of the code or in the distribution
-file anywhere.  Due to this fact, I consider this code unlicensed and thus free to use.
-
-I have attempted to contact the developer of the original software on his/her board for more information regarding
-the copyright and distribution license of this software.
-
-Overlib is licensed from www.bosrup.com under an "Artistic" license which you can read about Here:
-http://www.bosrup.com/web/overlib/?License.  The license does allow it's use in this software, but is NOT GPL v3
-like the rest of my code.  Please be aware when creating derivative works of WRM that the code here may or may not
-be supported (Overlib can be re-distributed and "derived" from according to the license above).
-
-Please see "credits.htm" and "license.txt" for more information. 
+0.1 was first used in WRM 3.5.1 and was the base for pulling code from the armory.
+0.2 was first used in WRM 3.6.0 and is what has been shipped ever since.  This is the last version of phpArmory
+	maintained by the original Authors.
+0.3 -> 0.4.2 is developed by a new developer (shiena of sourceforge - Daniel of www.marenkay.com) and is released
+	under the GPLv3 license.  This is a final version of code we will be moving too in the 4.0 timeframe.
+	
+PHP Version
+---------------
+Note that as of 0.4.0 of the phparmory code, the application uses the features of PHP5 to do it's work and is NOT
+backwards compatable.  I have not yet decided whether to move fully to PHP5 or whether to attempt to support PHP4
+via the older version of phpArmory while allowing PHP5 users the ability to use the new features and most stable
+code.
 
 Introduction:
 --------------- 
@@ -33,14 +32,13 @@ is identical to using a character popup, see the "Usage:" section below for more
 
 Configuration:
 ---------------
-There is one small configuration item that is needed to begin making this work.  In the wowchar-tooltip and
-wowitem-tooltip directories is a file named config.php.  There is a define in that file that sets which armory
-you are pulling your information from.  Too, the Server Name and 2 Character language code needs to be set
-so that the code can correctly look up the information on the armory.  These are all controlled through the 
-configuration section of the WRM Application.  In the "guild configuration" section there is a box for server
-and language code and a drop down for the correct armory link for your guild.  These all need to be set correctly
-for the armory code to function.  FAILURE TO SET THESE VALUES TO WHAT IS RECOGNIZED BY THE ARMORY WILL CAUSE
-THE ARMORY CODE TO FAIL TO FIND THE CHARACTER OR ITEM.  
+To configure the phpArmory code for use, a site admin must go into the configruation section of WRM and modify 
+the guild information section.  The most important information is the dropdown of which wow armory website the
+guild's data will come from.  Too, the "Name" and "Server" must be exact as it is these strings that are used
+by the lookup code to submit the proper query to the armory website.
+
+FAILURE TO SET THESE VALUES TO WHAT IS RECOGNIZED BY THE ARMORY WILL CAUSE THE ARMORY CODE TO FAIL TO FIND THE 
+CHARACTER OR ITEM.  
 
 Regarding the "Correct Armory Link for Server" setting in Config, Blizzard splits servers among the US servers 
 and international servers in various regions.  Servers in different regions have DIFFERENT armory links where 
@@ -55,101 +53,38 @@ By default this is all setup for the main US armory (www.wowarmory.com) but coul
 * http://kr.wowarmory.com - Korean Armory
 * http://tw.wowarmory.com - Tiawan Armory
 
-The configuration section will automatically set the "Define" in these files to the site which holds your guild's 
-information in both the wowchar-tooltip and wowitem-tooltip directories.  The distributed config.php files will be
-overwritten with the selected value every time the submit button is clicked.
-
-To make this work, the config.php files and the cache directory under each of these two directories needs to be 
-writable by the web server.  If the cache directory is not writable you will get a LONG wait time for the armory 
-pull with a final message at the end saying "couldn't write to cache directory".  If the config.php files aren't
-writable the application will simply not be able to change the config files based upon your selection in the 
-armory link drop down in config.
-
 Usage:
 ---------------
-First, WRM needs to have the wowchar-tooltip and wowitem-tooltip directories in the root of the WRM Installation. 
-These directories should reside in the same place as the auth, db, docs, includes, etc. directories, and should 
-already be there if you are using the 3.2.1 or better version of WRM.
+First, WRM needs to have the wowarmory directory in the includes direcotry of the WRM Installation (ships this way
+by default).  
 
 When the directories are in place the following needs to be added to the header.htm file in ALL APPROPIRATE INSTALLED
 THEMES: (templates/default/header.htm) 
 
-		<script type='text/javascript' language='javascript' src='wowchar-tooltip/js/overlib.js'><!-- overLIB (c) Erik Bosrup --></script>
-		<script type='text/javascript' language='javascript' src='wowchar-tooltip/js/tooltipnew.js'></script>
-		<script type='text/javascript' language='javascript' src='wowitem-tooltip/js/tooltipnew.js'></script>
-		<link rel="stylesheet" href="wowitem-tooltip/css/tooltip.css" type="text/css" />
-		<link rel="stylesheet" href="wowchar-tooltip/css/tooltip.css" type="text/css" />
+		<script language="JavaScript" src="includes/wowarmory/js/qtip.js" type="text/JavaScript"></script>
+		<script language="JavaScript" src="includes/wowarmory/js/tw-sack.js" type="text/JavaScript"></script>
+		<script language="JavaScript" src="includes/wowarmory/js/ajax-dynamic-content.js" type="text/JavaScript"></script>		
+		<link rel="stylesheet" href="includes/wowarmory/style.php" type="text/css" title="wow">
 
-This will allow the java scripts (overlib and the character and item tooltips) to be read and function on one of WRMs
+This will allow the java scripts (the character and item tooltips) to be read and function on one of WRMs
 pages.
 
 Once the header has been modified, this software is available to the ENTIRE WRM SITE, any page created using the
 standard methodologies in WRM (e.g. Using: "require_once('./common.php');" at the head of the PHP File) will have 
 access to the tooltips through the method mentioned below.
 
-Beyond the header then, the only thing left is to use the following methodologies to create a link to a character
-or item from the appropriate armory.  
+From there, there are two files in the root of the wowarmory directory: char.php and item.php that control the actual
+retrieval of information from the armory.
 
-Characters:
-*******************
-* Method 1: The Direct Link
-<!-- Character ToolTip -->
- <a href="http://{armory address}/character-sheet.xml?r={server}&n={character name}" 
-     target="new" onmouseover="tooltip_charid('{server}','{language}','{character name}')" 
-     onmouseout="tooltip_close_char()">{character name}</a>
+To get character data you would call the function "get_armorychar()" passing it the character name, language, and 
+server.  The proper armory link will be pulled from the configuration section.
 
-Will Print: 
+A function to retrieve item data is not yet written, but will essentially be similar to get_armorychar() (likely
+get_armoryitem()) that would allow for the retrieval of item data from the armory.
 
-{character name}
-
-Which will be a link to the armory profile for that character and have the popup.
-
-* Method 2: JScript Code Link
-
- <script type="text/javascript"> if(tipcount){ tipcount = tipcount + 1; } else { var tipcount = 1 } 
- document.write("<span id=\"tip-"+tipcount+"\"></span>"); 
- sendRequst_char("{server}", "tip-"+tipcount, "{character name}", "en"); 
- </script><noscript>[{server}: {character name}]</noscript>
-
-Will Print:
-
-<race icon><class icon> [{server}: {character name}]
-
-{armory address} 	- The address for the armory.  www.wowarmory.com, eu.wowarmory.com, etc.
-{server} 			- The character's server name. (Alleria, etc.)
-{language} 			- The language code, for US this is "en".
-{character name} 	- The full name of the character as known by the armory.
-
-NOTE: Method one will print only the character's name while method two displays the race and class icons as well as 
-the character name.  Generally Method one is used in WRM.
-
-*******************
-
-Items:
-*******************
-* Method 1: Direct Link Method
- <a href="http://{armory address}/item-info.xml?i={item id}"
-     target="new" onmouseover="tooltip_itemid('{item id}', '{language}')"
-     onmouseout="tooltip_close()">{item name}</a>
-     
-Note: I can find no way to create a direct link (method 1 in characters) via an item NAME, Only an Item ID.  If you
-already happen to have the item ID you can use it above to create the proper item link.
-
-* Method 2: JScript Code Link
-
- <script type="text/javascript"> if(tipcount){ tipcount = tipcount + 1; } else { var tipcount = 1 } 
- document.write("<span id=\"tip-"+tipcount+"\"></span>"); sendRequst("{item}", "tip-"+tipcount, "en"); 
- </script><noscript>[{item name}]</noscript>
- 
-Both methods will display the same popup box with item information in it.
-
-{armory address}	- The address for the armory.  www.wowarmory.com, eu.wowarmory.com, etc.
-{item id}			- The *ID* of the item according to the armory, you CANNOT use the Item's Name in this place.
-{item name}			- The name of the item, you can but should not use the ID of the item in this place.
-{item}				- Can use EITHER the item name or ID in place of this value, both produce the same information.
-{language}			- The language code, for US this is "en".
 
 *******************
    
-Note: Information is Cached locally.  This means that once the character or item is pulled the first time, if the armory
-is not available it will STILL pop up, albeit maybe with information that is a bit older than should be.
+Note: At the moment information is NOT Cached locally.  Once Caching is truned on (sometime in the 4.0 timeframe) 
+this will mean that once the character or item is pulled the first time, if the armory is not available it will 
+STILL pop up, albeit maybe with information that is a bit older than should be.

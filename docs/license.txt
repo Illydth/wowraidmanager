@@ -38,12 +38,17 @@ For version 3.2.x and above the license has changed to the GNU v3.0 license and 
 will be released via that license from now on.  The full text of the GNU 3.0 license can be
 be found in the Docs/gpl-3.0.txt file or on www.gnu.org/licenses.
 
+WRM 4.0 is still released under the v3.0 GPL License.
+
 *** WOW Armory Popups: ***
 ------------------------------------
-* CHANGED FOR 3.5.1 *
 The new Armory code (from phparmory.sourceforge.net) is released under the GPL v2 or at my discretion
 any later version.  Due to this, this brings the entire code base back under the GPL.  The header above, 
 though not attached to the wowarmory code, applies to the entire code base again.
+
+A new version of the Armory Code (0.3 -> 0.4.2) is released by a different developer and is now released
+under the GPL v3.0 Licence, again bringing the code base back to license commonality.  Once the 0.4.2 
+version of the Armory code is implemented the entire code base will be released under the GPLv3 license.
 
 If there are any questions about the above or other license questions, please
 direct them to douglasw at wagnerweb dot org or to the www.wowraidmanager.net website.

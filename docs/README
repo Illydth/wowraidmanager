@@ -42,13 +42,13 @@ thanks to them for bringing the project to where it is today.
 
 Installation/Upgrade
 ---------------------
-Please see docs/INSTALL for information on both installing the 3.5.1 version of WRM 
-as well as upgrading a current installation of WRM.  
+Please see docs/INSTALL for information on both installing WRM as well as upgrading a 
+current installation of WRM.  
 
 The old phpRaid_install_doc.pdf is still there and is a very useful resource for setup
-and installation of WRM, however it HAS NOT been updated to reflect 3.5.1.  Where
-information in the installation pdf and the INSTALL text file conflict, please note that
-the INSTALL file is correct.
+and installation of WRM, however it HAS NOT been updated to reflect any recent version of 
+WRM and in many places is out of date.  Where information in the installation pdf and the 
+INSTALL text file conflict, please note that the INSTALL file is correct.
 
 Also: ** Please take the time to read through the INSTALL file, *especially* if you are 
 upgrading from a prior version and ESPECIALLY the "errata" section for information on 
