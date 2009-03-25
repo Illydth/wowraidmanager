@@ -408,4 +408,5 @@ VALUES (NULL , 'raidview2', 'Time', '1', '16', NULL, 'time', 'wrmtime');
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
 VALUES (NULL , 'raidview2', 'Buttons', '1', '17', NULL, 'buttons', NULL);
 
-INSERT INTO `wrm_config` VALUES ('records_per_page','2');
+INSERT INTO `wrm_config` VALUES ('records_per_page','25');
+INSERT INTO `wrm_version` VALUES ('4.0.0','Version 4.0.0 of WoW Raid Manager');

@@ -462,7 +462,7 @@ INSERT INTO `wrm_config` VALUES ('template','default');
 INSERT INTO `wrm_config` VALUES ('time_format','h:i a');
 INSERT INTO `wrm_config` VALUES ('timezone','-0600');
 INSERT INTO `wrm_config` VALUES ('resop', '0');
-INSERT INTO `wrm_config` VALUES ('enable_five_man', '0');
+INSERT INTO `wrm_config` VALUES ('enable_five_man', '1');
 INSERT INTO `wrm_config` VALUES ('user_queue_promote', '0');
 INSERT INTO `wrm_config` VALUES ('user_queue_comments', '1');
 INSERT INTO `wrm_config` VALUES ('user_queue_cancel', '1');
@@ -518,7 +518,7 @@ INSERT INTO `wrm_config` VALUES ('enable_eqdkp', '0');
 INSERT INTO `wrm_config` VALUES ('eqdkp_url', 'http://localhost/eqdkp');
 INSERT INTO `wrm_config` VALUES ('ampm', '12');
 INSERT INTO `wrm_config` VALUES ('raid_view_type','by_class');
-INSERT INTO `wrm_config` VALUES ('records_per_page','2');
+INSERT INTO `wrm_config` VALUES ('records_per_page','25');
 
 -- Events Table Creation
 DROP TABLE IF EXISTS `wrm_events`;
