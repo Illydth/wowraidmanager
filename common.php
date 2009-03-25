@@ -185,6 +185,10 @@ else
 require_once($phpraid_dir.'auth/auth_' . $phpraid_config['auth_type'] . '.php');
 get_permissions();
 
+/***************************************************
+ * Set Up Column Modification Array
+ ***************************************************/
+$col_mod = array();
 
 /****************************************************
  * Maintenance Flag Disable Site

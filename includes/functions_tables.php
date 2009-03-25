@@ -38,7 +38,7 @@
 */
 function getVisibleColumns($view_name) 
 {
-	global $phpraid_config, $db_raid, $phprlang;
+	global $phpraid_config, $db_raid, $phprlang, $col_mod;
 	
 	$table_headers = array();
 	
@@ -85,15 +85,24 @@ function getVisibleColumns($view_name)
 		}
 
 		// Determine what the Actual Text of the Column Should Be.
+		// To hide Role columns you must pass the role name as listed in the config.
 		if ($data['lang_idx_hdr']=='')
 			$col_head_text = $column_name;
 		else
 			$col_head_text = $phprlang[$data['lang_idx_hdr']];
 		
+		// Modify Column Visibility from the $col_mod array.
+		$visibility = $data['visible'];
+		for ($i = 0; $i < count($col_mod); $i++)
+		{
+			if ($column_name == $col_mod[$i]['name'])
+				$visibility = $col_mod[$i]['visibility'];
+		}
+			
 		array_push($table_headers,
 			array(
 				'column_name'=>$column_name,
-				'visible'=>$data['visible'],
+				'visible'=>$visibility,
 				'position'=>$data['position'],
 				'img_url'=>$data['img_url'],
 				'col_text'=>$col_head_text,
@@ -226,6 +235,65 @@ function getPageNavigation($dataArray, $startRecord, $pageURL, $sortField, $sort
 	return $jumpMenu;
 }
 
+/**
+* Overrides the default column visibility value in the column table and sets the column to
+* hidden.  This is done so that specific fields can be made available only to specific groups
+* of users.
+* 
+* @param string $colName The name of the column to hide.
+* @return bool A TRUE/FALSE value identifying success or failure.
+* @access public
+*/
+function hideCol($colName)
+{
+	global $col_mod;
+	
+	$arrSize = count($col_mod);
+	$colFound = FALSE;
+	
+	for ($i = 0; $i < $arrSize; $i++)
+	{
+		if ($colName == $col_mod[$i]['name'])
+			$col_mod[$i]['visibility'] = FALSE;
+		$colFound = TRUE; 
+	}
+	if ($colFound == FALSE)
+	{
+		$col_mod[$i]['name'] = $colName;
+		$col_mod[$i]['visibility'] = FALSE;
+	}
+	return TRUE;
+}
+
+/**
+* Overrides the default column visibility value in the column table and sets the column to
+* visible.  This is done so that specific fields can be made available only to specific groups
+* of users.
+* 
+* @param string $colName The name of the column to show.
+* @return bool A TRUE/FALSE value identifying success or failure.
+* @access public
+*/
+function showCol($colName)
+{
+	global $col_mod;
+	
+	$arrSize = count($col_mod);
+	$colFound = FALSE;
+	
+	for ($i = 0; $i < $arrSize; $i++)
+	{
+		if ($colName == $col_mod[$i]['name'])
+			$col_mod[$i]['visibility'] = TRUE;
+		$colFound = TRUE; 
+	}
+	if ($colFound == FALSE)
+	{
+		$col_mod[$i]['name'] = $colName;
+		$col_mod[$i]['visibility'] = TRUE;
+	}
+	return TRUE;
+}
 
 /*******************************
  * Internal Targets
@@ -523,4 +591,7 @@ function _formatListValue($strValue, $strFormat)
 
 	return $strValue;
 }
+
+
+
 ?>

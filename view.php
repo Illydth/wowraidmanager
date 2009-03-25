@@ -847,12 +847,10 @@ if($mode == 'view')
 		);
 	}
 
-	//************************  ADD THIS!!!!!! ***********************************
-	//if($priv_raids == 1 || $user_perm_group['RL'] == 1)
-	//{
-	//	$report->addOutputColumn('guild',$phprlang['guild'],'','left');
-	//}
-	//****************************************************************************
+	if($priv_raids != 1 && $user_perm_group['RL'] != 1)
+	{
+		hideCol('Guild');
+	}
 	
 	if ($phpraid_config['raid_view_type'] == 'by_class')
 	{
