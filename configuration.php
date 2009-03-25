@@ -52,7 +52,7 @@ $errstr = $version_info = '';
 
 if ($fsock = @fsockopen('www.wowraidmanager.net', 80, $errno, $errstr, 10))
 {
-	@fputs($fsock, "GET /vercheck/ver_check.txt HTTP/1.1\r\n");
+	@fputs($fsock, "GET /vercheck/ver_check_40.txt HTTP/1.1\r\n");
 	@fputs($fsock, "HOST: www.wowraidmanager.net\r\n");
 	@fputs($fsock, "Connection: close\r\n\r\n");
 
