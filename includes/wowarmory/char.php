@@ -373,10 +373,9 @@ function make_extra_data()
                                                 'value' => $char['charactertab']['melee']['expertise']['value'],
                                                 'color' => value_color(3)
                                                               );                                     			
-
                         $extradata['defense'] = Array(  
                                                 'field' => LANG_STATS_DEFENSE,
-                                                'value' => $char['charactertab']['defenses']['defense']['value'],
+                                                'value' => $char['charactertab']['defenses']['defense']['value'] + $char['charactertab']['defenses']['defense']['plusdefense'],
                                                 'color' => value_color(6)
                                             );
                         $extradata['block'] = Array(   
