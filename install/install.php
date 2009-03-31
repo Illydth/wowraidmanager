@@ -387,7 +387,7 @@
 
 				if($line == ';')
 				{
-			  		$sql = substr(str_replace('`phpraid_','`' . $prefix, $sql), 0, -1);
+			  		$sql = substr(str_replace('`wrm_','`' . $prefix, $sql), 0, -1);
 					mysql_query($sql) or die($localstr['step3errorsql'].' ' . mysql_error());
 					$sql = '';
 				}
@@ -409,7 +409,7 @@
 
 					if($line == ';')
 					{
-				  		$sql = substr(str_replace('`phpraid_','`' . $prefix, $sql), 0, -1);
+				  		$sql = substr(str_replace('`wrm_','`' . $prefix, $sql), 0, -1);
 						mysql_query($sql) or die($localstr['step3errorsql'].' ' . mysql_error());
 						$sql = '';
 					}
@@ -419,8 +419,7 @@
 		}
 
 		// Make a Version Check
-		$sql = "select max(version_number) from `phpraid_version`";
-		$sql = str_replace('`phpraid_', '`' . $prefix, $sql);
+		$sql = "select max(version_number) from `" . $prefix . "version`";
 		$result = mysql_query($sql) or die($localstr['step3errorsql'].' ' . mysql_error());
 		$data = mysql_fetch_assoc($result);
 
