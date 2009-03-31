@@ -155,12 +155,12 @@ class phpArmory {
 		
 		//Character skills page is no longer available.
 		//$pages = array("reputation", "skills", "talents");
-		$pages = array("reputation", "talents");
-		foreach ($pages as $page) {
-			$temp = $this->xmlToArray($this->xmlFetch(sprintf($url, $page)));
-			unset($temp['characterinfo']['character']);
-			$result['characterinfo'] = array_merge($result['characterinfo'], reset($temp));
-		}
+		//$pages = array("reputation", "talents");
+		//foreach ($pages as $page) {
+		//	$temp = $this->xmlToArray($this->xmlFetch(sprintf($url, $page)));
+		//	unset($temp['characterinfo']['character']);
+		//	$result['characterinfo'] = array_merge($result['characterinfo'], reset($temp));
+		//}
 
 		return $result;
 
