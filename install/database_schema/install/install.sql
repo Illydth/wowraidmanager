@@ -894,3 +894,4 @@ INSERT INTO `wrm_version` VALUES ('3.6.0.1','Version 3.6.0.1 of WoW Raid Manager
 INSERT INTO `wrm_version` VALUES ('3.6.0.2','Version 3.6.0.2 of WoW Raid Manager');
 INSERT INTO `wrm_version` VALUES ('3.6.1','Version 3.6.1 of WoW Raid Manager');
 INSERT INTO `wrm_version` VALUES ('3.9.9.1.1','4.0 Beta 1 Release 1');
+INSERT INTO `wrm_version` VALUES ('3.9.9.1.2','4.0 Beta 1 Release 2');

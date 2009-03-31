@@ -410,3 +410,4 @@ VALUES (NULL , 'raidview2', 'Buttons', '1', '17', NULL, 'buttons', NULL);
 
 INSERT INTO `wrm_config` VALUES ('records_per_page','25');
 INSERT INTO `wrm_version` VALUES ('3.9.9.1.1','4.0 Beta 1 Release 1');
+INSERT INTO `wrm_version` VALUES ('3.9.9.1.2','4.0 Beta 1 Release 2');
