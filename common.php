@@ -44,9 +44,6 @@ error_reporting(E_ALL ^ E_NOTICE);
 // feel free to set this to absolute if necessary
 $phpraid_dir = './';
 
-// Sanity Check the Config File
-require_once($phpraid_dir."sanity.php");
-
 /*************************************************
  * Installation Redirect if Needed (Deprecated)
  *************************************************/
@@ -54,6 +51,9 @@ require_once($phpraid_dir."sanity.php");
 if(file_exists($phpraid_dir.'install/')) {
 	header("Location: install/install.php");
 }
+
+// Sanity Check the Config File
+require_once($phpraid_dir."sanity.php");
 
 //FIX FOR OPEN BASEDIR ISSUES.
 // No Win here, some people aren't allowed to include files not listed in the include list, 
