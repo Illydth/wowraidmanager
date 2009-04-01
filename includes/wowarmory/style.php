@@ -14,6 +14,6 @@
 header('Content-type: text/css; charset=UTF-8');
 
 // Include Commom file
-include("includes/common.php");
+include("includes/phparmory02/common.php");
 include("template/css/".$conf_template.".css");
 ?>

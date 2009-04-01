@@ -56,20 +56,26 @@ require_once("includes/template.class.php");
 $armver = '042';
 // Setup Cache Selection.  Valid Values: database, file, none.
 if ($armory_cache_setting == 'database')
+{
 	if ( ! $armory = new phpArmory5Cache($areaName = $locale, 
 									$dataStore = "mysql", 
 									$dataPath = $phpraid_config['db_prefix'] . "armory_cache", 
 									$mysqlString = "mysql://" . $phpraid_config['db_user'] . ":" . $phpraid_config['db_pass'] . "@" . $phpraid_config['db_host'] . "/" . $phpraid_config['db_name']) )
 		echo "Could not create an instance of phpArmory5. Please consult your PHP5 logs.\n";
+}
 elseif ($armory_cache_setting == 'file')
+{
 	if ( ! $armory = new phpArmory5Cache($areaName = $locale, 
 									$dataStore = "file", 
 									$dataPath = "../../cache/armory_cache") ) 
 		echo "Could not create an instance of phpArmory5. Please consult your PHP5 logs.\n";
-else									
+}
+else
+{									
 	if ( ! $armory = new phpArmory5($areaName = $locale) )
 	    echo "Could not create an instance of phpArmory5. Please consult your PHP5 logs.\n";
-    
+}
+   
 // Select the lang file
 include("languages/lang_en.php");
 
