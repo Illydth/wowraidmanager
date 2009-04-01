@@ -15,6 +15,7 @@
 
 // Include Commom file
 include("includes/common.php");
+global $armver;
 
 // Get the URL GET And decode
 $var  = $_GET['v']; // Character Name
@@ -24,15 +25,25 @@ $var4 = $_GET['u']; // Armory URL
 
 // Set the armory language
 //$armory->setlang($var3);
-$armory->lang = $var3;
-$armory->armory = $var4 . "/";
 
 // Get the char data from Armory
-$char = $armory->characterFetch($var, $var2);
-
-// Url for armory icons
-$avatar_url = $armory->armory . "images/portraits/";
-$icons_url  = $armory->armory . "images/icons/";
+if ($armver == '020')
+{
+	$armory->lang = $var3;
+	$armory->armory = $var4 . "/";
+	$char = $armory->characterFetch($var, $var2);
+	// Url for armory icons
+	$avatar_url = $armory->armory . "images/portraits/";
+	$icons_url  = $armory->armory . "images/icons/";
+}
+else
+{
+	$char = $armory->getCharacterData($var, $var2);
+	$armoryAreaData = $armory->getArea();
+	// Url for armory icons
+	$avatar_url = $armoryAreaData[1] . "images/portraits/";
+	$icons_url  = $armoryAreaData[1] . "images/icons/";
+}
 
 // Reduce the array name size, make more easy to work with the array.
 $char = $char['characterinfo'];
@@ -45,22 +56,22 @@ if ((count($char) == 0) ||  ($char['errcode'] == 'noCharacter'))  die("<br /> <b
 
 function value_color($v)
 {
-        switch($v)
-        {
-                case 0: return "#c9c9c9"; 
-                case 1: return "#FFFFFF";
-                case 2: return "#00FF00";
-                case 3: return "#0070DD";
-                case 4: return "#A335EE";
-                case 5: return "#FF3300"; 
-                case 6: return "#ffd517";
-                case 7: return "#d80000"; 
+	switch($v)
+	{
+		case 0: return "#c9c9c9"; 
+		case 1: return "#FFFFFF";
+		case 2: return "#00FF00";
+		case 3: return "#0070DD";
+		case 4: return "#A335EE";
+		case 5: return "#FF3300"; 
+		case 6: return "#ffd517";
+		case 7: return "#d80000"; 
 		case 8: return "#d800cc"; 
 		case 9: return "#ff88FF";
 		case 10: return "#00F080";
 		case 11: return "#FF0040";
 		case 12: return "#FFBF00";
-        }
+	}
 }
 
 function id_to_name($v)
@@ -85,7 +96,6 @@ function id_to_name($v)
 		case 2: return 'paladin';
 		// Druid
 		case 11: return 'druid';
-		
 		// DK
 		case 6: return 'deathknight';
 	}
@@ -205,7 +215,7 @@ function make_extra_data()
 
 	global $char;
 	$stamina = $char['charactertab']['basestats']['stamina']['effective'] . " (" . $char['charactertab']['basestats']['stamina']['base'] . " + " . ($char['charactertab']['basestats']['stamina']['effective'] - $char['charactertab']['basestats']['stamina']['base']) . ")";
-  $intellect = $char['charactertab']['basestats']['intellect']['effective'] . " (" . $char['charactertab']['basestats']['intellect']['base'] . " + " . ($char['charactertab']['basestats']['intellect']['effective'] - $char['charactertab']['basestats']['intellect']['base']) . ")";
+	$intellect = $char['charactertab']['basestats']['intellect']['effective'] . " (" . $char['charactertab']['basestats']['intellect']['base'] . " + " . ($char['charactertab']['basestats']['intellect']['effective'] - $char['charactertab']['basestats']['intellect']['base']) . ")";
 	$strength = $char['charactertab']['basestats']['strength']['effective'] . " (" . $char['charactertab']['basestats']['strength']['base'] . " + " . ($char['charactertab']['basestats']['strength']['effective'] - $char['charactertab']['basestats']['strength']['base']) . ")";
 	$agility = $char['charactertab']['basestats']['agility']['effective'] . " (" . $char['charactertab']['basestats']['agility']['base'] . " + " . ($char['charactertab']['basestats']['agility']['effective'] - $char['charactertab']['basestats']['agility']['base']) . ")";
 	$spirit = $char['charactertab']['basestats']['spirit']['effective'] . " (" . $char['charactertab']['basestats']['spirit']['base'] . " + " . ($char['charactertab']['basestats']['spirit']['effective'] - $char['charactertab']['basestats']['spirit']['base']) . ")";
