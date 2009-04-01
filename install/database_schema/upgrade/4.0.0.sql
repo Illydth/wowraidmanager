@@ -408,6 +408,9 @@ VALUES (NULL , 'raidview2', 'Time', '1', '16', NULL, 'time', 'wrmtime');
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
 VALUES (NULL , 'raidview2', 'Buttons', '1', '17', NULL, 'buttons', NULL);
 
+UPDATE `wrm_config` SET `config_value` = 'us' WHERE 'armory_language' = 'en' LIMIT 1 ;
+INSERT INTO `wrm_config` VALUES ('armory_cache_setting', 'none');
+
 INSERT INTO `wrm_config` VALUES ('records_per_page','25');
 INSERT INTO `wrm_version` VALUES ('3.9.9.1.1','4.0 Beta 1 Release 1');
 INSERT INTO `wrm_version` VALUES ('3.9.9.1.2','4.0 Beta 1 Release 2');

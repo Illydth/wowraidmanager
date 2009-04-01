@@ -453,7 +453,7 @@ INSERT INTO `wrm_config` VALUES ('language','english');
 INSERT INTO `wrm_config` VALUES ('multiple_signups','0');
 INSERT INTO `wrm_config` VALUES ('phpraid_addon_link','http://www.wowraidmanager.net');
 INSERT INTO `wrm_config` VALUES ('armory_link','http://www.wowarmory.com');
-INSERT INTO `wrm_config` VALUES ('armory_language','en');
+INSERT INTO `wrm_config` VALUES ('armory_language','us');
 INSERT INTO `wrm_config` VALUES ('register_url','register.php');
 INSERT INTO `wrm_config` VALUES ('roster_integration','0');
 INSERT INTO `wrm_config` VALUES ('show_id','0');
@@ -519,6 +519,7 @@ INSERT INTO `wrm_config` VALUES ('eqdkp_url', 'http://localhost/eqdkp');
 INSERT INTO `wrm_config` VALUES ('ampm', '12');
 INSERT INTO `wrm_config` VALUES ('raid_view_type','by_class');
 INSERT INTO `wrm_config` VALUES ('records_per_page','25');
+INSERT INTO `wrm_config` VALUES ('armory_cache_setting', 'none');
 
 -- Events Table Creation
 DROP TABLE IF EXISTS `wrm_events`;
