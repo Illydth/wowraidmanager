@@ -22,6 +22,7 @@ cd wrm
 # Set Directory / File Write permissions.
 chmod 777 cache/
 chmod 777 cache/armory_log
+chmod 777 cache/armory_cache
 chmod 777 cache/raid_lua
 chmod 777 cache/smarty_cache
 chmod 777 cache/templates_c
@@ -32,6 +33,7 @@ rm -rf armory_log/stderr.log
 rm -rf raid_lua/phpRaid_Data.lua
 rm -rf smarty_cache/*
 rm -rf templates_c/*
+rm -rf armory_cache/*
 
 # Base Directory
 chmod a-x *.php
