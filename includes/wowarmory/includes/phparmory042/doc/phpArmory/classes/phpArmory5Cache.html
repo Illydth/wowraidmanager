@@ -1,0 +1,866 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+		<head>
+			<!-- template designed by Marco Von Ballmoos -->
+			<title>Docs For Class phpArmory5Cache</title>
+			<link rel="stylesheet" href="../../media/stylesheet.css" />
+			<meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1'/>
+		</head>
+		<body>
+			<div class="page-body">			
+<h2 class="class-name">Class phpArmory5Cache</h2>
+
+<a name="sec-description"></a>
+<div class="info-box">
+	<div class="info-box-title">Description</div>
+	<div class="nav-bar">
+					<span class="disabled">Description</span> |
+													<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
+						|											<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+						
+					</div>
+	<div class="info-box-body">
+        		<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">phpArmory5Cache class</p>
+<p class="description"><p>A class to fetch and cache unserialized XML data from the World of Warcraft  armory site.</p></p>
+		<p class="notes">
+			Located in <a class="field" href="_phpArmoryCache.class.php.html">/phpArmoryCache.class.php</a> (line <span class="field">29</span>)
+		</p>
+		
+				
+		<pre><a href="../../phpArmory/classes/phpArmory5.html">phpArmory5</a>
+   |
+   --phpArmory5Cache</pre>
+	
+			</div>
+</div>
+
+
+
+	<a name="sec-var-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Variable Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+						<span class="disabled">Vars</span> (<a href="#sec-vars">details</a>)
+							| 
+									<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+							
+								</div>
+		<div class="info-box-body">
+			<div class="var-summary">
+																																																																																<div class="var-title">
+					<span class="var-type">string</span>
+					<a href="#$cacheID" title="details" class="var-name">$cacheID</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">string</span>
+					<a href="#$dataPath" title="details" class="var-name">$dataPath</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">string</span>
+					<a href="#$dataStore" title="details" class="var-name">$dataStore</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">string</span>
+					<a href="#$mysqlString" title="details" class="var-name">$mysqlString</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">string</span>
+					<a href="#$mysqlTable" title="details" class="var-name">$mysqlTable</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">integer</span>
+					<a href="#$updateInterval" title="details" class="var-name">$updateInterval</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">string</span>
+					<a href="#$version" title="details" class="var-name">$version</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">string</span>
+					<a href="#$version_state" title="details" class="var-name">$version_state</a>
+				</div>
+											</div>
+		</div>
+	</div>
+
+	<a name="sec-method-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Method Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+																		<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
+				 
+				|
+						<span class="disabled">Methods</span> (<a href="#sec-methods">details</a>)
+		</div>
+		<div class="info-box-body">			
+			<div class="method-summary">
+																																																																																												
+												<div class="method-definition">
+											<span class="method-result">mixed</span>
+										<a href="#__construct" title="details" class="method-name">__construct</a>
+											([<span class="var-type">string</span>&nbsp;<span class="var-name">$areaName</span> = <span class="var-default">NULL</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$dataStore</span> = <span class="var-default">NULL</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$dataPath</span> = <span class="var-default">NULL</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$mysqlString</span> = <span class="var-default">NULL</span>], [<span class="var-type">int</span>&nbsp;<span class="var-name">$downloadRetries</span> = <span class="var-default">NULL</span>], <span class="var-type">string</span>&nbsp;<span class="var-name">$mysqlTable</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">array</span>
+										<a href="#getArenaTeamData" title="details" class="method-name">getArenaTeamData</a>
+											([<span class="var-type"></span>&nbsp;<span class="var-name">$arenaTeamName</span> = <span class="var-default">NULL</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$realmName</span> = <span class="var-default">NULL</span>], <span class="var-type">string</span>&nbsp;<span class="var-name">$arenaName</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">mixed</span>
+										<a href="#getCachedData" title="details" class="method-name">getCachedData</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$cacheID</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">array</span>
+										<a href="#getCharacterData" title="details" class="method-name">getCharacterData</a>
+											([<span class="var-type">string</span>&nbsp;<span class="var-name">$characterName</span> = <span class="var-default">NULL</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$realmName</span> = <span class="var-default">NULL</span>], [<span class="var-type">bool</span>&nbsp;<span class="var-name">$onlyBasicData</span> = <span class="var-default">false</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result">array</span>
+										<a href="#getGuildData" title="details" class="method-name">getGuildData</a>
+											([<span class="var-type">string</span>&nbsp;<span class="var-name">$guildName</span> = <span class="var-default">NULL</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$realmName</span> = <span class="var-default">NULL</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result">array</span>
+										<a href="#getItemData" title="details" class="method-name">getItemData</a>
+											(<span class="var-type">int</span>&nbsp;<span class="var-name">$itemID</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">mixed</span>
+										<a href="#getItemDataByName" title="details" class="method-name">getItemDataByName</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$itemName</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$itemFilter</span> = <span class="var-default">NULL</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result">bool</span>
+										<a href="#setCachedData" title="details" class="method-name">setCachedData</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$cacheID</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$xml</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#triggerError" title="details" class="method-name">triggerError</a>
+											([<span class="var-type">string</span>&nbsp;<span class="var-name">$userError</span> = <span class="var-default">NULL</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#triggerNotice" title="details" class="method-name">triggerNotice</a>
+											([<span class="var-type">string</span>&nbsp;<span class="var-name">$userNotice</span> = <span class="var-default">NULL</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#triggerWarning" title="details" class="method-name">triggerWarning</a>
+											([<span class="var-type">string</span>&nbsp;<span class="var-name">$userWarning</span> = <span class="var-default">NULL</span>])
+									</div>
+								</div>
+		</div>
+	</div>		
+
+	<a name="sec-vars"></a>
+	<div class="info-box">
+		<div class="info-box-title">Variables</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+										<a href="#sec-var-summary">Vars</a> (<span class="disabled">details</span>)
+						
+			
+										| 
+									<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+							
+					</div>
+		<div class="info-box-body">
+			<a name="var$cacheID" id="$cacheID"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">string</span>
+			<span class="var-name">$cacheID</span>
+			 = <span class="var-default"> &quot;&quot;</span>			(line <span class="line-number">51</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">The current cache ID in use.</p>
+	<ul class="tags">
+				<li><span class="field">var:</span> Contains the cache ID.</li>
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$dataPath" id="$dataPath"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">string</span>
+			<span class="var-name">$dataPath</span>
+			 = <span class="var-default"> &quot;./cache&quot;</span>			(line <span class="line-number">65</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">The path to the cache directory (must chmod 777 to make it writeable).</p>
+	<ul class="tags">
+				<li><span class="field">var:</span> Contains the path where to store cache files.</li>
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$dataStore" id="$dataStore"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">string</span>
+			<span class="var-name">$dataStore</span>
+			 = <span class="var-default"> &quot;file&quot;</span>			(line <span class="line-number">58</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Selected data storage for the class. Can be &quot;file&quot; or &quot;mysql&quot;.</p>
+	<ul class="tags">
+				<li><span class="field">var:</span> Contains the selected data storage.</li>
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$mysqlString" id="$mysqlString"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">string</span>
+			<span class="var-name">$mysqlString</span>
+			 = <span class="var-default"> &quot;mysql://username:password@localhost/databasename&quot;</span>			(line <span class="line-number">72</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">MySQL connection string.</p>
+	<ul class="tags">
+				<li><span class="field">var:</span> Contains the MySQL connection string.</li>
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$mysqlTable" id="$mysqlTable"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">string</span>
+			<span class="var-name">$mysqlTable</span>
+			 = <span class="var-default"> &quot;armory_cache&quot;</span>			(line <span class="line-number">79</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">MySQL cache table.</p>
+	<ul class="tags">
+				<li><span class="field">var:</span> Contains the MySQL cache table.</li>
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$updateInterval" id="$updateInterval"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">integer</span>
+			<span class="var-name">$updateInterval</span>
+			 = <span class="var-default"> 14400</span>			(line <span class="line-number">86</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">The time between cache updates in seconds</p>
+	<ul class="tags">
+				<li><span class="field">var:</span> Contains the time delay between updates in seconds. Default is 4 hours.</li>
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$version" id="$version"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">string</span>
+			<span class="var-name">$version</span>
+			 = <span class="var-default"> &quot;0.4.2&quot;</span>			(line <span class="line-number">36</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Current version of the phpArmory5Cache class.</p>
+	<ul class="tags">
+				<li><span class="field">var:</span> Contains the current class version.</li>
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	
+			<hr class="separator" />
+		<div class="notes">Redefinition of:</div>
+		<dl>
+			<dt><a href="../../phpArmory/classes/phpArmory5.html#var$version">phpArmory5::$version</a></dt>
+						<dd>Current version of the phpArmory5 class.</dd>
+					</dl>
+		
+		
+
+</div>
+<a name="var$version_state" id="$version_state"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">string</span>
+			<span class="var-name">$version_state</span>
+			 = <span class="var-default"> &quot;release&quot;</span>			(line <span class="line-number">44</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Current state of the phpArmory5Cache class. Allowed values are alpha, beta,  and release.</p>
+	<ul class="tags">
+				<li><span class="field">var:</span> Contains the current versions' state.</li>
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	
+			<hr class="separator" />
+		<div class="notes">Redefinition of:</div>
+		<dl>
+			<dt><a href="../../phpArmory/classes/phpArmory5.html#var$version_state">phpArmory5::$version_state</a></dt>
+						<dd>Current state of the phpArmory5 class. Allowed values are alpha, beta,  and release.</dd>
+					</dl>
+		
+		
+
+</div>
+							<h4>Inherited Variables</h4>
+				<A NAME='inherited_vars'><!-- --></A>
+									<p>Inherited from <span class="classname"><a href="../../phpArmory/classes/phpArmory5.html">phpArmory5</a></span></p>
+					<blockquote>
+													<span class="var-title">
+								<span class="var-name"><a href="../../phpArmory/classes/phpArmory5.html#var$areaName">phpArmory5::$areaName</a></span><br>
+							</span>
+													<span class="var-title">
+								<span class="var-name"><a href="../../phpArmory/classes/phpArmory5.html#var$armory">phpArmory5::$armory</a></span><br>
+							</span>
+													<span class="var-title">
+								<span class="var-name"><a href="../../phpArmory/classes/phpArmory5.html#var$downloadRetries">phpArmory5::$downloadRetries</a></span><br>
+							</span>
+													<span class="var-title">
+								<span class="var-name"><a href="../../phpArmory/classes/phpArmory5.html#var$lastDownload">phpArmory5::$lastDownload</a></span><br>
+							</span>
+													<span class="var-title">
+								<span class="var-name"><a href="../../phpArmory/classes/phpArmory5.html#var$localeName">phpArmory5::$localeName</a></span><br>
+							</span>
+													<span class="var-title">
+								<span class="var-name"><a href="../../phpArmory/classes/phpArmory5.html#var$timeOut">phpArmory5::$timeOut</a></span><br>
+							</span>
+													<span class="var-title">
+								<span class="var-name"><a href="../../phpArmory/classes/phpArmory5.html#var$userAgent">phpArmory5::$userAgent</a></span><br>
+							</span>
+													<span class="var-title">
+								<span class="var-name"><a href="../../phpArmory/classes/phpArmory5.html#var$wow">phpArmory5::$wow</a></span><br>
+							</span>
+											</blockquote> 
+										
+		</div>
+	</div>
+	
+	<a name="sec-methods"></a>
+	<div class="info-box">
+		<div class="info-box-title">Methods</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+															<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
+																	<a href="#sec-method-summary">Methods</a> (<span class="disabled">details</span>)
+						
+		</div>
+		<div class="info-box-body">
+			<A NAME='method_detail'></A>
+
+<a name="method__construct" id="__construct"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">Constructor __construct</span> (line <span class="line-number">98</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">phpArmory5Cache class constructor.</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> Returns TRUE if the class could be instantiated properly. Returns FALSE and an error string, if the class could not be instantiated.</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">mixed</span>
+		<span class="method-name">
+			__construct
+		</span>
+					([<span class="var-type">string</span>&nbsp;<span class="var-name">$areaName</span> = <span class="var-default">NULL</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$dataStore</span> = <span class="var-default">NULL</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$dataPath</span> = <span class="var-default">NULL</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$mysqlString</span> = <span class="var-default">NULL</span>], [<span class="var-type">int</span>&nbsp;<span class="var-name">$downloadRetries</span> = <span class="var-default">NULL</span>], <span class="var-type">string</span>&nbsp;<span class="var-name">$mysqlTable</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$areaName</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$dataStore</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$mysqlString</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$mysqlTable</span>			</li>
+					<li>
+				<span class="var-type">int</span>
+				<span class="var-name">$downloadRetries</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$dataPath</span>			</li>
+				</ul>
+		
+			<hr class="separator" />
+		<div class="notes">Redefinition of:</div>
+		<dl>
+			<dt><a href="../../phpArmory/classes/phpArmory5.html#method__construct">phpArmory5::__construct()</a></dt>
+						<dd>phpArmory5 class constructor.</dd>
+					</dl>
+			
+	</div>
+<a name="methodgetArenaTeamData" id="getArenaTeamData"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">getArenaTeamData</span> (line <span class="line-number">281</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Provides information on a specific arena team.</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> Returns an array containing arenaTeamData if $arenaTeamName and $realmName are valid, otherwise FALSE.</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">array</span>
+		<span class="method-name">
+			getArenaTeamData
+		</span>
+					([<span class="var-type"></span>&nbsp;<span class="var-name">$arenaTeamName</span> = <span class="var-default">NULL</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$realmName</span> = <span class="var-default">NULL</span>], <span class="var-type">string</span>&nbsp;<span class="var-name">$arenaName</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$arenaName</span><span class="var-description">: The arena teams' name.</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$realmName</span><span class="var-description">: The arena teams' realm name.</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$arenaTeamName</span>			</li>
+				</ul>
+		
+			<hr class="separator" />
+		<div class="notes">Redefinition of:</div>
+		<dl>
+			<dt><a href="../../phpArmory/classes/phpArmory5.html#methodgetArenaTeamData">phpArmory5::getArenaTeamData()</a></dt>
+						<dd>Provides information on a specific arena team.</dd>
+					</dl>
+			
+	</div>
+<a name="methodgetCachedData" id="getCachedData"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">getCachedData</span> (line <span class="line-number">204</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Retrieve cached data.</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> Returns a string containg the cached XML data, or FALSE if there is no cached data.</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">mixed</span>
+		<span class="method-name">
+			getCachedData
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$cacheID</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$cacheID</span><span class="var-description">: The unique ID of the retrieved data.</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodgetCharacterData" id="getCharacterData"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">getCharacterData</span> (line <span class="line-number">315</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Provides information on a specific character.</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> Returns an array containing characterData if $characterName and $realmName are valid, otherwise FALSE.</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">array</span>
+		<span class="method-name">
+			getCharacterData
+		</span>
+					([<span class="var-type">string</span>&nbsp;<span class="var-name">$characterName</span> = <span class="var-default">NULL</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$realmName</span> = <span class="var-default">NULL</span>], [<span class="var-type">bool</span>&nbsp;<span class="var-name">$onlyBasicData</span> = <span class="var-default">false</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$characterName</span><span class="var-description">: The characters' name.</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$realmName</span><span class="var-description">: The characters' realm name.</span>			</li>
+					<li>
+				<span class="var-type">bool</span>
+				<span class="var-name">$onlyBasicData</span><span class="var-description">: If true, only the basic character data will be fetched.</span>			</li>
+				</ul>
+		
+			<hr class="separator" />
+		<div class="notes">Redefinition of:</div>
+		<dl>
+			<dt><a href="../../phpArmory/classes/phpArmory5.html#methodgetCharacterData">phpArmory5::getCharacterData()</a></dt>
+						<dd>Provides information on a specific character.</dd>
+					</dl>
+			
+	</div>
+<a name="methodgetGuildData" id="getGuildData"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">getGuildData</span> (line <span class="line-number">348</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Provides information on a specific guild.</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> Returns an array containing guildData if $guildName and $realmName are valid, otherwise FALSE.</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">array</span>
+		<span class="method-name">
+			getGuildData
+		</span>
+					([<span class="var-type">string</span>&nbsp;<span class="var-name">$guildName</span> = <span class="var-default">NULL</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$realmName</span> = <span class="var-default">NULL</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$guildName</span><span class="var-description">: The guilds' name.</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$realmName</span><span class="var-description">: The guilds' realm name.</span>			</li>
+				</ul>
+		
+			<hr class="separator" />
+		<div class="notes">Redefinition of:</div>
+		<dl>
+			<dt><a href="../../phpArmory/classes/phpArmory5.html#methodgetGuildData">phpArmory5::getGuildData()</a></dt>
+						<dd>Provides information on a specific guild.</dd>
+					</dl>
+			
+	</div>
+<a name="methodgetItemData" id="getItemData"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">getItemData</span> (line <span class="line-number">378</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Provides information on a specific item by querying its' ID.</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> Returns an array containing itemData if $itemID is valid, otherwise FALSE.</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">array</span>
+		<span class="method-name">
+			getItemData
+		</span>
+					(<span class="var-type">int</span>&nbsp;<span class="var-name">$itemID</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">int</span>
+				<span class="var-name">$itemID</span><span class="var-description">: The items' ID.</span>			</li>
+				</ul>
+		
+			<hr class="separator" />
+		<div class="notes">Redefinition of:</div>
+		<dl>
+			<dt><a href="../../phpArmory/classes/phpArmory5.html#methodgetItemData">phpArmory5::getItemData()</a></dt>
+						<dd>Provides information on a specific item by querying its' ID.</dd>
+					</dl>
+			
+	</div>
+<a name="methodgetItemDataByName" id="getItemDataByName"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">getItemDataByName</span> (line <span class="line-number">410</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Provides information on a specific item by querying its' name.</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> Returns an array containing itemData if $itemName is valid, otherwise FALSE.</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">mixed</span>
+		<span class="method-name">
+			getItemDataByName
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$itemName</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$itemFilter</span> = <span class="var-default">NULL</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$itemName</span><span class="var-description">: The items' name.</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$itemFilter</span><span class="var-description">: An associative array of search paramters.</span>			</li>
+				</ul>
+		
+			<hr class="separator" />
+		<div class="notes">Redefinition of:</div>
+		<dl>
+			<dt><a href="../../phpArmory/classes/phpArmory5.html#methodgetItemDataByName">phpArmory5::getItemDataByName()</a></dt>
+						<dd>Provides information on a specific item by querying its' name.</dd>
+					</dl>
+			
+	</div>
+<a name="methodsetCachedData" id="setCachedData"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">setCachedData</span> (line <span class="line-number">250</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Saved retrieved data to cache.</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> Returns TRUE if $xml could be cached, and FALSE if it failed to be saved.</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">bool</span>
+		<span class="method-name">
+			setCachedData
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$cacheID</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$xml</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$cacheID</span><span class="var-description">: The unique ID of the retrieved data.</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$xml</span><span class="var-description">: The retrieved XML data to store.</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodtriggerError" id="triggerError"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">triggerError</span> (line <span class="line-number">164</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Raise a PHP error.</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			triggerError
+		</span>
+					([<span class="var-type">string</span>&nbsp;<span class="var-name">$userError</span> = <span class="var-default">NULL</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$userError</span><span class="var-description">: The error string to output.</span>			</li>
+				</ul>
+		
+			<hr class="separator" />
+		<div class="notes">Redefinition of:</div>
+		<dl>
+			<dt><a href="../../phpArmory/classes/phpArmory5.html#methodtriggerError">phpArmory5::triggerError()</a></dt>
+						<dd>Raise a PHP error.</dd>
+					</dl>
+			
+	</div>
+<a name="methodtriggerNotice" id="triggerNotice"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">triggerNotice</span> (line <span class="line-number">189</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Raise a PHP notice if the class is used from the command line.</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			triggerNotice
+		</span>
+					([<span class="var-type">string</span>&nbsp;<span class="var-name">$userNotice</span> = <span class="var-default">NULL</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$userNotice</span><span class="var-description">: The notice string to output.</span>			</li>
+				</ul>
+		
+			<hr class="separator" />
+		<div class="notes">Redefinition of:</div>
+		<dl>
+			<dt><a href="../../phpArmory/classes/phpArmory5.html#methodtriggerNotice">phpArmory5::triggerNotice()</a></dt>
+						<dd>Raise a PHP notice if the class is used from the command line.</dd>
+					</dl>
+			
+	</div>
+<a name="methodtriggerWarning" id="triggerWarning"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">triggerWarning</span> (line <span class="line-number">175</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Raise a PHP warning if the class is used from the command line.</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			triggerWarning
+		</span>
+					([<span class="var-type">string</span>&nbsp;<span class="var-name">$userWarning</span> = <span class="var-default">NULL</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$userWarning</span><span class="var-description">: The warning string to output.</span>			</li>
+				</ul>
+		
+			<hr class="separator" />
+		<div class="notes">Redefinition of:</div>
+		<dl>
+			<dt><a href="../../phpArmory/classes/phpArmory5.html#methodtriggerWarning">phpArmory5::triggerWarning()</a></dt>
+						<dd>Raise a PHP warning if the class is used from the command line.</dd>
+					</dl>
+			
+	</div>
+							<h4>Inherited Methods</h4>
+				<a name='inherited_methods'><!-- --></a>	
+									<!-- =========== Summary =========== -->
+					<p>Inherited From <span class="classname"><a href="../../phpArmory/classes/phpArmory5.html">phpArmory5</a></span></p>
+					<blockquote>
+													<span class="method-name"><a href="../../phpArmory/classes/phpArmory5.html#method__construct">phpArmory5::__construct()</a></span><br>
+													<span class="method-name"><a href="../../phpArmory/classes/phpArmory5.html#methodconvertXmlToArray">phpArmory5::convertXmlToArray()</a></span><br>
+													<span class="method-name"><a href="../../phpArmory/classes/phpArmory5.html#methodgetAnyData">phpArmory5::getAnyData()</a></span><br>
+													<span class="method-name"><a href="../../phpArmory/classes/phpArmory5.html#methodgetArea">phpArmory5::getArea()</a></span><br>
+													<span class="method-name"><a href="../../phpArmory/classes/phpArmory5.html#methodgetArenaTeamData">phpArmory5::getArenaTeamData()</a></span><br>
+													<span class="method-name"><a href="../../phpArmory/classes/phpArmory5.html#methodgetCharacterData">phpArmory5::getCharacterData()</a></span><br>
+													<span class="method-name"><a href="../../phpArmory/classes/phpArmory5.html#methodgetCharacterIconURL">phpArmory5::getCharacterIconURL()</a></span><br>
+													<span class="method-name"><a href="../../phpArmory/classes/phpArmory5.html#methodgetGuildData">phpArmory5::getGuildData()</a></span><br>
+													<span class="method-name"><a href="../../phpArmory/classes/phpArmory5.html#methodgetItemData">phpArmory5::getItemData()</a></span><br>
+													<span class="method-name"><a href="../../phpArmory/classes/phpArmory5.html#methodgetItemDataByName">phpArmory5::getItemDataByName()</a></span><br>
+													<span class="method-name"><a href="../../phpArmory/classes/phpArmory5.html#methodgetLocale">phpArmory5::getLocale()</a></span><br>
+													<span class="method-name"><a href="../../phpArmory/classes/phpArmory5.html#methodgetPatchLevel">phpArmory5::getPatchLevel()</a></span><br>
+													<span class="method-name"><a href="../../phpArmory/classes/phpArmory5.html#methodgetTalentData">phpArmory5::getTalentData()</a></span><br>
+													<span class="method-name"><a href="../../phpArmory/classes/phpArmory5.html#methodgetXmlData">phpArmory5::getXmlData()</a></span><br>
+													<span class="method-name"><a href="../../phpArmory/classes/phpArmory5.html#methodsetArea">phpArmory5::setArea()</a></span><br>
+													<span class="method-name"><a href="../../phpArmory/classes/phpArmory5.html#methodsetLocale">phpArmory5::setLocale()</a></span><br>
+													<span class="method-name"><a href="../../phpArmory/classes/phpArmory5.html#methodtriggerError">phpArmory5::triggerError()</a></span><br>
+													<span class="method-name"><a href="../../phpArmory/classes/phpArmory5.html#methodtriggerNotice">phpArmory5::triggerNotice()</a></span><br>
+													<span class="method-name"><a href="../../phpArmory/classes/phpArmory5.html#methodtriggerWarning">phpArmory5::triggerWarning()</a></span><br>
+											</blockquote>
+										
+		</div>
+	</div>
+
+
+	<p class="notes" id="credit">
+		Documentation generated on Wed, 17 Dec 2008 15:51:36 +0100 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.2</a>
+	</p>
+	</div></body>
+</html>

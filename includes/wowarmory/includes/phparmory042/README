@@ -1,0 +1,27 @@
+# phpArmory - Work the World of Warcraft armory as you desire
+
+## Summary
+
+phpArmory is a PHP class library that can easily fetch and unserialize World
+of Warcraft Armory XML data into structured associative arrays.
+
+This class library requires the PHP extensions for CURL, and XML installed.
+Please make sure that these extensions are installed on your server.
+
+## Usage
+
+Include phpArmory.class.php as the base class in your project, and inherit
+new classes from the `phpArmory5` class.
+
+If you need caching of the retrieved XML results, include the caching class
+from phpArmoryCache.class.php in your project, and inherit new classes from
+the `phpArmory5Cache` class.
+
+## Notes
+
+* With the release of phpArmory 0.4.0 support for running the classes with
+  PHP4 has been dropped, due to PHP4 not being supported by the developers
+  anymore. Thus we recommend to upgrade your PHP installation to PHP5 now.
+
+* The phpArmory API has changed with phpArmory 0.4.0 and is not backwards
+  compatible.

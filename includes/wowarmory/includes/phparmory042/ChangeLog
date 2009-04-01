@@ -1,0 +1,167 @@
+# 0.4.2 - "Fishing Extravaganza" - Dec 17, 2008
+This release should fix issues with character that could not be retrieved
+from the armory due to special characters in realm or character names.
+
+## Bugs squashed
+* phpArmory5Cache: the setCachedData(...) function was called without prior
+  checks if there *was* any valid data to cache. This has been fixed.
+* phpArmory5: Strings used in URLs do not need a manual replacement of the
+  space character. urlencode() handles this for us already.
+* phpArmory5: fixed an issue in __construct, where required PHP extension
+  have not been checked properly. Thanks to Gizzmo for the hint.
+
+## Features added
+* phpArmory5: added getAnyData($searchType = NULL, $objectName = NULL,
+  $filter = NULL). $searchType can be any of "arenateams", "characters",
+  "guilds", "items". $filter needs to be an associative array of filter
+  properties. For now, try out the armory item search page to see valid
+  filter options.
+* phpArmory5: added a third parameter to getCharacterData for retrieving only
+  the basic character data. Defaults to false. Use the following to get basic
+  character data only:
+
+        !!php
+        $character = $phpArmory->getCharacterData($characterName = "Char", $realmName = "Realm", $onlyBasicData = true)
+
+# 0.4.1 - "Call to Arms" - Nov 26, 2008
+The [World of Warcraft armory](http://www.wowarmory.com/) has received quite a
+few improvements, making it feature complete with the added character data from
+the "Wrath of the Lich King" expansion.
+
+## Features added
+* getCharacterData($characterName, $realmName) will now return an array which
+  contains character achievements and statistics.
+
+        !!php
+        $character = Array
+        (
+            [characterinfo] => Array
+                (
+                        ...
+                )
+
+            [reputationtab] => Array
+                (
+                        ...
+                )
+
+            [skilltab] => Array
+                (
+                        ...
+                )
+
+            [talenttab] => Array
+                (
+                        ...
+                )
+
+            [achievements] => Array
+                (
+                        ...
+                )
+
+            [statistics] => Array
+                (
+                        ...
+                )
+
+            [armorypatchlevel] => 030003
+        )
+
+
+# 0.4.0 - “Jack-o’-Lantern” - Nov 20, 2008
+
+phpArmory has been rewritten for PHP5 and the new OOP class syntax. The class
+interfaces have been changed to use getFunction() and setFunction() syntax,
+and class variables have been adjusted to use private, protected, and public
+states. Please consult the doc/ folder for updated API documentation.
+
+NOTE: arena team handling has been postponed to release 0.5.0, as with the
+recent release of Wrath of the Lich King, all arena teams have been wiped and
+no sample data was available to develop the feature.
+
+## Bugs squashed
+
+* all functions have received input checking, now all functions will properly
+  return FALSE when something goes wrong.
+
+## Features added
+
+* phpArmory5 and phpArmory5Cache will now make use of trigger_error provided by
+  PHP5 to raise notices (E_USER_NOTICE), warnings (E_USER_WARNING), and errors
+  (E_USER_ERROR). Please note that warnings and notices will only be raised when
+  you use phpArmory from the command line. If you use it on your web server,
+  only errors will be raised.
+* you can now use getArea / setArea to make changes to the armory area.
+* you can now use getLocale / setLocale to set the language in which you want
+  to query data from the armory.
+* you can retrieve talent definitions for all classes, including the recently
+  added Death Knight using getTalentData().
+
+## Features changed
+
+* the phpArmory class API has been changed. All functions now use get... and
+  set... for their names. The current API documentation is available online:
+  http://www.marenkay.com/wp-content/plugins/wow-armory/phparmory/doc/
+* character icons will now be properly display for characters up to level 80.
+  We have shiny WotLK character icons.
+
+# 0.3.2 - “Giddyup!” - Oct 02, 2008
+
+A pure bugfix release.
+
+## Bugs squashed
+
+* phpArmory.class.php: Class will not be instantiated if the Curl or XML
+  extension is missing from your PHP installation.
+* examples/character.php: Updated to use setArea. Properly dumps character data
+  as XML. Please note that characterFetch() will now return the armory
+  patchlevel, too.
+* examples/guildroster.php: Updated to use setArea. Properly dumps the full
+  guild roster as plain table.
+
+# 0.3.1 - “Unknown item” - Sep 28, 2008
+
+A few features have been revised, a few new ones added.
+
+## Features added
+
+* Patchlevel detection: getCurrentPatchlevel() will return the current patch
+  version for the armory region you use.
+* Talent definitions: TalentDefinitionFetch() will retrieve talent definition
+  for all classes from the World of Warcraft website.
+* WoW armory lockout prevention: with previous phpArmory versions, it could
+  happen that your applications would be temporarily locked out from the
+  armory. To prevent this, you can now limit the number of retries for XML
+  pulling. To do this inherit your own classes like this:
+
+  <?php
+  $armoryFetch = new phpArmory ($armory = "http://www.wowarmory.com/", retries = 3);
+  ?>
+
+## Features changed
+
+* Armory region and locales: this has been simplified, to only supply a setArea
+  function to define which armory region we use.
+
+# 0.3.0 - “Use soulstone” - Apr 30, 2008
+
+Mostly bug fixes, a few new features.
+
+## Features added
+
+* Language support. You now can define and query the language, in which you
+  want to query data from the World of Warcraft armory.
+* Region support. You now can define a regions' armory to query data from it.
+  This is especially helpful, if querying character data from different regions
+  (e.g. US and EU characters).
+
+## Bugs squashed
+
+* The xmlToArray method was not properly checking, if children of the XML
+  objects are proper arrays.
+* Caching XML data retrieved from the World of Warcraft armory works again.
+* MySQL query results will now be stored correct. The cacheSave() method was
+  not checking, if an XML result was already stored in the database, and thus
+  produced a duplicate key error. Now existing XML results will be updated
+  instead of inserted.
