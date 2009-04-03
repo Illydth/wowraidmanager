@@ -190,6 +190,48 @@ get_permissions();
  ***************************************************/
 $col_mod = array();
 
+/***************************************************
+ * Load Game Specific Data to Global Variables
+ ***************************************************/
+$wrm_global_classes = array();
+$wrm_global_races = array();
+$wrm_global_roles = array();
+
+// Load the Classes Array
+$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "classes";
+$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+$x = 0;
+while($data = $db_raid->sql_fetchrow($result, true))
+{
+	$wrm_global_classes[$x]['class_id'] = $data['class_id'];
+	$wrm_global_classes[$x]['lang_index'] = $data['lang_index'];
+	$x++;
+}
+
+// Load the Races Array
+$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "races";
+$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+$x = 0;			
+while($data = $db_raid->sql_fetchrow($result, true))
+{
+	$wrm_global_races[$x]['race_id'] = $data['race_id'];
+	$wrm_global_races[$x]['faction'] = $data['faction'];
+	$wrm_global_races[$x]['lang_index'] = $data['lang_index'];
+	$x++;
+}
+
+// Load the Roles Array
+$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "roles";
+$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+$x = 0;			
+while($data = $db_raid->sql_fetchrow($result, true))
+{
+	$wrm_global_roles[$x]['role_id'] = $data['role_id'];
+	$wrm_global_roles[$x]['role_name'] = $data['role_name'];
+	$wrm_global_roles[$x]['lang_index'] = $data['lang_index'];
+	$x++;
+}
+
 /****************************************************
  * Maintenance Flag Disable Site
  ****************************************************/
