@@ -547,15 +547,30 @@ $guild_server = '<input name="guild_server" type="text" id="guild_server" value=
 $register = '<input name="register" type="text" value="'.$phpraid_config['register_url'].'" size="60" class="post">';
 $buttons = '<input type="submit" name="submit" value="'.$phprlang['submit'].'" class="mainoption"> <input type="reset" name="Reset" value="'.$phprlang['reset'].'" class="liteoption">';
 $armory_language = '<input name="armory_language" type="text" value="'.$phpraid_config['armory_language'].'" size="4" class="post">';
-$role1_name='<input name="role1_name" type="text" value="'.$phpraid_config['role1_name'].'" size="25" class="post">';
-$role2_name='<input name="role2_name" type="text" value="'.$phpraid_config['role2_name'].'" size="25" class="post">';
-$role3_name='<input name="role3_name" type="text" value="'.$phpraid_config['role3_name'].'" size="25" class="post">';
-$role4_name='<input name="role4_name" type="text" value="'.$phpraid_config['role4_name'].'" size="25" class="post">';
-$role5_name='<input name="role5_name" type="text" value="'.$phpraid_config['role5_name'].'" size="25" class="post">';
-$role6_name='<input name="role6_name" type="text" value="'.$phpraid_config['role6_name'].'" size="25" class="post">';
 $eqdkp_url='<input name="eqdkp_url" type="text" value="'.$phpraid_config['eqdkp_url'].'" size="60" class="post">';
 
+// Setup the Role Boxes based upon what's in the Role table.
+$role_data = array();
+
+$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "roles";
+$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+
+while($data = $db_raid->sql_fetchrow($result, true))
+{
+	$var = $data['role_id'] . "_name";
+	$role_name = '<input name="'.$var.'" type="text" value="'.$data['role_name'].'" size="25" class="post">';
+	$role_text = $phprlang[$data['lang_index']];
+	
+	array_push($role_data,
+		array(
+			'role_name' => $role_name,
+			'role_text' => $role_text,
+			)
+		);
+}
+
 // put the variables into the template
+$wrmsmarty->assign('role_data', $role_data);
 $wrmsmarty->assign('config_data',
 	array(
 		'guild_name' => $guild_name,
@@ -595,18 +610,6 @@ $wrmsmarty->assign('config_data',
 		'enable_armory_text' => $phprlang['configuration_armory_enable'],
 		'enable_eqdkp_text' => $phprlang['configuration_eqdkp_integration_text'],
 		'eqdkp_url_text' => $phprlang['configuration_eqdkp_link'],
-		'role1_name' => $role1_name,
-		'role2_name' => $role2_name,
-		'role3_name' => $role3_name,
-		'role4_name' => $role4_name,
-		'role5_name' => $role5_name,
-		'role6_name' => $role6_name,
-		'role1_text' => $phprlang['configuration_role1_text'],
-		'role2_text' => $phprlang['configuration_role2_text'],
-		'role3_text' => $phprlang['configuration_role3_text'],
-		'role4_text' => $phprlang['configuration_role4_text'],
-		'role5_text' => $phprlang['configuration_role5_text'],
-		'role6_text' => $phprlang['configuration_role6_text'],
 		'role_limit_text' => $phprlang['configuration_role_limit_text'],
 		'class_limit_text' => $phprlang['configuration_class_limit_text'],
 		'class_as_min_text' => $phprlang['configuration_class_as_min'],
@@ -792,44 +795,24 @@ if(isset($_POST['submit']))
 	$armory_link = scrub_input($_POST['armory_link']);
 	$raid_view_type = scrub_input($_POST['raid_view_type']);
 	$armory_language = scrub_input($_POST['armory_language']);
-	$role1_name = scrub_input($_POST['role1_name']);
-	$role2_name = scrub_input($_POST['role2_name']);
-	$role3_name = scrub_input($_POST['role3_name']);
-	$role4_name = scrub_input($_POST['role4_name']);
-	$role5_name = scrub_input($_POST['role5_name']);
-	$role6_name = scrub_input($_POST['role6_name']);
+	
+	// Process Roles
+	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "roles";
+	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	
+	while($data = $db_raid->sql_fetchrow($result, true))
+	{
+		$var = $data['role_id'] . "_name";
+		$$var = scrub_input($_POST[$var]);
 
-	// Check for changes in role name.  If the Role Name changes, we need to update the characters table.
-	if ($phpraid_config['role1_name'] != $role1_name)
-	{
-		$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."chars` SET `role` = %s WHERE `role`= %s;", quote_smart($role1_name), quote_smart($phpraid_config['role1_name']));
-		$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
-	}
-	if ($phpraid_config['role2_name'] != $role2_name)
-	{
-		$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."chars` SET `role` = %s WHERE `role`= %s;", quote_smart($role2_name), quote_smart($phpraid_config['role2_name']));
-		$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);		
-	}
-	if ($phpraid_config['role3_name'] != $role3_name)
-	{
-		$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."chars` SET `role` = %s WHERE `role`= %s;", quote_smart($role3_name), quote_smart($phpraid_config['role3_name']));
-		$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);		
-	}
-	if ($phpraid_config['role4_name'] != $role4_name)
-	{
-		$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."chars` SET `role` = %s WHERE `role`= %s;", quote_smart($role4_name), quote_smart($phpraid_config['role4_name']));
-		$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
-	}
-	if ($phpraid_config['role5_name'] != $role5_name)
-	{
-		$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."chars` SET `role` = %s WHERE `role`= %s;", quote_smart($role5_name), quote_smart($phpraid_config['role5_name']));
-		$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
-	}
-	if ($phpraid_config['role6_name'] != $role6_name)
-	{
-		$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."chars` SET `role` = %s WHERE `role`= %s;", quote_smart($role6_name), quote_smart($phpraid_config['role6_name']));
-		$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
-	}
+		if ($data['role_name'] != $$var)
+		{
+			$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."chars` SET `role` = %s WHERE `role`= %s;", quote_smart($$var), quote_smart($data['role_name']));
+			$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+			$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."roles` SET `role_name` = %s WHERE `role_id`= %s;", quote_smart($$var), quote_smart($data['role_id']));
+			$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+		}
+	}	
 
 	if(isset($_POST['multiple_signups']))
 		$allow_multiple = 1;
@@ -1084,18 +1067,6 @@ if(isset($_POST['submit']))
 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'rss_export_url';", quote_smart($rss_export_url_p));
 	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'rss_feed_amt';", quote_smart($rss_feed_amt_p));
-	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
-	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'role1_name';", quote_smart($role1_name));
-	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
-	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'role2_name';", quote_smart($role2_name));
-	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
-	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'role3_name';", quote_smart($role3_name));
-	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
-	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'role4_name';", quote_smart($role4_name));
-	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
-	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'role5_name';", quote_smart($role5_name));
-	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
-	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'role6_name';", quote_smart($role6_name));
 	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'raid_view_type';", quote_smart($raid_view_type));
 	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);

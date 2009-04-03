@@ -136,30 +136,12 @@
   <tr> 
     <td valign="top"> 
       <table width="100%" border="0" cellspacing="1" cellpadding="3" class="dataOutline">
-        <tr> 
-          <td width="200" class="row1"><strong>{$config_data.role1_text}</strong></td>
-          <td class="row2">{$config_data.role1_name}</td>
-        </tr>
-        <tr> 
-          <td class="row1"><strong>{$config_data.role2_text}</strong></td>
-          <td class="row2">{$config_data.role2_name}</td>
-        </tr>
-        <tr> 
-          <td class="row1"><strong>{$config_data.role3_text}</strong></td>
-          <td class="row2">{$config_data.role3_name}</td>
-        </tr>
-        <tr> 
-          <td class="row1"><strong>{$config_data.role4_text}</strong></td>
-          <td class="row2">{$config_data.role4_name}</td>
-        </tr>
-        <tr>
-          <td class="row1"><strong>{$config_data.role5_text}</strong></td>
-          <td class="row2">{$config_data.role5_name}</td>
-		</tr>
-        <tr>
-          <td class="row1"><strong>{$config_data.role6_text}</strong></td>
-          <td class="row2">{$config_data.role6_name}</td>
-		</tr>
+		{section name=role_data_sec loop=$role_data}
+	        <tr>
+	          <td width="200" class="row1"><strong>{$role_data[role_data_sec].role_text}</strong></td>
+	          <td class="row2">{$role_data[role_data_sec].role_name}</td>
+	        </tr>
+        {/section}
         <tr>
           <td class="row1"><strong>{$config_data.raid_view_type_text}</strong></td>
           <td class="row2">{$config_data.raid_view_type}</td>
