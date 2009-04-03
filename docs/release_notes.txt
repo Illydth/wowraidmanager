@@ -3,329 +3,163 @@ at:
 
 * http://www.wowraidmanager.net/wiki/index.php?title=Installation
 
-Fast Note: There is ALOT of information in this release note for 3.6.1 since there has been a
-full set of changes implmented since 3.6.0, please browse through at least the 3.6.1 section of 
-these notes for important information regarding 3.6.1, the 3.6.0 sections also have some 
-important information for people upgrading to 3.6.0 who have not already applied any of the
-3.6.0.x patches.
-
 ****************************************************
 ****************************************************
-****             3.6.1 Release Notes             ***
+****              4.0 Release Notes              ***
 ****************************************************
 ****************************************************
 
-Release of 3.6.1 Final of WoW Raid Manager
+Release of 4.0.0 Final of WoW Raid Manager
 -----------------------------------
-3.6.1 is identical to v3.6.0.2 + Patch except for the addition of an additional feature.  
-
-This update encorporates all "consolidated" patches for 3.6.0 and adds a new feature to the
-calendar.
-
-* Calendar Icons now supported: Instead of the text based calendar I developed for 3.6.0 we
-have a new icon based calendar.  Each raid will now appear as an event specific ICON (assuming
-it is setup, see below) on the calendar with a mouseover denoting the raid, invite and start
-times as well as description.  As with the text link, clicking on the icon will take you to the
-raid to allow you to sign up.   
-
-* Location System Rewrite: Along with the calendar icon addition, the locations section has
-received a MAJOR overhaul.  It now supports and understands all Blizzard Raid and Dungeon zones
-inherently, including Max Raid/Group size, Icon, and the Game Calendar based raid name.  Creating
-a new location is now as easy as selecting the Type (Raid, Dungeon, PvP, Meeting, Other), Expansion 
-(Generic, BC, or Wrath) and then the selecting the zone from the dropdown, relivant information 
-will be filled in for you and the event Icon will be immediately set for the event to appear in 
-the calendar.  See "Calendar Icons and Location Changes" below for more detailed information.
-
-Calendar Icons and Location Changes
-------------------------------------
-As noted in the release announcement, the locations section has been re-written to support
-attaching icons to raid events.  
-
-There is now a new set of database tables (events, event_type and expansion) included that
-assist with the support of managing Blizzard's game information.  The events table now includes a
-listing of all blizzard raid and dungeon instances in the game, including generic, BC and WotLK
-released instances.  This is now the basis for creating a new location.  In the locations section
-the location creator will now select from dropdowns the basic zone and information that the location
-will be based upon.  Once that base information is filled in the location maintainer will be able
-to set or re-set most of the location inforamation (like class and level limits) as well as give
-the location a unique identifier.
-
-Note that this is a LARGE change from the fairly open location design in the past but all possible
-configurations should be accounted for.  If you find that you are missing an "event" of some kind
-that your guild regularly uses, you can add it to the events table by simply adding a record.  If 
-you find a major event missing, please let me know and I will try to add it in the future.
-
-NOTE:  All CURRENTLY CREATED LOCATIONS will need to be updated in your software to support the new
-raid icons and to link them with proper events.  This SHOULD be as easy as going into the locations
-section of your WRM installation and doing an "edit" on each location and selecting the correct zone
-that that location applies to.  Note that any locations not updated in this way will get a "generic"
-icon on the WRM calendar.
-
-
-****************************************************
-****************************************************
-****  3.6.0, 3.6.0.1, and 3.6.0.2 Release Notes  ***
-****************************************************
-****************************************************
-The original 3.6.0 Release Announcement and the 3.6.0.1 and 3.6.0.2 announcements have been
-maintained below to get a full picture of the 3.6.x release version.
-
-=========================================
-   *** 3.6.0.2 Release Information ***
-=========================================
-
-The 3.6.0.2 Release announcement is as follows:
-------------------------------------------------
-This patch represents a set of combined patches and various bugfixes to the 3.6.0 software.
-
-Installation instructions for this patch are contained within the .zip or .tar.gz file in the README.txt file.
-
-PLEASE READ THIS FILE
-
-There is a database update that needs done and instructions on how to apply the database update (it will require you to possibly minorly modify the SQL file).
-
-Note: This patch ONLY applies to 3.6.0/3.6.0.1.  DO NOT attempt to apply this patch to any other release of software besides a 3.6.0.x installation of WRM.
-
-If you are having problems with any other version of WRM, please upgrade to 3.6.0 first before identifying issues.
-
-Quick and Dirty Upgrade Instructions
-------------------------------------------------------------------
-Download the .zip or .tar.gz file.
-Upload the files in the cp2 directory to your WRM root on your webserver OVERWRITE ALL FILES.
-Read the README.txt file for instructions on how to modify the wrm3602.sql file in the wrm360_cp2 directory.
-Execute the wrm3602.sql file to your database.
-
-You should be all patched.
-
-Quick and Dirty New Install Instructions
--------------------------------------------------------------------
-Download the 3.6.0 base package.
-Unzip to a local directory.
-Download the 3.6.0.1 upgrade package.
-Unzip to a local directory.
-Download the 3.6.0.2 upgrade package.
-Unzip to a local directory.
-Copy all 3.6.0.1 files over the top of all 3.6.0 files.
-Copy all the 3.6.0.2 files over the top of all 3.6.0 files.
-Upload the entire 3.6.0 directory (which should now include the 3.6.0.1 and 3.6.0.2 upgrade files) to a directory on your webserver.
-Run the installer.
-
-Versions Prior to 3.6.0:
----------------------------
-While versions prior to 3.6.0 are not supported, the security breach DOES affect these versions of the software.  Again, while there is no support for v3.5.x and before it is likely that these auth files will work for prior versions of the WRM software.  While I cannot gaurentee total compatibility, it is likely that unzipping the 3.6.0.2 consolidated patch and overwriting the auth and includes files (DO NOT modify the installer or installation files in the install directories for these versions) for versions at least as far back as 3.5.0 and potentially back to the 3.2 versions will work to update and fix the securty problems inherent in these bridges.
-
-ADMINS ARE ON THEIR OWN if they choose to implement these patch files on versions prior to 3.6.0/3.6.0.1.  I recommend keeping backup copies of the "working" bridges before attempting to overwrite them with the files from 3.6.0.2.
-----------------------------------------------------
-
-3.6.0.2 Change Notes:
----------------------
-Release Notes
--------------------
-* SECURITY FIX: This release fixes a major security hole in the WRM application
-where the user password is stored in plain text in a cookie accessible to the en
-tire domain.  User passwords were easily readable by viewing the cookies associa
-ted with connecting to the WRM application.  Using man in the middle attacks or
-other methods of obtaining cookies sent to a domain, a hacker could obtain passw
-ord information for a user using WRM.  In the case of a bridged installation thi
-s password would compromise both WRM's security as well as the security of the b
-ridged application.
-
-* SECURITY FIX: This release fixes a medium/major security hole allowing users of one WRM installation on a domain to freely log in/access/manage another WRM installation on the same domain.  Given two WRM/phpRaid installations on the sameweb host (say under the directories /wrm and /wrm2) the users of WRM2, once logged in to WRM2, would ALSO have access to the same ProfileID (possible for a different user name) in the WRM1 installation.  Due to the way session data is stored on the system, the session cookie for users using WRM2 would also load when using WRM1 (or visa versa), however due to another bug, the user login data is not checked once this sesssion was loaded, causing users to obtain access to the WRM1 installation as the profile ID they are logged in under the WRM2 installation (again, or visa versa).
-
-NOTE: If you have followed the security fix on the WRM boards for this problem (making user cookies expire immediately when the browser window exits) this fix will restore the functionality of allowing users to stay logged in for 30 days before having to log in again, however this time it is a secure method of cookie storage.  Please DO NOT apply the security fix from the WRM post to this installation once you have upgraded to 3.6.0.2.
-
-Session Security Information
-----------------------------
-As a new "feature" (read now that it's written properly), WRM has double session protection.  First, each bridge uses a different session name, and these session names should be "Unique" amoung web applications.  Thus, a WRM installation using the iUMS bridge and one using the e107 bridge can never cross sessions, regardless of their installations, due to the session names being different.  Secondly, the session cookie is now stored in the web path of the WRM installation instead of at the web host root.  This means that even if two WRM installations ofthe same Type (same bridge usage: e.g. an iUMS and an iUMS installation) are installed on the same server, so long as they're not installed in the same web path (which is impossible without using symbolic links) will never share the same session information due to the web path for each installation being different.
-
-With these changes it should be completely safe to have multiple copies of WRM running on any given web host.
-=========================================
-
-
-=========================================
-   *** 3.6.0.1 Release Information ***
-=========================================
-
-The original 3.6.0.1 Release annoncement is as follows:
-----------------------------------------------------------
-This patch represents the combined patches and various bugfixes to the 3.6.0 software.
-
-Installation instructions for this patch are contained within the .zip or .tar.gz file in the README.txt file.
-
-PLEASE READ THIS FILE
-
-There is a database update that needs done and instructions on how to apply the database update (it will require you to possibly minorly modify the SQL file).
-
-Note: This patch ONLY applies to 3.6.0.  DO NOT attempt to apply this patch to any other release of software besides 3.6.0.
-
-If you are having problems with any other version of WRM, please upgrade to 3.6.0 first before identifying issues.
-
-Quick and Dirty Upgrade Instructions
-------------------------------------------------------------------
-Download the .zip or .tar.gz file.
-Upload all files to your WRM root on your webserver OVERWRITE ALL FILES.
-Read the README.txt file for instructions on how to modify the 3.6.0.1.sql file in the install/database_schema/upgrade directory.
-Execute the 3.6.0.1.sql file to your database.
-
-You should be all patched.
-
-Quick and Dirty New Install Instructions
--------------------------------------------------------------------
-Download the 3.6.0 base package.
-Unzip to a local directory.
-Download the 3.6.0.1 upgrade package.
-Unzip to a local directory.
-Copy all 3.6.0.1 files over the top of all 3.6.0 files.
-Upload the entire 3.6.0 directory (which should now include the 3.6.0.1 upgrade files) to a directory on your webserver.
-Run the installer.
-
-12/30/08 NOTE: This is an updated version of the download including a fixed SMF bridge and with the armory code directory fixed.  If all is working with your site you do not need to download this, however if you use the SMF 1.x bridge or are having problems with the update, please re-download and re-apply as per instructions above.
------------------------------------
-
-3.6.0.1 Changes
------------------
-Release Notes
--------------------
-* Death Knight added to LUA Output file.
-* Fix for comment popups when ' is included in the "notes" field in the raid view.
-* Armory Popup code now supports Death Knights.
-* Fix for delete of permissions when user does not click the "Confirm" button on the delete confirmation page (prior to this fix the moment you clicked the delete link it would go ahead and delete the permission set, PRIOR to giving you the confirmation popup).
-* Update of version to 3.6.0.1
-* Bugfix for Hack Attempt Display on page 2+ of missing signups view.
-* Fix for armory lookup code bug with ' in the server name.
-* "Deathknight Icon" description in language files for german, italian, norwegian and swedish languages was wrong.
-* Update for some German String Translations
-* Fixed some Wrong/Invalid include paths for armory lookup includes.
-* Update for Italian Language files.
-* SMF1 and SMF2 bridges now support users in both main and alternate groups instead of JUST the main group being checked for WRM usage.
-
-
-=========================================
-   *** 3.6.0 Release Information ***
-=========================================
-3.6.0 Release Notes:
-----------------------
-* Addition of a .htaccess file in the WRM root directory to turn on proper error logging for
-the WRM site.  If users have problems with this or if this interfears with a current .htaccess
-file it is OK to turn off/modify/remove this .htaccess file, with the caveaut that they may
-have problems with error reporting.
-
-* This is a 3.5.1 fix that got merged to 3.6.0.  "Sanity Checking" of the config.php file.
-The sanity checker looks for some "badness" in the config files and stops the use of WRM if
-it finds any.  This should help protect against certain types of web based attacks.
-
-* Open Basedir Fix (again 3.5.1 -> 3.6.0 Merge).  PLEASE READ THE SECTION BELOW FOR
-INFORMATION ON THE OPEN BASEDIR VS SET INI ISSUES!!!  See: "Damned if you do, damned if you
-don't Issue" below.
-
-* Installation Update: The Joomla installation now properly reports "Joomla" installation
-instead of a phpBB installation...the Joomla installer has received counciling and is doing
-much better with it's schitzophrenia.  It just needs to stay on it's medication and it'll be
-fine...
-
-* Added Swedish Language for both Installation and Use.
-
-* PHPBB3 Bridge Fix: Fixed password/login issue allowing access to unauthorized users.
-
-* German Language updated for better/more current text in both installation and usage language
-files.
-
-* Death Knights added: Death Knights should now be fully supported by WRM.  Create them as
-any other character through the profile section of WRM.  They will properly show up on both
-raid and class views as well as in the tables where other class information shows.
-
-* Fix for Role Limit checking, invalid variable name caused limits to be ignored.
-
-* UTF-8 Character set update.  An ongoing struggle to get WRM to support Multi-byte characters
-from the UTF-8 character set is still ongoing.  While not "fixed" this should hopefully make
-things 'better'.
-
-* Major Update to the phpRaid_output.lua file produced through the Lua output raids link.  
-Please see information below for information on the output file.
-
-* Added Event Type to raid and location templates to assist in syncronizing data with the 
-in game blizzard calendar.
-
-* Minor HTML updates in wowarmory_tooltip area to fix minor HTML Incompatibilities.  
-
-* Bug Fix: Users in permissions sets not showing up when viewed by clicking link from
-users.php.  The link had a bad parameter in it, this is now fixed.
-
-* Calendar Fix: A varible misuse in calendar file caused all signups to show as "queued but not
-signed up", has been fixed.  The correct mark should now show up properly next to a raid 
-event on the calendar when a user is signed up to the event.
-
-* Announcements Bug Fix: Announcements will now properly recognize a "return" character in
-the type in box and translate that to <br> for you.  There is no longer a need to use 
-<br> at the end of each line in the announcement to show multi-line announcmenents properly.
-Or beter put, the Announcements box is more "WYSIWYG".
-
-* Bug Fix: Hacking Attempt in rss.php is fixed.  More use of "&amp;" in a header instead of
-the proper & use.
-
-* View.php Comment Popups Fixed...hopefully for the last time.  Users were having two issues
-with comment popups in view.php: 1) Comments for "drafted" users simply weren't showing at all
-and 2) Comments for Queued and Cancelled users were popping up only till a user moused over
-an armory popup link, then they stopped popping up till page refresh.  This is now fixed.  
-All view.php comments will properly pop up regardless of what status you are and they work 
-with the armory popups again.
-
-* Installation Bug Fix/Security Fix: Installation into windows based machines was failing if the user tried
-to use "\" to specify path structure to other files (for instance when trying to specify the
-path to the config.php file of phpbb3 if the user were to type in, for instance "C:\Junk" they
-would get an error from the MySQL database.  Installation type ins were not being properly
-escaped and quoted.  They are now.
-
-* Level 80 Configuration Supported.  Max level for WRM is now set to 80.  This is still a 
-hard coded string but will not be beyond 4.0.
-
-
-"Damned if you do, damned if you don't Issue" (Open Basedir vs. Set INI)
--------------------------------------------------------------------------
-At the beginning of this version a couple users reported a problem with including files
-within WRM.  When the WRM common.php file went to include the various functions needed by 
-the application to run they had issues with their PHP Server throwing back problems at them
-identifying that a specific php.ini setting was set that removed the ability to include files
-that were not on the "include path" set by PHP.  This "open basedir" issue resulted in me
-putting in a fix that included a "set_ini" parameter update to put the various WRM directories
-into the PHP include path, thus allowing those affected by the open basedir issue to work.
-
-HOWEVER nothing can be easy.  In doing so I opened up another segment of users to problems:
-specificaly those whose host does not allow modification of the php.ini variables on the fly
-(they have "set_ini" restricted).  At this point the application is NOT written to support
-both kinds of users.  I suppose it would be simple enough to check the open_basedir parameter
-and run the "set_ini" stuff if it's set, however this is NOT done.  And if anyone has a better
-way to handle this please let me know.
-
-As it sits, the application is default configured to correct the Open Basedir problem as more
-people have issues with this than the set_ini issues.  For those of you who are affected by
-the SET_INI issue, you can comment out a couple sections of code in 2 files and you will be
-working again.
-
-In the common.php file (wrm base directory), you will find lines 58-62 and lines 114-116 need
-commented to remove the SET INI problems.  Also in wowarmory_tooltip/includes/common.php lines
-24-30 need commented.  This should remove all the "open basedir" fix stuff and allow the 
-set ini problems to go away.
-
-If you are on a host that restricts both open_basedir and set_ini you're hosed...find a better
-host amoung the 10s of thousands out there...or ask your host what the hell they're thinking, 
-and why they're so inconsiderate to me...yes, me personally. :)
-
+-- 4.0 Beta 1 Changes.
+* Table Views and Column Changes
+The largest thing that any user will experience with this new version of the software is 
+that all tables (like the raid list, roster, users list, etc.) in the output are now 
+generated a different way.  We are no longer using the underlaying reports.php file and 
+this, along with the Smarty Templating system's power, has allowed me to do some things 
+with the table views we weren't able to before.
+
+First and foremost is the number of records per page / pagination.  There is now a config 
+option in the config table for Number of Records per page.  If you want to limit the number 
+of records displayed on tables to 10 instead of the prior 25 you can now do so.  Keep in 
+mind that there is no "UI" surrounding changing this at the moment.  You will need to go 
+into your config table and find the "records_per_page" config value.  It should be set to 
+25 by default.  Change that to any vaule you'd like and make sure it all works.  I have been 
+playing with 4 as a default number during my testing to ensure jump tables and the rest of 
+the pagination stuff works.
+
+Next, the columns in each table view are now configurable as to whether they are shown or 
+not shown, and adding new columns to a table is more "dynamic" (though will still require 
+data values to be added to the code).  There is a new database table included with this 
+version called "column_headers" and it contains a record for each column in each view (view 
+information listed below).  Don't want to see the arcane resistance value for a drafted 
+member of the raid anymore?  No problem, turn the column visibility flag in the database off 
+for that specific view and arcane will magically dissappear at the next page reload. 
+
+Again, there is no UI associated with this at the moment (again there will be), so you will 
+have to manually modify the visible flag for each column in the database manually...but this 
+should be a hell of alot easier than having to go into the code and manually comment out add 
+column lines to hide a column, and will allow admins to get the look they want out of their 
+tables without having to suffer with default views.
+
+* Adding More Data to Each Table Output
+At the moment, ALL FIELDS for ALL TABLES are turned on.  What you see in each table 
+represents the MAXIMUM amount of information each table can display.  If you do not see a 
+column now, that column is not available to be shown in the view. 
+
+One thing I'm looking for is suggestions for what can/should be ADDED to each of the view 
+sets to allow more information to be shown in the various tables.  The focus by most users 
+has always been removing data they don't want to see, but I also want to make sure that any 
+piece of information the user could possibly need on a given table in WRM COULD be displayed 
+if they so wanted it (Within reason).  As you are going through the software please keep in 
+the back of your mind the question "Could more data be added to this table to make it more 
+useful?"
+
+* Separating / Combining Table Outputs
+By and large, almost every table view in 3.6 of WRM has been separated in to it's own "view" 
+in the column_headers table.  As you are going through the application if you find places 
+where two tables are based off of the same view and you'd like them separated, or if you 
+find places where you really think the two views should be consolidated, please feel free to 
+comment.
+
+* Default Column Visibility
+Along this same lines, if you feel any specific fields in the output should, by default, be 
+turned off (remember they're ALL on right now), I would be willing to hear your comments on 
+this as well.
+
+* Smarty Template System
+As I've hinted at and stated many many times we are now using the smarty templating system 
+(http://www.smarty.net) as our templating system backend.  One of the benefits this system 
+provides is the ability to turn on and off debugging information for each page load.  This 
+will assist with displaying page variables and their values and give me some idea when 
+something goes wrong as to what might be an issue.  The smarty debugging symbols are ON BY 
+DEFAULT in this and all future sets of beta code.  I would request that if at all possible 
+you leave this debugging information on while you are testing the application so that we can 
+get information on what might be going wrong.  That said, if you have non-techical users 
+using this beta software, especially if you opt to use this as your guild's major 
+installation, there's a high likelyhood that the debug box that pops up on page load will at 
+minimum get very annoying and at most scare the [censored] out of your users.
+
+This can be turned off by opening the common.php file (from your WRM Root directory) and 
+look down around lines 135.  You will see a comment noting turning on and off Debugging.  
+Please Uncomment the debugging false and comment the debugging true.  DO NOT DELETE THE TRUE 
+LINE COMMENT IT ONLY.  This way, when I ask you to turn debugging back on to solve an issue, 
+you won't have to ask "how do I do that?"
+
+Consider this annoyance my guarantee that all of my beta testers read this message, and grin 
+to yourself every time you see a "how the hell do I turn that [censored] popup window off" 
+secure in the knowledge that that person didn't read this message. :)
+
+The second item of interest are on lines 133 and 134.  Note that Smarty has the abilty to 
+cache it's templates for faster reload from disk.  HOWEVER any template that is cached 
+doesn't seem to re-generate itself unless the page itself changes, NOT JUST THE PAGE DATA.  
+In other words, adding a new raid to the system will cause the page to simply reload from 
+cache and will not flag the page as changed, thus the new raid won't show up.
+
+I have a couple ideas on a way to implement a cache mangement system for WRM, but if anyone 
+out there in the community has experience developing applications using smarty and has a 
+thought out plan for how to implement a cache system I would be deeply appreciative of 
+hearing about it.  Please start a new thread and let me know your ideas.
+
+-- 4.0 Beta 2
+* Table / Datastructure Reorganization - Massive reorganization of the table/data structure
+model release allows most of the system now to be database driven.  Classes, Races, Roles, 
+and all of the rest of this inherent data is now compiled and configured in the database.  
+This leaves the system open for expansion to other games much more easily than it was before.
+It also allows for some VERY cool functionality to be added based up on class, subclass
+(talent spec) and role.
+
+* phpArmory 0.4.2 Implemented, Cached Data implemented.  A new version of the armory pull
+software has been added to the system.  This version however is php5 compatable ONLY, php4
+folks will miss out on all of these new features, but the old phpArmory system is still in 
+place so all prior functionality should (for the moment) work without a hitch.  There is a 
+new configuration item allowing caching to database, file or no caching.
+
+* Role Changes.  A new table (wrm_roles) has been added to the system allowing roles to be 
+table configured instead of just hard coded.  This allows more than the 6 default roles to 
+be added.  Simply add a role to the roles table with a sequential role ID (role7 is the next
+ID to use) and in the lang_index field add the lang file index name for the role text (If you
+have $phprlang['configuration_role5_text'] = "Role 5"; then "configuration_role5_text" is the
+lang_index).  The configuration section will now update and modify the roles table, the
+role1_text-role6_text configuration items in the config table are now extranious. 
+
+Table/View Name and Pages Relations
+--------------------------------------------
+Page/Section of WRM		DB View Name		Comment/Position of Table
+Announcements	 		announcements1		Announcements Table at the Top
+DKP						dkp1				Main Table in the DKP View
+Guilds					guild1				Guilds list at the Top
+Index (Main Page)		index1				Upcomming Events AND Previous Events (Same View)
+Locations				location1			Saved Locations Section
+Missing Signups 
+  (Link from Raid View)	users1	 			Users View in the Missing Signups Link
+Permissions				permissions1		Permission Sets List
+Permissions				permissions2		Users List for Permission Set (click into 
+												specific permission link)
+Profile					char1				Characters List at the Top.
+Profile					raids1				Raid Participation List in the Middle
+Raids					raids1				List of Upcomming Raids and List of Previous Raids
+Roster					roster1				Main Guild Roster List
+Teams Link				team1				Remove Users from Team Section
+Teams Link				team2				Add Users to Team Section
+Users					users1				User List in Main User Page
+Users					char1				Character Details List by Clicking on Username 
+												Link in Users 
+Raid View 
+  (By Role/By Class)	raidview1			Drafted List in the Drafted Section (either by 
+  												class or by role)
+Raid View 
+  (By Role/By Class)	raidview2			Queued/Cancelled List in the Queued/Cancelled 
+  												Section
 
 phpRaid_data.lua file Update
 -------------------------------
-For those of you who export/import your raids and use a raid manager UI mod (Like RIM) there
-have been some MAJOR changes to the output LUA file.  Unfortunately this likely means that 
-RIM is now "broken" till the next update by Elayne...I don't know if the file will load up
-in her current released version or not.  HOWEVER all the changes bring about some love for
-RIM's users.  More data is being passed down and we may have the UTF-8 Issue with RIM either
-fixed or at least better.  Also, RIM is now positioned to support the in game calendar to 
-import WRM data to RIM and RIM then imports that data to the Calendar.  This should allow 
-users to see WRM scheduled raids on their personal in game calendars.
 
-Keep in mind that RIM is still a work in progress and is supported on the wowraidmanager.net
-forums by Elayne in the RIM specific support forums.  Please check out the mod it's great.
-
+Template Changes
+-------------------------------
+These are simply too numerious to list.  The ENTIRE set of templates has been re-written using
+the smarty template system.  There is NO prior template that will work with this version at 
+all.  Make sure to reset back to what is now called "default" to make things work.
 
 Unfinished/Incomplete
 ----------------------
