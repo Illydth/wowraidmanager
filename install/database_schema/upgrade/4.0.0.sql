@@ -1,3 +1,6 @@
+---------------------------------------------------------
+-- 3.9.9.1.1
+---------------------------------------------------------
 -- Column Header Creation
 DROP TABLE IF EXISTS `wrm_column_headers`;
 CREATE TABLE `wrm_column_headers` (
@@ -408,9 +411,218 @@ VALUES (NULL , 'raidview2', 'Time', '1', '16', NULL, 'time', 'wrmtime');
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
 VALUES (NULL , 'raidview2', 'Buttons', '1', '17', NULL, 'buttons', NULL);
 
-UPDATE `wrm_config` SET `config_value` = 'us' WHERE 'armory_language' = 'en' LIMIT 1 ;
-INSERT INTO `wrm_config` VALUES ('armory_cache_setting', 'none');
-
 INSERT INTO `wrm_config` VALUES ('records_per_page','25');
 INSERT INTO `wrm_version` VALUES ('3.9.9.1.1','4.0 Beta 1 Release 1');
 INSERT INTO `wrm_version` VALUES ('3.9.9.1.2','4.0 Beta 1 Release 2');
+
+---------------------------------------------------------
+-- 3.9.9.2.1
+---------------------------------------------------------
+UPDATE `wrm_config` SET `config_value` = 'us' WHERE 'armory_language' = 'en' LIMIT 1 ;
+INSERT INTO `wrm_config` VALUES ('armory_cache_setting', 'none');
+
+CREATE TABLE IF NOT EXISTS `wrm_classes` (
+  `class_id` varchar(100) NOT NULL,
+  `lang_index` varchar(100) NOT NULL,
+  PRIMARY KEY  (`class_id`)
+);
+
+INSERT INTO `wrm_classes` VALUES ('Death Knight', 'deathknight');
+INSERT INTO `wrm_classes` VALUES ('Druid', 'druid');
+INSERT INTO `wrm_classes` VALUES ('Hunter', 'hunter');
+INSERT INTO `wrm_classes` VALUES ('Mage', 'mage');
+INSERT INTO `wrm_classes` VALUES ('Paladin', 'paladin');
+INSERT INTO `wrm_classes` VALUES ('Priest', 'priest');
+INSERT INTO `wrm_classes` VALUES ('Rogue', 'rogue');
+INSERT INTO `wrm_classes` VALUES ('Shaman', 'shaman');
+INSERT INTO `wrm_classes` VALUES ('Warlock', 'warlock');
+INSERT INTO `wrm_classes` VALUES ('Warrior', 'warrior');
+
+CREATE TABLE IF NOT EXISTS `wrm_races` (
+  `race_id` varchar(100) NOT NULL,
+  `faction` varchar(100) NOT NULL,
+  `lang_index` varchar(100) NOT NULL,
+  PRIMARY KEY  (`race_id`)
+);
+
+INSERT INTO `wrm_races` VALUES ('Draenei', 'Alliance', 'draenei');
+INSERT INTO `wrm_races` VALUES ('Dwarf', 'Alliance', 'dwarf');
+INSERT INTO `wrm_races` VALUES ('Human', 'Alliance', 'human');
+INSERT INTO `wrm_races` VALUES ('Gnome', 'Alliance', 'gnome');
+INSERT INTO `wrm_races` VALUES ('Night Elf', 'Alliance', 'night_elf');
+INSERT INTO `wrm_races` VALUES ('Blood Elf', 'Horde', 'blood_elf');
+INSERT INTO `wrm_races` VALUES ('Orc', 'Horde', 'orc');
+INSERT INTO `wrm_races` VALUES ('Tauren', 'Horde', 'tauren');
+INSERT INTO `wrm_races` VALUES ('Troll', 'Horde', 'troll');
+INSERT INTO `wrm_races` VALUES ('Undead', 'Horde', 'undead');
+
+CREATE TABLE `wrm_class_race` (
+`race_id` VARCHAR( 100 ) NOT NULL ,
+`class_id` VARCHAR( 100 ) NOT NULL ,
+PRIMARY KEY ( `race_id` , `class_id` )
+);
+
+INSERT INTO `wrm_class_race` VALUES ('Draenei', 'Priest');
+INSERT INTO `wrm_class_race` VALUES ('Draenei', 'Warrior');
+INSERT INTO `wrm_class_race` VALUES ('Draenei', 'Hunter');
+INSERT INTO `wrm_class_race` VALUES ('Draenei', 'Mage');
+INSERT INTO `wrm_class_race` VALUES ('Draenei', 'Shaman');
+INSERT INTO `wrm_class_race` VALUES ('Draenei', 'Paladin');
+INSERT INTO `wrm_class_race` VALUES ('Draenei', 'Death Knight');
+INSERT INTO `wrm_class_race` VALUES ('Dwarf', 'Priest');
+INSERT INTO `wrm_class_race` VALUES ('Dwarf', 'Rogue');
+INSERT INTO `wrm_class_race` VALUES ('Dwarf', 'Warrior');
+INSERT INTO `wrm_class_race` VALUES ('Dwarf', 'Hunter');
+INSERT INTO `wrm_class_race` VALUES ('Dwarf', 'Paladin');
+INSERT INTO `wrm_class_race` VALUES ('Dwarf', 'Death Knight');
+INSERT INTO `wrm_class_race` VALUES ('Human', 'Priest');
+INSERT INTO `wrm_class_race` VALUES ('Human', 'Rogue');
+INSERT INTO `wrm_class_race` VALUES ('Human', 'Warrior');
+INSERT INTO `wrm_class_race` VALUES ('Human', 'Mage');
+INSERT INTO `wrm_class_race` VALUES ('Human', 'Warlock');
+INSERT INTO `wrm_class_race` VALUES ('Human', 'Paladin');
+INSERT INTO `wrm_class_race` VALUES ('Human', 'Death Knight');
+INSERT INTO `wrm_class_race` VALUES ('Gnome', 'Rogue');
+INSERT INTO `wrm_class_race` VALUES ('Gnome', 'Warrior');
+INSERT INTO `wrm_class_race` VALUES ('Gnome', 'Mage');
+INSERT INTO `wrm_class_race` VALUES ('Gnome', 'Warlock');
+INSERT INTO `wrm_class_race` VALUES ('Gnome', 'Death Knight');
+INSERT INTO `wrm_class_race` VALUES ('Night Elf', 'Priest');
+INSERT INTO `wrm_class_race` VALUES ('Night Elf', 'Rogue');
+INSERT INTO `wrm_class_race` VALUES ('Night Elf', 'Warrior');
+INSERT INTO `wrm_class_race` VALUES ('Night Elf', 'Druid');
+INSERT INTO `wrm_class_race` VALUES ('Night Elf', 'Hunter');
+INSERT INTO `wrm_class_race` VALUES ('Night Elf', 'Death Knight');
+INSERT INTO `wrm_class_race` VALUES ('Blood Elf', 'Priest');
+INSERT INTO `wrm_class_race` VALUES ('Blood Elf', 'Rogue');
+INSERT INTO `wrm_class_race` VALUES ('Blood Elf', 'Mage');
+INSERT INTO `wrm_class_race` VALUES ('Blood Elf', 'Hunter');
+INSERT INTO `wrm_class_race` VALUES ('Blood Elf', 'Warlock');
+INSERT INTO `wrm_class_race` VALUES ('Blood Elf', 'Paladin');
+INSERT INTO `wrm_class_race` VALUES ('Blood Elf', 'Death Knight');
+INSERT INTO `wrm_class_race` VALUES ('Orc', 'Rogue');
+INSERT INTO `wrm_class_race` VALUES ('Orc', 'Warrior');
+INSERT INTO `wrm_class_race` VALUES ('Orc', 'Hunter');
+INSERT INTO `wrm_class_race` VALUES ('Orc', 'Warlock');
+INSERT INTO `wrm_class_race` VALUES ('Orc', 'Shaman');
+INSERT INTO `wrm_class_race` VALUES ('Orc', 'Death Knight');
+INSERT INTO `wrm_class_race` VALUES ('Tauren', 'Warrior');
+INSERT INTO `wrm_class_race` VALUES ('Tauren', 'Druid');
+INSERT INTO `wrm_class_race` VALUES ('Tauren', 'Shaman');
+INSERT INTO `wrm_class_race` VALUES ('Tauren', 'Hunter');
+INSERT INTO `wrm_class_race` VALUES ('Tauren', 'Death Knight');
+INSERT INTO `wrm_class_race` VALUES ('Troll', 'Priest');
+INSERT INTO `wrm_class_race` VALUES ('Troll', 'Rogue');
+INSERT INTO `wrm_class_race` VALUES ('Troll', 'Warrior');
+INSERT INTO `wrm_class_race` VALUES ('Troll', 'Mage');
+INSERT INTO `wrm_class_race` VALUES ('Troll', 'Hunter');
+INSERT INTO `wrm_class_race` VALUES ('Troll', 'Shaman');
+INSERT INTO `wrm_class_race` VALUES ('Troll', 'Death Knight');
+INSERT INTO `wrm_class_race` VALUES ('Undead', 'Priest');
+INSERT INTO `wrm_class_race` VALUES ('Undead', 'Rogue');
+INSERT INTO `wrm_class_race` VALUES ('Undead', 'Warrior');
+INSERT INTO `wrm_class_race` VALUES ('Undead', 'Mage');
+INSERT INTO `wrm_class_race` VALUES ('Undead', 'Warlock');
+INSERT INTO `wrm_class_race` VALUES ('Undead', 'Death Knight');
+
+CREATE TABLE IF NOT EXISTS `wrm_roles` (
+  `role_id` varchar(10) NOT NULL,
+  `role_name` varchar(100) NOT NULL,
+  PRIMARY KEY  (`role_id`)
+);
+
+INSERT INTO `wrm_roles` VALUES ('role1', 'Tank', 'configuration_role1_text');
+INSERT INTO `wrm_roles` VALUES ('role2', 'Melee', 'configuration_role2_text');
+INSERT INTO `wrm_roles` VALUES ('role3', 'Healing', 'configuration_role3_text');
+INSERT INTO `wrm_roles` VALUES ('role4', 'Ranged', 'configuration_role4_text');
+INSERT INTO `wrm_roles` VALUES ('role5', 'misc1', 'configuration_role5_text');
+INSERT INTO `wrm_roles` VALUES ('role6', 'misc2', 'configuration_role6_text');
+
+CREATE TABLE IF NOT EXISTS `wrm_class_role` (
+  `class_id` varchar(100) NOT NULL,
+  `subclass` varchar(100) NOT NULL,
+  `role_name` varchar(100) NOT NULL,
+  PRIMARY KEY  (`class_id`,`subclass`)
+);
+
+INSERT INTO `wrm_class_role` VALUES ('Priest', 'Discipline', 'Healing');
+INSERT INTO `wrm_class_role` VALUES ('Priest', 'Holy', 'Healing');
+INSERT INTO `wrm_class_role` VALUES ('Priest', 'Shadow', 'Ranged');
+INSERT INTO `wrm_class_role` VALUES ('Rogue', 'Assassination', 'Melee');
+INSERT INTO `wrm_class_role` VALUES ('Rogue', 'Combat', 'Melee');
+INSERT INTO `wrm_class_role` VALUES ('Rogue', 'Subtlety', 'Melee');
+INSERT INTO `wrm_class_role` VALUES ('Warrior', 'Arms', 'Melee');
+INSERT INTO `wrm_class_role` VALUES ('Warrior', 'Fury', 'Melee');
+INSERT INTO `wrm_class_role` VALUES ('Warrior', 'Protection', 'Tank');
+INSERT INTO `wrm_class_role` VALUES ('Mage', 'Arcane', 'Ranged');
+INSERT INTO `wrm_class_role` VALUES ('Mage', 'Fire', 'Ranged');
+INSERT INTO `wrm_class_role` VALUES ('Mage', 'Frost', 'Ranged');
+INSERT INTO `wrm_class_role` VALUES ('Druid', 'Balance', 'Ranged');
+INSERT INTO `wrm_class_role` VALUES ('Druid', 'Feral (Cat)', 'Melee');
+INSERT INTO `wrm_class_role` VALUES ('Druid', 'Feral (Bear)', 'Tank');
+INSERT INTO `wrm_class_role` VALUES ('Druid', 'Restoration', 'Healing');
+INSERT INTO `wrm_class_role` VALUES ('Hunter', 'Beast Mastery', 'Ranged');
+INSERT INTO `wrm_class_role` VALUES ('Hunter', 'Marksmanship', 'Ranged');
+INSERT INTO `wrm_class_role` VALUES ('Hunter', 'Survival', 'Ranged');
+INSERT INTO `wrm_class_role` VALUES ('Warlock', 'Affliction', 'Ranged');
+INSERT INTO `wrm_class_role` VALUES ('Warlock', 'Demonology', 'Ranged');
+INSERT INTO `wrm_class_role` VALUES ('Warlock', 'Destruction', 'Ranged');
+INSERT INTO `wrm_class_role` VALUES ('Shaman', 'Elemental', 'Ranged');
+INSERT INTO `wrm_class_role` VALUES ('Shaman', 'Enhancement', 'Melee');
+INSERT INTO `wrm_class_role` VALUES ('Shaman', 'Restoration', 'Healing');
+INSERT INTO `wrm_class_role` VALUES ('Paladin', 'Holy', 'Healing');
+INSERT INTO `wrm_class_role` VALUES ('Paladin', 'Protection', 'Tank');
+INSERT INTO `wrm_class_role` VALUES ('Paladin', 'Retribution', 'Melee');
+INSERT INTO `wrm_class_role` VALUES ('Death Knight', 'Blood', 'Melee');
+INSERT INTO `wrm_class_role` VALUES ('Death Knight', 'Frost', 'Tank');
+INSERT INTO `wrm_class_role` VALUES ('Death Knight', 'Unholy', 'Melee');
+
+DELETE FROM `wrm_config` WHERE `config_name` = 'role1_name';
+DELETE FROM `wrm_config` WHERE `config_name` = 'role2_name';
+DELETE FROM `wrm_config` WHERE `config_name` = 'role3_name';
+DELETE FROM `wrm_config` WHERE `config_name` = 'role4_name';
+DELETE FROM `wrm_config` WHERE `config_name` = 'role5_name';
+DELETE FROM `wrm_config` WHERE `config_name` = 'role6_name';
+
+CREATE TABLE IF NOT EXISTS `wrm_raid_class_lmt` (
+  `raid_id` int(10) NOT NULL,
+  `class_id` varchar(100) NOT NULL,
+  `lmt` int(2) NOT NULL,
+  PRIMARY KEY  (`raid_id`,`class_id`)
+);
+
+-- Take all xx_lmt values from raid table and expand into wrm_raid_class_lmt.
+
+CREATE TABLE IF NOT EXISTS `wrm_loc_class_lmt` (
+  `location_id` int(10) NOT NULL,
+  `class_id` varchar(100) NOT NULL,
+  `lmt` int(2) NOT NULL,
+  PRIMARY KEY  (`location_id`,`class_id`)
+);
+
+-- Take all xx_lmt values from location table and expand into wrm_loc_class_lmt.
+
+CREATE TABLE IF NOT EXISTS `wrm_raid_role_lmt` (
+  `raid_id` int(10) NOT NULL,
+  `role_id` varchar(10) NOT NULL,
+  `lmt` int(2) NOT NULL,
+  PRIMARY KEY  (`raid_id`,`role_id`)
+);
+
+-- Take all roleX_lmt values from raid table and expand into wrm_raid_role_lmt.
+
+CREATE TABLE IF NOT EXISTS `wrm_loc_role_lmt` (
+  `location_id` int(10) NOT NULL,
+  `role_id` varchar(10) NOT NULL,
+  `lmt` int(2) NOT NULL,
+  PRIMARY KEY  (`location_id`,`role_id`)
+);
+
+-- Take all roleX_lmt values from location table and expand into wrm_loc_role_lmt.
+
+ALTER TABLE `wrm_locations`
+  DROP `dk`, DROP `dr`,  DROP `hu`,  DROP `ma`,  DROP `pa`,  DROP `pr`,  DROP `ro`,  
+  DROP `sh`, DROP `wk`,  DROP `wa`,  DROP `role1`,  DROP `role2`,  DROP `role3`,  
+  DROP `role4`,  DROP `role5`,  DROP `role6`;
+
+INSERT INTO `wrm_version` VALUES ('3.9.9.2.1','4.0 Beta 2 Release 1');
