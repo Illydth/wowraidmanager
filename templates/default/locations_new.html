@@ -52,82 +52,20 @@
   <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
   <tr>
     <td> <table width="100%" border="0" cellspacing="1" cellpadding="3" class="dataOutline">
-        <tr> 
-            <td width="200" class="row1"><span class="headmed"><strong>{$locations_new.deathknight_name}</strong></span></td>
-            <td class="row2">{$locations_new.dk}</td>
-        </tr>
-        <tr> 
-            <td width="200" class="row1"><span class="headmed"><strong>{$locations_new.druid_name}</strong></span></td>
-            <td class="row2">{$locations_new.dr}</td>
-        </tr>
-        <tr> 
-            <td width="200" class="row1"><span class="headmed"><strong>{$locations_new.hunter_name}</strong></span></td>
-            <td class="row2">{$locations_new.hu}</td>
-        </tr>
-        <tr> 
-            <td width="200" class="row1"><span class="headmed"><strong>{$locations_new.mage_name}</strong></span></td>
-            <td class="row2">{$locations_new.ma}</td>
-        </tr>
-        <tr> 
-            <td width="200" class="row1"><span class="headmed"><strong>{$locations_new.paladin_name}</strong></span></td>
-            <td class="row2">{$locations_new.pa}</td>
-        </tr>
-        <tr> 
-            <td width="200" class="row1"><span class="headmed"><strong>{$locations_new.priest_name}</strong></span></td>
-            <td class="row2">{$locations_new.pr}</td>
-        </tr>
-        <tr> 
-            <td width="200" class="row1"><span class="headmed"><strong>{$locations_new.rogue_name}</strong></span></td>
-            <td class="row2">{$locations_new.ro}</td>
-        </tr>
-        <tr> 
-            <td width="200" class="row1"><span class="headmed"><strong>{$locations_new.shaman_name}</strong></span></td>
-            <td class="row2">{$locations_new.sh}</td>
-        </tr>
-        <tr> 
-            <td width="200" class="row1"><span class="headmed"><strong>{$locations_new.warlock_name}</strong></span></td>
-            <td class="row2">{$locations_new.wk}</td>
-        </tr>
-        <tr>
-            <td width="200" class="row1"><span class="headmed"><strong>{$locations_new.warrior_name}</strong></span></td>
-            <td class="row2">{$locations_new.wa}</td>
-        </tr>
-        {if $locations_new.role1_name != ""}
-	        <tr>
-	            <td width="200" class="row1"><span class="headmed"><strong>{$locations_new.role1_name}</strong></span></td>
-	            <td class="row2">{$locations_new.role1}</td>
+        {section name=class_data_sec loop=$class_data}
+	        <tr> 
+	            <td width="200" class="row1"><span class="headmed"><strong>{$class_data[class_data_sec].lang_id}</strong></span></td>
+	            <td class="row2">{$class_data[class_data_sec].class}</td>
 	        </tr>
-        {/if}
-        {if $locations_new.role2_name != ""}
-	        <tr>
-	            <td width="200" class="row1"><span class="headmed"><strong>{$locations_new.role2_name}</strong></span></td>
-	            <td class="row2">{$locations_new.role2}</td>
-	        </tr>
-        {/if}
-        {if $locations_new.role3_name != ""}
-	        <tr>
-	            <td width="200" class="row1"><span class="headmed"><strong>{$locations_new.role3_name}</strong></span></td>
-	            <td class="row2">{$locations_new.role3}</td>
-	        </tr>
-        {/if}
-        {if $locations_new.role4_name != ""}
-	        <tr>
-	            <td width="200" class="row1"><span class="headmed"><strong>{$locations_new.role4_name}</strong></span></td>
-	            <td class="row2">{$locations_new.role4}</td>
-	        </tr>
-        {/if}
-        {if $locations_new.role5_name != ""}
-	        <tr>
-	            <td width="200" class="row1"><span class="headmed"><strong>{$locations_new.role5_name}</strong></span></td>
-	            <td class="row2">{$locations_new.role5}</td>
-	        </tr>        
-        {/if}
-        {if $locations_new.role6_name != ""}
-	        <tr>
-	            <td width="200" class="row1"><span class="headmed"><strong>{$locations_new.role6_name}</strong></span></td>
-	            <td class="row2">{$locations_new.role6}</td>
-	        </tr>        
-        {/if}
+        {/section}
+        {section name=role_data_sec loop=$role_data}
+		    {if $role_data[role_data_sec].lang_id != ""}
+		        <tr> 
+		            <td width="200" class="row1"><span class="headmed"><strong>{$role_data[role_data_sec].lang_id}</strong></span></td>
+		            <td class="row2">{$role_data[role_data_sec].role}</td>
+		        </tr>
+		    {/if}
+        {/section}
         <tr>
             <td width="200" class="row1"><span class="headmed"><strong>{$locations_new.locked_text}</strong></span></td>
             <td class="row2">{$locations_new.locked}</td>

@@ -67,7 +67,7 @@ $pageURL = 'locations.php?mode=view&';
 if($_GET['mode'] == 'view')
 {
 	$loc = array();
-
+	$loc_loop_num = 0;
 	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "locations";
 	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 	while($data = $db_raid->sql_fetchrow($result, true))
@@ -84,6 +84,28 @@ if($_GET['mode'] == 'view')
 		$event_type_id = $event_type_data['event_type'];
 		$event_type_text = $phprlang[$event_type_data['event_type_lang_id']];
 		
+		// Now that we have the location data, we need to retrieve limit data based upon location ID.
+		// Get Class Limits
+		$loc_class_array = array();
+		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "loc_class_lmt WHERE location_id = %s", quote_smart($data['location_id']));
+		$result_loc_class = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		while($loc_class_data = $db_raid->sql_fetchrow($result_loc_class, true))
+		{
+			$loc_class_array[$loc_class_data['class_id']] = $loc_class_data['lmt'];
+		}
+		// Get Role Limits
+		$loc_role_array = array();
+		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "loc_role_lmt WHERE location_id = %s", quote_smart($data['location_id']));
+		$result_loc_role = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		while($loc_role_data = $db_raid->sql_fetchrow($result_loc_role, true))
+		{
+			$sql2 = sprintf("SELECT role_name FROM " . $phpraid_config['db_prefix'] . "roles WHERE role_id = %s", quote_smart($loc_role_data['role_id']));
+			$result_role_name = $db_raid->sql_query($sql2) or print_error($sql2, mysql_error(), 1);
+			$role_name = $db_raid->sql_fetchrow($result_role_name, true);
+			
+			$loc_role_array[$role_name['role_name']] = $loc_role_data['lmt'];
+		}
+
 		array_push($loc,
 			array(
 				'ID'=>$data['location_id'],
@@ -93,26 +115,19 @@ if($_GET['mode'] == 'view')
 				'Min Level'=>$data['min_lvl'],
 				'Max Level'=>$data['max_lvl'],
 				'Raid Max'=>$data['max'],
-				'Death Knight'=>$data['dk'],
-				'Druid'=>$data['dr'],
-				'Hunter'=>$data['hu'],
-				'Mage'=>$data['ma'],
-				'Paladin'=>$data['pa'],
-				'Priest'=>$data['pr'],
-				'Rogue'=>$data['ro'],
-				'Shaman'=>$data['sh'],
-				'Warlock'=>$data['wk'],
-				'Warrior'=>$data['wa'],
-				$phpraid_config['role1_name']=>$data['role1'],
-				$phpraid_config['role2_name']=>$data['role2'],
-				$phpraid_config['role3_name']=>$data['role3'],
-				$phpraid_config['role4_name']=>$data['role4'],
-				$phpraid_config['role5_name']=>$data['role5'],
-				$phpraid_config['role6_name']=>$data['role6'],
 				'Locked'=>$data['locked'],
 				'Buttons'=>$edit . $delete,
 			)
 		);
+		foreach ($loc_class_array as $left => $right)
+		{
+			$loc[$loc_loop_num][$left]= $right;
+		}
+		foreach ($loc_role_array as $left => $right)
+		{
+			$loc[$loc_loop_num][$left]= $right;
+		}
+		$loc_loop_num++;
 	}
 
 	/**************************************************************
@@ -164,34 +179,50 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 	$event_id = scrub_input($_GET['event']);
 	$min_lvl = scrub_input($_POST['min_lvl']);
 	$max_lvl = scrub_input($_POST['max_lvl']);
-	$dk = scrub_input($_POST['dk']);
-	$dr = scrub_input($_POST['dr']);
-	$hu = scrub_input($_POST['hu']);
-	$ma = scrub_input($_POST['ma']);
-	$pa = scrub_input($_POST['pa']);
-	$pr = scrub_input($_POST['pr']);
-	$ro = scrub_input($_POST['ro']);
-	$sh = scrub_input($_POST['sh']);
-	$wk = scrub_input($_POST['wk']);
-	$wa = scrub_input($_POST['wa']);
- 	$role1 = scrub_input($_POST['role1']);
-	if ($role1 == '')
-		$role1 = '0';
-	$role2 = scrub_input($_POST['role2']);
-	if ($role2 == '')
-		$role2 = '0';
-	$role3 = scrub_input($_POST['role3']);
-	if ($role3 == '')
-		$role3 = '0';
-	$role4 = scrub_input($_POST['role4']);
-	if ($role4 == '')
-		$role4 = '0';
-	$role5 = scrub_input($_POST['role5']);
-	if ($role5 == '')
-		$role5 = '0';
-	$role6 = scrub_input($_POST['role6']);
-	if ($role6 == '')
-		$role6 = '0';
+	
+	// Handle Classes
+	foreach ($wrm_global_classes as $global_class)
+	//while($class_data = $db_raid->sql_fetchrow($class_result, true))
+	{
+		$classtrans = str_replace(" ", "_", $global_class['class_id']);
+		$class[$global_class['class_id']] = scrub_input($_POST[$classtrans]);
+	}
+	//$dr = scrub_input($_POST['dr']);
+	//$hu = scrub_input($_POST['hu']);
+	//$ma = scrub_input($_POST['ma']);
+	//$pa = scrub_input($_POST['pa']);
+	//$pr = scrub_input($_POST['pr']);
+	//$ro = scrub_input($_POST['ro']);
+	//$sh = scrub_input($_POST['sh']);
+	//$wk = scrub_input($_POST['wk']);
+	//$wa = scrub_input($_POST['wa']);
+ 	
+	// Handle Roles
+	foreach ($wrm_global_roles as $global_role)	
+	//while($role_data = $db_raid->sql_fetchrow($role_result, true))
+	{
+		$role[$global_role['role_id']] = scrub_input($_POST[$global_role['role_id']]);
+		if ($role[$global_role['role_id']] == '')
+			$role[$global_role['role_id']] == '0'; 
+	}
+	//$role1 = scrub_input($_POST['role1']);
+	//if ($role1 == '')
+	//	$role1 = '0';
+	//$role2 = scrub_input($_POST['role2']);
+	//if ($role2 == '')
+	//	$role2 = '0';
+	//$role3 = scrub_input($_POST['role3']);
+	//if ($role3 == '')
+	//	$role3 = '0';
+	//$role4 = scrub_input($_POST['role4']);
+	//if ($role4 == '')
+	//	$role4 = '0';
+	//$role5 = scrub_input($_POST['role5']);
+	//if ($role5 == '')
+	//	$role5 = '0';
+	//$role6 = scrub_input($_POST['role6']);
+	//if ($role6 == '')
+	//	$role6 = '0';
  
  	if(isset($_POST['lock_template']))
  		$locked = 1;
@@ -202,14 +233,37 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 	if($_GET['mode'] == 'new')
 	{
 		$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "locations (`location`,`min_lvl`,`max_lvl`,
-		`name`,`dk`,`dr`,`hu`,`ma`,`pa`,`pr`,`ro`,`sh`,`wk`,`wa`,`role1`,`role2`,`role3`,`role4`,`role5`,`role6`,`max`,`locked`,`event_type`,`event_id`) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
-		quote_smart($loc),quote_smart($min_lvl),quote_smart($max_lvl),quote_smart($name),quote_smart($dk),quote_smart($dr),quote_smart($hu),
-		quote_smart($ma),quote_smart($pa),quote_smart($pr),quote_smart($ro),quote_smart($sh),quote_smart($wk),quote_smart($wa),
-		quote_smart($role1),quote_smart($role2),quote_smart($role3),quote_smart($role4),quote_smart($role5),quote_smart($role6),
+		`name`,`max`,`locked`,`event_type`,`event_id`) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)",
+		quote_smart($loc),quote_smart($min_lvl),quote_smart($max_lvl),quote_smart($name),
 		quote_smart($max),quote_smart($locked),quote_smart($eventtype),quote_smart($event_id));
 		
 		$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
 
+		// Get the Location ID of what was Just Entered to Apply to the Lookup Tables
+		$sql = "SELECT location_id FROM " . $phpraid_config['db_prefix'] . "locations ORDER BY location_id DESC LIMIT 1";
+		$loc_id_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$loc_id = $db_raid->sql_fetchrow($loc_id_result, true);
+		
+		// Insert Class Data to loc_class_lmt
+		foreach ($wrm_global_classes as $global_class)
+		//while($class_data = $db_raid->sql_fetchrow($class_result, true))
+		{
+			$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "loc_class_lmt (`location_id`, `class_id`, `lmt`)
+			VALUES (%s,%s,%s)",quote_smart($loc_id['location_id']), quote_smart($global_class['class_id']), quote_smart($class[$global_class['class_id']]));
+			
+			$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+		}
+		
+		// Insert Role Data to loc_role_lmt
+		foreach ($wrm_global_roles as $global_role)	
+		//while($role_data = $db_raid->sql_fetchrow($role_result, true))
+		{
+			$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "loc_role_lmt (`location_id`, `role_id`, `lmt`)
+			VALUES (%s,%s,%s)",quote_smart($loc_id['location_id']), quote_smart($global_role['role_id']), quote_smart($role[$global_role['role_id']]));
+			
+			$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);	
+		}
+		
 		log_create('location',mysql_insert_id(),$name);
 	}
 	elseif($_GET['mode'] == 'edit');
@@ -219,13 +273,31 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 		else
 			$id = '';
 
-		$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "locations SET name=%s,max=%s,dk=%s,dr=%s,hu=%s,ma=%s,pa=%s,pr=%s,ro=%s,sh=%s,wk=%s,
-		wa=%s,role1=%s,role2=%s,role3=%s,role4=%s,role5=%s,role6=%s,min_lvl=%s,max_lvl=%s,location=%s,locked=%s,event_type=%s,event_id=%s WHERE location_id=%s",quote_smart($name),quote_smart($max),
-		quote_smart($dk),quote_smart($dr),quote_smart($hu),quote_smart($ma),quote_smart($pa),quote_smart($pr),quote_smart($ro),quote_smart($sh),quote_smart($wk),quote_smart($wa),
-		quote_smart($role1),quote_smart($role2),quote_smart($role3),quote_smart($role4),quote_smart($role5),quote_smart($role6),quote_smart($min_lvl),
-		quote_smart($max_lvl),quote_smart($loc),quote_smart($locked),quote_smart($eventtype),quote_smart($event_id),quote_smart($id));
+		$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "locations SET name=%s,max=%s,
+		min_lvl=%s,max_lvl=%s,location=%s,locked=%s,event_type=%s,event_id=%s WHERE location_id=%s",
+		quote_smart($name),quote_smart($max),quote_smart($min_lvl),quote_smart($max_lvl),
+		quote_smart($loc),quote_smart($locked),quote_smart($eventtype),quote_smart($event_id),
+		quote_smart($id));
 
 		$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+
+		// Insert Class Data to loc_class_lmt
+		foreach ($wrm_global_classes as $global_class)
+		{
+			$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "loc_class_lmt SET lmt=%s WHERE location_id=%s AND class_id=%s",
+			quote_smart($class[$global_class['class_id']]), quote_smart($id), quote_smart($global_class['class_id']));
+			
+			$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+		}
+		
+		// Insert Role Data to loc_role_lmt
+		foreach ($wrm_global_roles as $global_role)	
+		{
+			$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "loc_role_lmt SET lmt=%s WHERE location_id=%s AND role_id=%s",
+			quote_smart($role[$global_role['role_id']]), quote_smart($id), quote_smart($global_role['role_id']));
+			
+			$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);	
+		}
 	}
 
 	header("Location: locations.php?mode=view");
@@ -259,7 +331,11 @@ elseif($_GET['mode'] == 'delete')
 
 			$sql = sprintf("DELETE FROM " . $phpraid_config['db_prefix'] . "locations WHERE location_id=%s",quote_smart($id));
 			$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-
+			$sql = sprintf("DELETE FROM " . $phpraid_config['db_prefix'] . "loc_class_lmt WHERE location_id=%s",quote_smart($id));
+			$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+			$sql = sprintf("DELETE FROM " . $phpraid_config['db_prefix'] . "loc_role_lmt WHERE location_id=%s",quote_smart($id));
+			$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+			
 			header("Location: locations.php?mode=view");
 		}
 	} else {
@@ -381,40 +457,20 @@ if($_GET['mode'] != 'delete')
 		$name = '<input name="name" type="text" id="name" class="post">';
 		$min_lvl = '<input name="min_lvl" type="text" class="post" style="width:20px" maxlength="2">';
 		$max_lvl = '<input name="max_lvl" type="text" class="post" style="width:20px" maxlength="2">';
-		$dk = '<input name="dk" type="text" class="post" style="width:20px" maxlength="2">';
-		$dr = '<input name="dr" type="text" class="post" style="width:20px" maxlength="2">';
-		$hu = '<input name="hu" type="text" class="post" style="width:20px" maxlength="2">';
-		$ma = '<input name="ma" type="text" class="post" style="width:20px" maxlength="2">';
-		$pa = '<input name="pa" type="text" class="post" style="width:20px" maxlength="2">';
-		$pr = '<input name="pr" type="text" class="post" style="width:20px" maxlength="2">';
-		$ro = '<input name="ro" type="text" class="post" style="width:20px" maxlength="2">';
-		$sh = '<input name="sh" type="text" class="post" style="width:20px" maxlength="2">';
-		$wk = '<input name="wk" type="text" class="post" style="width:20px" maxlength="2">';
-		$wa = '<input name="wa" type="text" class="post" style="width:20px" maxlength="2">';
-		if ($phpraid_config['role1_name'] != '')
-			$role1 = '<input name="role1" type="text" class="post" style="width:20px" maxlength="2">';
-		else
-			$role1 = '<input name="role1" type="hidden" value="" class="post" style="width:20px" maxlength="2">';
-		if ($phpraid_config['role2_name'] != '')
-			$role2 = '<input name="role2" type="text" class="post" style="width:20px" maxlength="2">';
-		else
-			$role2 = '<input name="role2" type="hidden" value="" class="post" style="width:20px" maxlength="2">';
-		if ($phpraid_config['role3_name'] != '')
-			$role3 = '<input name="role3" type="text" class="post" style="width:20px" maxlength="2">';
-		else
-			$role3 = '<input name="role3" type="hidden" value="" class="post" style="width:20px" maxlength="2">';
-		if ($phpraid_config['role4_name'] != '')
-			$role4 = '<input name="role4" type="text" class="post" style="width:20px" maxlength="2">';
-		else
-			$role4 = '<input name="role4" type="hidden" value="" class="post" style="width:20px" maxlength="2">';
-		if ($phpraid_config['role5_name'] != '')
-			$role5 = '<input name="role5" type="text" class="post" style="width:20px" maxlength="2">';
-		else
-			$role5 = '<input name="role5" type="hidden" value="" class="post" style="width:20px" maxlength="2">';
-		if ($phpraid_config['role6_name'] != '')
-			$role6 = '<input name="role6" type="text" class="post" style="width:20px" maxlength="2">';
-		else
-			$role6 = '<input name="role6" type="hidden" value="" class="post" style="width:20px" maxlength="2">';
+
+		// Setup the Class Text Fields
+		foreach ($wrm_global_classes as $global_class)
+			$class[$global_class['class_id']]='<input name="'.$global_class['class_id'].'" type="text" class="post" style="width:20px" maxlength="2">';
+		
+		// Setup the Role Text Fields
+		foreach ($wrm_global_roles as $global_role)	
+		{
+			if ($global_role['role_name'] != '')	
+				$role[$global_role['role_id']]='<input name="'.$global_role['role_id'].'" type="text" class="post" style="width:20px" maxlength="2">';
+			else			
+				$role[$global_role['role_id']]='<input name="'.$global_role['role_id'].'" type="hidden" class="post" style="width:20px" maxlength="2">';
+		}
+		
 		$locked = '<input name="lock_template" type="checkbox" value="1" class="post">';
 		
 		if ($event_id != '')
@@ -443,6 +499,28 @@ if($_GET['mode'] != 'delete')
 	elseif($_GET['mode'] == 'update')
 	{
 		// it's an edit... joy
+
+		// Get Limit Information for Class
+		$loc_class_array = array();
+		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "loc_class_lmt WHERE location_id = %s", quote_smart($data['location_id']));
+		$result_loc_class = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		while($loc_class_data = $db_raid->sql_fetchrow($result_loc_class, true))
+		{
+			$loc_class_array[$loc_class_data['class_id']] = $loc_class_data['lmt'];
+		}
+		
+		// Get Limit Information for Role
+		$loc_role_array = array();
+		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "loc_role_lmt WHERE location_id = %s", quote_smart($data['location_id']));
+		$result_loc_role = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		while($loc_role_data = $db_raid->sql_fetchrow($result_loc_role, true))
+		{
+			$sql2 = sprintf("SELECT role_name FROM " . $phpraid_config['db_prefix'] . "roles WHERE role_id = %s", quote_smart($loc_role_data['role_id']));
+			$result_role_name = $db_raid->sql_query($sql2) or print_error($sql2, mysql_error(), 1);
+			$role_name = $db_raid->sql_fetchrow($result_role_name, true);
+			
+			$loc_role_array[$role_name['role_name']] = $loc_role_data['lmt'];
+		}
 		
 		// Setup Event Type Select Box.
 		$eventtype = '<select name="event_type" id="event_type" class="post" onChange="MM_jumpMenu(\'parent\',this,0)">
@@ -509,40 +587,16 @@ if($_GET['mode'] != 'delete')
 		$name = '<input name="name" type="text" id="name" value="' . $data['name'] . '" class="post">';
 		$min_lvl = '<input name="min_lvl" type="text" value="' . $data['min_lvl'] . '"  class="post" style="width:20px" maxlength="2">';
 		$max_lvl = '<input name="max_lvl" type="text" value="' . $data['max_lvl'] . '"  class="post" style="width:20px" maxlength="2">';
-		$dk = '<input name="dk" type="text" value="' . $data['dk'] . '"  class="post" style="width:20px" maxlength="2">';
-		$dr = '<input name="dr" type="text" value="' . $data['dr'] . '"  class="post" style="width:20px" maxlength="2">';
-		$hu = '<input name="hu" type="text" value="' . $data['hu'] . '"  class="post" style="width:20px" maxlength="2">';
-		$ma = '<input name="ma" type="text" value="' . $data['ma'] . '"  class="post" style="width:20px" maxlength="2">';
-		$pa = '<input name="pa" type="text" value="' . $data['pa'] . '"  class="post" style="width:20px" maxlength="2">';
-		$pr = '<input name="pr" type="text" value="' . $data['pr'] . '"  class="post" style="width:20px" maxlength="2">';
-		$ro = '<input name="ro" type="text" value="' . $data['ro'] . '"  class="post" style="width:20px" maxlength="2">';
-		$sh = '<input name="sh" type="text" value="' . $data['sh'] . '"  class="post" style="width:20px" maxlength="2">';
-		$wk = '<input name="wk" type="text" value="' . $data['wk'] . '"  class="post" style="width:20px" maxlength="2">';
-		$wa = '<input name="wa" type="text" value="' . $data['wa'] . '"  class="post" style="width:20px" maxlength="2">';
-		if ($phpraid_config['role1_name'] != '')
-			$role1 = '<input name="role1" type="text" value="' . $data['role1'] . '"  class="post" style="width:20px" maxlength="2">';
-		else
-			$role1 = '<input name="role1" type="hidden" value="" class="post" style="width:20px" maxlength="2">';
-		if ($phpraid_config['role2_name'] != '')
-			$role2 = '<input name="role2" type="text" value="' . $data['role2'] . '"  class="post" style="width:20px" maxlength="2">';
-		else
-			$role2 = '<input name="role2" type="hidden" value="" class="post" style="width:20px" maxlength="2">';
-		if ($phpraid_config['role3_name'] != '')
-			$role3 = '<input name="role3" type="text" value="' . $data['role3'] . '"  class="post" style="width:20px" maxlength="2">';
-		else
-			$role3 = '<input name="role3" type="hidden" value="" class="post" style="width:20px" maxlength="2">';
-		if ($phpraid_config['role4_name'] != '')
-			$role4 = '<input name="role4" type="text" value="' . $data['role4'] . '"  class="post" style="width:20px" maxlength="2">';
-		else
-			$role4 = '<input name="role4" type="hidden" value="" class="post" style="width:20px" maxlength="2">';
-		if ($phpraid_config['role5_name'] != '')
-			$role5 = '<input name="role5" type="text" value="' . $data['role5'] . '"  class="post" style="width:20px" maxlength="2">';
-		else
-			$role5 = '<input name="role5" type="hidden" value="" class="post" style="width:20px" maxlength="2">';
-		if ($phpraid_config['role6_name'] != '')
-			$role6 = '<input name="role6" type="text" value="' . $data['role6'] . '"  class="post" style="width:20px" maxlength="2">';
-		else
-			$role6 = '<input name="role6" type="hidden" value="" class="post" style="width:20px" maxlength="2">';
+
+		// Setup the Class Text Fields
+		foreach ($wrm_global_classes as $global_class)
+			$class[$global_class['class_id']]='<input name="'.$global_class['class_id'].'" type="text" value="' . $loc_class_array[$global_class['class_id']] . '"  class="post" style="width:20px" maxlength="2">';
+
+		// Setup the Role Text Fields
+		foreach ($wrm_global_roles as $global_role)	
+			if ($global_role['role_name'] != '')
+				$role[$global_role['role_id']]='<input name="'.$global_role['role_id'].'" type="text" value="' . $loc_role_array[$global_role['role_name']] . '"  class="post" style="width:20px" maxlength="2">';	
+
 		if($data['locked'] == '0')
 			$locked = '<input type="checkbox" name="lock_template" value="' . $data['locked'] . '"  class="post">';
 		else
@@ -561,6 +615,8 @@ if($_GET['mode'] != 'delete')
 		$buttons = '<input type="submit" value="'.$phprlang['update'].'" name="submit" class="mainoption"> <input type="reset" value="'.$phprlang['reset'].'" name="reset" class="liteoption">';
 	}
 
+	// Select Roles to Assign to Location
+	
 	$wrmsmarty->assign('locations_new',
 		array(
 			'form_action'=>$form_action,
@@ -576,41 +632,9 @@ if($_GET['mode'] != 'delete')
 			'location_read_only_text'=>$phprlang['locations_ro_text'],
 			'min_lvl'=>$min_lvl,
 			'max_lvl'=>$max_lvl,
-			'dk'=>$dk,
-			'dr'=>$dr,
-			'hu'=>$hu,
-			'ma'=>$ma,
-			'pa'=>$pa,
-			'pr'=>$pr,
-			'ro'=>$ro,
-			'sh'=>$sh,
-			'wk'=>$wk,
-			'wa'=>$wa,
-			'role1'=>$role1,
-			'role2'=>$role2,
-			'role3'=>$role3,
-			'role4'=>$role4,
-			'role5'=>$role5,
-			'role6'=>$role6,
 			'max'=>$max,
 			'locked'=>$locked,
 			'buttons'=>$buttons,
-			'deathknight_name'=>$phprlang['deathknight'],
-			'druid_name'=>$phprlang['druid'],
-			'hunter_name'=>$phprlang['hunter'],
-			'mage_name'=>$phprlang['mage'],
-			'paladin_name'=>$phprlang['paladin'],
-			'priest_name'=>$phprlang['priest'],
-			'rogue_name'=>$phprlang['rogue'],
-			'shaman_name'=>$phprlang['shaman'],
-			'warlock_name'=>$phprlang['warlock'],
-			'warrior_name'=>$phprlang['warrior'],
-			'role1_name'=>$phpraid_config['role1_name'],
-			'role2_name'=>$phpraid_config['role2_name'],
-			'role3_name'=>$phpraid_config['role3_name'],
-			'role4_name'=>$phpraid_config['role4_name'],
-			'role5_name'=>$phpraid_config['role5_name'],
-			'role6_name'=>$phpraid_config['role6_name'],
 			'locked_text'=>$phprlang['lock_template'],
 			'newlocation_header'=>$phprlang['locations_new'],
 			'shortname_text'=>$phprlang['locations_short'],
@@ -621,6 +645,33 @@ if($_GET['mode'] != 'delete')
 			'limits_header'=>$phprlang['locations_limits_header'],
 		)
 	);
+	// Assign Class Info to Class For Location
+	$class_array = array();
+	foreach ($wrm_global_classes as $global_class)
+	{
+		$lang_id = $global_class['lang_index'] . "_name";
+		array_push($class_array,
+			array(
+				'class'=>$class[$global_class['class_id']],
+				'lang_id'=>$phprlang[$global_class['lang_index']],
+			)
+		);
+	}
+	$wrmsmarty->assign('class_data', $class_array);
+	
+	// Assign Role Info to Role For Location
+	$role_array = array();
+	foreach ($wrm_global_roles as $global_role)	
+	{
+		$lang_id = $global_role['role_id'] . "_name";
+		array_push($role_array,
+			array(
+				'role'=>$role[$global_role['role_id']],
+				'lang_id'=>$global_role['role_name'],
+			)
+		);
+	}
+	$wrmsmarty->assign('role_data', $role_array);	
 }
 
 //
