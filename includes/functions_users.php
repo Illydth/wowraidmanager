@@ -147,26 +147,13 @@ function get_char_count($id, $type) {
 				break;
 		}
 
-		switch(strtolower($char['role'])) {
-			case strtolower($phpraid_config['role1_name']):
-				$count['role1']++;
-				break;
-			case strtolower($phpraid_config['role2_name']):
-				$count['role2']++;
-				break;
-			case strtolower($phpraid_config['role3_name']):
-				$count['role3']++;
-				break;
-			case strtolower($phpraid_config['role4_name']):
-				$count['role4']++;
-				break;
-			case strtolower($phpraid_config['role5_name']):
-				$count['role5']++;
-				break;
-			case strtolower($phpraid_config['role6_name']):
-				$count['role6']++;
-				break;
-		}
+		// Handle Roles based upon what's in the Role table.
+		$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "roles";
+		$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		
+		while($data = $db_raid->sql_fetchrow($result, true))
+			if (strtolower($char['role']) == strtolower($data['role_name']))
+				$count[$data['role_id']]++;			
 	}
 
 	return $count;

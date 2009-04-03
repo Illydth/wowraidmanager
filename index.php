@@ -75,6 +75,9 @@ $sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "raids";
 $raids_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 
 $count = array();
+$test = array();
+$curr_count = 0;
+$prev_count = 0;
 
 while($raids = $db_raid->sql_fetchrow($raids_result, true)) {
 	$invite = new_date('Y/m/d H:i:s', $raids['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
@@ -138,12 +141,6 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true)) {
 		$sh_text = get_coloredcount('shaman', $count['sh'], $raids['sh_lmt'], $count2['sh'], true);
 		$wk_text = get_coloredcount('warlock', $count['wk'], $raids['wk_lmt'], $count2['wk'], true);
 		$wa_text = get_coloredcount('warrior', $count['wa'], $raids['wa_lmt'], $count2['wa'], true);
-		$role1_text = get_coloredcount('role1', $count['role1'], $raids['role1_lmt'], $count2['role1']);
-		$role2_text = get_coloredcount('role2', $count['role2'], $raids['role2_lmt'], $count2['role2']);
-		$role3_text = get_coloredcount('role3', $count['role3'], $raids['role3_lmt'], $count2['role3']);
-		$role4_text = get_coloredcount('role4', $count['role4'], $raids['role4_lmt'], $count2['role4']);
-		$role5_text = get_coloredcount('role5', $count['role5'], $raids['role5_lmt'], $count2['role5']);
-		$role6_text = get_coloredcount('role6', $count['role6'], $raids['role6_lmt'], $count2['role6']);
 	}
 	else
 	{
@@ -157,14 +154,21 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true)) {
 		$sh_text = get_coloredcount('shaman', $count['sh'], $raids['sh_lmt'], $count2['sh']);
 		$wk_text = get_coloredcount('warlock', $count['wk'], $raids['wk_lmt'], $count2['wk']);
 		$wa_text = get_coloredcount('warrior', $count['wa'], $raids['wa_lmt'], $count2['wa']);
-		$role1_text = get_coloredcount('role1', $count['role1'], $raids['role1_lmt'], $count2['role1']);
-		$role2_text = get_coloredcount('role2', $count['role2'], $raids['role2_lmt'], $count2['role2']);
-		$role3_text = get_coloredcount('role3', $count['role3'], $raids['role3_lmt'], $count2['role3']);
-		$role4_text = get_coloredcount('role4', $count['role4'], $raids['role4_lmt'], $count2['role4']);
-		$role5_text = get_coloredcount('role5', $count['role5'], $raids['role5_lmt'], $count2['role5']);
-		$role6_text = get_coloredcount('role6', $count['role6'], $raids['role6_lmt'], $count2['role6']);
 	}
-	
+
+	// Handle Roles based upon what's in the Role table.
+	$role_array = array();
+	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "roles";
+	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		
+	while($data = $db_raid->sql_fetchrow($result, true))
+	{
+		$var = $data['role_id'] . "_text";
+		$limit = $data['role_id'] . "_lmt";
+		$$var = get_coloredcount($data['role_id'], $count[$data['role_id']], $raids[$limit], $count2[$data['role_id']]);
+		$role_array[$data['role_name']] = $$var;
+	}
+		
 	// always show current raids
 	if($raids['old'] == 0) {
 		array_push($current,
@@ -187,15 +191,15 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true)) {
 				'Shaman'=>$sh_text,
 				'Warlock'=>$wk_text,
 				'Warrior'=>$wa_text,
-				$phpraid_config['role1_name']=>$role1_text,
-				$phpraid_config['role2_name']=>$role2_text,
-				$phpraid_config['role3_name']=>$role3_text,
-				$phpraid_config['role4_name']=>$role4_text,
-				$phpraid_config['role5_name']=>$role5_text,
-				$phpraid_config['role6_name']=>$role6_text,
 				'Totals'=>$total.'/'.$raids['max']  . '' . $total2,
 			)
 		);
+		foreach ($role_array as $left => $right)
+		{
+			$current[$curr_count][$left]= $right;
+		}
+		$curr_count++;
+		
 	} else {
 		array_push($previous,
 			array(
@@ -216,15 +220,14 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true)) {
 				'Shaman'=>$sh_text,
 				'Warlock'=>$wk_text,
 				'Warrior'=>$wa_text,
-				$phpraid_config['role1_name']=>$role1_text,
-				$phpraid_config['role2_name']=>$role2_text,
-				$phpraid_config['role3_name']=>$role3_text,
-				$phpraid_config['role4_name']=>$role4_text,
-				$phpraid_config['role5_name']=>$role5_text,
-				$phpraid_config['role6_name']=>$role6_text,
 				'Totals'=>$total.'/'.$raids['max']  . '' . $total2,
 			)
 		);
+		foreach ($role_array as $left => $right)
+		{
+			$previous[$prev_count][$left]= $right;
+		}
+		$prev_count++;
 	}
 }
 
