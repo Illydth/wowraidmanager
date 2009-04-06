@@ -1723,9 +1723,7 @@ if($mode == 'view')
 			'rogue_icon'=>$rogue_icon,
 			'shaman_icon'=>$shaman_icon,
 			'warlock_icon'=>$warlock_icon,
-			'warrior_icon'=>$warrior_icon,
-			'signup_button_text'=>$phprlang['signup'],
-			'reset_button_text'=>$phprlang['reset']
+			'warrior_icon'=>$warrior_icon
 		)
 	);
 }
@@ -2460,7 +2458,9 @@ if($show_signup == 1 && $priv_profile == 1)
 			'username_text'=>$phprlang['view_username'],
 			'character_text'=>$phprlang['view_character'],
 			'queue_text'=>$phprlang['view_queue'],
-			'comments_text'=>$phprlang['view_comments']
+			'comments_text'=>$phprlang['view_comments'],
+			'signup_button_text'=>$phprlang['signup'],
+			'reset_button_text'=>$phprlang['reset']
 		)
 	);
 	$wrmsmarty->display('view_signup.html');
