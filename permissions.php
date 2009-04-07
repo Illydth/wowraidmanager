@@ -416,7 +416,7 @@ if($_GET['mode'] != 'delete' && $_GET['mode'] != 'details')
 		
 		$form_action = "permissions.php?mode=edit&amp;perm_id=$perm_id";
 		
-		$page->set_var('header_text',$phprlang['permissions_edit_header']);	
+		$wrmsmarty->assign('header_text',$phprlang['permissions_edit_header']);
 	} else {
 		$announcements = '<select name="announcements" class="post">
 						<option value="1" SELECTED>' . $phprlang['yes'] . '</option>
