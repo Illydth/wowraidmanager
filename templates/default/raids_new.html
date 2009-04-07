@@ -66,82 +66,20 @@
 							<td width="200" class="row1"><strong>{$page.maxlvl_text}</strong></td>
 							<td class="row2">{$page.maximum_level}</td>
 						</tr>
-						<tr> 
-							<td width="200" class="row1"><strong>{$page.deathknight_text}</strong></td>
-							<td class="row2">{$page.deathknight_limit}</td>
-						</tr>
-						<tr> 
-							<td width="200" class="row1"><strong>{$page.druid_text}</strong></td>
-							<td class="row2">{$page.druid_limit}</td>
-						</tr>
-						<tr>
-							<td class="row1"><strong>{$page.hunter_text}</strong></td>
-							<td class="row2">{$page.hunter_limit}</td>
-						</tr>
-						<tr>
-							<td class="row1"><strong>{$page.mage_text}</strong></td>
-							<td class="row2">{$page.mage_limit}</td>
-						</tr>
-						<tr>
-							<td class="row1"><strong>{$page.paladin_text}</strong></td>
-							<td class="row2">{$page.paladin_limit}</td>
-						</tr>
-						<tr>
-							<td class="row1"><strong>{$page.priest_text}</strong></td>
-							<td class="row2">{$page.priest_limit}</td>
-						</tr>
-						<tr>
-							<td class="row1"><strong>{$page.rogue_text}</strong></td>
-							<td class="row2">{$page.rogue_limit}</td>
-						</tr>
-						<tr>
-							<td class="row1"><strong>{$page.shaman_text}</strong></td>
-							<td class="row2">{$page.shaman_limit}</td>
-						</tr>
-						<tr>
-							<td class="row1"><strong>{$page.warlock_text}</strong></td>
-							<td class="row2">{$page.warlock_limit}</td>
-						</tr>
-						<tr> 
-							<td class="row1"><strong>{$page.warrior_text}</strong></td>
-							<td class="row2">{$page.warrior_limit}</td>
-						</tr>
-						{if $page.role1_limit != ""}
-						<tr>
-							<td width="200" class="row1"><strong>{$page.role1_text}</strong></td>
-							<td class="row2">{$page.role1_limit}</td>
-						</tr>
-						{/if}
-						{if $page.role2_limit != ""}
-						<tr>
-							<td width="200" class="row1"><strong>{$page.role2_text}</strong></td>
-							<td class="row2">{$page.role2_limit}</td>
-						</tr>
-						{/if}
-						{if $page.role3_limit != ""}
-						<tr>
-							<td width="200" class="row1"><strong>{$page.role3_text}</strong></td>
-							<td class="row2">{$page.role3_limit}</td>
-						</tr>
-						{/if}
-						{if $page.role4_limit != ""}
-						<tr>
-							<td width="200" class="row1"><strong>{$page.role4_text}</strong></td>
-							<td class="row2">{$page.role4_limit}</td>
-						</tr>
-						{/if}
-						{if $page.role5_limit != ""}
-						<tr>
-							<td width="200" class="row1"><strong>{$page.role5_text}</strong></td>
-							<td class="row2">{$page.role5_limit}</td>
-						</tr>          
-						{/if}
-						{if $page.role6_limit != ""}
-						<tr>
-							<td width="200" class="row1"><strong>{$page.role6_text}</strong></td>
-							<td class="row2">{$page.role6_limit}</td>
-						</tr>
-						{/if}
+        				{section name=class_data_sec loop=$class_limits}
+							<tr> 
+								<td width="200" class="row1"><strong>{$class_limits[class_data_sec].lang_id}</strong></td>
+								<td class="row2">{$class_limits[class_data_sec].lmt}</td>
+							</tr>
+				        {/section}
+				        {section name=role_data_sec loop=$role_limits}
+						    {if $role_limits[role_data_sec].lang_id != ""}
+								<tr>
+									<td width="200" class="row1"><strong>{$role_limits[role_data_sec].lang_id}</strong></td>
+									<td class="row2">{$role_limits[role_data_sec].lmt}</td>
+								</tr>
+						    {/if}
+				        {/section}
 					</table>
 				</td>
 			</tr>

@@ -625,4 +625,9 @@ ALTER TABLE `wrm_locations`
   DROP `sh`, DROP `wk`,  DROP `wa`,  DROP `role1`,  DROP `role2`,  DROP `role3`,  
   DROP `role4`,  DROP `role5`,  DROP `role6`;
 
+ALTER TABLE `wrm_raids`
+  DROP `dk_lmt`, DROP `dr_lmt`, DROP `hu_lmt`, DROP `ma_lmt`, DROP `pa_lmt`, DROP `pr_lmt`, 
+  DROP `sh_lmt`, DROP `ro_lmt`, DROP `wk_lmt`, DROP `wa_lmt`, DROP `role1_lmt`, 
+  DROP `role2_lmt`, DROP `role3_lmt`, DROP `role4_lmt`, DROP `role5_lmt`, DROP `role6_lmt`;  
+  
 INSERT INTO `wrm_version` VALUES ('3.9.9.2.1','4.0 Beta 2 Release 1');

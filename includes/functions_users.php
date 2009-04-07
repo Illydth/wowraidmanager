@@ -90,10 +90,14 @@ function check_frozen($raid_id) {
 }
 
 function get_char_count($id, $type) {
-	global $db_raid, $phpraid_config, $phprlang;
+	global $db_raid, $phpraid_config, $phprlang, $wrm_global_classes, $wrm_global_roles;
 
-	$count = array('dk'=>'0','dr'=>'0','hu'=>'0','ma'=>'0','pa'=>'0','pr'=>'0','ro'=>'0','sh'=>'0','wk'=>'0','wa'=>'0','role1'=>'0','role2'=>'0','role3'=>'0','role4'=>'0','role5'=>'0','role6'=>'0');
-
+	//$count = array('dk'=>'0','dr'=>'0','hu'=>'0','ma'=>'0','pa'=>'0','pr'=>'0','ro'=>'0','sh'=>'0','wk'=>'0','wa'=>'0','role1'=>'0','role2'=>'0','role3'=>'0','role4'=>'0','role5'=>'0','role6'=>'0');
+	foreach ($wrm_global_classes as $global_class)
+		$count[$global_class['class_id']]='0';
+	foreach ($wrm_global_roles as $global_role)
+		$count[$global_role['role_id']]='0';
+		
 	if($type == "queue") //Count Queued Signups
 	{
 		$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id='$id' AND queue='1' AND cancel='0'";
@@ -114,46 +118,19 @@ function get_char_count($id, $type) {
 		$result_char = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 		$char = $db_raid->sql_fetchrow($result_char, true);
 
-		switch($char['class']) {
-			case $phprlang['deathknight']:
-				$count['dk']++;
+		foreach ($wrm_global_classes as $global_class)
+		{
+			if ($char['class'] == $global_class['class_id'])
+			{
+				$count[$global_class['class_id']]++;
 				break;
-			case $phprlang['druid']:
-				$count['dr']++;
-				break;
-			case $phprlang['hunter']:
-				$count['hu']++;
-				break;
-			case $phprlang['mage']:
-				$count['ma']++;
-				break;
-			case $phprlang['paladin']:
-				$count['pa']++;
-				break;
-			case $phprlang['priest']:
-				$count['pr']++;
-				break;
-			case $phprlang['rogue']:
-				$count['ro']++;
-				break;
-			case $phprlang['shaman']:
-				$count['sh']++;
-				break;
-			case $phprlang['warlock']:
-				$count['wk']++;
-				break;
-			case $phprlang['warrior']:
-				$count['wa']++;
-				break;
+			}
 		}
 
 		// Handle Roles based upon what's in the Role table.
-		$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "roles";
-		$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-		
-		while($data = $db_raid->sql_fetchrow($result, true))
-			if (strtolower($char['role']) == strtolower($data['role_name']))
-				$count[$data['role_id']]++;			
+		foreach ($wrm_global_roles as $global_role)	
+			if ($char['role'] == $global_role['role_id'])
+				$count[$global_role['role_id']]++;			
 	}
 
 	return $count;
