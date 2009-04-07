@@ -182,47 +182,18 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 	
 	// Handle Classes
 	foreach ($wrm_global_classes as $global_class)
-	//while($class_data = $db_raid->sql_fetchrow($class_result, true))
 	{
 		$classtrans = str_replace(" ", "_", $global_class['class_id']);
 		$class[$global_class['class_id']] = scrub_input($_POST[$classtrans]);
 	}
-	//$dr = scrub_input($_POST['dr']);
-	//$hu = scrub_input($_POST['hu']);
-	//$ma = scrub_input($_POST['ma']);
-	//$pa = scrub_input($_POST['pa']);
-	//$pr = scrub_input($_POST['pr']);
-	//$ro = scrub_input($_POST['ro']);
-	//$sh = scrub_input($_POST['sh']);
-	//$wk = scrub_input($_POST['wk']);
-	//$wa = scrub_input($_POST['wa']);
- 	
+	
 	// Handle Roles
 	foreach ($wrm_global_roles as $global_role)	
-	//while($role_data = $db_raid->sql_fetchrow($role_result, true))
 	{
 		$role[$global_role['role_id']] = scrub_input($_POST[$global_role['role_id']]);
 		if ($role[$global_role['role_id']] == '')
 			$role[$global_role['role_id']] == '0'; 
 	}
-	//$role1 = scrub_input($_POST['role1']);
-	//if ($role1 == '')
-	//	$role1 = '0';
-	//$role2 = scrub_input($_POST['role2']);
-	//if ($role2 == '')
-	//	$role2 = '0';
-	//$role3 = scrub_input($_POST['role3']);
-	//if ($role3 == '')
-	//	$role3 = '0';
-	//$role4 = scrub_input($_POST['role4']);
-	//if ($role4 == '')
-	//	$role4 = '0';
-	//$role5 = scrub_input($_POST['role5']);
-	//if ($role5 == '')
-	//	$role5 = '0';
-	//$role6 = scrub_input($_POST['role6']);
-	//if ($role6 == '')
-	//	$role6 = '0';
  
  	if(isset($_POST['lock_template']))
  		$locked = 1;
@@ -246,7 +217,6 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 		
 		// Insert Class Data to loc_class_lmt
 		foreach ($wrm_global_classes as $global_class)
-		//while($class_data = $db_raid->sql_fetchrow($class_result, true))
 		{
 			$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "loc_class_lmt (`location_id`, `class_id`, `lmt`)
 			VALUES (%s,%s,%s)",quote_smart($loc_id['location_id']), quote_smart($global_class['class_id']), quote_smart($class[$global_class['class_id']]));
@@ -256,7 +226,6 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 		
 		// Insert Role Data to loc_role_lmt
 		foreach ($wrm_global_roles as $global_role)	
-		//while($role_data = $db_raid->sql_fetchrow($role_result, true))
 		{
 			$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "loc_role_lmt (`location_id`, `role_id`, `lmt`)
 			VALUES (%s,%s,%s)",quote_smart($loc_id['location_id']), quote_smart($global_role['role_id']), quote_smart($role[$global_role['role_id']]));
@@ -649,7 +618,6 @@ if($_GET['mode'] != 'delete')
 	$class_array = array();
 	foreach ($wrm_global_classes as $global_class)
 	{
-		$lang_id = $global_class['lang_index'] . "_name";
 		array_push($class_array,
 			array(
 				'class'=>$class[$global_class['class_id']],
@@ -663,7 +631,6 @@ if($_GET['mode'] != 'delete')
 	$role_array = array();
 	foreach ($wrm_global_roles as $global_role)	
 	{
-		$lang_id = $global_role['role_id'] . "_name";
 		array_push($role_array,
 			array(
 				'role'=>$role[$global_role['role_id']],
