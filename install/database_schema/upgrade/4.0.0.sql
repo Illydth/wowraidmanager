@@ -553,7 +553,7 @@ INSERT INTO `wrm_class_role` VALUES ('Priest', 'Holy', 'holy', 'Healing');
 INSERT INTO `wrm_class_role` VALUES ('Priest', 'Shadow', 'shadow', 'Ranged');
 INSERT INTO `wrm_class_role` VALUES ('Rogue', 'Assassination', 'assassination', 'Melee');
 INSERT INTO `wrm_class_role` VALUES ('Rogue', 'Combat', 'combat', 'Melee');
-INSERT INTO `wrm_class_role` VALUES ('Rogue', 'Subtlety', 'subtelty', 'Melee');
+INSERT INTO `wrm_class_role` VALUES ('Rogue', 'Subtlety', 'subtlety', 'Melee');
 INSERT INTO `wrm_class_role` VALUES ('Warrior', 'Arms', 'arms', 'Melee');
 INSERT INTO `wrm_class_role` VALUES ('Warrior', 'Fury', 'fury', 'Melee');
 INSERT INTO `wrm_class_role` VALUES ('Warrior', 'Protection', 'prot', 'Tank');
