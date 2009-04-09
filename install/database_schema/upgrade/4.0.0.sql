@@ -265,9 +265,11 @@ VALUES (NULL , 'char1', 'Nature', '1', '10', '/images/resistances/nature_resista
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
 VALUES (NULL , 'char1', 'Shadow', '1', '11', '/images/resistances/shadow_resistance.gif', 'shadow', NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'char1', 'Role', '1', '12', NULL, 'role', NULL);
+VALUES (NULL , 'char1', 'Pri_Spec', '1', '12', NULL, 'pri_spec', NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'char1', 'Buttons', '1', '13', NULL, 'buttons', NULL);
+VALUES (NULL , 'char1', 'Sec_Spec', '1', '13', NULL, 'sec_spec', NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
+VALUES (NULL , 'char1', 'Buttons', '1', '14', NULL, 'buttons', NULL);
 
 -- Column Header Data - Users1 View
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
@@ -541,41 +543,42 @@ INSERT INTO `wrm_roles` VALUES ('role6', 'misc2', 'configuration_role6_text');
 CREATE TABLE IF NOT EXISTS `wrm_class_role` (
   `class_id` varchar(100) NOT NULL,
   `subclass` varchar(100) NOT NULL,
+  `lang_index` varchar(100) NOT NULL,
   `role_name` varchar(100) NOT NULL,
   PRIMARY KEY  (`class_id`,`subclass`)
 );
 
-INSERT INTO `wrm_class_role` VALUES ('Priest', 'Discipline', 'Healing');
-INSERT INTO `wrm_class_role` VALUES ('Priest', 'Holy', 'Healing');
-INSERT INTO `wrm_class_role` VALUES ('Priest', 'Shadow', 'Ranged');
-INSERT INTO `wrm_class_role` VALUES ('Rogue', 'Assassination', 'Melee');
-INSERT INTO `wrm_class_role` VALUES ('Rogue', 'Combat', 'Melee');
-INSERT INTO `wrm_class_role` VALUES ('Rogue', 'Subtlety', 'Melee');
-INSERT INTO `wrm_class_role` VALUES ('Warrior', 'Arms', 'Melee');
-INSERT INTO `wrm_class_role` VALUES ('Warrior', 'Fury', 'Melee');
-INSERT INTO `wrm_class_role` VALUES ('Warrior', 'Protection', 'Tank');
-INSERT INTO `wrm_class_role` VALUES ('Mage', 'Arcane', 'Ranged');
-INSERT INTO `wrm_class_role` VALUES ('Mage', 'Fire', 'Ranged');
-INSERT INTO `wrm_class_role` VALUES ('Mage', 'Frost', 'Ranged');
-INSERT INTO `wrm_class_role` VALUES ('Druid', 'Balance', 'Ranged');
-INSERT INTO `wrm_class_role` VALUES ('Druid', 'Feral (Cat)', 'Melee');
-INSERT INTO `wrm_class_role` VALUES ('Druid', 'Feral (Bear)', 'Tank');
-INSERT INTO `wrm_class_role` VALUES ('Druid', 'Restoration', 'Healing');
-INSERT INTO `wrm_class_role` VALUES ('Hunter', 'Beast Mastery', 'Ranged');
-INSERT INTO `wrm_class_role` VALUES ('Hunter', 'Marksmanship', 'Ranged');
-INSERT INTO `wrm_class_role` VALUES ('Hunter', 'Survival', 'Ranged');
-INSERT INTO `wrm_class_role` VALUES ('Warlock', 'Affliction', 'Ranged');
-INSERT INTO `wrm_class_role` VALUES ('Warlock', 'Demonology', 'Ranged');
-INSERT INTO `wrm_class_role` VALUES ('Warlock', 'Destruction', 'Ranged');
-INSERT INTO `wrm_class_role` VALUES ('Shaman', 'Elemental', 'Ranged');
-INSERT INTO `wrm_class_role` VALUES ('Shaman', 'Enhancement', 'Melee');
-INSERT INTO `wrm_class_role` VALUES ('Shaman', 'Restoration', 'Healing');
-INSERT INTO `wrm_class_role` VALUES ('Paladin', 'Holy', 'Healing');
-INSERT INTO `wrm_class_role` VALUES ('Paladin', 'Protection', 'Tank');
-INSERT INTO `wrm_class_role` VALUES ('Paladin', 'Retribution', 'Melee');
-INSERT INTO `wrm_class_role` VALUES ('Death Knight', 'Blood', 'Melee');
-INSERT INTO `wrm_class_role` VALUES ('Death Knight', 'Frost', 'Tank');
-INSERT INTO `wrm_class_role` VALUES ('Death Knight', 'Unholy', 'Melee');
+INSERT INTO `wrm_class_role` VALUES ('Priest', 'Discipline', 'disc', 'Healing');
+INSERT INTO `wrm_class_role` VALUES ('Priest', 'Holy', 'holy', 'Healing');
+INSERT INTO `wrm_class_role` VALUES ('Priest', 'Shadow', 'shadow', 'Ranged');
+INSERT INTO `wrm_class_role` VALUES ('Rogue', 'Assassination', 'assassination', 'Melee');
+INSERT INTO `wrm_class_role` VALUES ('Rogue', 'Combat', 'combat', 'Melee');
+INSERT INTO `wrm_class_role` VALUES ('Rogue', 'Subtlety', 'subtelty', 'Melee');
+INSERT INTO `wrm_class_role` VALUES ('Warrior', 'Arms', 'arms', 'Melee');
+INSERT INTO `wrm_class_role` VALUES ('Warrior', 'Fury', 'fury', 'Melee');
+INSERT INTO `wrm_class_role` VALUES ('Warrior', 'Protection', 'prot', 'Tank');
+INSERT INTO `wrm_class_role` VALUES ('Mage', 'Arcane', 'arcane', 'Ranged');
+INSERT INTO `wrm_class_role` VALUES ('Mage', 'Fire', 'fire', 'Ranged');
+INSERT INTO `wrm_class_role` VALUES ('Mage', 'Frost', 'frost', 'Ranged');
+INSERT INTO `wrm_class_role` VALUES ('Druid', 'Balance', 'balance', 'Ranged');
+INSERT INTO `wrm_class_role` VALUES ('Druid', 'Feral (Cat)', 'cat', 'Melee');
+INSERT INTO `wrm_class_role` VALUES ('Druid', 'Feral (Bear)', 'bear', 'Tank');
+INSERT INTO `wrm_class_role` VALUES ('Druid', 'Restoration', 'resto', 'Healing');
+INSERT INTO `wrm_class_role` VALUES ('Hunter', 'Beast Mastery', 'bm', 'Ranged');
+INSERT INTO `wrm_class_role` VALUES ('Hunter', 'Marksmanship', 'marks', 'Ranged');
+INSERT INTO `wrm_class_role` VALUES ('Hunter', 'Survival', 'survival', 'Ranged');
+INSERT INTO `wrm_class_role` VALUES ('Warlock', 'Affliction', 'affliction', 'Ranged');
+INSERT INTO `wrm_class_role` VALUES ('Warlock', 'Demonology', 'demon', 'Ranged');
+INSERT INTO `wrm_class_role` VALUES ('Warlock', 'Destruction', 'destro', 'Ranged');
+INSERT INTO `wrm_class_role` VALUES ('Shaman', 'Elemental', 'elemental', 'Ranged');
+INSERT INTO `wrm_class_role` VALUES ('Shaman', 'Enhancement', 'enhance', 'Melee');
+INSERT INTO `wrm_class_role` VALUES ('Shaman', 'Restoration', 'resto', 'Healing');
+INSERT INTO `wrm_class_role` VALUES ('Paladin', 'Holy', 'holy', 'Healing');
+INSERT INTO `wrm_class_role` VALUES ('Paladin', 'Protection', 'prot', 'Tank');
+INSERT INTO `wrm_class_role` VALUES ('Paladin', 'Retribution', 'ret', 'Melee');
+INSERT INTO `wrm_class_role` VALUES ('Death Knight', 'Blood', 'blood', 'Melee');
+INSERT INTO `wrm_class_role` VALUES ('Death Knight', 'Frost', 'frost', 'Tank');
+INSERT INTO `wrm_class_role` VALUES ('Death Knight', 'Unholy', 'unholy', 'Melee');
 
 DELETE FROM `wrm_config` WHERE `config_name` = 'role1_name';
 DELETE FROM `wrm_config` WHERE `config_name` = 'role2_name';
@@ -620,14 +623,34 @@ CREATE TABLE IF NOT EXISTS `wrm_loc_role_lmt` (
 
 -- Take all roleX_lmt values from location table and expand into wrm_loc_role_lmt.
 
+-- Gender Table Creation
+CREATE TABLE IF NOT EXISTS `wrm_gender` (
+  `gender_id` varchar(10) NOT NULL,
+  `lang_index` varchar(100) NOT NULL,
+  PRIMARY KEY  (`gender_id`)
+);
+
+-- Gender Table Data
+INSERT INTO `wrm_gender` VALUES ('male', 'male');
+INSERT INTO `wrm_gender` VALUES ('female', 'female');
+
+-- Move all location limit data to loc_limits
 ALTER TABLE `wrm_locations`
   DROP `dk`, DROP `dr`,  DROP `hu`,  DROP `ma`,  DROP `pa`,  DROP `pr`,  DROP `ro`,  
   DROP `sh`, DROP `wk`,  DROP `wa`,  DROP `role1`,  DROP `role2`,  DROP `role3`,  
   DROP `role4`,  DROP `role5`,  DROP `role6`;
 
+-- Move all raid limit data to raid_limits
 ALTER TABLE `wrm_raids`
   DROP `dk_lmt`, DROP `dr_lmt`, DROP `hu_lmt`, DROP `ma_lmt`, DROP `pa_lmt`, DROP `pr_lmt`, 
   DROP `sh_lmt`, DROP `ro_lmt`, DROP `wk_lmt`, DROP `wa_lmt`, DROP `role1_lmt`, 
   DROP `role2_lmt`, DROP `role3_lmt`, DROP `role4_lmt`, DROP `role5_lmt`, DROP `role6_lmt`;  
   
+-- Manage Primary and Secondary Spec instead of Role.
+ALTER TABLE `wrm_chars` CHANGE `role` `pri_spec` VARCHAR( 255 ) NOT NULL;
+ALTER TABLE `wrm_chars` ADD `sec_spec` VARCHAR( 255 ) ;
+UPDATE `wrm_column_headers` SET `column_name` = 'Pri_Spec' WHERE `wrm_column_headers`.`ID` =117 LIMIT 1;
+UPDATE `wrm_column_headers` SET `position` = '14' WHERE `wrm_column_headers`.`ID` =118 LIMIT 1 ;
+INSERT INTO `wrm_column_headers` VALUES (NULL , 'char1', 'Sec_Spec', '1', '13', NULL , 'role', NULL);
+
 INSERT INTO `wrm_version` VALUES ('3.9.9.2.1','4.0 Beta 2 Release 1');
