@@ -52,4 +52,34 @@ $phprlang['orc'] = 'Orc';
 $phprlang['tauren'] = 'Tauren';
 $phprlang['troll'] = 'Troll';
 $phprlang['undead'] = 'Undead';
+
+// Talent Specs
+$phprlang['disc'] = "Discipline";
+$phprlang['holy'] = "Holy";
+$phprlang['shadow'] = "Shadow";
+$phprlang['assassination'] = "Assassination";
+$phprlang['combat'] = "Combat";
+$phprlang['subtlety'] = "Subtlety";
+$phprlang['arms'] = "Arms";
+$phprlang['fury'] = "Fury";
+$phprlang['prot'] = "Protection";
+$phprlang['arcane'] = "Arcane";
+$phprlang['fire'] = "Fire";
+$phprlang['frost'] = "Frost";
+$phprlang['balance'] = "Balance";
+$phprlang['cat'] = "Feral (Cat)";
+$phprlang['bear'] = "Feral (Bear)";
+$phprlang['resto'] = "Restoration";
+$phprlang['bm'] = "Beast Mastery";
+$phprlang['marks'] = "Marksmanship";
+$phprlang['survival'] = "Survival";
+$phprlang['affliction'] = "Affliction";
+$phprlang['demon'] = "Demonology";
+$phprlang['destro'] = "Destruction";
+$phprlang['elemental'] = "Elemental";
+$phprlang['enhance'] = "Enhancement";
+$phprlang['ret'] = "Retribution";
+$phprlang['blood'] = "Blood";
+$phprlang['unholy'] = "Unholy";
+$phprlang['notavailable'] = "N/A";
 ?>

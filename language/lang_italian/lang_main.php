@@ -89,6 +89,8 @@ $phprlang['buttons'] = 'Buttons';
 $phprlang['add_to_team'] = 'Add To Team';
 $phprlang['create_date'] = 'Create Date';
 $phprlang['create_time'] = 'Create Time';
+$phprlang['pri_spec'] = 'Pri Talent';
+$phprlang['sec_spec'] = 'Sec Talent';
 
 // roles
 $phprlang['role'] = 'Ruolo';
