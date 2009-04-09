@@ -67,53 +67,52 @@ $pageURL = 'index.php?mode=view&';
  * End Record Output Setup for Data Table
  **************************************************************/
 
-// arrays to old raid information
+// arrays to hold raid information
 $current = array();
 $previous = array();
+$count = array();
+$count2 = array();
+$raid_loop_cur = 0;
+$raid_loop_prev = 0;
 
 $sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "raids";
 $raids_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-
-$count = array();
-$test = array();
-$curr_count = 0;
-$prev_count = 0;
 
 while($raids = $db_raid->sql_fetchrow($raids_result, true)) {
 	$invite = new_date('Y/m/d H:i:s', $raids['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
 	$start = new_date('Y/m/d H:i:s', $raids['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
 	$date = $start;
 	
-	$count = get_char_count($raids['raid_id'], $type='');
-	$count2 = get_char_count($raids['raid_id'], $type='queue');
-
-	//Drafted maximum
-	$total = $count['dk'] + $count['dr'] + $count['hu'] + $count['ma'] + $count['pa'] + $count['pr'] + $count['ro'] + $count ['sh'] + $count['wk'] + $count['wa'];
-	
-	//Queued Additional
-	$total2 = $count2['dk'] + $count2['dr'] + $count2['hu'] + $count2['ma'] + $count2['pa'] + $count2['pr'] + $count2['ro'] + $count2['sh'] + $count2['wk'] + $count2['wa'];
-
-	if($total == "")
+	// Initialize Count Array and Totals.
+	foreach ($wrm_global_classes as $global_class)
 	{
-		$total = "0";
+		$count[$global_class['class_id']]='0';
+		$count2[$global_class['class_id']]='0';
 	}		
+	foreach ($wrm_global_roles as $global_role)
+	{	
+		$count[$global_role['role_id']]='0';
+		$count2[$global_role['role_id']]='0';
+	}
+	$total = 0;
+	$total2 = 0;
 	
-	if($total2 == "")
-	{
-		$total2 = "";
-	}
-	else
-	{
-		$total2 = " (+$total2)";
-	}
-
+	//Get Raid Total Counts
+	$count = get_char_count($raids['raid_id'], $type='');
+	$count2 = get_char_count($raids['raid_id'], $type='queue');		
+	foreach ($count as $class_count)
+		$total += $class_count;
+	foreach ($count2 as $class_queue_count)
+		$total2 += $class_queue_count;
+	
 	$logged_in=scrub_input($_SESSION['session_logged_in']);
 	$priv_profile=scrub_input($_SESSION['priv_profile']);
 	$profile_id=scrub_input($_SESSION['profile_id']);
 
 	// check if signed up
 	// precendence -> cancelled signup, signed up, raid frozen, open for signup
-	if($logged_in == 1 && $priv_profile == 1) {
+	if($logged_in == 1 && $priv_profile == 1) 
+	{
 		if(is_char_cancel($profile_id, $raids['raid_id']))
 			$info = '<img src="templates/' . $phpraid_config['template'] . '/images/icons/cancel.gif" border="0" height="14" width="14" onMouseover="ddrivetip(\'' . $phprlang['cancel_msg'] . '\');" onMouseout="hideddrivetip();" alt="cancel icon">';
 		else if(is_char_signed($profile_id, $raids['raid_id']))
@@ -122,51 +121,39 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true)) {
 			$info = '<img src="templates/' . $phpraid_config['template'] . '/images/icons/frozen.gif" border="0" height="14" width="14" onMouseover="ddrivetip(\'' . $phprlang['frozen_msg'] . '\');" onMouseout="hideddrivetip();" alt="frozen">';
 		else
 			$info = '<a href="view.php?mode=view&amp;raid_id=' . $raids['raid_id'] . '#signup">'. $phprlang['signup'] .'</a>';
-		//	$info = '<a href="view.php?mode=view&amp;raid_id=' . $raids['raid_id'] . '#signup"><img src="templates/' . $phpraid_config['template'] . '/images/icons/signup.gif" border="0" height="14" width="14" onMouseover="ddrivetip(\'' . $phprlang['not_signed_up'] . '\')"; onMouseout="hideddrivetip()"></a>';
 	}
 
 	$desc = scrub_input($raids['description']);
 	$ddrivetiptxt = "'<span class=tooltip_title>" . $phprlang['description'] ."</span><br>" . DEUBB2($desc) . "'";
 	$location = '<a href="view.php?mode=view&amp;raid_id=' . $raids['raid_id'] . '" onMouseover="ddrivetip('.$ddrivetiptxt.');" onMouseout="hideddrivetip();">'.$raids['location'].'</a>';
 	
-	if($phpraid_config['class_as_min'])
+	// Now that we have the raid data, we need to retrieve limit data based upon Raid ID.
+	// Get Class Limits and set Colored Counts
+	$raid_class_array = array();
+	$class_color_count = array();
+	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raid_class_lmt WHERE raid_id = %s", quote_smart($raids['raid_id']));
+	$result_raid_class = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	while($raid_class_data = $db_raid->sql_fetchrow($result_raid_class, true))
 	{
-		$dk_text = get_coloredcount('death knight', $count['dk'], $raids['dk_lmt'], $count2['dk'], true);
-		$dr_text = get_coloredcount('druid', $count['dr'], $raids['dr_lmt'], $count2['dr'], true);
-		$hu_text = get_coloredcount('hunter', $count['hu'], $raids['hu_lmt'], $count2['hu'], true);
-		$ma_text = get_coloredcount('mage', $count['ma'], $raids['ma_lmt'], $count2['ma'], true);
-		$pa_text = get_coloredcount('paladin', $count['pa'], $raids['pa_lmt'], $count2['pa'], true);
-		$pr_text = get_coloredcount('priest', $count['pr'], $raids['pr_lmt'], $count2['pr'], true);
-		$ro_text = get_coloredcount('rogue', $count['ro'], $raids['ro_lmt'], $count2['ro'], true);
-		$sh_text = get_coloredcount('shaman', $count['sh'], $raids['sh_lmt'], $count2['sh'], true);
-		$wk_text = get_coloredcount('warlock', $count['wk'], $raids['wk_lmt'], $count2['wk'], true);
-		$wa_text = get_coloredcount('warrior', $count['wa'], $raids['wa_lmt'], $count2['wa'], true);
+		$raid_class_array[$raid_class_data['class_id']] = $raid_class_data['lmt'];
+		if($phpraid_config['class_as_min'])
+			$class_color_count[$raid_class_data['class_id']] = get_coloredcount($raid_class_data['class_id'], $count[$raid_class_data['class_id']], $raid_class_array[$raid_class_data['class_id']], $count2[$raid_class_data['class_id']], true);
+		else
+			$class_color_count[$raid_class_data['class_id']] = get_coloredcount($raid_class_data['class_id'], $count[$raid_class_data['class_id']], $raid_class_array[$raid_class_data['class_id']], $count2[$raid_class_data['class_id']]);
 	}
-	else
+	// Get Role Limits and set Colored Counts
+	$raid_role_array = array();
+	$role_color_count = array();
+	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raid_role_lmt WHERE raid_id = %s", quote_smart($raids['raid_id']));
+	$result_raid_role = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	while($raid_role_data = $db_raid->sql_fetchrow($result_raid_role, true))
 	{
-		$dk_text = get_coloredcount('death knight', $count['dk'], $raids['dk_lmt'], $count2['dk']);
-		$dr_text = get_coloredcount('druid', $count['dr'], $raids['dr_lmt'], $count2['dr']);
-		$hu_text = get_coloredcount('hunter', $count['hu'], $raids['hu_lmt'], $count2['hu']);
-		$ma_text = get_coloredcount('mage', $count['ma'], $raids['ma_lmt'], $count2['ma']);
-		$pa_text = get_coloredcount('paladin', $count['pa'], $raids['pa_lmt'], $count2['pa']);
-		$pr_text = get_coloredcount('priest', $count['pr'], $raids['pr_lmt'], $count2['pr']);
-		$ro_text = get_coloredcount('rogue', $count['ro'], $raids['ro_lmt'], $count2['ro']);
-		$sh_text = get_coloredcount('shaman', $count['sh'], $raids['sh_lmt'], $count2['sh']);
-		$wk_text = get_coloredcount('warlock', $count['wk'], $raids['wk_lmt'], $count2['wk']);
-		$wa_text = get_coloredcount('warrior', $count['wa'], $raids['wa_lmt'], $count2['wa']);
-	}
-
-	// Handle Roles based upon what's in the Role table.
-	$role_array = array();
-	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "roles";
-	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$sql2 = sprintf("SELECT role_name FROM " . $phpraid_config['db_prefix'] . "roles WHERE role_id = %s", quote_smart($raid_role_data['role_id']));
+		$result_role_name = $db_raid->sql_query($sql2) or print_error($sql2, mysql_error(), 1);
+		$role_name = $db_raid->sql_fetchrow($result_role_name, true);
 		
-	while($data = $db_raid->sql_fetchrow($result, true))
-	{
-		$var = $data['role_id'] . "_text";
-		$limit = $data['role_id'] . "_lmt";
-		$$var = get_coloredcount($data['role_id'], $count[$data['role_id']], $raids[$limit], $count2[$data['role_id']]);
-		$role_array[$data['role_name']] = $$var;
+		$raid_role_array[$role_name['role_name']] = $raid_role_data['lmt'];
+		$role_color_count[$role_name['role_name']] = get_coloredcount($role_name['role_name'], $count[$raid_role_data['role_id']], $raid_role_array[$role_name['role_name']], $count2[$raid_role_data['role_id']]);
 	}
 		
 	// always show current raids
@@ -176,30 +163,18 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true)) {
 				'ID'=>$raids['raid_id'],
 				'Signup'=>$info,
 				'Date'=>$date,
-				//'Dungeon'=>UBB2($location),
 				'Dungeon'=>$location,
 				'Invite Time'=>$invite,
 				'Start Time'=>$start,
 				'Creator'=>$raids['officer'],
-				'Death Knight'=>$dk_text,
-				'Druid'=>$dr_text,
-				'Hunter'=>$hu_text,
-				'Mage'=>$ma_text,
-				'Paladin'=>$pa_text,
-				'Priest'=>$pr_text,
-				'Rogue'=>$ro_text,
-				'Shaman'=>$sh_text,
-				'Warlock'=>$wk_text,
-				'Warrior'=>$wa_text,
-				'Totals'=>$total.'/'.$raids['max']  . '' . $total2,
+				'Totals'=>$total.'/'.$raids['max']  . '(+' . $total2. ')',
 			)
 		);
-		foreach ($role_array as $left => $right)
-		{
-			$current[$curr_count][$left]= $right;
-		}
-		$curr_count++;
-		
+		foreach ($class_color_count as $left => $right)
+			$current[$raid_loop_cur][$left]= $right;
+		foreach ($role_color_count as $left => $right)
+			$current[$raid_loop_cur][$left]= $right;
+		$raid_loop_cur++;		
 	} else {
 		array_push($previous,
 			array(
@@ -210,24 +185,14 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true)) {
 				'Invite Time'=>$invite,
 				'Start Time'=>$start,
 				'Creator'=>$raids['officer'],
-				'Death Knight'=>$dk_text,
-				'Druid'=>$dr_text,
-				'Hunter'=>$hu_text,
-				'Mage'=>$ma_text,
-				'Paladin'=>$pa_text,
-				'Priest'=>$pr_text,
-				'Rogue'=>$ro_text,
-				'Shaman'=>$sh_text,
-				'Warlock'=>$wk_text,
-				'Warrior'=>$wa_text,
-				'Totals'=>$total.'/'.$raids['max']  . '' . $total2,
+				'Totals'=>$total.'/'.$raids['max']  . '(+' . $total2. ')',
 			)
 		);
-		foreach ($role_array as $left => $right)
-		{
-			$previous[$prev_count][$left]= $right;
-		}
-		$prev_count++;
+		foreach ($class_color_count as $left => $right)
+			$previous[$raid_loop_prev][$left]= $right;
+		foreach ($role_color_count as $left => $right)
+			$previous[$raid_loop_prev][$left]= $right;
+		$raid_loop_prev++;
 	}
 }
 
