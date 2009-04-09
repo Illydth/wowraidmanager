@@ -191,13 +191,9 @@ if($_GET['mode'] == 'view')
 				)
 			);
 			foreach ($class_color_count as $left => $right)
-			{
 				$current[$raid_loop_cur][$left]= $right;
-			}
 			foreach ($role_color_count as $left => $right)
-			{
 				$current[$raid_loop_cur][$left]= $right;
-			}
 			$raid_loop_cur++;
 		}
 		else
@@ -215,13 +211,9 @@ if($_GET['mode'] == 'view')
 				)
 			);	
 			foreach ($class_color_count as $left => $right)
-			{
 				$previous[$raid_loop_prev][$left]= $right;
-			}
 			foreach ($role_color_count as $left => $right)
-			{
 				$previous[$raid_loop_prev][$left]= $right;
-			}
 			$raid_loop_prev++;
 		}
 		$edit = "";

@@ -175,25 +175,6 @@ if($_GET['mode'] == 'view') {
 			$total += $class_count;
 		foreach ($count2 as $class_queue_count)
 			$total2 += $class_queue_count;
-		
-		//$count = get_char_count($data['raid_id'], $type='');
-		//$count2 = get_char_count($data['raid_id'], $type='queue');
-
-		//$total = $count['dk'] + $count['dr'] + $count['hu'] + $count['ma'] + $count['pa'] +$count['pr'] + $count['ro'] + $count['sh'] + $count['wk'] + $count['wa'];
-		//$total2 = $count2['dk'] + $count2['dr'] + $count2['hu'] + $count2['ma'] + $count2['pa'] + $count2['pr'] + $count2['ro'] + $count2['sh'] + $count2['wk'] + $count2['wa'];
-
-		//if($total == "")
-		//{
-		//	$total = "0";
-		//}
-		//if($total2 == "")
-		//{
-		//	$total2 = "";
-		//}
-		//else
-		//{
-		//	$total2 = " (+$total2)";
-		//}
 
 		// Now that we have the raid data, we need to retrieve limit data based upon Raid ID.
 		// Get Class Limits and set Colored Counts
@@ -223,77 +204,8 @@ if($_GET['mode'] == 'view') {
 			$raid_role_array[$role_name['role_name']] = $raid_role_data['lmt'];
 			$role_color_count[$role_name['role_name']] = get_coloredcount($role_name['role_name'], $count[$raid_role_data['role_id']], $raid_role_array[$role_name['role_name']], $count2[$raid_role_data['role_id']]);
 		}
-		//if($phpraid_config['class_as_min'])
-		//{
-		//	$dk_text = get_coloredcount('deathknight', $count['dk'], $data['dk_lmt'], $count2['dk'], true);
-		//	$dr_text = get_coloredcount('druid', $count['dr'], $data['dr_lmt'], $count2['dr'], true);
-		//	$hu_text = get_coloredcount('hunter', $count['hu'], $data['hu_lmt'], $count2['hu'], true);
-		//	$ma_text = get_coloredcount('mage', $count['ma'], $data['ma_lmt'], $count2['ma'], true);
-		//	$pa_text = get_coloredcount('paladin', $count['pa'], $data['pa_lmt'], $count2['pa'], true);
-		//	$pr_text = get_coloredcount('priest', $count['pr'], $data['pr_lmt'], $count2['pr'], true);
-		//	$ro_text = get_coloredcount('rogue', $count['ro'], $data['ro_lmt'], $count2['ro'], true);
-		//	$sh_text = get_coloredcount('shaman', $count['sh'], $data['sh_lmt'], $count2['sh'], true);
-		//	$wk_text = get_coloredcount('warlock', $count['wk'], $data['wk_lmt'], $count2['wk'], true);
-		//	$wa_text = get_coloredcount('warrior', $count['wa'], $data['wa_lmt'], $count2['wa'], true);
-		//	$role1_text = get_coloredcount('role1', $count['role1'], $data['role1_lmt'], $count2['role1']);
-		//	$role2_text = get_coloredcount('role2', $count['role2'], $data['role2_lmt'], $count2['role2']);
-		//	$role3_text = get_coloredcount('role3', $count['role3'], $data['role3_lmt'], $count2['role3']);
-		//	$role4_text = get_coloredcount('role4', $count['role4'], $data['role4_lmt'], $count2['role4']);
-		//	$role5_text = get_coloredcount('role5', $count['role5'], $data['role5_lmt'], $count2['role5']);
-		//	$role6_text = get_coloredcount('role6', $count['role6'], $data['role6_lmt'], $count2['role6']);
-		//}
-		//else
-		//{
-		//	$dk_text = get_coloredcount('deathknight', $count['dk'], $data['dk_lmt'], $count2['dk']);
-		//	$dr_text = get_coloredcount('druid', $count['dr'], $data['dr_lmt'], $count2['dr']);
-		//	$hu_text = get_coloredcount('hunter', $count['hu'], $data['hu_lmt'], $count2['hu']);
-		//	$ma_text = get_coloredcount('mage', $count['ma'], $data['ma_lmt'], $count2['ma']);
-		//	$pa_text = get_coloredcount('paladin', $count['pa'], $data['pa_lmt'], $count2['pa']);
-		//	$pr_text = get_coloredcount('priest', $count['pr'], $data['pr_lmt'], $count2['pr']);
-		//	$ro_text = get_coloredcount('rogue', $count['ro'], $data['ro_lmt'], $count2['ro']);
-		//	$sh_text = get_coloredcount('shaman', $count['sh'], $data['sh_lmt'], $count2['sh']);
-		//	$wk_text = get_coloredcount('warlock', $count['wk'], $data['wk_lmt'], $count2['wk']);
-		//	$wa_text = get_coloredcount('warrior', $count['wa'], $data['wa_lmt'], $count2['wa']);
-		//	$role1_text = get_coloredcount('role1', $count['role1'], $data['role1_lmt'], $count2['role1']);
-		//	$role2_text = get_coloredcount('role2', $count['role2'], $data['role2_lmt'], $count2['role2']);
-		//	$role3_text = get_coloredcount('role3', $count['role3'], $data['role3_lmt'], $count2['role3']);
-		//	$role4_text = get_coloredcount('role4', $count['role4'], $data['role4_lmt'], $count2['role4']);
-		//	$role5_text = get_coloredcount('role5', $count['role5'], $data['role5_lmt'], $count2['role5']);
-		//	$role6_text = get_coloredcount('role6', $count['role6'], $data['role6_lmt'], $count2['role6']);
-		//}
-
+		
 		// current raids
-		//if($data['old'] == 0) {
-		//	array_push($raid_list,
-		//		array(
-		//			'ID'=>$data['raid_id'],
-		//			'Date'=>$date,
-		//			'Dungeon'=>$location,
-		//			'Invite Time'=>$invite,
-		//			'Start Time'=>$start,
-		//			'Creator'=>$data['officer'],
-		//			'Totals'=>$total.'/'.$data['max']  . '' . $total2,
-		//			'Death Knight'=>$dk_text,
-		//			'Druid'=>$dr_text,
-		//			'Hunter'=>$hu_text,
-		//			'Mage'=>$ma_text,
-		//			'Paladin'=>$pa_text,
-		//			'Priest'=>$pr_text,
-		//			'Rogue'=>$ro_text,
-		//			'Shaman'=>$sh_text,
-		//			'Warlock'=>$wk_text,
-		//			'Warrior'=>$wa_text,
-		//			$phpraid_config['role1_name']=>$role1_text,
-		//			$phpraid_config['role2_name']=>$role2_text,
-		//			$phpraid_config['role3_name']=>$role3_text,
-		//			$phpraid_config['role4_name']=>$role4_text,
-		//			$phpraid_config['role5_name']=>$role5_text,
-		//			$phpraid_config['role6_name']=>$role6_text,
-		//			'Buttons'=> ''
-		//		)
-		//	);
-		//}
-			// current raids
 		if($data['old'] == 0) {
 			array_push($raid_list,
 				array(
@@ -308,13 +220,9 @@ if($_GET['mode'] == 'view') {
 				)
 			);
 			foreach ($class_color_count as $left => $right)
-			{
 				$raid_list[$raid_loop_cur][$left]= $right;
-			}
 			foreach ($role_color_count as $left => $right)
-			{
 				$raid_list[$raid_loop_cur][$left]= $right;
-			}
 			$raid_loop_cur++;
 		}
 	}
