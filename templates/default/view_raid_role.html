@@ -45,26 +45,6 @@
                 	<td width="11%" valign="top" class="row1"><div align="center">{$class_count_icon[class_data_sec].icon}<br>
           				{$class_count_icon[class_data_sec].count}</div></td>
           		{/section}
-<!--
-				<td width="11%" valign="top" class="row1"><div align="center">{$view_raid_info.druid_icon}<br>
-          {$view_raid_info.druid_count}</div></td>
-                <td width="11%" valign="top" class="row1"><div align="center">{$view_raid_info.hunter_icon}<br>
-          {$view_raid_info.hunter_count}</div></td>
-                <td width="11%" valign="top" class="row1"><div align="center">{$view_raid_info.mage_icon}<br>
-          {$view_raid_info.mage_count}</div></td>
-                <td width="11%" valign="top" class="row1"><div align="center">{$view_raid_info.paladin_icon}<br>
-          {$view_raid_info.paladin_count}</div></td>
-                <td width="11%" valign="top" class="row1"><div align="center">{$view_raid_info.priest_icon}<br>
-          {$view_raid_info.priest_count}</div></td>
-                <td width="11%" valign="top" class="row1"><div align="center">{$view_raid_info.rogue_icon}<br>
-          {$view_raid_info.rogue_count}</div></td>
-                <td width="11%" valign="top" class="row1"><div align="center">{$view_raid_info.shaman_icon}<br>
-          {$view_raid_info.shaman_count}</div></td>
-                <td width="11%" valign="top" class="row1"><div align="center">{$view_raid_info.warlock_icon}<br>
-          {$view_raid_info.warlock_count}</div></td>
-                <td width="11%" valign="top" class="row1"><div align="center">{$view_raid_info.warrior_icon}<br>
-          {$view_raid_info.warrior_count}</div></td>
--->
               </tr>
             </tbody>
           </table></td>
@@ -77,20 +57,6 @@
 	                <td width="20%" valign="top" class="row1"><div align="center">{$role_count_icon[role_data_sec].text}<br>
 						{$role_count_icon[role_data_sec].count}</div></td>
           		{/section}
-<!-- 
-                <td width="20%" valign="top" class="row1"><div align="center">{$view_raid_info.role1_text}<br>
-          {$view_raid_info.role1_count}</div></td>
-                <td width="20%" valign="top" class="row1"><div align="center">{$view_raid_info.role2_text}<br>
-          {$view_raid_info.role2_count}</div></td>
-                <td width="20%" valign="top" class="row1"><div align="center">{$view_raid_info.role3_text}<br>
-          {$view_raid_info.role3_count}</div></td>
-                <td width="20%" valign="top" class="row1"><div align="center">{$view_raid_info.role4_text}<br>
-          {$view_raid_info.role4_count}</div></td>
-                <td width="20%" valign="top" class="row1"><div align="center">{$view_raid_info.role5_text}<br>
-          {$view_raid_info.role5_count}</div></td>
-                <td width="20%" valign="top" class="row1"><div align="center">{$view_raid_info.role6_text}<br>
-          {$view_raid_info.role6_count}</div></td>
- -->
               </tr>
             </tbody>
           </table></td>
@@ -142,32 +108,6 @@
 	<div class="contentHeader"><a name="{$role_table[role_data_sec].header_data.header}"></a>{$role_table[role_data_sec].header_data.header}</div><br>
 	<div class="contentBody">{include file='raids_table.html' raid_data=$role_table[role_data_sec].role_data jump_menu=$role_table[role_data_sec].jump_menu record_counts=$role_table[role_data_sec].record_counts column_name=$role_table[role_data_sec].column_name header_data=$role_table[role_data_sec].header_data}</div><br>	
 {/section}
-<!-- 
-{if $view_raid_info.role1_text != ""}
-	<div class="contentHeader"><a name="role1"></a>{$ro1_header_data.role1_header}</div><br>
-	<div class="contentBody">{include file='raids_table.html' raid_data=$ro1_data jump_menu=$ro1_jump_menu record_counts=$ro1_record_counts column_name=$ro1_column_name header_data=$ro1_header_data}</div><br>
-{/if}
-{if $view_raid_info.role2_text != ""}
-	<div class="contentHeader"><a name="role2"></a>{$ro2_header_data.role2_header}</div><br>
-	<div class="contentBody">{include file='raids_table.html' raid_data=$ro2_data jump_menu=$ro2_jump_menu record_counts=$ro2_record_counts column_name=$ro2_column_name header_data=$ro2_header_data}</div><br>
-{/if}
-{if $view_raid_info.role3_text != ""}
-	<div class="contentHeader"><a name="role3"></a>{$ro3_header_data.role3_header}</div><br>
-	<div class="contentBody">{include file='raids_table.html' raid_data=$ro3_data jump_menu=$ro3_jump_menu record_counts=$ro3_record_counts column_name=$ro3_column_name header_data=$ro3_header_data}</div><br>
-{/if}
-{if $view_raid_info.role4_text != ""}
-	<div class="contentHeader"><a name="role4"></a>{$ro4_header_data.role4_header}</div><br>
-	<div class="contentBody">{include file='raids_table.html' raid_data=$ro4_data jump_menu=$ro4_jump_menu record_counts=$ro4_record_counts column_name=$ro4_column_name header_data=$ro4_header_data}</div><br>
-{/if}
-{if $view_raid_info.role5_text != ""}
-	<div class="contentHeader"><a name="role5"></a>{$ro5_header_data.role5_header}</div><br>
-	<div class="contentBody">{include file='raids_table.html' raid_data=$ro5_data jump_menu=$ro5_jump_menu record_counts=$ro5_record_counts column_name=$ro5_column_name header_data=$ro5_header_data}</div><br>
-{/if}
-{if $view_raid_info.role6_text != ""}
-	<div class="contentHeader"><a name="role6"></a>{$ro6_header_data.role6_header}</div><br>
-	<div class="contentBody">{include file='raids_table.html' raid_data=$ro6_data jump_menu=$ro6_jump_menu record_counts=$ro6_record_counts column_name=$ro6_column_name header_data=$ro6_header_data}</div><br>
-{/if}
--->
 <div class="contentHeader">{$queue_header_data.raid_queue_header}</div><br>
 <div class="contentBody">{include file='raids_table.html' raid_data=$queue_data jump_menu=$queue_jump_menu record_counts=$queue_record_counts column_name=$queue_column_name header_data=$queue_header_data}</div><br>
 <div class="contentHeader">{$cancel_header_data.raid_cancel_header}</div><br>
