@@ -415,7 +415,9 @@ VALUES (NULL , 'raidview2', 'Date', '1', '11', NULL, 'date', 'wrmdate');
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
 VALUES (NULL , 'raidview2', 'Time', '1', '12', NULL, 'time', 'wrmtime');
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'raidview2', 'Buttons', '1', '13', NULL, 'buttons', NULL);
+VALUES (NULL , 'raidview2', 'Signup_Spec', '1', '13', NULL, 'signup_spec', NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
+VALUES (NULL , 'raidview2', 'Buttons', '1', '14', NULL, 'buttons', NULL);
 
 INSERT INTO `wrm_config` VALUES ('records_per_page','25');
 INSERT INTO `wrm_version` VALUES ('3.9.9.1.1','4.0 Beta 1 Release 1');
@@ -686,5 +688,8 @@ ALTER TABLE `wrm_chars` ADD `sec_spec` VARCHAR( 255 ) ;
 UPDATE `wrm_column_headers` SET `column_name` = 'Pri_Spec' WHERE `wrm_column_headers`.`ID` =117 LIMIT 1;
 UPDATE `wrm_column_headers` SET `position` = '14' WHERE `wrm_column_headers`.`ID` =118 LIMIT 1 ;
 INSERT INTO `wrm_column_headers` VALUES (NULL , 'char1', 'Sec_Spec', '1', '13', NULL , 'role', NULL);
+
+-- Add selected spec to the signups field.
+ALTER TABLE `wrm_signups` ADD `selected_spec` VARCHAR( 100 ) NOT NULL ;
 
 INSERT INTO `wrm_version` VALUES ('3.9.9.2.1','4.0 Beta 2 Release 1');

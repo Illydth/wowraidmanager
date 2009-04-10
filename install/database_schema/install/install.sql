@@ -564,8 +564,9 @@ VALUES (NULL , 'raidview2', 'Date', '1', '11', NULL, 'date', 'wrmdate');
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
 VALUES (NULL , 'raidview2', 'Time', '1', '12', NULL, 'time', 'wrmtime');
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'raidview2', 'Buttons', '1', '13', NULL, 'buttons', NULL);
-
+VALUES (NULL , 'raidview2', 'Signup_Spec', '1', '13', NULL, 'signup_spec', NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
+VALUES (NULL , 'raidview2', 'Buttons', '1', '14', NULL, 'buttons', NULL);
 -- Config Table Creation
 DROP TABLE IF EXISTS `wrm_config`;
 CREATE TABLE  `wrm_config` (
@@ -1071,6 +1072,7 @@ CREATE TABLE  `wrm_signups` (
   `cancel` int(1) NOT NULL default '0',
   `queue` int(1) NOT NULL default '0',
   `timestamp` varchar(255) NOT NULL default '',
+  `selected_spec` varchar(100) NOT NULL,
   PRIMARY KEY  (`signup_id`)
 ) ;
 
