@@ -288,6 +288,7 @@ if($_GET['mode'] == 'view') {
 		require_once('includes/page_header.php');
 		$wrmsmarty->display('delete.html');
 		require_once('includes/page_footer.php');
+		exit;
 	}
 	else
 	{
