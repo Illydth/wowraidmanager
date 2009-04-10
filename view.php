@@ -76,7 +76,7 @@ if(!isset($_GET['SortDescending']) || !is_numeric($_GET['SortDescending']))
 else
 	$sortDesc = scrub_input($_GET['SortDescending']);
 		
-$pageURL = 'users.php?mode=view&raid_id=' . $raid_id . '&';
+$pageURL = 'view.php?mode=view&raid_id=' . $raid_id . '&';
 /**************************************************************
  * End Record Output Setup for Data Table
  **************************************************************/
@@ -184,41 +184,6 @@ if($mode == 'view')
 				
 	$raid_queue = array();
 	$raid_cancel = array();
-	
-	// now, get the actual class information and put them into their arrays
-	//if ($phpraid_config['raid_view_type'] == 'by_class')
-	//{
-	//	$deathknight = array();
-	//	$druid = array();
-	//	$hunter = array();
-	//	$mage = array();
-	//	$paladin = array();
-	//	$priest = array();
-	//	$rogue = array();
-	//	$shaman = array();
-	//	$warlock = array();
-	//	$warrior = array();
-	//}
-	//else
-	//{
-	//	$role1 = array();
-	//	$role2 = array();
-	//	$role3 = array();
-	//	$role4 = array();
-	//	$role5 = array();
-	//	$role6 = array();
-	//}
-
-	//$deathknight_count = 0;
-	//$druid_count = 0;
-	//$hunter_count = 0;
-	//$mage_count = 0;
-	//$paladin_count = 0;
-	//$priest_count = 0;
-	//$rogue_count = 0;
-	//$shaman_count = 0;
-	//$warlock_count = 0;
-	//$warrior_count = 0;
 
 	/*******************************************************************************
 	 * 	HANDLE DRAFTED RAIDERS
@@ -301,13 +266,41 @@ if($mode == 'view')
 		if(strlen($comments) == 0)
 			$comments = '-';
 
+		//Get Spec Information.
+		$spec = $signups['selected_spec'];
+		
+		$sql = sprintf("SELECT role_id FROM " . $phpraid_config['db_prefix'] . "class_role WHERE class_id = %s and subclass = %s", quote_smart($data['class']), quote_smart($data['pri_spec']));
+		$result_spec_lang = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$spec_lang_data = $db_raid->sql_fetchrow($result_spec_lang, true);
+		$pri_spec_lang = $spec_lang_data['lang_index'];
+		$pri_spec_role = $spec_lang_data['role_id'];
+		foreach ($wrm_global_roles as $global_role)
+			if($pri_spec_role == $global_role['role_id'])
+				$pri_spec_role_name = $global_role['role_name'];
+		
+		$sql = sprintf("SELECT role_id FROM " . $phpraid_config['db_prefix'] . "class_role WHERE class_id = %s and subclass = %s", quote_smart($data['class']), quote_smart($data['sec_spec']));
+		$result_spec_lang = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$spec_lang_data = $db_raid->sql_fetchrow($result_spec_lang, true);
+		$sec_spec_lang = $spec_lang_data['lang_index'];
+		$sec_spec_role = $spec_lang_data['role_id'];
+		foreach ($wrm_global_roles as $global_role)
+			if($sec_spec_role == $global_role['role_id'])
+				$sec_spec_role_name = $global_role['role_name'];
+			
+		if ($spec == $data['pri_spec'])
+			$pri_spec = "<b>" . $data['pri_spec'] . ":" . $pri_spec_role_name . "</b>";
+		else
+			$pri_spec = $data['pri_spec'] . ":" . $pri_spec_role_name;
+		if ($spec == $data['sec_spec'])
+			$sec_spec = "<b>" . $data['sec_spec'] . ":" . $sec_spec_role_name . "</b>";
+		else
+			$sec_spec = $data['sec_spec'] . ":" . $sec_spec_role_name;
+				
 		$arcane = $data['arcane'];
 		$fire = $data['fire'];
 		$nature = $data['nature'];
 		$frost = $data['frost'];
 		$shadow = $data['shadow'];
-		$pri_spec = $data['pri_spec'];
-		$sec_spec = $data['sec_spec'];
 
 		if ($phpraid_config['enable_armory'])
 			$name = get_armorychar($data['name'], $phpraid_config['armory_language'], $server);
@@ -344,7 +337,7 @@ if($mode == 'view')
 					$class = ' <img src="templates/' . $phpraid_config['template'] . '/'. $global_class['image'] .'" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang[$global_class['lang_index']].'\');" onMouseout="hideddrivetip();" alt="'.$phprlang[$global_class['lang_index']].'">';
 					
 			// Get Role attached to primary spec by looking up in class/role table.
-			$sql = sprintf("SELECT role_id FROM " . $phpraid_config['db_prefix'] . "class_role WHERE class_id=%s and subclass=%s",quote_smart($data['class']),quote_smart($pri_spec));
+			$sql = sprintf("SELECT role_id FROM " . $phpraid_config['db_prefix'] . "class_role WHERE class_id=%s and subclass=%s",quote_smart($data['class']),quote_smart($spec));
 			$role_name_data_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 			$role_name_data = $db_raid->sql_fetchrow($role_name_data_result, true);
 			$role_id = $role_name_data['role_id'];
@@ -428,6 +421,38 @@ if($mode == 'view')
 			$guildname = $data['guild'];
 		}
 
+		//Create the Signup Spec Dropdown.
+		$sql = sprintf("SELECT role_id, lang_index FROM " . $phpraid_config['db_prefix'] . "class_role WHERE class_id = %s and subclass = %s", quote_smart($data['class']), quote_smart($data['pri_spec']));
+		$result_spec_lang = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$spec_lang_data = $db_raid->sql_fetchrow($result_spec_lang, true);
+		$pri_spec_lang = $spec_lang_data['lang_index'];
+		$pri_spec_role = $spec_lang_data['role_id'];
+		foreach ($wrm_global_roles as $global_role)
+			if($pri_spec_role == $global_role['role_id'])
+				$pri_spec_role_name = $global_role['role_name'];
+		
+		$sql = sprintf("SELECT role_id, lang_index FROM " . $phpraid_config['db_prefix'] . "class_role WHERE class_id = %s and subclass = %s", quote_smart($data['class']), quote_smart($data['sec_spec']));
+		$result_spec_lang = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$spec_lang_data = $db_raid->sql_fetchrow($result_spec_lang, true);
+		$sec_spec_lang = $spec_lang_data['lang_index'];
+		$sec_spec_role = $spec_lang_data['role_id'];
+		foreach ($wrm_global_roles as $global_role)
+			if($sec_spec_role == $global_role['role_id'])
+				$sec_spec_role_name = $global_role['role_name'];
+		
+		$form_use = "value=\"view.php?mode=switch_spec&amp;raid_id=" . $raid_id . "&amp;Sort=" . $sort_mode . "&amp;SortDescending=".$sort_descending."&amp;signup_id=" . $signups['signup_id'] . "&amp;spec=";
+
+		$signup_spec = "<option ";
+		if($signups['selected_spec'] == '' || $signups['selected_spec'] == $data['pri_spec'])
+			$signup_spec .= "SELECTED ";
+		$signup_spec .= $form_use.$data['pri_spec']."\">".$phprlang[$pri_spec_lang].":".$pri_spec_role_name."</option>";
+		$signup_spec .= "<option ";
+		if($signups['selected_spec'] == $data['sec_spec'])
+			$signup_spec .= "SELECTED ";
+		$signup_spec .= $form_use.$data['sec_spec']."\">".$phprlang[$sec_spec_lang].":".$sec_spec_role_name."</option>";
+				
+		$signup_spec_output = '<select name="signup_spec" onChange="MM_jumpMenu(\'parent\',this,0)" class="form">'. $signup_spec . '</select>';		
+		
 		array_push($raid_queue, 
 			array(
 				'ID'=>$data['char_id'],
@@ -441,7 +466,8 @@ if($mode == 'view')
 				'Date'=>$date,
 				'Time'=>$time,
 				'Comments'=>$comments,
-				'Guild'=>$guildname
+				'Guild'=>$guildname,
+				'Signup_Spec'=>$signup_spec_output,
 			)
 		);
 	}
@@ -517,6 +543,38 @@ if($mode == 'view')
 			$guildname = $data['guild'];
 		}
 
+		//Create the Signup Spec Dropdown.
+		$sql = sprintf("SELECT role_id, lang_index FROM " . $phpraid_config['db_prefix'] . "class_role WHERE class_id = %s and subclass = %s", quote_smart($data['class']), quote_smart($data['pri_spec']));
+		$result_spec_lang = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$spec_lang_data = $db_raid->sql_fetchrow($result_spec_lang, true);
+		$pri_spec_lang = $spec_lang_data['lang_index'];
+		$pri_spec_role = $spec_lang_data['role_id'];
+		foreach ($wrm_global_roles as $global_role)
+			if($pri_spec_role == $global_role['role_id'])
+				$pri_spec_role_name = $global_role['role_name'];
+		
+		$sql = sprintf("SELECT role_id, lang_index FROM " . $phpraid_config['db_prefix'] . "class_role WHERE class_id = %s and subclass = %s", quote_smart($data['class']), quote_smart($data['sec_spec']));
+		$result_spec_lang = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$spec_lang_data = $db_raid->sql_fetchrow($result_spec_lang, true);
+		$sec_spec_lang = $spec_lang_data['lang_index'];
+		$sec_spec_role = $spec_lang_data['role_id'];
+		foreach ($wrm_global_roles as $global_role)
+			if($sec_spec_role == $global_role['role_id'])
+				$sec_spec_role_name = $global_role['role_name'];
+		
+		$form_use = "value=\"view.php?mode=switch_spec&amp;raid_id=" . $raid_id . "&amp;Sort=" . $sort_mode . "&amp;SortDescending=".$sort_descending."&amp;signup_id=" . $signups['signup_id'] . "&amp;spec=";
+
+		$signup_spec = "<option ";
+		if($signups['selected_spec'] == '' || $signups['selected_spec'] == $data['pri_spec'])
+			$signup_spec .= "SELECTED ";
+		$signup_spec .= $form_use.$data['pri_spec']."\">".$phprlang[$pri_spec_lang].":".$pri_spec_role_name."</option>";
+		$signup_spec .= "<option ";
+		if($signups['selected_spec'] == $data['sec_spec'])
+			$signup_spec .= "SELECTED ";
+		$signup_spec .= $form_use.$data['sec_spec']."\">".$phprlang[$sec_spec_lang].":".$sec_spec_role_name."</option>";
+				
+		$signup_spec_output = '<select name="signup_spec" onChange="MM_jumpMenu(\'parent\',this,0)" class="form">'. $signup_spec . '</select>';		
+				
 		array_push($raid_cancel, 
 			array(
 				'ID'=>$data['char_id'],
@@ -530,7 +588,8 @@ if($mode == 'view')
 				'Date'=>$date,
 				'Time'=>$time,
 				'Comments'=>$comments,
-				'Guild'=>$guildname
+				'Guild'=>$guildname,
+				'Signup_Spec'=>$signup_spec_output,
 			)
 		);
 	}
@@ -542,9 +601,6 @@ if($mode == 'view')
 	
 	if ($phpraid_config['raid_view_type'] == 'by_class')
 	{
-		// Get the class database information to the template to create a section for it.
-		//$wrmsmarty->assign('global_class', $wrm_global_classes);
-		
 		// Create the Class Drafted Table Views.
 		$class_table_array = array();
 		$class_data = array();
@@ -594,9 +650,6 @@ if($mode == 'view')
 	}
 	else
 	{
-		// Get the class database information to the template to create a section for it.
-		//$wrmsmarty->assign('global_role', $wrm_global_roles);
-		
 		// Create the Class Drafted Table Views.
 		$role_table_array = array();
 		$role_data = array();
@@ -761,94 +814,6 @@ if($mode == 'view')
 		$raid_role_array[$role_name['role_name']] = $raid_role_data['lmt'];
 		$role_color_count[$role_name['role_name']] = get_coloredcount($role_name['role_name'], $count[$raid_role_data['role_id']], $raid_role_array[$role_name['role_name']], $count2[$raid_role_data['role_id']]);
 	}		
-	
-	//if($phpraid_config['class_as_min'])
-	//{
-	//	$deathknight_count = get_coloredcount('deathknight', $count['dk'], $data['dk_lmt'], $count2['dk'], true);
-	//	$druid_count = get_coloredcount('druid', $count['dr'], $data['dr_lmt'], $count2['dr'], true);
-	//	$hunter_count = get_coloredcount('hunter', $count['hu'], $data['hu_lmt'], $count2['hu'], true);
-	//	$mage_count = get_coloredcount('mage', $count['ma'], $data['ma_lmt'], $count2['ma'], true);
-	//	$paladin_count = get_coloredcount('paladin', $count['pa'], $data['pa_lmt'], $count2['pa'], true);
-	//	$priest_count = get_coloredcount('priest', $count['pr'], $data['pr_lmt'], $count2['pr'], true);
-	//	$rogue_count = get_coloredcount('rogue', $count['ro'], $data['ro_lmt'], $count2['ro'], true);
-	//	$shaman_count = get_coloredcount('shaman', $count['sh'], $data['sh_lmt'], $count2['sh'], true);
-	//	$warlock_count = get_coloredcount('warlock', $count['wk'], $data['wk_lmt'], $count2['wk'], true);
-	//	$warrior_count = get_coloredcount('warrior', $count['wa'], $data['wa_lmt'], $count2['wa'], true);
-	//}
-	//else
-	//{
-	//	$deathknight_count = get_coloredcount('deathknight', $count['dk'], $data['dk_lmt'], $count2['dk']);
-	//	$druid_count = get_coloredcount('druid', $count['dr'], $data['dr_lmt'], $count2['dr']);
-	//	$hunter_count = get_coloredcount('hunter', $count['hu'], $data['hu_lmt'], $count2['hu']);
-	//	$mage_count = get_coloredcount('mage', $count['ma'], $data['ma_lmt'], $count2['ma']);
-	//	$paladin_count = get_coloredcount('paladin', $count['pa'], $data['pa_lmt'], $count2['pa']);
-	//	$priest_count = get_coloredcount('priest', $count['pr'], $data['pr_lmt'], $count2['pr']);
-	//	$rogue_count = get_coloredcount('rogue', $count['ro'], $data['ro_lmt'], $count2['ro']);
-	//	$shaman_count = get_coloredcount('shaman', $count['sh'], $data['sh_lmt'], $count2['sh']);
-	//	$warlock_count = get_coloredcount('warlock', $count['wk'], $data['wk_lmt'], $count2['wk']);
-	//	$warrior_count = get_coloredcount('warrior', $count['wa'], $data['wa_lmt'], $count2['wa']);
-	//}
-
-	//if ($phpraid_config['role1_name'] != '')
-	//{
-	//	$role1_text = $phpraid_config['role1_name'];
-	//	$role1_count = get_coloredcount('role1', $count['role1'], $data['role1_lmt'], $count2['role1']);
-	//}
-	//else
-	//{
-	//	$role1_text = '';
-	//	$role1_count = '';
-	//}
-	//if ($phpraid_config['role2_name'] != '')
-	//{
-	//	$role2_text = $phpraid_config['role2_name'];
-	//	$role2_count = get_coloredcount('role2', $count['role2'], $data['role2_lmt'], $count2['role2']);
-	//}
-	//else
-	//{
-	//	$role2_text = '';
-	//	$role2_count = '';
-	//}
-	//if ($phpraid_config['role3_name'] != '')
-	//{
-	//	$role3_text = $phpraid_config['role3_name'];
-	//	$role3_count = get_coloredcount('role3', $count['role3'], $data['role3_lmt'], $count2['role3']);
-	//}
-	//else
-	//{
-	//	$role3_text = '';
-	//	$role3_count = '';
-	//}
-	//if ($phpraid_config['role4_name'] != '')
-	//{
-	//	$role4_text = $phpraid_config['role4_name'];
-	//	$role4_count = get_coloredcount('role4', $count['role4'], $data['role4_lmt'], $count2['role4']);
-	//}
-	//else
-	//{
-	//	$role4_text = '';
-	//	$role4_count = '';
-	//}
-	//if ($phpraid_config['role5_name'] != '')
-	//{
-	//	$role5_text = $phpraid_config['role5_name'];
-	//	$role5_count = get_coloredcount('role5', $count['role5'], $data['role5_lmt'], $count2['role5']);
-	//}
-	//else
-	//{
-	//	$role5_text = '';
-	//	$role5_count = '';
-	//}
-	//if ($phpraid_config['role6_name'] != '')
-	//{
-	//	$role6_text = $phpraid_config['role6_name'];
-	//	$role6_count = get_coloredcount('role6', $count['role6'], $data['role6_lmt'], $count2['role6']);
-	//}
-	//else
-	//{
-	//	$role6_text = '';
-	//	$role6_count = '';
-	//}
 
 	// check to see if they have permissions to signup
 	$show_signup = 1;
@@ -896,20 +861,8 @@ if($mode == 'view')
 	// finally, icons
 	$class_icons = array();
 	foreach ($wrm_global_classes as $global_class)
-	{
 		$class_icons[$global_class['class_id']] = '<a href="#'.$global_class['lang_index'].'" onMouseover="ddrivetip(\''.$phprlang[$global_class['lang_index']].'\');" onMouseout="hideddrivetip();"><img src="templates/'.$phpraid_config['template'].'/'.$global_class['image'].'" width="24" height="24" border="0" alt="'.$global_class['class_id'].'"></a>'; 
-		
-		//$deathknight_icon = '<a href="#deathknights" onMouseover="ddrivetip(\''.$phprlang['deathknight_icon'].'\');" onMouseout="hideddrivetip();"><img src="templates/'.$phpraid_config['template'].'/images/classes/deathknight_icon.gif" width="24" height="24" border="0" alt="death knight"></a>';
-		//$druid_icon = '<a href="#druids" onMouseover="ddrivetip(\''.$phprlang['druid_icon'].'\');" onMouseout="hideddrivetip();"><img src="templates/'.$phpraid_config['template'].'/images/classes/druid_icon.gif" width="24" height="24" border="0" alt="druid"></a>';
-		//$hunter_icon = '<a href="#hunters" onMouseover="ddrivetip(\''.$phprlang['hunter_icon'].'\');" onMouseout="hideddrivetip();"><img src="templates/'.$phpraid_config['template'].'/images/classes/hunter_icon.gif" width="24" height="24" border="0" alt="hunter"></a>';
-		//$mage_icon = '<a href="#mages" onMouseover="ddrivetip(\''.$phprlang['mage_icon'].'\');" onMouseout="hideddrivetip();"><img src="templates/'.$phpraid_config['template'].'/images/classes/mage_icon.gif" width="24" height="24" border="0" alt="mage"></a>';
-		//$paladin_icon = '<a href="#paladins" onMouseover="ddrivetip(\''.$phprlang['paladin_icon'].'\');" onMouseout="hideddrivetip();"><img src="templates/'.$phpraid_config['template'].'/images/classes/paladin_icon.gif" width="24" height="24" border="0" alt="paladin"></a>';
-		//$priest_icon = '<a href="#priests" onMouseover="ddrivetip(\''.$phprlang['priest_icon'].'\');" onMouseout="hideddrivetip();"><img src="templates/'.$phpraid_config['template'].'/images/classes/priest_icon.gif" width="24" height="24" border="0" alt="priest"></a>';
-		//$rogue_icon = '<a href="#rogues" onMouseover="ddrivetip(\''.$phprlang['rogue_icon'].'\');" onMouseout="hideddrivetip();"><img src="templates/'.$phpraid_config['template'].'/images/classes/rogue_icon.gif" width="24" height="24" border="0" alt="rogue"></a>';
-		//$shaman_icon = '<a href="#shamans" onMouseover="ddrivetip(\''.$phprlang['shaman_icon'].'\');" onMouseout="hideddrivetip();"><img src="templates/'.$phpraid_config['template'].'/images/classes/shaman_icon.gif" width="24" height="24" border="0" alt="shaman"></a>';
-		//$warlock_icon = '<a href="#warlocks" onMouseover="ddrivetip(\''.$phprlang['warlock_icon'].'\');" onMouseout="hideddrivetip();"><img src="templates/'.$phpraid_config['template'].'/images/classes/warlock_icon.gif" width="24" height="24" border="0" alt="warlock"></a>';
-		//$warrior_icon = '<a href="#warriors" onMouseover="ddrivetip(\''.$phprlang['warrior_icon'].'\');" onMouseout="hideddrivetip();"><img src="templates/'.$phpraid_config['template'].'/images/classes/warrior_icon.gif" width="24" height="24" border="0" alt="warrior"></a>';
-	}
+
 	// And now create the link to the team assignment/creation form and view missing signups but only if RL or RA.
 	if ($user_perm_group['admin'] OR $user_perm_group['RL'])
 	{
@@ -931,22 +884,6 @@ if($mode == 'view')
 			'raid_date'=>$raid_date,
 			'raid_invite_time'=>$raid_invite_time,
 			'raid_start_time'=>$raid_start_time,
-			//'deathknight_count'=>$deathknight_count,
-			//'druid_count'=>$druid_count,
-			//'hunter_count'=>$hunter_count,
-			//'mage_count'=>$mage_count,
-			//'priest_count'=>$priest_count,
-			//'paladin_count'=>$paladin_count,
-			//'rogue_count'=>$rogue_count,
-			//'shaman_count'=>$shaman_count,
-			//'warlock_count'=>$warlock_count,
-			//'warrior_count'=>$warrior_count,
-			//'role1_count'=>$role1_count,
-			//'role2_count'=>$role2_count,
-			//'role3_count'=>$role3_count,
-			//'role4_count'=>$role4_count,
-			//'role5_count'=>$role5_count,
-			//'role6_count'=>$role6_count,
 			'raid_cancel'=>$raid_cancel,
 			'raid_max'=>$raid_max,
 			'raid_max_percentage'=>$raid_max_percentage,
@@ -962,12 +899,6 @@ if($mode == 'view')
 			'raid_open'=>$raid_open,
 			'raid_notice'=>$raid_notice,
 			'raid_description'=>$raid_description,
-			//'role1_text'=>$role1_text,
-			//'role2_text'=>$role2_text,
-			//'role3_text'=>$role3_text,
-			//'role4_text'=>$role4_text,
-			//'role5_text'=>$role5_text,
-			//'role6_text'=>$role6_text,
 			'cancel_text'=>$phprlang['view_raid_cancel_text'],
 			'raid_description_header'=>$phprlang['view_description_header'],
 			'location_text'=>$phprlang['view_location'],
@@ -984,16 +915,6 @@ if($mode == 'view')
 			'total_text'=>$phprlang['view_total'],
 			'information_header'=>$phprlang['view_information_header'],
 			'statistics_header'=>$phprlang['view_statistics_header'],
-			//'deathknight_icon'=>$deathknight_icon,
-			//'druid_icon'=>$druid_icon,
-			//'hunter_icon'=>$hunter_icon,
-			//'mage_icon'=>$mage_icon,
-			//'paladin_icon'=>$paladin_icon,
-			//'priest_icon'=>$priest_icon,
-			//'rogue_icon'=>$rogue_icon,
-			//'shaman_icon'=>$shaman_icon,
-			//'warlock_icon'=>$warlock_icon,
-			//'warrior_icon'=>$warrior_icon
 		)
 	);
 
@@ -1022,6 +943,21 @@ if($mode == 'view')
 		
 	$wrmsmarty->assign('class_count_icon', $class_count_icon);
 	$wrmsmarty->assign('role_count_icon', $role_count_icon);
+}
+elseif($mode == 'switch_spec')
+{
+	//Retrieve Values
+	$raid_id = scrub_input($_GET['raid_id']);
+	$signup_id = scrub_input($_GET['signup_id']);
+	$spec = scrub_input($_GET['spec']);
+	$sort_mode = scrub_input($_GET['Sort']);
+	$sort_descending = scrub_input($_GET['SortDescending']);
+	
+	// Update the Signups Table with the selected spec and forward back to the view page.
+	$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "signups set selected_spec=%s WHERE signup_id=%s", quote_smart($spec), quote_smart($signup_id));
+	$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+
+	header("Location: view.php?mode=view&raid_id=$raid_id&Sort=$sort_mode&SortDescending=$sort_descending");
 }
 elseif($mode == 'signup')
 {
@@ -1059,7 +995,6 @@ elseif($mode == 'signup')
 		{
 			// now check class limits
 			// setup the count array
-			//$count = array('dk'=>'0','dr'=>'0','hu'=>'0','ma'=>'0','pa'=>'0','pr'=>'0','ro'=>'0','sh'=>'0','wk'=>'0','wa'=>'0','role1'=>'0','role2'=>'0','role3'=>'0','role4'=>'0','role5'=>'0','role6'=>'0','total'=>'0');
 			$count = array();
 			// Initialize Count Array and Totals.
 			foreach ($wrm_global_classes as $global_class)
@@ -1073,72 +1008,6 @@ elseif($mode == 'signup')
 			foreach ($count as $class_count)
 				$total += $class_count;
 			
-			//$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id=%s AND queue='0' AND cancel='0'",quote_smart($raid_id));
-			//$result_char = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-			//while($char = $db_raid->sql_fetchrow($result_char, true))
-			//{
-			//	$signup_char_id = scrub_input($char['char_id']);
-			//	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id=%s", quote_smart($signup_char_id));
-			//	$result_count = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-			//	$tmp = $db_raid->sql_fetchrow($result_count, true);
-				
-			//	switch($tmp['class'])
-			//	{
-			//		case $phprlang['deathknight']:
-			//			$count['dk']++;
-			//			break;
-			//		case $phprlang['druid']:
-			//			$count['dr']++;
-			//			break;
-			//		case $phprlang['hunter']:
-			//			$count['hu']++;
-			//			break;
-			//		case $phprlang['mage']:
-			//			$count['ma']++;
-			//			break;
-			//		case $phprlang['paladin']:
-			//			$count['pa']++;
-			//			break;
-			//		case $phprlang['priest']:
-			//			$count['pr']++;
-			//			break;
-			//		case $phprlang['rogue']:
-			//			$count['ro']++;
-			//			break;
-			//		case $phprlang['shaman']:
-			//			$count['sh']++;
-			//			break;
-			//		case $phprlang['warlock']:
-			//			$count['wk']++;
-			//			break;
-			//		case $phprlang['warrior']:
-			//			$count['wa']++;
-			//			break;
-			//	}
-			//	switch($tmp['role'])
-			//	{
-			//		case $phpraid_config['role1_name']:
-			//			$count['role1']++;
-			//			break;
-			//		case $phpraid_config['role2_name']:
-			//			$count['role2']++;
-			//			break;
-			//		case $phpraid_config['role3_name']:
-			//			$count['role3']++;
-			//			break;
-			//		case $phpraid_config['role4_name']:
-			//			$count['role4']++;
-			//			break;
-			//		case $phpraid_config['role5_name']:
-			//			$count['role5']++;
-			//			break;
-			//		case $phpraid_config['role6_name']:
-			//			$count['role6']++;
-			//			break;
-			//	}	
-			//	$count['total']++;			
-			//}
-
 			// Now that we have the raid data, we need to retrieve limit data based upon Raid ID.
 			// Get Class Limits and set Colored Counts
 			$raid_class_array = array();
@@ -1182,49 +1051,6 @@ elseif($mode == 'signup')
 							if ($count[$global_class['class_id']] >= $raid_class_array[$raid_class_data['class_id']])
 								$queue = 1;
 				}	
-					//switch($class['class'])
-					//{
-					//	case $phprlang['deathknight']:
-					//		if($count['dk'] >= $total['dk_lmt'])
-					//			$queue = 1;
-					//		break;
-					//	case $phprlang['druid']:
-					//		if($count['dr'] >= $total['dr_lmt'])
-					//			$queue = 1;
-					//		break;
-					//	case $phprlang['hunter']:
-					//		if($count['hu'] >= $total['hu_lmt'])
-					//			$queue = 1;
-					//		break;
-					//	case $phprlang['mage']:
-					//		if($count['ma'] >= $total['ma_lmt'])
-					//			$queue = 1;
-					//		break;
-					//	case $phprlang['paladin']:
-					//		if($count['pa'] >= $total['pa_lmt'])
-					//			$queue = 1;
-					//		break;
-					//	case $phprlang['priest']:
-					//		if($count['pr'] >= $total['pr_lmt'])
-					//			$queue = 1;
-					//		break;
-					//	case $phprlang['rogue']:
-					//		if($count['ro'] >= $total['ro_lmt'])
-					//			$queue = 1;
-					//		break;
-					//	case $phprlang['shaman']:
-					//		if($count['sh'] >= $total['sh_lmt'])
-					//			$queue = 1;
-					//		break;
-					//	case $phprlang['warlock']:
-					//		if($count['wk'] >= $total['wk_lmt'])
-					//			$queue = 1;
-					//		break;
-					//	case $phprlang['warrior']:
-					//		if($count['wa'] >= $total['wa_lmt'])
-					//			$queue = 1;
-					//		break;
-					//}			
 				
 				if($phpraid_config['enforce_role_limits'])
 				{
@@ -1243,33 +1069,7 @@ elseif($mode == 'signup')
 							if ($count[$global_role['role_name']] >= $raid_role_array[$global_role['role_name']])
 								$queue = 1;
 				}	
-					//switch($class['role'])
-					//{
-					//	case $phpraid_config['role1_name']:
-					//		if($count['role1'] >= $total['role1_lmt'])
-					//			$queue = 1;
-					//		break;
-					//	case $phpraid_config['role2_name']:
-					//		if($count['role2'] >= $total['role2_lmt'])
-					//			$queue = 1;
-					//		break;
-					//	case $phpraid_config['role3_name']:
-					//		if($count['role3'] >= $total['role3_lmt'])
-					//			$queue = 1;
-					//		break;
-					//	case $phpraid_config['role4_name']:
-					//		if($count['role4'] >= $total['role4_lmt'])
-					//			$queue = 1;
-					//		break;
-					//	case $phpraid_config['role5_name']:
-					//		if($count['role5'] >= $total['role5_lmt'])
-					//			$queue = 1;
-					//		break;
-					//	case $phpraid_config['role6_name']:
-					//		if($count['role6'] >= $total['role6_lmt'])
-					//			$queue = 1;
-					//		break;
-					//}
+
 				if($total >= $max)
 					$queue = 1;
 			}
@@ -1279,39 +1079,31 @@ elseif($mode == 'signup')
 		$timestamp = scrub_input($_POST['timestamp']);
 		$profile_id = scrub_input($_SESSION['profile_id']);
 
-		//$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id=%s", quote_smart($char_id));
-		//$result_char = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-		//$char_data = $db_raid->sql_fetchrow($result_char);
-		//if($char_data['pri_spec'] == $phprlang['role_none'] || $char_data['pri_spec'] == '')
-		//{
-		//	$form_error = 1;
-		//	$errorTitle = $phprlang['form_error'];
-		//	$errorMsg = $phprlang['view_error_role_undef'];
-		//	$errorDie = 1;
-		//	$errorSpace = 1;
-		//}
-		//else
-		//{
-			$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id=%s AND char_id=%s AND profile_id=%s", quote_smart($raid_id), quote_smart($char_id), quote_smart($profile_id));
-			$result_signup = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-			if($db_raid->sql_numrows($result_signup) > 0) {
-				$form_error = 1;
-				$errorTitle = $phprlang['form_error'];
-				$errorMsg = $phprlang['view_error_signed_up'];
-				$errorDie = 1;
-				$errorSpace = 1;
-			}else{
-				log_raid($char_id, $raid_id, 'signup');
+		// Get the character spec information. 
+		$sql = sprintf("SELECT pri_spec FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id=%s", quote_smart($char_id));
+		$result_spec = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$spec_data = $db_raid->sql_fetchrow($result_spec, true);
+		$selected_spec = $spec_data['pri_spec'];
+		
+		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id=%s AND char_id=%s AND profile_id=%s", quote_smart($raid_id), quote_smart($char_id), quote_smart($profile_id));
+		$result_signup = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		if($db_raid->sql_numrows($result_signup) > 0) {
+			$form_error = 1;
+			$errorTitle = $phprlang['form_error'];
+			$errorMsg = $phprlang['view_error_signed_up'];
+			$errorDie = 1;
+			$errorSpace = 1;
+		}else{
+			log_raid($char_id, $raid_id, 'signup');
 
-				$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "signups
-							(`char_id`,`profile_id`,`raid_id`,`comments`,`queue`,`timestamp`,`cancel`)
-						VALUES
-							(%s,%s,%s,%s,%s,%s,%s)", quote_smart($char_id), quote_smart($profile_id), quote_smart($raid_id),
-							quote_smart($comments), quote_smart($queue), quote_smart($timestamp), quote_smart($cancel));
-				$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-				header("Location: view.php?mode=view&raid_id=$raid_id");
-			}
-		//}
+			$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "signups
+						(`char_id`,`profile_id`,`raid_id`,`comments`,`queue`,`timestamp`,`cancel`,`selected_spec`)
+					VALUES
+						(%s,%s,%s,%s,%s,%s,%s,%s)", quote_smart($char_id), quote_smart($profile_id), quote_smart($raid_id),
+						quote_smart($comments), quote_smart($queue), quote_smart($timestamp), quote_smart($cancel), quote_smart($selected_spec));
+			$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+			header("Location: view.php?mode=view&raid_id=$raid_id");
+		}
 	}
 }
 elseif($mode == 'delete')
@@ -1427,10 +1219,8 @@ elseif($mode == 'draft')
 		$S_profile_id != $data['profile_id'])
 		log_hack();
 
-
 	// now check class limits to prevent users cheating the cancel/queue signup
 	// setup the count array
-	//$count = array('dk'=>'0','dr'=>'0','hu'=>'0','ma'=>'0','pa'=>'0','pr'=>'0','ro'=>'0','sh'=>'0','wk'=>'0','wa'=>'0','role1'=>'0','role2'=>'0','role3'=>'0','role4'=>'0','role5'=>'0','role6'=>'0','total'=>'0');
 	$count = array();			
 	// Initialize Count Array and Totals.
 	foreach ($wrm_global_classes as $global_class)
@@ -1444,74 +1234,6 @@ elseif($mode == 'draft')
 	$count = get_char_count($raid_id, $type='');
 	foreach ($count as $class_count)
 		$total += $class_count;
-
-	
-	// setup the count array
-	//$count = array('dk'=>'0','dr'=>'0','hu'=>'0','ma'=>'0','pa'=>'0','pr'=>'0','ro'=>'0','sh'=>'0','wk'=>'0','wa'=>'0','role1'=>'0','role2'=>'0','role3'=>'0','role4'=>'0','role5'=>'0','role6'=>'0','total'=>'0');
-	//$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id=%s AND queue='0' AND cancel='0'",quote_smart($raid_id));
-	//$result_char = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-	//while($char = $db_raid->sql_fetchrow($result_char, true))
-	//{
-	//	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id=%s", quote_smart($char['char_id']));
-	//	$result_count = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-	//	$tmp = $db_raid->sql_fetchrow($result_count, true);
-
-	//	switch($tmp['class'])
-	//	{
-	//		case $phprlang['deathknight']:
-	//			$count['dk']++;
-	//			break;
-	//		case $phprlang['druid']:
-	//			$count['dr']++;
-	//			break;
-	//		case $phprlang['hunter']:
-	//			$count['hu']++;
-	//			break;
-	//		case $phprlang['mage']:
-	//			$count['ma']++;
-	//			break;
-	//		case $phprlang['paladin']:
-	//			$count['pa']++;
-	//			break;
-	//		case $phprlang['priest']:
-	//			$count['pr']++;
-	//			break;
-	//		case $phprlang['rogue']:
-	//			$count['ro']++;
-	//			break;
-	//		case $phprlang['shaman']:
-	//			$count['sh']++;
-	//			break;
-	//		case $phprlang['warlock']:
-	//			$count['wk']++;
-	//			break;
-	//		case $phprlang['warrior']:
-	//			$count['wa']++;
-	//			break;
-	//	}
-	//	switch($tmp['role'])
-	//	{
-	//		case $phpraid_config['role1_name']:
-	//			$count['role1']++;
-	//			break;
-	//		case $phpraid_config['role2_name']:
-	//			$count['role2']++;
-	//			break;
-	//		case $phpraid_config['role3_name']:
-	//			$count['role3']++;
-	//			break;
-	//		case $phpraid_config['role4_name']:
-	//			$count['role4']++;
-	//			break;
-	//		case $phpraid_config['role5_name']:
-	//			$count['role5']++;
-	//			break;
-	//		case $phpraid_config['role6_name']:
-	//			$count['role6']++;
-	//			break;
-	//	}				
-	//	$count['total']++;
-	//}
 
 	// Now that we have the raid data, we need to retrieve limit data based upon Raid ID.
 	// Get Class Limits and set Colored Counts
@@ -1540,10 +1262,7 @@ elseif($mode == 'draft')
 	$max_data = $db_raid->sql_fetchrow($result_raid, true);
 	$max = $max_data['max'];
 
-	//$sql = sprintf("SELECT dk_lmt,dr_lmt,hu_lmt,ma_lmt,pa_lmt,pr_lmt,ro_lmt,sh_lmt,wk_lmt,wa_lmt,role1_lmt,role2_lmt,role3_lmt,role4_lmt,role5_lmt,role6_lmt,max FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id=%s", quote_smart($raid_id));
-	//$result_raid = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-	//$total = $db_raid->sql_fetchrow($result_raid, true);
-
+	// Get the character data.
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id=%s", quote_smart($char_id));
 	$result_class = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 	$class = $db_raid->sql_fetchrow($result_class, true);
@@ -1556,52 +1275,7 @@ elseif($mode == 'draft')
 				if ($count[$global_class['class_id']] >= $raid_class_array[$raid_class_data['class_id']])
 					$queue = 1;
 	}	
-	//if($phpraid_config['enforce_class_limits'])
-	//{
-	//	switch($class['class'])
-	//	{
-	//		case $phprlang['deathknight']:
-	//			if($count['dk'] >= $total['dk_lmt'])
-	//				$queue = 1;
-	//			break;
-	//		case $phprlang['druid']:
-	//			if($count['dr'] >= $total['dr_lmt'])
-	//				$queue = 1;
-	//			break;
-	//		case $phprlang['hunter']:
-	//			if($count['hu'] >= $total['hu_lmt'])
-	//				$queue = 1;
-	//			break;
-	//		case $phprlang['mage']:
-	//			if($count['ma'] >= $total['ma_lmt'])
-	//				$queue = 1;
-	//			break;
-	//		case $phprlang['paladin']:
-	//			if($count['pa'] >= $total['pa_lmt'])
-	//				$queue = 1;
-	//			break;
-	//		case $phprlang['priest']:
-	//			if($count['pr'] >= $total['pr_lmt'])
-	//				$queue = 1;
-	//			break;
-	//		case $phprlang['rogue']:
-	//			if($count['ro'] >= $total['ro_lmt'])
-	//				$queue = 1;
-	//			break;
-	//		case $phprlang['shaman']:
-	//			if($count['sh'] >= $total['sh_lmt'])
-	//				$queue = 1;
-	//			break;
-	//		case $phprlang['warlock']:
-	//			if($count['wk'] >= $total['wk_lmt'])
-	//				$queue = 1;
-	//			break;
-	//		case $phprlang['warrior']:
-	//			if($count['wa'] >= $total['wa_lmt'])
-	//				$queue = 1;
-	//			break;
-	//	}
-	//}
+
 	if($phpraid_config['enforce_role_limits'])
 	{
 		$sql = sprintf("SELECT role_name 
@@ -1620,33 +1294,6 @@ elseif($mode == 'draft')
 					$queue = 1;
 	}		
 		
-		//switch($class['role'])
-		//{		
-		//	case $phpraid_config['role1_name']:	
-		//		if($count['role1'] >= $total['role1_lmt'])
-		//			$queue = 1;
-		//		break;
-		//	case $phpraid_config['role2_name']:
-		//		if($count['role2'] >= $total['role2_lmt'])
-		//			$queue = 1;
-		//		break;
-		///	case $phpraid_config['role3_name']:
-		//		if($count['role3'] >= $total['role3_lmt'])
-		//			$queue = 1;
-		//		break;
-		//	case $phpraid_config['role4_name']:
-		//		if($count['role4'] >= $total['role4_lmt'])
-		//			$queue = 1;
-		//		break;
-		//	case $phpraid_config['role5_name']:
-		//		if($count['role5'] >= $total['role5_lmt'])
-		//			$queue = 1;
-		//		break;
-		//	case $phpraid_config['role6_name']:
-		//		if($count['role6'] >= $total['role6_lmt'])
-		//			$queue = 1;
-		//		break;
-		//}
 	if($total >= $max)
 		$queue = 1;
 
