@@ -33,21 +33,23 @@ CREATE TABLE  `wrm_chars` (
 -- Class Table Creation
 CREATE TABLE IF NOT EXISTS `wrm_classes` (
   `class_id` varchar(100) NOT NULL,
+  `class_code` varchar(2) NOT NULL,
   `lang_index` varchar(100) NOT NULL,
+  `image` varchar(100) NOT NULL,
   PRIMARY KEY  (`class_id`)
 );
 
 -- Class Data
-INSERT INTO `wrm_classes` VALUES ('Death Knight', 'deathknight');
-INSERT INTO `wrm_classes` VALUES ('Druid', 'druid');
-INSERT INTO `wrm_classes` VALUES ('Hunter', 'hunter');
-INSERT INTO `wrm_classes` VALUES ('Mage', 'mage');
-INSERT INTO `wrm_classes` VALUES ('Paladin', 'paladin');
-INSERT INTO `wrm_classes` VALUES ('Priest', 'priest');
-INSERT INTO `wrm_classes` VALUES ('Rogue', 'rogue');
-INSERT INTO `wrm_classes` VALUES ('Shaman', 'shaman');
-INSERT INTO `wrm_classes` VALUES ('Warlock', 'warlock');
-INSERT INTO `wrm_classes` VALUES ('Warrior', 'warrior');
+INSERT INTO `wrm_classes` VALUES ('Death Knight', 'dk', 'deathknight', 'images/classes/deathknight_icon.gif');
+INSERT INTO `wrm_classes` VALUES ('Druid', 'dr', 'druid', 'images/classes/druid_icon.gif');
+INSERT INTO `wrm_classes` VALUES ('Hunter', 'hu', 'hunter', 'images/classes/hunter_icon.gif');
+INSERT INTO `wrm_classes` VALUES ('Mage', 'ma', 'mage', 'images/classes/mage_icon.gif');
+INSERT INTO `wrm_classes` VALUES ('Paladin', 'pa', 'paladin', 'images/classes/paladin_icon.gif');
+INSERT INTO `wrm_classes` VALUES ('Priest', 'pr', 'priest', 'images/classes/priest_icon.gif');
+INSERT INTO `wrm_classes` VALUES ('Rogue', 'ro', 'rogue', 'images/classes/rogue_icon.gif');
+INSERT INTO `wrm_classes` VALUES ('Shaman', 'sh', 'shaman', 'images/classes/shaman_icon.gif');
+INSERT INTO `wrm_classes` VALUES ('Warlock', 'wk', 'warlock', 'images/classes/warlock_icon.gif');
+INSERT INTO `wrm_classes` VALUES ('Warrior', 'wa', 'warrior', 'images/classes/warrior_icon.gif');
 
 -- Race/Class Link Table Creation
 CREATE TABLE `wrm_class_race` (
@@ -125,42 +127,42 @@ CREATE TABLE IF NOT EXISTS `wrm_class_role` (
   `class_id` varchar(100) NOT NULL,
   `subclass` varchar(100) NOT NULL,
   `lang_index` varchar(100) NOT NULL,
-  `role_name` varchar(100) NOT NULL,
+  `role_id` varchar(10) NOT NULL,
   PRIMARY KEY  (`class_id`,`subclass`)
 );
 
 -- Class and Role Link Data
-INSERT INTO `wrm_class_role` VALUES ('Priest', 'Discipline', 'disc', 'Healing');
-INSERT INTO `wrm_class_role` VALUES ('Priest', 'Holy', 'holy', 'Healing');
-INSERT INTO `wrm_class_role` VALUES ('Priest', 'Shadow', 'shadow', 'Ranged');
-INSERT INTO `wrm_class_role` VALUES ('Rogue', 'Assassination', 'assassination', 'Melee');
-INSERT INTO `wrm_class_role` VALUES ('Rogue', 'Combat', 'combat', 'Melee');
-INSERT INTO `wrm_class_role` VALUES ('Rogue', 'Subtlety', 'subtlety', 'Melee');
-INSERT INTO `wrm_class_role` VALUES ('Warrior', 'Arms', 'arms', 'Melee');
-INSERT INTO `wrm_class_role` VALUES ('Warrior', 'Fury', 'fury', 'Melee');
-INSERT INTO `wrm_class_role` VALUES ('Warrior', 'Protection', 'prot', 'Tank');
-INSERT INTO `wrm_class_role` VALUES ('Mage', 'Arcane', 'arcane', 'Ranged');
-INSERT INTO `wrm_class_role` VALUES ('Mage', 'Fire', 'fire', 'Ranged');
-INSERT INTO `wrm_class_role` VALUES ('Mage', 'Frost', 'frost', 'Ranged');
-INSERT INTO `wrm_class_role` VALUES ('Druid', 'Balance', 'balance', 'Ranged');
-INSERT INTO `wrm_class_role` VALUES ('Druid', 'Feral (Cat)', 'cat', 'Melee');
-INSERT INTO `wrm_class_role` VALUES ('Druid', 'Feral (Bear)', 'bear', 'Tank');
-INSERT INTO `wrm_class_role` VALUES ('Druid', 'Restoration', 'resto', 'Healing');
-INSERT INTO `wrm_class_role` VALUES ('Hunter', 'Beast Mastery', 'bm', 'Ranged');
-INSERT INTO `wrm_class_role` VALUES ('Hunter', 'Marksmanship', 'marks', 'Ranged');
-INSERT INTO `wrm_class_role` VALUES ('Hunter', 'Survival', 'survival', 'Ranged');
-INSERT INTO `wrm_class_role` VALUES ('Warlock', 'Affliction', 'affliction', 'Ranged');
-INSERT INTO `wrm_class_role` VALUES ('Warlock', 'Demonology', 'demon', 'Ranged');
-INSERT INTO `wrm_class_role` VALUES ('Warlock', 'Destruction', 'destro', 'Ranged');
-INSERT INTO `wrm_class_role` VALUES ('Shaman', 'Elemental', 'elemental', 'Ranged');
-INSERT INTO `wrm_class_role` VALUES ('Shaman', 'Enhancement', 'enhance', 'Melee');
-INSERT INTO `wrm_class_role` VALUES ('Shaman', 'Restoration', 'resto', 'Healing');
-INSERT INTO `wrm_class_role` VALUES ('Paladin', 'Holy', 'holy', 'Healing');
-INSERT INTO `wrm_class_role` VALUES ('Paladin', 'Protection', 'prot', 'Tank');
-INSERT INTO `wrm_class_role` VALUES ('Paladin', 'Retribution', 'ret', 'Melee');
-INSERT INTO `wrm_class_role` VALUES ('Death Knight', 'Blood', 'blood', 'Melee');
-INSERT INTO `wrm_class_role` VALUES ('Death Knight', 'Frost', 'frost', 'Tank');
-INSERT INTO `wrm_class_role` VALUES ('Death Knight', 'Unholy', 'unholy', 'Melee');
+INSERT INTO `wrm_class_role` VALUES ('Priest', 'Discipline', 'disc', 'role3');
+INSERT INTO `wrm_class_role` VALUES ('Priest', 'Holy', 'holy', 'role3');
+INSERT INTO `wrm_class_role` VALUES ('Priest', 'Shadow', 'shadow', 'role4');
+INSERT INTO `wrm_class_role` VALUES ('Rogue', 'Assassination', 'assassination', 'role2');
+INSERT INTO `wrm_class_role` VALUES ('Rogue', 'Combat', 'combat', 'role2');
+INSERT INTO `wrm_class_role` VALUES ('Rogue', 'Subtlety', 'subtlety', 'role2');
+INSERT INTO `wrm_class_role` VALUES ('Warrior', 'Arms', 'arms', 'role2');
+INSERT INTO `wrm_class_role` VALUES ('Warrior', 'Fury', 'fury', 'role2');
+INSERT INTO `wrm_class_role` VALUES ('Warrior', 'Protection', 'prot', 'role1');
+INSERT INTO `wrm_class_role` VALUES ('Mage', 'Arcane', 'arcane', 'role4');
+INSERT INTO `wrm_class_role` VALUES ('Mage', 'Fire', 'fire', 'role4');
+INSERT INTO `wrm_class_role` VALUES ('Mage', 'Frost', 'frost', 'role4');
+INSERT INTO `wrm_class_role` VALUES ('Druid', 'Balance', 'balance', 'role4');
+INSERT INTO `wrm_class_role` VALUES ('Druid', 'Feral (Cat)', 'cat', 'role2');
+INSERT INTO `wrm_class_role` VALUES ('Druid', 'Feral (Bear)', 'bear', 'role1');
+INSERT INTO `wrm_class_role` VALUES ('Druid', 'Restoration', 'resto', 'role3');
+INSERT INTO `wrm_class_role` VALUES ('Hunter', 'Beast Mastery', 'bm', 'role4');
+INSERT INTO `wrm_class_role` VALUES ('Hunter', 'Marksmanship', 'marks', 'role4');
+INSERT INTO `wrm_class_role` VALUES ('Hunter', 'Survival', 'survival', 'role4');
+INSERT INTO `wrm_class_role` VALUES ('Warlock', 'Affliction', 'affliction', 'role4');
+INSERT INTO `wrm_class_role` VALUES ('Warlock', 'Demonology', 'demon', 'role4');
+INSERT INTO `wrm_class_role` VALUES ('Warlock', 'Destruction', 'destro', 'role4');
+INSERT INTO `wrm_class_role` VALUES ('Shaman', 'Elemental', 'elemental', 'role4');
+INSERT INTO `wrm_class_role` VALUES ('Shaman', 'Enhancement', 'enhance', 'role2');
+INSERT INTO `wrm_class_role` VALUES ('Shaman', 'Restoration', 'resto', 'role3');
+INSERT INTO `wrm_class_role` VALUES ('Paladin', 'Holy', 'holy', 'role3');
+INSERT INTO `wrm_class_role` VALUES ('Paladin', 'Protection', 'prot', 'role1');
+INSERT INTO `wrm_class_role` VALUES ('Paladin', 'Retribution', 'ret', 'role2');
+INSERT INTO `wrm_class_role` VALUES ('Death Knight', 'Blood', 'blood', 'role2');
+INSERT INTO `wrm_class_role` VALUES ('Death Knight', 'Frost', 'frost', 'role1');
+INSERT INTO `wrm_class_role` VALUES ('Death Knight', 'Unholy', 'unholy', 'role2');
 
 -- Column Header Creation
 DROP TABLE IF EXISTS `wrm_column_headers`;
@@ -519,23 +521,25 @@ VALUES (NULL , 'raidview1', 'Race', '1', '7', NULL, 'race', NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
 VALUES (NULL , 'raidview1', 'Class', '1', '8', NULL, 'class', NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'raidview1', 'Role', '1', '9', NULL, 'role', NULL);
+VALUES (NULL , 'raidview1', 'Pri_Spec', '1', '9', NULL, 'pri_spec', NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'raidview1', 'Arcane', '1', '10', '/images/resistances/arcane_resistance.gif', 'arcane', NULL);
+VALUES (NULL , 'raidview1', 'Sec_Spec', '1', '10', NULL, 'sec_spec', NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'raidview1', 'Fire', '1', '11', '/images/resistances/fire_resistance.gif', 'fire', NULL);
+VALUES (NULL , 'raidview1', 'Arcane', '1', '11', '/images/resistances/arcane_resistance.gif', 'arcane', NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'raidview1', 'Nature', '1', '12', '/images/resistances/nature_resistance.gif', 'nature', NULL);
+VALUES (NULL , 'raidview1', 'Fire', '1', '12', '/images/resistances/fire_resistance.gif', 'fire', NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'raidview1', 'Frost', '1', '13', '/images/resistances/frost_resistance.gif', 'frost', NULL);
+VALUES (NULL , 'raidview1', 'Nature', '1', '13', '/images/resistances/nature_resistance.gif', 'nature', NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'raidview1', 'Shadow', '1', '14', '/images/resistances/shadow_resistance.gif', 'shadow', NULL);
+VALUES (NULL , 'raidview1', 'Frost', '1', '14', '/images/resistances/frost_resistance.gif', 'frost', NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'raidview1', 'Date', '1', '15', NULL, 'date', 'wrmdate');
+VALUES (NULL , 'raidview1', 'Shadow', '1', '15', '/images/resistances/shadow_resistance.gif', 'shadow', NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'raidview1', 'Time', '1', '16', NULL, 'time', 'wrmtime');
+VALUES (NULL , 'raidview1', 'Date', '1', '16', NULL, 'date', 'wrmdate');
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'raidview1', 'Buttons', '1', '17', NULL, 'buttons', NULL);
+VALUES (NULL , 'raidview1', 'Time', '1', '17', NULL, 'time', 'wrmtime');
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
+VALUES (NULL , 'raidview1', 'Buttons', '1', '18', NULL, 'buttons', NULL);
 -- Column Header Data - raidview2 View
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
 VALUES (NULL , 'raidview2', 'ID', '1', '1', NULL, 'id', NULL);
@@ -552,13 +556,15 @@ VALUES (NULL , 'raidview2', 'Race', '1', '7', NULL, 'race', NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
 VALUES (NULL , 'raidview2', 'Class', '1', '8', NULL, 'class', NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'raidview2', 'Role', '1', '9', NULL, 'role', NULL);
+VALUES (NULL , 'raidview1', 'Pri_Spec', '1', '9', NULL, 'pri_spec', NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'raidview2', 'Date', '1', '15', NULL, 'date', 'wrmdate');
+VALUES (NULL , 'raidview1', 'Sec_Spec', '1', '10', NULL, 'sec_spec', NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'raidview2', 'Time', '1', '16', NULL, 'time', 'wrmtime');
+VALUES (NULL , 'raidview2', 'Date', '1', '11', NULL, 'date', 'wrmdate');
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'raidview2', 'Buttons', '1', '17', NULL, 'buttons', NULL);
+VALUES (NULL , 'raidview2', 'Time', '1', '12', NULL, 'time', 'wrmtime');
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
+VALUES (NULL , 'raidview2', 'Buttons', '1', '13', NULL, 'buttons', NULL);
 
 -- Config Table Creation
 DROP TABLE IF EXISTS `wrm_config`;
@@ -973,6 +979,36 @@ INSERT INTO `wrm_races` VALUES ('Orc', 'Horde', 'orc');
 INSERT INTO `wrm_races` VALUES ('Tauren', 'Horde', 'tauren');
 INSERT INTO `wrm_races` VALUES ('Troll', 'Horde', 'troll');
 INSERT INTO `wrm_races` VALUES ('Undead', 'Horde', 'undead');
+
+-- Race/Gender Link Table Creation
+CREATE TABLE IF NOT EXISTS `wrm_race_gender` (
+  `race_id` varchar(100) NOT NULL,
+  `gender_id` varchar(10) NOT NULL,
+  `image` varchar(100) NOT NULL,
+  PRIMARY KEY  (`race_id`,`gender_id`)
+);
+
+-- Race/Gender Link Table Data
+INSERT INTO `wrm_race_gender` VALUES ('Draenei', 'male', '/images/faces/dr_male.gif');
+INSERT INTO `wrm_race_gender` VALUES ('Draenei', 'female', '/images/faces/dr_female.gif');
+INSERT INTO `wrm_race_gender` VALUES ('Dwarf', 'male', '/images/faces/dw_male.gif');
+INSERT INTO `wrm_race_gender` VALUES ('Dwarf', 'female', '/images/faces/dw_female.gif');
+INSERT INTO `wrm_race_gender` VALUES ('Human', 'male', '/images/faces/hu_male.gif');
+INSERT INTO `wrm_race_gender` VALUES ('Human', 'female', '/images/faces/hu_female.gif');
+INSERT INTO `wrm_race_gender` VALUES ('Gnome', 'male', '/images/faces/gn_male.gif');
+INSERT INTO `wrm_race_gender` VALUES ('Gnome', 'female', '/images/faces/gn_female.gif');
+INSERT INTO `wrm_race_gender` VALUES ('Night Elf', 'male', '/images/faces/ne_male.gif');
+INSERT INTO `wrm_race_gender` VALUES ('Night Elf', 'female', '/images/faces/ne_female.gif');
+INSERT INTO `wrm_race_gender` VALUES ('Blood Elf', 'male', '/images/faces/be_male.gif');
+INSERT INTO `wrm_race_gender` VALUES ('Blood Elf', 'female', '/images/faces/be_female.gif');
+INSERT INTO `wrm_race_gender` VALUES ('Orc', 'male', '/images/faces/or_male.gif');
+INSERT INTO `wrm_race_gender` VALUES ('Orc', 'female', '/images/faces/or_female.gif');
+INSERT INTO `wrm_race_gender` VALUES ('Tauren', 'male', '/images/faces/ta_male.gif');
+INSERT INTO `wrm_race_gender` VALUES ('Tauren', 'female', '/images/faces/ta_female.gif');
+INSERT INTO `wrm_race_gender` VALUES ('Troll', 'male', '/images/faces/tr_male.gif');
+INSERT INTO `wrm_race_gender` VALUES ('Troll', 'female', '/images/faces/tr_female.gif');
+INSERT INTO `wrm_race_gender` VALUES ('Undead', 'male', '/images/faces/un_male.gif');
+INSERT INTO `wrm_race_gender` VALUES ('Undead', 'female', '/images/faces/un_female.gif');
 
 -- Raid Table Creation
 DROP TABLE IF EXISTS `wrm_raids`;
