@@ -196,6 +196,7 @@ $col_mod = array();
 $wrm_global_classes = array();
 $wrm_global_races = array();
 $wrm_global_roles = array();
+$wrm_global_gender = array();
 
 // Load the Classes Array
 $sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "classes";
@@ -205,6 +206,7 @@ while($data = $db_raid->sql_fetchrow($result, true))
 {
 	$wrm_global_classes[$x]['class_id'] = $data['class_id'];
 	$wrm_global_classes[$x]['lang_index'] = $data['lang_index'];
+	$wrm_global_classes[$x]['image'] = $data['image'];
 	$x++;
 }
 
@@ -229,6 +231,17 @@ while($data = $db_raid->sql_fetchrow($result, true))
 	$wrm_global_roles[$x]['role_id'] = $data['role_id'];
 	$wrm_global_roles[$x]['role_name'] = $data['role_name'];
 	$wrm_global_roles[$x]['lang_index'] = $data['lang_index'];
+	$x++;
+}
+
+// Load the Gender Array
+$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "gender";
+$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+$x = 0;			
+while($data = $db_raid->sql_fetchrow($result, true))
+{
+	$wrm_global_gender[$x]['gender_id'] = $data['gender_id'];
+	$wrm_global_gender[$x]['lang_index'] = $data['lang_index'];
 	$x++;
 }
 
