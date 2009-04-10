@@ -41,9 +41,12 @@
           <td colspan="2" class="row1"><table width="100%" border="0" align="center" cellpadding="3" cellspacing="0">
             <tbody>
               <tr>
-                <td width="11%" valign="top" class="row1"><div align="center">{$view_raid_info.deathknight_icon}<br>
-          {$view_raid_info.deathknight_count}</div></td>
-                <td width="11%" valign="top" class="row1"><div align="center">{$view_raid_info.druid_icon}<br>
+              	{section name=class_data_sec loop=$class_count_icon}
+                	<td width="11%" valign="top" class="row1"><div align="center">{$class_count_icon[class_data_sec].icon}<br>
+          				{$class_count_icon[class_data_sec].count}</div></td>
+          		{/section}
+<!--
+				<td width="11%" valign="top" class="row1"><div align="center">{$view_raid_info.druid_icon}<br>
           {$view_raid_info.druid_count}</div></td>
                 <td width="11%" valign="top" class="row1"><div align="center">{$view_raid_info.hunter_icon}<br>
           {$view_raid_info.hunter_count}</div></td>
@@ -61,6 +64,7 @@
           {$view_raid_info.warlock_count}</div></td>
                 <td width="11%" valign="top" class="row1"><div align="center">{$view_raid_info.warrior_icon}<br>
           {$view_raid_info.warrior_count}</div></td>
+-->
               </tr>
             </tbody>
           </table></td>
@@ -69,6 +73,11 @@
           <td colspan="2" class="row1"><table width="100%" border="0" align="center" cellpadding="3" cellspacing="0">
             <tbody>
               <tr>
+              	{section name=role_data_sec loop=$role_count_icon}
+	                <td width="20%" valign="top" class="row1"><div align="center">{$role_count_icon[role_data_sec].text}<br>
+						{$role_count_icon[role_data_sec].count}</div></td>
+          		{/section}
+<!-- 
                 <td width="20%" valign="top" class="row1"><div align="center">{$view_raid_info.role1_text}<br>
           {$view_raid_info.role1_count}</div></td>
                 <td width="20%" valign="top" class="row1"><div align="center">{$view_raid_info.role2_text}<br>
@@ -81,6 +90,7 @@
           {$view_raid_info.role5_count}</div></td>
                 <td width="20%" valign="top" class="row1"><div align="center">{$view_raid_info.role6_text}<br>
           {$view_raid_info.role6_count}</div></td>
+ -->
               </tr>
             </tbody>
           </table></td>
@@ -128,6 +138,11 @@
 </table>
 <br>
 
+{section name=role_data_sec loop=$role_table}
+	<div class="contentHeader"><a name="{$role_table[role_data_sec].header_data.header}"></a>{$role_table[role_data_sec].header_data.header}</div><br>
+	<div class="contentBody">{include file='raids_table.html' raid_data=$role_table[role_data_sec].role_data jump_menu=$role_table[role_data_sec].jump_menu record_counts=$role_table[role_data_sec].record_counts column_name=$role_table[role_data_sec].column_name header_data=$role_table[role_data_sec].header_data}</div><br>	
+{/section}
+<!-- 
 {if $view_raid_info.role1_text != ""}
 	<div class="contentHeader"><a name="role1"></a>{$ro1_header_data.role1_header}</div><br>
 	<div class="contentBody">{include file='raids_table.html' raid_data=$ro1_data jump_menu=$ro1_jump_menu record_counts=$ro1_record_counts column_name=$ro1_column_name header_data=$ro1_header_data}</div><br>
@@ -152,6 +167,7 @@
 	<div class="contentHeader"><a name="role6"></a>{$ro6_header_data.role6_header}</div><br>
 	<div class="contentBody">{include file='raids_table.html' raid_data=$ro6_data jump_menu=$ro6_jump_menu record_counts=$ro6_record_counts column_name=$ro6_column_name header_data=$ro6_header_data}</div><br>
 {/if}
+-->
 <div class="contentHeader">{$queue_header_data.raid_queue_header}</div><br>
 <div class="contentBody">{include file='raids_table.html' raid_data=$queue_data jump_menu=$queue_jump_menu record_counts=$queue_record_counts column_name=$queue_column_name header_data=$queue_header_data}</div><br>
 <div class="contentHeader">{$cancel_header_data.raid_cancel_header}</div><br>

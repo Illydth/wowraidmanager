@@ -113,8 +113,8 @@ else
 
 if($mode == 'view')
 {
-  //
-  // Obtain data for the raid
+	//
+	// Obtain data for the raid
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id=%s", quote_smart($raid_id));
 	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 	$data = $db_raid->sql_fetchrow($result, true);
@@ -171,43 +171,58 @@ if($mode == 'view')
 
 	$raid_open = $raid_max - $raid_total;
 
-	// now, get the actual class information and put them into their arrays
+	// Initialize Class/Role Arrays and Counts.
+	$class_info = array();
+	$role_info = array();
+	
 	if ($phpraid_config['raid_view_type'] == 'by_class')
-	{
-		$deathknight = array();
-		$druid = array();
-		$hunter = array();
-		$mage = array();
-		$paladin = array();
-		$priest = array();
-		$rogue = array();
-		$shaman = array();
-		$warlock = array();
-		$warrior = array();
-	}
+		foreach ($wrm_global_classes as $global_class)
+			$class_info[$global_class['class_id']] = array();
 	else
-	{
-		$role1 = array();
-		$role2 = array();
-		$role3 = array();
-		$role4 = array();
-		$role5 = array();
-		$role6 = array();
-	}
+		foreach ($wrm_global_roles as $global_role)
+			$role_info[$global_role['role_id']] = array();
+				
 	$raid_queue = array();
 	$raid_cancel = array();
+	
+	// now, get the actual class information and put them into their arrays
+	//if ($phpraid_config['raid_view_type'] == 'by_class')
+	//{
+	//	$deathknight = array();
+	//	$druid = array();
+	//	$hunter = array();
+	//	$mage = array();
+	//	$paladin = array();
+	//	$priest = array();
+	//	$rogue = array();
+	//	$shaman = array();
+	//	$warlock = array();
+	//	$warrior = array();
+	//}
+	//else
+	//{
+	//	$role1 = array();
+	//	$role2 = array();
+	//	$role3 = array();
+	//	$role4 = array();
+	//	$role5 = array();
+	//	$role6 = array();
+	//}
 
-	$deathknight_count = 0;
-	$druid_count = 0;
-	$hunter_count = 0;
-	$mage_count = 0;
-	$paladin_count = 0;
-	$priest_count = 0;
-	$rogue_count = 0;
-	$shaman_count = 0;
-	$warlock_count = 0;
-	$warrior_count = 0;
+	//$deathknight_count = 0;
+	//$druid_count = 0;
+	//$hunter_count = 0;
+	//$mage_count = 0;
+	//$paladin_count = 0;
+	//$priest_count = 0;
+	//$rogue_count = 0;
+	//$shaman_count = 0;
+	//$warlock_count = 0;
+	//$warrior_count = 0;
 
+	/*******************************************************************************
+	 * 	HANDLE DRAFTED RAIDERS
+	 ******************************************************************************/
 	// parse the signup array and seperate to classes or roles
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id=%s AND queue='0' AND cancel='0'", quote_smart($raid_id));
 	$signups_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
@@ -264,69 +279,17 @@ if($mode == 'view')
 		$time = new_date('Y/m/d H:i:s',$signups['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']);
 		$date = $time;
 
-		switch($data['race'])
-		{
-			case $phprlang['draenei']:
-				if(strtolower($data['gender']) == strtolower($phprlang['male']))
-					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/dr_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['draenei'].'\');" onMouseout="hideddrivetip();" alt="dranei male">';
-				else
-					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/dr_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['draenei'].'\');" onMouseout="hideddrivetip();" alt="dranei female">';
-				break;
-			case $phprlang['dwarf']:
-				if(strtolower($data['gender']) == strtolower($phprlang['male']))
-					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/dw_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['dwarf'].'\');" onMouseout="hideddrivetip();" alt="dwarf male">';
-				else
-					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/dw_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['dwarf'].'\');" onMouseout="hideddrivetip();" alt="dwarf female">';
-				break;
-			case $phprlang['gnome']:
-				if(strtolower($data['gender']) == strtolower($phprlang['male']))
-					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/gn_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['gnome'].'\');" onMouseout="hideddrivetip();" alt="gnome male">';
-				else
-					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/gn_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['gnome'].'\');" onMouseout="hideddrivetip();" alt="gnome female">';
-				break;
-			case $phprlang['human']:
-				if(strtolower($data['gender']) == strtolower($phprlang['male']))
-					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/hu_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['human'].'\');" onMouseout="hideddrivetip();" alt="human male">';
-				else
-					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/hu_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['human'].'\');" onMouseout="hideddrivetip();" alt="human female">';
-				break;
-			case $phprlang['night_elf']:
-				if(strtolower($data['gender']) == strtolower($phprlang['male']))
-					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/ne_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['night_elf'].'\');" onMouseout="hideddrivetip();" alt="nightelf male">';
-				else
-					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/ne_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['night_elf'].'\');" onMouseout="hideddrivetip();" alt="nightelf female">';
-				break;
-			case $phprlang['blood_elf']:
-				if(strtolower($data['gender']) == strtolower($phprlang['male']))
-					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/be_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['blood_elf'].'\');" onMouseout="hideddrivetip();" alt="bloodelf male">';
-				else
-					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/be_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['blood_elf'].'\');" onMouseout="hideddrivetip();" alt="blood elf female">';
-				break;
-			case $phprlang['orc']:
-				if(strtolower($data['gender']) == strtolower($phprlang['male']))
-					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/or_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['orc'].'\');" onMouseout="hideddrivetip();" alt="orc male">';
-				else
-					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/or_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['orc'].'\');" onMouseout="hideddrivetip();" alt="orc female">';
-				break;
-			case $phprlang['tauren']:
-				if(strtolower($data['gender']) == strtolower($phprlang['male']))
-					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/ta_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['tauren'].'\');" onMouseout="hideddrivetip();" alt="tauren male">';
-				else
-					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/ta_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['tauren'].'\');" onMouseout="hideddrivetip();" alt="tauren female">';
-				break;
-			case $phprlang['troll']:
-				if(strtolower($data['gender']) == strtolower($phprlang['male']))
-					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/tr_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['troll'].'\');" onMouseout="hideddrivetip();" alt="troll male">';
-				else
-					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/tr_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['troll'].'\');" onMouseout="hideddrivetip();" alt="troll female">';
-				break;
-			case $phprlang['undead']:
-				if(strtolower($data['gender']) == strtolower($phprlang['male']))
-					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/un_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['undead'].'\');" onMouseout="hideddrivetip();" alt="undead male">';
-				else
-					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/un_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['undead'].'\');" onMouseout="hideddrivetip();" alt="undead female">';
-				break;
-			}
+		// Get the proper race/gender image into the $race variable.
+		foreach($wrm_global_races as $global_race)
+			if ($data['race'] == $global_race['race_id'])
+				foreach($wrm_global_gender as $global_gender)
+					if ($data['gender'] == $global_gender['gender_id'])
+					{
+						$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "race_gender WHERE race_id = %s and gender_id = %s", quote_smart($global_race['race_id']),quote_smart($global_gender['gender_id']));
+						$result_race_gender = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+						$race_gender_data = $db_raid->sql_fetchrow($result_race_gender, true);
+						$race = '<img src="templates/' . $phpraid_config['template'] . $race_gender_data['image'] . '" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang[$global_race['lang_index']].'\');" onMouseout="hideddrivetip();" alt="'.$phprlang[$global_race['lang_index']].' '.$phprlang[$global_gender['lang_index']].'">';
+					}					
 
 		$comments = escapePOPUP(scrub_input($signups['comments']));
 
@@ -343,7 +306,8 @@ if($mode == 'view')
 		$nature = $data['nature'];
 		$frost = $data['frost'];
 		$shadow = $data['shadow'];
-		$role = $data['role'];
+		$pri_spec = $data['pri_spec'];
+		$sec_spec = $data['sec_spec'];
 
 		if ($phpraid_config['enable_armory'])
 			$name = get_armorychar($data['name'], $phpraid_config['armory_language'], $server);
@@ -361,158 +325,41 @@ if($mode == 'view')
 		// now that we have the row, figure out what class or role and push into corresponding array
 		if ($phpraid_config['raid_view_type'] == 'by_class')
 		{		
-			switch($data['class'])
+			foreach ($wrm_global_classes as $global_class)
 			{
-				case $phprlang['deathknight']:
-					$class = ' <img src="templates/' . $phpraid_config['template'] . '/images/classes/deathknight_icon.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['deathknight'].'\');" onMouseout="hideddrivetip();" alt="death knight">';
-					array_push($deathknight,
-						array('ID'=>$data['char_id'],'Arcane'=>$arcane,'Fire'=>$fire,'Nature'=>$nature,'Frost'=>$frost,'Shadow'=>$shadow,'Role'=>$role,
-							  'Race'=>$race,'Class'=>$class,'Name'=>$name,'Comments'=>$comments,'Level'=>$data['lvl'],'Buttons'=>$actions,
+				if ($data['class'] == $global_class['class_id'])
+				{
+					$class = ' <img src="templates/' . $phpraid_config['template'] . '/'. $global_class['image'] .'" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang[$global_class['lang_index']].'\');" onMouseout="hideddrivetip();" alt="'.$phprlang[$global_class['lang_index']].'">';
+					array_push($class_info[$global_class['class_id']],
+						array('ID'=>$data['char_id'],'Arcane'=>$arcane,'Fire'=>$fire,'Nature'=>$nature,'Frost'=>$frost,'Shadow'=>$shadow,'Pri_Spec'=>$pri_spec,
+							  'Sec_Spec'=>$sec_spec,'Race'=>$race,'Class'=>$class,'Name'=>$name,'Comments'=>$comments,'Level'=>$data['lvl'],'Buttons'=>$actions,
 							  'Date'=>$date,'Time'=>$time,'Team Name'=>$team_name,'Guild'=>$guildname));
-					break;
-				case $phprlang['druid']:
-					$class = ' <img src="templates/' . $phpraid_config['template'] . '/images/classes/druid_icon.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['druid'].'\');" onMouseout="hideddrivetip();" alt="duird">';
-					array_push($druid,
-						array('ID'=>$data['char_id'],'Arcane'=>$arcane,'Fire'=>$fire,'Nature'=>$nature,'Frost'=>$frost,'Shadow'=>$shadow,'Role'=>$role,
-							  'Race'=>$race,'Class'=>$class,'Name'=>$name,'Comments'=>$comments,'Level'=>$data['lvl'],'Buttons'=>$actions,
-							  'Date'=>$date,'Time'=>$time,'Team Name'=>$team_name,'Guild'=>$guildname));
-					break;
-				case $phprlang['hunter']:
-					$class = ' <img src="templates/' . $phpraid_config['template'] . '/images/classes/hunter_icon.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['hunter'].'\');" onMouseout="hideddrivetip();" alt="hunter">';
-					array_push($hunter,
-						array('ID'=>$data['char_id'],'Arcane'=>$arcane,'Fire'=>$fire,'Nature'=>$nature,'Frost'=>$frost,'Shadow'=>$shadow,'Role'=>$role,
-							  'Race'=>$race,'Class'=>$class,'Name'=>$name,'Comments'=>$comments,'Level'=>$data['lvl'],'Buttons'=>$actions,
-							  'Date'=>$date,'Time'=>$time,'Team Name'=>$team_name,'Guild'=>$guildname));
-					break;
-				case $phprlang['mage']:
-					$class = ' <img src="templates/' . $phpraid_config['template'] . '/images/classes/mage_icon.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['mage'].'\');" onMouseout="hideddrivetip();" alt="mage">';
-					array_push($mage,
-						array('ID'=>$data['char_id'],'Arcane'=>$arcane,'Fire'=>$fire,'Nature'=>$nature,'Frost'=>$frost,'Shadow'=>$shadow,'Role'=>$role,
-							  'Race'=>$race,'Class'=>$class,'Name'=>$name,'Comments'=>$comments,'Level'=>$data['lvl'],'Buttons'=>$actions,
-							  'Date'=>$date,'Time'=>$time,'Team Name'=>$team_name,'Guild'=>$guildname));
-					break;
-				case $phprlang['paladin']:
-					$class = ' <img src="templates/' . $phpraid_config['template'] . '/images/classes/paladin_icon.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['paladin'].'\');" onMouseout="hideddrivetip();" alt="paladin">';
-					array_push($paladin,
-						array('ID'=>$data['char_id'],'Arcane'=>$arcane,'Fire'=>$fire,'Nature'=>$nature,'Frost'=>$frost,'Shadow'=>$shadow,'Role'=>$role,
-							  'Race'=>$race,'Class'=>$class,'Name'=>$name,'Comments'=>$comments,'Level'=>$data['lvl'],'Buttons'=>$actions,
-							  'Date'=>$date,'Time'=>$time,'Team Name'=>$team_name,'Guild'=>$guildname));
-					break;
-				case $phprlang['priest']:
-					$class = ' <img src="templates/' . $phpraid_config['template'] . '/images/classes/priest_icon.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['priest'].'\');" onMouseout="hideddrivetip();" alt="priest">';
-					array_push($priest,
-						array('ID'=>$data['char_id'],'Arcane'=>$arcane,'Fire'=>$fire,'Nature'=>$nature,'Frost'=>$frost,'Shadow'=>$shadow,'Role'=>$role,
-							  'Race'=>$race,'Class'=>$class,'Name'=>$name,'Comments'=>$comments,'Level'=>$data['lvl'],'Buttons'=>$actions,
-							  'Date'=>$date,'Time'=>$time,'Team Name'=>$team_name,'Guild'=>$guildname));
-					break;
-				case $phprlang['rogue']:
-					$class = ' <img src="templates/' . $phpraid_config['template'] . '/images/classes/rogue_icon.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['rogue'].'\');" onMouseout="hideddrivetip();" alt="rogue">';
-					array_push($rogue,
-						array('ID'=>$data['char_id'],'Arcane'=>$arcane,'Fire'=>$fire,'Nature'=>$nature,'Frost'=>$frost,'Shadow'=>$shadow,'Role'=>$role,
-							  'Race'=>$race,'Class'=>$class,'Name'=>$name,'Comments'=>$comments,'Level'=>$data['lvl'],'Buttons'=>$actions,
-							  'Date'=>$date,'Time'=>$time,'Team Name'=>$team_name,'Guild'=>$guildname));
-					break;
-				case $phprlang['shaman']:
-					$class = ' <img src="templates/' . $phpraid_config['template'] . '/images/classes/shaman_icon.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['shaman'].'\');" onMouseout="hideddrivetip();" alt="shaman">';
-					array_push($shaman,
-						array('ID'=>$data['char_id'],'Arcane'=>$arcane,'Fire'=>$fire,'Nature'=>$nature,'Frost'=>$frost,'Shadow'=>$shadow,'Role'=>$role,
-							  'Race'=>$race,'Class'=>$class,'Name'=>$name,'Comments'=>$comments,'Level'=>$data['lvl'],'Buttons'=>$actions,
-							  'Date'=>$date,'Time'=>$time,'Team Name'=>$team_name,'Guild'=>$guildname));
-					break;
-				case $phprlang['warlock']:
-					$class = ' <img src="templates/' . $phpraid_config['template'] . '/images/classes/warlock_icon.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['warlock'].'\');" onMouseout="hideddrivetip();" alt="warlock">';
-					array_push($warlock,
-						array('ID'=>$data['char_id'],'Arcane'=>$arcane,'Fire'=>$fire,'Nature'=>$nature,'Frost'=>$frost,'Shadow'=>$shadow,'Role'=>$role,
-							  'Race'=>$race,'Class'=>$class,'Name'=>$name,'Comments'=>$comments,'Level'=>$data['lvl'],'Buttons'=>$actions,
-							  'Date'=>$date,'Time'=>$time,'Team Name'=>$team_name,'Guild'=>$guildname));
-					break;
-				case $phprlang['warrior']:
-					$class = ' <img src="templates/' . $phpraid_config['template'] . '/images/classes/warrior_icon.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['warrior'].'\')"; onMouseout="hideddrivetip()" alt="warrior">';
-					array_push($warrior,
-						array('ID'=>$data['char_id'],'Arcane'=>$arcane,'Fire'=>$fire,'Nature'=>$nature,'Frost'=>$frost,'Shadow'=>$shadow,'Role'=>$role,
-							  'Race'=>$race,'Class'=>$class,'Name'=>$name,'Comments'=>$comments,'Level'=>$data['lvl'],'Buttons'=>$actions,
-							  'Date'=>$date,'Time'=>$time,'Team Name'=>$team_name,'Guild'=>$guildname));
-					break;
+				}	
 			}
 		}
 		else
 		{
-			switch($data['class'])
-			{
-				case $phprlang['deathknight']:
-					$class = ' <img src="templates/' . $phpraid_config['template'] . '/images/classes/deathknight_icon.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['deathknight'].'\');" onMouseout="hideddrivetip();" alt="death knight">';
-					break;
-				case $phprlang['druid']:
-					$class = ' <img src="templates/' . $phpraid_config['template'] . '/images/classes/druid_icon.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['druid'].'\');" onMouseout="hideddrivetip();" alt="duird">';
-					break;
-				case $phprlang['hunter']:
-					$class = ' <img src="templates/' . $phpraid_config['template'] . '/images/classes/hunter_icon.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['hunter'].'\');" onMouseout="hideddrivetip();" alt="hunter">';
-					break;
-				case $phprlang['mage']:
-					$class = ' <img src="templates/' . $phpraid_config['template'] . '/images/classes/mage_icon.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['mage'].'\');" onMouseout="hideddrivetip();" alt="mage">';
-					break;
-				case $phprlang['paladin']:
-					$class = ' <img src="templates/' . $phpraid_config['template'] . '/images/classes/paladin_icon.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['paladin'].'\');" onMouseout="hideddrivetip();" alt="paladin">';
-					break;
-				case $phprlang['priest']:
-					$class = ' <img src="templates/' . $phpraid_config['template'] . '/images/classes/priest_icon.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['priest'].'\');" onMouseout="hideddrivetip();" alt="priest">';
-					break;
-				case $phprlang['rogue']:
-					$class = ' <img src="templates/' . $phpraid_config['template'] . '/images/classes/rogue_icon.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['rogue'].'\');" onMouseout="hideddrivetip();" alt="rogue">';
-					break;
-				case $phprlang['shaman']:
-					$class = ' <img src="templates/' . $phpraid_config['template'] . '/images/classes/shaman_icon.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['shaman'].'\');" onMouseout="hideddrivetip();" alt="shaman">';
-					break;
-				case $phprlang['warlock']:
-					$class = ' <img src="templates/' . $phpraid_config['template'] . '/images/classes/warlock_icon.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['warlock'].'\');" onMouseout="hideddrivetip();" alt="warlock">';
-					break;
-				case $phprlang['warrior']:
-					$class = ' <img src="templates/' . $phpraid_config['template'] . '/images/classes/warrior_icon.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['warrior'].'\')"; onMouseout="hideddrivetip()" alt="warrior">';
-					break;
-			}
-			
-			switch($data['role'])
-			{
-				case $phpraid_config['role1_name']:
-					array_push($role1,
-						array('ID'=>$data['char_id'],'Arcane'=>$arcane,'Fire'=>$fire,'Nature'=>$nature,'Frost'=>$frost,'shadow'=>$Shadow,'Role'=>$role,
-							  'Race'=>$race,'Class'=>$class,'Name'=>$name,'Comments'=>$comments,'Level'=>$data['lvl'],'Buttons'=>$actions,
+			foreach ($wrm_global_classes as $global_class)
+				if ($data['class'] == $global_class['class_id'])
+					$class = ' <img src="templates/' . $phpraid_config['template'] . '/'. $global_class['image'] .'" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang[$global_class['lang_index']].'\');" onMouseout="hideddrivetip();" alt="'.$phprlang[$global_class['lang_index']].'">';
+					
+			// Get Role attached to primary spec by looking up in class/role table.
+			$sql = sprintf("SELECT role_id FROM " . $phpraid_config['db_prefix'] . "class_role WHERE class_id=%s and subclass=%s",quote_smart($data['class']),quote_smart($pri_spec));
+			$role_name_data_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+			$role_name_data = $db_raid->sql_fetchrow($role_name_data_result, true);
+			$role_id = $role_name_data['role_id'];
+			foreach ($wrm_global_roles as $global_role)
+				if ($role_id == $global_role['role_id'])
+					array_push($role_info[$global_role['role_id']],
+						array('ID'=>$data['char_id'],'Arcane'=>$arcane,'Fire'=>$fire,'Nature'=>$nature,'Frost'=>$frost,'Shadow'=>$shadow,'Pri_Spec'=>$pri_spec,
+							  'Sec_Spec'=>$sec_spec,'Race'=>$race,'Class'=>$class,'Name'=>$name,'Comments'=>$comments,'Level'=>$data['lvl'],'Buttons'=>$actions,
 							  'Date'=>$date,'Time'=>$time,'Team Name'=>$team_name,'Guild'=>$guildname));
-					break;
-				case $phpraid_config['role2_name']:
-					array_push($role2,
-						array('ID'=>$data['char_id'],'Arcane'=>$arcane,'Fire'=>$fire,'Nature'=>$nature,'Frost'=>$frost,'shadow'=>$Shadow,'Role'=>$role,
-							  'Race'=>$race,'Class'=>$class,'Name'=>$name,'Comments'=>$comments,'Level'=>$data['lvl'],'Buttons'=>$actions,
-							  'Date'=>$date,'Time'=>$time,'Team Name'=>$team_name,'Guild'=>$guildname));
-					break;
-				case $phpraid_config['role3_name']:
-					array_push($role3,
-						array('ID'=>$data['char_id'],'Arcane'=>$arcane,'Fire'=>$fire,'Nature'=>$nature,'Frost'=>$frost,'shadow'=>$Shadow,'Role'=>$role,
-							  'Race'=>$race,'Class'=>$class,'Name'=>$name,'Comments'=>$comments,'Level'=>$data['lvl'],'Buttons'=>$actions,
-							  'Date'=>$date,'Time'=>$time,'Team Name'=>$team_name,'Guild'=>$guildname));
-					break;
-				case $phpraid_config['role4_name']:
-					array_push($role4,
-						array('ID'=>$data['char_id'],'Arcane'=>$arcane,'Fire'=>$fire,'Nature'=>$nature,'Frost'=>$frost,'shadow'=>$Shadow,'Role'=>$role,
-							  'Race'=>$race,'Class'=>$class,'Name'=>$name,'Comments'=>$comments,'Level'=>$data['lvl'],'Buttons'=>$actions,
-							  'Date'=>$date,'Time'=>$time,'Team Name'=>$team_name,'Guild'=>$guildname));
-					break;
-				case $phpraid_config['role5_name']:
-					array_push($role5,
-						array('ID'=>$data['char_id'],'Arcane'=>$arcane,'Fire'=>$fire,'Nature'=>$nature,'Frost'=>$frost,'shadow'=>$Shadow,'Role'=>$role,
-							  'Race'=>$race,'Class'=>$class,'Name'=>$name,'Comments'=>$comments,'Level'=>$data['lvl'],'Buttons'=>$actions,
-							  'Date'=>$date,'Time'=>$time,'Team Name'=>$team_name,'Guild'=>$guildname));
-					break;
-				case $phpraid_config['role6_name']:
-					array_push($role6,
-						array('ID'=>$data['char_id'],'Arcane'=>$arcane,'Fire'=>$fire,'Nature'=>$nature,'Frost'=>$frost,'shadow'=>$Shadow,'Role'=>$role,
-							  'Race'=>$race,'Class'=>$class,'Name'=>$name,'Comments'=>$comments,'Level'=>$data['lvl'],'Buttons'=>$actions,
-							  'Date'=>$date,'Time'=>$time,'Team Name'=>$team_name,'Guild'=>$guildname));
-					break;
-			}
 		}
 	}
 
+	/*******************************************************************************
+	 * 	HANDLE QUEUED RAIDERS
+	 ******************************************************************************/
 	// parse the queue array and seperate to classes
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id=%s AND queue='1' AND cancel='0'",quote_smart($raid_id));
 	$signups_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
@@ -539,103 +386,21 @@ if($mode == 'view')
 		$time = new_date('Y/m/d H:i:s',$signups['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']);
 		$date = $time;
 
-		switch($data['race'])
-		{
-			case $phprlang['draenei']:
-				if(strtolower($data['gender']) == strtolower($phprlang['male']))
-					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/dr_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['draenei'].'\');" onMouseout="hideddrivetip();" alt="dranei male">';
-				else
-					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/dr_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['draenei'].'\');" onMouseout="hideddrivetip();" alt="dranei female">';
-				break;
-			case $phprlang['dwarf']:
-				if(strtolower($data['gender']) == strtolower($phprlang['male']))
-					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/dw_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['dwarf'].'\');" onMouseout="hideddrivetip();" alt="dwarf male">';
-				else
-					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/dw_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['dwarf'].'\');" onMouseout="hideddrivetip();" alt="dwarf female">';
-				break;
-			case $phprlang['gnome']:
-				if(strtolower($data['gender']) == strtolower($phprlang['male']))
-					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/gn_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['gnome'].'\');" onMouseout="hideddrivetip();" alt="gnome male">';
-				else
-					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/gn_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['gnome'].'\');" onMouseout="hideddrivetip();" alt="gnome female">';
-				break;
-			case $phprlang['human']:
-				if(strtolower($data['gender']) == strtolower($phprlang['male']))
-					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/hu_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['human'].'\');" onMouseout="hideddrivetip();" alt="human male">';
-				else
-					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/hu_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['human'].'\');" onMouseout="hideddrivetip();" alt="human female">';
-				break;
-			case $phprlang['night_elf']:
-				if(strtolower($data['gender']) == strtolower($phprlang['male']))
-					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/ne_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['night_elf'].'\');" onMouseout="hideddrivetip();" alt="nightelf male">';
-				else
-					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/ne_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['night_elf'].'\');" onMouseout="hideddrivetip();" alt="nightelf female">';
-				break;
-			case $phprlang['blood_elf']:
-				if(strtolower($data['gender']) == strtolower($phprlang['male']))
-					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/be_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['blood_elf'].'\');" onMouseout="hideddrivetip();" alr="bloodelf male">';
-				else
-					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/be_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['blood_elf'].'\');" onMouseout="hideddrivetip();" alt="bloodelf female">';
-				break;
-			case $phprlang['orc']:
-				if(strtolower($data['gender']) == strtolower($phprlang['male']))
-					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/or_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['orc'].'\');" onMouseout="hideddrivetip();" alt="orc male">';
-				else
-					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/or_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['orc'].'\');" onMouseout="hideddrivetip();" alt="orc female">';
-				break;
-			case $phprlang['tauren']:
-				if(strtolower($data['gender']) == strtolower($phprlang['male']))
-					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/ta_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['tauren'].'\');" onMouseout="hideddrivetip();" alt="tauren male">';
-				else
-					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/ta_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['tauren'].'\');" onMouseout="hideddrivetip();" alt="tauren female">';
-				break;
-			case $phprlang['troll']:
-				if(strtolower($data['gender']) == strtolower($phprlang['male']))
-					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/tr_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['troll'].'\');" onMouseout="hideddrivetip();" alt="troll male">';
-				else
-					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/tr_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['troll'].'\');" onMouseout="hideddrivetip();" alt="troll female">';
-				break;
-			case $phprlang['undead']:
-				if(strtolower($data['gender']) == strtolower($phprlang['male']))
-					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/un_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['undead'].'\');" onMouseout="hideddrivetip();" alt="undead male">';
-				else
-					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/un_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['undead'].'\');" onMouseout="hideddrivetip();" alt="undead female">';
-				break;
-		}
+		// Get the proper race/gender image into the $race variable.
+		foreach($wrm_global_races as $global_race)
+			if ($data['race'] == $global_race['race_id'])
+				foreach($wrm_global_gender as $global_gender)
+					if ($data['gender'] == $global_gender['gender_id'])
+					{
+						$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "race_gender WHERE race_id = %s and gender_id = %s", quote_smart($global_race['race_id']),quote_smart($global_gender['gender_id']));
+						$result_race_gender = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+						$race_gender_data = $db_raid->sql_fetchrow($result_race_gender, true);
+						$race = '<img src="templates/' . $phpraid_config['template'] . $race_gender_data['image'] . '" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang[$global_race['lang_index']].'\');" onMouseout="hideddrivetip();" alt="'.$phprlang[$global_race['lang_index']].' '.$phprlang[$global_gender['lang_index']].'">';
+					}
 
-		switch($data['class'])
-		{
-			case $phprlang['deathknight']:
-				$class = ' <img src="templates/' . $phpraid_config['template'] . '/images/classes/deathknight_icon.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['deathknight'].'\');" onMouseout="hideddrivetip();" alt="death knight">';
-				break;
-			case $phprlang['druid']:
-				$class = ' <img src="templates/' . $phpraid_config['template'] . '/images/classes/druid_icon.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['druid'].'\');" onMouseout="hideddrivetip();" alt="duird">';
-				break;
-			case $phprlang['hunter']:
-				$class = ' <img src="templates/' . $phpraid_config['template'] . '/images/classes/hunter_icon.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['hunter'].'\');" onMouseout="hideddrivetip();" alt="hunter">';
-				break;
-			case $phprlang['mage']:
-				$class = ' <img src="templates/' . $phpraid_config['template'] . '/images/classes/mage_icon.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['mage'].'\');" onMouseout="hideddrivetip();" alt="mage">';
-				break;
-			case $phprlang['paladin']:
-				$class = ' <img src="templates/' . $phpraid_config['template'] . '/images/classes/paladin_icon.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['paladin'].'\');" onMouseout="hideddrivetip();" alt="paladin">';
-				break;
-			case $phprlang['priest']:
-				$class = ' <img src="templates/' . $phpraid_config['template'] . '/images/classes/priest_icon.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['priest'].'\');" onMouseout="hideddrivetip();" alt="priest">';
-				break;
-			case $phprlang['rogue']:
-				$class = ' <img src="templates/' . $phpraid_config['template'] . '/images/classes/rogue_icon.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['rogue'].'\');" onMouseout="hideddrivetip();" alt="rogue">';
-				break;
-			case $phprlang['shaman']:
-				$class = ' <img src="templates/' . $phpraid_config['template'] . '/images/classes/shaman_icon.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['shaman'].'\');" onMouseout="hideddrivetip();" alt="shaman">';
-				break;
-			case $phprlang['warlock']:
-				$class = ' <img src="templates/' . $phpraid_config['template'] . '/images/classes/warlock_icon.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['warlock'].'\');" onMouseout="hideddrivetip();" alt="warlock">';
-				break;
-			case $phprlang['warrior']:
-				$class = ' <img src="templates/' . $phpraid_config['template'] . '/images/classes/warrior_icon.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['warrior'].'\')"; onMouseout="hideddrivetip()" alt="warrior">';
-				break;
-		}
+		foreach ($wrm_global_classes as $global_class)
+			if ($data['class'] == $global_class['class_id'])
+				$class = ' <img src="templates/' . $phpraid_config['template'] . '/'. $global_class['image'] .'" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang[$global_class['lang_index']].'\');" onMouseout="hideddrivetip();" alt="'.$phprlang[$global_class['lang_index']].'">';
 
 		/**********************
 		 * Buttons applicable to users who are Queued to be Drafted for a raid.  Buttons for Drafted Characters
@@ -670,7 +435,8 @@ if($mode == 'view')
 				'Class'=>$class,
 				'Name'=>$name,
 				'Level'=>$data['lvl'],
-				'Role'=>$data['role'],
+				'Pri_Spec'=>$data['pri_spec'],
+				'Sec_Spec'=>$data['sec_spec'],
 				'Buttons'=>$actions,
 				'Date'=>$date,
 				'Time'=>$time,
@@ -680,6 +446,9 @@ if($mode == 'view')
 		);
 	}
 
+	/*******************************************************************************
+	 * 	HANDLE CANCELLED RAIDERS
+	 ******************************************************************************/	
 	// parse the cancel array and seperate to classes
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id=%s AND queue='0' AND cancel='1'",quote_smart($raid_id));
 	$signups_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
@@ -706,103 +475,21 @@ if($mode == 'view')
 		$time = new_date('Y/m/d H:i:s',$signups['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']);
 		$date = $time;
 
-		switch($data['race'])
-		{
-			case $phprlang['draenei']:
-				if(strtolower($data['gender']) == strtolower($phprlang['male']))
-					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/dr_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['draenei'].'\');" onMouseout="hideddrivetip();" alt="dranei male">';
-				else
-					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/dr_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['draenei'].'\');" onMouseout="hideddrivetip();" alt="dranei female">';
-				break;
-			case $phprlang['dwarf']:
-				if(strtolower($data['gender']) == strtolower($phprlang['male']))
-					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/dw_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['dwarf'].'\');" onMouseout="hideddrivetip();" alt="dwarf male">';
-				else
-					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/dw_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['dwarf'].'\');" onMouseout="hideddrivetip();" alt="dwarf female">';
-				break;
-			case $phprlang['gnome']:
-				if(strtolower($data['gender']) == strtolower($phprlang['male']))
-					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/gn_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['gnome'].'\');" onMouseout="hideddrivetip();" alt="gnome male">';
-				else
-					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/gn_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['gnome'].'\');" onMouseout="hideddrivetip();" alt="gnome female">';
-				break;
-			case $phprlang['human']:
-				if(strtolower($data['gender']) == strtolower($phprlang['male']))
-					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/hu_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['human'].'\');" onMouseout="hideddrivetip();" alt="human male">';
-				else
-					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/hu_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['human'].'\');" onMouseout="hideddrivetip();" alt="human female">';
-				break;
-			case $phprlang['night_elf']:
-				if(strtolower($data['gender']) == strtolower($phprlang['male']))
-					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/ne_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['night_elf'].'\');" onMouseout="hideddrivetip();" alt="nightelf male">';
-				else
-					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/ne_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['night_elf'].'\');" onMouseout="hideddrivetip();" alt="nightelf female">';
-				break;
-			case $phprlang['blood_elf']:
-				if(strtolower($data['gender']) == strtolower($phprlang['male']))
-					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/be_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['blood_elf'].'\');" onMouseout="hideddrivetip();" alt="bloodelf male">';
-				else
-					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/be_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['blood_elf'].'\');" onMouseout="hideddrivetip();" alt="bloodelf female">';
-				break;
-			case $phprlang['orc']:
-				if(strtolower($data['gender']) == strtolower($phprlang['male']))
-					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/or_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['orc'].'\');" onMouseout="hideddrivetip();" alt="orc male">';
-				else
-					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/or_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['orc'].'\');" onMouseout="hideddrivetip();" alt="orc female">';
-				break;
-			case $phprlang['tauren']:
-				if(strtolower($data['gender']) == strtolower($phprlang['male']))
-					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/ta_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['tauren'].'\');" onMouseout="hideddrivetip();" alt="tauren male">';
-				else
-					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/ta_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['tauren'].'\');" onMouseout="hideddrivetip();" alt="tauren female">';
-				break;
-			case $phprlang['troll']:
-				if(strtolower($data['gender']) == strtolower($phprlang['male']))
-					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/tr_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['troll'].'\');" onMouseout="hideddrivetip();" alt="troll male">';
-				else
-					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/tr_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['troll'].'\');" onMouseout="hideddrivetip();" alt="troll female">';
-				break;
-			case $phprlang['undead']:
-				if(strtolower($data['gender']) == strtolower($phprlang['male']))
-					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/un_male.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['undead'].'\');" onMouseout="hideddrivetip();" alt="undead male">';
-				else
-					$race = '<img src="templates/' . $phpraid_config['template'] . '/images/faces/un_female.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['undead'].'\');" onMouseout="hideddrivetip();" alt="undead female">';
-				break;
-		}
-
-		switch($data['class'])
-		{
-			case $phprlang['deathknight']:
-				$class = ' <img src="templates/' . $phpraid_config['template'] . '/images/classes/deathknight_icon.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['deathknight'].'\');" onMouseout="hideddrivetip();" alt="death knight">';
-				break;
-			case $phprlang['druid']:
-				$class = ' <img src="templates/' . $phpraid_config['template'] . '/images/classes/druid_icon.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['druid'].'\');" onMouseout="hideddrivetip();" alt="druid">';
-				break;
-			case $phprlang['hunter']:
-				$class = ' <img src="templates/' . $phpraid_config['template'] . '/images/classes/hunter_icon.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['hunter'].'\');" onMouseout="hideddrivetip();" alt="hunter">';
-				break;
-			case $phprlang['mage']:
-				$class = ' <img src="templates/' . $phpraid_config['template'] . '/images/classes/mage_icon.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['mage'].'\');" onMouseout="hideddrivetip();" alt="mage">';
-				break;
-			case $phprlang['paladin']:
-				$class = ' <img src="templates/' . $phpraid_config['template'] . '/images/classes/paladin_icon.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['paladin'].'\');" onMouseout="hideddrivetip();" alt="paladin">';
-				break;
-			case $phprlang['priest']:
-				$class = ' <img src="templates/' . $phpraid_config['template'] . '/images/classes/priest_icon.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['priest'].'\');" onMouseout="hideddrivetip();" alt="priest">';
-				break;
-			case $phprlang['rogue']:
-				$class = ' <img src="templates/' . $phpraid_config['template'] . '/images/classes/rogue_icon.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['rogue'].'\');" onMouseout="hideddrivetip();" alt="rogue">';
-				break;
-			case $phprlang['shaman']:
-				$class = ' <img src="templates/' . $phpraid_config['template'] . '/images/classes/shaman_icon.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['shaman'].'\');" onMouseout="hideddrivetip();" alt="shaman">';
-				break;
-			case $phprlang['warlock']:
-				$class = ' <img src="templates/' . $phpraid_config['template'] . '/images/classes/warlock_icon.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['warlock'].'\');" onMouseout="hideddrivetip();" alt="warlock">';
-				break;
-			case $phprlang['warrior']:
-				$class = ' <img src="templates/' . $phpraid_config['template'] . '/images/classes/warrior_icon.gif" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang['warlock'].'\');" onMouseout="hideddrivetip();" alt="warrior">';
-				break;
-		}
+		// Get the proper race/gender image into the $race variable.
+		foreach($wrm_global_races as $global_race)
+			if ($data['race'] == $global_race['race_id'])
+				foreach($wrm_global_gender as $global_gender)
+					if ($data['gender'] == $global_gender['gender_id'])
+					{
+						$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "race_gender WHERE race_id = %s and gender_id = %s", quote_smart($global_race['race_id']),quote_smart($global_gender['gender_id']));
+						$result_race_gender = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+						$race_gender_data = $db_raid->sql_fetchrow($result_race_gender, true);
+						$race = '<img src="templates/' . $phpraid_config['template'] . $race_gender_data['image'] . '" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang[$global_race['lang_index']].'\');" onMouseout="hideddrivetip();" alt="'.$phprlang[$global_race['lang_index']].' '.$phprlang[$global_gender['lang_index']].'">';
+					}					
+		
+		foreach ($wrm_global_classes as $global_class)
+			if ($data['class'] == $global_class['class_id'])
+				$class = ' <img src="templates/' . $phpraid_config['template'] . '/'. $global_class['image'] .'" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang[$global_class['lang_index']].'\');" onMouseout="hideddrivetip();" alt="'.$phprlang[$global_class['lang_index']].'">';
 
 		/**********************
 		 * Buttons applicable to users who have canceled their signup for the Raid.  Buttons for Drafted
@@ -837,7 +524,8 @@ if($mode == 'view')
 				'Class'=>$class,
 				'Name'=>$name,
 				'Level'=>$data['lvl'],
-				'Role'=>$data['role'],
+				'Pri_Spec'=>$data['pri_spec'],
+				'Sec_Spec'=>$data['sec_spec'],
 				'Buttons'=>$actions,
 				'Date'=>$date,
 				'Time'=>$time,
@@ -854,569 +542,110 @@ if($mode == 'view')
 	
 	if ($phpraid_config['raid_view_type'] == 'by_class')
 	{
-		/**************  DEATH KNIGHT *****************/
-		/**************************************************************
-		 * Code to setup for a Dynamic Table Create: raidview1 View.
-		 **************************************************************/
-		$viewName = 'raidview1';
+		// Get the class database information to the template to create a section for it.
+		//$wrmsmarty->assign('global_class', $wrm_global_classes);
 		
-		//Setup Columns
-		$dk_headers = array();
-		$record_count_array = array();
-		$dk_headers = getVisibleColumns($viewName);
-	
-		//Get Record Counts
-		$dk_record_count_array = getRecordCounts($deathknight, $dk_headers, $startRecord);
+		// Create the Class Drafted Table Views.
+		$class_table_array = array();
+		$class_data = array();
+		foreach ($wrm_global_classes as $global_class)
+		{
+			$class_data = $class_info[$global_class['class_id']];
+			/**************************************************************
+			 * Code to setup for a Dynamic Table Create: raidview1 View.
+			 **************************************************************/
+			$viewName = 'raidview1';
+			
+			//Setup Columns
+			$headers = array();
+			$headers = getVisibleColumns($viewName);
 		
-		//Get the Jump Menu and pass it down
-		$dkJumpMenu = getPageNavigation($deathknight, $startRecord, $pageURL, $sortField, $sortDesc);
-	
-		//Setup Data
-		$deathknight = paginateSortAndFormat($deathknight, $sortField, $sortDesc, $startRecord, $viewName);
-		/****************************************************************
-		 * Data Assign for Template.
-		 ****************************************************************/
-		$wrmsmarty->assign('dk_data', $deathknight); 
-		$wrmsmarty->assign('dk_jump_menu', $dkJumpMenu);
-		$wrmsmarty->assign('dk_column_name', $dk_headers);
-		$wrmsmarty->assign('dk_record_counts', $dk_record_count_array);
-		$wrmsmarty->assign('dk_header_data',
-			array(
-				'template_name'=>$phpraid_config['template'],
-				'deathknight_header'=>$phprlang['deathknight'],
-				'sort_url_base' => $pageURL,
-				'sort_descending' => $sortDesc,
-				'sort_text' => $phprlang['sort_text'],
-			)
-		);
-		/**************  DRUID *****************/
-		/**************************************************************
-		 * Code to setup for a Dynamic Table Create: raidview1 View.
-		 **************************************************************/
-		$viewName = 'raidview1';
+			//Get Record Counts
+			$record_counts = array();
+			$record_counts = getRecordCounts($class_data, $headers, $startRecord);
+			
+			//Get the Jump Menu and pass it down
+			$jump_menu = getPageNavigation($class_data, $startRecord, $pageURL, $sortField, $sortDesc);
 		
-		//Setup Columns
-		$dr_headers = array();
-		$record_count_array = array();
-		$dr_headers = getVisibleColumns($viewName);
-	
-		//Get Record Counts
-		$dr_record_count_array = getRecordCounts($druid, $dr_headers, $startRecord);
-		
-		//Get the Jump Menu and pass it down
-		$drJumpMenu = getPageNavigation($druid, $startRecord, $pageURL, $sortField, $sortDesc);
-	
-		//Setup Data
-		$druid = paginateSortAndFormat($druid, $sortField, $sortDesc, $startRecord, $viewName);
-		/****************************************************************
-		 * Data Assign for Template.
-		 ****************************************************************/
-		$wrmsmarty->assign('dr_data', $druid); 
-		$wrmsmarty->assign('dr_jump_menu', $drJumpMenu);
-		$wrmsmarty->assign('dr_column_name', $dr_headers);
-		$wrmsmarty->assign('dr_record_counts', $dr_record_count_array);
-		$wrmsmarty->assign('dr_header_data',
-			array(
-				'template_name'=>$phpraid_config['template'],
-				'druid_header'=>$phprlang['druid'],
-				'sort_url_base' => $pageURL,
-				'sort_descending' => $sortDesc,
-				'sort_text' => $phprlang['sort_text'],
-			)
-		);
-		/**************  HUNTER *****************/
-		/**************************************************************
-		 * Code to setup for a Dynamic Table Create: raidview1 View.
-		 **************************************************************/
-		$viewName = 'raidview1';
-		
-		//Setup Columns
-		$hu_headers = array();
-		$record_count_array = array();
-		$hu_headers = getVisibleColumns($viewName);
-	
-		//Get Record Counts
-		$hu_record_count_array = getRecordCounts($hunter, $hu_headers, $startRecord);
-		
-		//Get the Jump Menu and pass it down
-		$huJumpMenu = getPageNavigation($hunter, $startRecord, $pageURL, $sortField, $sortDesc);
-	
-		//Setup Data
-		$hunter = paginateSortAndFormat($hunter, $sortField, $sortDesc, $startRecord, $viewName);
-		/****************************************************************
-		 * Data Assign for Template.
-		 ****************************************************************/
-		$wrmsmarty->assign('hu_data', $hunter); 
-		$wrmsmarty->assign('hu_jump_menu', $huJumpMenu);
-		$wrmsmarty->assign('hu_column_name', $hu_headers);
-		$wrmsmarty->assign('hu_record_counts', $hu_record_count_array);
-		$wrmsmarty->assign('hu_header_data',
-			array(
-				'template_name'=>$phpraid_config['template'],
-				'hunter_header'=>$phprlang['hunter'],
-				'sort_url_base' => $pageURL,
-				'sort_descending' => $sortDesc,
-				'sort_text' => $phprlang['sort_text'],
-			)
-		);
-		/**************  MAGE *****************/
-		/**************************************************************
-		 * Code to setup for a Dynamic Table Create: raidview1 View.
-		 **************************************************************/
-		$viewName = 'raidview1';
-		
-		//Setup Columns
-		$ma_headers = array();
-		$record_count_array = array();
-		$ma_headers = getVisibleColumns($viewName);
-	
-		//Get Record Counts
-		$ma_record_count_array = getRecordCounts($mage, $ma_headers, $startRecord);
-		
-		//Get the Jump Menu and pass it down
-		$maJumpMenu = getPageNavigation($mage, $startRecord, $pageURL, $sortField, $sortDesc);
-	
-		//Setup Data
-		$mage = paginateSortAndFormat($mage, $sortField, $sortDesc, $startRecord, $viewName);
-		/****************************************************************
-		 * Data Assign for Template.
-		 ****************************************************************/
-		$wrmsmarty->assign('ma_data', $mage); 
-		$wrmsmarty->assign('ma_jump_menu', $maJumpMenu);
-		$wrmsmarty->assign('ma_column_name', $ma_headers);
-		$wrmsmarty->assign('ma_record_counts', $ma_record_count_array);
-		$wrmsmarty->assign('ma_header_data',
-			array(
-				'template_name'=>$phpraid_config['template'],
-				'mage_header'=>$phprlang['mage'],
-				'sort_url_base' => $pageURL,
-				'sort_descending' => $sortDesc,
-				'sort_text' => $phprlang['sort_text'],
-			)
-		);
-		/**************  PALADIN *****************/
-		/**************************************************************
-		 * Code to setup for a Dynamic Table Create: raidview1 View.
-		 **************************************************************/
-		$viewName = 'raidview1';
-		
-		//Setup Columns
-		$pa_headers = array();
-		$record_count_array = array();
-		$pa_headers = getVisibleColumns($viewName);
-	
-		//Get Record Counts
-		$pa_record_count_array = getRecordCounts($paladin, $pa_headers, $startRecord);
-		
-		//Get the Jump Menu and pass it down
-		$paJumpMenu = getPageNavigation($paladin, $startRecord, $pageURL, $sortField, $sortDesc);
-	
-		//Setup Data
-		$paladin = paginateSortAndFormat($paladin, $sortField, $sortDesc, $startRecord, $viewName);
-		/****************************************************************
-		 * Data Assign for Template.
-		 ****************************************************************/
-		$wrmsmarty->assign('pa_data', $paladin); 
-		$wrmsmarty->assign('pa_jump_menu', $paJumpMenu);
-		$wrmsmarty->assign('pa_column_name', $pa_headers);
-		$wrmsmarty->assign('pa_record_counts', $pa_record_count_array);
-		$wrmsmarty->assign('pa_header_data',
-			array(
-				'template_name'=>$phpraid_config['template'],
-				'paladin_header'=>$phprlang['paladin'],
-				'sort_url_base' => $pageURL,
-				'sort_descending' => $sortDesc,
-				'sort_text' => $phprlang['sort_text'],
-			)
-		);
-		/**************  PRIEST *****************/
-		/**************************************************************
-		 * Code to setup for a Dynamic Table Create: raidview1 View.
-		 **************************************************************/
-		$viewName = 'raidview1';
-		
-		//Setup Columns
-		$pr_headers = array();
-		$record_count_array = array();
-		$pr_headers = getVisibleColumns($viewName);
-	
-		//Get Record Counts
-		$pr_record_count_array = getRecordCounts($priest, $pr_headers, $startRecord);
-		
-		//Get the Jump Menu and pass it down
-		$prJumpMenu = getPageNavigation($priest, $startRecord, $pageURL, $sortField, $sortDesc);
-	
-		//Setup Data
-		$priest = paginateSortAndFormat($priest, $sortField, $sortDesc, $startRecord, $viewName);
-		/****************************************************************
-		 * Data Assign for Template.
-		 ****************************************************************/
-		$wrmsmarty->assign('pr_data', $priest); 
-		$wrmsmarty->assign('pr_jump_menu', $prJumpMenu);
-		$wrmsmarty->assign('pr_column_name', $pr_headers);
-		$wrmsmarty->assign('pr_record_counts', $pr_record_count_array);
-		$wrmsmarty->assign('pr_header_data',
-			array(
-				'template_name'=>$phpraid_config['template'],
-				'priest_header'=>$phprlang['priest'],
-				'sort_url_base' => $pageURL,
-				'sort_descending' => $sortDesc,
-				'sort_text' => $phprlang['sort_text'],
-			)
-		);
-		/**************  ROGUE *****************/
-		/**************************************************************
-		 * Code to setup for a Dynamic Table Create: raidview1 View.
-		 **************************************************************/
-		$viewName = 'raidview1';
-		
-		//Setup Columns
-		$ro_headers = array();
-		$record_count_array = array();
-		$ro_headers = getVisibleColumns($viewName);
-	
-		//Get Record Counts
-		$ro_record_count_array = getRecordCounts($rogue, $ro_headers, $startRecord);
-		
-		//Get the Jump Menu and pass it down
-		$roJumpMenu = getPageNavigation($rogue, $startRecord, $pageURL, $sortField, $sortDesc);
-	
-		//Setup Data
-		$rogue = paginateSortAndFormat($rogue, $sortField, $sortDesc, $startRecord, $viewName);
-		/****************************************************************
-		 * Data Assign for Template.
-		 ****************************************************************/
-		$wrmsmarty->assign('ro_data', $rogue); 
-		$wrmsmarty->assign('ro_jump_menu', $roJumpMenu);
-		$wrmsmarty->assign('ro_column_name', $ro_headers);
-		$wrmsmarty->assign('ro_record_counts', $ro_record_count_array);
-		$wrmsmarty->assign('ro_header_data',
-			array(
-				'template_name'=>$phpraid_config['template'],
-				'rogue_header'=>$phprlang['rogue'],
-				'sort_url_base' => $pageURL,
-				'sort_descending' => $sortDesc,
-				'sort_text' => $phprlang['sort_text'],
-			)
-		);
-		/**************  SHAMAN *****************/
-		/**************************************************************
-		 * Code to setup for a Dynamic Table Create: raidview1 View.
-		 **************************************************************/
-		$viewName = 'raidview1';
-		
-		//Setup Columns
-		$sh_headers = array();
-		$record_count_array = array();
-		$sh_headers = getVisibleColumns($viewName);
-	
-		//Get Record Counts
-		$sh_record_count_array = getRecordCounts($shaman, $sh_headers, $startRecord);
-		
-		//Get the Jump Menu and pass it down
-		$shJumpMenu = getPageNavigation($shaman, $startRecord, $pageURL, $sortField, $sortDesc);
-	
-		//Setup Data
-		$shaman = paginateSortAndFormat($shaman, $sortField, $sortDesc, $startRecord, $viewName);
-		/****************************************************************
-		 * Data Assign for Template.
-		 ****************************************************************/
-		$wrmsmarty->assign('sh_data', $shaman); 
-		$wrmsmarty->assign('sh_jump_menu', $shJumpMenu);
-		$wrmsmarty->assign('sh_column_name', $sh_headers);
-		$wrmsmarty->assign('sh_record_counts', $sh_record_count_array);
-		$wrmsmarty->assign('sh_header_data',
-			array(
-				'template_name'=>$phpraid_config['template'],
-				'shaman_header'=>$phprlang['shaman'],
-				'sort_url_base' => $pageURL,
-				'sort_descending' => $sortDesc,
-				'sort_text' => $phprlang['sort_text'],
-			)
-		);
-		/**************  WARLOCK *****************/
-		/**************************************************************
-		 * Code to setup for a Dynamic Table Create: raidview1 View.
-		 **************************************************************/
-		$viewName = 'raidview1';
-		
-		//Setup Columns
-		$wl_headers = array();
-		$record_count_array = array();
-		$wl_headers = getVisibleColumns($viewName);
-	
-		//Get Record Counts
-		$wl_record_count_array = getRecordCounts($warlock, $wl_headers, $startRecord);
-		
-		//Get the Jump Menu and pass it down
-		$wlJumpMenu = getPageNavigation($warlock, $startRecord, $pageURL, $sortField, $sortDesc);
-	
-		//Setup Data
-		$warlock = paginateSortAndFormat($warlock, $sortField, $sortDesc, $startRecord, $viewName);
-		/****************************************************************
-		 * Data Assign for Template.
-		 ****************************************************************/
-		$wrmsmarty->assign('wl_data', $warlock); 
-		$wrmsmarty->assign('wl_jump_menu', $wlJumpMenu);
-		$wrmsmarty->assign('wl_column_name', $wl_headers);
-		$wrmsmarty->assign('wl_record_counts', $wl_record_count_array);
-		$wrmsmarty->assign('wl_header_data',
-			array(
-				'template_name'=>$phpraid_config['template'],
-				'warlock_header'=>$phprlang['warlock'],
-				'sort_url_base' => $pageURL,
-				'sort_descending' => $sortDesc,
-				'sort_text' => $phprlang['sort_text'],
-			)
-		);
-		/**************  WARRIOR *****************/
-		/**************************************************************
-		 * Code to setup for a Dynamic Table Create: raidview1 View.
-		 **************************************************************/
-		$viewName = 'raidview1';
-		
-		//Setup Columns
-		$wa_headers = array();
-		$record_count_array = array();
-		$wa_headers = getVisibleColumns($viewName);
-	
-		//Get Record Counts
-		$wa_record_count_array = getRecordCounts($warrior, $wa_headers, $startRecord);
-		
-		//Get the Jump Menu and pass it down
-		$waJumpMenu = getPageNavigation($warrior, $startRecord, $pageURL, $sortField, $sortDesc);
-	
-		//Setup Data
-		$warrior = paginateSortAndFormat($warrior, $sortField, $sortDesc, $startRecord, $viewName);
-		/****************************************************************
-		 * Data Assign for Template.
-		 ****************************************************************/
-		$wrmsmarty->assign('wa_data', $warrior); 
-		$wrmsmarty->assign('wa_jump_menu', $waJumpMenu);
-		$wrmsmarty->assign('wa_column_name', $wa_headers);
-		$wrmsmarty->assign('wa_record_counts', $wa_record_count_array);
-		$wrmsmarty->assign('wa_header_data',
-			array(
-				'template_name'=>$phpraid_config['template'],
-				'warrior_header'=>$phprlang['warrior'],
-				'sort_url_base' => $pageURL,
-				'sort_descending' => $sortDesc,
-				'sort_text' => $phprlang['sort_text'],
-			)
-		);
+			//Setup Data
+			$class_data = paginateSortAndFormat($class_data, $sortField, $sortDesc, $startRecord, $viewName);
+			/****************************************************************
+			 * Data Assign for Template.
+			 ****************************************************************/
+			$header_data = array(
+							'template_name'=>$phpraid_config['template'],
+							'header'=>$phprlang[$global_class['lang_index']],
+							'sort_url_base' => $pageURL,
+							'sort_descending' => $sortDesc,
+							'sort_text' => $phprlang['sort_text'],			
+						);
+			
+			array_push($class_table_array,
+				array(
+					'column_name'=>$headers,
+					'record_counts'=>$record_counts,
+					'jump_menu'=>$jump_menu,
+					'header_data'=>$header_data,
+					'class_data'=>$class_data,
+				)
+			);
+		}
+		$wrmsmarty->assign('class_table', $class_table_array); 
 	}
 	else
 	{
-		/**************  ROLE1 *****************/
-		/**************************************************************
-		 * Code to setup for a Dynamic Table Create: raidview1 View.
-		 **************************************************************/
-		$viewName = 'raidview1';
+		// Get the class database information to the template to create a section for it.
+		//$wrmsmarty->assign('global_role', $wrm_global_roles);
 		
-		//Setup Columns
-		$ro1_headers = array();
-		$record_count_array = array();
-		$ro1_headers = getVisibleColumns($viewName);
-	
-		//Get Record Counts
-		$ro1_record_count_array = getRecordCounts($role1, $ro1_headers, $startRecord);
-		
-		//Get the Jump Menu and pass it down
-		$ro1JumpMenu = getPageNavigation($role1, $startRecord, $pageURL, $sortField, $sortDesc);
-	
-		//Setup Data
-		$role1 = paginateSortAndFormat($role1, $sortField, $sortDesc, $startRecord, $viewName);
-		/****************************************************************
-		 * Data Assign for Template.
-		 ****************************************************************/
-		$wrmsmarty->assign('ro1_data', $role1); 
-		$wrmsmarty->assign('ro1_jump_menu', $ro1JumpMenu);
-		$wrmsmarty->assign('ro1_column_name', $ro1_headers);
-		$wrmsmarty->assign('ro1_record_counts', $ro1_record_count_array);
-		$wrmsmarty->assign('ro1_header_data',
-			array(
-				'template_name'=>$phpraid_config['template'],
-				'role1_header'=>$phpraid_config['role1_name'],
-				'sort_url_base' => $pageURL,
-				'sort_descending' => $sortDesc,
-				'sort_text' => $phprlang['sort_text'],
-			)
-		);
-		/**************  ROLE2 *****************/
-		/**************************************************************
-		 * Code to setup for a Dynamic Table Create: raidview1 View.
-		 **************************************************************/
-		$viewName = 'raidview1';
-		
-		//Setup Columns
-		$ro2_headers = array();
-		$record_count_array = array();
-		$ro2_headers = getVisibleColumns($viewName);
-	
-		//Get Record Counts
-		$ro2_record_count_array = getRecordCounts($role2, $ro2_headers, $startRecord);
-		
-		//Get the Jump Menu and pass it down
-		$ro2JumpMenu = getPageNavigation($role2, $startRecord, $pageURL, $sortField, $sortDesc);
-	
-		//Setup Data
-		$role2 = paginateSortAndFormat($role2, $sortField, $sortDesc, $startRecord, $viewName);
-		/****************************************************************
-		 * Data Assign for Template.
-		 ****************************************************************/
-		$wrmsmarty->assign('ro2_data', $role2); 
-		$wrmsmarty->assign('ro2_jump_menu', $ro2JumpMenu);
-		$wrmsmarty->assign('ro2_column_name', $ro2_headers);
-		$wrmsmarty->assign('ro2_record_counts', $ro2_record_count_array);
-		$wrmsmarty->assign('ro2_header_data',
-			array(
-				'template_name'=>$phpraid_config['template'],
-				'role2_header'=>$phpraid_config['role2_name'],
-				'sort_url_base' => $pageURL,
-				'sort_descending' => $sortDesc,
-				'sort_text' => $phprlang['sort_text'],
-			)
-		);
-		/**************  ROLE3 *****************/
-		/**************************************************************
-		 * Code to setup for a Dynamic Table Create: raidview1 View.
-		 **************************************************************/
-		$viewName = 'raidview1';
-		
-		//Setup Columns
-		$ro3_headers = array();
-		$record_count_array = array();
-		$ro3_headers = getVisibleColumns($viewName);
-	
-		//Get Record Counts
-		$ro3_record_count_array = getRecordCounts($role3, $ro3_headers, $startRecord);
-		
-		//Get the Jump Menu and pass it down
-		$ro3JumpMenu = getPageNavigation($role3, $startRecord, $pageURL, $sortField, $sortDesc);
-	
-		//Setup Data
-		$role3 = paginateSortAndFormat($role3, $sortField, $sortDesc, $startRecord, $viewName);
-		/****************************************************************
-		 * Data Assign for Template.
-		 ****************************************************************/
-		$wrmsmarty->assign('ro3_data', $role3); 
-		$wrmsmarty->assign('ro3_jump_menu', $ro3JumpMenu);
-		$wrmsmarty->assign('ro3_column_name', $ro3_headers);
-		$wrmsmarty->assign('ro3_record_counts', $ro3_record_count_array);
-		$wrmsmarty->assign('ro3_header_data',
-			array(
-				'template_name'=>$phpraid_config['template'],
-				'role3_header'=>$phpraid_config['role3_name'],
-				'sort_url_base' => $pageURL,
-				'sort_descending' => $sortDesc,
-				'sort_text' => $phprlang['sort_text'],
-			)
-		);
-		/**************  ROLE4 *****************/
-		/**************************************************************
-		 * Code to setup for a Dynamic Table Create: raidview1 View.
-		 **************************************************************/
-		$viewName = 'raidview1';
-		
-		//Setup Columns
-		$ro4_headers = array();
-		$record_count_array = array();
-		$ro4_headers = getVisibleColumns($viewName);
-	
-		//Get Record Counts
-		$ro4_record_count_array = getRecordCounts($role4, $ro4_headers, $startRecord);
-		
-		//Get the Jump Menu and pass it down
-		$ro4JumpMenu = getPageNavigation($role4, $startRecord, $pageURL, $sortField, $sortDesc);
-	
-		//Setup Data
-		$role4 = paginateSortAndFormat($role4, $sortField, $sortDesc, $startRecord, $viewName);
-		/****************************************************************
-		 * Data Assign for Template.
-		 ****************************************************************/
-		$wrmsmarty->assign('ro4_data', $role4); 
-		$wrmsmarty->assign('ro4_jump_menu', $ro4JumpMenu);
-		$wrmsmarty->assign('ro4_column_name', $ro4_headers);
-		$wrmsmarty->assign('ro4_record_counts', $ro4_record_count_array);
-		$wrmsmarty->assign('ro4_header_data',
-			array(
-				'template_name'=>$phpraid_config['template'],
-				'role4_header'=>$phpraid_config['role4_name'],
-				'sort_url_base' => $pageURL,
-				'sort_descending' => $sortDesc,
-				'sort_text' => $phprlang['sort_text'],
-			)
-		);
-		/**************  ROLE5 *****************/
-		/**************************************************************
-		 * Code to setup for a Dynamic Table Create: raidview1 View.
-		 **************************************************************/
-		$viewName = 'raidview1';
-		
-		//Setup Columns
-		$ro5_headers = array();
-		$record_count_array = array();
-		$ro5_headers = getVisibleColumns($viewName);
-	
-		//Get Record Counts
-		$ro5_record_count_array = getRecordCounts($role5, $ro5_headers, $startRecord);
-		
-		//Get the Jump Menu and pass it down
-		$ro5JumpMenu = getPageNavigation($role5, $startRecord, $pageURL, $sortField, $sortDesc);
-	
-		//Setup Data
-		$role5 = paginateSortAndFormat($role5, $sortField, $sortDesc, $startRecord, $viewName);
-		/****************************************************************
-		 * Data Assign for Template.
-		 ****************************************************************/
-		$wrmsmarty->assign('ro5_data', $role5); 
-		$wrmsmarty->assign('ro5_jump_menu', $ro5JumpMenu);
-		$wrmsmarty->assign('ro5_column_name', $ro5_headers);
-		$wrmsmarty->assign('ro5_record_counts', $ro5_record_count_array);
-		$wrmsmarty->assign('ro5_header_data',
-			array(
-				'template_name'=>$phpraid_config['template'],
-				'role5_header'=>$phpraid_config['role5_name'],
-				'sort_url_base' => $pageURL,
-				'sort_descending' => $sortDesc,
-				'sort_text' => $phprlang['sort_text'],
-			)
-		);
-		/**************  ROLE6 *****************/
-		/**************************************************************
-		 * Code to setup for a Dynamic Table Create: raidview1 View.
-		 **************************************************************/
-		$viewName = 'raidview1';
-		
-		//Setup Columns
-		$ro6_headers = array();
-		$record_count_array = array();
-		$ro6_headers = getVisibleColumns($viewName);
-	
-		//Get Record Counts
-		$ro6_record_count_array = getRecordCounts($role6, $ro6_headers, $startRecord);
-		
-		//Get the Jump Menu and pass it down
-		$ro6JumpMenu = getPageNavigation($role6, $startRecord, $pageURL, $sortField, $sortDesc);
-	
-		//Setup Data
-		$role6 = paginateSortAndFormat($role6, $sortField, $sortDesc, $startRecord, $viewName);
-		/****************************************************************
-		 * Data Assign for Template.
-		 ****************************************************************/
-		$wrmsmarty->assign('ro6_data', $role6); 
-		$wrmsmarty->assign('ro6_jump_menu', $ro6JumpMenu);
-		$wrmsmarty->assign('ro6_column_name', $ro6_headers);
-		$wrmsmarty->assign('ro6_record_counts', $ro6_record_count_array);
-		$wrmsmarty->assign('ro6_header_data',
-			array(
-				'template_name'=>$phpraid_config['template'],
-				'role6_header'=>$phpraid_config['role6_name'],
-				'sort_url_base' => $pageURL,
-				'sort_descending' => $sortDesc,
-				'sort_text' => $phprlang['sort_text'],
-			)
-		);
+		// Create the Class Drafted Table Views.
+		$role_table_array = array();
+		$role_data = array();
+		foreach ($wrm_global_roles as $global_role)
+		{
+			if ($global_role['role_name'] != '')
+			{
+				$role_data = $role_info[$global_role['role_id']];
+				/**************************************************************
+				 * Code to setup for a Dynamic Table Create: raidview1 View.
+				 **************************************************************/
+				$viewName = 'raidview1';
+				
+				//Setup Columns
+				$headers = array();
+				$headers = getVisibleColumns($viewName);
+			
+				//Get Record Counts
+				$record_counts = array();
+				$record_counts = getRecordCounts($role_data, $headers, $startRecord);
+				
+				//Get the Jump Menu and pass it down
+				$jump_menu = getPageNavigation($role_data, $startRecord, $pageURL, $sortField, $sortDesc);
+			
+				//Setup Data
+				$role_data = paginateSortAndFormat($role_data, $sortField, $sortDesc, $startRecord, $viewName);
+				/****************************************************************
+				 * Data Assign for Template.
+				 ****************************************************************/
+				$header_data = array(
+								'template_name'=>$phpraid_config['template'],
+								'header'=>$global_role['role_name'],
+								'sort_url_base' => $pageURL,
+								'sort_descending' => $sortDesc,
+								'sort_text' => $phprlang['sort_text'],			
+							);
+				
+				array_push($role_table_array,
+					array(
+						'column_name'=>$headers,
+						'record_counts'=>$record_counts,
+						'jump_menu'=>$jump_menu,
+						'header_data'=>$header_data,
+						'role_data'=>$role_data,
+					)
+				);
+			}
+		}
+		$wrmsmarty->assign('role_table', $role_table_array); 
 	}
 
 	/**************************************************************
@@ -1494,96 +723,132 @@ if($mode == 'view')
 	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 	$data = $db_raid->sql_fetchrow($result, true);
 
+	//Get Raid Total Counts
 	$count = get_char_count($raid_id, $type='');
-	$count2 = get_char_count($raid_id, $type='queue');
+	$count2 = get_char_count($raid_id, $type='queue');		
+	foreach ($count as $class_count)
+		$total += $class_count;
+	foreach ($count2 as $class_queue_count)
+		$total2 += $class_queue_count;
+	//$count = get_char_count($raid_id, $type='');
+	//$count2 = get_char_count($raid_id, $type='queue');
 	
-	if($phpraid_config['class_as_min'])
+	// Now that we have the raid data, we need to retrieve limit data based upon Raid ID.
+	// Get Class Limits and set Colored Counts
+	$raid_class_array = array();
+	$class_color_count = array();
+	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raid_class_lmt WHERE raid_id = %s", quote_smart($data['raid_id']));
+	$result_raid_class = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	while($raid_class_data = $db_raid->sql_fetchrow($result_raid_class, true))
 	{
-		$deathknight_count = get_coloredcount('deathknight', $count['dk'], $data['dk_lmt'], $count2['dk'], true);
-		$druid_count = get_coloredcount('druid', $count['dr'], $data['dr_lmt'], $count2['dr'], true);
-		$hunter_count = get_coloredcount('hunter', $count['hu'], $data['hu_lmt'], $count2['hu'], true);
-		$mage_count = get_coloredcount('mage', $count['ma'], $data['ma_lmt'], $count2['ma'], true);
-		$paladin_count = get_coloredcount('paladin', $count['pa'], $data['pa_lmt'], $count2['pa'], true);
-		$priest_count = get_coloredcount('priest', $count['pr'], $data['pr_lmt'], $count2['pr'], true);
-		$rogue_count = get_coloredcount('rogue', $count['ro'], $data['ro_lmt'], $count2['ro'], true);
-		$shaman_count = get_coloredcount('shaman', $count['sh'], $data['sh_lmt'], $count2['sh'], true);
-		$warlock_count = get_coloredcount('warlock', $count['wk'], $data['wk_lmt'], $count2['wk'], true);
-		$warrior_count = get_coloredcount('warrior', $count['wa'], $data['wa_lmt'], $count2['wa'], true);
+		$raid_class_array[$raid_class_data['class_id']] = $raid_class_data['lmt'];
+		if($phpraid_config['class_as_min'])
+			$class_color_count[$raid_class_data['class_id']] = get_coloredcount($raid_class_data['class_id'], $count[$raid_class_data['class_id']], $raid_class_array[$raid_class_data['class_id']], $count2[$raid_class_data['class_id']], true);
+		else
+			$class_color_count[$raid_class_data['class_id']] = get_coloredcount($raid_class_data['class_id'], $count[$raid_class_data['class_id']], $raid_class_array[$raid_class_data['class_id']], $count2[$raid_class_data['class_id']]);
 	}
-	else
+	// Get Role Limits and set Colored Counts
+	$raid_role_array = array();
+	$role_color_count = array();
+	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raid_role_lmt WHERE raid_id = %s", quote_smart($data['raid_id']));
+	$result_raid_role = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	while($raid_role_data = $db_raid->sql_fetchrow($result_raid_role, true))
 	{
-		$deathknight_count = get_coloredcount('deathknight', $count['dk'], $data['dk_lmt'], $count2['dk']);
-		$druid_count = get_coloredcount('druid', $count['dr'], $data['dr_lmt'], $count2['dr']);
-		$hunter_count = get_coloredcount('hunter', $count['hu'], $data['hu_lmt'], $count2['hu']);
-		$mage_count = get_coloredcount('mage', $count['ma'], $data['ma_lmt'], $count2['ma']);
-		$paladin_count = get_coloredcount('paladin', $count['pa'], $data['pa_lmt'], $count2['pa']);
-		$priest_count = get_coloredcount('priest', $count['pr'], $data['pr_lmt'], $count2['pr']);
-		$rogue_count = get_coloredcount('rogue', $count['ro'], $data['ro_lmt'], $count2['ro']);
-		$shaman_count = get_coloredcount('shaman', $count['sh'], $data['sh_lmt'], $count2['sh']);
-		$warlock_count = get_coloredcount('warlock', $count['wk'], $data['wk_lmt'], $count2['wk']);
-		$warrior_count = get_coloredcount('warrior', $count['wa'], $data['wa_lmt'], $count2['wa']);
-	}
+		$sql2 = sprintf("SELECT role_name FROM " . $phpraid_config['db_prefix'] . "roles WHERE role_id = %s", quote_smart($raid_role_data['role_id']));
+		$result_role_name = $db_raid->sql_query($sql2) or print_error($sql2, mysql_error(), 1);
+		$role_name = $db_raid->sql_fetchrow($result_role_name, true);
+		
+		$raid_role_array[$role_name['role_name']] = $raid_role_data['lmt'];
+		$role_color_count[$role_name['role_name']] = get_coloredcount($role_name['role_name'], $count[$raid_role_data['role_id']], $raid_role_array[$role_name['role_name']], $count2[$raid_role_data['role_id']]);
+	}		
+	
+	//if($phpraid_config['class_as_min'])
+	//{
+	//	$deathknight_count = get_coloredcount('deathknight', $count['dk'], $data['dk_lmt'], $count2['dk'], true);
+	//	$druid_count = get_coloredcount('druid', $count['dr'], $data['dr_lmt'], $count2['dr'], true);
+	//	$hunter_count = get_coloredcount('hunter', $count['hu'], $data['hu_lmt'], $count2['hu'], true);
+	//	$mage_count = get_coloredcount('mage', $count['ma'], $data['ma_lmt'], $count2['ma'], true);
+	//	$paladin_count = get_coloredcount('paladin', $count['pa'], $data['pa_lmt'], $count2['pa'], true);
+	//	$priest_count = get_coloredcount('priest', $count['pr'], $data['pr_lmt'], $count2['pr'], true);
+	//	$rogue_count = get_coloredcount('rogue', $count['ro'], $data['ro_lmt'], $count2['ro'], true);
+	//	$shaman_count = get_coloredcount('shaman', $count['sh'], $data['sh_lmt'], $count2['sh'], true);
+	//	$warlock_count = get_coloredcount('warlock', $count['wk'], $data['wk_lmt'], $count2['wk'], true);
+	//	$warrior_count = get_coloredcount('warrior', $count['wa'], $data['wa_lmt'], $count2['wa'], true);
+	//}
+	//else
+	//{
+	//	$deathknight_count = get_coloredcount('deathknight', $count['dk'], $data['dk_lmt'], $count2['dk']);
+	//	$druid_count = get_coloredcount('druid', $count['dr'], $data['dr_lmt'], $count2['dr']);
+	//	$hunter_count = get_coloredcount('hunter', $count['hu'], $data['hu_lmt'], $count2['hu']);
+	//	$mage_count = get_coloredcount('mage', $count['ma'], $data['ma_lmt'], $count2['ma']);
+	//	$paladin_count = get_coloredcount('paladin', $count['pa'], $data['pa_lmt'], $count2['pa']);
+	//	$priest_count = get_coloredcount('priest', $count['pr'], $data['pr_lmt'], $count2['pr']);
+	//	$rogue_count = get_coloredcount('rogue', $count['ro'], $data['ro_lmt'], $count2['ro']);
+	//	$shaman_count = get_coloredcount('shaman', $count['sh'], $data['sh_lmt'], $count2['sh']);
+	//	$warlock_count = get_coloredcount('warlock', $count['wk'], $data['wk_lmt'], $count2['wk']);
+	//	$warrior_count = get_coloredcount('warrior', $count['wa'], $data['wa_lmt'], $count2['wa']);
+	//}
 
-	if ($phpraid_config['role1_name'] != '')
-	{
-		$role1_text = $phpraid_config['role1_name'];
-		$role1_count = get_coloredcount('role1', $count['role1'], $data['role1_lmt'], $count2['role1']);
-	}
-	else
-	{
-		$role1_text = '';
-		$role1_count = '';
-	}
-	if ($phpraid_config['role2_name'] != '')
-	{
-		$role2_text = $phpraid_config['role2_name'];
-		$role2_count = get_coloredcount('role2', $count['role2'], $data['role2_lmt'], $count2['role2']);
-	}
-	else
-	{
-		$role2_text = '';
-		$role2_count = '';
-	}
-	if ($phpraid_config['role3_name'] != '')
-	{
-		$role3_text = $phpraid_config['role3_name'];
-		$role3_count = get_coloredcount('role3', $count['role3'], $data['role3_lmt'], $count2['role3']);
-	}
-	else
-	{
-		$role3_text = '';
-		$role3_count = '';
-	}
-	if ($phpraid_config['role4_name'] != '')
-	{
-		$role4_text = $phpraid_config['role4_name'];
-		$role4_count = get_coloredcount('role4', $count['role4'], $data['role4_lmt'], $count2['role4']);
-	}
-	else
-	{
-		$role4_text = '';
-		$role4_count = '';
-	}
-	if ($phpraid_config['role5_name'] != '')
-	{
-		$role5_text = $phpraid_config['role5_name'];
-		$role5_count = get_coloredcount('role5', $count['role5'], $data['role5_lmt'], $count2['role5']);
-	}
-	else
-	{
-		$role5_text = '';
-		$role5_count = '';
-	}
-	if ($phpraid_config['role6_name'] != '')
-	{
-		$role6_text = $phpraid_config['role6_name'];
-		$role6_count = get_coloredcount('role6', $count['role6'], $data['role6_lmt'], $count2['role6']);
-	}
-	else
-	{
-		$role6_text = '';
-		$role6_count = '';
-	}
+	//if ($phpraid_config['role1_name'] != '')
+	//{
+	//	$role1_text = $phpraid_config['role1_name'];
+	//	$role1_count = get_coloredcount('role1', $count['role1'], $data['role1_lmt'], $count2['role1']);
+	//}
+	//else
+	//{
+	//	$role1_text = '';
+	//	$role1_count = '';
+	//}
+	//if ($phpraid_config['role2_name'] != '')
+	//{
+	//	$role2_text = $phpraid_config['role2_name'];
+	//	$role2_count = get_coloredcount('role2', $count['role2'], $data['role2_lmt'], $count2['role2']);
+	//}
+	//else
+	//{
+	//	$role2_text = '';
+	//	$role2_count = '';
+	//}
+	//if ($phpraid_config['role3_name'] != '')
+	//{
+	//	$role3_text = $phpraid_config['role3_name'];
+	//	$role3_count = get_coloredcount('role3', $count['role3'], $data['role3_lmt'], $count2['role3']);
+	//}
+	//else
+	//{
+	//	$role3_text = '';
+	//	$role3_count = '';
+	//}
+	//if ($phpraid_config['role4_name'] != '')
+	//{
+	//	$role4_text = $phpraid_config['role4_name'];
+	//	$role4_count = get_coloredcount('role4', $count['role4'], $data['role4_lmt'], $count2['role4']);
+	//}
+	//else
+	//{
+	//	$role4_text = '';
+	//	$role4_count = '';
+	//}
+	//if ($phpraid_config['role5_name'] != '')
+	//{
+	//	$role5_text = $phpraid_config['role5_name'];
+	//	$role5_count = get_coloredcount('role5', $count['role5'], $data['role5_lmt'], $count2['role5']);
+	//}
+	//else
+	//{
+	//	$role5_text = '';
+	//	$role5_count = '';
+	//}
+	//if ($phpraid_config['role6_name'] != '')
+	//{
+	//	$role6_text = $phpraid_config['role6_name'];
+	//	$role6_count = get_coloredcount('role6', $count['role6'], $data['role6_lmt'], $count2['role6']);
+	//}
+	//else
+	//{
+	//	$role6_text = '';
+	//	$role6_count = '';
+	//}
 
 	// check to see if they have permissions to signup
 	$show_signup = 1;
@@ -1629,17 +894,22 @@ if($mode == 'view')
 	}
 
 	// finally, icons
-	$deathknight_icon = '<a href="#deathknights" onMouseover="ddrivetip(\''.$phprlang['deathknight_icon'].'\');" onMouseout="hideddrivetip();"><img src="templates/'.$phpraid_config['template'].'/images/classes/deathknight_icon.gif" width="24" height="24" border="0" alt="death knight"></a>';
-	$druid_icon = '<a href="#druids" onMouseover="ddrivetip(\''.$phprlang['druid_icon'].'\');" onMouseout="hideddrivetip();"><img src="templates/'.$phpraid_config['template'].'/images/classes/druid_icon.gif" width="24" height="24" border="0" alt="druid"></a>';
-	$hunter_icon = '<a href="#hunters" onMouseover="ddrivetip(\''.$phprlang['hunter_icon'].'\');" onMouseout="hideddrivetip();"><img src="templates/'.$phpraid_config['template'].'/images/classes/hunter_icon.gif" width="24" height="24" border="0" alt="hunter"></a>';
-	$mage_icon = '<a href="#mages" onMouseover="ddrivetip(\''.$phprlang['mage_icon'].'\');" onMouseout="hideddrivetip();"><img src="templates/'.$phpraid_config['template'].'/images/classes/mage_icon.gif" width="24" height="24" border="0" alt="mage"></a>';
-	$paladin_icon = '<a href="#paladins" onMouseover="ddrivetip(\''.$phprlang['paladin_icon'].'\');" onMouseout="hideddrivetip();"><img src="templates/'.$phpraid_config['template'].'/images/classes/paladin_icon.gif" width="24" height="24" border="0" alt="paladin"></a>';
-	$priest_icon = '<a href="#priests" onMouseover="ddrivetip(\''.$phprlang['priest_icon'].'\');" onMouseout="hideddrivetip();"><img src="templates/'.$phpraid_config['template'].'/images/classes/priest_icon.gif" width="24" height="24" border="0" alt="priest"></a>';
-	$rogue_icon = '<a href="#rogues" onMouseover="ddrivetip(\''.$phprlang['rogue_icon'].'\');" onMouseout="hideddrivetip();"><img src="templates/'.$phpraid_config['template'].'/images/classes/rogue_icon.gif" width="24" height="24" border="0" alt="rogue"></a>';
-	$shaman_icon = '<a href="#shamans" onMouseover="ddrivetip(\''.$phprlang['shaman_icon'].'\');" onMouseout="hideddrivetip();"><img src="templates/'.$phpraid_config['template'].'/images/classes/shaman_icon.gif" width="24" height="24" border="0" alt="shaman"></a>';
-	$warlock_icon = '<a href="#warlocks" onMouseover="ddrivetip(\''.$phprlang['warlock_icon'].'\');" onMouseout="hideddrivetip();"><img src="templates/'.$phpraid_config['template'].'/images/classes/warlock_icon.gif" width="24" height="24" border="0" alt="warlock"></a>';
-	$warrior_icon = '<a href="#warriors" onMouseover="ddrivetip(\''.$phprlang['warrior_icon'].'\');" onMouseout="hideddrivetip();"><img src="templates/'.$phpraid_config['template'].'/images/classes/warrior_icon.gif" width="24" height="24" border="0" alt="warrior"></a>';
-
+	$class_icons = array();
+	foreach ($wrm_global_classes as $global_class)
+	{
+		$class_icons[$global_class['class_id']] = '<a href="#'.$global_class['lang_index'].'" onMouseover="ddrivetip(\''.$phprlang[$global_class['lang_index']].'\');" onMouseout="hideddrivetip();"><img src="templates/'.$phpraid_config['template'].'/'.$global_class['image'].'" width="24" height="24" border="0" alt="'.$global_class['class_id'].'"></a>'; 
+		
+		//$deathknight_icon = '<a href="#deathknights" onMouseover="ddrivetip(\''.$phprlang['deathknight_icon'].'\');" onMouseout="hideddrivetip();"><img src="templates/'.$phpraid_config['template'].'/images/classes/deathknight_icon.gif" width="24" height="24" border="0" alt="death knight"></a>';
+		//$druid_icon = '<a href="#druids" onMouseover="ddrivetip(\''.$phprlang['druid_icon'].'\');" onMouseout="hideddrivetip();"><img src="templates/'.$phpraid_config['template'].'/images/classes/druid_icon.gif" width="24" height="24" border="0" alt="druid"></a>';
+		//$hunter_icon = '<a href="#hunters" onMouseover="ddrivetip(\''.$phprlang['hunter_icon'].'\');" onMouseout="hideddrivetip();"><img src="templates/'.$phpraid_config['template'].'/images/classes/hunter_icon.gif" width="24" height="24" border="0" alt="hunter"></a>';
+		//$mage_icon = '<a href="#mages" onMouseover="ddrivetip(\''.$phprlang['mage_icon'].'\');" onMouseout="hideddrivetip();"><img src="templates/'.$phpraid_config['template'].'/images/classes/mage_icon.gif" width="24" height="24" border="0" alt="mage"></a>';
+		//$paladin_icon = '<a href="#paladins" onMouseover="ddrivetip(\''.$phprlang['paladin_icon'].'\');" onMouseout="hideddrivetip();"><img src="templates/'.$phpraid_config['template'].'/images/classes/paladin_icon.gif" width="24" height="24" border="0" alt="paladin"></a>';
+		//$priest_icon = '<a href="#priests" onMouseover="ddrivetip(\''.$phprlang['priest_icon'].'\');" onMouseout="hideddrivetip();"><img src="templates/'.$phpraid_config['template'].'/images/classes/priest_icon.gif" width="24" height="24" border="0" alt="priest"></a>';
+		//$rogue_icon = '<a href="#rogues" onMouseover="ddrivetip(\''.$phprlang['rogue_icon'].'\');" onMouseout="hideddrivetip();"><img src="templates/'.$phpraid_config['template'].'/images/classes/rogue_icon.gif" width="24" height="24" border="0" alt="rogue"></a>';
+		//$shaman_icon = '<a href="#shamans" onMouseover="ddrivetip(\''.$phprlang['shaman_icon'].'\');" onMouseout="hideddrivetip();"><img src="templates/'.$phpraid_config['template'].'/images/classes/shaman_icon.gif" width="24" height="24" border="0" alt="shaman"></a>';
+		//$warlock_icon = '<a href="#warlocks" onMouseover="ddrivetip(\''.$phprlang['warlock_icon'].'\');" onMouseout="hideddrivetip();"><img src="templates/'.$phpraid_config['template'].'/images/classes/warlock_icon.gif" width="24" height="24" border="0" alt="warlock"></a>';
+		//$warrior_icon = '<a href="#warriors" onMouseover="ddrivetip(\''.$phprlang['warrior_icon'].'\');" onMouseout="hideddrivetip();"><img src="templates/'.$phpraid_config['template'].'/images/classes/warrior_icon.gif" width="24" height="24" border="0" alt="warrior"></a>';
+	}
 	// And now create the link to the team assignment/creation form and view missing signups but only if RL or RA.
 	if ($user_perm_group['admin'] OR $user_perm_group['RL'])
 	{
@@ -1661,22 +931,22 @@ if($mode == 'view')
 			'raid_date'=>$raid_date,
 			'raid_invite_time'=>$raid_invite_time,
 			'raid_start_time'=>$raid_start_time,
-			'deathknight_count'=>$deathknight_count,
-			'druid_count'=>$druid_count,
-			'hunter_count'=>$hunter_count,
-			'mage_count'=>$mage_count,
-			'priest_count'=>$priest_count,
-			'paladin_count'=>$paladin_count,
-			'rogue_count'=>$rogue_count,
-			'shaman_count'=>$shaman_count,
-			'warlock_count'=>$warlock_count,
-			'warrior_count'=>$warrior_count,
-			'role1_count'=>$role1_count,
-			'role2_count'=>$role2_count,
-			'role3_count'=>$role3_count,
-			'role4_count'=>$role4_count,
-			'role5_count'=>$role5_count,
-			'role6_count'=>$role6_count,
+			//'deathknight_count'=>$deathknight_count,
+			//'druid_count'=>$druid_count,
+			//'hunter_count'=>$hunter_count,
+			//'mage_count'=>$mage_count,
+			//'priest_count'=>$priest_count,
+			//'paladin_count'=>$paladin_count,
+			//'rogue_count'=>$rogue_count,
+			//'shaman_count'=>$shaman_count,
+			//'warlock_count'=>$warlock_count,
+			//'warrior_count'=>$warrior_count,
+			//'role1_count'=>$role1_count,
+			//'role2_count'=>$role2_count,
+			//'role3_count'=>$role3_count,
+			//'role4_count'=>$role4_count,
+			//'role5_count'=>$role5_count,
+			//'role6_count'=>$role6_count,
 			'raid_cancel'=>$raid_cancel,
 			'raid_max'=>$raid_max,
 			'raid_max_percentage'=>$raid_max_percentage,
@@ -1692,12 +962,12 @@ if($mode == 'view')
 			'raid_open'=>$raid_open,
 			'raid_notice'=>$raid_notice,
 			'raid_description'=>$raid_description,
-			'role1_text'=>$role1_text,
-			'role2_text'=>$role2_text,
-			'role3_text'=>$role3_text,
-			'role4_text'=>$role4_text,
-			'role5_text'=>$role5_text,
-			'role6_text'=>$role6_text,
+			//'role1_text'=>$role1_text,
+			//'role2_text'=>$role2_text,
+			//'role3_text'=>$role3_text,
+			//'role4_text'=>$role4_text,
+			//'role5_text'=>$role5_text,
+			//'role6_text'=>$role6_text,
 			'cancel_text'=>$phprlang['view_raid_cancel_text'],
 			'raid_description_header'=>$phprlang['view_description_header'],
 			'location_text'=>$phprlang['view_location'],
@@ -1714,18 +984,44 @@ if($mode == 'view')
 			'total_text'=>$phprlang['view_total'],
 			'information_header'=>$phprlang['view_information_header'],
 			'statistics_header'=>$phprlang['view_statistics_header'],
-			'deathknight_icon'=>$deathknight_icon,
-			'druid_icon'=>$druid_icon,
-			'hunter_icon'=>$hunter_icon,
-			'mage_icon'=>$mage_icon,
-			'paladin_icon'=>$paladin_icon,
-			'priest_icon'=>$priest_icon,
-			'rogue_icon'=>$rogue_icon,
-			'shaman_icon'=>$shaman_icon,
-			'warlock_icon'=>$warlock_icon,
-			'warrior_icon'=>$warrior_icon
+			//'deathknight_icon'=>$deathknight_icon,
+			//'druid_icon'=>$druid_icon,
+			//'hunter_icon'=>$hunter_icon,
+			//'mage_icon'=>$mage_icon,
+			//'paladin_icon'=>$paladin_icon,
+			//'priest_icon'=>$priest_icon,
+			//'rogue_icon'=>$rogue_icon,
+			//'shaman_icon'=>$shaman_icon,
+			//'warlock_icon'=>$warlock_icon,
+			//'warrior_icon'=>$warrior_icon
 		)
 	);
+
+	$class_count_icon = array();
+	$role_count_icon = array();
+	
+	foreach ($wrm_global_classes as $global_class)
+	{
+		array_push($class_count_icon,
+			array(
+				'count'=>$class_color_count[$global_class['class_id']],
+				'icon'=>$class_icons[$global_class['class_id']],
+			)
+		);
+	}
+	foreach ($wrm_global_roles as $global_role)
+	{
+		if ($global_role['role_name'] != '')
+			array_push($role_count_icon,
+				array(
+					'count'=>$role_color_count[$role_name['role_name']],
+					'text'=>$global_role['role_name'],
+				)
+			);
+	}
+		
+	$wrmsmarty->assign('class_count_icon', $class_count_icon);
+	$wrmsmarty->assign('role_count_icon', $role_count_icon);
 }
 elseif($mode == 'signup')
 {
@@ -1763,77 +1059,114 @@ elseif($mode == 'signup')
 		{
 			// now check class limits
 			// setup the count array
-			$count = array('dk'=>'0','dr'=>'0','hu'=>'0','ma'=>'0','pa'=>'0','pr'=>'0','ro'=>'0','sh'=>'0','wk'=>'0','wa'=>'0','role1'=>'0','role2'=>'0','role3'=>'0','role4'=>'0','role5'=>'0','role6'=>'0','total'=>'0');
-			$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id=%s AND queue='0' AND cancel='0'",quote_smart($raid_id));
-			$result_char = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-			while($char = $db_raid->sql_fetchrow($result_char, true))
-			{
-				$signup_char_id = scrub_input($char['char_id']);
-				$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id=%s", quote_smart($signup_char_id));
-				$result_count = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-				$tmp = $db_raid->sql_fetchrow($result_count, true);
+			//$count = array('dk'=>'0','dr'=>'0','hu'=>'0','ma'=>'0','pa'=>'0','pr'=>'0','ro'=>'0','sh'=>'0','wk'=>'0','wa'=>'0','role1'=>'0','role2'=>'0','role3'=>'0','role4'=>'0','role5'=>'0','role6'=>'0','total'=>'0');
+			$count = array();
+			// Initialize Count Array and Totals.
+			foreach ($wrm_global_classes as $global_class)
+				$count[$global_class['class_id']]='0';
+			foreach ($wrm_global_roles as $global_role)
+				$count[$global_role['role_id']]='0';
+			$total = 0;
+
+			//Get Raid Total Counts
+			$count = get_char_count($raid_id, $type='');
+			foreach ($count as $class_count)
+				$total += $class_count;
+			
+			//$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id=%s AND queue='0' AND cancel='0'",quote_smart($raid_id));
+			//$result_char = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+			//while($char = $db_raid->sql_fetchrow($result_char, true))
+			//{
+			//	$signup_char_id = scrub_input($char['char_id']);
+			//	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id=%s", quote_smart($signup_char_id));
+			//	$result_count = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+			//	$tmp = $db_raid->sql_fetchrow($result_count, true);
 				
-				switch($tmp['class'])
-				{
-					case $phprlang['deathknight']:
-						$count['dk']++;
-						break;
-					case $phprlang['druid']:
-						$count['dr']++;
-						break;
-					case $phprlang['hunter']:
-						$count['hu']++;
-						break;
-					case $phprlang['mage']:
-						$count['ma']++;
-						break;
-					case $phprlang['paladin']:
-						$count['pa']++;
-						break;
-					case $phprlang['priest']:
-						$count['pr']++;
-						break;
-					case $phprlang['rogue']:
-						$count['ro']++;
-						break;
-					case $phprlang['shaman']:
-						$count['sh']++;
-						break;
-					case $phprlang['warlock']:
-						$count['wk']++;
-						break;
-					case $phprlang['warrior']:
-						$count['wa']++;
-						break;
-				}
-				switch($tmp['role'])
-				{
-					case $phpraid_config['role1_name']:
-						$count['role1']++;
-						break;
-					case $phpraid_config['role2_name']:
-						$count['role2']++;
-						break;
-					case $phpraid_config['role3_name']:
-						$count['role3']++;
-						break;
-					case $phpraid_config['role4_name']:
-						$count['role4']++;
-						break;
-					case $phpraid_config['role5_name']:
-						$count['role5']++;
-						break;
-					case $phpraid_config['role6_name']:
-						$count['role6']++;
-						break;
-				}	
-				$count['total']++;			
+			//	switch($tmp['class'])
+			//	{
+			//		case $phprlang['deathknight']:
+			//			$count['dk']++;
+			//			break;
+			//		case $phprlang['druid']:
+			//			$count['dr']++;
+			//			break;
+			//		case $phprlang['hunter']:
+			//			$count['hu']++;
+			//			break;
+			//		case $phprlang['mage']:
+			//			$count['ma']++;
+			//			break;
+			//		case $phprlang['paladin']:
+			//			$count['pa']++;
+			//			break;
+			//		case $phprlang['priest']:
+			//			$count['pr']++;
+			//			break;
+			//		case $phprlang['rogue']:
+			//			$count['ro']++;
+			//			break;
+			//		case $phprlang['shaman']:
+			//			$count['sh']++;
+			//			break;
+			//		case $phprlang['warlock']:
+			//			$count['wk']++;
+			//			break;
+			//		case $phprlang['warrior']:
+			//			$count['wa']++;
+			//			break;
+			//	}
+			//	switch($tmp['role'])
+			//	{
+			//		case $phpraid_config['role1_name']:
+			//			$count['role1']++;
+			//			break;
+			//		case $phpraid_config['role2_name']:
+			//			$count['role2']++;
+			//			break;
+			//		case $phpraid_config['role3_name']:
+			//			$count['role3']++;
+			//			break;
+			//		case $phpraid_config['role4_name']:
+			//			$count['role4']++;
+			//			break;
+			//		case $phpraid_config['role5_name']:
+			//			$count['role5']++;
+			//			break;
+			//		case $phpraid_config['role6_name']:
+			//			$count['role6']++;
+			//			break;
+			//	}	
+			//	$count['total']++;			
+			//}
+
+			// Now that we have the raid data, we need to retrieve limit data based upon Raid ID.
+			// Get Class Limits and set Colored Counts
+			$raid_class_array = array();
+			$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raid_class_lmt WHERE raid_id = %s", quote_smart($raid_id));
+			$result_raid_class = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+			while($raid_class_data = $db_raid->sql_fetchrow($result_raid_class, true))
+				$raid_class_array[$raid_class_data['class_id']] = $raid_class_data['lmt'];
+
+			// Get Role Limits and set Colored Counts
+			$raid_role_array = array();
+			$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raid_role_lmt WHERE raid_id = %s", quote_smart($raid_id));
+			$result_raid_role = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+			while($raid_role_data = $db_raid->sql_fetchrow($result_raid_role, true))
+			{
+				$sql2 = sprintf("SELECT role_name FROM " . $phpraid_config['db_prefix'] . "roles WHERE role_id = %s", quote_smart($raid_role_data['role_id']));
+				$result_role_name = $db_raid->sql_query($sql2) or print_error($sql2, mysql_error(), 1);
+				$role_name = $db_raid->sql_fetchrow($result_role_name, true);
+				
+				$raid_role_array[$role_name['role_name']] = $raid_role_data['lmt'];
 			}
-
-			$sql = sprintf("SELECT dk_lmt,dr_lmt,hu_lmt,ma_lmt,pa_lmt,pr_lmt,ro_lmt,sh_lmt,wk_lmt,wa_lmt,role1_lmt,role2_lmt,role3_lmt,role4_lmt,role5_lmt,role6_lmt,max FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id=%s", quote_smart($raid_id));
+				
+			// Get maximum raid attendees.
+			$sql = sprintf("SELECT max FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id=%s", quote_smart($raid_id));
 			$result_raid = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-			$total = $db_raid->sql_fetchrow($result_raid, true);
-
+			$max_data = $db_raid->sql_fetchrow($result_raid, true);
+			$max = $max_data['max'];
+			
+			// Get the character information.
 			$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id=%s", quote_smart($char_id));
 			$result_class = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 			$class = $db_raid->sql_fetchrow($result_class, true);
@@ -1844,81 +1177,100 @@ elseif($mode == 'signup')
 			{
 				if ($phpraid_config['enforce_class_limits'])
 				{
-					switch($class['class'])
-					{
-						case $phprlang['deathknight']:
-							if($count['dk'] >= $total['dk_lmt'])
+					foreach ($wrm_global_classes as $global_class)
+						if ($class['class'] == $global_class['class_id'])
+							if ($count[$global_class['class_id']] >= $raid_class_array[$raid_class_data['class_id']])
 								$queue = 1;
-							break;
-						case $phprlang['druid']:
-							if($count['dr'] >= $total['dr_lmt'])
-								$queue = 1;
-							break;
-						case $phprlang['hunter']:
-							if($count['hu'] >= $total['hu_lmt'])
-								$queue = 1;
-							break;
-						case $phprlang['mage']:
-							if($count['ma'] >= $total['ma_lmt'])
-								$queue = 1;
-							break;
-						case $phprlang['paladin']:
-							if($count['pa'] >= $total['pa_lmt'])
-								$queue = 1;
-							break;
-						case $phprlang['priest']:
-							if($count['pr'] >= $total['pr_lmt'])
-								$queue = 1;
-							break;
-						case $phprlang['rogue']:
-							if($count['ro'] >= $total['ro_lmt'])
-								$queue = 1;
-							break;
-						case $phprlang['shaman']:
-							if($count['sh'] >= $total['sh_lmt'])
-								$queue = 1;
-							break;
-						case $phprlang['warlock']:
-							if($count['wk'] >= $total['wk_lmt'])
-								$queue = 1;
-							break;
-						case $phprlang['warrior']:
-							if($count['wa'] >= $total['wa_lmt'])
-								$queue = 1;
-							break;
-					}
-				}
+				}	
+					//switch($class['class'])
+					//{
+					//	case $phprlang['deathknight']:
+					//		if($count['dk'] >= $total['dk_lmt'])
+					//			$queue = 1;
+					//		break;
+					//	case $phprlang['druid']:
+					//		if($count['dr'] >= $total['dr_lmt'])
+					//			$queue = 1;
+					//		break;
+					//	case $phprlang['hunter']:
+					//		if($count['hu'] >= $total['hu_lmt'])
+					//			$queue = 1;
+					//		break;
+					//	case $phprlang['mage']:
+					//		if($count['ma'] >= $total['ma_lmt'])
+					//			$queue = 1;
+					//		break;
+					//	case $phprlang['paladin']:
+					//		if($count['pa'] >= $total['pa_lmt'])
+					//			$queue = 1;
+					//		break;
+					//	case $phprlang['priest']:
+					//		if($count['pr'] >= $total['pr_lmt'])
+					//			$queue = 1;
+					//		break;
+					//	case $phprlang['rogue']:
+					//		if($count['ro'] >= $total['ro_lmt'])
+					//			$queue = 1;
+					//		break;
+					//	case $phprlang['shaman']:
+					//		if($count['sh'] >= $total['sh_lmt'])
+					//			$queue = 1;
+					//		break;
+					//	case $phprlang['warlock']:
+					//		if($count['wk'] >= $total['wk_lmt'])
+					//			$queue = 1;
+					//		break;
+					//	case $phprlang['warrior']:
+					//		if($count['wa'] >= $total['wa_lmt'])
+					//			$queue = 1;
+					//		break;
+					//}			
+				
 				if($phpraid_config['enforce_role_limits'])
 				{
-					switch($class['role'])
-					{
-						case $phpraid_config['role1_name']:
-							if($count['role1'] >= $total['role1_lmt'])
+					$sql = sprintf("SELECT role_name 
+									FROM " . $phpraid_config['db_prefix'] . "chars AS a, 
+											 " . $phpraid_config['db_prefix'] . "class_role AS b,
+											 " . $phpraid_config['db_prefix'] . "roles AS c
+									WHERE a.pri_spec = b.subclass
+									AND b.role_id = c.role_id
+									AND a.char_id=%s", quote_smart($char_id));	
+					$result_role_name = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+					$role_name_data = $db_raid->sql_fetchrow($result_role_name, true);
+					$role_name = $role_name_data['role_name'];
+					foreach ($wrm_global_roles as $global_role)
+						if ($global_role['role_name'] != '' && $role_name == $global_role['role_name'])
+							if ($count[$global_role['role_name']] >= $raid_role_array[$global_role['role_name']])
 								$queue = 1;
-							break;
-						case $phpraid_config['role2_name']:
-							if($count['role2'] >= $total['role2_lmt'])
-								$queue = 1;
-							break;
-						case $phpraid_config['role3_name']:
-							if($count['role3'] >= $total['role3_lmt'])
-								$queue = 1;
-							break;
-						case $phpraid_config['role4_name']:
-							if($count['role4'] >= $total['role4_lmt'])
-								$queue = 1;
-							break;
-						case $phpraid_config['role5_name']:
-							if($count['role5'] >= $total['role5_lmt'])
-								$queue = 1;
-							break;
-						case $phpraid_config['role6_name']:
-							if($count['role6'] >= $total['role6_lmt'])
-								$queue = 1;
-							break;
-					}
-				}
-				if($count['total'] >= $total['max'])
+				}	
+					//switch($class['role'])
+					//{
+					//	case $phpraid_config['role1_name']:
+					//		if($count['role1'] >= $total['role1_lmt'])
+					//			$queue = 1;
+					//		break;
+					//	case $phpraid_config['role2_name']:
+					//		if($count['role2'] >= $total['role2_lmt'])
+					//			$queue = 1;
+					//		break;
+					//	case $phpraid_config['role3_name']:
+					//		if($count['role3'] >= $total['role3_lmt'])
+					//			$queue = 1;
+					//		break;
+					//	case $phpraid_config['role4_name']:
+					//		if($count['role4'] >= $total['role4_lmt'])
+					//			$queue = 1;
+					//		break;
+					//	case $phpraid_config['role5_name']:
+					//		if($count['role5'] >= $total['role5_lmt'])
+					//			$queue = 1;
+					//		break;
+					//	case $phpraid_config['role6_name']:
+					//		if($count['role6'] >= $total['role6_lmt'])
+					//			$queue = 1;
+					//		break;
+					//}
+				if($total >= $max)
 					$queue = 1;
 			}
 		}
@@ -1927,19 +1279,19 @@ elseif($mode == 'signup')
 		$timestamp = scrub_input($_POST['timestamp']);
 		$profile_id = scrub_input($_SESSION['profile_id']);
 
-		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id=%s", quote_smart($char_id));
-		$result_char = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-		$char_data = $db_raid->sql_fetchrow($result_char);
-		if($char_data['role'] == $phprlang['role_none'] || $char_data['role'] == '')
-		{
-			$form_error = 1;
-			$errorTitle = $phprlang['form_error'];
-			$errorMsg = $phprlang['view_error_role_undef'];
-			$errorDie = 1;
-			$errorSpace = 1;
-		}
-		else
-		{
+		//$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id=%s", quote_smart($char_id));
+		//$result_char = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		//$char_data = $db_raid->sql_fetchrow($result_char);
+		//if($char_data['pri_spec'] == $phprlang['role_none'] || $char_data['pri_spec'] == '')
+		//{
+		//	$form_error = 1;
+		//	$errorTitle = $phprlang['form_error'];
+		//	$errorMsg = $phprlang['view_error_role_undef'];
+		//	$errorDie = 1;
+		//	$errorSpace = 1;
+		//}
+		//else
+		//{
 			$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id=%s AND char_id=%s AND profile_id=%s", quote_smart($raid_id), quote_smart($char_id), quote_smart($profile_id));
 			$result_signup = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 			if($db_raid->sql_numrows($result_signup) > 0) {
@@ -1959,7 +1311,7 @@ elseif($mode == 'signup')
 				$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 				header("Location: view.php?mode=view&raid_id=$raid_id");
 			}
-		}
+		//}
 	}
 }
 elseif($mode == 'delete')
@@ -1989,6 +1341,7 @@ elseif($mode == 'delete')
 			require_once('includes/page_header.php');
 			$wrmsmarty->display('delete.html');
 			require_once('includes/page_footer.php');
+			exit;
 		} else {
 			$sql = sprintf("DELETE FROM " . $phpraid_config['db_prefix'] . "signups WHERE char_id=%s AND raid_id=%s", quote_smart($char_id), quote_smart($raid_id));
 			$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
@@ -2074,159 +1427,227 @@ elseif($mode == 'draft')
 		$S_profile_id != $data['profile_id'])
 		log_hack();
 
+
 	// now check class limits to prevent users cheating the cancel/queue signup
 	// setup the count array
-	$count = array('dk'=>'0','dr'=>'0','hu'=>'0','ma'=>'0','pa'=>'0','pr'=>'0','ro'=>'0','sh'=>'0','wk'=>'0','wa'=>'0','role1'=>'0','role2'=>'0','role3'=>'0','role4'=>'0','role5'=>'0','role6'=>'0','total'=>'0');
-	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id=%s AND queue='0' AND cancel='0'",quote_smart($raid_id));
-	$result_char = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-	while($char = $db_raid->sql_fetchrow($result_char, true))
-	{
-		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id=%s", quote_smart($char['char_id']));
-		$result_count = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-		$tmp = $db_raid->sql_fetchrow($result_count, true);
+	//$count = array('dk'=>'0','dr'=>'0','hu'=>'0','ma'=>'0','pa'=>'0','pr'=>'0','ro'=>'0','sh'=>'0','wk'=>'0','wa'=>'0','role1'=>'0','role2'=>'0','role3'=>'0','role4'=>'0','role5'=>'0','role6'=>'0','total'=>'0');
+	$count = array();			
+	// Initialize Count Array and Totals.
+	foreach ($wrm_global_classes as $global_class)
+		$count[$global_class['class_id']]='0';
+	foreach ($wrm_global_roles as $global_role)
+		$count[$global_role['role_id']]='0';
+	$total = 0;
+	//$total2 = 0;
 
-		switch($tmp['class'])
-		{
-			case $phprlang['deathknight']:
-				$count['dk']++;
-				break;
-			case $phprlang['druid']:
-				$count['dr']++;
-				break;
-			case $phprlang['hunter']:
-				$count['hu']++;
-				break;
-			case $phprlang['mage']:
-				$count['ma']++;
-				break;
-			case $phprlang['paladin']:
-				$count['pa']++;
-				break;
-			case $phprlang['priest']:
-				$count['pr']++;
-				break;
-			case $phprlang['rogue']:
-				$count['ro']++;
-				break;
-			case $phprlang['shaman']:
-				$count['sh']++;
-				break;
-			case $phprlang['warlock']:
-				$count['wk']++;
-				break;
-			case $phprlang['warrior']:
-				$count['wa']++;
-				break;
-		}
-		switch($tmp['role'])
-		{
-			case $phpraid_config['role1_name']:
-				$count['role1']++;
-				break;
-			case $phpraid_config['role2_name']:
-				$count['role2']++;
-				break;
-			case $phpraid_config['role3_name']:
-				$count['role3']++;
-				break;
-			case $phpraid_config['role4_name']:
-				$count['role4']++;
-				break;
-			case $phpraid_config['role5_name']:
-				$count['role5']++;
-				break;
-			case $phpraid_config['role6_name']:
-				$count['role6']++;
-				break;
-		}				
-		$count['total']++;
+	//Get Raid Total Counts
+	$count = get_char_count($raid_id, $type='');
+	foreach ($count as $class_count)
+		$total += $class_count;
+
+	
+	// setup the count array
+	//$count = array('dk'=>'0','dr'=>'0','hu'=>'0','ma'=>'0','pa'=>'0','pr'=>'0','ro'=>'0','sh'=>'0','wk'=>'0','wa'=>'0','role1'=>'0','role2'=>'0','role3'=>'0','role4'=>'0','role5'=>'0','role6'=>'0','total'=>'0');
+	//$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id=%s AND queue='0' AND cancel='0'",quote_smart($raid_id));
+	//$result_char = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	//while($char = $db_raid->sql_fetchrow($result_char, true))
+	//{
+	//	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id=%s", quote_smart($char['char_id']));
+	//	$result_count = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	//	$tmp = $db_raid->sql_fetchrow($result_count, true);
+
+	//	switch($tmp['class'])
+	//	{
+	//		case $phprlang['deathknight']:
+	//			$count['dk']++;
+	//			break;
+	//		case $phprlang['druid']:
+	//			$count['dr']++;
+	//			break;
+	//		case $phprlang['hunter']:
+	//			$count['hu']++;
+	//			break;
+	//		case $phprlang['mage']:
+	//			$count['ma']++;
+	//			break;
+	//		case $phprlang['paladin']:
+	//			$count['pa']++;
+	//			break;
+	//		case $phprlang['priest']:
+	//			$count['pr']++;
+	//			break;
+	//		case $phprlang['rogue']:
+	//			$count['ro']++;
+	//			break;
+	//		case $phprlang['shaman']:
+	//			$count['sh']++;
+	//			break;
+	//		case $phprlang['warlock']:
+	//			$count['wk']++;
+	//			break;
+	//		case $phprlang['warrior']:
+	//			$count['wa']++;
+	//			break;
+	//	}
+	//	switch($tmp['role'])
+	//	{
+	//		case $phpraid_config['role1_name']:
+	//			$count['role1']++;
+	//			break;
+	//		case $phpraid_config['role2_name']:
+	//			$count['role2']++;
+	//			break;
+	//		case $phpraid_config['role3_name']:
+	//			$count['role3']++;
+	//			break;
+	//		case $phpraid_config['role4_name']:
+	//			$count['role4']++;
+	//			break;
+	//		case $phpraid_config['role5_name']:
+	//			$count['role5']++;
+	//			break;
+	//		case $phpraid_config['role6_name']:
+	//			$count['role6']++;
+	//			break;
+	//	}				
+	//	$count['total']++;
+	//}
+
+	// Now that we have the raid data, we need to retrieve limit data based upon Raid ID.
+	// Get Class Limits and set Colored Counts
+	$raid_class_array = array();
+	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raid_class_lmt WHERE raid_id = %s", quote_smart($raid_id));
+	$result_raid_class = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	while($raid_class_data = $db_raid->sql_fetchrow($result_raid_class, true))
+		$raid_class_array[$raid_class_data['class_id']] = $raid_class_data['lmt'];
+
+	// Get Role Limits and set Colored Counts
+	$raid_role_array = array();
+	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raid_role_lmt WHERE raid_id = %s", quote_smart($raid_id));
+	$result_raid_role = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	while($raid_role_data = $db_raid->sql_fetchrow($result_raid_role, true))
+	{
+		$sql2 = sprintf("SELECT role_name FROM " . $phpraid_config['db_prefix'] . "roles WHERE role_id = %s", quote_smart($raid_role_data['role_id']));
+		$result_role_name = $db_raid->sql_query($sql2) or print_error($sql2, mysql_error(), 1);
+		$role_name = $db_raid->sql_fetchrow($result_role_name, true);
+		
+		$raid_role_array[$role_name['role_name']] = $raid_role_data['lmt'];
 	}
-	$sql = sprintf("SELECT dk_lmt,dr_lmt,hu_lmt,ma_lmt,pa_lmt,pr_lmt,ro_lmt,sh_lmt,wk_lmt,wa_lmt,role1_lmt,role2_lmt,role3_lmt,role4_lmt,role5_lmt,role6_lmt,max FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id=%s", quote_smart($raid_id));
+		
+	// Get maximum raid attendees.
+	$sql = sprintf("SELECT max FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id=%s", quote_smart($raid_id));
 	$result_raid = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-	$total = $db_raid->sql_fetchrow($result_raid, true);
+	$max_data = $db_raid->sql_fetchrow($result_raid, true);
+	$max = $max_data['max'];
+
+	//$sql = sprintf("SELECT dk_lmt,dr_lmt,hu_lmt,ma_lmt,pa_lmt,pr_lmt,ro_lmt,sh_lmt,wk_lmt,wa_lmt,role1_lmt,role2_lmt,role3_lmt,role4_lmt,role5_lmt,role6_lmt,max FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id=%s", quote_smart($raid_id));
+	//$result_raid = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	//$total = $db_raid->sql_fetchrow($result_raid, true);
 
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id=%s", quote_smart($char_id));
 	$result_class = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 	$class = $db_raid->sql_fetchrow($result_class, true);
 
 	$queue=0;
-	if($phpraid_config['enforce_class_limits'])
+	if ($phpraid_config['enforce_class_limits'])
 	{
-		switch($class['class'])
-		{
-			case $phprlang['deathknight']:
-				if($count['dk'] >= $total['dk_lmt'])
+		foreach ($wrm_global_classes as $global_class)
+			if ($class['class'] == $global_class['class_id'])
+				if ($count[$global_class['class_id']] >= $raid_class_array[$raid_class_data['class_id']])
 					$queue = 1;
-				break;
-			case $phprlang['druid']:
-				if($count['dr'] >= $total['dr_lmt'])
-					$queue = 1;
-				break;
-			case $phprlang['hunter']:
-				if($count['hu'] >= $total['hu_lmt'])
-					$queue = 1;
-				break;
-			case $phprlang['mage']:
-				if($count['ma'] >= $total['ma_lmt'])
-					$queue = 1;
-				break;
-			case $phprlang['paladin']:
-				if($count['pa'] >= $total['pa_lmt'])
-					$queue = 1;
-				break;
-			case $phprlang['priest']:
-				if($count['pr'] >= $total['pr_lmt'])
-					$queue = 1;
-				break;
-			case $phprlang['rogue']:
-				if($count['ro'] >= $total['ro_lmt'])
-					$queue = 1;
-				break;
-			case $phprlang['shaman']:
-				if($count['sh'] >= $total['sh_lmt'])
-					$queue = 1;
-				break;
-			case $phprlang['warlock']:
-				if($count['wk'] >= $total['wk_lmt'])
-					$queue = 1;
-				break;
-			case $phprlang['warrior']:
-				if($count['wa'] >= $total['wa_lmt'])
-					$queue = 1;
-				break;
-		}
-	}
+	}	
+	//if($phpraid_config['enforce_class_limits'])
+	//{
+	//	switch($class['class'])
+	//	{
+	//		case $phprlang['deathknight']:
+	//			if($count['dk'] >= $total['dk_lmt'])
+	//				$queue = 1;
+	//			break;
+	//		case $phprlang['druid']:
+	//			if($count['dr'] >= $total['dr_lmt'])
+	//				$queue = 1;
+	//			break;
+	//		case $phprlang['hunter']:
+	//			if($count['hu'] >= $total['hu_lmt'])
+	//				$queue = 1;
+	//			break;
+	//		case $phprlang['mage']:
+	//			if($count['ma'] >= $total['ma_lmt'])
+	//				$queue = 1;
+	//			break;
+	//		case $phprlang['paladin']:
+	//			if($count['pa'] >= $total['pa_lmt'])
+	//				$queue = 1;
+	//			break;
+	//		case $phprlang['priest']:
+	//			if($count['pr'] >= $total['pr_lmt'])
+	//				$queue = 1;
+	//			break;
+	//		case $phprlang['rogue']:
+	//			if($count['ro'] >= $total['ro_lmt'])
+	//				$queue = 1;
+	//			break;
+	//		case $phprlang['shaman']:
+	//			if($count['sh'] >= $total['sh_lmt'])
+	//				$queue = 1;
+	//			break;
+	//		case $phprlang['warlock']:
+	//			if($count['wk'] >= $total['wk_lmt'])
+	//				$queue = 1;
+	//			break;
+	//		case $phprlang['warrior']:
+	//			if($count['wa'] >= $total['wa_lmt'])
+	//				$queue = 1;
+	//			break;
+	//	}
+	//}
 	if($phpraid_config['enforce_role_limits'])
 	{
-		switch($class['role'])
-		{		
-			case $phpraid_config['role1_name']:	
-				if($count['role1'] >= $total['role1_lmt'])
+		$sql = sprintf("SELECT role_name 
+						FROM " . $phpraid_config['db_prefix'] . "chars AS a, 
+								 " . $phpraid_config['db_prefix'] . "class_role AS b,
+								 " . $phpraid_config['db_prefix'] . "roles AS c
+						WHERE a.pri_spec = b.subclass
+						AND b.role_id = c.role_id
+						AND a.char_id=%s", quote_smart($char_id));	
+		$result_role_name = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$role_name_data = $db_raid->sql_fetchrow($result_role_name, true);
+		$role_name = $role_name_data['role_name'];
+		foreach ($wrm_global_roles as $global_role)
+			if ($global_role['role_name'] != '' && $role_name == $global_role['role_name'])
+				if ($count[$global_role['role_name']] >= $raid_role_array[$global_role['role_name']])
 					$queue = 1;
-				break;
-			case $phpraid_config['role2_name']:
-				if($count['role2'] >= $total['role2_lmt'])
-					$queue = 1;
-				break;
-			case $phpraid_config['role3_name']:
-				if($count['role3'] >= $total['role3_lmt'])
-					$queue = 1;
-				break;
-			case $phpraid_config['role4_name']:
-				if($count['role4'] >= $total['role4_lmt'])
-					$queue = 1;
-				break;
-			case $phpraid_config['role5_name']:
-				if($count['role5'] >= $total['role5_lmt'])
-					$queue = 1;
-				break;
-			case $phpraid_config['role6_name']:
-				if($count['role6'] >= $total['role6_lmt'])
-					$queue = 1;
-				break;
-		}
-	}
-	if($count['total'] >= $total['max'])
+	}		
+		
+		//switch($class['role'])
+		//{		
+		//	case $phpraid_config['role1_name']:	
+		//		if($count['role1'] >= $total['role1_lmt'])
+		//			$queue = 1;
+		//		break;
+		//	case $phpraid_config['role2_name']:
+		//		if($count['role2'] >= $total['role2_lmt'])
+		//			$queue = 1;
+		//		break;
+		///	case $phpraid_config['role3_name']:
+		//		if($count['role3'] >= $total['role3_lmt'])
+		//			$queue = 1;
+		//		break;
+		//	case $phpraid_config['role4_name']:
+		//		if($count['role4'] >= $total['role4_lmt'])
+		//			$queue = 1;
+		//		break;
+		//	case $phpraid_config['role5_name']:
+		//		if($count['role5'] >= $total['role5_lmt'])
+		//			$queue = 1;
+		//		break;
+		//	case $phpraid_config['role6_name']:
+		//		if($count['role6'] >= $total['role6_lmt'])
+		//			$queue = 1;
+		//		break;
+		//}
+	if($total >= $max)
 		$queue = 1;
 
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id=%s AND char_id=%s", quote_smart($raid_id), quote_smart($char_id));
