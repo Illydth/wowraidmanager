@@ -205,6 +205,7 @@ $x = 0;
 while($data = $db_raid->sql_fetchrow($result, true))
 {
 	$wrm_global_classes[$x]['class_id'] = $data['class_id'];
+	$wrm_global_classes[$x]['class_code'] = $data['class_code'];
 	$wrm_global_classes[$x]['lang_index'] = $data['lang_index'];
 	$wrm_global_classes[$x]['image'] = $data['image'];
 	$x++;
@@ -231,6 +232,7 @@ while($data = $db_raid->sql_fetchrow($result, true))
 	$wrm_global_roles[$x]['role_id'] = $data['role_id'];
 	$wrm_global_roles[$x]['role_name'] = $data['role_name'];
 	$wrm_global_roles[$x]['lang_index'] = $data['lang_index'];
+	$wrm_global_roles[$x]['image'] = $data['image'];
 	$x++;
 }
 
