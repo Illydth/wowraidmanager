@@ -227,10 +227,14 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 		// Insert Role Data to loc_role_lmt
 		foreach ($wrm_global_roles as $global_role)	
 		{
-			$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "loc_role_lmt (`location_id`, `role_id`, `lmt`)
-			VALUES (%s,%s,%s)",quote_smart($loc_id['location_id']), quote_smart($global_role['role_id']), quote_smart($role[$global_role['role_id']]));
+			if ($global_role['role_name'] != '')
+			{
+				$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "loc_role_lmt (`location_id`, `role_id`, `lmt`)
+								VALUES (%s,%s,%s)",quote_smart($loc_id['location_id']), quote_smart($global_role['role_id']), 
+								quote_smart($role[$global_role['role_id']]));
 			
-			$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);	
+				$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+			}	
 		}
 		
 		log_create('location',mysql_insert_id(),$name);

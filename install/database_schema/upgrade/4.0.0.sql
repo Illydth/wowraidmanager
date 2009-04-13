@@ -566,6 +566,7 @@ INSERT INTO `wrm_class_race` VALUES ('Undead', 'Death Knight');
 CREATE TABLE IF NOT EXISTS `wrm_roles` (
   `role_id` varchar(10) NOT NULL,
   `role_name` varchar(100) NOT NULL,
+  `lang_index` varchar(100) NOT NULL,
   PRIMARY KEY  (`role_id`)
 );
 

@@ -567,6 +567,7 @@ INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible
 VALUES (NULL , 'raidview2', 'Signup_Spec', '1', '13', NULL, 'signup_spec', NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
 VALUES (NULL , 'raidview2', 'Buttons', '1', '14', NULL, 'buttons', NULL);
+
 -- Config Table Creation
 DROP TABLE IF EXISTS `wrm_config`;
 CREATE TABLE  `wrm_config` (
@@ -1050,6 +1051,7 @@ CREATE TABLE IF NOT EXISTS `wrm_raid_role_lmt` (
 CREATE TABLE IF NOT EXISTS `wrm_roles` (
   `role_id` varchar(10) NOT NULL,
   `role_name` varchar(100) NOT NULL,
+  `lang_index` varchar(100) NOT NULL,
   PRIMARY KEY  (`role_id`)
 );
 

@@ -807,8 +807,6 @@ if(isset($_POST['submit']))
 
 		if ($data['role_name'] != $$var)
 		{
-			$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."chars` SET `role` = %s WHERE `role`= %s;", quote_smart($$var), quote_smart($data['role_name']));
-			$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
 			$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."roles` SET `role_name` = %s WHERE `role_id`= %s;", quote_smart($$var), quote_smart($data['role_id']));
 			$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
 		}
