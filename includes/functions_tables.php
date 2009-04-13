@@ -38,9 +38,10 @@
 */
 function getVisibleColumns($view_name) 
 {
-	global $phpraid_config, $db_raid, $phprlang, $col_mod;
+	global $phpraid_config, $db_raid, $phprlang, $col_mod, $wrm_global_classes, $wrm_global_roles;
 	
 	$table_headers = array();
+	$position_counter = 0; // Position addend that will incriment for classes and roles.
 	
 	// Get all the columns from the column_header table
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "column_headers WHERE view_name = %s ORDER BY position", quote_smart($view_name));
@@ -53,44 +54,9 @@ function getVisibleColumns($view_name)
 
 	// Cycle all the columns in the table name view.
 	while($data = $db_raid->sql_fetchrow($result, true)) 
-	{
-		//Replace Columns that start with @ with the proper header names (used to replace
-		//  generic "Role1" header with the proper "Role1" header from config.)
+	{		
 		$column_name = $data['column_name'];
-		if (strncmp($column_name, '@r', 1) == 0)
-		{
-			//It's a replacement variable, determine what replacement.
-			$repstr = substr($column_name, 1);
-			switch($repstr)
-			{
-				case "role1":
-					$column_name = ucfirst($phpraid_config['role1_name']);
-					break;
-				case "role2":
-					$column_name = ucfirst($phpraid_config['role2_name']);
-					break;
-				case "role3":
-					$column_name = ucfirst($phpraid_config['role3_name']);
-					break;
-				case "role4":
-					$column_name = ucfirst($phpraid_config['role4_name']);
-					break;
-				case "role5":
-					$column_name = ucfirst($phpraid_config['role5_name']);
-					break;
-				case "role6":
-					$column_name = ucfirst($phpraid_config['role6_name']);
-					break;
-			}
-		}
 
-		// Determine what the Actual Text of the Column Should Be.
-		// To hide Role columns you must pass the role name as listed in the config.
-		if ($data['lang_idx_hdr']=='')
-			$col_head_text = $column_name;
-		else
-			$col_head_text = $phprlang[$data['lang_idx_hdr']];
-		
 		// Modify Column Visibility from the $col_mod array.
 		$visibility = $data['visible'];
 		for ($i = 0; $i < count($col_mod); $i++)
@@ -98,17 +64,80 @@ function getVisibleColumns($view_name)
 			if ($column_name == $col_mod[$i]['name'])
 				$visibility = $col_mod[$i]['visibility'];
 		}
+				
+		//Replace Columns that start with @ with the proper header names (used to replace
+		//  generic "Role1" header with the proper "Role1" header from config.)
+		if (strncmp($column_name, '@', 1) == 0)
+		{
+			//It's a replacement variable, determine what replacement.
+			$repstr = substr($column_name, 1);
+			if ($repstr == 'role')
+			{
+				foreach ($wrm_global_roles as $global_role)
+				{
+					array_push($table_headers,
+						array(
+							'column_name'=>$global_role['role_name'],
+							'visible'=>$visibility,
+							'position'=>$data['position']+$position_counter,
+							'img_url'=>$global_role['image'],
+							'col_text'=>$global_role['role_name'],
+							'format_code'=>$data['format_code'],
+						)
+					);			
+					$position_counter++;
+				}
+			}
+			elseif ($repstr == 'class')
+			{
+				foreach ($wrm_global_classes as $global_class)
+				{
+					array_push($table_headers,
+						array(
+							'column_name'=>$global_class['class_id'],
+							'visible'=>$visibility,
+							'position'=>$data['position']+$position_counter,
+							'img_url'=>$global_class['image'],
+							'col_text'=>$global_class['lang_index'],
+							'format_code'=>$data['format_code'],
+						)
+					);	
+					$position_counter++;		
+				}
+			}
+			else
+			{
+				echo "Invalid replacement variable";
+			}
+		}
+		else
+		{
+			// Determine what the Actual Text of the Column Should Be.
+			// To hide Role columns you must pass the role name as listed in the config.
+			if ($data['lang_idx_hdr']=='')
+				$col_head_text = $column_name;
+			else
+				$col_head_text = $phprlang[$data['lang_idx_hdr']];
 			
-		array_push($table_headers,
-			array(
-				'column_name'=>$column_name,
-				'visible'=>$visibility,
-				'position'=>$data['position'],
-				'img_url'=>$data['img_url'],
-				'col_text'=>$col_head_text,
-				'format_code'=>$data['format_code'],
-			)
-		);
+			// Modify Column Visibility from the $col_mod array.
+			$visibility = $data['visible'];
+			for ($i = 0; $i < count($col_mod); $i++)
+			{
+				if ($column_name == $col_mod[$i]['name'])
+					$visibility = $col_mod[$i]['visibility'];
+			}
+				
+			array_push($table_headers,
+				array(
+					'column_name'=>$column_name,
+					'visible'=>$visibility,
+					'position'=>$data['position'],
+					'img_url'=>$data['img_url'],
+					'col_text'=>$col_head_text,
+					'format_code'=>$data['format_code'],
+				)
+			);
+		}
 	}
 	return $table_headers;
 }
