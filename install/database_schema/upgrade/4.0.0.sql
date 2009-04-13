@@ -29,37 +29,9 @@ VALUES (NULL , 'raids1', 'Start Time', '1', '5', NULL, 'start_time', 'wrmtime');
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
 VALUES (NULL , 'raids1', 'Creator', '1', '6', NULL, 'officer', NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'raids1', 'Death Knight', '1', '7', 'images/classes/deathknight_icon.gif', 'deathknight', NULL);
+VALUES (NULL , 'raids1', '@class', '1', '7', NULL, NULL, NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'raids1', 'Druid', '1', '8', 'images/classes/druid_icon.gif', 'druid', NULL);
-INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'raids1', 'Hunter', '1', '9', 'images/classes/hunter_icon.gif', 'hunter', NULL);
-INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'raids1', 'Mage', '1', '10', 'images/classes/mage_icon.gif', 'mage', NULL);
-INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'raids1', 'Paladin', '1', '11', 'images/classes/paladin_icon.gif', 'paladin', NULL);
-INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'raids1', 'Priest', '1', '12', 'images/classes/priest_icon.gif', 'priest', NULL);
-INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'raids1', 'Rogue', '1', '13', 'images/classes/rogue_icon.gif', 'rogue', NULL);
-INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'raids1', 'Shaman', '1', '14', 'images/classes/shaman_icon.gif', 'shaman', NULL);
-INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'raids1', 'Warlock', '1', '15', 'images/classes/warlock_icon.gif', 'warlock', NULL);
-INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'raids1', 'Warrior', '1', '16', 'images/classes/warrior_icon.gif', 'warrior', NULL);
-INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'raids1', '@role1', '1', '17', NULL, NULL, NULL);
-INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'raids1', '@role2', '1', '18', NULL, NULL, NULL);
-INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'raids1', '@role3', '1', '19', NULL, NULL, NULL);
-INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'raids1', '@role4', '1', '20', NULL, NULL, NULL);
-INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'raids1', '@role5', '1', '21', NULL, NULL, NULL);
-INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'raids1', '@role6', '1', '22', NULL, NULL, NULL);
+VALUES (NULL , 'raids1', '@role', '1', '17', NULL, NULL, NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
 VALUES (NULL , 'raids1', 'Totals', '1', '23', NULL, 'totals', NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
@@ -81,37 +53,9 @@ VALUES (NULL , 'index1', 'Start Time', '1', '6', NULL, 'start_time', 'wrmtime');
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
 VALUES (NULL , 'index1', 'Creator', '1', '7', NULL, 'officer', NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'index1', 'Death Knight', '1', '8', 'images/classes/deathknight_icon.gif', 'deathknight', NULL);
+VALUES (NULL , 'index1', '@class', '1', '8', NULL, NULL, NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'index1', 'Druid', '1', '9', 'images/classes/druid_icon.gif', 'druid', NULL);
-INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'index1', 'Hunter', '1', '10', 'images/classes/hunter_icon.gif', 'hunter', NULL);
-INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'index1', 'Mage', '1', '11', 'images/classes/mage_icon.gif', 'hunter', NULL);
-INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'index1', 'Paladin', '1', '12', 'images/classes/paladin_icon.gif', 'paladin', NULL);
-INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'index1', 'Priest', '1', '13', 'images/classes/priest_icon.gif', 'priest', NULL);
-INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'index1', 'Rogue', '1', '14', 'images/classes/rogue_icon.gif', 'rogue', NULL);
-INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'index1', 'Shaman', '1', '15', 'images/classes/shaman_icon.gif', 'shaman', NULL);
-INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'index1', 'Warlock', '1', '16', 'images/classes/warlock_icon.gif', 'warlock', NULL);
-INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'index1', 'Warrior', '1', '17', 'images/classes/warrior_icon.gif', 'warrior', NULL);
-INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'index1', '@role1', '1', '18', NULL, NULL, NULL);
-INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'index1', '@role2', '1', '19', NULL, NULL, NULL);
-INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'index1', '@role3', '1', '20', NULL, NULL, NULL);
-INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'index1', '@role4', '1', '21', NULL, NULL, NULL);
-INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'index1', '@role5', '1', '22', NULL, NULL, NULL);
-INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'index1', '@role6', '1', '23', NULL, NULL, NULL);
+VALUES (NULL , 'index1', '@role', '1', '18', NULL, NULL, NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
 VALUES (NULL , 'index1', 'Totals', '1', '24', NULL, 'totals', NULL);
 
@@ -203,37 +147,9 @@ VALUES (NULL , 'location1', 'Min Level', '1', '5', NULL, 'min_lvl', NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
 VALUES (NULL , 'location1', 'Max Level', '1', '6', NULL, 'max_lvl', NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'location1', 'Death Knight', '1', '7', 'images/classes/deathknight_icon.gif', 'deathknight', NULL);
+VALUES (NULL , 'location1', '@class', '1', '7', NULL, NULL, NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'location1', 'Druid', '1', '8', 'images/classes/druid_icon.gif', 'druid', NULL);
-INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'location1', 'Hunter', '1', '9', 'images/classes/hunter_icon.gif', 'hunter', NULL);
-INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'location1', 'Mage', '1', '10', 'images/classes/mage_icon.gif', 'hunter', NULL);
-INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'location1', 'Paladin', '1', '11', 'images/classes/paladin_icon.gif', 'paladin', NULL);
-INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'location1', 'Priest', '1', '12', 'images/classes/priest_icon.gif', 'priest', NULL);
-INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'location1', 'Rogue', '1', '13', 'images/classes/rogue_icon.gif', 'rogue', NULL);
-INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'location1', 'Shaman', '1', '14', 'images/classes/shaman_icon.gif', 'shaman', NULL);
-INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'location1', 'Warlock', '1', '15', 'images/classes/warlock_icon.gif', 'warlock', NULL);
-INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'location1', 'Warrior', '1', '16', 'images/classes/warrior_icon.gif', 'warrior', NULL);
-INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'location1', '@role1', '1', '17', NULL, NULL, NULL);
-INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'location1', '@role2', '1', '18', NULL, NULL, NULL);
-INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'location1', '@role3', '1', '19', NULL, NULL, NULL);
-INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'location1', '@role4', '1', '20', NULL, NULL, NULL);
-INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'location1', '@role5', '1', '21', NULL, NULL, NULL);
-INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'location1', '@role6', '1', '22', NULL, NULL, NULL);
+VALUES (NULL , 'location1', '@role', '1', '17', NULL, NULL, NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
 VALUES (NULL , 'location1', 'Raid Max', '1', '23', NULL, 'max_raiders', NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
@@ -567,21 +483,22 @@ CREATE TABLE IF NOT EXISTS `wrm_roles` (
   `role_id` varchar(10) NOT NULL,
   `role_name` varchar(100) NOT NULL,
   `lang_index` varchar(100) NOT NULL,
+  `image` varchar(100) NOT NULL,
   PRIMARY KEY  (`role_id`)
 );
 
-INSERT INTO `wrm_roles` VALUES ('role1', 'Tank', 'configuration_role1_text');
-INSERT INTO `wrm_roles` VALUES ('role2', 'Melee', 'configuration_role2_text');
-INSERT INTO `wrm_roles` VALUES ('role3', 'Healing', 'configuration_role3_text');
-INSERT INTO `wrm_roles` VALUES ('role4', 'Ranged', 'configuration_role4_text');
-INSERT INTO `wrm_roles` VALUES ('role5', 'misc1', 'configuration_role5_text');
-INSERT INTO `wrm_roles` VALUES ('role6', 'misc2', 'configuration_role6_text');
+INSERT INTO `wrm_roles` VALUES ('role1', 'Tank', 'configuration_role1_text','');
+INSERT INTO `wrm_roles` VALUES ('role2', 'Melee', 'configuration_role2_text','');
+INSERT INTO `wrm_roles` VALUES ('role3', 'Healing', 'configuration_role3_text','');
+INSERT INTO `wrm_roles` VALUES ('role4', 'Ranged', 'configuration_role4_text','');
+INSERT INTO `wrm_roles` VALUES ('role5', 'misc1', 'configuration_role5_text','');
+INSERT INTO `wrm_roles` VALUES ('role6', 'misc2', 'configuration_role6_text','');
 
 CREATE TABLE IF NOT EXISTS `wrm_class_role` (
   `class_id` varchar(100) NOT NULL,
   `subclass` varchar(100) NOT NULL,
   `lang_index` varchar(100) NOT NULL,
-  `role_id` varchar(10) NOT NULL,
+  `role_id` varchar(10) default NULL,
   PRIMARY KEY  (`class_id`,`subclass`)
 );
 
