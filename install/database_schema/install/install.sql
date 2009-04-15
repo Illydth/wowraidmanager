@@ -472,17 +472,13 @@ VALUES (NULL , 'raidview2', 'Race', '1', '7', NULL, 'race', NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
 VALUES (NULL , 'raidview2', 'Class', '1', '8', NULL, 'class', NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'raidview1', 'Pri_Spec', '1', '9', NULL, 'pri_spec', NULL);
+VALUES (NULL , 'raidview2', 'Date', '1', '9', NULL, 'date', 'wrmdate');
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'raidview1', 'Sec_Spec', '1', '10', NULL, 'sec_spec', NULL);
+VALUES (NULL , 'raidview2', 'Time', '1', '10', NULL, 'time', 'wrmtime');
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'raidview2', 'Date', '1', '11', NULL, 'date', 'wrmdate');
+VALUES (NULL , 'raidview2', 'Signup_Spec', '1', '11', NULL, 'signup_spec', NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'raidview2', 'Time', '1', '12', NULL, 'time', 'wrmtime');
-INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'raidview2', 'Signup_Spec', '1', '13', NULL, 'signup_spec', NULL);
-INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'raidview2', 'Buttons', '1', '14', NULL, 'buttons', NULL);
+VALUES (NULL , 'raidview2', 'Buttons', '1', '12', NULL, 'buttons', NULL);
 
 -- Config Table Creation
 DROP TABLE IF EXISTS `wrm_config`;
