@@ -28,7 +28,7 @@
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 * 
 ****************************************************************************/
-require_once($phpraid_dir.'includes/functions.php');
+//require_once($phpraid_dir.'includes/functions.php');
 
 if(!defined("SQL_LAYER"))
 {
