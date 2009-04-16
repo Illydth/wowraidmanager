@@ -1326,11 +1326,24 @@ elseif($mode == 'draft')
 	if (($data['cancel'] && $phpraid_config['user_cancel_promote']) ||
 	($data['queue'] && $phpraid_config['user_queue_promote']))
 		$hackattempt=0;
-
+		
 	if($hackattempt)
 		log_hack();
 	else
 	{
+		// Spec Check, if the spec on the signup table is blank, automatically add the primary spec to signups.
+		if ($data['selected_spec'] == '')
+		{
+			// Get the spec from the char table.
+			$sql = sprintf("SELECT pri_spec FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id=%s", quote_smart($char_id));
+			$spec_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+			$spec_data = $db_raid->sql_fetchrow($spec_result, true);
+			$spec = $spec_data['pri_spec'];		
+			
+			$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "signups set selected_spec = %s WHERE raid_id=%s AND char_id=%s", quote_smart($spec), quote_smart($raid_id), quote_smart($char_id));
+			$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);	
+		}
+		
 		if ($queue)
 		{
 			// Too many of this type, set back to queue.
