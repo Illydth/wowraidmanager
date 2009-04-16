@@ -314,8 +314,8 @@ ALTER TABLE `wrm_signups` ADD `selected_spec` VARCHAR( 100 ) NOT NULL ;
 
 INSERT INTO `wrm_version` VALUES ('3.9.9.2.1','4.0 Beta 2 Release 1');
 
-UPDATE `phpraid_TC_config` SET `config_value` = 'us' WHERE `config_name` = 'armory_language' AND `config_value` = 'en' LIMIT 1;
-UPDATE `phpraid_TC_config` SET `config_value` = 'default' WHERE `config_name` = 'template' AND `config_value` = 'SpiffyJr' LIMIT 1;
+UPDATE `wrm_config` SET `config_value` = 'us' WHERE `config_name` = 'armory_language' AND `config_value` = 'en' LIMIT 1;
+UPDATE `wrm_config` SET `config_value` = 'default' WHERE `config_name` = 'template' AND `config_value` = 'SpiffyJr' LIMIT 1;
 
 -------------------------------------------------------------------
 -- Manual Changes - The lines below MUST be modified manually to make
