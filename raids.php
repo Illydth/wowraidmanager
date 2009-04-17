@@ -72,6 +72,9 @@ $pageURL = 'raids.php?mode=view&';
 $priv_raids = scrub_input($_SESSION['priv_raids']);
 $username = scrub_input($_SESSION['username']);
 
+/************************************************************************************************
+ *   Mode: VIEW 
+ ************************************************************************************************/
 if($_GET['mode'] == 'view')
 {
 	// two arrays to pass to our report class, current and previous raids
@@ -81,15 +84,12 @@ if($_GET['mode'] == 'view')
 	$count2 = array();
 	$raid_loop_cur = 0;
 	$raid_loop_prev = 0;
+
+	// Create the "new raid" button. -- This needs to be created regardless of whether or not we have raids.
+	$new_raid_link = '<a href="raids.php?mode=new"><img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_new_raid.gif" border="0"  onMouseover="ddrivetip(\''.$phprlang['raids_new_header'].'\');" onMouseout="hideddrivetip();" alt="new raid icon"></a>';
 	
 	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "raids";
-	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-
-	// Get information for current raids
-	// And push into current array so that we can output it with our report class
-	if (!$db_raid->sql_numrows($result) || $db_raid->sql_numrows($result) < 1)
-		$new_raid_link = '<a href="raids.php?mode=new"><img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_new_raid.gif" border="0"  onMouseover="ddrivetip(\''.$phprlang['raids_new_header'].'\');" onMouseout="hideddrivetip();" alt="new raid icon"></a>';		
-
+	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);	
 	while($data = $db_raid->sql_fetchrow($result, true)) {
 		if ($priv_raids or $username == $data['officer'])
 		{
@@ -111,9 +111,6 @@ if($_GET['mode'] == 'view')
 
 			$mark_new = '<a href="raids.php?mode=mark&amp;id='.$data['raid_id'].'"><img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_latest_reply.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['new'].'\');" onMouseout="hideddrivetip();" alt="latest reply icon"></a>';
 		}
-
-		// Create the "new raid" button.
-		$new_raid_link = '<a href="raids.php?mode=new"><img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_new_raid.gif" border="0"  onMouseover="ddrivetip(\''.$phprlang['raids_new_header'].'\');" onMouseout="hideddrivetip();" alt="new raid icon"></a>';
 
 		// Initialize Count Array and Totals.
 		foreach ($wrm_global_classes as $global_class)
@@ -273,7 +270,11 @@ if($_GET['mode'] == 'view')
 	$wrmsmarty->display('raids.html');
 	require_once('includes/page_footer.php');
 }
-elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
+
+/************************************************************************************************
+ *   Mode: NEW
+ ************************************************************************************************/
+elseif($_GET['mode'] == 'new')
 {
 	// error checking, goes before the output so we can show the error at the top and allow them to fix the errors without pressing back
 	if(isset($_POST['submit']))
@@ -342,208 +343,66 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 
 	}
 
-	//Normal fetch location
-	if(isset($_GET['id']))
-	{
-		$location = scrub_input($_GET['id']);
-		//if ($priv_raids == 1)
-		//{
-			$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "locations WHERE location_id=%s", quote_smart($location));
-			$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-			$data = $db_raid->sql_fetchrow($result, true);
-		//}
-		//else
-		//{
-		//	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "locations WHERE location_id=%s and locked='0'", quote_smart($location));
-		//	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-		//	$data = $db_raid->sql_fetchrow($result, true);
-		//}
-
-		$tag = $data['event_type'];
-		$event_id = $data['event_id'];
-		$max = $data['max'];
-
-		// Now that we have the location data, we need to retrieve limit data based upon location ID.
-		// Get Class Limits
-		//$raid_class_array = array();
-		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "loc_class_lmt WHERE location_id = %s", quote_smart($location));
-		$result_loc_class = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-		while($loc_class_data = $db_raid->sql_fetchrow($result_loc_class, true))
-		{
-			$class[$loc_class_data['class_id']] = $loc_class_data['lmt'];
-		}
-		// Get Role Limits
-		//$raid_role_array = array();
-		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "loc_role_lmt WHERE location_id = %s", quote_smart($location));
-		$result_loc_role = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-		while($loc_role_data = $db_raid->sql_fetchrow($result_loc_role, true))
-		{
-			$sql2 = sprintf("SELECT role_name FROM " . $phpraid_config['db_prefix'] . "roles WHERE role_id = %s", quote_smart($loc_role_data['role_id']));
-			$result_role_name = $db_raid->sql_query($sql2) or print_error($sql2, mysql_error(), 1);
-			$role_name = $db_raid->sql_fetchrow($result_role_name, true);
-			
-			$role[$role_name['role_name']] = $loc_role_data['lmt'];
-		}
-		$min_lvl_value = $data['min_lvl'];
-		$max_lvl_value = $data['max_lvl'];
-		$location_value = $data['location'];
-	}
-
+	// Either We Haven't submitted the form or we have and we errored.  If we have 
+	//   submitted the form and errored, set variables, otherwise just build form.
 	if(!isset($_POST['submit']) || isset($errorTitle))
 	{
 		// setup the form action first
-		if(isset($_GET['mode']) && $_GET['mode'] == 'new')
-		{
-			$form_action = 'raids.php?mode=new';
-		}
-		elseif(isset($_GET['mode']) && $_GET['mode'] == 'edit')
-		{
-			$id = scrub_input($_GET['id']);
-			$form_action = 'raids.php?mode=edit&amp;id='. $id;
-		}
+		$form_action = 'raids.php?mode=new';
 
- 		// and if it's an edit, grab straight from the raids database instead
-		if($_GET['mode'] == 'edit')
+		/****************************************************************************************
+		 *  Set Data for Form Below.
+		 ****************************************************************************************/
+		// If the "Locations" dropdown was changed.
+		if(isset($_GET['id'])) //From "Stored Location" - This is the Location ID. Mode, Location ID, and Location Name are set.
 		{
-			// if so, grab values from database
-			if(isset($_GET['location']))
+			$location = scrub_input($_GET['id']);
+			if ($priv_raids == 1)
 			{
-				echo "<BR>Gets to New/Edit -> Not Submit -> Edit -> Location";
-			//	$location = scrub_input($_GET['location']);
-			//	if ($priv_raids == 1)
-			//	{
-			//		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "locations WHERE name=%s", quote_smart($location));
-			//		$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-			//		$data = $db_raid->sql_fetchrow($result, true);
-			//	}
-			//	else
-			//	{
-			//		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "locations WHERE name=%s and locked='0'", quote_smart($location));
-			//		$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-			//		$data = $db_raid->sql_fetchrow($result, true);
-			//	}
-
-			//	$tag = $data['event_type'];
-			//	$event_id = $data['event_id'];
-	        //  $max = $data['max'];
-
-	            // Now that we have the location data, we need to retrieve limit data based upon location ID.
-				// Get Class Limits
-			//	$loc_class_array = array();
-			//	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "loc_class_lmt WHERE location_id = %s", quote_smart($location));
-			//	$result_loc_class = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-			//	while($loc_class_data = $db_raid->sql_fetchrow($result_loc_class, true))
-			//	{
-			//		$loc_class_array[$loc_class_data['class_id']] = $loc_class_data['lmt'];
-			//	}
-				// Get Role Limits
-			//	$loc_role_array = array();
-			//	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "loc_role_lmt WHERE location_id = %s", quote_smart($location));
-			//	$result_loc_role = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-			//	while($loc_role_data = $db_raid->sql_fetchrow($result_loc_role, true))
-			//	{
-			//		$sql2 = sprintf("SELECT role_name FROM " . $phpraid_config['db_prefix'] . "roles WHERE role_id = %s", quote_smart($loc_role_data['role_id']));
-			//		$result_role_name = $db_raid->sql_query($sql2) or print_error($sql2, mysql_error(), 1);
-			//		$role_name = $db_raid->sql_fetchrow($result_role_name, true);
-			//		
-			//		$loc_role_array[$role_name['role_name']] = $loc_role_data['lmt'];
-			//	}
-	            //$dk = $data['dk'];
-			    //$dr = $data['dr'];
-			    //$hu = $data['hu'];
-			    //$ma = $data['ma'];
-			    //$pa = $data['pa'];
-			    //$pr = $data['pr'];
-			    //$ro = $data['ro'];
-			    //$sh = $data['sh'];
-			    //$wk = $data['wk'];
-			    //$wa = $data['wa'];
-				//$role1 = $data['role1'];
-				//$role2 = $data['role2'];
-				//$role3 = $data['role3'];
-				//$role4 = $data['role4'];
-				//$role5 = $data['role5'];
-				//$role6 = $data['role6'];
-	        //	$min_lvl_value = $data['min_lvl'];
-	        //	$max_lvl_value = $data['max_lvl'];
-	        //	$location_value = UBB2($data['location']);
+				$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "locations WHERE location_id=%s", quote_smart($location));
+				$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+				$data = $db_raid->sql_fetchrow($result, true);
+			}
+			else
+			{
+				$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "locations WHERE location_id=%s and locked='0'", quote_smart($location));
+				$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+				$data = $db_raid->sql_fetchrow($result, true);
+			}
 	
-			//	$id = scrub_input($_GET['id']);
-			//	$sql2 = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id=%s", quote_smart($id));
-			//	$result2 = $db_raid->sql_query($sql2) or print_error($sql2, mysql_error(), 1);
-			//	$data2 = $db_raid->sql_fetchrow($result2, true);
-	            
-			//	$date_value = new_date("m/d/Y",$data2['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
-			//	if ($phpraid_config['ampm'] == '12')
-			//		$i_time_hour_value = new_date("h",$data2['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
-			//	else
-			//		$i_time_hour_value = new_date("H",$data2['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);	            	
-			//	$i_time_minute_value = new_date("i",$data2['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
-			//	$i_time_ampm_value = new_date("a",$data2['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
-			//	if ($phpraid_config['ampm'] == '12')
-			//		$s_time_hour_value = new_date("h",$data2['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
-			//	else
-			//		$s_time_hour_value = new_date("H",$data2['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
-			//	$s_time_minute_value = new_date("i",$data2['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
-			//	$s_time_ampm_value = new_date("a",$data2['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
-			//	$freeze_value = $data2['freeze'];
-			//	$description_value = UBB2($data2['description']);
-			}
-			else // Edit, Location Not set.
+			$tag = $data['event_type'];
+			$event_id = $data['event_id'];
+			$max = $data['max'];
+	
+			// Now that we have the location data, we need to retrieve limit data based upon location ID.
+			// Get Class Limits
+			//$raid_class_array = array();
+			$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "loc_class_lmt WHERE location_id = %s", quote_smart($location));
+			$result_loc_class = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+			while($loc_class_data = $db_raid->sql_fetchrow($result_loc_class, true))
 			{
-	         	$id = scrub_input($_GET['id']);
-	            $sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id=%s", quote_smart($id));
-	            $result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-	            $data = $db_raid->sql_fetchrow($result, true);
-	            
-	            $tag = $data['event_type'];
-	            $event_id = $data['event_id'];
-	            $max = $data['max'];
-
-	            // Now that we have the raid data, we need to retrieve limit data based upon Raid ID.
-				// Get Class Limits and set Colored Counts
-				//$raid_class_array = array();
-				$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raid_class_lmt WHERE raid_id = %s", quote_smart($data['raid_id']));
-				$result_raid_class = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-				while($raid_class_data = $db_raid->sql_fetchrow($result_raid_class, true))
-				{
-					$class[$raid_class_data['class_id']] = $raid_class_data['lmt'];
-				}
-				// Get Role Limits and set Colored Counts
-				//$raid_role_array = array();
-				$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raid_role_lmt WHERE raid_id = %s", quote_smart($data['raid_id']));
-				$result_raid_role = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-				while($raid_role_data = $db_raid->sql_fetchrow($result_raid_role, true))
-				{
-					$sql2 = sprintf("SELECT role_name FROM " . $phpraid_config['db_prefix'] . "roles WHERE role_id = %s", quote_smart($raid_role_data['role_id']));
-					$result_role_name = $db_raid->sql_query($sql2) or print_error($sql2, mysql_error(), 1);
-					$role_name = $db_raid->sql_fetchrow($result_role_name, true);
-					
-					$role[$role_name['role_name']] = $raid_role_data['lmt'];
-				}	            
-	            $min_lvl_value = $data['min_lvl'];
-	            $max_lvl_value = $data['max_lvl'];
-	            $location_value = UBB2($data['location']);
-	            $date_value = new_date("m/d/Y",$data['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
-				if ($phpraid_config['ampm'] == '12')
-	            	$i_time_hour_value = new_date("h",$data['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
-	            else
-	            	$i_time_hour_value = new_date("H",$data['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);	            	
-	            $i_time_minute_value = new_date("i",$data['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
-	            $i_time_ampm_value = new_date("a",$data['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
-				if ($phpraid_config['ampm'] == '12')
-	            	$s_time_hour_value = new_date("h",$data['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
-	            else
-	            	$s_time_hour_value = new_date("H",$data['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
-	            $s_time_minute_value = new_date("i",$data['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
-	            $s_time_ampm_value = new_date("a",$data['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
-	            $freeze_value = $data['freeze'];
-	            $description_value = UBB2($data['description']);
+				$class[$loc_class_data['class_id']] = $loc_class_data['lmt'];
 			}
-      	}
-		elseif(isset($_POST['submit']))
+			// Get Role Limits
+			//$raid_role_array = array();
+			$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "loc_role_lmt WHERE location_id = %s", quote_smart($location));
+			$result_loc_role = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+			while($loc_role_data = $db_raid->sql_fetchrow($result_loc_role, true))
+			{
+				$sql2 = sprintf("SELECT role_name FROM " . $phpraid_config['db_prefix'] . "roles WHERE role_id = %s", quote_smart($loc_role_data['role_id']));
+				$result_role_name = $db_raid->sql_query($sql2) or print_error($sql2, mysql_error(), 1);
+				$role_name = $db_raid->sql_fetchrow($result_role_name, true);
+				
+				$role[$role_name['role_name']] = $loc_role_data['lmt'];
+			}
+			$min_lvl_value = $data['min_lvl'];
+			$max_lvl_value = $data['max_lvl'];
+			$location_value = $data['location'];
+		}
+		
+		// If the form is in error.
+		if(isset($errorTitle)) // We are in error on the form, get old values and set boxes for values.
 		{
-			//or it could be they screwed up the form, let's put those values back in because we're nice like that
 			$tag = scrub_input($_POST['tag']);
 			$event_id = scrub_input($_POST['event_id']);
 			$max = scrub_input($_POST['max']);
@@ -576,6 +435,9 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 			$description_value = scrub_input($_POST['description']);
 		}
 
+		/************************************************************************************************
+		 *   Build the form, use data from above if it exists.
+		 ************************************************************************************************/
 		// now for the actual form elements
 		if(isset($date_value))
 			$date = '<input type="text" name="date" size="20" class="post" READONLY value="' . $date_value . '"><a href="javascript:showCal(\'Calendar1\')"><span class="gen"> [+]</span></a>';
@@ -736,16 +598,11 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 		} else {
 		   $raid_location = '';
 		}
-		if (isset($_GET['mode'])) {
-		   $raid_mode = scrub_input($_GET['mode']);
+		if (isset($_GET['id'])) {
+		   $raid_id = scrub_input($_GET['id']);
 		} else {
-		   $raid_mode = '';
+		   $raid_id = '';
 		}
-		//if (isset($_GET['id'])) {
-		//   $raid_id = scrub_input($_GET['id']);
-		//} else {
-		//   $raid_id = '';
-		//}
 			
 		// setup vars for raid templates
 		$raid_name = '<select name="name" id="name" class="post" onChange="MM_jumpMenu(\'parent\',this,0)">
@@ -764,19 +621,9 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 		while($data = $db_raid->sql_fetchrow($result, true))
 		{
 			if($raid_location == $data['name'])
-			{
-			   if($raid_mode == 'edit')
-				  $raid_name .= '<option value="raids.php?mode=edit&id=' . $data['location_id'] . '&location=' . $data['name'] .'" selected>' . $data['name'] . '</option>';
-			   else
-				  $raid_name .= '<option value="raids.php?mode=new&id=' . $data['location_id']  . '&location=' . $data['name'] .'" selected>' . $data['name'] . '</option>';
-			}
+				  $raid_name .= '<option value="raids.php?mode=new&id=' . $data['location_id'] . '&location=' . $data['name'] .'" selected>' . $data['name'] . '</option>';
 			else
-			{
-			   if($raid_mode == 'edit')
-				  $raid_name .= '<option value="raids.php?mode=edit&id=' . $data['location_id'] . '&location=' . $data['name'] .'">' . $data['name'] . '</option>';
-			   else
 				  $raid_name .= '<option value="raids.php?mode=new&id=' . $data['location_id'] . '&location=' . $data['name'] .'">' . $data['name'] . '</option>';
-			}
 		 }
 		 $raid_name .= '</select>';
 
@@ -789,7 +636,7 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 		// limits
 		$raid_class_array = array();
 		$raid_role_array = array();
-		if($_GET['mode'] == 'edit' || isset($_GET['id']))
+		if(isset($_GET['id']))
 		{
 			$maximum = '<input name="max" type="text" class="post" style="width:20px" value="' . $max . '" maxlength="2">';
 			$minimum_level = '<input name="min_lvl" type="text" class="post" style="width:20px" value="' . $min_lvl_value . '" maxlength="2">';
@@ -825,6 +672,541 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 					$raid_role_array[$global_role['role_id']] = '';	
 			}			
 		}
+		$buttons = '<input type="submit" name="submit" value="'.$phprlang['submit'].'" class="mainoption"> <input type="reset" name="reset" value="'.$phprlang['reset'].'" class="liteoption">';			
+		
+		/****************************************************************
+		 * Data Assign for Template.
+		 ****************************************************************/		
+		$wrmsmarty->assign('page',
+			array(
+				'buttons'=>$buttons,
+				'form_action'=>$form_action,
+				'raid_name'=>$raid_name,
+				'date'=>$date,
+				'i_time_hour'=>$i_time_hour,
+				'i_time_minute'=>$i_time_minute,
+				'i_time_ampm'=>$i_time_ampm,
+				's_time_hour'=>$s_time_hour,
+				's_time_minute'=>$s_time_minute,
+				's_time_ampm'=>$s_time_ampm,
+				'freeze'=>$freeze,
+				'event_type'=>$eventtype,
+				'event_id_info'=>$event_id_info,
+				'location'=>$location,
+				'description'=>$description,
+				'maximum'=>$maximum,
+				'minimum_level'=>$minimum_level,
+				'maximum_level'=>$maximum_level,
+				'dungeon_text'=>$phprlang['raids_dungeon'],
+				'date_text'=>$phprlang['raids_date'],
+				'raids_new'=>$phprlang['raids_new_header'],
+				'invite_text'=>$phprlang['raids_invite'],
+				'start_text'=>$phprlang['raids_start'],
+				'freeze_text'=>$phprlang['raids_freeze'],
+				'eventtype_text'=>$phprlang['raids_eventtype_text'],
+				'location_text'=>$phprlang['raids_location'],
+				'description_text'=>$phprlang['raids_description'],
+				'limits_text'=>$phprlang['raids_limits'],
+				'max_text'=>$phprlang['raids_max'],
+				'minlvl_text'=>$phprlang['raids_min_lvl'],
+				'maxlvl_text'=>$phprlang['raids_max_lvl'],
+			)
+		);
+		
+		// Handle Classes
+		$class_array = array();
+		foreach ($wrm_global_classes as $global_class)
+		{				
+			array_push($class_array,
+				array(
+					'lmt'=>$raid_class_array[$global_class['class_id']],
+					'lang_id'=>$phprlang[$global_class['lang_index']],
+				)
+			);
+		}
+		$wrmsmarty->assign('class_limits', $class_array);
+				
+		// Handle Roles
+		$role_array = array();
+		foreach ($wrm_global_roles as $global_role)	
+		{
+			array_push($role_array,
+				array(
+					'lmt'=>$raid_role_array[$global_role['role_id']],
+					'lang_id'=>$global_role['role_name'],
+				)
+			);
+		}			
+		$wrmsmarty->assign('role_limits', $role_array);	
+		
+		//
+		// Start output of New Raid Or Edit Raid Page
+		//
+		require_once('includes/page_header.php');
+		$wrmsmarty->display('raids_new.html');
+		require_once('includes/page_footer.php');		
+	}
+	else // Submit Set, Error Title Not Set - Normal Submit.
+	{
+		// holy crap, time to put it into the database
+		// variables first
+		$max = scrub_input($_POST['max']);
+
+		// Handle Classes
+		foreach ($wrm_global_classes as $global_class)
+		{
+			$classtrans = str_replace(" ", "_", $global_class['class_id']);
+			$class[$global_class['class_id']] = scrub_input($_POST[$classtrans]);
+		}
+		
+		// Handle Roles
+		foreach ($wrm_global_roles as $global_role)	
+		{
+			$role[$global_role['role_id']] = scrub_input($_POST[$global_role['role_id']]);
+			if ($role[$global_role['role_id']] == '')
+				$role[$global_role['role_id']] == '0'; 
+		}
+
+		$min_lvl = scrub_input($_POST['min_lvl']);
+		$max_lvl = scrub_input($_POST['max_lvl']);
+
+		$location = scrub_input(DEUBB($_POST['location']));
+
+		$date = scrub_input($_POST['date']);
+		$i_time_hour_value = scrub_input($_POST['i_time_hour']);
+		$i_time_minute_value = scrub_input($_POST['i_time_minute']);
+		$i_time_ampm_value = scrub_input($_POST['i_time_ampm']);
+		$s_time_hour_value = scrub_input($_POST['s_time_hour']);
+		$s_time_minute_value = scrub_input($_POST['s_time_minute']);
+		$s_time_ampm_value = scrub_input($_POST['s_time_ampm']);
+		$freeze = scrub_input($_POST['freeze']);
+		$tag = scrub_input($_POST['tag']);
+		$event_id = scrub_input($_POST['event_id']);
+		$description = scrub_input(DEUBB($_POST['description']));
+		if(isset($_GET['id']))
+			$id = scrub_input($_GET['id']);
+		else
+			$id = '';
+
+		// setup the date, probably the only tricky tricky part :D
+		$month = substr($date,0,2);
+		$day = substr($date,3,2);
+		$year = substr($date,6,4);
+
+		if($i_time_ampm_value == 'pm' && $i_time_hour_value < 12)
+			$i_time_hour_value += 12;
+
+		if($s_time_ampm_value == 'pm' && $s_time_hour_value < 12)
+			$s_time_hour_value += 12;
+
+		$invite_time = new_mktime($i_time_hour_value,$i_time_minute_value,0,$month,$day,$year,$phpraid_config['timezone'] + $phpraid_config['dst']);
+		$start_time = new_mktime($s_time_hour_value,$s_time_minute_value,0,$month,$day,$year,$phpraid_config['timezone'] + $phpraid_config['dst']);
+
+		$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "raids (`description`,`freeze`,`invite_time`,
+				`location`,`officer`,`old`,`start_time`,
+				`min_lvl`,`max_lvl`,`max`,`event_type`,`event_id`)	VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
+				quote_smart($description),quote_smart($freeze),quote_smart($invite_time),quote_smart($location),
+				quote_smart($username),quote_smart('0'),quote_smart($start_time),
+				quote_smart($min_lvl),quote_smart($max_lvl),quote_smart($max),quote_smart($tag),quote_smart($event_id));
+
+		$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+
+		// Get the Location ID of what was Just Entered to Apply to the Lookup Tables
+		$sql = "SELECT raid_id FROM " . $phpraid_config['db_prefix'] . "raids ORDER BY raid_id DESC LIMIT 1";
+		$raid_id_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$raid_id = $db_raid->sql_fetchrow($raid_id_result, true);
+		
+		// Insert Class Data to loc_class_lmt
+		foreach ($wrm_global_classes as $global_class)
+		{
+			$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "raid_class_lmt (`raid_id`, `class_id`, `lmt`)
+			VALUES (%s,%s,%s)",quote_smart($raid_id['raid_id']), quote_smart($global_class['class_id']), quote_smart($class[$global_class['class_id']]));
+			
+			$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+		}
+		
+		// Insert Role Data to loc_role_lmt
+		foreach ($wrm_global_roles as $global_role)	
+		{
+			$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "raid_role_lmt (`raid_id`, `role_id`, `lmt`)
+			VALUES (%s,%s,%s)",quote_smart($raid_id['raid_id']), quote_smart($global_role['role_id']), quote_smart($role[$global_role['role_id']]));
+			
+			$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);	
+		}
+		
+		log_create('raid',mysql_insert_id(),$location);
+		header("Location: raids.php?mode=view");
+	}
+}
+/************************************************************************************************
+ *   Mode: EDIT
+ ************************************************************************************************/
+elseif($_GET['mode'] == 'edit')
+{
+	// error checking, goes before the output so we can show the error at the top and allow them to fix the errors without pressing back
+	if(isset($_POST['submit']))
+	{
+		$location = scrub_input($_POST['location']);
+		$date = str_replace(" ", "", scrub_input($_POST['date']));
+		$tag = scrub_input($_POST['tag']);
+		if ($tag == '')
+			$tag = "1";
+		$event_id = scrub_input($_POST['event_id']);
+		if ($event_id == '')
+			$event_id = "0";
+		$description = scrub_input($_POST['description']);
+		$max = scrub_input($_POST['max']);
+		$min_lvl = scrub_input($_POST['min_lvl']);
+		$max_lvl = scrub_input($_POST['max_lvl']);
+
+		// Handle Classes
+		$bad_class_limit = FALSE;
+		foreach ($wrm_global_classes as $global_class)
+		{
+			$classtrans = str_replace(" ", "_", $global_class['class_id']);
+			if ($_POST[$classtrans]!='' && is_numeric($_POST[$classtrans]))
+				$class[$global_class['class_id']] = scrub_input($_POST[$classtrans]);
+			else
+				$bad_class_limit = TRUE;
+		}
+		
+		// Handle Roles
+		$bad_role_limit = FALSE;
+		foreach ($wrm_global_roles as $global_role)	
+		{
+			$role[$global_role['role_id']] = scrub_input($_POST[$global_role['role_id']]);
+			if ($role[$global_role['role_id']] == '')
+				$role[$global_role['role_id']] == '0'; 
+
+			if($global_role['role_name'] != '')
+				if (!is_numeric($role[$global_role['role_id']]))
+					$bad_role_limit = TRUE;	
+		}
+		
+		// Verify Data to ensure Correctness, set error if not.
+		if($location == "" || $date == "" || $max == "" || $min_lvl == "" || $max_lvl == "" ||
+		   !is_numeric($max) || !is_numeric($min_lvl) || !is_numeric($max_lvl) || $bad_class_limit ||
+		   $bad_role_limit)
+		{
+			$errorTitle = $phprlang['form_error'];
+			$errorSpace = 1;
+			$errorMsg = '<ul>';
+			if($location == "")
+				$errorMsg .= '<li>' . $phprlang['raid_error_location'] . '</li>';
+
+			if($date == "")
+				$errorMsg .= '<li>' . $phprlang['raid_error_date'] . '</li>';
+
+			if($max == "" || $min_lvl == "" || $max_lvl == "" ||
+			!is_numeric($max) || !is_numeric($min_lvl) || !is_numeric($max_lvl) || $bad_class_limit ||
+			$bad_role_limit)
+				$errorMsg .= '<li>' . $phprlang['raid_error_limits'] . '</li>';
+		}
+		if($description == "")				
+		{									
+        	$description="-";			
+        	$_POST['description']="-";	
+		}
+	}
+
+	// Either We Haven't submitted the form or we have and we errored.  
+	//   If we have submitted the form and errored, set variables, otherwise just 
+	//   build form.
+	if(!isset($_POST['submit']) || isset($errorTitle))
+	{
+		// setup the form action first
+		$id = scrub_input($_GET['id']); // Raid ID
+		$form_action = 'raids.php?mode=edit&amp;id='. $id;
+
+		// They screwed up the form on submission.
+		if(isset($errorTitle))
+		{
+			$tag = scrub_input($_POST['tag']);
+			$event_id = scrub_input($_POST['event_id']);
+			$max = scrub_input($_POST['max']);
+
+			// Handle Classes
+			foreach ($wrm_global_classes as $global_class)
+			{
+				$classtrans = str_replace(" ", "_", $global_class['class_id']);
+				$class[$global_class['class_id']] = scrub_input($_POST[$classtrans]);
+			}
+			
+			// Handle Roles
+			foreach ($wrm_global_roles as $global_role)	
+			{
+				$role[$global_role['role_id']] = scrub_input($_POST[$global_role['role_id']]);
+				if ($role[$global_role['role_id']] == '')
+					$role[$global_role['role_id']] == '0'; 
+			}			
+			$min_lvl_value = scrub_input($_POST['min_lvl']);
+			$max_lvl_value = scrub_input($_POST['max_lvl']);
+			$location_value = scrub_input($_POST['location']);
+			$date_value = scrub_input($_POST['date']);
+			$i_time_hour_value = scrub_input($_POST['i_time_hour']);
+			$i_time_minute_value = scrub_input($_POST['i_time_minute']);
+			$i_time_ampm_value = scrub_input($_POST['i_time_ampm']);
+			$s_time_hour_value = scrub_input($_POST['s_time_hour']);
+			$s_time_minute_value = scrub_input($_POST['s_time_minute']);
+			$s_time_ampm_value = scrub_input($_POST['s_time_ampm']);
+			$freeze_value = scrub_input($_POST['freeze']);
+			$description_value = scrub_input($_POST['description']);
+		}
+		else
+		{
+			// Grab Values for Edit from Raid in DB.
+			$id = scrub_input($_GET['id']);
+			$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id=%s", quote_smart($id));
+			$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+			$data = $db_raid->sql_fetchrow($result, true);
+			            
+			$tag = $data['event_type'];
+			$event_id = $data['event_id'];
+			$max = $data['max'];
+			
+			// Now that we have the raid data, we need to retrieve limit data based upon Raid ID.
+			// Get Class Limits and set Colored Counts
+			//$raid_class_array = array();
+			$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raid_class_lmt WHERE raid_id = %s", quote_smart($data['raid_id']));
+			$result_raid_class = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+			while($raid_class_data = $db_raid->sql_fetchrow($result_raid_class, true))
+			{
+				$class[$raid_class_data['class_id']] = $raid_class_data['lmt'];
+			}
+			// Get Role Limits and set Colored Counts
+			//$raid_role_array = array();
+			$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raid_role_lmt WHERE raid_id = %s", quote_smart($data['raid_id']));
+			$result_raid_role = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+			while($raid_role_data = $db_raid->sql_fetchrow($result_raid_role, true))
+			{
+				$sql2 = sprintf("SELECT role_name FROM " . $phpraid_config['db_prefix'] . "roles WHERE role_id = %s", quote_smart($raid_role_data['role_id']));
+				$result_role_name = $db_raid->sql_query($sql2) or print_error($sql2, mysql_error(), 1);
+				$role_name = $db_raid->sql_fetchrow($result_role_name, true);
+								
+				$role[$role_name['role_name']] = $raid_role_data['lmt'];
+			}	            
+			$min_lvl_value = $data['min_lvl'];
+			$max_lvl_value = $data['max_lvl'];
+			$location_value = UBB2($data['location']);
+			$date_value = new_date("m/d/Y",$data['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+			if ($phpraid_config['ampm'] == '12')
+				$i_time_hour_value = new_date("h",$data['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+			else
+				$i_time_hour_value = new_date("H",$data['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);	            	
+			$i_time_minute_value = new_date("i",$data['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+			$i_time_ampm_value = new_date("a",$data['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+			if ($phpraid_config['ampm'] == '12')
+				$s_time_hour_value = new_date("h",$data['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+			else
+				$s_time_hour_value = new_date("H",$data['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+			$s_time_minute_value = new_date("i",$data['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+			$s_time_ampm_value = new_date("a",$data['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+			$freeze_value = $data['freeze'];
+			$description_value = UBB2($data['description']);
+		}
+
+		// now for the actual form elements
+		if(isset($date_value))
+			$date = '<input type="text" name="date" size="20" class="post" READONLY value="' . $date_value . '"><a href="javascript:showCal(\'Calendar1\')"><span class="gen"> [+]</span></a>';
+		else
+			$date = '<input type="text" name="date" size="20" class="post" READONLY><a href="javascript:showCal(\'Calendar1\')"><span class="gen"> [+]</span></a>';
+
+		// invite time
+		$i_time_hour = '<select name="i_time_hour" class="post">';
+		for($i = 1; $i <= $phpraid_config['ampm']; $i++)
+		{
+			if($i < 10)
+				$i_string = '0' . $i;
+			else
+				$i_string = $i;
+
+			if(isset($i_time_hour_value) && $i_string == $i_time_hour_value)
+				$i_time_hour .= '<option value="' . $i_string . '" selected>' . $i_string . '</option>';
+			else
+				$i_time_hour .= '<option value="' . $i_string . '">' . $i_string . '</option>';
+		}
+		$i_time_hour .= '</select>';
+
+		//~@@Change: Douglas Wagner - 6/23/2007
+		// This code reduces the selections in the "minute" selection boxes.  We want a 15 minute granularity, not a 1 minute granularity.
+		$i_time_minute = '<select name="i_time_minute" class="post">';
+		for($i = 0; $i < 60; $i++)
+		{
+			$ifloor=$i/15;					//Added
+			if(($ifloor) == floor($ifloor)) //Added
+			{								//Added
+				if($i < 10)
+					$i_string = '0' . $i;
+				else
+					$i_string = $i;
+
+				if(isset($i_time_minute_value) && $i_string == $i_time_minute_value)
+					$i_time_minute .= '<option value="' . $i_string . '" selected>' . $i_string . '</option>';
+				else
+					$i_time_minute .= '<option value="' . $i_string . '">' . $i_string . '</option>';
+			} 								//Added
+		}
+		$i_time_minute .= '</select>';
+
+		if ($phpraid_config['ampm'] == '12')
+		{
+			$i_time_ampm = '<select name="i_time_ampm" class="post">';
+			if(isset($i_time_ampm_value) && $i_time_ampm_value == 'am')
+			{
+				$i_time_ampm .= '<option value="am" selected>am</option><option value="pm">pm</option>';
+			}
+			elseif(isset($i_time_ampm_value) && $i_time_ampm_value == 'pm')
+			{
+				$i_time_ampm .= '<option value="am">am</option><option value="pm" selected>pm</option>';
+			}
+			else
+			{
+				$i_time_ampm .= '<option value="am">am</option><option value="pm" selected>pm</option>';
+			}
+			$i_time_ampm .= '</select>';
+			// end of invite time
+		}
+		
+		// start time
+		$s_time_hour = '<select name="s_time_hour" class="post">';
+		for($i = 1; $i <= $phpraid_config['ampm']; $i++)
+		{
+			if($i < 10)
+				$s_string = '0' . $i;
+			else
+				$s_string = $i;
+
+			if(isset($s_time_hour_value) && $s_string == $s_time_hour_value)
+				$s_time_hour .= '<option value="' . $s_string . '" selected>' . $s_string . '</option>';
+			else
+				$s_time_hour .= '<option value="' . $s_string . '">' . $s_string . '</option>';
+		}
+		$s_time_hour .= '</select>';
+
+		//~@@Change: Douglas Wagner - 6/23/2007
+		// This code reduces the selections in the "minute" selection boxes.  We want a 15 minute granularity, not a 1 minute granularity.
+		$s_time_minute = '<select name="s_time_minute" class="post">';
+		for($i = 0; $i < 60; $i++)
+		{
+			$ifloor=$i/15;					//Added
+			if(($ifloor) == floor($ifloor)) //Added
+			{								//Added
+				if($i < 10)
+					$s_string = '0' . $i;
+				else
+					$s_string = $i;
+
+				if(isset($s_time_minute_value) && $s_string == $s_time_minute_value)
+					$s_time_minute .= '<option value="' . $s_string . '" selected>' . $s_string . '</option>';
+				else
+					$s_time_minute .= '<option value="' . $s_string . '">' . $s_string . '</option>';
+			} 								//Added
+		}
+		$s_time_minute .= '</select>';
+
+		if ($phpraid_config['ampm'] == '12')
+		{
+			$s_time_ampm = '<select name="s_time_ampm" class="post">';
+			if(isset($s_time_ampm_value) && $s_time_ampm_value == 'am')
+			{
+				$s_time_ampm .= '<option value="am" selected>am</option><option value="pm">pm</option>';
+			}
+			elseif(isset($s_time_ampm_value) && $s_time_ampm_value == 'pm')
+			{
+				$s_time_ampm .= '<option value="am">am</option><option value="pm" selected>pm</option>';
+			}
+			else
+			{
+				$s_time_ampm .= '<option value="am">am</option><option value="pm" selected>pm</option>';
+			}
+			$s_time_ampm .= '</select>';
+			// end of start time
+		}
+		
+		// freeze
+		$freeze = '<select name="freeze" class="post">';
+		for($i = 0; $i <= 24; $i++)
+		{
+			if(isset($freeze_value) && $i == $freeze_value)
+				$freeze .= '<option value="' . $i . '" selected>' . $i . '</option>';
+			else
+				$freeze .= '<option value="' . $i . '">' . $i . '</option>';
+		}
+		$freeze .= '</select>';
+		
+		// Event Type for WoW Calendar
+		$eventtype = '<select name="tag" class="post">';
+		$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "event_type";
+		$result2 = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		while($event_type_data = $db_raid->sql_fetchrow($result2, true))
+		{		
+			// Event Type for WoW Calendar
+			if (isset($tag) && $event_type_data['event_type_id'] == $tag)
+				$eventtype .= '<option value="'.$event_type_data['event_type_id'].'" selected>' . $phprlang[$event_type_data['event_type_lang_id']] . '</option>';
+			elseif (!isset($tag) && $event_type_data['event_type_id'] == 1)
+				$eventtype .= '<option value="'.$event_type_data['event_type_id'].'" selected>' . $phprlang[$event_type_data['event_type_lang_id']] . '</option>';
+			else
+				$eventtype .= '<option value="'.$event_type_data['event_type_id'].'">' . $phprlang[$event_type_data['event_type_lang_id']] . '</option>';
+		}
+		$eventtype .= '</select>';		
+		// End Event Type Setup		
+
+		// location
+		if(isset($location_value))
+			$location = '<input type="text" name="location" class="post" value="' . $location_value . '">';
+		else
+			$location = '<input type="text" name="location" class="post">';
+			
+		// setup vars for raid templates
+		$raid_name = '<select name="event_id" id="name" class="post">
+					<option value="'.$event_id.'"></option>';
+
+		if ($priv_raids == 1)
+		{
+			$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "locations ORDER BY name";
+			$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		}
+		else
+		{
+			$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "locations WHERE locked='0' ORDER BY name";
+			$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		}
+		while($data = $db_raid->sql_fetchrow($result, true))
+		{
+			if($raid_location == $data['name'])
+				  $raid_name .= '<option value="'.$data['event_id'].'" selected>' . $data['name'] . '</option>';
+			else
+				  $raid_name .= '<option value="'.$data['event_id'].'">' . $data['name'] . '</option>';
+		 }
+		 $raid_name .= '</select>';
+
+		 $event_id_info = '<input type="hidden" name="event_id_old" class="post" value="' . $event_id . '">';
+		 
+		// description
+		if(isset($description_value))
+			$description = '<textarea name="description" cols="50" rows="10" wrap="PHYSICAL" class="post" id="message" style="width:300;height:150">' . $description_value . '</textarea>';
+		else
+			$description = '<textarea name="description" cols="50" rows="10" wrap="PHYSICAL" class="post" id="message" style="width:300;height:150"></textarea>';
+
+		// limits
+		$raid_class_array = array();
+		$raid_role_array = array();
+		$maximum = '<input name="max" type="text" class="post" style="width:20px" value="' . $max . '" maxlength="2">';
+		$minimum_level = '<input name="min_lvl" type="text" class="post" style="width:20px" value="' . $min_lvl_value . '" maxlength="2">';
+		$maximum_level =  '<input name="max_lvl" type="text" class="post" style="width:20px" value="' . $max_lvl_value . '" maxlength="2">';
+		
+		// Handle Classes
+		foreach ($wrm_global_classes as $global_class)
+			$raid_class_array[$global_class['class_id']] = '<input name="'.$global_class['class_id'].'" type="text" class="post" style="width:20px" value="' . $class[$global_class['class_id']] . '" maxlength="2">';
+		
+		// Handle Roles
+		foreach ($wrm_global_roles as $global_role)	
+		{
+			if ($global_role['role_name'] != '')
+				$raid_role_array[$global_role['role_id']] = '<input name="'.$global_role['role_id'].'" type="text" class="post" style="width:20px" value="' . $role[$global_role['role_name']] . '" maxlength="2">';
+			else
+				$raid_role_array[$global_role['role_id']] = '';	
+		}					
 		$buttons = '<input type="submit" name="submit" value="'.$phprlang['submit'].'" class="mainoption"> <input type="reset" name="reset" value="'.$phprlang['reset'].'" class="liteoption">';			
 		
 		/****************************************************************
@@ -955,72 +1337,36 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 		$invite_time = new_mktime($i_time_hour_value,$i_time_minute_value,0,$month,$day,$year,$phpraid_config['timezone'] + $phpraid_config['dst']);
 		$start_time = new_mktime($s_time_hour_value,$s_time_minute_value,0,$month,$day,$year,$phpraid_config['timezone'] + $phpraid_config['dst']);
 
-		if($_GET['mode'] == 'new')
-		{
-			$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "raids (`description`,`freeze`,`invite_time`,
-					`location`,`officer`,`old`,`start_time`,
-					`min_lvl`,`max_lvl`,`max`,`event_type`,`event_id`)	VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
-					quote_smart($description),quote_smart($freeze),quote_smart($invite_time),quote_smart($location),
-					quote_smart($username),quote_smart('0'),quote_smart($start_time),
-					quote_smart($min_lvl),quote_smart($max_lvl),quote_smart($max),quote_smart($tag),quote_smart($event_id));
+		$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "raids SET location=%s,description=%s,invite_time=%s,start_time=%s,
+				freeze=%s,max=%s,event_type=%s,event_id=%s,old='0',min_lvl=%s,max_lvl=%s WHERE raid_id=%s",
+				quote_smart($location),quote_smart($description),quote_smart($invite_time),quote_smart($start_time), quote_smart($freeze),
+				quote_smart($max),quote_smart($tag),quote_smart($event_id),quote_smart($min_lvl),quote_smart($max_lvl),quote_smart($id));
 
+		$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+
+		// Insert Class Data to loc_class_lmt
+		foreach ($wrm_global_classes as $global_class)
+		{
+			$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "raid_class_lmt SET lmt=%s WHERE raid_id=%s AND class_id=%s",
+			quote_smart($class[$global_class['class_id']]), quote_smart($id), quote_smart($global_class['class_id']));
+			
 			$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
-
-			// Get the Location ID of what was Just Entered to Apply to the Lookup Tables
-			$sql = "SELECT raid_id FROM " . $phpraid_config['db_prefix'] . "raids ORDER BY raid_id DESC LIMIT 1";
-			$raid_id_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-			$raid_id = $db_raid->sql_fetchrow($raid_id_result, true);
-			
-			// Insert Class Data to loc_class_lmt
-			foreach ($wrm_global_classes as $global_class)
-			{
-				$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "raid_class_lmt (`raid_id`, `class_id`, `lmt`)
-				VALUES (%s,%s,%s)",quote_smart($raid_id['raid_id']), quote_smart($global_class['class_id']), quote_smart($class[$global_class['class_id']]));
-				
-				$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
-			}
-			
-			// Insert Role Data to loc_role_lmt
-			foreach ($wrm_global_roles as $global_role)	
-			{
-				$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "raid_role_lmt (`raid_id`, `role_id`, `lmt`)
-				VALUES (%s,%s,%s)",quote_smart($raid_id['raid_id']), quote_smart($global_role['role_id']), quote_smart($role[$global_role['role_id']]));
-				
-				$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);	
-			}
-			
-			log_create('raid',mysql_insert_id(),$location);
 		}
-		else
+		
+		// Insert Role Data to loc_role_lmt
+		foreach ($wrm_global_roles as $global_role)	
 		{
-			$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "raids SET location=%s,description=%s,invite_time=%s,start_time=%s,
-					freeze=%s,max=%s,event_type=%s,event_id=%s,old='0',min_lvl=%s,max_lvl=%s WHERE raid_id=%s",
-					quote_smart($location),quote_smart($description),quote_smart($invite_time),quote_smart($start_time), quote_smart($freeze),
-					quote_smart($max),quote_smart($tag),quote_smart($event_id),quote_smart($min_lvl),quote_smart($max_lvl),quote_smart($id));
-
-			$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-
-			// Insert Class Data to loc_class_lmt
-			foreach ($wrm_global_classes as $global_class)
-			{
-				$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "raid_class_lmt SET lmt=%s WHERE raid_id=%s AND class_id=%s",
-				quote_smart($class[$global_class['class_id']]), quote_smart($id), quote_smart($global_class['class_id']));
-				
-				$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
-			}
+			$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "raid_role_lmt SET lmt=%s WHERE raid_id=%s AND role_id=%s",
+			quote_smart($role[$global_role['role_id']]), quote_smart($id), quote_smart($global_role['role_id']));
 			
-			// Insert Role Data to loc_role_lmt
-			foreach ($wrm_global_roles as $global_role)	
-			{
-				$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "raid_role_lmt SET lmt=%s WHERE raid_id=%s AND role_id=%s",
-				quote_smart($role[$global_role['role_id']]), quote_smart($id), quote_smart($global_role['role_id']));
-				
-				$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);	
-			}		
-		}
+			$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);	
+		}		
 		header("Location: raids.php?mode=view");
 	}
 }
+/************************************************************************************************
+ *   Mode: DELETE
+ ************************************************************************************************/
 elseif($_GET['mode'] == 'delete')
 {
 	$id = scrub_input($_GET['id']);
@@ -1065,6 +1411,9 @@ elseif($_GET['mode'] == 'delete')
 		header("Location: raids.php?mode=view");
 	}
 }
+/************************************************************************************************
+ *   Mode: MARK
+ ************************************************************************************************/
 elseif($_GET['mode'] == 'mark')
 {
 	$raid_id = scrub_input($_GET['id']);
