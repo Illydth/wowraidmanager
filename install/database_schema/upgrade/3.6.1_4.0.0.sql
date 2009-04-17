@@ -553,6 +553,9 @@ INSERT INTO `wrm_version` VALUES ('3.9.9.2.1','4.0 Beta 2 Release 1');
 UPDATE `wrm_config` SET `config_value` = 'us' WHERE `config_name` = 'armory_language' AND `config_value` = 'en' LIMIT 1;
 UPDATE `wrm_config` SET `config_value` = 'default' WHERE `config_name` = 'template' AND `config_value` = 'SpiffyJr' LIMIT 1;
 
+INSERT INTO `wrm_events` VALUES (122, 'Ulduar', 10, 3, 1, 'Ulduar', 'images/instances/WotLK_Icons/10-Ulduar.jpg');
+INSERT INTO `wrm_events` VALUES (123, 'Ulduar - Heroic', 25, 3, 1, 'Ulduar (Heroic)', 'images/instances/WotLK_Icons/25-Ulduar.jpg');
+
 -------------------------------------------------------------------
 -- Manual Changes - The lines below MUST be modified manually to make
 --    sense for YOUR environment.
