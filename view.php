@@ -66,13 +66,19 @@ else
 	
 // Set Sort Field for Page
 if(!isset($_GET['Sort']))
+{
 	$sortField="";
+	$initSort=FALSE;
+}
 else
+{
 	$sortField = scrub_input($_GET['Sort']);
+	$initSort=TRUE;
+}
 		
 // Set Sort Descending Mark
 if(!isset($_GET['SortDescending']) || !is_numeric($_GET['SortDescending']))
-	$sortDesc = 1;
+	$sortDesc = 0;
 else
 	$sortDesc = scrub_input($_GET['SortDescending']);
 		
@@ -446,12 +452,17 @@ if($mode == 'view')
 		if($signups['selected_spec'] == '' || $signups['selected_spec'] == $data['pri_spec'])
 			$signup_spec .= "SELECTED ";
 		$signup_spec .= $form_use.$data['pri_spec']."\">".$phprlang[$pri_spec_lang].":".$pri_spec_role_name."</option>";
-		$signup_spec .= "<option ";
-		if($signups['selected_spec'] == $data['sec_spec'])
-			$signup_spec .= "SELECTED ";
-		$signup_spec .= $form_use.$data['sec_spec']."\">".$phprlang[$sec_spec_lang].":".$sec_spec_role_name."</option>";
-				
-		$signup_spec_output = '<select name="signup_spec" onChange="MM_jumpMenu(\'parent\',this,0)" class="form">'. $signup_spec . '</select>';		
+		if($data['sec_spec'] != '')
+		{
+			$signup_spec .= "<option ";
+			if($signups['selected_spec'] == $data['sec_spec'])
+				$signup_spec .= "SELECTED ";
+			$signup_spec .= $form_use.$data['sec_spec']."\">".$phprlang[$sec_spec_lang].":".$sec_spec_role_name."</option>";
+		}
+		if(($user_perm_group['admin'])||($user_perm_group['RL'])||($_SESSION['profile_id'] == $data['profile_id']))		
+			$signup_spec_output = '<select name="signup_spec" onChange="MM_jumpMenu(\'parent\',this,0)" class="form">'. $signup_spec . '</select>';		
+		else
+			$signup_spec_output = 'N/A';
 		
 		array_push($raid_queue, 
 			array(
@@ -568,13 +579,18 @@ if($mode == 'view')
 		if($signups['selected_spec'] == '' || $signups['selected_spec'] == $data['pri_spec'])
 			$signup_spec .= "SELECTED ";
 		$signup_spec .= $form_use.$data['pri_spec']."\">".$phprlang[$pri_spec_lang].":".$pri_spec_role_name."</option>";
-		$signup_spec .= "<option ";
-		if($signups['selected_spec'] == $data['sec_spec'])
-			$signup_spec .= "SELECTED ";
-		$signup_spec .= $form_use.$data['sec_spec']."\">".$phprlang[$sec_spec_lang].":".$sec_spec_role_name."</option>";
-				
-		$signup_spec_output = '<select name="signup_spec" onChange="MM_jumpMenu(\'parent\',this,0)" class="form">'. $signup_spec . '</select>';		
-				
+		if($data['sec_spec'] != '')
+		{
+			$signup_spec .= "<option ";
+			if($signups['selected_spec'] == $data['sec_spec'])
+				$signup_spec .= "SELECTED ";
+			$signup_spec .= $form_use.$data['sec_spec']."\">".$phprlang[$sec_spec_lang].":".$sec_spec_role_name."</option>";
+		}				
+		if(($user_perm_group['admin'])||($user_perm_group['RL'])||($_SESSION['profile_id'] == $data['profile_id']))		
+			$signup_spec_output = '<select name="signup_spec" onChange="MM_jumpMenu(\'parent\',this,0)" class="form">'. $signup_spec . '</select>';		
+		else
+			$signup_spec_output = 'N/A';
+			
 		array_push($raid_cancel, 
 			array(
 				'ID'=>$data['char_id'],
@@ -622,7 +638,13 @@ if($mode == 'view')
 			
 			//Get the Jump Menu and pass it down
 			$jump_menu = getPageNavigation($class_data, $startRecord, $pageURL, $sortField, $sortDesc);
-		
+			
+			//Setup Default Data Sort from Headers Table
+			if (!$initSort)
+				foreach ($headers as $column_rec)
+					if ($column_rec['default_sort'])
+						$sortField = $column_rec['column_name'];
+
 			//Setup Data
 			$class_data = paginateSortAndFormat($class_data, $sortField, $sortDesc, $startRecord, $viewName);
 			/****************************************************************
@@ -673,7 +695,13 @@ if($mode == 'view')
 				
 				//Get the Jump Menu and pass it down
 				$jump_menu = getPageNavigation($role_data, $startRecord, $pageURL, $sortField, $sortDesc);
-			
+
+				//Setup Default Data Sort from Headers Table
+				if (!$initSort)
+					foreach ($headers as $column_rec)
+						if ($column_rec['default_sort'])
+							$sortField = $column_rec['column_name'];
+				
 				//Setup Data
 				$role_data = paginateSortAndFormat($role_data, $sortField, $sortDesc, $startRecord, $viewName);
 				/****************************************************************
@@ -716,7 +744,13 @@ if($mode == 'view')
 		
 	//Get the Jump Menu and pass it down
 	$queueJumpMenu = getPageNavigation($raid_queue, $startRecord, $pageURL, $sortField, $sortDesc);
-	
+
+	//Setup Default Data Sort from Headers Table
+	if (!$initSort)
+		foreach ($queue_headers as $column_rec)
+			if ($column_rec['default_sort'])
+				$sortField = $column_rec['column_name'];
+
 	//Setup Data
 	$raid_queue = paginateSortAndFormat($raid_queue, $sortField, $sortDesc, $startRecord, $viewName);
 	/****************************************************************
@@ -751,7 +785,13 @@ if($mode == 'view')
 		
 	//Get the Jump Menu and pass it down
 	$cancelJumpMenu = getPageNavigation($raid_cancel, $startRecord, $pageURL, $sortField, $sortDesc);
-	
+
+	//Setup Default Data Sort from Headers Table
+	if (!$initSort)
+		foreach ($cancel_headers as $column_rec)
+			if ($column_rec['default_sort'])
+				$sortField = $column_rec['column_name'];
+
 	//Setup Data
 	$raid_cancel = paginateSortAndFormat($raid_cancel, $sortField, $sortDesc, $startRecord, $viewName);
 	/****************************************************************
