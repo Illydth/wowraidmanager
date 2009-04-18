@@ -71,13 +71,19 @@ else
 
 // Set Sort Field for Page
 if(!isset($_GET['Sort']))
+{
 	$sortField="";
+	$initSort=FALSE;
+}
 else
+{
 	$sortField = scrub_input($_GET['Sort']);
+	$initSort=TRUE;
+}
 	
 // Set Sort Descending Mark
 if(!isset($_GET['SortDescending']) || !is_numeric($_GET['SortDescending']))
-	$sortDesc = 1;
+	$sortDesc = 0;
 else
 	$sortDesc = scrub_input($_GET['SortDescending']);
 	
@@ -189,6 +195,12 @@ if($mode == 'view')
 	//Get the Jump Menu and pass it down
 	$removeJumpMenu = getPageNavigation($team_remove, $startRecord, $pageURL, $sortField, $sortDesc);
 
+	//Setup Default Data Sort from Headers Table
+	if (!$initSort)
+		foreach ($remove_headers as $column_rec)
+			if ($column_rec['default_sort'])
+				$sortField = $column_rec['column_name'];
+	
 	//Setup Data
 	$team_remove = paginateSortAndFormat($team_remove, $sortField, $sortDesc, $startRecord, $viewName);
 	
@@ -321,6 +333,12 @@ if($mode == 'view')
 	//Get the Jump Menu and pass it down
 	$addJumpMenu = getPageNavigation($team_add, $startRecord, $pageURL, $sortField, $sortDesc);
 
+	//Setup Default Data Sort from Headers Table
+	if (!$initSort)
+		foreach ($add_headers as $column_rec)
+			if ($column_rec['default_sort'])
+				$sortField = $column_rec['column_name'];
+	
 	//Setup Data
 	$team_add = paginateSortAndFormat($team_add, $sortField, $sortDesc, $startRecord, $viewName);
 	

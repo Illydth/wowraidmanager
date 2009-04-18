@@ -48,13 +48,19 @@ else
 	
 // Set Sort Field for Page
 if(!isset($_GET['Sort']))
+{
 	$sortField="";
+	$initSort=FALSE;
+}
 else
+{
 	$sortField = scrub_input($_GET['Sort']);
+	$initSort=TRUE;
+}
 		
 // Set Sort Descending Mark
 if(!isset($_GET['SortDescending']) || !is_numeric($_GET['SortDescending']))
-	$sortDesc = 1;
+	$sortDesc = 0;
 else
 	$sortDesc = scrub_input($_GET['SortDescending']);
 		
@@ -178,7 +184,13 @@ if($_GET['mode'] == 'view')
 		
 	//Get the Jump Menu and pass it down
 	$permJumpMenu = getPageNavigation($perm, $startRecord, $pageURL, $sortField, $sortDesc);
-	
+			
+	//Setup Default Data Sort from Headers Table
+	if (!$initSort)
+		foreach ($perm_headers as $column_rec)
+			if ($column_rec['default_sort'])
+				$sortField = $column_rec['column_name'];
+
 	//Setup Data
 	$perm = paginateSortAndFormat($perm, $sortField, $sortDesc, $startRecord, $viewName);
 	

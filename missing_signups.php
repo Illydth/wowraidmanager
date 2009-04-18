@@ -53,13 +53,19 @@ else
 	
 // Set Sort Field for Page
 if(!isset($_GET['Sort']))
+{
 	$sortField="";
+	$initSort=FALSE;
+}
 else
+{
 	$sortField = scrub_input($_GET['Sort']);
+	$initSort=TRUE;
+}
 		
 // Set Sort Descending Mark
 if(!isset($_GET['SortDescending']) || !is_numeric($_GET['SortDescending']))
-	$sortDesc = 1;
+	$sortDesc = 0;
 else
 	$sortDesc = scrub_input($_GET['SortDescending']);
 		
@@ -123,6 +129,12 @@ $missing_record_count_array = getRecordCounts($users, $raid_headers, $startRecor
 	
 //Get the Jump Menu and pass it down
 $missingJumpMenu = getPageNavigation($users, $startRecord, $pageURL, $sortField, $sortDesc);
+			
+//Setup Default Data Sort from Headers Table
+if (!$initSort)
+	foreach ($missing_headers as $column_rec)
+		if ($column_rec['default_sort'])
+			$sortField = $column_rec['column_name'];
 
 //Setup Data
 $users = paginateSortAndFormat($users, $sortField, $sortDesc, $startRecord, $viewName);

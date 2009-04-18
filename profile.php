@@ -48,13 +48,19 @@ else
 
 // Set Sort Field for Page
 if(!isset($_GET['Sort']))
+{
 	$sortField="";
+	$initSort=FALSE;
+}
 else
+{
 	$sortField = scrub_input($_GET['Sort']);
+	$initSort=TRUE;
+}
 	
 // Set Sort Descending Mark
 if(!isset($_GET['SortDescending']) || !is_numeric($_GET['SortDescending']))
-	$sortDesc = 1;
+	$sortDesc = 0;
 else
 	$sortDesc = scrub_input($_GET['SortDescending']);
 	
@@ -115,6 +121,12 @@ if($_GET['mode'] == 'view') {
 	
 	//Get the Jump Menu and pass it down
 	$charJumpMenu = getPageNavigation($chars, $startRecord, $pageURL, $sortField, $sortDesc);
+			
+	//Setup Default Data Sort from Headers Table
+	if (!$initSort)
+		foreach ($char_headers as $column_rec)
+			if ($column_rec['default_sort'])
+				$sortField = $column_rec['column_name'];
 
 	//Setup Data
 	$chars = paginateSortAndFormat($chars, $sortField, $sortDesc, $startRecord, $viewName);
@@ -236,13 +248,19 @@ if($_GET['mode'] == 'view') {
 	$raid_headers = array();
 	$record_count_array = array();
 	$raid_headers = getVisibleColumns($viewName);
-
+	
 	//Get Record Counts
 	$raid_record_count_array = getRecordCounts($raid_list, $char_headers, $startRecord);
 	
 	//Get the Jump Menu and pass it down
 	$raidJumpMenu = getPageNavigation($raid_list, $startRecord, $pageURL, $sortField, $sortDesc);
-
+			
+	//Setup Default Data Sort from Headers Table
+	if (!$initSort)
+		foreach ($raid_headers as $column_rec)
+			if ($column_rec['default_sort'])
+				$sortField = $column_rec['column_name'];
+	
 	//Setup Data
 	$raid_list = paginateSortAndFormat($raid_list, $sortField, $sortDesc, $startRecord, $viewName);
 

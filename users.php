@@ -58,13 +58,19 @@ if($mode == 'view')
 	
 	// Set Sort Field for Page
 	if(!isset($_GET['Sort']))
+	{
 		$sortField="";
+		$initSort=FALSE;
+	}
 	else
+	{
 		$sortField = scrub_input($_GET['Sort']);
+		$initSort=TRUE;
+	}
 		
 	// Set Sort Descending Mark
 	if(!isset($_GET['SortDescending']) || !is_numeric($_GET['SortDescending']))
-		$sortDesc = 1;
+		$sortDesc = 0;
 	else
 		$sortDesc = scrub_input($_GET['SortDescending']);
 		
@@ -122,6 +128,12 @@ if($mode == 'view')
 	//Get the Jump Menu and pass it down
 	$usersJumpMenu = getPageNavigation($users, $startRecord, $pageURL, $sortField, $sortDesc);
 
+	//Setup Default Data Sort from Headers Table
+	if (!$initSort)
+		foreach ($users_headers as $column_rec)
+			if ($column_rec['default_sort'])
+				$sortField = $column_rec['column_name'];
+	
 	//Setup Data
 	$users = paginateSortAndFormat($users, $sortField, $sortDesc, $startRecord, $viewName);
 
@@ -165,13 +177,19 @@ else if($mode == 'details')
 	
 	// Set Sort Field for Page
 	if(!isset($_GET['Sort']))
+	{
 		$sortField="";
+		$initSort=FALSE;
+	}
 	else
+	{
 		$sortField = scrub_input($_GET['Sort']);
+		$initSort=TRUE;
+	}
 		
 	// Set Sort Descending Mark
 	if(!isset($_GET['SortDescending']) || !is_numeric($_GET['SortDescending']))
-		$sortDesc = 1;
+		$sortDesc = 0;
 	else
 		$sortDesc = scrub_input($_GET['SortDescending']);
 		
@@ -230,6 +248,12 @@ else if($mode == 'details')
 	//Get the Jump Menu and pass it down
 	$charJumpMenu = getPageNavigation($chars, $startRecord, $pageURL, $sortField, $sortDesc);
 
+	//Setup Default Data Sort from Headers Table
+	if (!$initSort)
+		foreach ($char_headers as $column_rec)
+			if ($column_rec['default_sort'])
+				$sortField = $column_rec['column_name'];
+	
 	//Setup Data
 	$chars = paginateSortAndFormat($chars, $sortField, $sortDesc, $startRecord, $viewName);
 

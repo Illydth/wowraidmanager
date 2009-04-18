@@ -47,13 +47,19 @@ else
 	
 // Set Sort Field for Page
 if(!isset($_GET['Sort']))
+{
 	$sortField="";
+	$initSort=FALSE;
+}
 else
+{
 	$sortField = scrub_input($_GET['Sort']);
+	$initSort=TRUE;
+}
 		
 // Set Sort Descending Mark
 if(!isset($_GET['SortDescending']) || !is_numeric($_GET['SortDescending']))
-	$sortDesc = 1;
+	$sortDesc = 0;
 else
 	$sortDesc = scrub_input($_GET['SortDescending']);
 		
@@ -117,6 +123,12 @@ $roster_record_count_array = getRecordCounts($chars, $raid_headers, $startRecord
 	
 //Get the Jump Menu and pass it down
 $rosterJumpMenu = getPageNavigation($chars, $startRecord, $pageURL, $sortField, $sortDesc);
+
+//Setup Default Data Sort from Headers Table
+if (!$initSort)
+	foreach ($roster_headers as $column_rec)
+		if ($column_rec['default_sort'])
+			$sortField = $column_rec['column_name'];
 
 //Setup Data
 $chars = paginateSortAndFormat($chars, $sortField, $sortDesc, $startRecord, $viewName);

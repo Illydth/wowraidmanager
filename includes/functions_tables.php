@@ -83,6 +83,7 @@ function getVisibleColumns($view_name)
 							'img_url'=>$global_role['image'],
 							'col_text'=>$global_role['role_name'],
 							'format_code'=>$data['format_code'],
+							'default_sort'=>$data['default_sort'],
 						)
 					);			
 					$position_counter++;
@@ -100,6 +101,7 @@ function getVisibleColumns($view_name)
 							'img_url'=>$global_class['image'],
 							'col_text'=>$global_class['lang_index'],
 							'format_code'=>$data['format_code'],
+							'default_sort'=>$data['default_sort'],
 						)
 					);	
 					$position_counter++;		
@@ -135,6 +137,7 @@ function getVisibleColumns($view_name)
 					'img_url'=>$data['img_url'],
 					'col_text'=>$col_head_text,
 					'format_code'=>$data['format_code'],
+					'default_sort'=>$data['default_sort'],
 				)
 			);
 		}
