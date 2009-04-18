@@ -79,7 +79,11 @@ $phprlang['destro'] = "Destruction";
 $phprlang['elemental'] = "Elemental";
 $phprlang['enhance'] = "Enhancement";
 $phprlang['ret'] = "Retribution";
-$phprlang['blood'] = "Blood";
-$phprlang['unholy'] = "Unholy";
+$phprlang['frost_tank'] = "Frost (Tank)";
+$phprlang['frost_melee'] = "Frost (Melee)";
+$phprlang['blood_tank'] = "Blood (Tank)";
+$phprlang['blood_melee'] = "Blood (Melee)";
+$phprlang['unholy_tank'] = "Unholy (Tank)";
+$phprlang['unholy_melee'] = "Unholy (Melee)";
 $phprlang['notavailable'] = "N/A";
 ?>
