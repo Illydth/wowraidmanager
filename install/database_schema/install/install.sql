@@ -160,9 +160,12 @@ INSERT INTO `wrm_class_role` VALUES ('Shaman', 'Restoration', 'resto', 'role3');
 INSERT INTO `wrm_class_role` VALUES ('Paladin', 'Holy', 'holy', 'role3');
 INSERT INTO `wrm_class_role` VALUES ('Paladin', 'Protection', 'prot', 'role1');
 INSERT INTO `wrm_class_role` VALUES ('Paladin', 'Retribution', 'ret', 'role2');
-INSERT INTO `wrm_class_role` VALUES ('Death Knight', 'Blood', 'blood', 'role2');
-INSERT INTO `wrm_class_role` VALUES ('Death Knight', 'Frost', 'frost', 'role1');
-INSERT INTO `wrm_class_role` VALUES ('Death Knight', 'Unholy', 'unholy', 'role2');
+INSERT INTO `wrm_class_role` VALUES ('Death Knight', 'Blood (Tank)', 'blood_tank', 'role1');
+INSERT INTO `wrm_class_role` VALUES ('Death Knight', 'Blood (Melee)', 'blood_melee', 'role2');
+INSERT INTO `wrm_class_role` VALUES ('Death Knight', 'Frost (Tank)', 'frost_tank', 'role1');
+INSERT INTO `wrm_class_role` VALUES ('Death Knight', 'Frost (Melee)', 'frost_melee', 'role2');
+INSERT INTO `wrm_class_role` VALUES ('Death Knight', 'Unholy (Tank)', 'unholy_tank', 'role1');
+INSERT INTO `wrm_class_role` VALUES ('Death Knight', 'Unholy (Melee)', 'unholy_melee', 'role2');
 
 -- Column Header Creation
 DROP TABLE IF EXISTS `wrm_column_headers`;
@@ -175,6 +178,7 @@ CREATE TABLE `wrm_column_headers` (
 `img_url` VARCHAR( 100 ) DEFAULT NULL,
 `lang_idx_hdr` VARCHAR ( 50 ) DEFAULT NULL,
 `format_code` VARCHAR ( 25 ) DEFAULT NULL,
+`default_sort` TINYINT( 1 ) NOT NULL DEFAULT '0',
 INDEX ( `view_name` )
 ) ;
 
@@ -479,6 +483,23 @@ INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible
 VALUES (NULL , 'raidview2', 'Signup_Spec', '1', '11', NULL, 'signup_spec', NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
 VALUES (NULL , 'raidview2', 'Buttons', '1', '12', NULL, 'buttons', NULL);
+-- So as not to have to add a 0 or 1 on to the end of everything above, we'll do this separately.
+ALTER TABLE `wrm_column_headers` ADD `default_sort` TINYINT( 1 ) NOT NULL DEFAULT '0';
+UPDATE `wrm_column_headers` SET `default_sort` = '1' WHERE `view_name`='raids1' AND `column_name` = 'Date' LIMIT 1 ;
+UPDATE `wrm_column_headers` SET `default_sort` = '1' WHERE `view_name`='index1' AND `column_name` = 'Date' LIMIT 1 ;
+UPDATE `wrm_column_headers` SET `default_sort` = '1' WHERE `view_name`='announcements1' AND `column_name` = 'ID' LIMIT 1 ;
+UPDATE `wrm_column_headers` SET `default_sort` = '1' WHERE `view_name`='dkp1' AND `column_name` = 'Name' LIMIT 1 ;
+UPDATE `wrm_column_headers` SET `default_sort` = '1' WHERE `view_name`='team1' AND `column_name` = 'Name' LIMIT 1 ;
+UPDATE `wrm_column_headers` SET `default_sort` = '1' WHERE `view_name`='team2' AND `column_name` = 'Name' LIMIT 1 ;
+UPDATE `wrm_column_headers` SET `default_sort` = '1' WHERE `view_name`='guild1' AND `column_name` = 'Guild Name' LIMIT 1 ;
+UPDATE `wrm_column_headers` SET `default_sort` = '1' WHERE `view_name`='location1' AND `column_name` = 'Name' LIMIT 1 ;
+UPDATE `wrm_column_headers` SET `default_sort` = '1' WHERE `view_name`='char1' AND `column_name` = 'Name' LIMIT 1 ;
+UPDATE `wrm_column_headers` SET `default_sort` = '1' WHERE `view_name`='users1' AND `column_name` = 'Username' LIMIT 1 ;
+UPDATE `wrm_column_headers` SET `default_sort` = '1' WHERE `view_name`='roster1' AND `column_name` = 'Name' LIMIT 1 ;
+UPDATE `wrm_column_headers` SET `default_sort` = '1' WHERE `view_name`='permissions1' AND `column_name` = 'ID' LIMIT 1 ;
+UPDATE `wrm_column_headers` SET `default_sort` = '1' WHERE `view_name`='permissions2' AND `column_name` = 'Username' LIMIT 1 ;
+UPDATE `wrm_column_headers` SET `default_sort` = '1' WHERE `view_name`='raidview1' AND `column_name` = 'Name' LIMIT 1 ;
+UPDATE `wrm_column_headers` SET `default_sort` = '1' WHERE `view_name`='raidview2' AND `column_name` = 'Name' LIMIT 1 ;
 
 -- Config Table Creation
 DROP TABLE IF EXISTS `wrm_config`;
@@ -748,8 +769,8 @@ CREATE TABLE IF NOT EXISTS `wrm_gender` (
 );
 
 -- Gender Table Data
-INSERT INTO `wrm_gender` VALUES ('male', 'male');
-INSERT INTO `wrm_gender` VALUES ('female', 'female');
+INSERT INTO `wrm_gender` VALUES ('Male', 'male');
+INSERT INTO `wrm_gender` VALUES ('Female', 'female');
 
 -- Guilds Table Creation
 DROP TABLE IF EXISTS `wrm_guilds`;
@@ -905,26 +926,26 @@ CREATE TABLE IF NOT EXISTS `wrm_race_gender` (
 );
 
 -- Race/Gender Link Table Data
-INSERT INTO `wrm_race_gender` VALUES ('Draenei', 'male', '/images/faces/dr_male.gif');
-INSERT INTO `wrm_race_gender` VALUES ('Draenei', 'female', '/images/faces/dr_female.gif');
-INSERT INTO `wrm_race_gender` VALUES ('Dwarf', 'male', '/images/faces/dw_male.gif');
-INSERT INTO `wrm_race_gender` VALUES ('Dwarf', 'female', '/images/faces/dw_female.gif');
-INSERT INTO `wrm_race_gender` VALUES ('Human', 'male', '/images/faces/hu_male.gif');
-INSERT INTO `wrm_race_gender` VALUES ('Human', 'female', '/images/faces/hu_female.gif');
-INSERT INTO `wrm_race_gender` VALUES ('Gnome', 'male', '/images/faces/gn_male.gif');
-INSERT INTO `wrm_race_gender` VALUES ('Gnome', 'female', '/images/faces/gn_female.gif');
-INSERT INTO `wrm_race_gender` VALUES ('Night Elf', 'male', '/images/faces/ne_male.gif');
-INSERT INTO `wrm_race_gender` VALUES ('Night Elf', 'female', '/images/faces/ne_female.gif');
-INSERT INTO `wrm_race_gender` VALUES ('Blood Elf', 'male', '/images/faces/be_male.gif');
-INSERT INTO `wrm_race_gender` VALUES ('Blood Elf', 'female', '/images/faces/be_female.gif');
-INSERT INTO `wrm_race_gender` VALUES ('Orc', 'male', '/images/faces/or_male.gif');
-INSERT INTO `wrm_race_gender` VALUES ('Orc', 'female', '/images/faces/or_female.gif');
-INSERT INTO `wrm_race_gender` VALUES ('Tauren', 'male', '/images/faces/ta_male.gif');
-INSERT INTO `wrm_race_gender` VALUES ('Tauren', 'female', '/images/faces/ta_female.gif');
-INSERT INTO `wrm_race_gender` VALUES ('Troll', 'male', '/images/faces/tr_male.gif');
-INSERT INTO `wrm_race_gender` VALUES ('Troll', 'female', '/images/faces/tr_female.gif');
-INSERT INTO `wrm_race_gender` VALUES ('Undead', 'male', '/images/faces/un_male.gif');
-INSERT INTO `wrm_race_gender` VALUES ('Undead', 'female', '/images/faces/un_female.gif');
+INSERT INTO `wrm_race_gender` VALUES ('Draenei', 'Male', '/images/faces/dr_male.gif');
+INSERT INTO `wrm_race_gender` VALUES ('Draenei', 'Female', '/images/faces/dr_female.gif');
+INSERT INTO `wrm_race_gender` VALUES ('Dwarf', 'Male', '/images/faces/dw_male.gif');
+INSERT INTO `wrm_race_gender` VALUES ('Dwarf', 'Female', '/images/faces/dw_female.gif');
+INSERT INTO `wrm_race_gender` VALUES ('Human', 'Male', '/images/faces/hu_male.gif');
+INSERT INTO `wrm_race_gender` VALUES ('Human', 'Female', '/images/faces/hu_female.gif');
+INSERT INTO `wrm_race_gender` VALUES ('Gnome', 'Male', '/images/faces/gn_male.gif');
+INSERT INTO `wrm_race_gender` VALUES ('Gnome', 'Female', '/images/faces/gn_female.gif');
+INSERT INTO `wrm_race_gender` VALUES ('Night Elf', 'Male', '/images/faces/ne_male.gif');
+INSERT INTO `wrm_race_gender` VALUES ('Night Elf', 'Female', '/images/faces/ne_female.gif');
+INSERT INTO `wrm_race_gender` VALUES ('Blood Elf', 'Male', '/images/faces/be_male.gif');
+INSERT INTO `wrm_race_gender` VALUES ('Blood Elf', 'Female', '/images/faces/be_female.gif');
+INSERT INTO `wrm_race_gender` VALUES ('Orc', 'Male', '/images/faces/or_male.gif');
+INSERT INTO `wrm_race_gender` VALUES ('Orc', 'Female', '/images/faces/or_female.gif');
+INSERT INTO `wrm_race_gender` VALUES ('Tauren', 'Male', '/images/faces/ta_male.gif');
+INSERT INTO `wrm_race_gender` VALUES ('Tauren', 'Female', '/images/faces/ta_female.gif');
+INSERT INTO `wrm_race_gender` VALUES ('Troll', 'Male', '/images/faces/tr_male.gif');
+INSERT INTO `wrm_race_gender` VALUES ('Troll', 'Female', '/images/faces/tr_female.gif');
+INSERT INTO `wrm_race_gender` VALUES ('Undead', 'Male', '/images/faces/un_male.gif');
+INSERT INTO `wrm_race_gender` VALUES ('Undead', 'Female', '/images/faces/un_female.gif');
 
 -- Raid Table Creation
 DROP TABLE IF EXISTS `wrm_raids`;
@@ -1012,18 +1033,4 @@ PRIMARY KEY ( `version_number` )
 ) ;
 
 -- Version Data
-INSERT INTO `wrm_version` VALUES ('3.0.9.2','Version 3.0.9.2 of phpRaid');
-INSERT INTO `wrm_version` VALUES ('3.1.0','Version 3.1.0 of phpRaid (Beta)');
-INSERT INTO `wrm_version` VALUES ('3.1.1','Version 3.1.1 of phpRaid');
-INSERT INTO `wrm_version` VALUES ('3.1.2','Version 3.1.2 of WoW Raid Manager');
-INSERT INTO `wrm_version` VALUES ('3.2.0','Version 3.2.0 of WoW Raid Manager');
-INSERT INTO `wrm_version` VALUES ('3.2.1','Version 3.2.1 of WoW Raid Manager');
-INSERT INTO `wrm_version` VALUES ('3.5.0','Version 3.5.0 of WoW Raid Manager');
-INSERT INTO `wrm_version` VALUES ('3.5.1','Version 3.5.1 of WoW Raid Manager');
-INSERT INTO `wrm_version` VALUES ('3.6.0','Version 3.6.0 of WoW Raid Manager');
-INSERT INTO `wrm_version` VALUES ('3.6.0.1','Version 3.6.0.1 of WoW Raid Manager');
-INSERT INTO `wrm_version` VALUES ('3.6.0.2','Version 3.6.0.2 of WoW Raid Manager');
-INSERT INTO `wrm_version` VALUES ('3.6.1','Version 3.6.1 of WoW Raid Manager');
-INSERT INTO `wrm_version` VALUES ('3.9.9.1.1','4.0 Beta 1 Release 1');
-INSERT INTO `wrm_version` VALUES ('3.9.9.1.2','4.0 Beta 1 Release 2');
-INSERT INTO `wrm_version` VALUES ('3.9.9.2.1','4.0 Beta 2 Release 1');
+INSERT INTO `wrm_version` VALUES ('4.0.0','Version 4.0.0 of WoW Raid Manager');

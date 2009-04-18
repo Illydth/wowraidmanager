@@ -448,8 +448,8 @@ CREATE TABLE IF NOT EXISTS `wrm_gender` (
 );
 
 -- Gender Table Data
-INSERT INTO `wrm_gender` VALUES ('male', 'male');
-INSERT INTO `wrm_gender` VALUES ('female', 'female');
+INSERT INTO `wrm_gender` VALUES ('Male', 'male');
+INSERT INTO `wrm_gender` VALUES ('Female', 'female');
 
 CREATE TABLE IF NOT EXISTS `wrm_loc_class_lmt` (
   `location_id` int(10) NOT NULL,
@@ -490,26 +490,26 @@ CREATE TABLE IF NOT EXISTS `wrm_race_gender` (
   PRIMARY KEY  (`race_id`,`gender_id`)
 );
 
-INSERT INTO `wrm_race_gender` VALUES ('Draenei', 'male', '/images/faces/dr_male.gif');
-INSERT INTO `wrm_race_gender` VALUES ('Draenei', 'female', '/images/faces/dr_female.gif');
-INSERT INTO `wrm_race_gender` VALUES ('Dwarf', 'male', '/images/faces/dw_male.gif');
-INSERT INTO `wrm_race_gender` VALUES ('Dwarf', 'female', '/images/faces/dw_female.gif');
-INSERT INTO `wrm_race_gender` VALUES ('Human', 'male', '/images/faces/hu_male.gif');
-INSERT INTO `wrm_race_gender` VALUES ('Human', 'female', '/images/faces/hu_female.gif');
-INSERT INTO `wrm_race_gender` VALUES ('Gnome', 'male', '/images/faces/gn_male.gif');
-INSERT INTO `wrm_race_gender` VALUES ('Gnome', 'female', '/images/faces/gn_female.gif');
-INSERT INTO `wrm_race_gender` VALUES ('Night Elf', 'male', '/images/faces/ne_male.gif');
-INSERT INTO `wrm_race_gender` VALUES ('Night Elf', 'female', '/images/faces/ne_female.gif');
-INSERT INTO `wrm_race_gender` VALUES ('Blood Elf', 'male', '/images/faces/be_male.gif');
-INSERT INTO `wrm_race_gender` VALUES ('Blood Elf', 'female', '/images/faces/be_female.gif');
-INSERT INTO `wrm_race_gender` VALUES ('Orc', 'male', '/images/faces/or_male.gif');
-INSERT INTO `wrm_race_gender` VALUES ('Orc', 'female', '/images/faces/or_female.gif');
-INSERT INTO `wrm_race_gender` VALUES ('Tauren', 'male', '/images/faces/ta_male.gif');
-INSERT INTO `wrm_race_gender` VALUES ('Tauren', 'female', '/images/faces/ta_female.gif');
-INSERT INTO `wrm_race_gender` VALUES ('Troll', 'male', '/images/faces/tr_male.gif');
-INSERT INTO `wrm_race_gender` VALUES ('Troll', 'female', '/images/faces/tr_female.gif');
-INSERT INTO `wrm_race_gender` VALUES ('Undead', 'male', '/images/faces/un_male.gif');
-INSERT INTO `wrm_race_gender` VALUES ('Undead', 'female', '/images/faces/un_female.gif');
+INSERT INTO `wrm_race_gender` VALUES ('Draenei', 'Male', '/images/faces/dr_male.gif');
+INSERT INTO `wrm_race_gender` VALUES ('Draenei', 'Female', '/images/faces/dr_female.gif');
+INSERT INTO `wrm_race_gender` VALUES ('Dwarf', 'Male', '/images/faces/dw_male.gif');
+INSERT INTO `wrm_race_gender` VALUES ('Dwarf', 'Female', '/images/faces/dw_female.gif');
+INSERT INTO `wrm_race_gender` VALUES ('Human', 'Male', '/images/faces/hu_male.gif');
+INSERT INTO `wrm_race_gender` VALUES ('Human', 'Female', '/images/faces/hu_female.gif');
+INSERT INTO `wrm_race_gender` VALUES ('Gnome', 'Male', '/images/faces/gn_male.gif');
+INSERT INTO `wrm_race_gender` VALUES ('Gnome', 'Female', '/images/faces/gn_female.gif');
+INSERT INTO `wrm_race_gender` VALUES ('Night Elf', 'Male', '/images/faces/ne_male.gif');
+INSERT INTO `wrm_race_gender` VALUES ('Night Elf', 'Female', '/images/faces/ne_female.gif');
+INSERT INTO `wrm_race_gender` VALUES ('Blood Elf', 'Male', '/images/faces/be_male.gif');
+INSERT INTO `wrm_race_gender` VALUES ('Blood Elf', 'Female', '/images/faces/be_female.gif');
+INSERT INTO `wrm_race_gender` VALUES ('Orc', 'Male', '/images/faces/or_male.gif');
+INSERT INTO `wrm_race_gender` VALUES ('Orc', 'Female', '/images/faces/or_female.gif');
+INSERT INTO `wrm_race_gender` VALUES ('Tauren', 'Male', '/images/faces/ta_male.gif');
+INSERT INTO `wrm_race_gender` VALUES ('Tauren', 'Female', '/images/faces/ta_female.gif');
+INSERT INTO `wrm_race_gender` VALUES ('Troll', 'Male', '/images/faces/tr_male.gif');
+INSERT INTO `wrm_race_gender` VALUES ('Troll', 'Female', '/images/faces/tr_female.gif');
+INSERT INTO `wrm_race_gender` VALUES ('Undead', 'Male', '/images/faces/un_male.gif');
+INSERT INTO `wrm_race_gender` VALUES ('Undead', 'Female', '/images/faces/un_female.gif');
 
 CREATE TABLE IF NOT EXISTS `wrm_raid_class_lmt` (
   `raid_id` int(10) NOT NULL,
@@ -547,9 +547,9 @@ DELETE FROM `wrm_config` WHERE `config_name` = 'role6_name';
 INSERT INTO `wrm_config` VALUES ('records_per_page','25');
 INSERT INTO `wrm_config` VALUES ('armory_cache_setting', 'none');
 
-INSERT INTO `wrm_version` VALUES ('3.9.9.1.1','4.0 Beta 1 Release 1');
-INSERT INTO `wrm_version` VALUES ('3.9.9.1.2','4.0 Beta 1 Release 2');
-INSERT INTO `wrm_version` VALUES ('3.9.9.2.1','4.0 Beta 2 Release 1');
+TRUNCATE TABLE `wrm_version`;
+INSERT INTO `wrm_version` VALUES ('4.0.0','Version 4.0.0 of WoW Raid Manager');
+
 UPDATE `wrm_config` SET `config_value` = 'us' WHERE `config_name` = 'armory_language' AND `config_value` = 'en' LIMIT 1;
 UPDATE `wrm_config` SET `config_value` = 'default' WHERE `config_name` = 'template' AND `config_value` = 'SpiffyJr' LIMIT 1;
 
@@ -605,9 +605,31 @@ INSERT INTO `wrm_class_role` VALUES ('Shaman', 'Restoration', 'resto', 'role3');
 INSERT INTO `wrm_class_role` VALUES ('Paladin', 'Holy', 'holy', 'role3');
 INSERT INTO `wrm_class_role` VALUES ('Paladin', 'Protection', 'prot', 'role1');
 INSERT INTO `wrm_class_role` VALUES ('Paladin', 'Retribution', 'ret', 'role2');
-INSERT INTO `wrm_class_role` VALUES ('Death Knight', 'Blood', 'blood', 'role2');
-INSERT INTO `wrm_class_role` VALUES ('Death Knight', 'Frost', 'frost', 'role1');
-INSERT INTO `wrm_class_role` VALUES ('Death Knight', 'Unholy', 'unholy', 'role2');
+INSERT INTO `wrm_class_role` VALUES ('Death Knight', 'Blood (Tank)', 'blood_tank', 'role1');
+INSERT INTO `wrm_class_role` VALUES ('Death Knight', 'Blood (Melee)', 'blood_melee', 'role2');
+INSERT INTO `wrm_class_role` VALUES ('Death Knight', 'Frost (Tank)', 'frost_tank', 'role1');
+INSERT INTO `wrm_class_role` VALUES ('Death Knight', 'Frost (Melee)', 'frost_melee', 'role2');
+INSERT INTO `wrm_class_role` VALUES ('Death Knight', 'Unholy (Tank)', 'unholy_tank', 'role1');
+INSERT INTO `wrm_class_role` VALUES ('Death Knight', 'Unholy (Melee)', 'unholy_melee', 'role2');
+
+-- Modify the fields below to change the default sort field for each data table.  Simply change the "column name" value
+--   in any of the update queries below to change the default sort to a different field.
+ALTER TABLE `wrm_column_headers` ADD `default_sort` TINYINT( 1 ) NOT NULL DEFAULT '0';
+UPDATE `wrm_column_headers` SET `default_sort` = '1' WHERE `view_name`='raids1' AND `column_name` = 'Date' LIMIT 1 ;
+UPDATE `wrm_column_headers` SET `default_sort` = '1' WHERE `view_name`='index1' AND `column_name` = 'Date' LIMIT 1 ;
+UPDATE `wrm_column_headers` SET `default_sort` = '1' WHERE `view_name`='announcements1' AND `column_name` = 'ID' LIMIT 1 ;
+UPDATE `wrm_column_headers` SET `default_sort` = '1' WHERE `view_name`='dkp1' AND `column_name` = 'Name' LIMIT 1 ;
+UPDATE `wrm_column_headers` SET `default_sort` = '1' WHERE `view_name`='team1' AND `column_name` = 'Name' LIMIT 1 ;
+UPDATE `wrm_column_headers` SET `default_sort` = '1' WHERE `view_name`='team2' AND `column_name` = 'Name' LIMIT 1 ;
+UPDATE `wrm_column_headers` SET `default_sort` = '1' WHERE `view_name`='guild1' AND `column_name` = 'Guild Name' LIMIT 1 ;
+UPDATE `wrm_column_headers` SET `default_sort` = '1' WHERE `view_name`='location1' AND `column_name` = 'Name' LIMIT 1 ;
+UPDATE `wrm_column_headers` SET `default_sort` = '1' WHERE `view_name`='char1' AND `column_name` = 'Name' LIMIT 1 ;
+UPDATE `wrm_column_headers` SET `default_sort` = '1' WHERE `view_name`='users1' AND `column_name` = 'Username' LIMIT 1 ;
+UPDATE `wrm_column_headers` SET `default_sort` = '1' WHERE `view_name`='roster1' AND `column_name` = 'Name' LIMIT 1 ;
+UPDATE `wrm_column_headers` SET `default_sort` = '1' WHERE `view_name`='permissions1' AND `column_name` = 'ID' LIMIT 1 ;
+UPDATE `wrm_column_headers` SET `default_sort` = '1' WHERE `view_name`='permissions2' AND `column_name` = 'Username' LIMIT 1 ;
+UPDATE `wrm_column_headers` SET `default_sort` = '1' WHERE `view_name`='raidview1' AND `column_name` = 'Name' LIMIT 1 ;
+UPDATE `wrm_column_headers` SET `default_sort` = '1' WHERE `view_name`='raidview2' AND `column_name` = 'Name' LIMIT 1 ;
 
 -------------------------------------------------------------------
 -- Data Migration Prior to Run - DO NOT RUN these lines till you have
