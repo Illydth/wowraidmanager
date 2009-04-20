@@ -77,7 +77,8 @@ else
 }
    
 // Select the lang file
-include("languages/lang_en.php");
+include("languages/lang_english.php");
+//include("languages/lang_german.php");
 
 // Set template
 $conf_template = 'default';
