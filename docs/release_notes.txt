@@ -11,6 +11,157 @@ at:
 
 Release of 4.0.0 Final of WoW Raid Manager
 -----------------------------------
+-- 4.0 Final Release Changes.
+* NOTE: Many items do not have configuration options.  As this version of WRM was NOT expected
+to be released for several months, keep in mind that it is somewhat "rough" around the edges
+when it comes to support for new features.  For instance, the system supports column visibility
+modifications (being able to hide/show columns on the fly for any given data table) yet does
+not have an interface to be able to do this.  Users will have to modify the database records
+directly to be able to modify the hide/show on each column in a data table.  There are several
+places where new features may not have an interface, advanced users may feel free to make 
+modifications.  Normal users will need to work "as is" with the system till I can get another
+version out that supports these changes.
+
+* Database Reorganization/Restructuring/Normalization.  The major change with this release is 
+a full database reorganization and normalization and the addition of multiple new tables.  
+With this release WRM has almost doubled the total number of tables and more importantly has
+gotten to a point where hard coded wow specific data has mostly been removed from the system
+if not completely.  With the release of WRM 4.0 it should be SIGNIFICANTLY easier to use
+this system for games OTHER than World of Warcraft, though the development will still remain
+WoW Focused.  For those looking to migrate this application for use in other games please see
+the races, classes, roles, gender, and the various cross ref tables (class_race, class_role, 
+etc.)
+
+* General Code Cleanup.  There has been a general code clean up of many of the major sections
+of WRM.  Confusing code (like raids.php that intermixed various bits of code based upon
+whether or not certain conditions were set) have been expanded to make flow more followable, 
+while large sections of code like view.php have been condensed and normalized, cutting out 
+several hundred to a couple thousand lines all together.  In general, the code should be much
+more easy to read and follow than it was before.
+
+* Easier addition of WOW Data, along with the changes to normalize the database we have gained
+the abililty to add new data to WRM without the need to rev the code/release a new release.
+Additions of classes, races, roles, etc. are all now accomplished by adding rows to a data
+table instead of hard coding them into the WRM code itself.  
+
+* Role Support beyond "6".  Not that there's been a request for this, but we are no longer
+limited to 6 "pre-defined" roles in WRM.  There is now the ability to add an unlimited number
+of roles to the system and have the system recognize and display those roles.  Please note, 
+however, that adding roles adds to the number of columns in a data table that displays roles.
+Adding 8 or 9 roles to the system may be something you're interested in doing but if you do 
+so keep in mind that you will almost certainly "double line" your data tables and/or break
+layout.  There's only so much screen space available, keep this in mind when adding new
+roles to the system.
+
+* There has been a bit of a change to column visibility settings for Role and Class displays
+on data tables where roles and/or classes are displayed (raids view, locations view, etc.).
+The record in the column headers table is now @role or @class, this is a placeholder column
+header for ALL roles or ALL classes.  Hiding the @class line in the column headers for a 
+given data table will hide ALL CLASSES from being displayed in the data table, same for roles.
+There is no way to do anything else.  With the changes to the system to dynamically add or
+remove classes or roles it is impossible now to create a column header in the table for EACH
+class or role in the system.  Thus they're either ALL displayed or NONE are displayed. 
+
+* Raid / Location limits changed to a lookup table as well.  This has caused the need for a
+translation program to migrate data from prior versions of WRM to the newest version.  This 
+has changed to support an unlimited number of classes or roles in the system. 
+
+* Selection of Talent Specs instead of Overall "Role".
+
+Another major change is the way "Roles" are assigned to WOW Character classes.  In the 
+class_role table (a new cross reference table in WRM 4) we are now listing class (Priest, 
+Rogue, Warrior, etc.), subclass (Talent spec: Discipline, Subtelty, Fury, etc.), and then 
+linking those talent spec declarations with a role_id, the role ID is then linked in the 
+roles table with a role definition (Tank, Melee, Ranged, Healing, etc.)  So, "Priest" in the
+class table will have a line in the class_role table listing Priest:Discipline, Priest:Holy, 
+and Priest:Shadow.  On the same line, Priest:Shadow may be identified as role3, while
+both Priest:Holy and Priest:Discipline will be linked with role4.  In the roles table there 
+will be a record with an identifier of "role3" listed as "Ranged" and an identifier of "role4"
+listed as "Healing".  Thus, the Priest class has 2 "Healer" roles (Holy and Disc) and one 
+"Ranged DPS" role (Shadow).  In Raid View (view.php) then, when the class is drafted into the
+raid the selected talent spec will determine where in the list the draftee falls and what
+overarching role that player fulfills.  A player with their spec listed as "shadow" when
+drafted will automatically draft into the "Ranged" role.  
+
+This is a change from the pre 4.0 days where a priest selected "ranged" or "healing" from 
+the dropdown.  This provides a more rigid locking of classes to roles.  On the upside, you 
+can no longer get a priest who accidentally selects "tank" as their role (mis click or being 
+stupid), but on the downside classes with cross specs (for instance Druids with Feral:Cat 
+and Feral:Bear) have a harder time managing their classes.  All this said, according to my 
+sources this is actually a BETTER, more representitive way of selecting role.  Feral:Cat and 
+Feral:Bear have similar but not exactly the same talents that they take.  Those specing down 
+Feral:Cat really are not as well suited to tank as those specing for tanking, and visa versa.  
+Again, according to my sources, this is the same with all classes.  Thus requiring selection 
+of talent spec instead of just overall role creates a better definition of what that player's
+capabilities are than just saying "tank".  
+
+Keep in mind that because this is implemented in a "lookup" table, making modifications or
+adding specs is not an issue.  For instance you will see in the installed table for this
+version that druids have *4* specs they can choose from in their dropdown lists (Balance, 
+Restoration, Feral:Cat, and Feral: Bear), and DKs have two different specs in each of their
+three tress to choose from (Blood: Tank, Blood: Melee, Unholy: Tank, Unholy: Melee, etc.)
+Again, the data design is such that you can feel free to tweek this to your guild's extent.
+Add specs, remove specs, add different names for hybrid subclasses (talent specs), whatever.
+For instance, you could add "HaT" as a rogue subclass which would identify a talent spec
+that is MOSTLY subtlety, but includes significant combat/assassination talents as well.  Or
+one could add "Combat:Sword" which would be identified differently from "Combat:Daggers"
+perhaps.  That said, unless there are significant differences between specs is it recommended
+that you DO NOT make modifications.  For instance, in the Combat:Sword/Dagger example above
+there are very few changes to talents between these two specs...as such things like buff
+and debuff applications are non-existant, one spec is the same as the other.  The more "junk"
+specs you put into this, the harder this table will be to maintain in the future. 
+
+Play with this to your heart's content.  Keep in mind that in an upcomming version of WRM
+the fact that players now have identified talent specs will play heavily into more features
+for raid leaders (such as identification of the buff and debuff status of a raid makeup).
+
+WARNING: Because 4.0 is a floating version at this point, and because there are MANY new
+features yet to come into it, heavily modifying any of the tables in this version (roles, 
+class_role, etc.) may cause significant manual work in the future as new features and
+possibly more columns are added.  Do play with it, and do get it organized for your guild but
+be careful about adding a whole bunch of new stuff to it.  
+
+* Dual Spec Supported - As well as now recognizing talent specs instead of just "roles", WRM
+also supports the WoW 3.1 Changes to allow for dual talent specializations.  Profiles have the
+option of selecting a primary spec (this is required) and a secondary spec (optionally) or
+selecting "N/A" for the secondary spec (Not Applicable, meaning the character has no
+significant second raid spec or has not yet purchased the secondary spec ability for that
+character).
+
+* Drafting by Spec (Raid Lead/Raid Admin).  WRM now also allows for raid leaders or raid
+admins to draft players according to their primary/secondary specs.  As a player you will 
+sign up to a raid and select (via dropdown) a spec you wish to play (generally your primary
+spec).  When the raid lead goes to draft you into the raid, they may CHANGE your spec between
+your primary and secondary spec at will.  When you are then drafted, you will see which spec
+you are being requested to play by the raid lead and can come prepared to play that spec.  So
+for instance, lets say a guild Warrior is a primary spec Protection, secondary spec Fury, and
+generally plays a Tertiary (3rd) tank role in a raid.  The player signs up for a malygos raid
+with "Protection" selected as his or her talent spec.  For something like Malygos where a
+third tank is not generally needed, the raid lead would change this dropdown to "Fury" to
+identify to the warrior that his tanking services are not needed but that he should prep 
+himself as a fury warrior for the raid.  He would then draft the warrior and the warrior would
+now take up a spot in the MELEE pool, NOT the TANK pool.  On the warrior's drafted record
+in the "Melee" section of the raid view we would see "Protection: Tank" under the "Pri Spec"
+column and "Fury: Melee" in BOLD under the "Sec Spec" column.  This allows the raid lead
+to understand that the player COULD be undrafted and re-drafted to fill a tank spot if needed
+as well as letting the warrior know that his expected role for the evening is Fury.
+
+* Ulduar Raid Added: Ulduar is now a valid raid for selection, location creation, and addition
+to both locations and raids.  A new icon for both 10 and 25 man versions has been added and
+the database updated to support the new Ulduar raid.
+
+* Migration of Data between 3.6.x and 4.0 and 3.9.9.x.x and 4.0 Created.  While I swore I 
+wasn't going to do it, I have.  There is now a migration path created for upgrade between
+3.6.x (release) and 4.0 as well as the 4.0 Beta releases (4.0 beta 1, Release 2) and 4.0 
+final.  PLEASE FOLLOW THE INSTALLATION INSTRUCTIONS.  Understand that the upgrade/migration 
+has been only partially tested (3.6 -> 4.0 has been run a couple times, 3.9.9.x.x -> 4.0 has
+not been run at all) and that using these upgrade scripts requires knowledge of editing and
+changing SQL queries.  There is no "automated" way of upgrading between 3.6 and 4.0 or 3.9.9
+and 4.0, if you are uncomfortable running these scripts or don't know what you're doing, or
+have problems during running them, you are MOSTLY on your own to fix them.  I will give what
+support I can but I will not walk you through the basics.  If you are not comfortable or not
+able to migrate, install from scratch...this is a fully supported method of running 4.0.
+
 -- 4.0 Beta 1 Changes.
 * Table Views and Column Changes
 The largest thing that any user will experience with this new version of the software is 

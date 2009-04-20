@@ -1,21 +1,51 @@
-INSTALLATION OF THE WRM 4.0 BETA:
+INSTALLATION OF THE WRM 4.0:
 ----------------------------------
-Please skip to "Beta Installation" Below.  Do NOT follow the installation steps in either Quick 
-Install or Quick Upgrade.  This note and the Beta Installation below will be removed as of 4.0
-release.
+******************  READ THE ENTIRE FILE FIRST *********************
+
+Especially the section related to your personal installation method COMPLETELY before starting
+this process.  YOU CAN LOOSE DATA OR BORK YOUR DATABASE DURING, ESPECIALLY, THE UPGRADE
+PROCESS IF YOU DO NOT FOLLOW THESE INSTRUCTIONS.
+
+This is your first, last, and ONLY Warning.
+
+ALL instructions start with "Backup any existing database before executing these instructions."
+I recognize that any time the word "Backup" is used most systems people laugh and move on 
+with the rest of the instructions.
+
+DO NOT DO THIS.
+
+PARTICUALRY for upgrade installations, but specifically for any installation that has a 
+database already existing, you run a risk during migration of completely hosing/borking your
+database.  It is mostly untested code you will be running.  While I am fairly confident that
+WRM 4 is functioning correctly (at least mostly), I make NO gaurentees about upgrading or 
+installing since NEITHER of these processes have been tested extensively.  Again, you have
+been warned.
 
 Quick Installation
 -------------------
+WRM 4.0, as noted on the WRM Boards, is a major re-write of the 3.x versions of WRM.  
+
+Installation of Beta:
+
 * Unpackage the files from this archive into a directory on your local machine.
+* Open your FTP program and DELETE any old beta versions of WRM.  Ensure that all files
+    and folders from any prior WRM BETA version have been completely deleted.  ALL WRM
+    4.0 INSTALLATIONS SHOULD BE DONE AS INSTALLS NOT UPGRADES (see Upgrading Below).    
 * Open your FTP program and upload the entire contents of this archive to your web host,
-	including the WRM directory.
+	including the WRM directory.  MAKE SURE TO UPLOAD TO A BRAND NEW DIRECTORY.  DO NOT
+	and I repeat, DO NOT upload over the top of an existing WRM installation. 
 * Change the Ownership of all files to match that of your web server.  
 * Change the permissions of the following directories and files to be writable by your
 	web server user:
 	* config.php (see below)
 	* cache/ (and all below directories)
+* Open a Database Management Tool (like phpMyAdmin) and DELETE any existing WRM BETA
+	databases.  DO NOT DELETE ANY PRODUCTION DATABASES YOU HAVE.
+* While still in the Database Management Tool, please create a new database for your
+	new installation.
 * Open a web browser and go to your WRM installation (e.g. http://www.yourdomain.com/wrm)
-* Choose your installation method and follow the steps to install your WoW Raid Manager server.
+* Choose your installation method (ALWAYS INSTALL) and follow the steps to install your 
+	WoW Raid Manager server.  
 * At the end of the installation please remove your Install directory (delete it completely)
 * Change the permissions on your config.php file back to read only to the world (you can 
 	leave it writable by your web server if you so choose, but it is recommended that
@@ -47,7 +77,7 @@ $phpraid_config['db_name'] = '<name of database>';
 $phpraid_config['db_host'] = '<name of database host>';
 $phpraid_config['db_user'] = '<database login user ID>';
 $phpraid_config['db_pass'] = '<database login user password>';
-$phpraid_config['db_prefix'] = 'wrm_'; (Change this only if you have changed the prefix in installation).
+$phpraid_config['db_prefix'] = 'wrm_'; #(Change this only if you have changed the prefix in installation).
 $phpraid_config['eqdkp_db_name'] = '';
 $phpraid_config['eqdkp_db_host'] = '';
 $phpraid_config['eqdkp_db_user'] = '';
@@ -58,26 +88,168 @@ $phpraid_config['eqdkp_db_prefix'] = '';
 It is safe to leave the eqdkp configuration blank for the moment.  Please see "eqdkp_link.htm" in
 the docs directory for more information on linking WRM with eqdkp.
 
-Quick Upgrade
--------------------
+"Quick" Upgrade (not really quick)
+-----------------------------------
+Upgrading WRM from 3.6.x (Release) or 3.9.9.x.x (Beta) is NOT recommended for non-technical
+users.  The upgrade process will require the modification of SQL files and MANUALLY running
+SQL into your database.  If you are uncomfortable doing this, please use the INSTALL section
+above and install a brand new copy of WRM 4.0 to your WebHost.  Leave your existing copy
+(including database) in place (install to a new directory) so that you have your old raid
+manager software available for a while to look at archived data on while using the new raid
+manager to schedule new raids.
+
+Note also, that upgrading, particularly from 3.9.9.x.x to 4.0 is an UNTESTED PROCESS.  3.6 to
+4.0 has been tested and has worked a couple times on my local installations and my guild's 
+information but YMMV.  All this said it SHOULD work, the upgrade is not THAT technically
+difficult, though there are several steps involved in properly upgrading the database to the
+new version.  
+
+If you choose to upgrade your current installation PLEASE follow the instructions below and
+do not skip steps or ASSUME you know what I'm asking you to do.  And, BACK UP YOUR DATABASE 
+FIRST.  I am NOT responsible for any loss of data you experience from this.
+
+Lastly, do not forget to shut down/disable access to WRM during this process.  It should only
+take a couple minutes to get through everything but someone can SERIOUSLY bork things by 
+making changes while some of this stuff is being run.  Lock the application (configuration
+menu) FIRST and tell all admins NOT to be in the system while the upgrade is in progress.
+
+* BACK UP YOUR DATABASE FIRST.
+* SHUTDOWN WRM WHILE THIS PROCESS IS ACTIVE
+
 * Unpackage the files from this archive into a directory on your local machine.
-* Open your FTP program and upload the entire contents of this archive to your web host,
-	including the WRM directory.  
-* MAKE SURE TO OVERWRITE ALL FILES, many FTP applications will try to resume upload by default
-    and this WILL screw up the software.  Ensure that your upload of these files FORCABLY overwrites
-    (replaces) the existing copy of WRM on your server.
-* Change the Ownership of all files to match that of your web server.  Check the list above
-	to ensure that everything listed in step 4 above is writable.  
-* Run the Installation application and select "Upgrade to 4.0.0".  Follow the installer all
-    the way through to the end (much of your prior information should be already set) and 
-    make sure to properly re-set your authentication method (if it's not pre-selected for you).
-* Note: Templates other than "default" are likely NOT to work with 4.0 for a while till the template
-	editors get a chance to upgrade them.  Please switch back to default till the templates get updated.
-* Note: You can remove the "Scripts" directory under any templates you are using, they are no longer used.
+
+1) Select the CORRECT SQL in the install/database_schema/upgrade directory.  
+	* 3.6.1_4.0.0.sql is to be used if your current database is version 3.6.1 - Production release
+	* beta1_4.0.sql is to be used if you are currently running on the beta/test version of 
+	WRM and need to upgrade it to 4.0.
+	
+2) Modify the SQL for your table prefix.
+-- Search and Replace wrm_ with your particular table prefix.  You will find all tables in the
+sql file start with wrm_ (wrm_raids, wrm_column_headers, etc.).  This needs to be changed to
+match your CURRENT table's prefix.  At last count there should be 322 Matches within the 
+SQL for the 3.6 -> 4.0 upgrade file (no clue on what is there in 4.0 beta -> 4.0 Release).
+
+3) Run all code in "Safe Execution".
+-- ***NOTE: Follow this instruction CAREFULLY***, if you add too much code at this point 
+you will render all locations and raids inoperative and will have to restore your database 
+or delete all raids and locations in the system and re-create them by hand.
+-- In the SQL file you selected should be a header "Safe Execution" and under it should be 
+ALOT of SQL code.  ALL of this is "safe" to execute and will make the lions share of changes
+to your database tables and add a bunch of new tables to the system.  Once this executes your
+WRM installation should go from 18 Tables to 30 Tables.
+
+4) Modify all SQL statements in the "Manual Changes" section to meet your guilds' needs, then 
+run each statement.
+-- Next, find the section in the SQL file labeled "Manual Chages".  The SQL statements in this
+section need/can be modified by hand BEFORE being run.  This section creates the mapping of
+Class, to Talent Spec, to Role and creates the various Roles in your system.  By default this
+section creates a "Tank", "Melee", "Ranged", and "Healing" role, and adds the three talent 
+trees for each class (with extras for DK and Druid) and maps them to my concept of the
+appropriate role for each talent spec.  This may NOT match what your guild is doing or has
+already setup.  If it doesn't, change the Roles SQL to match what your guild is currently 
+running and then modify the class_role SQL to map the appropriate class/talent specs to the
+roles you have newly created.  Once done, run these two SQLs to populate the Role table and
+the class_role table with the proper data.
+
+5) Backup your config.php file to a separate location.
+-- Copy your config.php file OUT of your current installation directory to a holding place
+where it will NOT be destroyed.
+
+6) Delete all files and Code from the base WRM directory on your Website (do not overwrite 
+what's there, delete or backup and remove first).
+-- Destroy everything from the WRM root directory on down.  Leave NOTHING from any prior
+release in place.  The code base for WRM4 is so vastly different from that in 3.x that there
+would be a serious concern of leaving any old code laying around.  DO NOT overwrite a prior
+3.x release with this code.
+
+7) Upload all new 4.0 files to the deleted area for a clean set of 4.0 code.
+-- Upload the expanded archive to the newly cleaned WRM root directory (or conversely, 
+just install to a completely new directory with the new code.  This would allow you to back up
+to your prior installation (so long as you keep your old database copy) if significant problems
+are found with 4.0).
+
+* Change the Ownership of all files to match that of your web server.  
+* Change the permissions of the following directories and files to be writable by your
+	web server user:
+	* config.php (see below)
+	* cache/ (and all below directories)
+
+8) Restore your config.php file to the clean WRM 4.0 Location.
+-- Copy the backed up copy of config.php (step 5) back to your WRM directory.  This should now
+enable WRM to re-connect to your old database without a problem.  If you choose to install
+to a copy of your old WRM database (i.e. You created a seperate database for the new
+installation and copied all your old data to it) then modify your config.php file to point to
+the new database now.  MAKE SURE that the information in the config.php file is CORRECT for
+your installation.  Particularly, make SURE that the table prefix in this file matches the
+table prefix for ALL tables in your WRM installation.
+
+9) Run install/migrate.php to migrate raid/location data to the new tables.
+-- At this point you are running a custom PHP migration script that will suck the data out
+of some of the existing WRM tables and re-populate that data properly into some of the new
+cross reference tables.  DO NOT PROCEED ANY FARTHER TILL THIS STEP COMPLETES CORRECTLY.  
+Otherwise you run the risk of borking (i.e. you WILL DESTROY) the current raid and location
+data in your existing database.
+ -- You should see "All Raids and Locations are now Processed. Continue by running the 
+ 'Data Migration Prior to Run' section" at the bottom.
+-- Verify raid and location limit data through printed information on screen if necessary.
+
+10) Run the SQL in the 'Data Migration Prior to Run' section of the upgrade SQL.
+-- Go back to the upgrade SQL you have been running and page down to the "Data Migration
+Prior to Run" section.  It is now safe to execute the lines/code in this section into your
+database. 
+
+11) Delete the Install directory from your server and navigate to your old URL.  Log in 
+and all data should be good to go.
+-- At this point you should have WRM 4.0 installed and correctly running for your system.
+There is NO NEED to run through the installer application again and it would likely cause
+problems if you did so.  Your application is installed, please delete the install directory
+and proceed forward with running the application.
+  
+12) ALL PLAYERS need to go in and modify all of their characters before any draft can 
+occur.  
+-- Any players who do not have a primary spec properly selected will bork the signups 
+for their character (they will disappear if you attempt to move them out of queue to draft 
+but will take up a raid slot).  What happens is the system goes to look for the character's
+primary spec to look up what role they belong to.  Since the primary spec is blank, the
+character is put, literally into the "" (NULL) role, which doesn't have a view associated
+with it in the raid view section...thus the player will "disappear" from the raid view and
+be inaccessable through the GUI.  Raid leaders should be notified NOT to draft ANYONE who's
+primary spec is not set properly (It'll show something like ":Tank" instead of 
+"Protection:Tank").
+-- If a player does end up in this "limbo" area, you as the system admin can fix this by 
+going into the signups table, finding the character ID/Raid ID combination and setting either
+the "cancelled" or "queued" flag (put a 1 in either the cancelled or queued column of the 
+signup row) and the user will re-appear in the queued or cancelled area at the next reload
+of the page.  
+
+13) Raid Leaders/Admins should go into the Raids and Locations section and ensure that all 
+Class and Role limits are correct.  You may simply edit those locations/raids that are NOT 
+correct to correct them.
+-- The limits for roles and classes for raids and locations are now pulled from cross ref 
+tables in the system and not directly from the "locations" and "raids" tables anymore.  This
+is the data that was "migrated" in step 9 above.  RL/RA's should look through all raids and
+locations to ensure that a proper migration did in fact happen and that all of the limits
+on the raids and locations are set correctly.  Click the edit button next to those that are
+not correct and the system should correct itself upon update.
+
+14) Edit configuration "Path to Header Image" to point from templates/SpiffyJr to 
+templates/default.
+-- When you initially load WRM after installation you will LIKELY see the header image as
+incorrect (It will likely say something like "GUILD_HEADER" as a link in the upper left hand
+corner of the screen).  This is just because the name of the template has changed from
+"SpiffyJr" to "default".  Modify the path to header image config value in the config section
+and replace the reference to "SpiffyJr" in the image path to "default" and it will show up
+again.
+
+* Note: Templates other than "default" are likely NOT to work with 4.0 for a while till the 
+template editors get a chance to upgrade them.  Please switch back to default till the 
+templates get updated.
+* Note: You can remove the "Scripts" directory under any templates you are using, they are 
+no longer used.
 
 Installing WRM into a supported CMS system
 -----------------------------------------------
-At the time of this writing 3.6.0 supports the following CMS systems:
+At the time of this writing 4.0 supports the following CMS systems:
 
 * e107 from http://www.e107.org
 * Joomla from http://www.joomla.org (v1.5 ONLY) (NEW)
@@ -86,8 +258,8 @@ At the time of this writing 3.6.0 supports the following CMS systems:
 * WBB from http://www.woltlab.com/products/burning_board/index_en.php
 * XOOPS from http://www.xoops.org/
 
-Also supported, if you do not have a supported CMS system, is the "iUMS" (previously phpRaid) installation,
-which is the default non-CMS supported installation.  
+Also supported, if you do not have a supported CMS system, is the "iUMS" (previously phpRaid) 
+installation, which is the default non-CMS supported installation.  
 
 If you DO intend to install this application into a CMS please note that it is a
 REQUIREMENT that you install your WRM database INTO your CMS database, at the
@@ -96,125 +268,4 @@ moment you CANNOT separate the databases and have everything work.
 When entering the database information to install to, please ensure that you install
 into your CMS database to get CMS integration to work.
 
-========================================================================================================================
-
-Beta Installation
---------------------------
-The WRM Beta of 4.0, as noted on the WRM Boards, is a major re-write of the 3.x versions of WRM.  Due to this
-and due to the ever changing nature of beta applications, it is entirely possible that this software should
-NOT be used on production/live WRM websites.  It is HIGHLY recommended, then, to create a SEPARATE installation
-of WRM on your webhost and to test on this installation.  Doing this will gaurentee that the below instructions
-for installing beta applications will always work.
-
-Installation of Beta:
-
-* Unpackage the files from this archive into a directory on your local machine.
-* Open your FTP program and DELETE any old beta versions of WRM.  Ensure that all files
-    and folders from any prior WRM BETA version have been completely deleted.  ALL WRM
-    BETA INSTALLATIONS SHOULD BE DONE AS INSTALLS NOT UPGRADES.  
-* Open your FTP program and upload the entire contents of this archive to your web host,
-	including the WRM directory.  MAKE SURE TO UPLOAD TO A BRAND NEW DIRECTORY.  DO NOT
-	and I repeat, DO NOT upload into a production version of WRM. 
-* Change the Ownership of all files to match that of your web server.  
-* Change the permissions of the following directories and files to be writable by your
-	web server user:
-	* config.php (see below)
-	* cache/ (and all below directories)
-* Open a Database Management Tool (like phpMyAdmin) and DELETE any existing WRM BETA
-	databases.  DO NOT DELETE ANY PRODUCTION DATABASES YOU HAVE.
-* While still in the Database Management Tool, please create a new database for your
-	new beta installation.
-* Open a web browser and go to your WRM installation (e.g. http://www.yourdomain.com/wrm)
-* Choose your installation method (ALWAYS INSTALL) and follow the steps to install your 
-	WoW Raid Manager server.  FOR NOW please use *iUMS* as your authentication method.
-	The other bridges should still work, but I would like to rule out problems produced by
-	the other bridges at least at the onset of the beta testing period.  
-* At the end of the installation please remove your Install directory (delete it completely)
-* Change the permissions on your config.php file back to read only to the world (you can 
-	leave it writable by your web server if you so choose, but it is recommended that
-	you make it read only...(400 permissions in Unix).  Keep the permissions of the other
-	files and folders listed above writable.
-	
-Basically, any time a new beta is being tested please delete your old beta database, your
-old beta software and re-install from scratch.
-
-Advanced Installation (Maintaining a Working WRM through Beta):
------------------------------------------------------------------
-I am a software developer.  I know that EVERY beta program I get into includes the lines 
-I write above that says "don't use this on a production site."  And I know every time I 
-read these I laugh and do it anyway. 
-
-SOMONE out there is going to ignore my words of warning above and they're going to decide
-either to update their main/production site to 4.0 beta or they're going to migrate users
-to the new version and use the new beta as production.
-
-Again, I DO NOT RECOMMEND THIS.  I have NO idea what kinds of changes will be comming in 
-to the database for 4.0, particularly on this next phase where I start adding a whole SLEW
-of changes to WRM.  That said, you all know my stance on releasing quality software, even 
-BETA versions will work an should contain working functionality for all of the basic stuff.
-
-If you so choose to run your production site on the beta verision of 4.0 you MAY very well
-likely get away with it, and as you're also sure, even if I tell you I won't support it, I 
-will.  Note that the first beta release is, in essence, 3.6.1 + bugfixes with a new backend.
-All the 3.6.1 features and functionality exist and work.
-
-If you DO choose to do this, please make sure you meet the following criteria:
-
-* You are running PHP5
-* You are good with MySQL (i.e. you can read and modify existing SQL statements to make sense)
-* You are no noob with software installation and maintenance.
-* You are willing to keep up to date release to release.
-
-The first statement is VERY important, already I have a piece of code I am considering
-implementing that is incompatable with php4.  I have not yet decided whether 4.0 will be
-php4 backward compatable or not but I am starting to lean toward not.  If you try to run
-this software on a php4 site as your production you may at some point loose either pieces
-of functionality or loose the entire software all together.
-
-Note that you also MUST be able to read and modify SQL statements.  THe SQL database changes
-that I will be releasing with WRM 4.0 as it progresses through beta will be consolidated
-changes that will NOT take into account prior versions of the BETA...in other words they will
-assume you are starting over from scratch or starting from a 3.6.1 release.  If you are
-maintaining a 4.0 database beta version to beta version you will have to be able to figure out
-what pieces of the "upgrade" SQL to run.  A Visual DIFF tool (such as kdiff, CompareIt!, etc.) 
-is extremely helpful in doing this and I highly recommend using one.
-
-Lastly, your best success will be achieved if you keep your installation up to date beta to beta
-release.  If you fall behind you may find it impossible to upgrade.
-
-Process:  
-
-To start with, use the instructions above as a guideline.  Note that I will not be providing step
-by step installation instructions for this process.  Consider this your first test of being able
-to manage this.  If you can install the betas without instructions you are probably savy enough
-to manage maintaining the database and software beta to beta.
-
-In regards to the software, there have been MANY changes in file structure and you SHOULD, version
-to version, delete all of the files in your WRM directory other than your config.php and re-upload
-the entire archive EVERY time a new beta is released.  For 3.6.1 -> 4.0 the entire wowarmory archive
-got moved under the "includes" directory, as well as an entire Smarty release.  "Cache" is a new top
-level directory that now holds the compilation information for Smarty as well as the LUA Output and
-armory lookup output files.  Make SURE that this cache directory (all of it) is writeable by your
-webserver or the app will blow up SPECTACTULARLY in your face.
-
-In regards to the database, do yourself a HUGE favor and back it up periodically during this beta
-phase.  I don't suspect I will be corrupting databases but my development work gets done pretty
-haphazardly and I almost NEVER run an entire installation or upgrade SQL at one time, so there is
-a small potential for an installation or upgrade SQL to bork something.  Just make periodic backups
-ESEPCIALLY before upgrading to a new beta and you'll probably be fine.  Also, do yourself a favor and
-keep a copy of 3.6.1 and your old 3.6.1 database laying around if you decide to run this on your
-production site.  You never know when we'll hit a snag and you'll have to quickly re-install SOMETHING
-to get your guild working while I fix the problem.  If I were you, I would keep a 4.0 and a 3.6.1 
-site up and running.  Point your users at 4.0 if you wish, but make SURE that any new users signing into
-4.0 ALSO sign into the old 3.6.1 just in case you have to revert.
-
-In regards to the authentication system.  If you MUST do so, feel free to run bridged authentication
-to external applciations.  My PREFERENCE at this point is for you to use iUMS auth on the beta to 
-ensure that any bugs reported are not caused by external applications, but there is some use to having
-the bridges tested during this phase of the process as well.  Too, and more importantly, it's damn
-near impossible to switch to a new bridge once you start getting users logging in on the old bridge
-due to UIDs being wrong beween profiles.  If you intend to use this in replacement of your current
-site, go ahead and select your bridge, but in any bug reports MAKE SURE you note that you are using
-a bridge and which bridge.  Of course my preference is for you to migrate your users to 4.0, let them
-use this through the entire beta, and then blow away the thing and re-install the final version but
-I suspect I won't get many takers on this.
+===========================================================================================================
