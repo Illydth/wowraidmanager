@@ -92,8 +92,8 @@ $profile_id = scrub_input($_SESSION['profile_id']);
 // Set the Guild Server for the Page.
 $server = $phpraid_config['guild_server'];
 
-isset($_GET['Sort']) ? $sort_mode = scrub_input($_GET['Sort']) : $sort_mode = 'name';
-isset($_GET['SortDescending']) ? $sort_descending = scrub_input($_GET['SortDescending']) : $sort_descending = 0;
+//isset($_GET['Sort']) ? $sort_mode = scrub_input($_GET['Sort']) : $sort_mode = 'name';
+//isset($_GET['SortDescending']) ? $sort_descending = scrub_input($_GET['SortDescending']) : $sort_descending = 0;
 
 // This require sets up the flow control surrounding queueing, cancelling and drafting of users.
 require_once('./signup_flow.php');
@@ -278,7 +278,7 @@ if($mode == 'view')
 		$sql = sprintf("SELECT role_id FROM " . $phpraid_config['db_prefix'] . "class_role WHERE class_id = %s and subclass = %s", quote_smart($data['class']), quote_smart($data['pri_spec']));
 		$result_spec_lang = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 		$spec_lang_data = $db_raid->sql_fetchrow($result_spec_lang, true);
-		$pri_spec_lang = $spec_lang_data['lang_index'];
+		//$pri_spec_lang = $spec_lang_data['lang_index'];
 		$pri_spec_role = $spec_lang_data['role_id'];
 		foreach ($wrm_global_roles as $global_role)
 			if($pri_spec_role == $global_role['role_id'])
@@ -287,7 +287,7 @@ if($mode == 'view')
 		$sql = sprintf("SELECT role_id FROM " . $phpraid_config['db_prefix'] . "class_role WHERE class_id = %s and subclass = %s", quote_smart($data['class']), quote_smart($data['sec_spec']));
 		$result_spec_lang = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 		$spec_lang_data = $db_raid->sql_fetchrow($result_spec_lang, true);
-		$sec_spec_lang = $spec_lang_data['lang_index'];
+		//$sec_spec_lang = $spec_lang_data['lang_index'];
 		$sec_spec_role = $spec_lang_data['role_id'];
 		foreach ($wrm_global_roles as $global_role)
 			if($sec_spec_role == $global_role['role_id'])
@@ -819,10 +819,10 @@ if($mode == 'view')
 	//Get Raid Total Counts
 	$count = get_char_count($raid_id, $type='');
 	$count2 = get_char_count($raid_id, $type='queue');		
-	foreach ($count as $class_count)
-		$total += $class_count;
-	foreach ($count2 as $class_queue_count)
-		$total2 += $class_queue_count;
+	foreach ($wrm_global_classes as $global_class)
+		$total += $count[$global_class['class_id']];
+	foreach ($wrm_global_classes as $global_class)
+		$total2 += $count2[$global_class['class_id']];
 	//$count = get_char_count($raid_id, $type='');
 	//$count2 = get_char_count($raid_id, $type='queue');
 	
@@ -975,7 +975,7 @@ if($mode == 'view')
 		if ($global_role['role_name'] != '')
 			array_push($role_count_icon,
 				array(
-					'count'=>$role_color_count[$role_name['role_name']],
+					'count'=>$role_color_count[$global_role['role_name']],
 					'text'=>$global_role['role_name'],
 				)
 			);

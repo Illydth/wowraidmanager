@@ -106,10 +106,10 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true)) {
 	//Get Raid Total Counts
 	$count = get_char_count($raids['raid_id'], $type='');
 	$count2 = get_char_count($raids['raid_id'], $type='queue');		
-	foreach ($count as $class_count)
-		$total += $class_count;
-	foreach ($count2 as $class_queue_count)
-		$total2 += $class_queue_count;
+	foreach ($wrm_global_classes as $global_class)
+		$total += $count[$global_class['class_id']];
+	foreach ($wrm_global_classes as $global_class)
+		$total2 += $count2[$global_class['class_id']];
 	
 	$logged_in=scrub_input($_SESSION['session_logged_in']);
 	$priv_profile=scrub_input($_SESSION['priv_profile']);

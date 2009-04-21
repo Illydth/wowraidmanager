@@ -127,9 +127,14 @@ function get_char_count($id, $type) {
 			}
 		}
 
+		// Get Role from Spec
+		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "class_role WHERE subclass=%s", quote_smart($signups['selected_spec']));
+		$result_spec = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$role_id = $db_raid->sql_fetchrow($result_spec, true);
+		
 		// Handle Roles based upon what's in the Role table.
 		foreach ($wrm_global_roles as $global_role)	
-			if ($char['role'] == $global_role['role_id'])
+			if ($role_id['role_id'] == $global_role['role_id'])
 				$count[$global_role['role_id']]++;			
 	}
 

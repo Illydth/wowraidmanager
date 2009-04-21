@@ -395,7 +395,7 @@ if($_GET['mode'] == 'view') {
 				$errorMsg .= '<li>'.$phprlang['profile_error_name'].'</li>';
 			if($level == '' || !is_numeric($level) || $level < 1 || $level > 80)
 				$errorMsg .= '<li>'.$phprlang['profile_error_level'].'</li>';
-			if($role == '' || $role == $phprlang['role_none'])
+			if($pri_spec == '' || $pri_spec == $phprlang['role_none'])
 				$errorMsg .= '<li>'.$phprlang['profile_error_role'].'</li>';
 
 			$errorDie = 0;
@@ -474,7 +474,7 @@ if($_GET['mode'] == 'view') {
 					$errorMsg .= '<li>'.$phprlang['profile_error_nature'].'</li>';
 				if(!is_numeric($shadow))
 					$errorMsg .= '<li>'.$phprlang['profile_error_shadow'].'</li>';
-				if($role == '' || $role == $phprlang['role_none'])
+				if($pri_spec == '' || $pri_spec == $phprlang['role_none'])
 					$errorMsg .= '<li>'.$phprlang['profile_error_role'].'</li>';
 				$errorDie = 0;
 
