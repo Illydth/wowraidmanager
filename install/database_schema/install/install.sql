@@ -484,7 +484,6 @@ VALUES (NULL , 'raidview2', 'Signup_Spec', '1', '11', NULL, 'signup_spec', NULL)
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
 VALUES (NULL , 'raidview2', 'Buttons', '1', '12', NULL, 'buttons', NULL);
 -- So as not to have to add a 0 or 1 on to the end of everything above, we'll do this separately.
-ALTER TABLE `wrm_column_headers` ADD `default_sort` TINYINT( 1 ) NOT NULL DEFAULT '0';
 UPDATE `wrm_column_headers` SET `default_sort` = '1' WHERE `view_name`='raids1' AND `column_name` = 'Date' LIMIT 1 ;
 UPDATE `wrm_column_headers` SET `default_sort` = '1' WHERE `view_name`='index1' AND `column_name` = 'Date' LIMIT 1 ;
 UPDATE `wrm_column_headers` SET `default_sort` = '1' WHERE `view_name`='announcements1' AND `column_name` = 'ID' LIMIT 1 ;
@@ -987,7 +986,7 @@ CREATE TABLE IF NOT EXISTS `wrm_roles` (
   `role_id` varchar(10) NOT NULL,
   `role_name` varchar(100) NOT NULL,
   `lang_index` varchar(100) NOT NULL,
-  `role_id` varchar(10) default NULL,
+  `image` varchar(100) NOT NULL,
   PRIMARY KEY  (`role_id`)
 );
 
