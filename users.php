@@ -57,7 +57,7 @@ if($mode == 'view')
 		$startRecord = scrub_input($_GET['Base']);
 	
 	// Set Sort Field for Page
-	if(!isset($_GET['Sort']))
+	if(!isset($_GET['Sort'])||$_GET['Sort']=='')
 	{
 		$sortField="";
 		$initSort=FALSE;
@@ -176,7 +176,7 @@ else if($mode == 'details')
 		$startRecord = scrub_input($_GET['Base']);
 	
 	// Set Sort Field for Page
-	if(!isset($_GET['Sort']))
+	if(!isset($_GET['Sort'])||$_GET['Sort']=='')
 	{
 		$sortField="";
 		$initSort=FALSE;
