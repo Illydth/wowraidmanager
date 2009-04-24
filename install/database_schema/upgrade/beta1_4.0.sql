@@ -314,6 +314,7 @@ ALTER TABLE `wrm_signups` ADD `selected_spec` VARCHAR( 100 ) NOT NULL ;
 
 TRUNCATE TABLE `wrm_version`;
 INSERT INTO `wrm_version` VALUES ('4.0.0','Version 4.0.0 of WoW Raid Manager');
+INSERT INTO `wrm_version` VALUES ('4.0.1','Version 4.0.1 of WoW Raid Manager');
 
 UPDATE `wrm_config` SET `config_value` = 'us' WHERE `config_name` = 'armory_language' AND `config_value` = 'en' LIMIT 1;
 UPDATE `wrm_config` SET `config_value` = 'default' WHERE `config_name` = 'template' AND `config_value` = 'SpiffyJr' LIMIT 1;

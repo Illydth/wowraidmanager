@@ -1033,3 +1033,5 @@ PRIMARY KEY ( `version_number` )
 
 -- Version Data
 INSERT INTO `wrm_version` VALUES ('4.0.0','Version 4.0.0 of WoW Raid Manager');
+INSERT INTO `wrm_version` VALUES ('4.0.1','Version 4.0.1 of WoW Raid Manager');
+
