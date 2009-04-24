@@ -163,6 +163,7 @@ $phprlang['raid_error_location'] = 'E\' necessario selezionare un\'Istanza';
 $phprlang['view_error_signed_up'] = 'Sei già iscritto con questo Personaggio';
 $phprlang['view_error_role_undef'] = 'Verifica che il Personaggio abbia associato un ruolo nella sezione <a href="profile.php?mode=view">Personaggi</a>.';
 $phprlang['yes'] = 'Sì';
+$phprlang['teams_error_no_team'] = 'No team is selected to add users to.';
 
 // Buttons
 $phprlang['submit'] = 'Invia';

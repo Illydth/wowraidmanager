@@ -163,6 +163,7 @@ $phprlang['raid_error_location'] = 'Du må ha et raid sted';
 $phprlang['view_error_signed_up'] = 'Du har allerede siget opp med den characteren.';
 $phprlang['view_error_role_undef'] = 'Sørg for at characteren har en definert rolle i  <a href="profile.php?mode=view">Profilen</a>.';
 $phprlang['yes'] = 'Ja';
+$phprlang['teams_error_no_team'] = 'No team is selected to add users to.';
 
 // Buttons
 $phprlang['submit'] = 'Send';

@@ -165,6 +165,7 @@ $phprlang['raid_error_location'] = '輸入一個團隊活動地點';
 $phprlang['view_error_signed_up'] = '這個角色報名過了';
 $phprlang['view_error_role_undef'] = '請確認該角色 <a href="profile.php?mode=view">Profile</a> 已設定職責。';
 $phprlang['yes'] = '是';
+$phprlang['teams_error_no_team'] = 'No team is selected to add users to.';
 
 // Buttons   按鈕
 $phprlang['submit'] = '提交';

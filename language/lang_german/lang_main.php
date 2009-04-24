@@ -165,7 +165,7 @@ $phprlang['raid_error_location'] = 'Du musst eine Raidinstanz eingeben';
 $phprlang['view_error_signed_up'] = 'Du hast dich bereits mit diesem Charakter angemeldet';
 $phprlang['view_error_role_undef'] = 'Bitte weise deinem Charakter im <a href="profile.php?mode=view">Profil</a> erst eine Rolle zu';
 $phprlang['yes'] = 'Ja';
-
+$phprlang['teams_error_no_team'] = 'No team is selected to add users to.';
 // Buttons
 $phprlang['submit'] = 'Übernehmen';
 $phprlang['reset'] = 'Zurücksetzen';

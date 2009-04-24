@@ -167,6 +167,7 @@ $phprlang['raid_error_location'] = 'Ajouter un lieu de raid';
 $phprlang['view_error_signed_up'] = 'Vous etes dèja inscrit avec ce personnage';
 $phprlang['view_error_role_undef'] = 'Make sure that the Character in <a href="profile.php?mode=view">Profile</a> has a defined Role.';
 $phprlang['yes'] = 'Oui';
+$phprlang['teams_error_no_team'] = 'No team is selected to add users to.';
 
 // Buttons
 $phprlang['submit'] = 'Valider';

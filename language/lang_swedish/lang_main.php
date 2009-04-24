@@ -165,6 +165,7 @@ $phprlang['raid_error_location'] = 'Fyll i en raid instans';
 $phprlang['view_error_signed_up'] = 'Du är redan bokad med denna karaktär';
 $phprlang['view_error_role_undef'] = 'Se till att Karaktären har en Roll vald i <a href="profile.php?mode=view">Profilen</a>.';
 $phprlang['yes'] = 'Ja';
+$phprlang['teams_error_no_team'] = 'No team is selected to add users to.';
 
 // Buttons
 $phprlang['submit'] = 'Skicka';

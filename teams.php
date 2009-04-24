@@ -174,7 +174,7 @@ if($mode == 'view')
 				'Guild'=>$team['guild'],
 				'Level'=>$team['lvl'],
 				'Team Name'=>$team['team_name'],
-				'Actions'=>$delete
+				'Buttons'=>$delete
 			)
 		);
 	}
@@ -408,29 +408,37 @@ elseif($mode == 'add')
 	isset($_POST['team_drop_name']) ? $team_id = sprintf($_POST['team_drop_name']) : $team_id = '';
 
 	if($team_id == '' || !is_numeric($team_id))
-		log_hack();
-
-	//get team_name from team_id: Only one team name can be passed at any given time, so only retrieve team once.
-	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "teams WHERE team_id=%s",quote_smart($team_id));
-	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-	$data = $db_raid->sql_fetchrow($result, true);
-	$team_name = $data['team_name'];
-
-	//For each char id on input, we need to add a record to the teams table noteing that that char is now on a team.
-	foreach($_POST as $key=>$value)
 	{
-		if($key != 'submit' and $key != 'team_drop_name')
-		{
-			$char_id = $value;
-			//insert character and raid to teams table.
-			$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "teams (`team_id`,`raid_id`,`team_name`,`char_id`)
-						VALUES ('0',%s,%s,%s)", quote_smart($raid_id),quote_smart($team_name),quote_smart($char_id));
-			$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-
-			log_create('teams',mysql_insert_id(),$title);
-		}
+		//log_hack();
+		$errorSpace = 1;
+		$errorTitle = $phprlang['form_error'];
+		$errorMsg = $phprlang['teams_error_no_team'];
+		$errorDie = 1;	
 	}
-	header("Location: teams.php?mode=view&raid_id=$raid_id");
+	else
+	{
+		//get team_name from team_id: Only one team name can be passed at any given time, so only retrieve team once.
+		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "teams WHERE team_id=%s",quote_smart($team_id));
+		$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$data = $db_raid->sql_fetchrow($result, true);
+		$team_name = $data['team_name'];
+	
+		//For each char id on input, we need to add a record to the teams table noteing that that char is now on a team.
+		foreach($_POST as $key=>$value)
+		{
+			if($key != 'submit' and $key != 'team_drop_name')
+			{
+				$char_id = $value;
+				//insert character and raid to teams table.
+				$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "teams (`team_id`,`raid_id`,`team_name`,`char_id`)
+							VALUES ('0',%s,%s,%s)", quote_smart($raid_id),quote_smart($team_name),quote_smart($char_id));
+				$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	
+				log_create('teams',mysql_insert_id(),$title);
+			}
+		}
+		header("Location: teams.php?mode=view&raid_id=$raid_id");
+	}
 }
 elseif($mode == 'delteam')
 {

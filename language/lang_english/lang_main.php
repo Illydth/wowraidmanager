@@ -165,6 +165,7 @@ $phprlang['raid_error_location'] = 'Input a raid location';
 $phprlang['view_error_signed_up'] = 'You have already signed up with this character';
 $phprlang['view_error_role_undef'] = 'Make sure that the Character in <a href="profile.php?mode=view">Profile</a> has a defined Role.';
 $phprlang['yes'] = 'Yes';
+$phprlang['teams_error_no_team'] = 'No team is selected to add users to.';
 
 // Buttons
 $phprlang['submit'] = 'Submit';
