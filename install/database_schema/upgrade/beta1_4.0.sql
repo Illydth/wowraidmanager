@@ -197,8 +197,10 @@ DELETE FROM `wrm_column_headers` WHERE `view_name` = 'raidview2' AND `column_nam
 UPDATE `wrm_column_headers` SET `position` = '9' WHERE `view_name` = 'raidview2' and `column_name` = 'Date' LIMIT 1 ;
 UPDATE `wrm_column_headers` SET `position` = '10' WHERE `view_name` = 'raidview2' and `column_name` = 'Time' LIMIT 1 ;
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'raidview2', 'Signup_Spec', '1', '11', NULL, 'signup_spec', NULL);
-UPDATE `wrm_column_headers` SET `position` = '12' WHERE `view_name` = 'raidview2' and `column_name` = 'Buttons' LIMIT 1 ;
+VALUES (NULL , 'raidview2', 'Role', '1', '11', NULL, 'role', NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
+VALUES (NULL , 'raidview2', 'Signup_Spec', '1', '12', NULL, 'signup_spec', NULL);
+UPDATE `wrm_column_headers` SET `position` = '13' WHERE `view_name` = 'raidview2' and `column_name` = 'Buttons' LIMIT 1 ;
 
 UPDATE `wrm_config` SET `config_value` = 'us' WHERE 'armory_language' = 'en' LIMIT 1 ;
 INSERT INTO `wrm_config` VALUES ('armory_cache_setting', 'none');
