@@ -183,10 +183,15 @@ if($_GET['mode'] == 'view') {
 		//Get Raid Total Counts
 		$count = get_char_count($data['raid_id'], $type='');
 		$count2 = get_char_count($data['raid_id'], $type='queue');		
-		foreach ($count as $class_count)
-			$total += $class_count;
-		foreach ($count2 as $class_queue_count)
-			$total2 += $class_queue_count;
+		foreach ($wrm_global_classes as $global_class)
+			$total += $count[$global_class['class_id']];
+		foreach ($wrm_global_classes as $global_class)
+			$total2 += $count2[$global_class['class_id']];
+			
+		//foreach ($count as $class_count)
+		//	$total += $class_count;
+		//foreach ($count2 as $class_queue_count)
+		//	$total2 += $class_queue_count;
 
 		// Now that we have the raid data, we need to retrieve limit data based upon Raid ID.
 		// Get Class Limits and set Colored Counts

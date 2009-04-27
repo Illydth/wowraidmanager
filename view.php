@@ -1045,8 +1045,10 @@ elseif($mode == 'signup')
 
 			//Get Raid Total Counts
 			$count = get_char_count($raid_id, $type='');
-			foreach ($count as $class_count)
-				$total += $class_count;
+			//foreach ($count as $class_count)
+			//	$total += $class_count;
+			foreach ($wrm_global_classes as $global_class)
+				$total += $count[$global_class['class_id']];
 			
 			// Now that we have the raid data, we need to retrieve limit data based upon Raid ID.
 			// Get Class Limits and set Colored Counts
@@ -1272,9 +1274,9 @@ elseif($mode == 'draft')
 
 	//Get Raid Total Counts
 	$count = get_char_count($raid_id, $type='');
-	foreach ($count as $class_count)
-		$total += $class_count;
-
+	foreach ($wrm_global_classes as $global_class)
+		$total += $count[$global_class['class_id']];
+	
 	// Now that we have the raid data, we need to retrieve limit data based upon Raid ID.
 	// Get Class Limits and set Colored Counts
 	$raid_class_array = array();
