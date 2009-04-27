@@ -294,13 +294,13 @@ if($mode == 'view')
 				$sec_spec_role_name = $global_role['role_name'];
 			
 		if ($spec == $data['pri_spec'])
-			$pri_spec = "<b>" . $data['pri_spec'] . ":" . $pri_spec_role_name . "</b>";
+			$pri_spec = "<b>" . $pri_spec_role_name . ":" . $data['pri_spec'] . "</b>";
 		else
-			$pri_spec = $data['pri_spec'] . ":" . $pri_spec_role_name;
+			$pri_spec = $pri_spec_role_name . ":" . $data['pri_spec'];
 		if ($spec == $data['sec_spec'])
-			$sec_spec = "<b>" . $data['sec_spec'] . ":" . $sec_spec_role_name . "</b>";
+			$sec_spec = "<b>" . $sec_spec_role_name . ":" . $data['sec_spec'] . "</b>";
 		else
-			$sec_spec = $data['sec_spec'] . ":" . $sec_spec_role_name;
+			$sec_spec = $sec_spec_role_name . ":" . $data['sec_spec'];
 				
 		$arcane = $data['arcane'];
 		$fire = $data['fire'];
@@ -451,13 +451,17 @@ if($mode == 'view')
 		$signup_spec = "<option ";
 		if($signups['selected_spec'] == '' || $signups['selected_spec'] == $data['pri_spec'])
 			$signup_spec .= "SELECTED ";
-		$signup_spec .= $form_use.$data['pri_spec']."\">".$phprlang[$pri_spec_lang].":".$pri_spec_role_name."</option>";
+		$signup_spec .= $form_use.$data['pri_spec']."\">".$pri_spec_role_name.":".$phprlang[$pri_spec_lang]."</option>";
+		$role = $pri_spec_role_name;
 		if($data['sec_spec'] != '')
 		{
 			$signup_spec .= "<option ";
 			if($signups['selected_spec'] == $data['sec_spec'])
+			{
 				$signup_spec .= "SELECTED ";
-			$signup_spec .= $form_use.$data['sec_spec']."\">".$phprlang[$sec_spec_lang].":".$sec_spec_role_name."</option>";
+				$role = $sec_spec_role_name;
+			}
+			$signup_spec .= $form_use.$data['sec_spec']."\">".$sec_spec_role_name.":".$phprlang[$sec_spec_lang]."</option>";
 		}
 		if(($user_perm_group['admin'])||($user_perm_group['RL'])||($_SESSION['profile_id'] == $data['profile_id']))		
 			$signup_spec_output = '<select name="signup_spec" onChange="MM_jumpMenu(\'parent\',this,0)" class="form">'. $signup_spec . '</select>';		
@@ -478,6 +482,7 @@ if($mode == 'view')
 				'Time'=>$time,
 				'Comments'=>$comments,
 				'Guild'=>$guildname,
+				'Role'=>$role,
 				'Signup_Spec'=>$signup_spec_output,
 			)
 		);
@@ -578,13 +583,17 @@ if($mode == 'view')
 		$signup_spec = "<option ";
 		if($signups['selected_spec'] == '' || $signups['selected_spec'] == $data['pri_spec'])
 			$signup_spec .= "SELECTED ";
-		$signup_spec .= $form_use.$data['pri_spec']."\">".$phprlang[$pri_spec_lang].":".$pri_spec_role_name."</option>";
+		$signup_spec .= $form_use.$data['pri_spec']."\">".$pri_spec_role_name.":".$phprlang[$pri_spec_lang]."</option>";
+		$role = $pri_spec_role_name;
 		if($data['sec_spec'] != '')
 		{
 			$signup_spec .= "<option ";
 			if($signups['selected_spec'] == $data['sec_spec'])
+			{
 				$signup_spec .= "SELECTED ";
-			$signup_spec .= $form_use.$data['sec_spec']."\">".$phprlang[$sec_spec_lang].":".$sec_spec_role_name."</option>";
+				$role = $sec_spec_role_name;
+			}
+			$signup_spec .= $form_use.$data['sec_spec']."\">".$sec_spec_role_name.":".$phprlang[$sec_spec_lang]."</option>";
 		}				
 		if(($user_perm_group['admin'])||($user_perm_group['RL'])||($_SESSION['profile_id'] == $data['profile_id']))		
 			$signup_spec_output = '<select name="signup_spec" onChange="MM_jumpMenu(\'parent\',this,0)" class="form">'. $signup_spec . '</select>';		
@@ -605,6 +614,7 @@ if($mode == 'view')
 				'Time'=>$time,
 				'Comments'=>$comments,
 				'Guild'=>$guildname,
+				'Role'=>$role,
 				'Signup_Spec'=>$signup_spec_output,
 			)
 		);
