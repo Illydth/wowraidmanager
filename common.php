@@ -126,9 +126,9 @@ require(SMARTY_DIR . 'Smarty.class.php');
 
 $wrmsmarty = new Smarty();
 $wrmsmarty->template_dir = 'templates/' . $phpraid_config['template'] . '/';
-$wrmsmarty->compile_dir  = 'cache/templates_c/';
+$wrmsmarty->compile_dir  = './cache/templates_c/';
 $wrmsmarty->config_dir   = 'includes/smarty/configs/';
-$wrmsmarty->cache_dir    = 'cache/smarty_cache/';
+$wrmsmarty->cache_dir    = './cache/smarty_cache/';
 // Turning on Caching will cause many pages not to display dynamic changes properly.
 $wrmsmarty->caching = false;
 $wrmsmarty->compile_check = true;
