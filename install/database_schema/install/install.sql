@@ -125,7 +125,7 @@ INSERT INTO `wrm_class_race` VALUES ('Undead', 'Warlock');
 INSERT INTO `wrm_class_race` VALUES ('Undead', 'Death Knight');
 
 -- Class and Role Linking Table Creation
-DROP TABLE IF EXISTS `wrm_classes`;
+DROP TABLE IF EXISTS `wrm_class_role`;
 CREATE TABLE `wrm_class_role` (
   `class_id` varchar(100) NOT NULL,
   `subclass` varchar(100) NOT NULL,
