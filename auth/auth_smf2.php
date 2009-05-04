@@ -242,7 +242,7 @@ function phpraid_login()
 			{
 				$FoundUserInGroup = FALSE;
 
-				$sql = sprintf( "SELECT " . $db_user_id. "," .$db_group_id ." FROM " . $table_prefix . $db_table_group_name. 
+				$sql = sprintf( "SELECT " . $db_user_id. "," .$db_group_id . "," .$db_add_group_ids ." FROM " . $table_prefix . $db_table_group_name. 
 								" WHERE ".$db_user_id." = %s", quote_smart($data[$db_user_id])
 						);
 				$resultgroup = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);

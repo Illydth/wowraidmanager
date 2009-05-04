@@ -31,7 +31,8 @@ CREATE TABLE  `wrm_chars` (
 ) ;
 
 -- Class Table Creation
-CREATE TABLE IF NOT EXISTS `wrm_classes` (
+DROP TABLE IF EXISTS `wrm_classes`;
+CREATE TABLE `wrm_classes` (
   `class_id` varchar(100) NOT NULL,
   `class_code` varchar(2) NOT NULL,
   `lang_index` varchar(100) NOT NULL,
@@ -52,6 +53,7 @@ INSERT INTO `wrm_classes` VALUES ('Warlock', 'wk', 'warlock', 'images/classes/wa
 INSERT INTO `wrm_classes` VALUES ('Warrior', 'wa', 'warrior', 'images/classes/warrior_icon.gif');
 
 -- Race/Class Link Table Creation
+DROP TABLE IF EXISTS `wrm_class_race`;
 CREATE TABLE `wrm_class_race` (
 `race_id` VARCHAR( 100 ) NOT NULL ,
 `class_id` VARCHAR( 100 ) NOT NULL ,
@@ -123,7 +125,8 @@ INSERT INTO `wrm_class_race` VALUES ('Undead', 'Warlock');
 INSERT INTO `wrm_class_race` VALUES ('Undead', 'Death Knight');
 
 -- Class and Role Linking Table Creation
-CREATE TABLE IF NOT EXISTS `wrm_class_role` (
+DROP TABLE IF EXISTS `wrm_class_role`;
+CREATE TABLE `wrm_class_role` (
   `class_id` varchar(100) NOT NULL,
   `subclass` varchar(100) NOT NULL,
   `lang_index` varchar(100) NOT NULL,
@@ -480,9 +483,11 @@ VALUES (NULL , 'raidview2', 'Date', '1', '9', NULL, 'date', 'wrmdate');
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
 VALUES (NULL , 'raidview2', 'Time', '1', '10', NULL, 'time', 'wrmtime');
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'raidview2', 'Signup_Spec', '1', '11', NULL, 'signup_spec', NULL);
+VALUES (NULL , 'raidview2', 'Role', '1', '11', NULL, 'role', NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'raidview2', 'Buttons', '1', '12', NULL, 'buttons', NULL);
+VALUES (NULL , 'raidview2', 'Signup_Spec', '1', '12', NULL, 'signup_spec', NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
+VALUES (NULL , 'raidview2', 'Buttons', '1', '13', NULL, 'buttons', NULL);
 -- So as not to have to add a 0 or 1 on to the end of everything above, we'll do this separately.
 UPDATE `wrm_column_headers` SET `default_sort` = '1' WHERE `view_name`='raids1' AND `column_name` = 'Date' LIMIT 1 ;
 UPDATE `wrm_column_headers` SET `default_sort` = '1' WHERE `view_name`='index1' AND `column_name` = 'Date' LIMIT 1 ;
@@ -761,7 +766,8 @@ INSERT INTO `wrm_expansion` (`exp_id`, `exp_name`, `exp_lang_id`, `def`) VALUES
 (3, 'WotLK', 'exp_wrath_lich_king', 1);
 
 -- Gender Table Creation
-CREATE TABLE IF NOT EXISTS `wrm_gender` (
+DROP TABLE IF EXISTS `wrm_gender`;
+CREATE TABLE `wrm_gender` (
   `gender_id` varchar(10) NOT NULL,
   `lang_index` varchar(100) NOT NULL,
   PRIMARY KEY  (`gender_id`)
@@ -773,7 +779,7 @@ INSERT INTO `wrm_gender` VALUES ('Female', 'female');
 
 -- Guilds Table Creation
 DROP TABLE IF EXISTS `wrm_guilds`;
-CREATE TABLE  `wrm_guilds` (
+CREATE TABLE `wrm_guilds` (
   `guild_id` int(10) NOT NULL auto_increment,
   `guild_master` varchar(80) NOT NULL default '',
   `guild_name` varchar(30) NOT NULL default '',
@@ -783,7 +789,7 @@ CREATE TABLE  `wrm_guilds` (
 
 -- Locations Table Creation
 DROP TABLE IF EXISTS `wrm_locations`;
-CREATE TABLE  `wrm_locations` (
+CREATE TABLE `wrm_locations` (
   `location_id` int(10) NOT NULL auto_increment,
   `location` varchar(255) NOT NULL default '',
   `min_lvl` int(2) NOT NULL default '0',
@@ -799,7 +805,8 @@ CREATE TABLE  `wrm_locations` (
 -- Locations Data
 
 -- Location / Class Limit Link Table Creation
-CREATE TABLE IF NOT EXISTS `wrm_loc_class_lmt` (
+DROP TABLE IF EXISTS `wrm_loc_class_lmt`;
+CREATE TABLE `wrm_loc_class_lmt` (
   `location_id` int(10) NOT NULL,
   `class_id` varchar(100) NOT NULL,
   `lmt` int(2) NOT NULL,
@@ -807,7 +814,8 @@ CREATE TABLE IF NOT EXISTS `wrm_loc_class_lmt` (
 );
 
 -- Location / Role Limit Link Table Creation
-CREATE TABLE IF NOT EXISTS `wrm_loc_role_lmt` (
+DROP TABLE IF EXISTS `wrm_loc_role_lmt`;
+CREATE TABLE `wrm_loc_role_lmt` (
   `location_id` int(10) NOT NULL,
   `role_id` varchar(10) NOT NULL,
   `lmt` int(2) NOT NULL,
@@ -816,7 +824,7 @@ CREATE TABLE IF NOT EXISTS `wrm_loc_role_lmt` (
 
 -- Log Create Table Creation
 DROP TABLE IF EXISTS `wrm_logs_create`;
-CREATE TABLE  `wrm_logs_create` (
+CREATE TABLE `wrm_logs_create` (
   `log_id` int(11) NOT NULL auto_increment,
   `create_id` int(11) NOT NULL default '0',
   `profile_id` int(11) NOT NULL default '0',
@@ -829,7 +837,7 @@ CREATE TABLE  `wrm_logs_create` (
 
 -- Log Delete Table Creation
 DROP TABLE IF EXISTS `wrm_logs_delete`;
-CREATE TABLE  `wrm_logs_delete` (
+CREATE TABLE `wrm_logs_delete` (
   `log_id` int(11) NOT NULL auto_increment,
   `profile_id` int(11) NOT NULL default '0',
   `ip` varchar(45) NOT NULL default '',
@@ -841,7 +849,7 @@ CREATE TABLE  `wrm_logs_delete` (
 
 -- Log Hack Table Creation 
 DROP TABLE IF EXISTS `wrm_logs_hack`;
-CREATE TABLE  `wrm_logs_hack` (
+CREATE TABLE `wrm_logs_hack` (
   `log_id` int(10) unsigned NOT NULL auto_increment,
   `ip` varchar(45) NOT NULL default '0',
   `message` text NOT NULL,
@@ -851,7 +859,7 @@ CREATE TABLE  `wrm_logs_hack` (
 
 -- Log Raid Table Creation
 DROP TABLE IF EXISTS `wrm_logs_raid`;
-CREATE TABLE  `wrm_logs_raid` (
+CREATE TABLE `wrm_logs_raid` (
   `log_id` int(10) NOT NULL auto_increment,
   `char_id` int(10) NOT NULL default '0',
   `profile_id` int(10) NOT NULL default '0',
@@ -864,7 +872,7 @@ CREATE TABLE  `wrm_logs_raid` (
 
 -- Permissions Table Creation
 DROP TABLE IF EXISTS `wrm_permissions`;
-CREATE TABLE  `wrm_permissions` (
+CREATE TABLE `wrm_permissions` (
   `permission_id` int(10) NOT NULL auto_increment,
   `name` varchar(255) NOT NULL,
   `description` text NOT NULL,
@@ -886,7 +894,7 @@ INSERT INTO `wrm_permissions` (`name`,`description`,`announcements`,`configurati
 
 -- Profile Table Creation
 DROP TABLE IF EXISTS `wrm_profile`;
-CREATE TABLE  `wrm_profile` (
+CREATE TABLE `wrm_profile` (
   `profile_id` int(10) NOT NULL auto_increment,
   `email` varchar(255) NOT NULL default '',
   `password` varchar(255) NOT NULL default '',
@@ -897,7 +905,8 @@ CREATE TABLE  `wrm_profile` (
 ) ;
 
 -- Race Table Creation
-CREATE TABLE IF NOT EXISTS `wrm_races` (
+DROP TABLE IF EXISTS `wrm_races`;
+CREATE TABLE `wrm_races` (
   `race_id` varchar(100) NOT NULL,
   `faction` varchar(100) NOT NULL,
   `lang_index` varchar(100) NOT NULL,
@@ -917,7 +926,8 @@ INSERT INTO `wrm_races` VALUES ('Troll', 'Horde', 'troll');
 INSERT INTO `wrm_races` VALUES ('Undead', 'Horde', 'undead');
 
 -- Race/Gender Link Table Creation
-CREATE TABLE IF NOT EXISTS `wrm_race_gender` (
+DROP TABLE IF EXISTS `wrm_race_gender`;
+CREATE TABLE `wrm_race_gender` (
   `race_id` varchar(100) NOT NULL,
   `gender_id` varchar(10) NOT NULL,
   `image` varchar(100) NOT NULL,
@@ -948,7 +958,7 @@ INSERT INTO `wrm_race_gender` VALUES ('Undead', 'Female', '/images/faces/un_fema
 
 -- Raid Table Creation
 DROP TABLE IF EXISTS `wrm_raids`;
-CREATE TABLE  `wrm_raids` (
+CREATE TABLE `wrm_raids` (
   `raid_id` int(10) NOT NULL auto_increment,
   `description` text NOT NULL,
   `freeze` int(10) NOT NULL default '0',
@@ -966,7 +976,8 @@ CREATE TABLE  `wrm_raids` (
 ) ;
 
 -- Class Limits per Raid Table
-CREATE TABLE IF NOT EXISTS `wrm_raid_class_lmt` (
+DROP TABLE IF EXISTS `wrm_raid_class_lmt`;
+CREATE TABLE `wrm_raid_class_lmt` (
   `raid_id` int(10) NOT NULL,
   `class_id` varchar(100) NOT NULL,
   `lmt` int(2) NOT NULL,
@@ -974,6 +985,7 @@ CREATE TABLE IF NOT EXISTS `wrm_raid_class_lmt` (
 );
 
 -- Role Limits per Raid Table
+DROP TABLE IF EXISTS `wrm_raid_role_lmt`;
 CREATE TABLE IF NOT EXISTS `wrm_raid_role_lmt` (
   `raid_id` int(10) NOT NULL,
   `role_id` varchar(10) NOT NULL,
@@ -982,6 +994,7 @@ CREATE TABLE IF NOT EXISTS `wrm_raid_role_lmt` (
 );
 
 -- Role Table Creation
+DROP TABLE IF EXISTS `wrm_roles`;
 CREATE TABLE IF NOT EXISTS `wrm_roles` (
   `role_id` varchar(10) NOT NULL,
   `role_name` varchar(100) NOT NULL,
@@ -1000,7 +1013,7 @@ INSERT INTO `wrm_roles` VALUES ('role6', 'misc2', 'configuration_role6_text','')
 
 -- Signup Table Creation
 DROP TABLE IF EXISTS `wrm_signups`;
-CREATE TABLE  `wrm_signups` (
+CREATE TABLE `wrm_signups` (
   `signup_id` int(10) NOT NULL auto_increment,
   `char_id` int(10) NOT NULL default '0',
   `profile_id` int(10) NOT NULL default '0',
@@ -1015,7 +1028,7 @@ CREATE TABLE  `wrm_signups` (
 
 -- Team Table Creation
 DROP TABLE IF EXISTS `wrm_teams`;
-CREATE TABLE  `wrm_teams` (
+CREATE TABLE `wrm_teams` (
   `team_id` int(10) NOT NULL auto_increment,
   `raid_id` int(10) NOT NULL default '0',
   `team_name` varchar(255) NOT NULL default '',
@@ -1034,4 +1047,5 @@ PRIMARY KEY ( `version_number` )
 -- Version Data
 INSERT INTO `wrm_version` VALUES ('4.0.0','Version 4.0.0 of WoW Raid Manager');
 INSERT INTO `wrm_version` VALUES ('4.0.1','Version 4.0.1 of WoW Raid Manager');
+INSERT INTO `wrm_version` VALUES ('4.0.2','Version 4.0.2 of WoW Raid Manager');
 
