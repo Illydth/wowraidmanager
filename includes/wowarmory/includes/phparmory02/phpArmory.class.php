@@ -150,7 +150,7 @@ class phpArmory {
 		if(($realm==NULL)&&($this->realm)) $realm = $this->realm;
 		
 		$realm = str_replace("\'", "%%27",$realm);
-		$url = $this->armory."character-%s.xml?r=".str_replace(" ", "+",$realm)."&n=".str_replace(" ", "+",$character);
+		$url = $this->armory."character-%s.xml?r=".urlencode($realm)."&n=".urlencode($character);
 		$result = $this->xmlToArray($this->xmlFetch(sprintf($url, "sheet")));
 		
 		//Character skills page is no longer available.
@@ -294,18 +294,36 @@ class phpArmory {
 	* @param integer	$timeout		The connection timeout in seconds
 	*/
 	function xmlFetch($url, $userAgent = NULL, $timeout = NULL, $lang = NULL){
-	
+		//@@ DWAGNER - Change to Function
 		if(($userAgent==NULL)&&($this->userAgent)) $userAgent = $this->userAgent;
 		if(($timeout==NULL)&&($this->timeout)) $timeout = $this->timeout;
 		if(($lang==NULL)&&($this->lang)) $lang = $this->lang; //lang suport courtesy from flokohlert
-	
+
+        // @@ Change: Get the specific page data from the URL and use that to open error
+        //    and output files.
+		if (strpos($url,$this->wow) === FALSE)
+		{
+			// Getting Character information
+			$matches = array();
+			preg_match('"(.*)/(.*).xml(.*)"', $url, $matches);
+			$output_data = $matches[2];
+			$ext = ".xml";
+		}
+		else
+		{
+			// Getting Patch Notes
+			$output_data = "patch_notes";
+			$ext = ".html";
+		}
+		// Open an error log to write to for information.
+        $stderrfptr = fopen(getcwd() . "../../../cache/armory_log/" . $output_data . "_stderr.log", "w+");
+				
 		if (function_exists('curl_init')){
 	
 			$ch = curl_init();
 			$timeout = $this->timeout;
 			$userAgent = $this->userAgent;
-			
-			$stderrfptr = fopen(getcwd() . "../../../cache/armory_log/stderr.log", "w+");
+ 			
 			curl_setopt ($ch, CURLOPT_URL, $url);
 			curl_setopt ($ch, CURLOPT_VERBOSE, 1);
 			curl_setopt ($ch, CURLOPT_STDERR, $stderrfptr);
@@ -340,6 +358,11 @@ class phpArmory {
                 die('There couldn\'t be found any function on your server, whichwork!<br /><br />Try this functions:<br />- curl<br />- file_get_contents with stream_context_create<br />- fopen with stream_context_create<br /><br />Ask your hoster to activate these functions.');
         }
 
+        // Turn on to output raw XML armory data to file on disk.
+		$stdoutfptr = fopen(getcwd() . "../../../cache/armory_log/" . $output_data . "_data" . $ext, "w+");
+		fwrite($stdoutfptr, $f);
+		fclose($stdoutfptr);
+        
 		return $f;
 	}
 
