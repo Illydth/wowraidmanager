@@ -70,7 +70,8 @@ function db_password_change($profile_id, $dbusernewpassword)
 {
 	global $db_user_id, $db_group_id, $db_user_name, $db_user_email, $db_user_password, $db_table_user_name; 
 	global $db_table_group_name, $auth_user_class, $auth_alt_user_class, $table_prefix, $db_raid, $phpraid_config;
-
+	global $db_add_group_ids;
+	
 	// SMF Specific Password Mangling
 	/* 
 	 * For SMF, to create a password we use the sha1 hashing algorithm but we pre-pend the username
@@ -134,7 +135,7 @@ function password_check($oldpassword, $profile_id, $encryptflag)
 {
 	global $db_user_id, $db_group_id, $db_user_name, $db_user_email, $db_user_password, $db_table_user_name; 
 	global $db_table_group_name, $auth_user_class, $auth_alt_user_class, $table_prefix, $db_raid, $phpraid_config;
-	global $pwd_hasher;
+	global $pwd_hasher,	$db_add_group_ids;
 
 	$sql_passchk = sprintf("SELECT " . $db_user_password . " FROM " . $table_prefix . $db_table_user_name . 
 						" WHERE " . $db_user_id . " = %s", quote_smart($profile_id)
@@ -185,7 +186,8 @@ function phpraid_login()
 {
 	global $db_user_id, $db_group_id, $db_user_name, $db_user_email, $db_user_password, $db_table_user_name; 
 	global $db_table_group_name, $auth_user_class, $auth_alt_user_class, $table_prefix, $db_raid, $phpraid_config;
-
+	global $db_add_group_ids;
+	
 	$username = $password = "";
 
 	if(isset($_POST['username'])){
