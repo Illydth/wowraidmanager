@@ -257,20 +257,37 @@ class phpArmory5 {
      */
     protected function getXmlData($url, $userAgent = NULL, $timeOut = NULL) {
 
+    	// @@ DWAGNER - Changes to Function @@
+    	
         // If no user agent is defined, use our pre-defined userAgent from the class definition.
         if ( ($userAgent == NULL) && ($this->userAgent)) {
-
             $userAgent = $this->userAgent;
-
         }
 
         // If no timeout is defined, use our pre-defined timeout from the class definition.
         if ( ($timeOut == NULL) && ($this->timeOut)) {
-
             $timeout = $this->timeOut;
-
         }
 
+        // @@ Change: Get the specific page data from the URL and use that to open error
+        //    and output files.
+		if (strpos($url,$this->wow) === FALSE)
+		{
+			// Getting Character information
+			$matches = array();
+			preg_match('"(.*)/(.*).xml(.*)"', $url, $matches);
+			$output_data = $matches[2];
+			$ext = ".xml";
+		}
+		else
+		{
+			// Getting Patch Notes
+			$output_data = "patch_notes";
+			$ext = ".html";
+		}
+        // Open an error log to write to for information.
+        $stderrfptr = fopen(getcwd() . "../../../cache/armory_log/" . $output_data . "_stderr.log", "w+");
+        
         // Try to download from the given URL for a maximum of our pre-defined download retries from the class definition.
         for ( $i = 1; $i <= $this->downloadRetries; $i++ ) {
 
@@ -293,17 +310,24 @@ class phpArmory5 {
             curl_setopt ( $ch, CURLOPT_HTTPHEADER, array('Accept-language: ' . $this->localeName) );
             curl_setopt ( $ch, CURLOPT_HEADER, 0 );
             curl_setopt ( $ch, CURLOPT_FOLLOWLOCATION, 0 );
+			curl_setopt ( $ch, CURLOPT_VERBOSE, 1);
+            curl_setopt ( $ch, CURLOPT_STDERR, $stderrfptr);
             curl_setopt ( $ch, CURLOPT_FORBID_REUSE, 1 );
             curl_setopt ( $ch, CURLOPT_LOW_SPEED_LIMIT, 5 );
             curl_setopt ( $ch, CURLOPT_LOW_SPEED_TIME, $timeout );
-            curl_setopt ( $ch, CURLOPT_TIMEVALUE, $timeout*3 );
-
+            curl_setopt ( $ch, CURLOPT_TIMEVALUE, $timeout*3 );            
+            
             $f = curl_exec ( $ch );
             $this->lastDownload = time();
 
             // Disabled reporting of the fetched content in error logs. This may spam your host. Only uncomment this line if you are working on localhost aka 127.0.0.1.
-            // trigger_error("phpArmory " . $this->version . " - " . $this->version_state . ": Fetched content: " . $f, E_USER_NOTICE);
-
+            //trigger_error("phpArmory " . $this->version . " - " . $this->version_state . ": Fetched content: " . $f, E_USER_NOTICE);
+			
+            // Turn on to output raw XML armory data to file on disk.
+        	$stdoutfptr = fopen(getcwd() . "../../../cache/armory_log/" . $output_data . "_data" . $ext, "w+");
+            fwrite($stdoutfptr, $f);
+            fclose($stdoutfptr);
+            
             curl_close($ch);
 
             if ( strpos ( $f, 'errCode="noCharacter"' ) ) return ( array ( 'result' => FALSE, 'error' => "Character not found on armory, check spelling and area settings!") );
@@ -315,16 +339,14 @@ class phpArmory5 {
             }
 
         } // for
-
+        fclose($stderrfptr);
+        
         if ( strlen ( $f ) < 100 ) {
-
             return ( array( 'result' => FALSE, 'error' => "Download failed, giving up! Server response: " . $f) );
-
         }
 
         self::triggerNotice("Fetched [" . $url . "] in " . $i . " tries.");
         return array ( 'result' => TRUE, 'XmlData' => $f);
-
     }
 
     /**

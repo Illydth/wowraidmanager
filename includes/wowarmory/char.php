@@ -38,12 +38,20 @@ if ($armver == '020')
 }
 else
 {
-	$char = $armory->getCharacterData($var, $var2);
+	$char = $armory->getCharacterData($var, $var2);	
 	$armoryAreaData = $armory->getArea();
 	// Url for armory icons
 	$avatar_url = $armoryAreaData[1] . "images/portraits/";
 	$icons_url  = $armoryAreaData[1] . "images/icons/";
 }
+
+//Output the Converted Character Array to File.
+ob_start();
+var_dump($char);
+$data = ob_get_clean();
+$stdoutfptr = fopen(getcwd() . "../../../cache/armory_log/char_data_array.html", "w+");
+fwrite($stdoutfptr, $data);
+fclose($stdoutfptr);
 
 // Reduce the array name size, make more easy to work with the array.
 $char = $char['characterinfo'];
@@ -363,7 +371,7 @@ function make_extra_data()
                                                 'color' => value_color(10)
                                           );
 
-                       $extradata['melee_power'] = Array(   
+                        $extradata['melee_power'] = Array(   
                                                 'field' => LANG_MELEE_POWER,
                                                 'value' => $char['charactertab']['melee']['power']['effective'],
                                                 'color' => value_color(3)
@@ -475,7 +483,22 @@ else
 $avatar .= $char['character']['genderid'] . '-' . $char['character']['raceid'] . '-' . $char['character']['classid'] . '.gif';
 
 //Create the Talent info
-$talent_data = make_talent($char['charactertab']['talentspec'],$char['character']['classid']); 
+if (isset($char['charactertab']['talentspecs']['talentspec']['group']))
+{   // Character only has one spec, ONLY set primary spec, secondary is blank.
+	$pri_talent_data = make_talent($char['charactertab']['talentspecs']['talentspec'],$char['character']['classid']); 
+	$sec_talent_data = "";	
+}
+ 
+else if ($char['charactertab']['talentspecs']['talentspec'][0]['active'])
+{   // Character has 2 specs, spec 1 is the active spec.
+	$pri_talent_data = make_talent($char['charactertab']['talentspecs']['talentspec'][0],$char['character']['classid']); 
+	$sec_talent_data = make_talent($char['charactertab']['talentspecs']['talentspec'][1],$char['character']['classid']);
+}
+else
+{   // Character has 2 specs, spec 2 is the active spec.
+	$pri_talent_data = make_talent($char['charactertab']['talentspecs']['talentspec'][1],$char['character']['classid']); 
+	$sec_talent_data = make_talent($char['charactertab']['talentspecs']['talentspec'][0],$char['character']['classid']);
+}
 
 if(is_array($char['charactertab']['buffs']['spell'][0]))
 {
@@ -529,7 +552,8 @@ $tags=array(
         'tpl_char_character_level'=>$char['character']['level'],
         'tpl_char_character_race'=>strtoupper($char['character']['race']),
         'tpl_char_character_class'=>strtoupper($char['character']['class']),
-        'tpl_talent_data'=>$talent_data,
+        'tpl_pri_talent_data'=>$pri_talent_data,
+		'tpl_sec_talent_data'=>$sec_talent_data,
         'tpl_buffs'=>$buffs,
         'tpl_icons_professions_0'=>$icons_url . "professions/" . $char['charactertab']['professions']['skill'][0]['key'] . "-sm.gif",
         'tpl_char_charactertab_professions_skill_0_name'=>$char['charactertab']['professions']['skill'][0]['name'],
