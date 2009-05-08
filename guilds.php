@@ -78,7 +78,6 @@ if($_GET['mode'] == 'view' || $_GET['mode'] == 'update') {
 	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(),1);
 	while($data = $db_raid->sql_fetchrow($result, true)) {
 		
-
 	$edit = '<a href="guilds.php?mode=update&amp;id='.$data['guild_id'].'"><img src="templates/' . $phpraid_config['template'] . 
 			'/images/icons/icon_edit.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['edit'].'\');" onMouseout="hideddrivetip();" alt="edit icon"></a>';
 			
@@ -92,7 +91,7 @@ if($_GET['mode'] == 'view' || $_GET['mode'] == 'update') {
 				'Guild Name'=>$data['guild_name'],
 				'Guild Tag'=>$data['guild_tag'],
 				'Guild Master'=>$data['guild_master'],
-				'Actions'=>$edit . $delete,
+				'Buttons'=>$edit . $delete,
 				)
 		);
 	}
