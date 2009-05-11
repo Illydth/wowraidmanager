@@ -411,7 +411,7 @@ if($_GET['mode'] != 'delete')
 		if ($event_type_id != '' && $expansion_id != '')
 		{
 			$events = '<select name="event" id="event" class="post" onChange="MM_jumpMenu(\'parent\',this,0)">
-						<option value=""></option>';
+						<option value="locations.php?mode=view"></option>';
 			
 			if ($event_type_id == 1 || $event_type_id == 2) // If Dungeons or Raids pull exp_id = 0 also.
 				$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "events WHERE (exp_id =" .$expansion_id . " OR exp_id = 0) AND event_type_id =" .$event_type_id. " ORDER BY zone_desc";
@@ -546,7 +546,7 @@ if($_GET['mode'] != 'delete')
 
 		// Setup Events Select Box.
 		$events = '<select name="event" id="event" class="post" onChange="MM_jumpMenu(\'parent\',this,0)">
-					<option value=""></option>';
+					<option value="locations.php?mode=update&amp;id=' . $id . '"></option>';
 
 		if ($event_type_id == 1 || $event_type_id == 2) // If Dungeons or Raids pull exp_id = 0 also.
 			$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "events WHERE (exp_id =" .$expansion_id . " OR exp_id = 0) AND event_type_id =" .$event_type_id. " ORDER BY zone_desc";
@@ -594,7 +594,10 @@ if($_GET['mode'] != 'delete')
 		$wow_name = $event_data['wow_name'];
 		$zone_desc = $event_data['zone_desc'];
 		$location = '<input name="location" value="'.$wow_name.'" type="text" id="location" style="width:350px" class="post" DISABLED>';
-		$icon = "templates/" . $phpraid_config['template'] . "/" . $event_data['icon_path'];
+		if ($event_data['icon_path']!='')
+			$icon = "templates/" . $phpraid_config['template'] . "/" . $event_data['icon_path'];
+		else
+			$icon = '';
 		$form_action = 'locations.php?mode=edit&amp;id='.$id.'&amp;event_type='.$event_type_id.'&amp;event='.$event_id.'&amp;location='.$zone_desc;
 		
 		$buttons = '<input type="submit" value="'.$phprlang['update'].'" name="submit" class="mainoption"> <input type="reset" value="'.$phprlang['reset'].'" name="reset" class="liteoption">';

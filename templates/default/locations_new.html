@@ -17,7 +17,11 @@
         </tr>
 		<tr>
           <td width="200" class="row1"><span class="headmed"><strong>{$locations_new.event_text}</strong></span></td>
-          <td class="row2">{$locations_new.event}&nbsp;&nbsp;&nbsp;<img src="{$locations_new.icon}"></td>
+		  {if $locations_new.icon != ""}
+          	<td class="row2">{$locations_new.event}&nbsp;&nbsp;&nbsp;<img src="{$locations_new.icon}"></td>
+          {else}
+          	<td class="row2">{$locations_new.event}</td>
+		  {/if}          
         </tr>
         <tr>
           <td width="200" class="row1"><span class="headmed"><strong>{$locations_new.location_text}</strong></span></td>
