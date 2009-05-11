@@ -41,11 +41,14 @@ require_once("includes/authentication.php");
 // check for new version
 // primarily stripped from phpBB version checking
 // ingenious ;)
-$current_version = explode('.', $version);
-$minor_revision = (int) $current_version[2];
-$sub_head_revision = (int) $current_version[3];
-$sub_middle_revision = (int) $current_version[4];
-$sub_minor_revision = (int) $current_version[5];
+$current_version_array = explode('.', $version);
+$major_version = (int) $current_version_array[0];
+$minor_version = (int) $current_version_array[1];
+$patch_version = (int) $current_version_array[2];
+$sub_major_version = (int) $current_version_array[3];
+$sub_minor_version = (int) $current_version_array[4];
+$sub_patch_version = (int) $current_version_array[5];
+$current_version = (int) $current_version_array[0] . '.' . (int) $current_version_array[1] . '.' . (int) $current_version_array[2] . ':' . (int) $current_version_array[3] . '.' . (int) $current_version_array[4] . '.' . (int) $current_version_array[5];
 
 $errno = 0;
 $errstr = $version_info = '';
@@ -73,21 +76,22 @@ if ($fsock = @fsockopen('www.wowraidmanager.net', 80, $errno, $errstr, 10))
 	}
 	@fclose($fsock);
 	$version_info = explode("\n", $version_info);
-	$latest_head_revision = (int) $version_info[0];
-	$latest_minor_revision = (int) $version_info[2];
-	$sub_latest_head_revision = (int) $version_info[4];
-	$sub_latest_middle_revision = (int) $version_info[5];
-	$sub_latest_minor_revision = (int) $version_info[6];
-	$latest_version = (int) $version_info[0] . '.' . (int) $version_info[1] . '.' . (int) $version_info[2] . ' subversion ' . (int) $version_info[4] . '.' . (int) $version_info[5] . '.' . (int) $version_info[6];
+	$latest_major_version = (int) $version_info[0];
+	$latest_minor_version = (int) $version_info[1];
+	$latest_patch_revision = (int) $version_info[2];
+	$latest_sub_major_version = (int) $version_info[4];
+	$latest_sub_minor_version = (int) $version_info[5];
+	$latest_sub_patch_version = (int) $version_info[6];
+	$latest_version = (int) $version_info[0] . '.' . (int) $version_info[1] . '.' . (int) $version_info[2] . ':' . (int) $version_info[4] . '.' . (int) $version_info[5] . '.' . (int) $version_info[6];
 
-	if ($latest_head_revision == 3 && $minor_revision == $latest_minor_revision && $sub_head_revision  == $sub_latest_head_revision && $sub_middle_revision == $sub_latest_middle_revision && $sub_minor_revision == $sub_latest_minor_revision)
+	if ($current_version == $latest_version)
 	{
 		$version_info = '<p style="color:green">' . $phprlang['configuration_version_current'] . '</p>';
 	}
 	else
 	{
 		$version_info = '<br><div class="errorHeader">' . $phprlang['configuration_version_outdated_header'] . '</div>';
-		$version_info .= '<div class="errorBody">' . sprintf($phprlang['configuration_version_outdated_message'], $latest_version, $version) . '</div><br>';
+		$version_info .= '<div class="errorBody">' . sprintf($phprlang['configuration_version_outdated_message'], $latest_version, $current_version) . '</div><br>';
 	}
 }
 else
