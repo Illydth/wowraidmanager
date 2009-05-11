@@ -40,6 +40,9 @@ require_once('lang_pages.php');
 // world of warcraft language file
 require_once('lang_wow.php');
 
+// admin section language file
+require_once('lang_admin.php');
+
 // data output headers
 $phprlang['add_team']='點擊以增加新隊伍';
 $phprlang['add_team_dropdown_text']='將新成員增加至隊伍';

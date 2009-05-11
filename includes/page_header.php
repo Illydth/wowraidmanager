@@ -72,6 +72,13 @@ else
 	//$BridgeSupportPWDChange came from the bridge
 	if ( ($BridgeSupportPWDChange == TRUE) and isset($BridgeSupportPWDChange) )
 		$login_change_pass = '<a href="login.php?mode=ch_pwd">'.$phprlang['login_chpwd'].'</a>';
+	if ( $priv_config )
+	{
+		echo "Priv Config Set, generating admin link";
+		$admin_config_link = '<a href="admin/admin_index.php">'.$phprlang['admin_section_link'].'</a>';
+	}
+	else
+		echo "Priv Config not Set.";
 	$login_form_close = '</form>';
 }
 if(($phpraid_config['disable'] == '1') AND ($priv_config == 1))
@@ -114,6 +121,7 @@ $wrmsmarty->assign('page_header_data',
 			'armory_url'=>$phpraid_config['armory_link'],
 			'dkp_url'=>$phpraid_config['eqdkp_url'],
 			'header_link'=>$phpraid_config['header_link'],
+			'admin_config_link'=>$admin_config_link,
 	)
 );
 
