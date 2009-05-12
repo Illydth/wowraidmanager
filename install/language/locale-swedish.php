@@ -3,7 +3,7 @@
 //Svenska installations str�ngar
 //
 global $localstr;
-$localstr['headtitle'] = 'Välkommen till installationen av WRM 3.x.x.';
+$localstr['headtitle'] = 'Välkommen till installationen av WRM 4.x.x.';
 $localstr['headbodyinfo'] = 'Vänligen notera att databasen du installerar till redan måste existera.';
 
 //menu

@@ -3,7 +3,7 @@
 //germany install strings
 //
 global $localstr;
-$localstr['headtitle'] = 'Willkommen zu der WRM 3.x.x Installation.';
+$localstr['headtitle'] = 'Willkommen zu der WRM 4.x.x Installation.';
 $localstr['headbodyinfo'] = 'Bitte beachte, dass die Datenbank, in der du WRM installieren willst, auch existiert!';
 
 //menu
@@ -13,17 +13,17 @@ $localstr['menustep2conf'] = '2. Konfiguration';
 $localstr['menustep3instab'] = '3. Tabellen installieren';
 $localstr['menustep4auth'] = '4. Berechtigungsschema';
 $localstr['menustep5confauth'] = '5. Konf. Berechtigungsschema';
-$localstr['menustep6final'] = '6. Abschließen';
+$localstr['menustep6final'] = '6. Abschlieï¿½en';
 
 //botton
 $localstr['bd_submit'] = 'weiter';
-$localstr['bd_reset'] = 'zurücksetzen';
+$localstr['bd_reset'] = 'zurï¿½cksetzen';
 $localstr['bd_yes'] = 'Ja';
 $localstr['bd_no'] = 'Nein';
 
 //stuff
 $localstr['hittingsubmit'] = 'Bitte kontrolliere deine Eingaben bevor du auf "weiter" klickst.';
-$localstr['pressbrowserpack'] ='Bitte benutze in deinem Browser die "zurück" Taste und gebe die Daten erneut ein.';
+$localstr['pressbrowserpack'] ='Bitte benutze in deinem Browser die "zurï¿½ck" Taste und gebe die Daten erneut ein.';
 $localstr['problem'] ='Problem';
 $localstr['txtusername'] = 'Benutzername';
 $localstr['txtpassword'] = 'Passwort';
@@ -39,11 +39,11 @@ $localstr['step2dbserverusername'] = 'MySQL-Server Benutzername';
 $localstr['step2dbserverpwd'] = 'MySQL-Server Passwort';
 $localstr['step2WRMtableprefix'] = 'WRM Tabellenprefix';
 $localstr['step2installtype'] = 'Art der Installation';
-$localstr['step2error01'] = 'Bei falschen Eingaben könnte es zu unvorhersehbaren Auswirkungen kommen, eine Hilfe wird nicht angeboten!';
+$localstr['step2error01'] = 'Bei falschen Eingaben kï¿½nnte es zu unvorhersehbaren Auswirkungen kommen, eine Hilfe wird nicht angeboten!';
 
 //step 3
 $localstr['step3errordbcon'] = 'Fehler: konnte keine Verbindung zur angegeben Datenbank herstellen.<br>';
-$localstr['step3errorschema'] = 'Fehler: das Upgrade-Schema konnte nicht geöffnet werden';
+$localstr['step3errorschema'] = 'Fehler: das Upgrade-Schema konnte nicht geï¿½ffnet werden';
 $localstr['step3errorsql'] = 'Fehler bei der Installation :<br> SQL-String: $sql<br> Bericht: ';
 $localstr['step3installinfo'] = 'Wenn du dies hier lesen kannst, sind keine Fehler bei der Installation der SQL-Tabellen aufgetreten!';
 $localstr['step3errorversion'] = 'Die Software-Version in version.php entsprich nicht der Version der Datenbank in der Version-Tabelle.';
@@ -58,31 +58,31 @@ $localstr['step4desc_smf'] = 'Simple Machines Forum 1.x';
 $localstr['step4desc_smf2'] = 'Simple Machines Forum 2.x';
 $localstr['step4desc_wbb'] = 'WoltLab Burning Board Lite 1.x.x';
 $localstr['step4desc_xoops'] = 'XOOPS';
-$localstr['step4unkownauth'] = '(wenn du nicht sicher bist, wähle bitte "iUMS")';
-$localstr['step4chooseauth'] = 'Bitte wähle dein Berechtigungsschema aus.';
+$localstr['step4unkownauth'] = '(wenn du nicht sicher bist, wï¿½hle bitte "iUMS")';
+$localstr['step4chooseauth'] = 'Bitte wï¿½hle dein Berechtigungsschema aus.';
 
 //--------------------------
 // Auth.
 //--------------------------
-$localstr['step5failconWRM'] = 'Verbindung zur WRM-Datenbank nicht möglich';
+$localstr['step5failconWRM'] = 'Verbindung zur WRM-Datenbank nicht mï¿½glich';
 $localstr['step5selctusername'] = 'dieser Benutzer bekommt vollen Zugriff auf das WRM';
-$localstr['step5sub1follval'] = 'Um die Installation abzuschließen, fülle bitte die folgenden Felder aus';
+$localstr['step5sub1follval'] = 'Um die Installation abzuschlieï¿½en, fï¿½lle bitte die folgenden Felder aus';
 $localstr['step5done'] = 'fertig';
-$localstr['step5sub2usernamefullperm'] = 'wähle bitte den Benutzer aus, der vollen Zugriff auf das WRM bekommt';
-$localstr['step5sub3norest'] = 'Keine Einschränkung';
-$localstr['step5sub3noaddus'] = 'Keine zusätzliche Benutzergruppe';
+$localstr['step5sub2usernamefullperm'] = 'wï¿½hle bitte den Benutzer aus, der vollen Zugriff auf das WRM bekommt';
+$localstr['step5sub3norest'] = 'Keine Einschrï¿½nkung';
+$localstr['step5sub3noaddus'] = 'Keine zusï¿½tzliche Benutzergruppe';
 $localstr['step5sub2failfindfile'] = 'konnte die Konfigurationsdatei nich finden:';
-$localstr['step5sub2checkdir'] = 'überprüfe das Verzeichnis noch mal';
-$localstr['step5sub3group01'] = 'Wähle die Benutzergruppe aus, welche Zugang zur Nutzung von WRM hat';
-$localstr['step5sub3group02'] = 'Benutztern die nicht in dieser Benutzergruppe sind, ist es nicht möglich sich anzumelden';
-$localstr['step5sub3group03'] = 'Wenn du willst, dass alle Benutzer unabhängig von der Benutzergruppe sich im WRM anmelden können, wähle "Keine Einschränkung" aus.';
-$localstr['step5sub3altgroup01'] = 'Wähle eine alternative Benutzergruppe aus, welcher den Zugang zu WRM auch erlaubt ist';
-$localstr['step5sub3altgroup02'] = 'mit dieser alternativen Gruppe ist es Benutzern möglich, sich unabhängig davon anzumelden, ob sie in der oben genannten Benutzergruppe sind oder nicht ';
+$localstr['step5sub2checkdir'] = 'ï¿½berprï¿½fe das Verzeichnis noch mal';
+$localstr['step5sub3group01'] = 'Wï¿½hle die Benutzergruppe aus, welche Zugang zur Nutzung von WRM hat';
+$localstr['step5sub3group02'] = 'Benutztern die nicht in dieser Benutzergruppe sind, ist es nicht mï¿½glich sich anzumelden';
+$localstr['step5sub3group03'] = 'Wenn du willst, dass alle Benutzer unabhï¿½ngig von der Benutzergruppe sich im WRM anmelden kï¿½nnen, wï¿½hle "Keine Einschrï¿½nkung" aus.';
+$localstr['step5sub3altgroup01'] = 'Wï¿½hle eine alternative Benutzergruppe aus, welcher den Zugang zu WRM auch erlaubt ist';
+$localstr['step5sub3altgroup02'] = 'mit dieser alternativen Gruppe ist es Benutzern mï¿½glich, sich unabhï¿½ngig davon anzumelden, ob sie in der oben genannten Benutzergruppe sind oder nicht ';
 
 // phpBB
 $localstr['step5phpBBdesc'] = 'phpBB';
-$localstr['step5phpBBsub1desc'] = 'Du hast phpBB-Authentifizierung ausgewählt';
-$localstr['step5phpBBsub1inputdir'] = 'Gebe den relativen Pfad zu deinem phpBB-Verzeichnis ein (einschließlich des abschließenden Schrägstriches!)';
+$localstr['step5phpBBsub1desc'] = 'Du hast phpBB-Authentifizierung ausgewï¿½hlt';
+$localstr['step5phpBBsub1inputdir'] = 'Gebe den relativen Pfad zu deinem phpBB-Verzeichnis ein (einschlieï¿½lich des abschlieï¿½enden Schrï¿½gstriches!)';
 $localstr['step5phpBBsub2failincdir'] = 'Dein angegebenes phpBB-Verzeichnis ist falsch';
 $localstr['step5phpBBsub2failfindautfile'] = 'konnte die Konfigurationsdatei "../auth/auth_phpbb3.php" nicht finden';
 $localstr['step5phpBBsub2faildownautfile'] = 'bitte lade sie dir herunter (von der WRM-Homepage) und kopiere sie nach "/auth".';
@@ -90,70 +90,70 @@ $localstr['step5phpBBsub2founddb'] = 'gefunden phpBB-Datebank';
 $localstr['step5phpBBsub2readconffile'] = 'lese phpBB-Konfigurationsdatei';
 $localstr['step5phpBBsub3errorretusergroup'] = 'Fehler beim Abrufen der Benutzergruppe aus der phpBB3-Datebank';
 $localstr['step5phpBBsub3errorretusername'] = 'Fehler beim Abrufen der Benutzernamen aus der phpBB3-Datebank';
-$localstr['step5phpBBsub4wantimport'] = 'Möchtest du alle Benutzter aus dem phpBB Forum/Board importieren';
-$localstr['step5phpBBsub4srynotsupport'] = 'Endschuldigung: der Import der Benutzer aus dem phpBB Forum/Board wird bei phpBB2 nicht unterstützt';
+$localstr['step5phpBBsub4wantimport'] = 'Mï¿½chtest du alle Benutzter aus dem phpBB Forum/Board importieren';
+$localstr['step5phpBBsub4srynotsupport'] = 'Endschuldigung: der Import der Benutzer aus dem phpBB Forum/Board wird bei phpBB2 nicht unterstï¿½tzt';
 $localstr['step5phpBBsub5import'] = 'Import';
-$localstr['step5phpBBfailconphpBB'] = 'Verbindung zur phpBB-Datenbank nicht möglich';
+$localstr['step5phpBBfailconphpBB'] = 'Verbindung zur phpBB-Datenbank nicht mï¿½glich';
 
 // e107
 $localstr['step5e107desc'] = 'e107';
-$localstr['step5e107sub1desc'] = 'Du hast e107-Authentifizierung ausgewählt';
-$localstr['step5e107sub1inputdir'] = 'Gebe den relativen Pfad zu deinem e107-Verzeichnis ein (einschließlich des abschließenden Schrägstriches!)';
+$localstr['step5e107sub1desc'] = 'Du hast e107-Authentifizierung ausgewï¿½hlt';
+$localstr['step5e107sub1inputdir'] = 'Gebe den relativen Pfad zu deinem e107-Verzeichnis ein (einschlieï¿½lich des abschlieï¿½enden Schrï¿½gstriches!)';
 $localstr['step5e107sub2failincdir'] = 'Dein Angegebenes e107-Verzeichnis ist falsch';
 $localstr['step5e107sub2readconffile'] = 'lese e107-Konfigurationsdatei';
 $localstr['step5e107sub3errorretusername'] = 'Fehler beim Abrufen der Benutzernamen aus der e107-Datebank';
 $localstr['step5e107sub3errorretuserclass'] = 'Fehler beim Abrufen der Benutzergruppe aus der e107-Datebank';
-$localstr['step5e107failcone107'] = 'Verbindung zur e107-Datenbank nicht möglich';
+$localstr['step5e107failcone107'] = 'Verbindung zur e107-Datenbank nicht mï¿½glich';
 
 // iums = integrated User Management System
 $localstr['step5iumsdesc'] = 'integriertes Benutzermanagement-System';
-$localstr['step5iumssub1desc'] = 'Du hast "integriertes Benutzermanagement-System"-Authentifizierung ausgewählt';
-$localstr['step5sub1iumsfilladmindesc'] = 'fülle alle Werte für den Benutzter des Super-Administrator aus.';
+$localstr['step5iumssub1desc'] = 'Du hast "integriertes Benutzermanagement-System"-Authentifizierung ausgewï¿½hlt';
+$localstr['step5sub1iumsfilladmindesc'] = 'fï¿½lle alle Werte fï¿½r den Benutzter des Super-Administrator aus.';
 
 // Joomla germany
 $localstr['step5joomladesc'] = 'Joomla';
-$localstr['step5joomlasub1desc'] = 'Du hast Joomla-Authentifizierung ausgewählt';
-$localstr['step5joomlasub1inputdir'] = 'Gebe den relativen Pfad zu deinem Joomla-Verzeichnis ein (einschließlich des abschließenden Schrägstriches!)';
+$localstr['step5joomlasub1desc'] = 'Du hast Joomla-Authentifizierung ausgewï¿½hlt';
+$localstr['step5joomlasub1inputdir'] = 'Gebe den relativen Pfad zu deinem Joomla-Verzeichnis ein (einschlieï¿½lich des abschlieï¿½enden Schrï¿½gstriches!)';
 $localstr['step5joomlasub2failincdir'] = 'Dein angegebenes Joomla-Verzeichnis ist falsch';
 $localstr['step5joomlasub2readconffile'] = 'lese Joomla-Konfigurationsdatei';
 $localstr['step5joomlasub3errorretusername'] = 'Fehler beim Abrufen der Benutzernamen aus der Joomla-Datebank';
 $localstr['step5joomlasub3errorretuserclass'] = 'Fehler beim Abrufen der Benutzergruppe aus der Joomla-Datebank';
-$localstr['step5joomlafailconejoomla'] = 'Verbindung zur Joomla-Datenbank nicht möglich';
+$localstr['step5joomlafailconejoomla'] = 'Verbindung zur Joomla-Datenbank nicht mï¿½glich';
 
 // SMF = Simple Machines Forum
 $localstr['step5smfdesc'] = 'SMF';
-$localstr['step5smfsub1desc'] = 'Du hast SMF-Authentifizierung ausgewählt';
-$localstr['step5smfsub1inputdir'] = 'Gebe den relativen Pfad zu deinem SMF-Verzeichnis ein (einschließlich des abschließenden Schrägstriches!)';
+$localstr['step5smfsub1desc'] = 'Du hast SMF-Authentifizierung ausgewï¿½hlt';
+$localstr['step5smfsub1inputdir'] = 'Gebe den relativen Pfad zu deinem SMF-Verzeichnis ein (einschlieï¿½lich des abschlieï¿½enden Schrï¿½gstriches!)';
 $localstr['step5smfsub2failincdir'] = 'Dein angegebenes SMF-Verzeichnis ist falsch';
 $localstr['step5smfsub2readconffile'] = 'lese SMF-Konfigurationsdatei';
 $localstr['step5smfsub3errorretusername'] = 'Fehler beim Abrufen der Benutzernamen aus der SMF-Datebank';
 $localstr['step5smfsub3errorretuserclass'] = 'Fehler beim Abrufen der Benutzergruppe aus der SMF-Datebank';
-$localstr['step5smffailconesmf'] = 'Verbindung zur SMF-Datenbank nicht möglich';
+$localstr['step5smffailconesmf'] = 'Verbindung zur SMF-Datenbank nicht mï¿½glich';
 
 // WoltLab Burning Board Lite 1.x.x = wbb
 $localstr['step5wbbdesc'] = 'WoltLab Burning Board';
-$localstr['step5wbbsub1desc'] = 'Du hast WBB-Authentifizierung ausgewählt';
-$localstr['step5wbbsub1inputdir'] = 'Gebe den relativen Pfad zu deinem WBB-Verzeichnis ein (einschließlich des abschließenden Schrägstriches!)';
+$localstr['step5wbbsub1desc'] = 'Du hast WBB-Authentifizierung ausgewï¿½hlt';
+$localstr['step5wbbsub1inputdir'] = 'Gebe den relativen Pfad zu deinem WBB-Verzeichnis ein (einschlieï¿½lich des abschlieï¿½enden Schrï¿½gstriches!)';
 $localstr['step5wbbsub2failincdir'] = 'Dein angegebenes WBB-Verzeichnis ist falsch';
 $localstr['step5wbbsub2readconffile'] = 'lese WBB-Konfigurationsdatei';
 $localstr['step5wbbsub3errorretusername'] = 'Fehler beim Abrufen der Benutzernamen aus der WBB-Datebank';
 $localstr['step5wbbsub3errorretuserclass'] = 'Fehler beim Abrufen der Benutzergruppe aus der WBB-Datebank';
-$localstr['step5wbbfailconesmf'] = 'Verbindung zur WBB-Datenbank nicht möglich';
+$localstr['step5wbbfailconesmf'] = 'Verbindung zur WBB-Datenbank nicht mï¿½glich';
 
 // XOOPS
 $localstr['step5xoopsdesc'] = 'XOOPS';
-$localstr['step5xoopssub1desc'] = 'Du hast XOOPS-Authentifizierung ausgewählt';
-$localstr['step5xoopssub1inputdir'] = 'Gebe den relativen Pfad zu deinem XOOPS-Verzeichnis ein (einschließlich des abschließenden Schrägstriches!)';
+$localstr['step5xoopssub1desc'] = 'Du hast XOOPS-Authentifizierung ausgewï¿½hlt';
+$localstr['step5xoopssub1inputdir'] = 'Gebe den relativen Pfad zu deinem XOOPS-Verzeichnis ein (einschlieï¿½lich des abschlieï¿½enden Schrï¿½gstriches!)';
 $localstr['step5xoopssub2failincdir'] = 'dein angegebenes XOOPS-Verzeichnis ist falsch';
 $localstr['step5xoopssub2readconffile'] = 'lese XOOPS-Konfigurationsdatei';
 $localstr['step5xoopssub3errorretusername'] = 'Fehler beim Abrufen der Benutzernamen aus der XOOPS-Datebank';
 $localstr['step5xoopssub3errorretuserclass'] = 'Fehler beim Abrufen der Benutzergruppe aus der XOOPS-Datebank';
-$localstr['step5xoopsfailconesmf'] = 'Verbindung zur XOOPS-Datenbank nicht möglich';
+$localstr['step5xoopsfailconesmf'] = 'Verbindung zur XOOPS-Datenbank nicht mï¿½glich';
 
 //----------------------------------------------
 //step done
 $localstr['stepdonefinished'] = 'Fertig';
 $localstr['stepdonesetupcomplete'] = 'Die Installtion ist nun komplett.';
-$localstr['stepdoneremovedir'] = 'Lösche bitte das "install/"-Verzeichnis und klicke anschließend <a href="../index.php">auf diesen Link</a> wenn du fertig bist.';
+$localstr['stepdoneremovedir'] = 'Lï¿½sche bitte das "install/"-Verzeichnis und klicke anschlieï¿½end <a href="../index.php">auf diesen Link</a> wenn du fertig bist.';
 
 ?>

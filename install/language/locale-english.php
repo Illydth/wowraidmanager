@@ -3,7 +3,7 @@
 //english install strings
 //
 global $localstr;
-$localstr['headtitle'] = 'Welcome to the WRM 3.x.x Installation.';
+$localstr['headtitle'] = 'Welcome to the WRM 4.x.x Installation.';
 $localstr['headbodyinfo'] = 'Please note that the database you install into should already exist.';
 
 //menu
