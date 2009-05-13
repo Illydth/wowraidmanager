@@ -125,35 +125,17 @@ require_once($phpraid_dir.'templates/' . $phpraid_config['template'] . '/admin/a
  **********************************************/
 $admin_site_link = '<a href="../index.php">' . $theme_admin_site_link . "</a>";
 $admin_main_link = '<a href="admin_index.php">' . $theme_admin_main_link . '</a>';
+$admin_generalcfg_link = '<a href="admin_generalcfg.php">' . $theme_admin_generalcfg_link . '</a>';
+$admin_timecfg_link = '<a href="admin_timecfg.php">' . $theme_admin_timecfg_link . '</a>';
+$admin_raid_settings_link = '<a href="admin_raidsettings.php">' . $theme_admin_raid_settings_link . '</a>';
+$admin_externcfg_link = '<a href="admin_externcfg.php">' . $theme_admin_externcfg_link . '</a>';
+$admin_permissions_link = '<a href="admin_permissions.php?mode=view">' . $theme_admin_permissions_link . '</a>';
+$admin_signup_rights_link = '<a href="admin_signuprights.php">' . $theme_admin_signuprights_link . '</a>';
+$admin_user_settings_link = '<a href="admin_usersettings.php">' . $theme_admin_usersettings_link . '</a>';
+$admin_user_mgt_link = '<a href="admin_usermgt.php">' . $theme_admin_usermgt_link . '</a>';
+$admin_datatablecfg_link = '<a href="admin_datatablecfg.php">' . $theme_admin_datatablecfg_link . '</a>';
+$admin_rolecfg_link = '<a href="admin_rolecfg.php">' . $theme_admin_rolecfg_link . '</a>';
 $admin_logs_link = '<a href="admin_logs.php?mode=view">' . $theme_admin_logs_link . '</a>';
-
-// links useable for everyone
-//$index_link = '<a href="' . $phpraid_config['header_link'] . '">' . $theme_index_link . '</a>';
-//$home_link = '<a href="index.php">' . $theme_home_link . '</a>';
-//$calendar_link = '<a href="calendar.php">' . $theme_calendar_link . '</a>';
-//$roster_link = '<a href="roster.php">' . $theme_roster_link . '</a>';
-//$dkp_view_link = '<a href="dkp_view.php">' . $theme_dkp_link . '</a>';
-
-// these links need special permissions
-//$priv_announcement ? $announce_link = '<a href="announcements.php?mode=view">' . $theme_announcement_link . '</a>' : $announce_link = '';
-//$priv_config ? $phpraid_configure_link = '<a href="configuration.php">' . $theme_configure_link . '</a>' : $phpraid_configure_link = '';
-//$priv_permissions ? $permissions_link = '<a href="permissions.php?mode=view">' . $theme_permissions_link . '</a>' : $permissions_link = '';
-//$priv_guilds ?	$guild_link = '<a href="guilds.php?mode=view">' . $theme_guild_link . '</a>' : $guild_link = '';
-//$priv_locations ? $locations_link = '<a href="locations.php?mode=view">' . $theme_locations_link . '</a>' : $locations_link = '';
-//$priv_logs ? $logs_link = '<a href="logs.php?mode=view">' . $theme_logs_link . '</a>' : $logs_link = '';
-//$priv_profile ? $profile_link = '<a href="profile.php?mode=view">' . $theme_profile_link . '</a>' : $profile_link = '';
-//$priv_users ? $users_link = '<a href="users.php?mode=view">' . $theme_users_link . '</a>' : $users_link = '';
-//$logged_in != '1' ? $register_link = '<a href="' . $phpraid_config['register_url'] . '">' . $theme_register_link . '</a>' : $register_link = '';
-//if ( $priv_raids OR ($phpraid_config['enable_five_man'] AND $priv_profile) )
-//{
-//	$raids_link = '<a href="raids.php?mode=view">' . $theme_raids_link . '</a>';
-//	$lua_output_link = '<a href="lua_output.php">' . $theme_lua_output_link . '</a>';
-//}
-//else
-//{
-//	$raids_link = '';
-//	$lua_output_link = '';
-//}
 
 // The various Admin Menus:
 $main_menu = '<div align="left" class="navContainer"><ul class="navList">';
@@ -173,16 +155,70 @@ if (preg_match("/(.*)admin_index\.php(.*)/", $_SERVER['PHP_SELF'])) {
 }
 
 // *** General Configuration Menu Items ***
-
-
+// To DO
+if (preg_match("/(.*)admin_generalcfg\.php(.*)/", $_SERVER['PHP_SELF'])) {
+    $gen_conf_menu .= '<li class="active">' . $admin_generalcfg_link . '</li>';
+} else {
+    $gen_conf_menu .= '<li class="">' . $admin_generalcfg_link . '</li>';
+}
+// To DO
+if (preg_match("/(.*)admin_timecfg\.php(.*)/", $_SERVER['PHP_SELF'])) {
+    $gen_conf_menu .= '<li class="active">' . $admin_timecfg_link . '</li>';
+} else {
+    $gen_conf_menu .= '<li class="">' . $admin_timecfg_link . '</li>';
+}
+// To DO
+if (preg_match("/(.*)admin_raidsettings\.php(.*)/", $_SERVER['PHP_SELF'])) {
+    $gen_conf_menu .= '<li class="active">' . $admin_raid_settings_link . '</li>';
+} else {
+    $gen_conf_menu .= '<li class="">' . $admin_raid_settings_link . '</li>';
+}
+// To DO
+if (preg_match("/(.*)admin_externcfg\.php(.*)/", $_SERVER['PHP_SELF'])) {
+    $gen_conf_menu .= '<li class="active">' . $admin_externcfg_link . '</li>';
+} else {
+    $gen_conf_menu .= '<li class="">' . $admin_externcfg_link . '</li>';
+}
 
 // *** User Management Menu Items ***
-
-
+// To DO
+if (preg_match("/(.*)admin_permissions\.php(.*)/", $_SERVER['PHP_SELF'])) {
+    $user_mgt_menu .= '<li class="active">' . $admin_permissions_link . '</li>';
+} else {
+    $user_mgt_menu .= '<li class="">' . $admin_permissions_link . '</li>';
+}
+// To DO
+if (preg_match("/(.*)admin_signuprights\.php(.*)/", $_SERVER['PHP_SELF'])) {
+    $user_mgt_menu .= '<li class="active">' . $admin_signup_rights_link . '</li>';
+} else {
+    $user_mgt_menu .= '<li class="">' . $admin_signup_rights_link . '</li>';
+}
+// To DO
+if (preg_match("/(.*)admin_usersettings\.php(.*)/", $_SERVER['PHP_SELF'])) {
+    $user_mgt_menu .= '<li class="active">' . $admin_user_settings_link . '</li>';
+} else {
+    $user_mgt_menu .= '<li class="">' . $admin_user_settings_link . '</li>';
+}
+// To DO
+if (preg_match("/(.*)admin_usermgt\.php(.*)/", $_SERVER['PHP_SELF'])) {
+    $user_mgt_menu .= '<li class="active">' . $admin_user_mgt_link . '</li>';
+} else {
+    $user_mgt_menu .= '<li class="">' . $admin_user_mgt_link . '</li>';
+}
 
 // *** Table Configuration Menu Items ***
-
-
+// To DO
+if (preg_match("/(.*)admin_datatablecfg\.php(.*)/", $_SERVER['PHP_SELF'])) {
+	$table_conf_menu .= '<li class="active">' . $admin_datatablecfg_link . '</li>';
+} else {
+    $table_conf_menu .= '<li class="">' . $admin_datatablecfg_link . '</li>';
+}
+// To DO
+if (preg_match("/(.*)admin_rolecfg\.php(.*)/", $_SERVER['PHP_SELF'])) {
+	$table_conf_menu .= '<li class="active">' . $admin_rolecfg_link . '</li>';
+} else {
+    $table_conf_menu .= '<li class="">' . $admin_rolecfg_link . '</li>';
+}
 
 // *** Log Menu Items ***
 if (preg_match("/(.*)logs\.php(.*)/", $_SERVER['PHP_SELF'])) {
@@ -190,120 +226,6 @@ if (preg_match("/(.*)logs\.php(.*)/", $_SERVER['PHP_SELF'])) {
 } else {
     $logs_menu .= '<li class="">' . $admin_logs_link . '</li>';
 }
-
-//if (preg_match("/(.*)calendar\.php(.*)/", $_SERVER['PHP_SELF'])) {
-//    $menu .= '<li class="active">' . $calendar_link . '</li>';
-//} else {
-//    $menu .= '<li class="">' . $calendar_link . '</li>';
-//}
-
-// setup permission based links
-//if($_SESSION['priv_announcements'] == 1)
-//{
-//	if (preg_match("/(.*)announcements\.php(.*)/", $_SERVER['PHP_SELF'])) {
-//	    $menu .= '<li class="active">' . $announce_link . '</li>';
-//	} else {
-//	    $menu .= '<li class="">' . $announce_link . '</li>';
-//	}
-//}
-
-//if($_SESSION['priv_configuration'] == 1)
-//{
-//	if (preg_match("/(.*)configuration\.php(.*)/", $_SERVER['PHP_SELF'])) {
-//	    $menu .= '<li class="active">' . $phpraid_configure_link . '</li>';
-//	} else {
-//	    $menu .= '<li class="">' . $phpraid_configure_link . '</li>';
-//	}
-//}
-
-//if($_SESSION['priv_guilds'] == 1)
-//{
-//	if (preg_match("/(.*)guilds\.php(.*)/", $_SERVER['PHP_SELF'])) {
-//	    $menu .= '<li class="active">' . $guild_link . '</li>';
-//	} else {
-//	    $menu .= '<li class="">' . $guild_link . '</li>';
-//	}
-//}
-
-//if($_SESSION['priv_locations'] == 1)
-//{
-//	if (preg_match("/(.*)locations\.php(.*)/", $_SERVER['PHP_SELF'])) {
-//	    $menu .= '<li class="active">' . $locations_link . '</li>';
-//	} else {
-//	    $menu .= '<li class="">' . $locations_link . '</li>';
-//	}
-//}
-
-//if($_SESSION['priv_logs'] == 1)
-//{
-//	if (preg_match("/(.*)logs\.php(.*)/", $_SERVER['PHP_SELF'])) {
-//	    $menu .= '<li class="active">' . $logs_link . '</li>';
-//	} else {
-//	    $menu .= '<li class="">' . $logs_link . '</li>';
-//	}
-//}
-
-//if($_SESSION['priv_permissions'] == 1)
-//{
-//	if (preg_match("/(.*)permissions\.php(.*)/", $_SERVER['PHP_SELF'])) {
-//	    $menu .= '<li class="active">' . $permissions_link . '</li>';
-//	} else {
-//	    $menu .= '<li class="">' . $permissions_link . '</li>';
-//	}
-//}
-
-//if($_SESSION['priv_profile'] == 1)
-//{
-//	if (preg_match("/(.*)profile\.php(.*)/", $_SERVER['PHP_SELF'])) {
-//	    $menu .= '<li class="active">' . $profile_link . '</li>';
-//	} else {
-//	    $menu .= '<li class="">' . $profile_link . '</li>';
-//	}
-//}
-
-//if ( $_SESSION['priv_raids'] OR ($phpraid_config['enable_five_man'] AND $priv_profile) )
-//{
-//	if (preg_match("/(.*)raids\.php(.*)/", $_SERVER['PHP_SELF'])) {
-//	    $menu .= '<li class="active">' . $raids_link . '</li>';
-//	} else {
-//	    $menu .= '<li class="">' . $raids_link . '</li>';
-//	}
-//	if (preg_match("/(.*)lua_output\.php(.*)/", $_SERVER['PHP_SELF'])) {
-//	    $menu .= '<li class="active">' . $lua_output_link . '</li>';
-//	} else {
-//	    $menu .= '<li class="">' . $lua_output_link . '</li>';
-//	}
-//}
-
-//if($priv_users == 1)
-//{
-//	if (preg_match("/(.*)users\.php(.*)/", $_SERVER['PHP_SELF'])) {
-//	    $menu .= '<li class="active">' . $users_link . '</li>';
-//	} else {
-//	    $menu .= '<li class="">' . $users_link . '</li>';
-//	}
-//}
-
-//if($logged_in == 0) {
-//	$menu .= '<li>' . $register_link . '</li>';
-//	$wrmsmarty->assign('register_link',$register_link);
-//}
-
-//if (preg_match("/(.*)roster\.php(.*)/", $_SERVER['PHP_SELF'])) {
-//    $menu .= '<li class="active">' . $roster_link . '</li>';
-//} else {
-//    $menu .= '<li class="">' . $roster_link . '</li>';
-//}
-
-// If integration with EQDKP is enabled, add a link here.
-//if ($phpraid_config['enable_eqdkp'])
-//{
-//	if (preg_match("/(.*)dkp_view\.php(.*)/", $_SERVER['PHP_SELF'])) {
-//		$menu .= '<li class="active">' . $dkp_view_link . '</li>';
-//	} else {
-//		$menu .= '<li class="">' . $dkp_view_link . '</li>';
-//	}
-//}
 
 $main_menu .= '</ul></div>';
 $gen_conf_menu .= '</ul></div>';

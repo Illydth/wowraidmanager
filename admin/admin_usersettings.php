@@ -1,6 +1,6 @@
 <?php
 /***************************************************************************
- *                           lang_admin.php (English)
+                                admin_index.php
  *                            -------------------
  *   begin                : Monday, May 11, 2009
  *   copyright            : (C) 2007-2009 Douglas Wagner
@@ -28,32 +28,28 @@
 *
 ****************************************************************************/
 
-// Menu Headers
-$phprlang['admin_menu_header'] = 'Admin Menu';
-$phprlang['gen_conf_menu_header'] = 'General Config';
-$phprlang['user_mgt_menu_header'] = 'User Management';
-$phprlang['table_conf_menu_header'] = 'Table Config';
-$phprlang['logs_menu_header'] = 'Logs';
+// commons
+define("IN_PHPRAID", true);	
+require_once('./admin_common.php');
 
-// Admin Main Menu Links
-$phprlang['admin_site_link'] = '&raquo; Exit Admin';
-$phprlang['admin_main_link'] = '&raquo; Main';
-$phprlang['admin_logs_link'] = '&raquo;&nbsp;Log';
-$phprlang['admin_rolecfg_link'] = '&raquo; Role Configuration';
-$phprlang['admin_datatablecfg_link'] = '&raquo; Manage Data Tables';
-$phprlang['admin_permissions'] = '&raquo; User Permissions';
-$phprlang['admin_signup_rights'] = '&raquo; Signup Activities';
-$phprlang['admin_user_settings'] = '&raquo; User Settings';
-$phprlang['admin_user_management'] = '&raquo; User Administration';
+/*************************************************
+ * Access Authorization Section
+ *************************************************/
+// page authentication
+define("PAGE_LVL","configuration");
+require_once("../includes/authentication.php");	
 
-$phprlang['admin_general_config'] = '&raquo; General Config';
-$phprlang['admin_time_config'] = '&raquo; Time Settings';
-$phprlang['admin_raid_settings'] = '&raquo; Raid Settings';
-$phprlang['admin_external_config'] = '&raquo; External Systems';
+/* 
+ * Data for Index Page
+ */
 
 
-// Link from Main Site to Admin
-$phprlang['admin_section_link'] = 'Admin Section';
 
-// Text on the Main Index Page
-$phprlang['admin_index_header'] = 'WRM Administrative Section';
+//
+// Start output of the page.
+//
+require_once('./includes/admin_page_header.php');
+$wrmadminsmarty->display('admin_user_settings.html');
+require_once('./includes/admin_page_footer.php');
+
+?>

@@ -39,6 +39,17 @@ $phprlang['logs_menu_header'] = 'Logs';
 $phprlang['admin_site_link'] = '&raquo; Exit Admin';
 $phprlang['admin_main_link'] = '&raquo; Main';
 $phprlang['admin_logs_link'] = '&raquo; Logs';
+$phprlang['admin_rolecfg_link'] = '&raquo; Role Configuration';
+$phprlang['admin_datatablecfg_link'] = '&raquo; Manage Data Tables';
+$phprlang['admin_permissions'] = '&raquo; User Permissions';
+$phprlang['admin_signup_rights'] = '&raquo; Signup Activities';
+$phprlang['admin_user_settings'] = '&raquo; User Settings';
+$phprlang['admin_user_management'] = '&raquo; User Administration';
+
+$phprlang['admin_general_config'] = '&raquo; General Config';
+$phprlang['admin_time_config'] = '&raquo; Time Settings';
+$phprlang['admin_raid_settings'] = '&raquo; Raid Settings';
+$phprlang['admin_external_config'] = '&raquo; External Systems';
 
 
 // Link from Main Site to Admin
