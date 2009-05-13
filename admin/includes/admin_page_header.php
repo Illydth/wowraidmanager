@@ -125,6 +125,7 @@ require_once($phpraid_dir.'templates/' . $phpraid_config['template'] . '/admin/a
  **********************************************/
 $admin_site_link = '<a href="../index.php">' . $theme_admin_site_link . "</a>";
 $admin_main_link = '<a href="admin_index.php">' . $theme_admin_main_link . '</a>';
+$admin_logs_link = '<a href="admin_logs.php?mode=view">' . $theme_admin_logs_link . '</a>';
 
 // links useable for everyone
 //$index_link = '<a href="' . $phpraid_config['header_link'] . '">' . $theme_index_link . '</a>';
@@ -154,17 +155,42 @@ $admin_main_link = '<a href="admin_index.php">' . $theme_admin_main_link . '</a>
 //	$lua_output_link = '';
 //}
 
-// setup menu
-$menu = '<div align="left" class="navContainer"><ul class="navList">';
+// The various Admin Menus:
+$main_menu = '<div align="left" class="navContainer"><ul class="navList">';
+$gen_conf_menu = '<div align="left" class="navContainer"><ul class="navList">';
+$user_mgt_menu = '<div align="left" class="navContainer"><ul class="navList">';
+$table_conf_menu = '<div align="left" class="navContainer"><ul class="navList">';
+$logs_menu = '<div align="left" class="navContainer"><ul class="navList">';
 
+// *** MAIN MENU CONFIG ITEMS ***
 // Go Back to the Main Site
-$menu .= '<li class="">' . $admin_site_link . '</li>';
+$main_menu .= '<li class="">' . $admin_site_link . '</li>';
 
 if (preg_match("/(.*)admin_index\.php(.*)/", $_SERVER['PHP_SELF'])) {
-	$menu .= '<li class="active">' . $admin_main_link . '</li>';
+	$main_menu .= '<li class="active">' . $admin_main_link . '</li>';
 } else {
-    $menu .= '<li class="">' . $admin_main_link . '</li>';
+    $main_menu .= '<li class="">' . $admin_main_link . '</li>';
 }
+
+// *** General Configuration Menu Items ***
+
+
+
+// *** User Management Menu Items ***
+
+
+
+// *** Table Configuration Menu Items ***
+
+
+
+// *** Log Menu Items ***
+if (preg_match("/(.*)logs\.php(.*)/", $_SERVER['PHP_SELF'])) {
+    $logs_menu .= '<li class="active">' . $admin_logs_link . '</li>';
+} else {
+    $logs_menu .= '<li class="">' . $admin_logs_link . '</li>';
+}
+
 //if (preg_match("/(.*)calendar\.php(.*)/", $_SERVER['PHP_SELF'])) {
 //    $menu .= '<li class="active">' . $calendar_link . '</li>';
 //} else {
@@ -279,9 +305,27 @@ if (preg_match("/(.*)admin_index\.php(.*)/", $_SERVER['PHP_SELF'])) {
 //	}
 //}
 
-$menu .= '</ul></div>';
+$main_menu .= '</ul></div>';
+$gen_conf_menu .= '</ul></div>';
+$user_mgt_menu .= '</ul></div>';
+$table_conf_menu .= '</ul></div>';
+$logs_menu .= '</ul></div>';
 
-$wrmadminsmarty->assign('menu',$menu);
+$wrmadminsmarty->assign('menus', 
+	array(
+		'main_menu'=>$main_menu,
+		'main_menu_header'=>$phprlang['admin_menu_header'],
+		'gen_conf_menu'=>$gen_conf_menu,
+		'gen_conf_menu_header'=>$phprlang['gen_conf_menu_header'],
+		'user_mgt_menu'=>$user_mgt_menu,
+		'user_mgt_menu_header'=>$phprlang['user_mgt_menu_header'],
+		'table_conf_menu'=>$table_conf_menu,
+		'table_conf_menu_header'=>$phprlang['table_conf_menu_header'],
+		'logs_menu'=>$logs_menu,
+		'logs_menu_header'=>$phprlang['logs_menu_header'],
+	)
+);
+$wrmadminsmarty->assign('admin_index_header', $phprlang['admin_index_header']);
 
 // display any errors if they exist
 if(isset($errorMsg))

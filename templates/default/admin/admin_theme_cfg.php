@@ -8,6 +8,7 @@ $use_images = 0;
 // only if above is set to 1, else do not modify
 $image_admin_site_link = "<img src=\"../templates/" . $phpraid_config['template'] . "/images/admin/index.gif\" border=\"0\">";
 $image_admin_main_link = "<img src=\"../templates/" . $phpraid_config['template'] . "/images/admin/site.gif\" border=\"0\">";
+$image_admin_logs = "<img src=\"..templates/" . $phpraid_config['template'] . "/images/admin/logs.gif\" border=\"0\">";
 //$image_index = "<img src=\"templates/" . $phpraid_config['template'] . "/images/index.gif\" border=\"0\">";
 //$image_configure = "<img src=\"templates/" . $phpraid_config['template'] . "/images/configuration.gif\" border=\"0\">";
 //$image_roster = "<img src=\"templates/" . $phpraid_config['template'] . "/images/member_list.gif\" border=\"0\">";
@@ -17,7 +18,6 @@ $image_admin_main_link = "<img src=\"../templates/" . $phpraid_config['template'
 //$image_announcement = "<img src=\"templates/" . $phpraid_config['template'] . "/images/announcements.gif\" border=\"0\">";
 //$image_raids = "<img src=\"templates/" . $phpraid_config['template'] . "/images/manage_raids.gif\" border=\"0\">";
 //$image_locations = "<img src=\"templates/" . $phpraid_config['template'] . "/images/locations.gif\" border=\"0\">";
-//$image_logs = "<img src=\"templates/" . $phpraid_config['template'] . "/images/logs.gif\" border=\"0\">";
 //$image_profile = "<img src=\"templates/" . $phpraid_config['template'] . "/images/my_profile.gif\" border=\"0\">";
 //$image_register = "<img src=\"templates/" . $phpraid_config['template'] . "/images/register.gif\" border=\"0\">";
 //$image_rss = "<img src=\"templates/" . $phpraid_config['template'] . "/images/rss.png\" border=\"0\">";
@@ -28,6 +28,7 @@ $image_admin_main_link = "<img src=\"../templates/" . $phpraid_config['template'
 if($use_images == 0) {
 	$theme_admin_site_link = $phprlang['admin_site_link'];
 	$theme_admin_main_link = $phprlang['admin_main_link'];
+	$theme_admin_logs_link = $phprlang['admin_logs_link'];
 	//$theme_index_link = $phprlang['index_link'];
 	//$theme_lua_output_link = $phprlang['lua_output_link'];
 	//$theme_configure_link = $phprlang['configuration_link'];
@@ -38,7 +39,6 @@ if($use_images == 0) {
 	//$theme_announcement_link = $phprlang['announcements_link'];
 	//$theme_raids_link = $phprlang['raids_link'];
 	//$theme_locations_link = $phprlang['locations_link'];
-	//$theme_logs_link = $phprlang['logs_link'];
 	//$theme_profile_link = $phprlang['profile_link'];
 	//$theme_users_link = $phprlang['users_link'];
 	//$theme_register_link = $phprlang['register_link'];
@@ -47,6 +47,7 @@ if($use_images == 0) {
 } else {
 	$theme_admin_site_link = $image_admin_site_link;
 	$theme_admin_main_link = $image_admin_main_link;
+	$theme_admin_logs_link = $image_admin_logs;
 	//$theme_index_link = $image_index;
 	//$theme_configure_link = $image_configure;
 	//$theme_guild_link = $image_guild;
@@ -56,7 +57,6 @@ if($use_images == 0) {
 	//$theme_raids_link = $image_raids;
 	//$theme_calendar_link = $image_calendar;
 	//$theme_locations_link = $image_locations;
-	//$theme_logs_link = $image_logs;
 	//$theme_profile_link = $image_profile;
 	//$theme_users_link = $image_users;
 	//$theme_register_link = $image_register;

@@ -42,9 +42,21 @@
 				<table width="100%" cellpadding="0" cellspacing="0" align="center">
 					<tr valign="top">
 						<td id="leftMenuBackground" width="150px">
-							<div class="menuHeader">{$page_header_data.menu_header_text}</div>
-							{$menu}
+							<div class="menuHeader">{$menus.main_menu_header}</div>
+							{$menus.main_menu}<br>
+							<div class="menuHeader">{$menus.gen_conf_menu_header}</div>
+							{$menus.gen_conf_menu}<br>
+							<div class="menuHeader">{$menus.user_mgt_menu_header}</div>
+							{$menus.user_mgt_menu}<br>
+							<div class="menuHeader">{$menus.table_conf_menu_header}</div>
+							{$menus.table_conf_menu}<br>
+							<div class="menuHeader">{$menus.logs_menu_header}</div>
+							{$menus.logs_menu}
 						</td>
 						<td id="leftMenuBorder" width="5px">&nbsp;</td>
 						<td id="contentContainer">
 <!--  					{$page_header_data.site_disabled_warning}  -->
+							<center>
+								<h1>{$admin_index_header}</h1>
+								<hr>
+							</center>

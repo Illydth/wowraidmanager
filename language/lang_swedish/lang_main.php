@@ -266,7 +266,6 @@ $phprlang['guilds_link'] = '&raquo; Guilder';
 $phprlang['home_link'] = '&raquo; Start Sida';
 $phprlang['calendar_link'] = '&raquo; Kalender';
 $phprlang['locations_link'] = '&raquo; Instanser';
-$phprlang['logs_link'] = '&raquo; Loggar';
 $phprlang['permissions_link'] = '&raquo; Rättigheter';
 $phprlang['profile_link'] = '&raquo; Profil';
 $phprlang['raids_link'] = '&raquo; Raider';

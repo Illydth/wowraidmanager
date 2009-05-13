@@ -268,7 +268,6 @@ $phprlang['guilds_link'] = '&raquo; Guildes';
 $phprlang['home_link'] = '&raquo; Page D\'Accueil';
 $phprlang['calendar_link'] = '&raquo; Calendrier Graphique';
 $phprlang['locations_link'] = '&raquo; Lieux De Raid';
-$phprlang['logs_link'] = '&raquo; Journaux';
 $phprlang['permissions_link'] = '&raquo; Droits';
 $phprlang['profile_link'] = '&raquo; Mes Persos';
 $phprlang['raids_link'] = '&raquo; Raids';

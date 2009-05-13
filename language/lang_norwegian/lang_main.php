@@ -237,7 +237,6 @@ $phprlang['guilds_link'] = '&raquo; Guilder';
 $phprlang['home_link'] = '&raquo; Hovedside';
 $phprlang['calendar_link'] = '&raquo; Kalender';
 $phprlang['locations_link'] = '&raquo; Steder';
-$phprlang['logs_link'] = '&raquo; Logger';
 $phprlang['permissions_link'] = '&raquo; Tilganger';
 $phprlang['profile_link'] = '&raquo; Profiler';
 $phprlang['raids_link'] = '&raquo; Raid';

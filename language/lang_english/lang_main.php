@@ -266,7 +266,6 @@ $phprlang['guilds_link'] = '&raquo; Guilds';
 $phprlang['home_link'] = '&raquo; Main Page';
 $phprlang['calendar_link'] = '&raquo; Calendar View';
 $phprlang['locations_link'] = '&raquo; Locations';
-$phprlang['logs_link'] = '&raquo; Logs';
 $phprlang['permissions_link'] = '&raquo; Permissions';
 $phprlang['profile_link'] = '&raquo; Profile';
 $phprlang['raids_link'] = '&raquo; Raids';

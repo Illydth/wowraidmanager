@@ -264,7 +264,6 @@ $phprlang['guilds_link'] = '&raquo; Gilden';
 $phprlang['home_link'] = '&raquo; Übersicht';
 $phprlang['calendar_link'] = '&raquo; Kalender';
 $phprlang['locations_link'] = '&raquo; Instanzen';
-$phprlang['logs_link'] = '&raquo; Protokoll';
 $phprlang['permissions_link'] = '&raquo; Berechtigungen';
 $phprlang['profile_link'] = '&raquo; Profil';
 $phprlang['raids_link'] = '&raquo; Raids';

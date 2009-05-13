@@ -28,9 +28,21 @@
 *
 ****************************************************************************/
 
+// Menu Headers
+$phprlang['admin_menu_header'] = 'Admin Menu';
+$phprlang['gen_conf_menu_header'] = 'General Config';
+$phprlang['user_mgt_menu_header'] = 'User Management';
+$phprlang['table_conf_menu_header'] = 'Table Config';
+$phprlang['logs_menu_header'] = 'Logs';
+
 // Admin Main Menu Links
 $phprlang['admin_site_link'] = '&raquo; Exit Admin';
-$phprlang['admin_main_link'] = '&raquo; Information';
+$phprlang['admin_main_link'] = '&raquo; Main';
+$phprlang['admin_logs_link'] = '&raquo; Logs';
+
 
 // Link from Main Site to Admin
 $phprlang['admin_section_link'] = 'Admin Section';
+
+// Text on the Main Index Page
+$phprlang['admin_index_header'] = 'WRM Administrative Section';

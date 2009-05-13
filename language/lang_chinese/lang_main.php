@@ -266,7 +266,6 @@ $phprlang['guilds_link'] = '&raquo; 公會';
 $phprlang['home_link'] = '&raquo; 活動報名首頁';
 $phprlang['calendar_link'] = '&raquo; 檢視行事曆';
 $phprlang['locations_link'] = '&raquo; 活動類別';
-$phprlang['logs_link'] = '&raquo; 紀錄';
 $phprlang['permissions_link'] = '&raquo; 權限';
 $phprlang['profile_link'] = '&raquo; 個人資料';
 $phprlang['raids_link'] = '&raquo; 活動列表';

@@ -263,7 +263,6 @@ $phprlang['guilds_link'] = '&raquo;&nbsp;Gilde';
 $phprlang['home_link'] = '&raquo;&nbsp;Indice';
 $phprlang['calendar_link'] = '&raquo;&nbsp;Calendario&nbsp;eventi';
 $phprlang['locations_link'] = '&raquo;&nbsp;Istanze';
-$phprlang['logs_link'] = '&raquo;&nbsp;Log';
 $phprlang['permissions_link'] = '&raquo;&nbsp;Profili&nbsp;Utente';
 $phprlang['profile_link'] = '&raquo;&nbsp;Personaggi';
 $phprlang['raids_link'] = '&raquo;&nbsp;Raid';
