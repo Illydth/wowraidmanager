@@ -1,19 +1,17 @@
 <?php
 /***************************************************************************
- *                              logs.php
+ *                              admin_logs.php
  *                            -------------------
- *   begin                : Saturday, Jan 16, 2005
- *   copyright            : (C) 2007-2008 Douglas Wagner
+ *   begin                : Wednesday, May 13, 2005
+ *   copyright            : (C) 2007-2009 Douglas Wagner
  *   email                : douglasw@wagnerweb.org
- *
- *   $Id: logs.php,v 2.00 2008/03/07 17:05:18 psotfx Exp $
  *
  ***************************************************************************/
 
 /***************************************************************************
 *
 *    WoW Raid Manager - Raid Management Software for World of Warcraft
-*    Copyright (C) 2007-2008 Douglas Wagner
+*    Copyright (C) 2007-2009 Douglas Wagner
 *
 *    This program is free software: you can redistribute it and/or modify
 *    it under the terms of the GNU General Public License as published by
@@ -31,11 +29,11 @@
 ****************************************************************************/
 // commons
 define("IN_PHPRAID", true);
-require_once('./common.php');
+require_once('./admin_common.php');
 
 // page authentication
-define("PAGE_LVL","logs");
-require_once("includes/authentication.php");
+//define("PAGE_LVL","logs");
+//require_once("includes/authentication.php");
 
 $server = $phpraid_config['guild_server'];
 
@@ -62,10 +60,10 @@ if($_GET['mode'] == 'delete')
 
 	if(!isset($_POST['submit']))
 	{
-		$form_action = "logs.php?mode=delete&amp;section=$section";
+		$form_action = "admin_logs.php?mode=delete&amp;section=$section";
 		$confirm_button = '<input name="submit" type="submit" id="submit" value="'.$phprlang['confirm_deletion'].'" class="mainoption">';
 
-		$wrmsmarty->assign('page',
+		$wrmadminsmarty->assign('page',
 			array(
 				'form_action'=>$form_action,
 				'confirm_button'=>$confirm_button,
@@ -76,16 +74,16 @@ if($_GET['mode'] == 'delete')
 		//
 		// Start output of Delete Page
 		//
-		require_once('includes/page_header.php');
-		$wrmsmarty->display('delete.html');
-		require_once('includes/page_footer.php');	
+		require_once('includes/admin_page_header.php');
+		$wrmadminsmarty->display('../delete.html');
+		require_once('includes/admin_page_footer.php');	
 	}
 	else
 	{
 		$table = $phpraid_config['db_prefix'] . substr(quote_smart($logtype), 1, strlen(quote_smart($logtype)) - 2);
 		$sql = "TRUNCATE TABLE " . $table;
 		$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-		header("Location: logs.php");
+		header("Location: admin_logs.php");
 	}
 }
 else
@@ -150,7 +148,7 @@ else
 						  <option value="'.$phprlang['log_filter_1_day'].'" '.$f1_select.'>'.$phprlang['log_filter_1_day'].'</option>
 					  </select>';
 
-	$wrmsmarty->assign('sort',
+	$wrmadminsmarty->assign('sort',
 		array(
 			'sort_by'=>$phprlang['log_sort_by'],
 			'sort_by_select'=>$sort_by_select,
@@ -168,7 +166,7 @@ else
 		)
 	);
 	
-	$wrmsmarty->assign('log_sort_header', $phprlang['log_sort_header']);
+	$wrmadminsmarty->assign('log_sort_header', $phprlang['log_sort_header']);
 	// End Sort/Filter Creation, Now display logs.
 	
 	$sql_where = '';
@@ -309,7 +307,7 @@ else
 	if($c_check == 'checked')
 	{
 		$create_output = '<div class="contentHeader">'.$phprlang['log_create_header'].'';
-		$create_output .= '&nbsp;&nbsp;<a href="logs.php?mode=delete&amp;section=1"><img src="templates/' .
+		$create_output .= '&nbsp;&nbsp;<a href="admin_logs.php?mode=delete&amp;section=1"><img src="templates/' .
 					$phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['delete'].'\');"
 					onMouseout="hideddrivetip();" alt="delete icon"></a>
 					';
@@ -325,7 +323,7 @@ else
 	if($d_check == 'checked')
 	{
 		$delete_output = '<div class="contentHeader">'.$phprlang['log_delete_header'].'';
-		$delete_output .= '&nbsp;&nbsp;<a href="logs.php?mode=delete&amp;section=2"><img src="templates/' .
+		$delete_output .= '&nbsp;&nbsp;<a href="admin_logs.php?mode=delete&amp;section=2"><img src="templates/' .
 					$phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['delete'].'\');"
 					onMouseout="hideddrivetip();" alt="delete icon"></a>
 					';
@@ -340,7 +338,7 @@ else
 	if($h_check == 'checked')
 	{
 		$hack_output = '<div class="contentHeader">'.$phprlang['log_hack_header'].'';
-		$hack_output .= '&nbsp;&nbsp;<a href="logs.php?mode=delete&amp;section=3"><img src="templates/' .
+		$hack_output .= '&nbsp;&nbsp;<a href="admin_logs.php?mode=delete&amp;section=3"><img src="templates/' .
 					$phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['delete'].'\');"
 					onMouseout="hideddrivetip();" alt="delete icon"></a>
 					';
@@ -357,7 +355,7 @@ else
 	if($r_check == 'checked')
 	{
 		$raid_output = '<div class="contentHeader">'.$phprlang['log_raid_header'].'';
-		$raid_output .= '&nbsp;&nbsp;<a href="logs.php?mode=delete&amp;section=4"><img src="templates/' .
+		$raid_output .= '&nbsp;&nbsp;<a href="admin_logs.php?mode=delete&amp;section=4"><img src="templates/' .
 					$phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['delete'].'\');"
 					onMouseout="hideddrivetip();" alt="delete icon"></a>
 					';
@@ -374,9 +372,9 @@ else
 	//
 	// Start output of page
 	//
-	require_once('includes/page_header.php');
+	require_once('includes/admin_page_header.php');
 
-	$wrmsmarty->assign('logs',
+	$wrmadminsmarty->assign('logs',
 		array(
 			'create' => $create_output,
 			'delete'=>$delete_output,
@@ -386,8 +384,8 @@ else
 		)
 	);
 
-	$wrmsmarty->display('logs.html');
+	$wrmadminsmarty->display('admin_logs.html');
 	
-	require_once('includes/page_footer.php');
+	require_once('includes/admin_page_footer.php');
 }
 ?>

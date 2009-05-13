@@ -141,7 +141,7 @@ $priv_config ? $phpraid_configure_link = '<a href="configuration.php">' . $theme
 $priv_permissions ? $permissions_link = '<a href="permissions.php?mode=view">' . $theme_permissions_link . '</a>' : $permissions_link = '';
 $priv_guilds ?	$guild_link = '<a href="guilds.php?mode=view">' . $theme_guild_link . '</a>' : $guild_link = '';
 $priv_locations ? $locations_link = '<a href="locations.php?mode=view">' . $theme_locations_link . '</a>' : $locations_link = '';
-$priv_logs ? $logs_link = '<a href="logs.php?mode=view">' . $theme_logs_link . '</a>' : $logs_link = '';
+//$priv_logs ? $logs_link = '<a href="logs.php?mode=view">' . $theme_logs_link . '</a>' : $logs_link = '';
 $priv_profile ? $profile_link = '<a href="profile.php?mode=view">' . $theme_profile_link . '</a>' : $profile_link = '';
 $priv_users ? $users_link = '<a href="users.php?mode=view">' . $theme_users_link . '</a>' : $users_link = '';
 $logged_in != '1' ? $register_link = '<a href="' . $phpraid_config['register_url'] . '">' . $theme_register_link . '</a>' : $register_link = '';
@@ -210,14 +210,14 @@ if($_SESSION['priv_locations'] == 1)
 	}
 }
 
-if($_SESSION['priv_logs'] == 1)
-{
-	if (preg_match("/(.*)logs\.php(.*)/", $_SERVER['PHP_SELF'])) {
-	    $menu .= '<li class="active">' . $logs_link . '</li>';
-	} else {
-	    $menu .= '<li class="">' . $logs_link . '</li>';
-	}
-}
+//if($_SESSION['priv_logs'] == 1)
+//{
+//	if (preg_match("/(.*)logs\.php(.*)/", $_SERVER['PHP_SELF'])) {
+//	    $menu .= '<li class="active">' . $logs_link . '</li>';
+//	} else {
+//	    $menu .= '<li class="">' . $logs_link . '</li>';
+//	}
+//}
 
 if($_SESSION['priv_permissions'] == 1)
 {

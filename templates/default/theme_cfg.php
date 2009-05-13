@@ -15,7 +15,7 @@ $image_home = "<img src=\"templates/" . $phpraid_config['template'] . "/images/h
 $image_announcement = "<img src=\"templates/" . $phpraid_config['template'] . "/images/announcements.gif\" border=\"0\">";
 $image_raids = "<img src=\"templates/" . $phpraid_config['template'] . "/images/manage_raids.gif\" border=\"0\">";
 $image_locations = "<img src=\"templates/" . $phpraid_config['template'] . "/images/locations.gif\" border=\"0\">";
-$image_logs = "<img src=\"templates/" . $phpraid_config['template'] . "/images/logs.gif\" border=\"0\">";
+//$image_logs = "<img src=\"templates/" . $phpraid_config['template'] . "/images/logs.gif\" border=\"0\">";
 $image_profile = "<img src=\"templates/" . $phpraid_config['template'] . "/images/my_profile.gif\" border=\"0\">";
 $image_register = "<img src=\"templates/" . $phpraid_config['template'] . "/images/register.gif\" border=\"0\">";
 $image_rss = "<img src=\"templates/" . $phpraid_config['template'] . "/images/rss.png\" border=\"0\">";
@@ -34,7 +34,7 @@ if($use_images == 0) {
 	$theme_announcement_link = $phprlang['announcements_link'];
 	$theme_raids_link = $phprlang['raids_link'];
 	$theme_locations_link = $phprlang['locations_link'];
-	$theme_logs_link = $phprlang['logs_link'];
+	//$theme_logs_link = $phprlang['logs_link'];
 	$theme_profile_link = $phprlang['profile_link'];
 	$theme_users_link = $phprlang['users_link'];
 	$theme_register_link = $phprlang['register_link'];
@@ -50,7 +50,7 @@ if($use_images == 0) {
 	$theme_raids_link = $image_raids;
 	$theme_calendar_link = $image_calendar;
 	$theme_locations_link = $image_locations;
-	$theme_logs_link = $image_logs;
+	//$theme_logs_link = $image_logs;
 	$theme_profile_link = $image_profile;
 	$theme_users_link = $image_users;
 	$theme_register_link = $image_register;
