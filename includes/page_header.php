@@ -73,10 +73,7 @@ else
 	if ( ($BridgeSupportPWDChange == TRUE) and isset($BridgeSupportPWDChange) )
 		$login_change_pass = '<a href="login.php?mode=ch_pwd">'.$phprlang['login_chpwd'].'</a>';
 	if ( $priv_config )
-	{
-		echo "Priv Config Set, generating admin link";
 		$admin_config_link = '<a href="admin/admin_index.php">'.$phprlang['admin_section_link'].'</a>';
-	}
 	else
 		echo "Priv Config not Set.";
 	$login_form_close = '</form>';
@@ -143,7 +140,7 @@ $priv_guilds ?	$guild_link = '<a href="guilds.php?mode=view">' . $theme_guild_li
 $priv_locations ? $locations_link = '<a href="locations.php?mode=view">' . $theme_locations_link . '</a>' : $locations_link = '';
 //$priv_logs ? $logs_link = '<a href="logs.php?mode=view">' . $theme_logs_link . '</a>' : $logs_link = '';
 $priv_profile ? $profile_link = '<a href="profile.php?mode=view">' . $theme_profile_link . '</a>' : $profile_link = '';
-$priv_users ? $users_link = '<a href="users.php?mode=view">' . $theme_users_link . '</a>' : $users_link = '';
+//$priv_users ? $users_link = '<a href="users.php?mode=view">' . $theme_users_link . '</a>' : $users_link = '';
 $logged_in != '1' ? $register_link = '<a href="' . $phpraid_config['register_url'] . '">' . $theme_register_link . '</a>' : $register_link = '';
 if ( $priv_raids OR ($phpraid_config['enable_five_man'] AND $priv_profile) )
 {
@@ -251,14 +248,14 @@ if ( $_SESSION['priv_raids'] OR ($phpraid_config['enable_five_man'] AND $priv_pr
 	}
 }
 
-if($priv_users == 1)
-{
-	if (preg_match("/(.*)users\.php(.*)/", $_SERVER['PHP_SELF'])) {
-	    $menu .= '<li class="active">' . $users_link . '</li>';
-	} else {
-	    $menu .= '<li class="">' . $users_link . '</li>';
-	}
-}
+//if($priv_users == 1)
+//{
+//	if (preg_match("/(.*)users\.php(.*)/", $_SERVER['PHP_SELF'])) {
+//	    $menu .= '<li class="active">' . $users_link . '</li>';
+//	} else {
+//	    $menu .= '<li class="">' . $users_link . '</li>';
+//	}
+//}
 
 if($logged_in == 0) {
 	$menu .= '<li>' . $register_link . '</li>';

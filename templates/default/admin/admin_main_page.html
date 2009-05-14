@@ -1,3 +1,49 @@
 {* Smarty Template *}
 <div class="contentHeader">{$version_data.version_info_header}</div>
 <div class="contentBody" align="center">{$version_data.version_info}</div>
+<br>
+<div class="contentHeader">{$general_page_data.statistics_header}</div><br>
+<div class="contentBody">
+<table width="50%" border="0" align="left" cellpadding="0" cellspacing="0">
+	<tr>
+    	<td valign="top" class="forumline"> 
+    	   <div class="tableTitle">{$general_page_data.wrm_statistics_text}</div>
+           <table width="100%" border="0" cellspacing="1" cellpadding="3" class="dataOutline">
+		      <tr>
+		        <th class="row1Header">{$general_page_data.statistic_text}</th>
+		        <th class="row2Header">{$general_page_data.value_text}</th>
+		      </tr>
+		      <tr>
+		      	<td class="row1">{$general_page_data.wrm_version_text}</td>
+		      	<td class="row2">{$version_data.version}</td>
+		      </tr>
+		   </table>
+		</td>
+    	<td valign="top" class="forumline"> 
+    	   <div class="tableTitle">{$general_page_data.database_statistics_text}</div>
+           <table width="100%" border="0" cellspacing="1" cellpadding="3" class="dataOutline">
+		      <tr>
+		        <th class="row1Header">{$general_page_data.statistic_text}</th>
+		        <th class="row2Header">{$general_page_data.value_text}</th>
+		      </tr>
+		      <tr>
+		      	<td class="row1">{$general_page_data.wrm_db_name_text}</td>
+		      	<td class="row2">{$general_page_data.database_name}</td>
+		      </tr>
+		      <tr>
+		      	<td class="row1">{$general_page_data.wrm_db_host_text}</td>
+		      	<td class="row2">{$general_page_data.database_host}</td>
+		      </tr>
+		      <tr>
+		      	<td class="row1">{$general_page_data.wrm_db_user_text}</td>
+		      	<td class="row2">{$general_page_data.database_user}</td>
+		      </tr>
+		      <tr>
+		      	<td class="row1">{$general_page_data.wrm_tbl_prefix_text}</td>
+		      	<td class="row2">{$general_page_data.table_prefix}</td>
+		      </tr>
+		   </table>
+		</td>
+	</tr>
+</table>
+</div>

@@ -45,15 +45,23 @@ $phprlang['admin_permissions'] = '&raquo; User Permissions';
 $phprlang['admin_signup_rights'] = '&raquo; Signup Activities';
 $phprlang['admin_user_settings'] = '&raquo; User Settings';
 $phprlang['admin_user_management'] = '&raquo; User Administration';
-
 $phprlang['admin_general_config'] = '&raquo; General Config';
 $phprlang['admin_time_config'] = '&raquo; Time Settings';
 $phprlang['admin_raid_settings'] = '&raquo; Raid Settings';
 $phprlang['admin_external_config'] = '&raquo; External Systems';
-
 
 // Link from Main Site to Admin
 $phprlang['admin_section_link'] = 'Admin Section';
 
 // Text on the Main Index Page
 $phprlang['admin_index_header'] = 'WRM Administrative Section';
+$phprlang['admin_statistics_header'] = 'Statistics';
+$phprlang['wrm_statistics_header'] = 'WRM Statistics:';
+$phprlang['database_statistics_header'] = 'Database Statistics';
+$phprlang['admin_version_stat_text'] = 'WRM Version:';
+$phprlang['statistic'] = 'Statistic';
+$phprlang['value'] = 'Value';
+$phprlang['db_name_text'] = 'Database Name:';
+$phprlang['db_host_text'] = 'Database HostName:';
+$phprlang['db_user_text'] = 'Database Username:';
+$phprlang['db_prefix_text'] = 'Database Table Prefix:';

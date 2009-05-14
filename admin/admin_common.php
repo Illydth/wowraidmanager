@@ -62,9 +62,9 @@ require_once($phpraid_dir.'includes/functions_auth.php');
 require_once($phpraid_dir.'includes/functions.php');
 require_once($phpraid_dir.'includes/functions_date.php');
 require_once($phpraid_dir.'includes/functions_logging.php');
-//require_once($phpraid_dir.'includes/functions_tables.php');
-//require_once($phpraid_dir.'includes/functions_users.php');
-//require_once($phpraid_dir.'includes/ubb.php');
+require_once($phpraid_dir.'includes/functions_tables.php');
+require_once($phpraid_dir.'includes/functions_users.php');
+require_once($phpraid_dir.'includes/ubb.php');
 
 /************************************************
  * Database Connection and phpraid_config Load

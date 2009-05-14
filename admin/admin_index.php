@@ -113,13 +113,15 @@ $wrmadminsmarty->assign('version_data',
 	array(
 		'version_info_header'=>$phprlang['configuration_version_info_header'],
 		'version_info' => $version_info,
+		'version' => $version,
 	)
 );
 	
-
-// WRM Version
 // MySQL Version
 // PHP Version
+// Database Name
+// Server Name
+// Database User
 // Number of Users
 // Active Users in the Last 5 Minutes
 // Most Recent Log Entries
@@ -127,6 +129,25 @@ $wrmadminsmarty->assign('version_data',
 // Actions
 // Purge Board Cache
 // Purge Armory Cache
+
+$wrmadminsmarty->assign('general_page_data',
+	array(
+		'statistics_header'=>$phprlang['admin_statistics_header'],
+		'statistic_text'=>$phprlang['statistic'],
+		'wrm_statistics_text' =>  $phprlang['wrm_statistics_header'],
+		'database_statistics_text' => $phprlang['database_statistics_header'],
+		'value_text'=>$phprlang['value'],
+		'wrm_version_text' => $phprlang['admin_version_stat_text'],
+		'wrm_db_name_text' => $phprlang['db_name_text'],
+		'database_name' => $phpraid_config['db_name'],
+		'wrm_db_host_text' => $phprlang['db_host_text'],
+		'database_host' => $phpraid_config['db_host'],
+		'wrm_db_user_text' => $phprlang['db_user_text'],
+		'database_user' => $phpraid_config['db_user'],
+		'wrm_tbl_prefix_text' => $phprlang['db_prefix_text'],
+		'table_prefix' => $phpraid_config['db_prefix'],
+	)
+);
 
 
 //

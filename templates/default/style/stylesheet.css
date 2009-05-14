@@ -202,8 +202,20 @@ input.liteoption {
 }
 
 /* row colors for data output and hover color */
+.row1Header {
+	font-size:10px;
+	font-weight:bolder;
+	background-color: #B6B6BA;
+}
+
 .row1 {
 	background-color: #B6B6BA;
+}
+
+.row2Header {
+	font-size:10px;
+	font-weight:bolder;
+	background-color: #A3A2A8;
 }
 
 .row2 {
@@ -213,6 +225,12 @@ input.liteoption {
 .rowHover {
 	background-color: #CAC9CF;
 }
+
+.tableTitle {
+	font-size:14px;
+	font-weight:bolder;
+}
+
 /**********************
 * TEMPLATE CSS STYLES *
 ***********************/
