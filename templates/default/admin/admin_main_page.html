@@ -4,7 +4,7 @@
 <br>
 <div class="contentHeader">{$general_page_data.statistics_header}</div><br>
 <div class="contentBody">
-<table width="50%" border="0" align="left" cellpadding="0" cellspacing="0">
+<table width="80%" border="0" align="center" cellpadding="0" cellspacing="0">
 	<tr>
     	<td valign="top" class="forumline"> 
     	   <div class="tableTitle">{$general_page_data.wrm_statistics_text}</div>
@@ -17,8 +17,25 @@
 		      	<td class="row1">{$general_page_data.wrm_version_text}</td>
 		      	<td class="row2">{$version_data.version}</td>
 		      </tr>
+		      <tr>
+		      	<td class="row1">{$general_page_data.wrm_db_version_text}</td>
+		      	<td class="row2">{$version_data.wrm_db_version}</td>
+		      </tr>
+		      <tr>
+		      	<td class="row1">{$general_page_data.php_version_text}</td>
+		      	<td class="row2">{$general_page_data.php_version}</td>
+		      </tr>
+		      <tr>
+		      	<td class="row1">{$general_page_data.mysql_version_text}</td>
+		      	<td class="row2">{$general_page_data.mysql_version}</td>
+		      </tr>
+		      <tr>
+		      	<td class="row1">{$general_page_data.user_count_text}</td>
+		      	<td class="row2">{$general_page_data.user_count}</td>
+		      </tr>
 		   </table>
 		</td>
+		<td>&nbsp;</td>
     	<td valign="top" class="forumline"> 
     	   <div class="tableTitle">{$general_page_data.database_statistics_text}</div>
            <table width="100%" border="0" cellspacing="1" cellpadding="3" class="dataOutline">
@@ -42,6 +59,54 @@
 		      	<td class="row1">{$general_page_data.wrm_tbl_prefix_text}</td>
 		      	<td class="row2">{$general_page_data.table_prefix}</td>
 		      </tr>
+		      <tr>
+		      	<td class="row1">{$general_page_data.mysql_database_size_text}</td>
+		      	<td class="row2">{$general_page_data.mysql_database_size}</td>
+		      </tr>
+		   </table>
+		</td>
+	</tr>
+	<tr><td>&nbsp;</td></tr>
+	<tr>
+    	<td valign="top" class="forumline" colspan="3"> 
+    	   <div class="tableTitle">{$recent_logins_header.header}</div>
+           <table width="100%" border="0" cellspacing="1" cellpadding="3" class="dataOutline">
+		      <tr>
+		        <th class="row1Header">{$recent_logins_header.username_header}</th>
+		        <th class="row2Header">{$recent_logins_header.email_header}</th>
+		        <th class="row1Header">{$recent_logins_header.priv_header}</th>
+		        <th class="row2Header">{$recent_logins_header.login_time_header}</th>
+		      </tr>
+		      {section name=recent_users loop=$recent_logins}
+			      <tr>
+			      	<td class="row1">{$recent_logins[recent_users].username}</td>
+			      	<td class="row2">{$recent_logins[recent_users].email}</td>
+			      	<td class="row1">{$recent_logins[recent_users].priv}</td>
+			      	<td class="row2">{$recent_logins[recent_users].login_time}</td>
+			      </tr>
+			  {/section}
+		   </table>
+		</td>
+	</tr>
+	<tr><td>&nbsp;</td></tr>
+	<tr>
+    	<td valign="top" class="forumline" colspan="3"> 
+    	   <div class="tableTitle">{$inactive_logins_header.header}</div>
+           <table width="100%" border="0" cellspacing="1" cellpadding="3" class="dataOutline">
+		      <tr>
+		        <th class="row1Header">{$recent_logins_header.username_header}</th>
+		        <th class="row2Header">{$recent_logins_header.email_header}</th>
+		        <th class="row1Header">{$recent_logins_header.priv_header}</th>
+		        <th class="row2Header">{$recent_logins_header.login_time_header}</th>
+		      </tr>
+		      {section name=inactive_users loop=$inactive_logins}
+			      <tr>
+			      	<td class="row1">{$inactive_logins[inactive_users].username}</td>
+			      	<td class="row2">{$inactive_logins[inactive_users].email}</td>
+			      	<td class="row1">{$inactive_logins[inactive_users].priv}</td>
+			      	<td class="row2">{$inactive_logins[inactive_users].login_time}</td>
+			      </tr>
+			  {/section}
 		   </table>
 		</td>
 	</tr>

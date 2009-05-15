@@ -109,26 +109,140 @@ else
 	}
 }
 
+// WRM Database Version
+$sql = "SELECT max(version_number) as db_ver FROM " . $phpraid_config['db_prefix'] . "version";
+$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+$data = $db_raid->sql_fetchrow($result, true);
+$wrm_db_version = $data['db_ver'];
+
 $wrmadminsmarty->assign('version_data',
 	array(
 		'version_info_header'=>$phprlang['configuration_version_info_header'],
 		'version_info' => $version_info,
 		'version' => $version,
+		'wrm_db_version' => $wrm_db_version, 
 	)
 );
-	
+
 // MySQL Version
-// PHP Version
-// Database Name
-// Server Name
-// Database User
+$sql = "SELECT version() as ver";
+$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+$data = $db_raid->sql_fetchrow($result, true);
+$mysql_version = $data['ver'];
+
+// MySQL Database Size
+$dbsize = 0;
+$sql = "SHOW TABLE STATUS WHERE name LIKE '". $phpraid_config['db_prefix'] . "%'";
+$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+while($data = $db_raid->sql_fetchrow($result, true)) 
+{  
+	$dbsize += $data[ "Data_length" ] + $data[ "Index_length" ];
+}
+$dbsize = round($dbsize / 1024, 2); //(Kilobytes)
+
 // Number of Users
+$sql = "SELECT count(*) as count FROM " . $phpraid_config['db_prefix'] . "profile";
+$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+$data = $db_raid->sql_fetchrow($result, true);
+$user_count = $data['count'];
+
 // Active Users in the Last 5 Minutes
+$minus5_time = time() - (5 * 60); // Current Time - 5 minutes.
+$logged_in = array();
+
+$sql = "SELECT a.username as username, a.email as email, a.last_login_time as last_login_time, b.name as perm_name
+		FROM " . $phpraid_config['db_prefix'] . "profile a, " . $phpraid_config['db_prefix'] . "permissions b
+		WHERE a.priv = b.permission_id"; 
+$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+while($data = $db_raid->sql_fetchrow($result, true))
+{
+	if ($data['last_login_time'] >= $minus5_time)
+	{
+		// User's logged on in the last 5 mins.
+		array_push($logged_in,
+			array
+			(
+				'username'=>$data['username'],
+				'email'=>$data['email'],
+				'priv'=>$data['perm_name'],
+				'login_time'=>date($phpraid_config['date_format']." ".$phpraid_config['time_format'],$data['last_login_time']),
+			)
+		);		
+	}
+}
+
+$wrmadminsmarty->assign('recent_logins_header', 
+		array
+		(
+			'header' => $phprlang['recent_logins_header'],
+			'username_header' => $phprlang['logins_username_header'],
+			'email_header' => $phprlang['logins_email_header'],
+			'priv_header' => $phprlang['logins_priv_header'],
+			'login_time_header' => $phprlang['logins_time_header'],
+		)
+);
+
+$wrmadminsmarty->assign('recent_logins', $logged_in);
+
+// Inactive Users (30 Days)
+$minus30d_time = time() - (30 * 24 * 60 * 60); // Current Time - 30 days.
+$logged_in = array();
+
+$sql = "SELECT a.username as username, a.email as email, a.last_login_time as last_login_time, b.name as perm_name
+		FROM " . $phpraid_config['db_prefix'] . "profile a, " . $phpraid_config['db_prefix'] . "permissions b
+		WHERE a.priv = b.permission_id"; 
+$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+while($data = $db_raid->sql_fetchrow($result, true))
+{
+	if ($data['last_login_time'] <= $minus30d_time || $data['last_login_time']=='')
+	{
+		if ($data['last_login_time']=='')
+		{
+			//User hasn't logged in since somewhere in the WRM 3.5 Days, set them inactive.
+			$data['last_login_time'] = 0;
+		}
+		// Users not logged on for the last 30 days.
+		array_push($logged_in,
+			array
+			(
+				'username'=>$data['username'],
+				'email'=>$data['email'],
+				'priv'=>$data['perm_name'],
+				'login_time'=>date($phpraid_config['date_format']." ".$phpraid_config['time_format'],$data['last_login_time']),
+			)
+		);		
+	}
+}
+
+$wrmadminsmarty->assign('inactive_logins_header', 
+		array
+		(
+			'header' => $phprlang['inactive_logins_header'],
+			'username_header' => $phprlang['logins_username_header'],
+			'email_header' => $phprlang['logins_email_header'],
+			'priv_header' => $phprlang['logins_priv_header'],
+			'login_time_header' => $phprlang['logins_time_header'],
+		)
+);
+
+$wrmadminsmarty->assign('inactive_logins', $logged_in);
+
+// Raid Statistics
+// Number of Active Raids
+// Total Number of Raids
+// Average Attendance Percentage (Week)
+// Average Attendance Percentage (30 days)
+// Average Attendance Percentage (3 Months)
+// Average Attendance Percentage (6 Months)
+// Average Attendance Percentage (Year)
+// Average Attendance Percentage (All)
+
 // Most Recent Log Entries
 
 // Actions
 // Purge Board Cache
 // Purge Armory Cache
+// Purge Inactive Users
 
 $wrmadminsmarty->assign('general_page_data',
 	array(
@@ -146,6 +260,15 @@ $wrmadminsmarty->assign('general_page_data',
 		'database_user' => $phpraid_config['db_user'],
 		'wrm_tbl_prefix_text' => $phprlang['db_prefix_text'],
 		'table_prefix' => $phpraid_config['db_prefix'],
+		'php_version_text' => $phprlang['php_version_text'],
+		'php_version' => PHP_VERSION,
+		'mysql_version_text' => $phprlang['mysql_version_text'],
+		'mysql_version' => $mysql_version,
+		'mysql_database_size_text' => $phprlang['db_size_text'],
+		'mysql_database_size' => $dbsize . ' ' . $phprlang['kib'],
+		'user_count_text' => $phprlang['user_count_text'],
+		'user_count' => $user_count,
+		'wrm_db_version_text' => $phprlang['wrm_db_ver_text'],
 	)
 );
 
