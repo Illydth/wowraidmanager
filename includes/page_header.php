@@ -73,7 +73,7 @@ else
 	if ( ($BridgeSupportPWDChange == TRUE) and isset($BridgeSupportPWDChange) )
 		$login_change_pass = '<a href="login.php?mode=ch_pwd">'.$phprlang['login_chpwd'].'</a>';
 	if ( $priv_config )
-		$admin_config_link = '<a href="admin/admin_index.php">'.$phprlang['admin_section_link'].'</a>';
+		$admin_config_link = '<a href="admin/admin_index.php?'.SID.'">'.$phprlang['admin_section_link'].'</a>';
 	else
 		echo "Priv Config not Set.";
 	$login_form_close = '</form>';
