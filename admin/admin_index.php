@@ -42,6 +42,18 @@ require_once("../includes/authentication.php");
 /* 
  * Data for Index Page
  */
+
+//@@ REMOVE THIS
+// Set the Starting Day on the Calendar.
+$startDay = 'Sunday';
+if ($startDay = 'Sunday')
+	$dayOffset = 0;
+else
+	$dayOffset = 1;
+
+/*************************************************
+ * 			WRM STATISTICS SECTION
+ *************************************************/
 // Version Check
 // primarily stripped from phpBB version checking
 $current_version_array = explode('.', $version);
@@ -130,6 +142,15 @@ $result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 $data = $db_raid->sql_fetchrow($result, true);
 $mysql_version = $data['ver'];
 
+// Number of Users
+$sql = "SELECT count(*) as count FROM " . $phpraid_config['db_prefix'] . "profile";
+$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+$data = $db_raid->sql_fetchrow($result, true);
+$user_count = $data['count'];
+
+/*********************************************
+ * 		DATABASE STATISTICS SECTION
+ *********************************************/
 // MySQL Database Size
 $dbsize = 0;
 $sql = "SHOW TABLE STATUS WHERE name LIKE '". $phpraid_config['db_prefix'] . "%'";
@@ -140,12 +161,105 @@ while($data = $db_raid->sql_fetchrow($result, true))
 }
 $dbsize = round($dbsize / 1024, 2); //(Kilobytes)
 
-// Number of Users
-$sql = "SELECT count(*) as count FROM " . $phpraid_config['db_prefix'] . "profile";
+/*********************************************
+ * 		RAID STATISTICS SECTION
+ *********************************************/
+// Number of Active Raids
+$sql = "SELECT count(*) as count FROM " . $phpraid_config['db_prefix'] . "raids
+		WHERE old = '0' AND event_type = '1'";
 $result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 $data = $db_raid->sql_fetchrow($result, true);
-$user_count = $data['count'];
+$active_raid_count = $data['count'];
 
+// Total Number of Raids
+$sql = "SELECT count(*) as count FROM " . $phpraid_config['db_prefix'] . "raids
+		WHERE event_type = '1'";
+$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+$data = $db_raid->sql_fetchrow($result, true);
+$total_raid_count = $data['count'];
+
+// Average Attendance Percentage (Week)
+
+// Generate Week Start and End off of Current Time
+$dayOfWeek = date("w", time()) - $dayOffset;
+$firstDayOfWeek = date("U", mktime('00', '00', '00', date("n"), date("j")-$dayOfWeek, date("Y")));
+$lastDayOfWeek = date("U", mktime('23', '59', '59', date("n"), date("j")-(7-$dayOfWeek-1), date("Y")));
+
+// Get Raids within week, determine signups (Queued + Drafted / Max)
+$raid_max_count = 0;
+$raid_attend_count = 0;
+$sql = "SELECT raid_id, max FROM " . $phpraid_config['db_prefix'] . "raids
+		WHERE start_time >= " . $firstDayOfWeek . " AND start_time <= " . $lastDayOfWeek . "
+		AND event_type = '1'";
+$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+while($data = $db_raid->sql_fetchrow($result, true))
+{ 
+	$raid_max_count += $data['max'];
+	$sql = "SELECT count(*) as count FROM " . $phpraid_config['db_prefix'] . "signups
+			WHERE raid_id = " . $data['raid_id'] . " AND cancel = '0'";
+	$result2 = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$data2 = $db_raid->sql_fetchrow($result2, true);
+	$raid_attend_count += $data2['count'];
+}
+
+if ($raid_max_count <= 0)
+	$raid_week_attend_percent_text = "No Raids Scheduled";
+else
+{
+	$raid_week_attend_percent = round(($raid_attend_count / $raid_max_count)*100, 2);
+	$raid_week_attend_percent_text = $raid_week_attend_percent . "%";
+}
+
+// Average Attendance Percentage (Last 30 days)
+$minus30d_time = date("U", mktime('00', '00', '00', date("n"), date("j")-30, date("Y")));
+$current_time = date("U", mktime('23', '59', '59', date("n"), date("j"), date("Y")));
+// Get Raids within last 30 days, determine signups (Queued + Drafted / Max)
+$raid_max_count = 0;
+$raid_attend_count = 0;
+$sql = "SELECT raid_id, max FROM " . $phpraid_config['db_prefix'] . "raids
+		WHERE start_time >= " . $minus30d_time . " AND start_time <= " . $current_time . "
+		AND event_type = '1'";
+$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+while($data = $db_raid->sql_fetchrow($result, true))
+{ 
+	$raid_max_count += $data['max'];
+	$sql = "SELECT count(*) as count FROM " . $phpraid_config['db_prefix'] . "signups
+			WHERE raid_id = " . $data['raid_id'] . " AND cancel = '0'";
+	$result2 = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$data2 = $db_raid->sql_fetchrow($result2, true);
+	$raid_attend_count += $data2['count'];
+}
+
+if ($raid_max_count <= 0)
+	$raid_30d_attend_percent_text = "No Raids Scheduled";
+else
+{
+	$raid_30d_attend_percent = round(($raid_attend_count / $raid_max_count)*100, 2);
+	$raid_30d_attend_percent_text = $raid_30d_attend_percent . "%";
+}
+// Average Attendance Percentage (3 Months)
+// Average Attendance Percentage (6 Months)
+// Average Attendance Percentage (Year)
+// Average Attendance Percentage (All)
+
+$wrmadminsmarty->assign('raid_statistics_data', 
+		array
+		(
+			'header' => $phprlang['raid_stats_header'],
+			'active_count_header' => $phprlang['raid_active_count_header'],
+			'total_count_header' => $phprlang['raid_total_count_header'],
+			'active_count' => $active_raid_count,
+			'total_count' => $total_raid_count,
+			'week_percent_header' => $phprlang['raid_week_percent_header'],
+			'week_percent' => $raid_week_attend_percent_text,
+			'30d_percent_header' => $phprlang['raid_30d_percent_header'],
+			'30d_percent' => $raid_30d_attend_percent_text,
+		)
+);
+
+/*********************************************
+ * 		LOGINS SECTION
+ *********************************************/
 // Active Users in the Last 5 Minutes
 $minus5_time = time() - (5 * 60); // Current Time - 5 minutes.
 $logged_in = array();
@@ -175,6 +289,7 @@ $wrmadminsmarty->assign('recent_logins_header',
 		array
 		(
 			'header' => $phprlang['recent_logins_header'],
+			'explanation' => $phprlang['recent_logins_explanation'],
 			'username_header' => $phprlang['logins_username_header'],
 			'email_header' => $phprlang['logins_email_header'],
 			'priv_header' => $phprlang['logins_priv_header'],
@@ -190,8 +305,10 @@ $logged_in = array();
 
 $sql = "SELECT a.username as username, a.email as email, a.last_login_time as last_login_time, b.name as perm_name
 		FROM " . $phpraid_config['db_prefix'] . "profile a, " . $phpraid_config['db_prefix'] . "permissions b
-		WHERE a.priv = b.permission_id"; 
+		WHERE a.priv = b.permission_id
+		ORDER BY a.last_login_time DESC"; 
 $result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+$usercount=0;
 while($data = $db_raid->sql_fetchrow($result, true))
 {
 	if ($data['last_login_time'] <= $minus30d_time || $data['last_login_time']=='')
@@ -201,7 +318,7 @@ while($data = $db_raid->sql_fetchrow($result, true))
 			//User hasn't logged in since somewhere in the WRM 3.5 Days, set them inactive.
 			$data['last_login_time'] = 0;
 		}
-		// Users not logged on for the last 30 days.
+		// Last 10 Users not logged on for the last 30 days.
 		array_push($logged_in,
 			array
 			(
@@ -210,14 +327,18 @@ while($data = $db_raid->sql_fetchrow($result, true))
 				'priv'=>$data['perm_name'],
 				'login_time'=>date($phpraid_config['date_format']." ".$phpraid_config['time_format'],$data['last_login_time']),
 			)
-		);		
+		);
+		$usercount++;		
 	}
+	if ($usercount >= 10)
+		break;
 }
 
 $wrmadminsmarty->assign('inactive_logins_header', 
 		array
 		(
 			'header' => $phprlang['inactive_logins_header'],
+			'explanation' => $phprlang['inactive_login_explanation'],
 			'username_header' => $phprlang['logins_username_header'],
 			'email_header' => $phprlang['logins_email_header'],
 			'priv_header' => $phprlang['logins_priv_header'],

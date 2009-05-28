@@ -69,7 +69,34 @@
 	<tr><td>&nbsp;</td></tr>
 	<tr>
     	<td valign="top" class="forumline" colspan="3"> 
+    	   <div class="tableTitle">{$raid_statistics_data.header}</div>
+           <table width="100%" border="0" cellspacing="1" cellpadding="3" class="dataOutline">
+		      <tr>
+		        <th class="row1Header">{$general_page_data.statistic_text}</th>
+		        <th class="row2Header">{$general_page_data.value_text}</th>
+		        <th class="row1Header">{$general_page_data.statistic_text}</th>
+		        <th class="row2Header">{$general_page_data.value_text}</th>
+		      </tr>
+		      <tr>
+		      	<td class="row1">{$raid_statistics_data.active_count_header}</td>
+		      	<td class="row2">{$raid_statistics_data.active_count}</td>
+		      	<td class="row1">{$raid_statistics_data.total_count_header}</td>
+		      	<td class="row2">{$raid_statistics_data.total_count}</td>
+		      </tr>
+		      <tr>
+		      	<td class="row1">{$raid_statistics_data.week_percent_header}</td>
+		      	<td class="row2">{$raid_statistics_data.week_percent}</td>
+		      	<td class="row1">{$raid_statistics_data.30d_percent_header}</td>
+		      	<td class="row2">{$raid_statistics_data.30d_percent}</td>
+		      </tr>
+			</table>
+		</td>
+	</tr>
+	<tr><td>&nbsp;</td></tr>	
+	<tr>
+    	<td valign="top" class="forumline" colspan="3"> 
     	   <div class="tableTitle">{$recent_logins_header.header}</div>
+    	   <div class="conentBody">{$recent_logins_header.explanation}</div>
            <table width="100%" border="0" cellspacing="1" cellpadding="3" class="dataOutline">
 		      <tr>
 		        <th class="row1Header">{$recent_logins_header.username_header}</th>
@@ -92,6 +119,7 @@
 	<tr>
     	<td valign="top" class="forumline" colspan="3"> 
     	   <div class="tableTitle">{$inactive_logins_header.header}</div>
+    	   <div class="conentBody">{$inactive_logins_header.explanation}</div>
            <table width="100%" border="0" cellspacing="1" cellpadding="3" class="dataOutline">
 		      <tr>
 		        <th class="row1Header">{$recent_logins_header.username_header}</th>

@@ -71,10 +71,19 @@ $phprlang['mysql_version_text'] = 'MySQL Version:';
 $phprlang['user_count_text'] = 'Number of Users:';
 $phprlang['wrm_db_ver_text'] = 'WRM Database Version:';
 $phprlang['recent_logins_header'] = 'Recent Logins:';
+$phprlang['recent_logins_explanation'] = 'These are the users who have used the WRM software within the last 5 minutes.';
 $phprlang['inactive_logins_header'] = 'Inactive Logins:';
+$phprlang['inactive_login_explanation'] = 'These are the last 10 most recent users to fall into the "inactive" 
+											category.<br>To see the full list of inactive users please see the 
+											"User Administration" link in the Admin Section.';
 $phprlang['logins_username_header'] = 'Username';
 $phprlang['logins_email_header'] = 'EMail';
 $phprlang['logins_priv_header'] = 'Privledge Group';
 $phprlang['logins_time_header'] = 'Last Login';
 $phprlang['kib'] =  'KiB';
+$phprlang['raid_stats_header'] = 'Raid Statistics:';
+$phprlang['raid_active_count_header'] = 'Active Raids:';
+$phprlang['raid_total_count_header'] = 'Total Raids:';
+$phprlang['raid_week_percent_header'] = 'This Week\'s Attendance Percentage:';
+$phprlang['raid_30d_percent_header'] = 'Attendence Last 30 Days:';
 
