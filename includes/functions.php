@@ -335,4 +335,19 @@ function get_dupesignup_symbol()
 	return '<font color="' . '#cc0000' . '"><b>!</b></font>';
 }
 
+function generate_expanding_box($title, $info)
+{
+	// Include exp_content.html in the main HTML page at the point where the box should reside. 
+	global $expboxid;
+	
+	$expboxid++;
+	
+	$wrmsmarty->assign('expbox', 
+		array (
+			'id'=>$expboxid,
+			'title'=>$title,
+			'info'=>$info,
+		)
+	);
+}
 ?>

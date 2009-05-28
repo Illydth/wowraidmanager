@@ -191,6 +191,11 @@ get_permissions();
 $col_mod = array();
 
 /***************************************************
+ * Set Up Column Modification Array
+ ***************************************************/
+$expboxid = exp1243304747;
+
+/***************************************************
  * Load Game Specific Data to Global Variables
  ***************************************************/
 $wrm_global_classes = array();
