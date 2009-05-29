@@ -82,8 +82,22 @@ $phprlang['logins_priv_header'] = 'Privledge Group';
 $phprlang['logins_time_header'] = 'Last Login';
 $phprlang['kib'] =  'KiB';
 $phprlang['raid_stats_header'] = 'Raid Statistics:';
+$phprlang['raid_stats_explanation'] = 'Percentages are calculated as the total number of signed up users for the period<br>
+										(Queued + Drafted, NOT Cancelled) devided by total maximum raid attendees
+										for the period.';
 $phprlang['raid_active_count_header'] = 'Active Raids:';
 $phprlang['raid_total_count_header'] = 'Total Raids:';
 $phprlang['raid_week_percent_header'] = 'This Week\'s Attendance Percentage:';
 $phprlang['raid_30d_percent_header'] = 'Attendence Last 30 Days:';
+$phprlang['raid_3m_percent_header'] = 'Attendence Last 3 Months:';
+$phprlang['raid_6m_percent_header'] = 'Attendence Last 6 Months:';
+$phprlang['raid_1y_percent_header'] = 'Attendence Last 1 Year:';
+$phprlang['raid_life_percent_header'] = 'Lifetime Attendence Percentage:';
+$phprlang['logs_header'] = 'Recent Hack Logs:';
+$phprlang['logs_explanation'] = 'The 10 most recent "Hacking Attempts" identified by the system.';
+$phprlang['ip_header'] = 'IP Address';
+$phprlang['message_header'] = 'Message';
+$phprlang['timestamp_header'] = 'Date/Time';
+
+
 
