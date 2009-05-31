@@ -98,6 +98,14 @@ $phprlang['logs_explanation'] = 'The 10 most recent "Hacking Attempts" identifie
 $phprlang['ip_header'] = 'IP Address';
 $phprlang['message_header'] = 'Message';
 $phprlang['timestamp_header'] = 'Date/Time';
+$phprlang['delete_board_cache_text'] = 'Delete cache files for the WRM Application.';
+$phprlang['delete_armory_cache_text'] = 'Delete cache files for the WOW Armory';
+$phprlang['delete_armory_log_text'] = 'Delete the WoW Armory Output Logs';
+$phprlang['delete_template_cache_text'] = 'Delete the WRM Application Template Cache Files.';
+$phprlang['actions_header'] = 'Board Cache/Log Actions:';
+$phprlang['actions_explanation'] = 'The buttons below purge the various cache and log files associated with WRM.';
+
+
 
 
 
