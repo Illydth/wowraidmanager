@@ -42,9 +42,7 @@ $phprlang['key'] = 'Legende:<br>(*) = Angemeldet & vorgesehen<br>(#) = Angemelde
 $phprlang['calendar_month_select_header'] = 'Wähle das anzuzeigende Jahr und Monat';
 
 // configuration
-$phprlang['configuration_addon'] = 'Addon-URL';
 $phprlang['configuraiton_admin'] = 'Administrator';
-$phprlang['configuration_admin_email'] = 'Administrator-E-Mail';
 $phprlang['configuration_ampm'] = '24-Stunden-Format verwenden';
 $phprlang['configuration_anonymous'] = 'Anonymes Betrachten erlauben';
 $phprlang['configuration_armory_enable'] = 'Arsenal-Hints aktivieren';
@@ -58,18 +56,13 @@ $phprlang['configuration_comments'] = 'Kommentare';
 $phprlang['configuration_comments_def'] = 'Kommentare = Benutzern erlauben, ihre Kommentare zu bearbeiten';
 $phprlang['configuration_date'] = 'Datumsformat<br><a href="http://de.php.net/date/" target="_blank">Hilfe?</a>';
 $phprlang['configuration_description'] = 'Beschreibung';
-$phprlang['configuration_debug'] = 'Debugmodus';
 $phprlang['configuration_default'] = 'Standardgruppe';
 $phprlang['configuration_delete'] = 'Löschen';
 $phprlang['configuration_delete_def'] = 'Löschen = Benutzer aus der Anmeldung komplett entfernen';
-$phprlang['configuration_disable'] = 'WRM deaktivieren';
 $phprlang['configuration_draft'] = 'Anmelden';
 $phprlang['configuration_draft_def'] = 'Anmelden = Benutzer in den Bereich der Anmeldungen platzieren';
 $phprlang['configuration_drafted'] = 'Bestätigt';
 $phprlang['configuration_dst_text'] = 'Sommerzeit?';
-$phprlang['configuration_email_header'] = 'E-Mail-Konfiguration';
-$phprlang['configuration_email_sig'] = 'E-Mail-Signatur';
-$phprlang['configuration_enable_five_man'] = 'Gruppen aktivieren<br><a href="docs/enable_groups.htm" target="_blank">Hilfe?</a>';
 $phprlang['configuration_eqdkp_integration_text'] = 'Integration in EqDKP<br><a href="docs/eqdkp_link.htm" target="_blank">Hilfe?</a>';
 $phprlang['configuration_eqdkp_link'] = 'URL zur Basis der EqDKP-Installation (ohne abschließenden /)';
 $phprlang['configuration_external_links_header'] = 'Integration in externe Systeme';
@@ -78,8 +71,6 @@ $phprlang['configuration_freeze'] = 'Prüfung auf eingefrorene Raids ausschalten
 $phprlang['configuration_guild_header'] = 'Gildenkonfiguration';
 $phprlang['configuration_guild_name'] = 'Name';
 $phprlang['configuration_id'] = 'IDs in den Tabellen anzeigen';
-$phprlang['configuration_language'] = 'Sprache';
-$phprlang['configuration_logo'] = 'Pfad zum Logo';
 $phprlang['configuration_multiple'] = 'Mehrfachanmeldungen erlauben';
 $phprlang['configuration_on_queue'] = 'in Warteschlange';
 $phprlang['configuration_queue'] = 'Warteschlange';
@@ -90,7 +81,6 @@ $phprlang['configuration_raid_view_type_class'] = 'Zeige Raids nach Klassen';
 $phprlang['configuration_raid_view_type_role'] = 'Zeige Raids nach Rollen';
 $phprlang['configuration_raidlead'] = 'Raidleiter';
 $phprlang['configuration_resop'] = 'Eingabe der Widerstände optional';
-$phprlang['configuration_register_text'] = 'Registrierungs-URL';
 $phprlang['configuration_role_header'] = 'Konfiguration der Rollen';
 $phprlang['configuration_role1_text'] = 'Rolle #1';
 $phprlang['configuration_role2_text'] = 'Rolle #2';
@@ -106,11 +96,8 @@ $phprlang['configuration_rss_site'] = 'RSS: URL zur WRM-Installation (ohne absch
 $phprlang['configuration_rss_export'] = 'RSS: Seite des RSS-Feeds'; /* FIX */
 $phprlang['configuration_rss_feed_amt'] = 'RSS: Anzahl der Raids, die im Feed angezeigt werden sollen';
 $phprlang['configuration_server'] = 'Server';
-$phprlang['configuration_show_addon'] = 'Addon-Link zeigen';
 $phprlang['configuration_signup_rights_header'] = 'Anmelderechte';
 $phprlang['configuration_site_header'] = 'WRM-Konfiguration';
-$phprlang['configuration_sitelink'] = 'Link zur "Gildenseite"';
-$phprlang['configuration_template'] = 'Vorlage';
 $phprlang['configuration_time'] = 'Zeitformat<br><a href="http://www.php.net/date/" target="_blank">Hilfe?</a>';
 $phprlang['configuration_timezone_text'] = 'Zeitzone';
 $phprlang['configuration_user'] = 'Benutzer';

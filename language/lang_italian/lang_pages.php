@@ -42,9 +42,7 @@ $phprlang['key'] = 'Legenda:<br>(*) = Iscritto e confermato<br>(#) = Iscritto (i
 $phprlang['calendar_month_select_header'] = 'Seleziona mese ed anno da visualizzare';
 
 // configuration
-$phprlang['configuration_addon'] = 'Sito ufficiale di WowRaidManager';
 $phprlang['configuraiton_admin'] = 'Amministratori';
-$phprlang['configuration_admin_email'] = 'E-mail dell\'Amministratore';
 $phprlang['configuration_ampm'] = 'Formato orario di creazione dei Raid';
 $phprlang['configuration_anonymous'] = 'Consenti la visualizzazione agli Utenti non registrati';
 $phprlang['configuration_armory_enable'] = 'Abilita l\'integrazione con l\'Armory';
@@ -58,18 +56,13 @@ $phprlang['configuration_comments'] = 'Commenti';
 $phprlang['configuration_comments_def'] = 'Commenti = Consenti la modifica dei commenti';
 $phprlang['configuration_date'] = 'Formato delle date<br><a href="http://www.php.net/date/" target="_blank">(Guida)</a>';
 $phprlang['configuration_description'] = 'Descrizione';
-$phprlang['configuration_debug'] = 'Modalità debug';
 $phprlang['configuration_default'] = 'Profilo Utente predefinito';
 $phprlang['configuration_delete'] = 'Elimina';
 $phprlang['configuration_delete_def'] = 'Elimina = Consenti l\'eliminazione delle iscrizioni';
-$phprlang['configuration_disable'] = 'Disabilita WowRaidManager';
 $phprlang['configuration_draft'] = 'Conferma';
 $phprlang['configuration_draft_def'] = 'Conferma = Consenti l\'inserimento fra le iscrizioni confermate';
 $phprlang['configuration_drafted'] = 'Iscrizioni confermate';
 $phprlang['configuration_dst_text'] = 'Ora legale?';
-$phprlang['configuration_email_header'] = 'Configurazione dell\'e-mail';
-$phprlang['configuration_email_sig'] = 'Firma dell\'e-mail';
-$phprlang['configuration_enable_five_man'] = 'Abilita i Gruppi<br><a href="docs/enable_groups.htm" target="_blank">(Guida)</a>';
 $phprlang['configuration_eqdkp_integration_text'] = 'Integra con EqDKP<br><a href="docs/eqdkp_link.htm" target="_blank">(Guida)</a>';
 $phprlang['configuration_eqdkp_link'] = 'Indirizzo base dell\'installazione di EqDKP (senza barra finale)';
 $phprlang['configuration_external_links_header'] = 'Integrazione con sistemi esterni';
@@ -78,8 +71,6 @@ $phprlang['configuration_freeze'] = 'Disabilita la chiusura delle iscrizioni';
 $phprlang['configuration_guild_header'] = 'Configurazione della Gilda';
 $phprlang['configuration_guild_name'] = 'Nome';
 $phprlang['configuration_id'] = 'Visualizza l\'ID nelle tabelle';
-$phprlang['configuration_language'] = 'Lingua';
-$phprlang['configuration_logo'] = 'Immagine di intestazione';
 $phprlang['configuration_multiple'] = 'Consenti iscrizioni multiple';
 $phprlang['configuration_on_queue'] = 'Iscrizioni in coda';
 $phprlang['configuration_queue'] = 'Accoda';
@@ -90,7 +81,6 @@ $phprlang['configuration_raid_view_type_class'] = 'Visualizzazione Raid per clas
 $phprlang['configuration_raid_view_type_role'] = 'Visualizzazione Raid per ruolo';
 $phprlang['configuration_raidlead'] = 'Gestori Raid';
 $phprlang['configuration_resop'] = 'Rendi opzionali i dati delle resistenze';
-$phprlang['configuration_register_text'] = 'Indirizzo di registrazione';
 $phprlang['configuration_role_header'] = 'Configurazione dei ruoli';
 $phprlang['configuration_role1_text'] = 'Ruolo #1';
 $phprlang['configuration_role2_text'] = 'Ruolo #2';
@@ -106,11 +96,8 @@ $phprlang['configuration_rss_site'] = 'RSS: indirizzo di installazione di WowRai
 $phprlang['configuration_rss_export'] = 'RSS: indirizzo a cui esportare il feed RSS';
 $phprlang['configuration_rss_feed_amt'] = 'RSS: numero di Raid da visualizzare';
 $phprlang['configuration_server'] = 'Server';
-$phprlang['configuration_show_addon'] = 'Visualizza link a WRM';
 $phprlang['configuration_signup_rights_header'] = 'Permessi di iscrizione';
 $phprlang['configuration_site_header'] = 'Configurazione del sito';
-$phprlang['configuration_sitelink'] = 'Il link "Homepage" punta a';
-$phprlang['configuration_template'] = 'Tema visuale';
 $phprlang['configuration_time'] = 'Formato degli orari<br><a href="http://www.php.net/date/" target="_blank">(Guida)</a>';
 $phprlang['configuration_timezone_text'] = 'Fuso orario';
 $phprlang['configuration_user'] = 'Utenti';

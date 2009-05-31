@@ -38,22 +38,87 @@ $phprlang['logs_menu_header'] = 'Logs';
 // Admin Main Menu Links
 $phprlang['admin_site_link'] = '&raquo; Exit Admin';
 $phprlang['admin_main_link'] = '&raquo; Main';
-$phprlang['admin_logs_link'] = '&raquo; Logger';
+$phprlang['admin_logs_link'] = '&raquo; Logs';
 $phprlang['admin_rolecfg_link'] = '&raquo; Role Configuration';
 $phprlang['admin_datatablecfg_link'] = '&raquo; Manage Data Tables';
 $phprlang['admin_permissions'] = '&raquo; User Permissions';
 $phprlang['admin_signup_rights'] = '&raquo; Signup Activities';
 $phprlang['admin_user_settings'] = '&raquo; User Settings';
 $phprlang['admin_user_management'] = '&raquo; User Administration';
-
 $phprlang['admin_general_config'] = '&raquo; General Config';
 $phprlang['admin_time_config'] = '&raquo; Time Settings';
 $phprlang['admin_raid_settings'] = '&raquo; Raid Settings';
 $phprlang['admin_external_config'] = '&raquo; External Systems';
-
 
 // Link from Main Site to Admin
 $phprlang['admin_section_link'] = 'Admin Section';
 
 // Text on the Main Index Page
 $phprlang['admin_index_header'] = 'WRM Administrative Section';
+$phprlang['admin_statistics_header'] = 'Statistics';
+$phprlang['wrm_statistics_header'] = 'WRM Statistics:';
+$phprlang['database_statistics_header'] = 'Database Statistics:';
+$phprlang['admin_version_stat_text'] = 'WRM Version:';
+$phprlang['statistic'] = 'Statistic';
+$phprlang['value'] = 'Value';
+$phprlang['db_name_text'] = 'Database Name:';
+$phprlang['db_host_text'] = 'Database HostName:';
+$phprlang['db_user_text'] = 'Database Username:';
+$phprlang['db_prefix_text'] = 'Database Table Prefix:';
+$phprlang['db_size_text'] = 'Database Size (WRM Tables Only):';
+$phprlang['php_version_text'] = 'PHP Version:';
+$phprlang['mysql_version_text'] = 'MySQL Version:';
+$phprlang['user_count_text'] = 'Number of Users:';
+$phprlang['wrm_db_ver_text'] = 'WRM Database Version:';
+$phprlang['recent_logins_header'] = 'Recent Logins:';
+$phprlang['recent_logins_explanation'] = 'These are the users who have used the WRM software within the last 5 minutes.';
+$phprlang['inactive_logins_header'] = 'Inactive Logins:';
+$phprlang['inactive_login_explanation'] = 'These are the last 10 most recent users to fall into the "inactive" 
+											category.<br>To see the full list of inactive users please see the 
+											"User Administration" link in the Admin Section.';
+$phprlang['logins_username_header'] = 'Username';
+$phprlang['logins_email_header'] = 'EMail';
+$phprlang['logins_priv_header'] = 'Privledge Group';
+$phprlang['logins_time_header'] = 'Last Login';
+$phprlang['kib'] =  'KiB';
+$phprlang['raid_stats_header'] = 'Raid Statistics:';
+$phprlang['raid_stats_explanation'] = 'Percentages are calculated as the total number of signed up users for the period<br>
+										(Queued + Drafted, NOT Cancelled) devided by total maximum raid attendees
+										for the period.';
+$phprlang['raid_active_count_header'] = 'Active Raids:';
+$phprlang['raid_total_count_header'] = 'Total Raids:';
+$phprlang['raid_week_percent_header'] = 'This Week\'s Attendance Percentage:';
+$phprlang['raid_30d_percent_header'] = 'Attendence Last 30 Days:';
+$phprlang['raid_3m_percent_header'] = 'Attendence Last 3 Months:';
+$phprlang['raid_6m_percent_header'] = 'Attendence Last 6 Months:';
+$phprlang['raid_1y_percent_header'] = 'Attendence Last 1 Year:';
+$phprlang['raid_life_percent_header'] = 'Lifetime Attendence Percentage:';
+$phprlang['logs_header'] = 'Recent Hack Logs:';
+$phprlang['logs_explanation'] = 'The 10 most recent "Hacking Attempts" identified by the system.';
+$phprlang['ip_header'] = 'IP Address';
+$phprlang['message_header'] = 'Message';
+$phprlang['timestamp_header'] = 'Date/Time';
+$phprlang['delete_board_cache_text'] = 'Delete cache files for the WRM Application.';
+$phprlang['delete_armory_cache_text'] = 'Delete cache files for the WOW Armory';
+$phprlang['delete_armory_log_text'] = 'Delete the WoW Armory Output Logs';
+$phprlang['delete_template_cache_text'] = 'Delete the WRM Application Template Cache Files.';
+$phprlang['actions_header'] = 'Board Cache/Log Actions:';
+$phprlang['actions_explanation'] = 'The buttons below purge the various cache and log files associated with WRM.';
+
+// Text on the "General Config" Page
+$phprlang['configuration_addon'] = 'Addon URL';
+$phprlang['configuration_admin_email'] = 'Admin e-mail';
+$phprlang['configuration_debug'] = 'Debug mode';
+$phprlang['configuration_disable'] = 'Disable phpRaid';
+$phprlang['configuration_email_header'] = 'E-mail configuration';
+$phprlang['configuration_email_sig'] = 'E-mail signature';
+$phprlang['configuration_enable_five_man'] = 'Enable groups<br><a href="../docs/enable_groups.htm" target="_blank">help?</a>';
+$phprlang['configuration_language'] = 'Language';
+$phprlang['configuration_logo'] = 'Path to header image';
+$phprlang['configuration_register_text'] = 'Registration URL';
+$phprlang['configuration_show_addon'] = 'Show addon link';
+$phprlang['configuration_sitelink'] = '"Home" Link Points To';
+$phprlang['configuration_template'] = 'Template';
+$phprlang['general_configuration_header'] = 'General Settings';
+
+

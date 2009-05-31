@@ -105,7 +105,20 @@ $phprlang['delete_template_cache_text'] = 'Delete the WRM Application Template C
 $phprlang['actions_header'] = 'Board Cache/Log Actions:';
 $phprlang['actions_explanation'] = 'The buttons below purge the various cache and log files associated with WRM.';
 
-
-
+// Text on the "General Config" Page
+$phprlang['configuration_addon'] = 'Addon URL';
+$phprlang['configuration_admin_email'] = 'Admin e-mail';
+$phprlang['configuration_debug'] = 'Debug mode';
+$phprlang['configuration_disable'] = 'Disable phpRaid';
+$phprlang['configuration_email_header'] = 'E-mail configuration';
+$phprlang['configuration_email_sig'] = 'E-mail signature';
+$phprlang['configuration_enable_five_man'] = 'Enable groups<br><a href="../docs/enable_groups.htm" target="_blank">help?</a>';
+$phprlang['configuration_language'] = 'Language';
+$phprlang['configuration_logo'] = 'Path to header image';
+$phprlang['configuration_register_text'] = 'Registration URL';
+$phprlang['configuration_show_addon'] = 'Show addon link';
+$phprlang['configuration_sitelink'] = '"Home" Link Points To';
+$phprlang['configuration_template'] = 'Template';
+$phprlang['general_configuration_header'] = 'General Settings';
 
 
