@@ -272,9 +272,10 @@ $phprlang['raids_link'] = '&raquo; Raids';
 $phprlang['register_link'] = '&raquo; Register';
 $phprlang['roster_link'] = '&raquo; Roster';
 $phprlang['users_link'] = '&raquo; Users';
-$phprlang['lua_output_link'] = '&raquo; Lua output raids';
+$phprlang['lua_output_link'] = '&raquo; Lua Output Raids';
 $phprlang['index_link'] = '&raquo; Home';
 $phprlang['dkp_link'] = '&raquo; DKP';
+$phprlang['bosstrack_link'] = '&raquo; Boss Kill Tracking';
 
 // sorting information
 $phprlang['sort_text'] = 'Click here to sort by ';
