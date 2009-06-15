@@ -350,4 +350,39 @@ function generate_expanding_box($title, $info)
 		)
 	);
 }
+
+/**
+ * Recursively delete files in directory (but not the directories themselves).
+ *
+ * @param string $dir Directory name
+ * @param boolean $deleteRootToo Delete specified top-level directory as well
+ */
+function unlinkRecursive($dir, $deleteRootToo=FALSE)
+{
+    if(!$dh = @opendir($dir))
+    {
+        return;
+    }
+    while (false !== ($obj = readdir($dh)))
+    {
+        if($obj == '.' || $obj == '..' || $obj == '.gitignore')
+        {
+            continue;
+        }
+
+        if (!@unlink($dir . '/' . $obj))
+        {
+            unlinkRecursive($dir.'/'.$obj, $deleteRootToo);
+        }
+    }
+
+    closedir($dh);
+   
+    if ($deleteRootToo)
+    {
+        @rmdir($dir);
+    }
+   
+    return;
+} 
 ?>

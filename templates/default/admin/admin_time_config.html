@@ -1,3 +1,36 @@
 {* Smarty Template *}
-<div class="contentHeader">{$version_data.version_info_header}</div>
-<div class="contentBody" align="center">{$version_data.version_info}</div>
+<form action="admin_timecfg.php" method="post" name="configure" id="configure">
+<div class="contentHeader">{$config_data.time_header}</div><br>
+<div class="contentBody">
+<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+	<tr>
+		<td valign="top" class="forumline"> 
+			<table width="100%" border="0" cellspacing="1" cellpadding="3" class="dataOutline">
+				<tr>
+					<td class="row1" width="20%"><strong>{$config_data.date_text}</strong></td>
+					<td class="row2" width="80%">{$config_data.date_format}</td>
+				</tr>
+				<tr> 
+					<td class="row1"><strong>{$config_data.time_text}</strong></td>
+					<td class="row2">{$config_data.time_format}</td>
+				</tr>
+				<tr> 
+					<td class="row1"><strong>{$config_data.ampm_text}</strong></td>
+					<td class="row2">{$config_data.ampm}</td>
+				</tr>
+				<tr>
+					<td class="row1"><strong>{$config_data.timezone_text}</strong></td>
+					<td class="row2">{$config_data.timezone}</td>
+				</tr>        
+				<tr>
+					<td class="row1"><strong>{$config_data.dst_text}</strong></td>
+					<td class="row2">{$config_data.dst}</td>
+				</tr>				
+			</table>
+		</td>
+	</tr>
+</table>
+<br>
+<div align="center" class="button">{$config_data.buttons}</div>
+</div>
+</form>
