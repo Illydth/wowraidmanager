@@ -302,5 +302,8 @@ if(isset($errorMsg))
 		exit;
 	}
 }
-$wrmsmarty->display('header.html');
+else
+{
+	$wrmsmarty->display('header.html');
+}
 ?>
