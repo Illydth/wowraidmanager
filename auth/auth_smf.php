@@ -135,7 +135,7 @@ function password_check($oldpassword, $profile_id, $encryptflag)
 {
 	global $db_user_id, $db_group_id, $db_user_name, $db_user_email, $db_user_password, $db_table_user_name; 
 	global $db_table_group_name, $auth_user_class, $auth_alt_user_class, $table_prefix, $db_raid, $phpraid_config;
-	global $pwd_hasher, $db_add_group_ids;
+	global $pwd_hasher,	$db_add_group_ids;
 
 	$sql_passchk = sprintf("SELECT " . $db_user_password . " FROM " . $table_prefix . $db_table_user_name . 
 						" WHERE " . $db_user_id . " = %s", quote_smart($profile_id)
@@ -172,9 +172,9 @@ function password_check($oldpassword, $profile_id, $encryptflag)
 	
 		$data_username = $db_raid->sql_fetchrow($result_user, true);
 		$username = $data_username[$db_user_name];
-	
+		
 		$dbusernewpassword = sha1(strtolower($username).$oldpassword);
-	
+		
 		if ($dbusernewpassword == $db_pass)
 			return $db_pass;
 		else
@@ -193,13 +193,13 @@ function phpraid_login()
 	if(isset($_POST['username'])){
 		// User is logging in, set encryption flag to 0 to identify login with plain text password.
 		$pwdencrypt = FALSE;
-		$username = scrub_input(strtolower(utf8_decode($_POST['username'])));
+		$username = mb_strtolower(scrub_input($_POST['username']), "UTF-8");
 		$password = $_POST['password'];
 		$wrmpass = md5($_POST['password']);
 	} elseif(isset($_COOKIE['username']) && isset($_COOKIE['password'])) {
 		// User is not logging in but processing cooking, set encryption flag to 1 to identify login with encrypted password.
 		$pwdencrypt = TRUE;
-		$username = scrub_input(strtolower($_COOKIE['username']));
+		$username = mb_strtolower(scrub_input($_COOKIE['username']), "UTF-8");
 		$password = $_COOKIE['password'];
 		$wrmpass = '';
 	} else {
@@ -217,7 +217,7 @@ function phpraid_login()
 	$sql = sprintf(	"SELECT ".$db_user_id.",". $db_user_name .",".$db_user_email.",".$db_user_password.
 					" FROM " . $table_prefix . $db_table_user_name. 
 					" WHERE ".$db_user_name." = %s", quote_smart($username)
-			);
+	);
 
 	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 
@@ -234,7 +234,7 @@ function phpraid_login()
 	while($data = $db_raid->sql_fetchrow($result, true)) {
 		//$testVal = password_check($password, $data[$db_user_id]);
 		//echo "<br>Processing: " . $data[$db_user_name] . " : Password Check: " . $testVal;
-		if( ($username == strtolower($data[$db_user_name])) && ($cmspass = password_check($password, $data[$db_user_id], $pwdencrypt)) )
+		if( ($username == mb_strtolower($data[$db_user_name], "UTF-8")) && ($cmspass = password_check($password, $data[$db_user_id], $pwdencrypt)) ) 
 		{
 			// The user has a matching username and proper password in the phpbb database.
 			// We need to validate the users group.  If it does not contain the user group that has been set as
@@ -279,7 +279,7 @@ function phpraid_login()
 			}
 
 			// set user profile variables
-			$_SESSION['username'] = strtolower(utf8_decode($data[$db_user_name]));
+			$_SESSION['username'] = mb_strtolower($data[$db_user_name], "UTF-8");
 			$_SESSION['session_logged_in'] = 1;
 			$_SESSION['profile_id'] = $data[$db_user_id];
 			$_SESSION['email'] = $data[$db_user_email];
@@ -322,7 +322,7 @@ function phpraid_login()
 				//Profile not found in the database or DB Error, insert.
 				$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "profile VALUES (%s, %s, %s, %s, %s, %s)",
 							quote_smart($_SESSION['profile_id']), quote_smart($_SESSION['email']), quote_smart($wrmuserpassword),
-							quote_smart($user_priv), quote_smart(strtolower($_SESSION['username'])), quote_smart(time())
+							quote_smart($user_priv), quote_smart(mb_strtolower($_SESSION['username'], "UTF-8")), quote_smart(time())
 						);
 				$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 			}
@@ -351,10 +351,10 @@ function phpraid_logout()
 
 // good ole authentication
 $lifetime = get_cfg_var("session.gc_maxlifetime"); 
-$temp = session_name("WRM-smf");
+$temp = session_name("WRM-smf2");
 $temp = session_set_cookie_params($lifetime, getCookiePath());
 session_start();
-$_SESSION['name'] = "WRM-smf";
+$_SESSION['name'] = "WRM-smf2";
 
 // set session defaults
 if (!isset($_SESSION['initiated'])) 
@@ -381,5 +381,4 @@ if (!isset($_SESSION['initiated']))
 		$_SESSION['profile_id'] = -1;
 	}
 }
-
 ?>
