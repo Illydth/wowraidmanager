@@ -146,61 +146,37 @@ class Output_Data
 	
 	function GetClassIdByClassName($class)
 	{
-		global $phprlang;
+		global $phprlang, $db_raid, $phpraid_config;
 		
-		switch(strtolower($class))
+		$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "classes";
+		$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(),1);
+		while($data = $db_raid->sql_fetchrow($result, true)) 
 		{
-			case strtolower($phprlang['druid']):
-				return 1;
-			case strtolower($phprlang['hunter']):
-				return 2;
-			case strtolower($phprlang['mage']):
-				return 3;
-			case strtolower($phprlang['paladin']):
-				return 4;
-			case strtolower($phprlang['priest']):
-				return 5;
-			case strtolower($phprlang['rogue']):
-				return 6;
-			case strtolower($phprlang['shaman']):
-				return 7;
-			case strtolower($phprlang['warlock']):
-				return 8;
-			case strtolower($phprlang['warrior']):
-				return 9;
-			case strtolower($phprlang['deathknight']);
-				return 10;
+			if ($class == $data['class_id'])
+			{
+				return $data['class_index'];
+			}				
 		}
 	}
 	
 	function GetClassNameByClassId($id)
 	{
-		global $phprlang;
+		global $phprlang, $db_raid, $phpraid_config;
 		
-		switch($id)
+		if ($id == 0)
+			return "queue";
+		if ($id == 10)
+			return "skip";
+			
+		$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "classes";
+		$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(),1);
+		while($data = $db_raid->sql_fetchrow($result, true)) 
 		{
-			case 0:
-				return 'queue';
-			case 1:
-				return 'druids';
-			case 2:
-				return 'hunters';
-			case 3:
-				return 'mages';
-			case 4:
-				return 'paladins';
-			case 5:
-				return 'priests';
-			case 6:
-				return 'rogues';
-			case 7:
-				return 'shaman';
-			case 8:
-				return 'warlocks';
-			case 9:
-				return 'warriors';
-			case 10:
-				return 'deathknights';
+			if ($id == $data['class_index'])
+			{
+				$class = $data['lang_index'] . "s";
+				return $class;
+			}				
 		}
 	}
 	
@@ -252,6 +228,14 @@ class Output_Data
 		global $db_raid, $text, $phpraid_config;
 		$format=$phpraid_config['lua_output_format'];
 		$raid_id=scrub_input($_GET['raid_id']);
+		
+		// Get the total number of classes, this is max class_index from the classes table.
+		//  This will come in handy later when we're creating the LUA output.
+		$sql = "SELECT max(class_index) as max_class_index " .
+				"FROM ".$phpraid_config['db_prefix']."classes";
+		$max_class_query = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$max_class_records = $db_raid->sql_fetchrow($max_class_query, true);
+		$max_class_index = $max_class_records['max_class_index'];
 		
 		$lua_version = "31";
 		
@@ -471,11 +455,14 @@ class Output_Data
 					));					
 				}
 			}
-			
+						
 			// begin - add data to lua output
-			for($i=0; $i<11; $i++)
-				$lua_signups[$i] = "\t\t\t[\"".$this->GetClassNameByClassId($i)."\"] = {\n";
-				
+			for($i=0; $i<=$max_class_index; $i++)
+			{
+				$class = $this->GetClassNameByClassId($i);
+				if ($class != "skip")
+					$lua_signups[$i] = "\t\t\t[\"".$class."\"] = {\n";
+			}
 			// init counter vars
 			$cnt[0] = 0;
 			$cnt[1] = 0;
@@ -539,8 +526,9 @@ class Output_Data
 			$lua_output .= "\t\t\t[\"warlocks_count\"] = \"".$cnt[8]."\",\n";
 			$lua_output .= "\t\t\t[\"warriors_count\"] = \"".$cnt[9]."\",\n";
 			
-			for($i=0; $i<11; $i++)
-				$lua_output .= $lua_signups[$i] . "\t\t\t},\n";
+			for($i=0; $i<=$max_class_index; $i++)
+				if ($i != 10) // Class ID Number 10 does not exist at this point.
+					$lua_output .= $lua_signups[$i] . "\t\t\t},\n";
 			$lua_output .= "\t\t},\n";
 			
 			$count++;
