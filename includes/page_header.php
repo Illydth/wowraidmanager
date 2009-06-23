@@ -131,6 +131,7 @@ $home_link = '<a href="index.php">' . $theme_home_link . '</a>';
 $calendar_link = '<a href="calendar.php">' . $theme_calendar_link . '</a>';
 $roster_link = '<a href="roster.php">' . $theme_roster_link . '</a>';
 $dkp_view_link = '<a href="dkp_view.php">' . $theme_dkp_link . '</a>';
+$boss_tracking_link = '<a href="bosstracking.php?mode=view">' . $theme_bosstrack_link . '</a>';
 
 // these links need special permissions
 $priv_announcement ? $announce_link = '<a href="announcements.php?mode=view">' . $theme_announcement_link . '</a>' : $announce_link = '';
@@ -278,6 +279,13 @@ if ($phpraid_config['enable_eqdkp'])
 	}
 }
 
+// Show Boss Kill Tracking Link
+if (preg_match("/(.*)bosstracking\.php(.*)/", $_SERVER['PHP_SELF'])) {
+	$menu .= '<li class="active">' . $boss_tracking_link . '</li>';
+} else {
+	$menu .= '<li class="">' . $boss_tracking_link . '</li>';
+}
+
 $menu .= '</ul></div>';
 
 $wrmsmarty->assign('menu',$menu);
@@ -307,5 +315,8 @@ if(isset($errorMsg))
 		exit;
 	}
 }
-$wrmsmarty->display('header.html');
+else
+{
+	$wrmsmarty->display('header.html');
+}
 ?>

@@ -1,3 +1,78 @@
 {* Smarty Template *}
-<div class="contentHeader">{$version_data.version_info_header}</div>
-<div class="contentBody" align="center">{$version_data.version_info}</div>
+<form action="admin_generalcfg.php" method="post" name="configure" id="configure">
+<div class="contentHeader">{$config_data.general_header}</div><br>
+<div class="contentBody">
+<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+	<tr>
+    	<td valign="top" class="forumline"> 
+           <table width="100%" border="0" cellspacing="1" cellpadding="3" class="dataOutline">
+		      <tr>
+		        <td class="row1"><strong>{$config_data.phpraid_addon_link_text}</strong></td>
+		        <td class="row2">{$config_data.phpraid_addon_link}</td>
+		      </tr>
+		      <tr>
+		        <td class="row1"><strong>{$config_data.header_logo_text}</strong></td>
+		        <td class="row2">{$config_data.header_logo_path}</td>
+		      </tr>
+		      <tr>
+		        <td class="row1"><strong>{$config_data.register_text}</strong></td>
+		        <td class="row2">{$config_data.register}</td>
+		      </tr>
+		      <tr>
+		        <td class="row1"><strong>{$config_data.header_link_text}</strong></td>
+		        <td class="row2">{$config_data.header_link_value}</td>
+		      </tr>
+		      <tr>
+		        <td class="row1"><strong>{$config_data.language_text}</strong></td>
+		        <td class="row2">{$config_data.language}</td>
+		      </tr>
+		      <tr> 
+		        <td width="200" class="row1"><strong>{$config_data.template_text}</strong></td>
+		        <td class="row2">{$config_data.template_type}</td>
+		      </tr>
+		      <tr>
+		        <td class="row1"><strong>{$config_data.disable_text}</strong></td>
+		        <td class="row2">{$config_data.disable_site}</td>
+		      </tr>
+		      <tr>
+		        <td class="row1"><strong>{$config_data.debug_text}</strong></td>
+		        <td class="row2">{$config_data.debug_mode}</td>
+		      </tr>
+		      <tr>
+		        <td class="row1"><strong>{$config_data.showphpraid_addon_text}</strong></td>
+		        <td class="row2">{$config_data.showphpraid_addon_value}</td>
+		      </tr>
+			  <tr>
+		        <td class="row1"><strong>{$config_data.enable_five_man_text}</strong></td>
+		        <td class="row2">{$config_data.enable_five_man}</td>
+		      </tr>
+			</table>
+		</td>
+	</tr>
+</table>
+</div>
+<br>
+<div class="contentHeader">{$config_data.email_header}</div>
+<br>
+<div class="contentBody">
+	<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+	  <tr>
+	    <td valign="top" class="forumline">
+	      <table width="100%" border="0" cellspacing="1" cellpadding="3" class="dataOutline">
+	        <tr> 
+	          <td width="200" class="row1"><strong>{$config_data.admin_email_text}</strong></td>
+	          <td class="row2">{$config_data.admin_email}</td>
+	        </tr>
+	        <tr> 
+	          <td class="row1"><strong>{$config_data.email_signature_text}</strong></td>
+	          <td class="row2">{$config_data.email_signature}</td>
+	        </tr>
+	      </table>
+	    </td>
+	  </tr>
+	</table>
+	<br>
+	<div align="center" class="button">{$config_data.buttons}</div>
+  </div>
+</div>
+</form>

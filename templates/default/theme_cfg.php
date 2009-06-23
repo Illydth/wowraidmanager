@@ -21,6 +21,7 @@ $image_register = "<img src=\"templates/" . $phpraid_config['template'] . "/imag
 $image_rss = "<img src=\"templates/" . $phpraid_config['template'] . "/images/rss.png\" border=\"0\">";
 $image_lua_output = "<img src=\"templates/" . $phpraid_config['template'] . "/images/lua_output.gif\" border=\"0\">";
 $image_dkp_link = "<img src=\"templates/" . $phpraid_config['template'] . "/images/dkp_link.gif\" border=\"0\">";
+$image_bosstrack_link = "<img src=\"templates/" . $phpraid_config['template'] . "/images/bosstrack_link.gif\" border=\"0\">";
 
 // no further editing necessary
 if($use_images == 0) {
@@ -40,6 +41,7 @@ if($use_images == 0) {
 	$theme_register_link = $phprlang['register_link'];
 	$theme_roster_link = $phprlang['roster_link'];
 	$theme_dkp_link = $phprlang['dkp_link'];
+	$theme_bosstrack_link = $phprlang['bosstrack_link'];
 } else {
 	$theme_index_link = $image_index;
 	$theme_configure_link = $image_configure;
@@ -57,5 +59,6 @@ if($use_images == 0) {
 	$theme_roster_link = $image_roster;
 	$theme_lua_output_link = $image_lua_output;
 	$theme_dkp_link = $image_dkp_link;
+	$theme_bosstrack_link = $image_bosstrack_link;
 }
 ?>
