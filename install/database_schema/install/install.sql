@@ -890,8 +890,8 @@ CREATE TABLE `wrm_permissions` (
 ) ;
 
 -- Permissions Data
-INSERT INTO `wrm_permissions` (`name`,`description`,`announcements`,`configuration`,`guilds`,`locations`,`permissions`,`profile`,`raids`,`logs`,`users`) VALUES ('WRM Superadmin','Full Access','1','1','1','1','1','1','1','1','1');
-INSERT INTO `wrm_permissions` (`name`,`description`,`announcements`,`configuration`,`guilds`,`locations`,`permissions`,`profile`,`raids`,`logs`,`users`) VALUES ('WRM Users','Generic Access','0','0','0','0','0','1','0','0','0');
+INSERT INTO `wrm_permissions` (`permission_id`, `name`,`description`,`announcements`,`configuration`,`guilds`,`locations`,`permissions`,`profile`,`raids`,`logs`,`users`) VALUES ('1','WRM Superadmin','Full Access','1','1','1','1','1','1','1','1','1');
+INSERT INTO `wrm_permissions` (`permission_id`, `name`,`description`,`announcements`,`configuration`,`guilds`,`locations`,`permissions`,`profile`,`raids`,`logs`,`users`) VALUES ('2','WRM Users','Generic Access','0','0','0','0','0','1','0','0','0');
 
 -- Profile Table Creation
 DROP TABLE IF EXISTS `wrm_profile`;
