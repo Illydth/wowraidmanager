@@ -212,6 +212,7 @@ $result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 $x = 0;
 while($data = $db_raid->sql_fetchrow($result, true))
 {
+	$wrm_global_classes[$x]['class_index'] = $data['class_index'];
 	$wrm_global_classes[$x]['class_id'] = $data['class_id'];
 	$wrm_global_classes[$x]['class_code'] = $data['class_code'];
 	$wrm_global_classes[$x]['lang_index'] = $data['lang_index'];
