@@ -186,7 +186,7 @@ function permissions() {
 				$delete = '';
 			}
 			
-			$data['username'] = ucwords(strtolower($data['username']));
+			$data['username'] = ucwords(mb_strtolower($data['username'], "UTF-8"));
 			
 			array_push($users,
 				array(
@@ -245,7 +245,7 @@ function permissions() {
 			array_push($users, 
 				array(
 					'ID'=>$data['profile_id'],
-					'Username'=>ucwords(strtolower($data['username'])), 
+					'Username'=>ucwords(mb_strtolower($data['username'], "UTF-8")), 
 					'E-Mail'=>$data['email'], 
 					'Buttons'=>$actions
 					)

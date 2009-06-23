@@ -147,14 +147,14 @@ function get_armorychar($name, $language, $server)
 
 	$javascript = '<a href="' . $phpraid_config['armory_link'] . '/character-sheet.xml?r=' . $realm . '&amp;n=' . ucfirst($name) . '" target="new" onmouseover=\'tooltip.show("includes/wowarmory/char.php?v=' . ucfirst($name) . '&amp;z=' . str_replace("'", "\"+String.fromCharCode(39)+\"", $realm) . '&amp;l=' . $lang . '&amp;u='. $phpraid_config['armory_link'] .'");\' onmouseout="tooltip.hide();"><strong>' . ucfirst($name) . '</strong></a>';
 
-	if(substr($name, 0, 1) == '_')
+	if(mb_substr($name, 0, 1, "UTF-8") == '_')
 	{
-		$name = substr($name, 1);
+		$name = mb_substr($name, 1, (mb_strlen($name, "UTF-8")-1), "UTF-8");
 		$name = '<!-- ' . ucfirst($name) . ' -->' . $javascript;
 	}
-	else if(substr($name, 0, 1) == '(' && substr($name, strlen($name) - 1, 1) == ')')
+	else if(mb_substr($name, 0, 1, "UTF-8") == '(' && mb_substr($name, strlen($name) - 1, 1, "UTF-8") == ')')
 	{
-		$name = substr($name, 1, strlen($name) - 2);
+		$name = mb_substr($name, 1, mb_strlen($name, "UTF-8") - 2, "UTF-8");
 		$name = '<!-- ' . ucfirst($name) . ' -->' . $javascript;
 	}
 	else

@@ -197,7 +197,7 @@ class Output_Data
 			$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id=%s",quote_smart($data['char_id']));
 			$result2 = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 			$data2 = $db_raid->sql_fetchrow($result2, true);
-			$data2['name'] = ucfirst(strtolower($data2['name']));
+			$data2['name'] = ucfirst(mb_strtolower($data2['name'], "UTF-8"));
 			$text .= "/i {$data2['name']}\n";
 		}
 		
@@ -211,7 +211,7 @@ class Output_Data
 			$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id='" . $data['char_id'] . "'";
 			$result2 = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 			$data2 = $db_raid->sql_fetchrow($result2, true);
-			$data2['name'] = ucfirst(strtolower($data2['name']));
+			$data2['name'] = ucfirst(mb_strtolower($data2['name'], "UTF-8"));
 			$text .= "/i {$data2['name']}\n";
 		}
 		$text .= '</textarea></td></tr></table>';
@@ -363,7 +363,7 @@ class Output_Data
 						$access_type = "User";
 						
 					array_push($signups, array(
-						'name'		 => ucfirst(strtolower($signup['name'])),
+						'name'		 => ucfirst(mb_strtolower($signup['name'], "UTF-8")),
 						'level'		 => $signup['lvl'],
 						'race'		 => $signup['race'],
 						'class'		 => $signup['class'],
@@ -376,7 +376,7 @@ class Output_Data
 				else
 				{				
 					array_push($signups, array(
-						'name'		=> ucfirst(strtolower($signup['name'])),
+						'name'		=> ucfirst(mb_strtolower($signup['name'], "UTF-8")),
 						'level'		=> $signup['lvl'],
 						'race'		=> $signup['race'],
 						'class'		=> $signup['class'],
@@ -429,7 +429,7 @@ class Output_Data
 						$access_type = "User";
 					
 					array_push($queue, array(
-						'name'		 => ucfirst(strtolower($signup['name'])),
+						'name'		 => ucfirst(mb_strtolower($signup['name'], "UTF-8")),
 						'level'		 => $signup['lvl'],
 						'race'		 => $signup['race'],
 						'class'		 => $signup['class'],
@@ -442,7 +442,7 @@ class Output_Data
 				else
 				{
 					array_push($queue, array(
-						'name'		=> ucfirst(strtolower($signup['name'])),
+						'name'		=> ucfirst(mb_strtolower($signup['name'], "UTF-8")),
 						'level'		=> $signup['lvl'],
 						'race'		=> $signup['race'],
 						'class'		=> $signup['class'],

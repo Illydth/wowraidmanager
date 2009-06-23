@@ -264,12 +264,12 @@ if($mode == 'view')
 
 		$comments = escapePOPUP(scrub_input($signups['comments']));
 
-		if(strlen($signups['comments']) > 25)
-			$comments = '<a href="#" onMouseover="fixedtooltip(\'<span class=tooltip_title>'.$phprlang['comments'].'</span><br>'.$comments.'\',this,event,\'150\')" onMouseout="delayhidetip();">' . substr($signups['comments'], 0, 22) . '...</a>';
+		if(mb_strlen($signups['comments'], "UTF-8") > 25)
+			$comments = '<a href="#" onMouseover="fixedtooltip(\'<span class=tooltip_title>'.$phprlang['comments'].'</span><br>'.$comments.'\',this,event,\'150\')" onMouseout="delayhidetip();">' . mb_substr($signups['comments'], 0, 22, "UTF-8") . '...</a>';
 		else
 			$comments = UBB(scrub_input($signups['comments']));
 
-		if(strlen($comments) == 0)
+		if(mb_strlen($comments, "UTF-8") == 0)
 			$comments = '-';
 
 		//Get Spec Information.
@@ -372,12 +372,12 @@ if($mode == 'view')
 
 		$comments = escapePOPUP(scrub_input($signups['comments']));
 
-		if(strlen($signups['comments']) > 25)
-			$comments = '<a href="#" onMouseover="fixedtooltip(\'<span class=tooltip_title>'.$phprlang['comments'].'</span><br>'.$comments.'\',this,event,\'150\')" onMouseout="delayhidetip();">' . substr($signups['comments'], 0, 22) . '...</a>';
+		if(mb_strlen($signups['comments'], "UTF-8") > 25)
+			$comments = '<a href="#" onMouseover="fixedtooltip(\'<span class=tooltip_title>'.$phprlang['comments'].'</span><br>'.$comments.'\',this,event,\'150\')" onMouseout="delayhidetip();">' . mb_substr($signups['comments'], 0, 22, "UTF-8") . '...</a>';
 		else
 			$comments = UBB(scrub_input($signups['comments']));
 
-		if(strlen($comments) == 0)
+		if(mb_strlen($comments, "UTF-8") == 0)
 			$comments = '-';
 
 		$name = $data['name'];
@@ -504,12 +504,12 @@ if($mode == 'view')
 
 		$comments = escapePOPUP(scrub_input($signups['comments']));
 
-		if(strlen($signups['comments']) > 25)
-			$comments = '<a href="#" onMouseover="fixedtooltip(\'<span class=tooltip_title>'.$phprlang['comments'].'</span><br>'.$comments.'\',this,event,\'150\')" onMouseout="delayhidetip();">' . substr($signups['comments'], 0, 22) . '...</a>';
+		if(mb_strlen($signups['comments'], "UTF-8") > 25)
+			$comments = '<a href="#" onMouseover="fixedtooltip(\'<span class=tooltip_title>'.$phprlang['comments'].'</span><br>'.$comments.'\',this,event,\'150\')" onMouseout="delayhidetip();">' . mb_substr($signups['comments'], 0, 22, "UTF-8") . '...</a>';
 		else
 			$comments = UBB(scrub_input($signups['comments']));
 
-		if(strlen($comments) == 0)
+		if(mb_strlen($comments, "UTF-8") == 0)
 			$comments = '-';
 
 		$name = $data['name'];
