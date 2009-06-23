@@ -146,35 +146,31 @@ class Output_Data
 	
 	function GetClassIdByClassName($class)
 	{
-		global $phprlang, $db_raid, $phpraid_config;
+		global $phprlang, $db_raid, $phpraid_config, $wrm_global_classes;
 		
-		$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "classes";
-		$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(),1);
-		while($data = $db_raid->sql_fetchrow($result, true)) 
+		foreach ($wrm_global_classes as $global_class)
 		{
-			if ($class == $data['class_id'])
+			if ($class == $global_class['class_id'])
 			{
-				return $data['class_index'];
+				return $global_class['class_index'];
 			}				
 		}
 	}
 	
 	function GetClassNameByClassId($id)
 	{
-		global $phprlang, $db_raid, $phpraid_config;
+		global $phprlang, $db_raid, $phpraid_config, $wrm_global_classes;
 		
 		if ($id == 0)
 			return "queue";
 		if ($id == 10)
 			return "skip";
-			
-		$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "classes";
-		$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(),1);
-		while($data = $db_raid->sql_fetchrow($result, true)) 
+
+		foreach ($wrm_global_classes as $global_class)
 		{
-			if ($id == $data['class_index'])
+			if ($id == $global_class['class_index'])
 			{
-				$class = $data['lang_index'] . "s";
+				$class = $global_class['lang_index'] . "s";
 				return $class;
 			}				
 		}
@@ -225,7 +221,7 @@ class Output_Data
 	
 	function Output_Lua()
 	{
-		global $db_raid, $text, $phpraid_config;
+		global $db_raid, $text, $phpraid_config, $wrm_global_classes;
 		$format=$phpraid_config['lua_output_format'];
 		$raid_id=scrub_input($_GET['raid_id']);
 		
@@ -465,16 +461,8 @@ class Output_Data
 			}
 			// init counter vars
 			$cnt[0] = 0;
-			$cnt[1] = 0;
-			$cnt[2] = 0;
-			$cnt[3] = 0;
-			$cnt[4] = 0;
-			$cnt[5] = 0;
-			$cnt[6] = 0;
-			$cnt[7] = 0;
-			$cnt[8] = 0;
-			$cnt[9] = 0;
-			$cnt[10] = 0;
+			foreach ($wrm_global_classes as $global_class)
+				$cnt[$global_class['class_index']] = 0;
 			
 			foreach($queue as $char)
 			{
@@ -515,16 +503,8 @@ class Output_Data
 			
 			// add class counts
 			$lua_output .= "\t\t\t[\"queue_count\"] = \"".$cnt[0]."\",\n";
-			$lua_output .= "\t\t\t[\"deathknight_count\"] = \"".$cnt[10]."\",\n";
-			$lua_output .= "\t\t\t[\"druids_count\"] = \"".$cnt[1]."\",\n";
-			$lua_output .= "\t\t\t[\"hunters_count\"] = \"".$cnt[2]."\",\n";
-			$lua_output .= "\t\t\t[\"mages_count\"] = \"".$cnt[3]."\",\n";
-			$lua_output .= "\t\t\t[\"paladins_count\"] = \"".$cnt[4]."\",\n";
-			$lua_output .= "\t\t\t[\"priests_count\"] = \"".$cnt[5]."\",\n";
-			$lua_output .= "\t\t\t[\"rogues_count\"] = \"".$cnt[6]."\",\n";
-			$lua_output .= "\t\t\t[\"shaman_count\"] = \"".$cnt[7]."\",\n";
-			$lua_output .= "\t\t\t[\"warlocks_count\"] = \"".$cnt[8]."\",\n";
-			$lua_output .= "\t\t\t[\"warriors_count\"] = \"".$cnt[9]."\",\n";
+			foreach ($wrm_global_classes as $global_class)
+				$lua_output .= "\t\t\t[\"".$global_class['lang_index']."s_count\"] = \"".$cnt[$global_class['class_index']]."\",\n";
 			
 			for($i=0; $i<=$max_class_index; $i++)
 				if ($i != 10) // Class ID Number 10 does not exist at this point.
