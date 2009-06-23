@@ -69,7 +69,7 @@ if(!isset($_GET['SortDescending']) || !is_numeric($_GET['SortDescending']))
 else
 	$sortDesc = scrub_input($_GET['SortDescending']);
 		
-$pageURL = 'missing_signups.php?raid_id=' . $raid_id;
+$pageURL = 'missing_signups.php?raid_id=' . $raid_id . '&';
 /**************************************************************
  * End Record Output Setup for Data Table
  **************************************************************/
@@ -100,7 +100,7 @@ $result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 
 while($data = $db_raid->sql_fetchrow($result, true))
 {
-	$usersname = '<!-- ' . strtolower($data['username']) . ' --><a href="users.php?mode=details&amp;user_id='.$data['profile_id'].'">'.$data['username'].'</a>';
+	$usersname = '<!-- ' . mb_strtolower($data['username'], "UTF-8") . ' --><a href="users.php?mode=details&amp;user_id='.$data['profile_id'].'">'.$data['username'].'</a>';
 
 	$date = !($data['last_login_time'])?'':new_date('Y/m/d H:i:s',$data['last_login_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
 	$time = !($data['last_login_time'])?'':new_date('Y/m/d H:i:s',$data['last_login_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);

@@ -506,30 +506,30 @@ function _formatListValue($strValue, $strFormat)
 	switch ($strFormat) {
 		case 'phone' :
 			$strValue = trim($strValue);
-			switch (strlen($strValue)) {
+			switch (mb_strlen($strValue, "UTF-8")) {
 				case 7 :
 					// 6060801 -> 606-0801
-					$strValue = substr($strValue, 0, 3) . '-' .
-								substr($strValue, 3);
+					$strValue = mb_substr($strValue, 0, 3, "UTF-8") . '-' .
+								mb_substr($strValue, 3, mb_strlen($strValue, "UTF-8") - 3, "UTF-8");
 					break;
 				case 10 :
 					// 8016060801 -> (801) 606-0801
-					$strValue = '(' . substr($strValue, 0, 3) . ') ' .
-									substr($strValue, 3, 3) . '-' .
-									substr($strValue, 6);
+					$strValue = '(' . mb_substr($strValue, 0, 3, "UTF-8") . ') ' .
+									mb_substr($strValue, 3, 3, "UTF-8") . '-' .
+									mb_substr($strValue, 6, mb_strlen($strValue, "UTF-8") - 6, "UTF-8");
 					break;
 				default :
 					break;
 			}
 			break;
 		case 'ucase' :
-			$strValue = strtoupper($strValue);
+			$strValue = mb_strtoupper($strValue, "UTF-8");
 			break;
 		case 'lcase' :
-			$strValue = strtolower($strValue);
+			$strValue = mb_strtolower($strValue, "UTF-8");
 			break;
 		case 'pcase' :
-			$strValue = ucwords(strtolower($strValue));
+			$strValue = mb_convert_case(mb_strtolower($strValue, "UTF-8"), MB_CASE_TITLE, "UTF-8");
 			break;
 		case 'money' :
 			$strValue = number_format($strValue, 2);

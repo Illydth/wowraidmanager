@@ -259,7 +259,7 @@ function has_char_multiple_signups($profile_id, $raid_id) {
 		{
 			// exclude external sign-ups
 			$name = get_char_name($data['char_id']);
-			if(!(substr($name, 0, 1) == '_' || substr($name, 0, 1) == '(' && substr($name, strlen($name) - 1, 1) == ')'))
+			if(!(mb_substr($name, 0, 1, "UTF-8") == '_' || mb_substr($name, 0, 1, "UTF-8") == '(' && mb_substr($name, mb_strlen($name, "UTF-8") - 1, 1, "UTF-8") == ')'))
 			{
 				$signup_count += 1;
 				if($signup_count > 1)
