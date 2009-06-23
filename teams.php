@@ -166,11 +166,16 @@ if($mode == 'view')
 			$delete = '';
 		}
 
+		// Get the Internationalized data to display from the database values:
+		foreach ($wrm_global_classes as $global_class)
+			if ($team['class'] == $global_class['class_id'])
+				$class = $phprlang[$global_class['lang_index']];
+		
 		array_push($team_remove,
 			array(
 				'ID'=>$team['char_id'],
 				'Name'=>get_armorychar($team['name'], $phpraid_config['armory_language'], $server),
-				'Class'=>$team['class'],
+				'Class'=>$class,
 				'Guild'=>$team['guild'],
 				'Level'=>$team['lvl'],
 				'Team Name'=>$team['team_name'],
@@ -304,11 +309,17 @@ if($mode == 'view')
 
 		$action='<input type="checkbox" name="addtolist' . $data['char_id'] . '" value="' . $data['char_id'] . '">';
 
+		// Get the Internationalized data to display from the database values:
+		foreach ($wrm_global_classes as $global_class)
+			if ($data['class'] == $global_class['class_id'])
+				$class = $phprlang[$global_class['lang_index']];
+		
+		
 		array_push($team_add,
 			array(
 				'ID'=>$data['char_id'],
 				'Name'=>get_armorychar($data['name'], $phpraid_config['armory_language'], $server),
-				'Class'=>$data['class'],
+				'Class'=>$class,
 				'Guild'=>$data['guild'],
 				'Level'=>$data['lvl'],
 				'Team Name'=>'',

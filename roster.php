@@ -87,15 +87,24 @@ while($data = $db_raid->sql_fetchrow($result, true)) {
 		$charname = get_armorychar($data['name'], $phpraid_config['armory_language'], $server);
 	else
 		$charname = $data['name'];
-		
+
+	// Get the Internationalized data to display from the database values:
+	foreach ($wrm_global_races as $global_race)
+		if ($data['race'] == $global_race['race_id'])
+			$race = $phprlang[$global_race['lang_index']];
+
+	foreach ($wrm_global_classes as $global_class)
+		if ($data['class'] == $global_class['class_id'])
+			$class = $phprlang[$global_class['lang_index']];
+				
 	array_push($chars,
 		array(
 			'ID'=>$data['char_id'],
 			'Name'=> $charname,
 			'Guild'=>$data['guild'],
 			'Level'=>$data['lvl'],
-			'Race'=>$data['race'],
-			'Class'=>$data['class'],
+			'Race'=>$race,
+			'Class'=>$class,
 			'Pri_Spec'=>$data['pri_spec'],
 			'Sec_Spec'=>$data['sec_spec'],
 			'Arcane'=>$data['arcane'],
