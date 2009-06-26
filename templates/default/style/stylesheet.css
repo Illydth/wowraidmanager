@@ -327,3 +327,52 @@ input.liteoption {
 	margin-left:10px;
 	margin-right:10px;
 }
+
+/* Over/Under/Even Color */
+  /* This is the color for when a raid number is on the "bad" side of it's limit. */
+  /*    For instance 2/1 Warriors Signed up for the raid (Over). */
+.badcolor {
+     color:#CC0000;
+}
+
+  /* This is the color for when a raid number is on the "good" side of it's limit. */
+  /*    For instance 0/1 Warriors Signed up to the raid (not over) */
+.goodcolor {
+     color:#008800;
+}
+
+  /* This is the color for when a raid number is exactly the number it needs to be. */
+  /*    For instance, 1/1 Warriors Signed up to the raid. */
+.evencolor {
+     color:#000000;
+} 
+
+/* Implementation of Calendar CSS Elements to modify the Calendar display. */
+  /* Any day before "today" that doesn't have a raid has this look. */
+.priorDay {
+	text-align:right;
+	font-size:18px;
+	color:#FFFFFF;
+}
+  /* Any day after "today" that doesn't have a raid has this look. */
+.postDay {
+	text-align:right;
+	font-size:18px;
+	color:#000000;
+}
+  /* "Today" always has a special look to it, regardless of whether it has a raid or not. */
+.currentDay {
+	text-align:right;
+	font-size:18px;
+	color:#FF0000;
+}
+  /* "#" Signed Up - Not Drafted Mark */
+.qcanmark {
+	font-size:20px;
+	color:#0000FF;
+}
+  /* "*" Signed Up, Drafted Mark */
+.draftedmark {
+	font-size:20px;
+	color:#0000FF;
+}

@@ -38,7 +38,7 @@ $phprlang['announcements_title_text'] = 'Titel';
 // Calendar
 $phprlang['invites'] = 'Inbjudan';
 $phprlang['start'] = 'Start';
-$phprlang['key'] = 'Key:<br>(*) = Bokad & Uppflyttad <br>(#) = Bokad, Inte uppflyttad (köad eller avbokad)<br><font color="#FFFFFF">Vita</font> datum är i det förflutna.<br><font color="#FF0000">Röd</font> datum är idag.<br><font color="#000000">Svarta</font> datum är i framtiden.';
+$phprlang['key'] = 'Key:<br>(<span class="draftedmark">*</span>) = Bokad & Uppflyttad <br>(<span class="qcanmark">#</span>) = Bokad, Inte uppflyttad (köad eller avbokad)<br><span class="priorDay">TEXT</span> datum är i det förflutna.<br><span class="currentDay">TEXT</span> datum är idag.<br><span class="postDay">TEXT</span> datum är i framtiden.';
 $phprlang['calendar_month_select_header'] = 'Select Month and Year to View';
 
 // configuration

@@ -38,7 +38,7 @@ $phprlang['announcements_title_text'] = 'Title';
 // Calendar
 $phprlang['invites'] = 'Invites';
 $phprlang['start'] = 'Start';
-$phprlang['key'] = 'Key:<br>(*) = Signed Up & Drafted<br>(#) = Signed Up, Not Drafted (queued or cancelled)<br><font color="#FFFFFF">White</font> dates are in the past.<br><font color="#FF0000">Red</font> date is today.<br><font color="#000000">Black</font> dates are in the future.';
+$phprlang['key'] = 'Key:<br>(<span class="draftedmark">*</span>) = Signed Up & Drafted<br>(<span class="qcanmark">#</span>) = Signed Up, Not Drafted (queued or cancelled)<br><span class="priorDay">TEXT</span> dates are in the past.<br><span class="currentDay">TEXT</span> date is today.<br><span class="postDay">TEXT</span> dates are in the future.';
 $phprlang['calendar_month_select_header'] = 'Select Month and Year to View';
 
 // configuration

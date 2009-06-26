@@ -38,7 +38,7 @@ $phprlang['announcements_title_text'] = 'Titolo';
 // Calendar
 $phprlang['invites'] = 'Inviti';
 $phprlang['start'] = 'Inizio';
-$phprlang['key'] = 'Legenda:<br>(*) = Iscritto e confermato<br>(#) = Iscritto (in coda o annullato)<br>Giorni <font color="#FFFFFF">bianchi</font> = eventi passati.<br>Giorno <font color="#FF0000">rosso</font> = eventi odierni.<br>Giorni <font color="#000000">neri</font> = eventi futuri.';
+$phprlang['key'] = 'Legenda:<br>(<span class="draftedmark">*</span>) = Iscritto e confermato<br>(<span class="qcanmark">#</span>) = Iscritto (in coda o annullato)<br>Giorni <span class="priorDay">TEXT</span> = eventi passati.<br>Giorno <span class="currentDay">TEXT</span> = eventi odierni.<br>Giorni <span class="postDay">TEXT</span> = eventi futuri.';
 $phprlang['calendar_month_select_header'] = 'Seleziona mese ed anno da visualizzare';
 
 // configuration

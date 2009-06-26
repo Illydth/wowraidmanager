@@ -38,7 +38,7 @@ $phprlang['announcements_title_text'] = '標題';
 // Calendar
 $phprlang['invites'] = '邀請';
 $phprlang['start'] = '開始';
-$phprlang['key'] = '代表符號: <br>(*) = 已報名並列入團隊 <br>(#) = 已報名，但未列入團隊 (已列入後補或已取消)<br><font color="#FFFFFF">White</font> 日期已過。<br><font color="#FF0000">Red</font> 日期為今日。 <br><font color="#000000">Black</font> 日期於未來。';
+$phprlang['key'] = '代表符號: <br>(<div class="draftedmark">*</div>) = 已報名並列入團隊 <br>(<div class="qcanmark">#</div>) = 已報名，但未列入團隊 (已列入後補或已取消)<br><div class="priorDay">TEXT</div> 日期已過。<br><div class="currentDay">TEXT</div> 日期為今日。 <br><div class="postDay">TEXT</div> 日期於未來。';
 $phprlang['calendar_month_select_header'] = 'Select Month and Year to View';
 
 // configuration
