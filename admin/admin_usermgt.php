@@ -226,7 +226,9 @@ else if($mode == 'details')
 				'Frost'=>$data['frost'],
 				'Nature'=>$data['nature'],
 				'Shadow'=>$data['shadow'],
-				'Buttons'=>'<a href="admin_usermgt.php?mode=remove_char&amp;n='.$data['name'].'&amp;char_id='.$data['char_id'].'&amp;user_id='.$data['profile_id'].'"><img src="../templates/' . $phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''. $phprlang['delete'] .'\');" onMouseout="hideddrivetip();" alt="delete icon"></a>')
+				'Pri_Spec'=>$data['pri_spec'],
+				'Sec_Spec'=>$data['sec_spec'],
+				'Buttons'=>'<a href="users.php?mode=remove_char&amp;n='.$data['name'].'&amp;char_id='.$data['char_id'].'&amp;user_id='.$data['profile_id'].'"><img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''. $phprlang['delete'] .'\');" onMouseout="hideddrivetip();" alt="delete icon"></a>')
 			);
 	}
 
