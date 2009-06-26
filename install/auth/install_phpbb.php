@@ -98,7 +98,7 @@ function step5($auth_type)
 		$content .= '<input type="hidden" name="auth_type" value="' . $auth_type . '" class="post">';
 		$content .= '<input type="hidden" name="substep" value="2" class="post">';
 		$content .= $localstr['step5phpBBsub1inputdir'].'.<br><br>';
-		$content .= '<input type="text" name="phpbb_root_path" size="20" class="post" value="../phpBB/"><br><br>';
+		$content .= '<input type="text" name="phpbb_root_path" size="20" class="post" value="../../"><br><br>';
 		$content .= '<br><br><br>';
 		$content .= '<br>------------------------------------------------------------------<br>';	
 		$content .= $localstr['hittingsubmit'].'.<br><br>';
