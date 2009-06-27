@@ -21,16 +21,25 @@ WRM 4 is functioning correctly (at least mostly), I make NO gaurentees about upg
 installing since NEITHER of these processes have been tested extensively.  Again, you have
 been warned.
 
+Update note: 4.0.3.  So with the 4.0.3 release there's at least been some testing on the
+installation.  While I suspect there are a few latent issues (especially installation on
+windows based servers), I hope that the majority of the installation problems are fixed.
+
+The Migration has also been run by several people and to my knowledge has worked to migrate
+them fro 3.6.x to 4.0.0.  Again, backing up your database is ESSENTIAL to the process to
+ensure something going wrong doesn't dump all your hard earned raid data.
+
 Quick Installation
 -------------------
 WRM 4.0, as noted on the WRM Boards, is a major re-write of the 3.x versions of WRM.  
 
-Installation of Beta:
+Installation of 4.0.3:
 
 * Unpackage the files from this archive into a directory on your local machine.
-* Open your FTP program and DELETE any old beta versions of WRM.  Ensure that all files
-    and folders from any prior WRM BETA version have been completely deleted.  ALL WRM
-    4.0 INSTALLATIONS SHOULD BE DONE AS INSTALLS NOT UPGRADES (see Upgrading Below).    
+* Open your FTP program and DELETE any old versions of WRM.  Ensure that all files
+    and folders from any prior WRM release (BETA or production) version have been completely 
+    deleted.  ALL WRM 4.0.0 INSTALLATIONS SHOULD BE DONE AS INSTALLS NOT UPGRADES (see 
+    Upgrading Below).
 * Open your FTP program and upload the entire contents of this archive to your web host,
 	including the WRM directory.  MAKE SURE TO UPLOAD TO A BRAND NEW DIRECTORY.  DO NOT
 	and I repeat, DO NOT upload over the top of an existing WRM installation. 
@@ -54,11 +63,11 @@ Installation of Beta:
 	
 Please see phpRaid_install_doc.pdf for more information.
 
-NOTE on Config.php: Note that the config.php file no longer ships with the software.  Generally
-it should be created on the fly by the installation program shipping with WRM but in some special
-cases we have found that the config file is NOT created by the installation and the software has
-problems when being executed.  If, after installation, you do not have a valid config.php file in 
-your WRM Root Directory, please create one in the following format:
+NOTE on Config.php: Note that the config.php file no longer ships with the software.  
+Generally it should be created on the fly by the installation program shipping with WRM but 
+in some special cases we have found that the config file is NOT created by the installation 
+and the software has problems when being executed.  If, after installation, you do not have
+a valid config.php file in your WRM Root Directory, please create one in the following format:
 
 <?php
 /*
@@ -85,11 +94,60 @@ $phpraid_config['eqdkp_db_pass'] = '';
 $phpraid_config['eqdkp_db_prefix'] = '';
 ?>
 
-It is safe to leave the eqdkp configuration blank for the moment.  Please see "eqdkp_link.htm" in
-the docs directory for more information on linking WRM with eqdkp.
+It is safe to leave the eqdkp configuration blank for the moment.  Please see "eqdkp_link.htm" 
+in the docs directory for more information on linking WRM with eqdkp.
 
-"Quick" Upgrade (not really quick)
+"Quick" Upgrade from 4.0.x to 4.0.3
 -----------------------------------
+IF YOU ARE UPGRADING FROM 3.X or 4.0 BETA TO 4.0.3  YOU SHOULD NOT BE FOLOWING THESE
+INSTRUCTIONS.  SEE BELOW.
+
+If you are already on a 4.0.x release (4.0.0, 4.0.1, 4.0.2) then you can follow this process
+to upgrade your installation to 4.0.3.
+
+FIRST: due to updates to the default template, go into your configuration section and switch
+back to using the "default" template before you perform this upgrade, it is unlikely that any
+other templates will work properly for you till they are correctly updated for 4.0.3.
+
+* Unpackage the files from this archive into a directory on your local machine.
+* Open your FTP program and copy down your config.php file to your locally unpacked archive.
+* Make sure a second time that you have copied down your config.php file or be prepared to
+remake it by hand.
+* DELETE all files and folders inside your current WRM 4.0.x installation directory.  
+	Ensure that all files and folders from any prior WRM release version have been completely 
+    deleted from your WRM directory on your host (NOT LOCAL).  
+* Upload the entire contents of this archive to your web host, including your config.php file,
+	and including the WRM directory.  MAKE SURE TO UPLOAD TO A CLEAN DIRECTORY.  DO NOT
+	and I repeat, DO NOT upload over the top of an existing WRM installation.  This is a rule
+	for all 4.0 releases and things rapidly change and whole sections of code are getting 
+	moved from place to place. 
+* Change the Ownership of all files to match that of your web server.  
+* Change the permissions of the following directories and files to be writable by your
+	web server user:
+	* config.php (see below)
+	* cache/ (and all below directories)
+* Open a Database Management Tool (like phpMyAdmin) and execute the SQLs that are in the
+install/database_schema/upgrade directory that apply to you.  If you are currently on 4.0.1
+and you are upgrading to 4.0.3 you would run 4.0.1_4.0.2.sql and 4.0.2_4.0.3.sql into your
+WRM database.  This probably goes without saying but RUN THEM IN ORDER (4.0.1_4.0.2.sql first
+4.0.2_4.0.3.sql second, etc.).  Do not execute SQLs that do not apply to you.
+IF YOU ARE UPGRADING FROM 3.X or 4.0 BETA TO 4.0.3  YOU SHOULD NOT BE FOLOWING THESE
+INSTRUCTIONS.
+* At this point you have upgraded your installation to 4.0.3, please remove your Install 
+directory (delete it completely)
+* Change the permissions on your config.php file back to read only to the world (you can 
+	leave it writable by your web server if you so choose, but it is recommended that
+	you make it read only...(400 permissions in Unix).  Keep the permissions of the other
+	files and folders listed above writable.
+
+You should probably go to your configuration section and ensure that you aren't getting an 
+error message telling you you're out of date.  If you do, make sure you have upgraded
+ALL files.  The most common error experienced in this upgrade is not forceably overwriting
+all files or deleting all files in the directory before uploading.  I'm not joking, blow away
+your ENTIRE prior installation (other than the config.php file) before uploading.
+
+"Quick" Upgrade (not really quick) from 3.6.x or 4.0 Beta
+-----------------------------------------------------------
 Upgrading WRM from 3.6.x (Release) or 3.9.9.x.x (Beta) is NOT recommended for non-technical
 users.  The upgrade process will require the modification of SQL files and MANUALLY running
 SQL into your database.  If you are uncomfortable doing this, please use the INSTALL section
