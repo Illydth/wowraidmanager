@@ -169,24 +169,24 @@ function get_armorychar($name, $language, $server)
 //			counts are used as MINIMUM values (config:class_as_min) if count < count_max set to red. 
 function get_color($text, $count, $max_count, $reverse)
 {
-	$color = '';
+	$class = '';
 
 	if($count < $max_count)
 		if($reverse)
-			$color = '#CC0000'; //Red
+			$class = 'badcolor'; //Red
 		else
-			$color = '#008800'; //Green
+			$class = 'goodcolor'; //Green
 	
 	if($count == $max_count)
-		$color = '#000000'; //Black
+		$class = 'evencolor'; //Black
 	
 	if($count > $max_count)
 		if($reverse)
-			$color = '#000000'; //Black
+			$class = 'evencolor'; //Black
 		else
-			$color = '#CC0000'; //Red 
+			$class = 'badcolor'; //Red 
 			
-	return $color ? '<font color="' . $color . '">' . $text . '</font>' : $text;
+	return $class ? '<span class="' . $class . '">' . $text . '</span>' : $text;
 }
 
 function get_coloredcount($signedup, $count, $max_count, $onqueue, $reverse = false)

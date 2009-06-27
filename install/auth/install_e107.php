@@ -101,7 +101,7 @@ function step5($auth_type)
 		$content .= '<input type="hidden" name="auth_type" value="' . $auth_type . '" class="post">';
 		$content .= '<input type="hidden" name="substep" value="2" class="post">';
 		$content .= $localstr['step5e107sub1inputdir'].'.<br><br>';
-		$content .= '<input type="text" name="e107_base_path" size="20" class="post" value="../e107/"><br><br>';
+		$content .= '<input type="text" name="e107_base_path" size="20" class="post" value="../../"><br><br>';
 		$content .= '<br><br><br>';
 		$content .= '<br>------------------------------------------------------------------<br>';	
 		$content .= $localstr['hittingsubmit'].'.<br><br>';

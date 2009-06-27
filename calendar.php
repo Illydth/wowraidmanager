@@ -160,19 +160,22 @@ for ($x = 1; $x <= $daysInMonth; $x++)
 	{
 		$boxNum = $x + $offset;
 		$varname = 'box'.$boxNum;
-		$$varname = '<div align="right"><font size="4" color="#FF0000"><b>' . $x . '</b></font></div>';		
+		//$$varname = '<div align="right"><font size="4" color="#FF0000"><b>' . $x . '</b></font></div>';
+		$$varname = '<div class="currentDay">' . $x . '</div>';		
 	}
 	elseif ($checkDate < $currTimeStamp)
 	{
 		$boxNum = $x + $offset;
 		$varname = 'box'.$boxNum;
-		$$varname = '<div align="right"><font size="4" color="#FFFFFF"><b>' . $x . '</b></font></div>';				
+		//$$varname = '<div align="right"><font size="4" color="#FFFFFF"><b>' . $x . '</b></font></div>';
+		$$varname = '<div class="priorDay">' . $x . '</div>';				
 	}
 	else
 	{
 		$boxNum = $x + $offset;
 		$varname = 'box'.$boxNum;
-		$$varname = '<div align="right"><font size="4"><b>' . $x . '</b></font></div>';				
+		//$$varname = '<div align="right"><font size="4"><b>' . $x . '</b></font></div>';
+		$$varname = '<div class="postDay">' . $x . '</div>'; 				
 	}
 }
 
@@ -209,9 +212,9 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true))
 		while($signups = $db_raid->sql_fetchrow($resultz, true)) 
 		{
 			if (($signups['queue'] == '0') and ($signups['cancel'] == '0')) {
-				$issignedup = "*";
+				$issignedup = '<span class="draftedmark">&nbsp;*</span>';
 			} elseif ($issignedup == '') {
-				$issignedup = "#";
+				$issignedup = '<span class="qcanmark">&nbsp;#</span>';
 			}
 		}
 	}
@@ -241,7 +244,7 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true))
 	$href = '<a href="view.php?mode=view&amp;raid_id='.$raids['raid_id'].'">';
 	$href_close = '</a>';
 	$img = '<img src="templates/'.$phpraid_config['template'].'/'.$raid_icon.'" onMouseout="hideddrivetip();" onMouseover="ddrivetip('.$ddrivetiptext.');" alt="'.$raids['location'].'">';
-	$font = '<font color="#0000ff" size="+1">&nbsp;' . $issignedup . '</font>';
+	$font = $issignedup;
 	$location = $href . $img . $href_close . $font;
 	
 	// Start the "display" portion, get the "box" the raid link and information is supposed to go into
