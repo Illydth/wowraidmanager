@@ -5,6 +5,202 @@ at:
 
 ****************************************************
 ****************************************************
+****             4.0.3 Release Notes             ***
+****************************************************
+****************************************************
+LOTS of little things fixed in this release, this is a general bugfix release over 4.0.2 and
+HOPEFULLY will be the last 4.0 release I produce, 4.1 will be next with several new features.
+As always report any issues you see with the 4.0.3 product and I'll patch it.
+
+* Minor installation fixes including a wrong name in a table drop, wrong version display
+in the installation header (read 3.x.x instead of 4.x.x), and a generic fix to all bridge
+files to update the default location to look for the CMS/BB configuration file at ../../
+instead of the useless ../< blah > that was in there right now.  I suspect that this change
+will fix several "I can't find my config file" problems right off the bat. :)
+
+* SMF Authentication fix: SMF Subgroups are now supported.  A bug causing players in a sub
+group of SMF to not be able to authenticate has been fixed.
+
+* Fixed minor bug with buttons on the guild list (edit/delete) not showing up.
+
+* Several issues to the armory look up code have been fixed including:
+
+* URL Encode Failed: issue with replacing " " with "+" in functions.php
+caused URL encode issues at the lookup point.  Both functions.php and the
+lookup were doing an encode on the URL and thus the " " got encoded twice
+and failed.
+
+* Talent Spec Lookup Bug: Bliz changed the armory output to include a
+"talentSpecs" node between the class node and the previous "talentSpec"
+node that caused talent spec calculation lookups to fail.
+
+* Support for Multiple Talent Specs:  Support for dual talent specs added
+by looking up both specs and processing all nodes under the new
+"talentSpecs" node.  Single talent and dual talent specs are now 
+supported.
+
+* Added Debugging: Additional debugging has been added.  The output from
+the curl call and the output of the generated PHP character array has been
+created on disk for debugging purposes.  Additionally for 042, each
+connection (patch notes, talents, character sheet, pvp data, etc.) will
+generate their own data and stderr files on disk.
+
+* Changed armory 020 Method of Encoding URL.  The 020 version of the 
+armory code was encoding the URL entities (realm, character) manually.  Changed
+this to use "urlencode" which should do all the right stuff.
+
+* Changed the default and wowhead templates to now display both primary
+and secondary talent specs.
+
+* Fix added to the web based "Do I have the most recent version" lookup where a hard coded
+"3" for the major version was causing problems.  Also made the code a little cleaner and
+easier to read.
+
+* Fixed an issue where a red X appeared in the locations page in place of the raid image
+in certain conditions on Internet Explorer (Real browsers, like Firefox, were unaffected 
+*grin*).
+
+* Joomla Authentication fix for using the alternate authentication group (subgroup).  Had
+a typo that was causing this group not to work.
+
+* WRM LUA Output problems: When using the LUA output in 4.0.x with a language other than 
+"english" selected as your default language for WRM, a problem occured with class lookups:
+the code expected to see the localized names of the classes upon lookup but was getting only
+english class names and thus failing.  See the "i18n/l10n Fixes" header for more information
+on LUA changes.
+
+* General Bridge Update:  All bridges have been updated to PROPERLY accept and handle
+multi-byte characters both as part of the username and as part of the password.  Users should
+no longer get "locked out" of WRM because their usernames don't match due to a multi-byte
+character in them.  This should be fixed across the board, but for SMF/SMF2 especially this
+was a headache (username is part of the hashed password).
+
+* Minor fix to the case where WRM displays an error message so that the page doesn't actually
+load when an error displays.  This is the behavior as it has been in WRM up to 4.0, this is
+just a return to that behavior.
+
+* Fixed a "permissions" issue that was reported by a user where their permissions IDs were
+not being properly allocated to the respective permissions groups.  Permission ID "1" is 
+identified by the system as "superadmin" in all cases, if for some reason the permission ID
+of the "superadmin" group is not 1, the system no longer thinks it's GOT a superadmin.  This
+is actually a very POOR implementation of permission IDs and will be fixed in a future 
+version when I do a full permissions system re-write.
+
+* Updated the "class" table in WRM to now carry the offical class index number (blizzard
+identified) for use by both the armory code as well as within WRM.  This should allow WRM
+to better interface with properly written external applications that support the blizzard
+class index numbers.  These "blizzard" numbers are now used across the system instead of 
+the arbitrary numbering scheme of previous releases.
+
+* Fixed a bug in table pagination in the "missing signups" link from the "raid view" area.
+If the missing signups decided it needed to paginate, it would not do so properly.
+
+* Fixed a bug in several areas (Profile, Roster, Teams) where the player class was always
+displaying in "english" regardless of the foreign language selected.  This update should
+properly display the character classes in the localized format.
+
+* Thanks to user reports, I have fixed a bug in the Users.php file that caused the primary
+and secondary spec NOT to display in the drill down (user details) view.  (Thanks 
+Vollheilig)
+
+* Added 8 new CSS classes for Theme developers, including 3 that get rid of the need to 
+modify the functions.php file.  See "CSS Updates" Section below.
+
+i18n/l10n Fixes
+-------------------
+I swore I was going to do it at some point and I have.  The largest and most prominent
+update in 4.0.3 is one you won't see on the screens anywhere.  As far as I can tell ALL
+internationalization (i18n) and localization (l10n) problems within WRM have been SQUASHED.
+I now have a proper UTF-8 connection from the code to the database and back so all data
+being sent and received is now in correctly translated UTF-8 Code.  I have also updated
+all of the string code in the system to use the multi-byte aware versions of the string codes
+(replacing things like strtolower() with mb_strtolower() to ensure proper UTF-8 Handling).
+
+What this means for all of you out there is we should STOP seeing these annoying login issues
+where users with funky names are not recognized correctly and thus not authenticated with 
+the system.  WE should now even see all of the text on the screens with properly displayed
+accented characters instead of the junk you used to see.
+
+HOWEVER, there is a catch.  Any information with multi-byte characters that has already been
+entered into the system MAY fail to behave properly at this point, even information that has
+worked in the past.  The "FIX" for this is to re-create the data.  So for instance if you
+have a guild name with a multi-byte character in it, and it's not showing up correctly for
+you or causing you problems, delete it and re-type it in and re-store it to the DB, from
+there out, it shouldn't cause you any more problems.  Same with character names or accounts.
+
+While this might be some work for you and may cause you some failures in the near term, in 
+the long run you will no longer be seeing any multi-byte issues in the system (I HOPE).
+
+Please, before reporting a multi-byte issue or an issue with a multi-byte character as part
+of the input, please see if you can "remove" any existing information associated with the 
+problem and re-create it on your system to see if the problem goes away BEFORE reporting the
+issue.  
+
+If the data is simply too much to re-input, you CAN go in to the tables directly and edit
+the information directly.  If you are stumped as to where to find a particular value, please
+don't hesitate to ask me.
+
+A second note: Regarding the Output LUA file.  If you notice that the output LUA file is no
+longer being translated into a foreign language (particularly class names) for 4.0 that is 
+because it's not.  This is not a bug.  It is easier for the communication protocol between 
+WRM and RIM to be 100% english text and to allow the respective systems (WRM and RIM) to do 
+the translations into the foreign languages we support at display time.
+
+What this means is that where you USED to see "todestrider" before (in german) you will now
+see "deathknight".  You should see these properly displayed to you localized in the respective
+applications however.
+
+CSS Updates
+-----------------
+Thanks to a set of conversations I had with donflamenco, there have been 8 additional minor
+CSS elements added to the templates/default/style/stylesheet.css file.
+
+The elements are identified as follows:
+
+* badcolor, goodcolor, evencolor: These three elements are used in the includes/functions.php
+file in the "get_color()" function.  Used to be that the theme developers had to modify this
+file if they wanted to change the "green, red, black" colors on the data tables when certain
+conditions apply (for instance when the raid leader doesn't have enough of a class to meet a
+set raid limitation, the number showed up as "red").  Instead of the "font" code imbeded 
+within the function, this has been changed to a span with a class that is now controlled 
+through these three CSS elements.  "badcolor" is the element used when a condition is out
+of bounds (either over or under depending upon condition), "goodcolor" is the element used
+when a condition is "good" (under limit with spaces available, at or above the minimum of
+a given class, etc.).  "evencolor" is used when a condition matches a stated value (i.e.
+10 of 10 DPS have signed up to the raid...it's not over and it's not under).  
+
+Three more elements have been added to affect the Calendar:
+
+* priorDay, currentDay and postDay: Affect the font, color and size of the NUMBER displayed
+in each calendar box.  Note ONLY the number and not the box itself is affected by these three
+elements.  Template developers can feel free to set different colors for the different day
+types (before Today, Today, and After Today) based upon the theme they've selected.  Note that
+the "key" below the calendar is tied to the same class as the calendar numbers are, so
+changing the color of the number through the CSS value will also update the "key" to allow
+users to make sense of your colors.
+
+And finally two elements have been added to affect the signed up mark and the queued /
+cancelled mark on the calendar:
+
+* draftedmark - Affects the "*" mark next to the raids on the calendar which identifies when
+a user is signed up and drafted (selected to come) to the raid.  
+* qcanmark - Affects the "#" mark next to raids on the calendar which identifies when a user
+is signed up to the raid but has not YET been drafted (queued) or the user has signed up
+as "cancelled" to the raid.
+
+Both of these elements affect the size and color of the * or # used to identify one condition
+or the other.  Again, the Key uses the same class as the text itself so that an update to 
+the color or size will affect both the mark on the calendar, as well as the key below the
+calendar in the same way. 
+
+Each of these elements is documented, at least minorly, in the CSS file.  Theme developers,
+please update your themes and EXCLUDE/REMOVE the functions.php files from your theme (there
+is no need to update that file anymore, all design elements in it are controlled through the
+new CSS elements) and update your themes to make use of the new calendar and condition
+colors.
+
+****************************************************
+****************************************************
 ****             4.0.2 Release Notes             ***
 ****************************************************
 ****************************************************
