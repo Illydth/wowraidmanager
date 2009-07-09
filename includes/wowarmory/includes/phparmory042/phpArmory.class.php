@@ -162,6 +162,8 @@ class phpArmory5 {
         return array ( $this->areaName, $this->armory, $this->wow );
     }
 
+    
+    // @@ DWAGNER - Changes to Function @@
     /**
      * Configure the area in which phpArmory should operate.
      * @access      protected
@@ -176,12 +178,36 @@ class phpArmory5 {
                 $this->wow      	= 'http://www.wow-europe.com/';
                 $this->localeName 	= 'en';
                 break;
+            case 'de':
+                $this->areaName 	= 'eu';
+                $this->armory   	= 'http://eu.wowarmory.com/';
+                $this->wow      	= 'http://www.wow-europe.com/';
+                $this->localeName 	= 'de';
+                break;    
+            case 'es':
+                $this->areaName 	= 'eu';
+                $this->armory   	= 'http://eu.wowarmory.com/';
+                $this->wow      	= 'http://www.wow-europe.com/';
+                $this->localeName 	= 'es';
+                break;
+            case 'fr':
+                $this->areaName 	= 'eu';
+                $this->armory   	= 'http://eu.wowarmory.com/';
+                $this->wow      	= 'http://www.wow-europe.com/';
+                $this->localeName 	= 'fr';
+                break;    
             case 'us':
                 $this->areaName 	= 'us';
                 $this->armory   	= 'http://www.wowarmory.com/';
                 $this->wow      	= 'http://www.worldofwarcraft.com/';
                 $this->localeName 	= 'en';
                 break;
+            case 'en': //Duplicate of US
+                $this->areaName 	= 'us';
+                $this->armory   	= 'http://www.wowarmory.com/';
+                $this->wow      	= 'http://www.worldofwarcraft.com/';
+                $this->localeName 	= 'en';
+                break;    
             case 'kr':
                 $this->areaName 	= 'us';
                 $this->armory   	= 'http://kr.wowarmory.com/';
