@@ -117,6 +117,12 @@ while($data = $db_raid->sql_fetchrow($result, true)) {
 	);
 }
 
+if(scrub_input($_SESSION['priv_users'] != 1))
+{
+	hideCol('Profile');
+}
+
+
 /**************************************************************
  * Code to setup for a Dynamic Table Create: roster1 View.
  **************************************************************/
