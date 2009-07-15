@@ -1106,7 +1106,7 @@ elseif($mode == 'signup')
 				
 				if($phpraid_config['enforce_role_limits'])
 				{
-					$sql = sprintf("SELECT role_name 
+					$sql = sprintf("SELECT role_name, c.role_id 
 									FROM " . $phpraid_config['db_prefix'] . "chars AS a, 
 											 " . $phpraid_config['db_prefix'] . "class_role AS b,
 											 " . $phpraid_config['db_prefix'] . "roles AS c
@@ -1118,7 +1118,7 @@ elseif($mode == 'signup')
 					$role_name = $role_name_data['role_name'];
 					foreach ($wrm_global_roles as $global_role)
 						if ($global_role['role_name'] != '' && $role_name == $global_role['role_name'])
-							if ($count[$global_role['role_name']] >= $raid_role_array[$global_role['role_name']])
+							if ($count[$global_role['role_id']] >= $raid_role_array[$global_role['role_name']])
 								$queue = 1;
 				}	
 
@@ -1330,19 +1330,22 @@ elseif($mode == 'draft')
 
 	if($phpraid_config['enforce_role_limits'])
 	{
-		$sql = sprintf("SELECT role_name 
-						FROM " . $phpraid_config['db_prefix'] . "chars AS a, 
-								 " . $phpraid_config['db_prefix'] . "class_role AS b,
-								 " . $phpraid_config['db_prefix'] . "roles AS c
-						WHERE a.pri_spec = b.subclass
+		// User is in Queue, Therefor should have a signup record already.
+		$sql = sprintf("SELECT c.role_name, c.role_id
+						FROM " . $phpraid_config['db_prefix'] . "signups AS a,
+								" . $phpraid_config['db_prefix'] . "class_role AS b,
+								" . $phpraid_config['db_prefix'] . "roles AS c
+						WHERE a.selected_spec = b.subclass
 						AND b.role_id = c.role_id
-						AND a.char_id=%s", quote_smart($char_id));	
+						AND a.raid_id=%s
+						AND a.char_id=%s", quote_smart($raid_id), quote_smart($char_id));	
+		
 		$result_role_name = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 		$role_name_data = $db_raid->sql_fetchrow($result_role_name, true);
 		$role_name = $role_name_data['role_name'];
 		foreach ($wrm_global_roles as $global_role)
 			if ($global_role['role_name'] != '' && $role_name == $global_role['role_name'])
-				if ($count[$global_role['role_name']] >= $raid_role_array[$global_role['role_name']])
+				if ($count[$global_role['role_id']] >= $raid_role_array[$global_role['role_name']])
 					$queue = 1;
 	}		
 		
