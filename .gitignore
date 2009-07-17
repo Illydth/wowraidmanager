@@ -3,6 +3,7 @@ config.*
 package
 package/*
 cache/templates_c/*
+cache/templates_c/admin/*
 cache/smarty_cache/*
 cache/raid_lua/*
 cache/armory_log/*
