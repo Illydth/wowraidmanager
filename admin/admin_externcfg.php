@@ -42,9 +42,67 @@ require_once("../includes/authentication.php");
 /* 
  * Data for Index Page
  */
+// Enable Armory Lookups
+if($phpraid_config['enable_armory'] == '0')
+	$enable_armory = '<input type="checkbox" name="enable_armory" value="1">';
+else
+	$enable_armory = '<input type="checkbox" name="enable_armory" value="1" checked>';
 
+// Integrate with EqDKP
+if($phpraid_config['enable_eqdkp'] == '0')
+	$enable_eqdkp = '<input type="checkbox" name="enable_eqdkp" value="1">';
+else
+	$enable_eqdkp = '<input type="checkbox" name="enable_eqdkp" value="1" checked>';
 
+// URL to Base of EqDKP Installation
+$eqdkp_url='<input name="eqdkp_url" type="text" value="'.$phpraid_config['eqdkp_url'].'" size="60" class="post">';
 
+// Integrate with WoW Roster
+//if($phpraid_config['roster_integration'] == '0')
+//	$roster = '<input type="checkbox" name="roster" value="1">';
+//else
+//	$roster = '<input type="checkbox" name="roster" value="1" checked>';
+
+$buttons = '<input type="submit" name="submit" value="'.$phprlang['submit'].'" class="mainoption"> <input type="reset" name="Reset" value="'.$phprlang['reset'].'" class="liteoption">';
+
+$wrmadminsmarty->assign('config_data',
+	array(
+		'enable_armory' => $enable_armory,
+		'enable_armory_text' => $phprlang['configuration_armory_enable'],
+		'enable_eqdkp' => $enable_eqdkp,
+		'enable_eqdkp_text' => $phprlang['configuration_eqdkp_integration_text'],
+		'eqdkp_url' => $eqdkp_url,
+		'eqdkp_url_text' => $phprlang['configuration_eqdkp_link'],
+		'external_links_header'=>$phprlang['configuration_external_links_header'],
+		//'roster' => $roster,
+		//'roster_text' => $phprlang['configuration_roster_text'],
+		'buttons' => $buttons,
+	)
+);
+
+if(isset($_POST['submit']))
+{	
+	if(isset($_POST['enable_armory']))
+ 		$enable_armory = 1;
+ 	else
+ 		$enable_armory = 0;
+
+ 	if(isset($_POST['enable_eqdkp']))
+ 		$enable_eqdkp = 1;
+ 	else
+ 		$enable_eqdkp = 0;
+ 		
+ 	$eqdkp_url = scrub_input($_POST['eqdkp_url'], true);
+ 	
+ 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'enable_armory';", quote_smart($enable_armory));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'enable_eqdkp';", quote_smart($enable_eqdkp));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'eqdkp_url';", quote_smart($eqdkp_url));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+
+	header("Location: admin_externcfg.php");
+}
 //
 // Start output of the page.
 //

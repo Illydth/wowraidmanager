@@ -1,3 +1,37 @@
 {* Smarty Template *}
-<div class="contentHeader">{$version_data.version_info_header}</div>
-<div class="contentBody" align="center">{$version_data.version_info}</div>
+<!--  <div class="contentHeader">{$version_data.version_info_header}</div>
+<div class="contentBody" align="center">{$version_data.version_info}</div> -->
+<form action="admin_raidsettings.php" method="post" name="configure" id="configure">
+<div class="contentHeader">{$config_data.raid_settings_header}</div><br>
+<div class="contentBody">
+  <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tr> 
+    <td valign="top"> 
+      <table width="100%" border="0" cellspacing="1" cellpadding="3" class="dataOutline">
+        <tr>
+          <td width="200" class="row1"><strong>{$config_data.autoqueue_text}</strong></td>
+          <td class="row2">{$config_data.auto_queue}</td>
+        </tr>
+        <tr>
+          <td width="200" class="row1"><strong>{$config_data.role_limit_text}</strong></td>
+          <td class="row2">{$config_data.enforce_role_limits}</td>
+        </tr>
+        <tr>
+          <td width="200" class="row1"><strong>{$config_data.class_limit_text}</strong></td>
+          <td class="row2">{$config_data.enforce_class_limits}</td>
+        </tr>
+        <tr>
+          <td width="200" class="row1"><strong>{$config_data.class_as_min_text}</strong></td>
+          <td class="row2">{$config_data.class_as_min}</td>
+        </tr>
+        <tr> 
+          <td class="row1"><strong>{$config_data.freeze_text}</strong></td>
+          <td class="row2">{$config_data.disable_freeze}</td>
+        </tr>
+      </table>
+    </td></tr>
+</table>
+<br>
+<div align="center" class="button">{$config_data.buttons}</div>
+</div>
+</form>

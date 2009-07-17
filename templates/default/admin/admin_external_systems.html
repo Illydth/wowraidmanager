@@ -1,3 +1,31 @@
 {* Smarty Template *}
-<div class="contentHeader">{$version_data.version_info_header}</div>
-<div class="contentBody" align="center">{$version_data.version_info}</div>
+<form action="admin_externcfg.php" method="post" name="configure" id="configure">
+<div class="contentHeader">{$config_data.external_links_header}</div><br>
+<div class="contentBody">
+  <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tr> 
+    <td valign="top"> 
+      <table width="100%" border="0" cellspacing="1" cellpadding="3" class="dataOutline">
+        <tr>
+          <td width="200" class="row1"><strong>{$config_data.enable_armory_text}</strong></td>
+          <td class="row2">{$config_data.enable_armory}</td>
+        </tr>
+        <tr>
+          <td width="200" class="row1"><strong>{$config_data.enable_eqdkp_text}</strong></td>
+          <td class="row2">{$config_data.enable_eqdkp}</td>
+        </tr>
+        <tr>
+          <td width="200" class="row1"><strong>{$config_data.eqdkp_url_text}</strong></td>
+          <td class="row2">{$config_data.eqdkp_url}</td>
+        </tr>
+        <!--  <tr>
+          <td class="row1"><strong>{$config_data.roster_text}</strong></td>
+          <td class="row2">{$config_data.roster}</td>
+        </tr>  -->
+      </table>
+    </td></tr>
+</table>
+<br>
+<div align="center" class="button">{$config_data.buttons}</div>
+</div>
+</form>
