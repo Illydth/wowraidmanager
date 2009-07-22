@@ -121,6 +121,9 @@ $register = '<input name="register" type="text" value="'.$phpraid_config['regist
 $header_link = '<input name="header_link" size="60" type="text" class="post" value="' . $phpraid_config['header_link'] . '">';
 $admin_email = '<input name="admin_email" type="text" class="post" value="' . $phpraid_config['admin_email'] .'" maxlength="255">';
 $email_signature = '<textarea name="email_signature" cols="30" rows="5" id="email_signature" class="post">' . $phpraid_config['email_signature'] . '</textarea>';
+$rss_site_url = '<input name="rss_site_url" size="60" type="text" class="post" value="' . $phpraid_config['rss_site_url'] . '">';
+$rss_export_url = '<input name="rss_export_url" size="60" type="text" class="post" value="' . $phpraid_config['rss_export_url'] . '">';
+$rss_feed_amt = '<input name="rss_feed_amt" size="10" type="text" class="post" value="' . $phpraid_config['rss_feed_amt'] . '">';
 
 $buttons = '<input type="submit" name="submit" value="'.$phprlang['submit'].'" class="mainoption"> <input type="reset" name="Reset" value="'.$phprlang['reset'].'" class="liteoption">';
 
@@ -152,6 +155,13 @@ $wrmadminsmarty->assign('config_data',
 		'admin_email_text' => $phprlang['configuration_admin_email'],
 		'email_signature' => $email_signature,
 		'email_signature_text' => $phprlang['configuration_email_sig'],
+		'rss_header' => $phprlang['configuration_rss_header'],
+		'rss_site_text' => $phprlang['configuration_rss_site'],
+		'rss_export_text' => $phprlang['configuration_rss_export'],
+		'rss_feed_amt_txt' => $phprlang['configuration_rss_feed_amt'],
+		'rss_site_url' => $rss_site_url,
+		'rss_export_url' => $rss_export_url,
+		'rss_feed_amt' => $rss_feed_amt,
 		'buttons' => $buttons,
 	)
 );
@@ -187,7 +197,10 @@ if(isset($_POST['submit']))
 	$t_type = scrub_input(DEUBB($_POST['template']));
 	$a_email = scrub_input(DEUBB($_POST['admin_email']));
 	$e_sig = scrub_input(DEUBB($_POST['email_signature']));
-	
+	$rss_site_url_p = scrub_input($_POST['rss_site_url'], true);
+	$rss_export_url_p = scrub_input($_POST['rss_export_url'], true);
+	$rss_feed_amt_p = scrub_input($_POST['rss_feed_amt']);
+		
 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'phpraid_addon_link';", quote_smart($p_link));
 	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'header_logo';", quote_smart($h_logo));
@@ -211,6 +224,12 @@ if(isset($_POST['submit']))
 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'admin_email';", quote_smart($a_email));
 	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'email_signature';", quote_smart($e_sig));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'rss_site_url';", quote_smart($rss_site_url_p));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'rss_export_url';", quote_smart($rss_export_url_p));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'rss_feed_amt';", quote_smart($rss_feed_amt_p));
 	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
 	
 	header("Location: admin_generalcfg.php");
