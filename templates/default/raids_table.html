@@ -27,9 +27,9 @@
 							<th>&nbsp;</th>
 						{else}
 							{if $header_data.sort_descending}
-								<th><a href="{$header_data.sort_url_base}Sort={$column_name[create_columns].col_text}&SortDescending=0">{$column_name[create_columns].col_text}</a></th>
+								<th><a href="{$header_data.sort_url_base}Sort={$column_name[create_columns].column_name}&SortDescending=0">{$column_name[create_columns].col_text}</a></th>
 							{else}
-								<th><a href="{$header_data.sort_url_base}Sort={$column_name[create_columns].col_text}&SortDescending=1">{$column_name[create_columns].col_text}</a></th>
+								<th><a href="{$header_data.sort_url_base}Sort={$column_name[create_columns].column_name}&SortDescending=1">{$column_name[create_columns].col_text}</a></th>
 							{/if}							
 						{/if}
 					{/if}
