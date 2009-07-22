@@ -116,6 +116,7 @@ $phprlang['configuration_enable_five_man'] = 'Enable groups<br><a href="../docs/
 $phprlang['configuration_language'] = 'Language';
 $phprlang['configuration_logo'] = 'Path to header image';
 $phprlang['configuration_register_text'] = 'Registration URL';
+$phprlang['configuration_rss_header'] = 'RSS Configuration';
 $phprlang['configuration_show_addon'] = 'Show addon link';
 $phprlang['configuration_sitelink'] = '"Home" Link Points To';
 $phprlang['configuration_template'] = 'Template';
@@ -128,6 +129,13 @@ $phprlang['configuration_dst_text'] = 'Daylight saving time?';
 $phprlang['configuration_time'] = 'Time format<br><a href="http://www.php.net/date/" target="_blank">help?</a>';
 $phprlang['configuration_timezone_text'] = 'Timezone';
 $phprlang['time_header'] = 'Time Configuration';
+
+// Text on the "Role Configuration" Page.
+$phprlang['role_delete_header'] = 'Delete Existing Roles';
+$phprlang['role_delete_text'] = 'Check the box next to a Role and Submit the page to DELETE.  <b>NO CONFIRMATION</b>!';
+$phprlang['role_add_header'] = 'Add New Roles';
+$phprlang['role_add_text'] = 'Put a role number in the box and submit to add a new role.';
+$phprlang['role_add_box_text'] = 'New Role Number:';
 
 
 $phprlang['configuraiton_admin'] = 'Administrator';
