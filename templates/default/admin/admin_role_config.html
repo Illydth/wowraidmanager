@@ -1,59 +1,6 @@
 {* Smarty Template *}
-<form action="admin_rolecfg.php" method="post" name="configure" id="configure">
-<div class="contentHeader">{$config_data.role_configure_header}</div><br>
-<div class="contentBody">
-  <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
-  <tr> 
-    <td valign="top"> 
-      <table width="100%" border="0" cellspacing="1" cellpadding="3" class="dataOutline">
-		{section name=role_data_sec loop=$role_data}
-	        <tr>
-	          <td width="200" class="row1"><strong>{$role_data[role_data_sec].role_text}</strong></td>
-	          <td class="row2">{$role_data[role_data_sec].role_name}</td>
-	        </tr>
-        {/section}
-        <tr>
-          <td class="row1"><strong>{$config_data.raid_view_type_text}</strong></td>
-          <td class="row2">{$config_data.raid_view_type}</td>
-		</tr>		
-      </table>
-    </td></tr>
-</table>
-</div>
-<br>
-<div class="contentHeader">{$config_data.role_delete_header}</div>
-<div class="contentBody">
-  {$config_data.role_delete_text}<br>
-  <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
-  <tr> 
-    <td valign="top"> 
-      <table width="100%" border="0" cellspacing="1" cellpadding="3" class="dataOutline">
-		{section name=delete_data_sec loop=$delete_data}
-	        <tr>
-	          <td width="200" class="row1"><strong>{$delete_data[delete_data_sec].role_text}</strong></td>
-	          <td class="row2">{$delete_data[delete_data_sec].role_delete_checkbox}</td>
-	        </tr>
-        {/section}
-      </table>
-    </td></tr>
-</table>
-</div>
-<br>
-<div class="contentHeader">{$config_data.role_add_header}</div>
-<div class="contentBody">
-  {$config_data.role_add_text}<br>
-  <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
-  <tr> 
-    <td valign="top"> 
-      <table width="100%" border="0" cellspacing="1" cellpadding="3" class="dataOutline">
-        <tr>
-          <td class="row1" width="16%"><strong>{$config_data.role_add_box_text}</strong></td>
-          <td class="row2">{$config_data.role_add_box}</td>
-		</tr>		
-      </table>
-    </td></tr>
-</table>
-</div>
-<br>
-<div align="center" class="button">{$config_data.buttons}</div>
-</form>
+<div class="contentHeader">{$header_data.role_header}</div><br>
+{* Setup Role Table List *}
+<div class="contentBody">{include file='../raids_table.html' raid_data=$role_data jump_menu=$role_jump_menu record_counts=$role_record_counts column_name=$role_column_name}</div><br>
+{* Include to Add New Characters *}
+{include file='admin_role_new.html'}

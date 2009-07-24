@@ -131,11 +131,14 @@ $phprlang['configuration_timezone_text'] = 'Timezone';
 $phprlang['time_header'] = 'Time Configuration';
 
 // Text on the "Role Configuration" Page.
-$phprlang['role_delete_header'] = 'Delete Existing Roles';
-$phprlang['role_delete_text'] = 'Check the box next to a Role and Submit the page to DELETE.  <b>NO CONFIRMATION</b>!';
-$phprlang['role_add_header'] = 'Add New Roles';
-$phprlang['role_add_text'] = 'Put a role number in the box and submit to add a new role.';
-$phprlang['role_add_box_text'] = 'New Role Number:';
+$phprlang['addrole'] = 'Add Role';
+$phprlang['updaterole'] = 'Update Role';
+$phprlang['configuration_role_new_header'] = 'Add a New Role';
+$phprlang['configuration_role_edit_header']= 'Modify an Existing Role';
+$phprlang['role_error_exists'] = 'Role ID Already Exists, Chose Another.';
+$phprlang['role_error_role_name_blank'] = 'Role Name Cannot Be a Blank or Null Value.';
+$phprlang['role_error_role_config_blank'] = 'Role Config Text Cannot Be a Blank or Null Value.';
+$phprlang['role_error_role_id_blank'] = 'Role ID Cannot Be a Blank or Null Value.';
 
 
 $phprlang['configuraiton_admin'] = 'Administrator';
@@ -175,12 +178,6 @@ $phprlang['configuration_raid_view_type_role'] = 'Display Raid View By Role';
 $phprlang['configuration_raidlead'] = 'Raid Leader';
 $phprlang['configuration_resop'] = 'Make resistance optional';
 $phprlang['configuration_role_header'] = 'Role Configuration';
-$phprlang['configuration_role1_text'] = 'Class Role #1';
-$phprlang['configuration_role2_text'] = 'Class Role #2';
-$phprlang['configuration_role3_text'] = 'Class Role #3';
-$phprlang['configuration_role4_text'] = 'Class Role #4';
-$phprlang['configuration_role5_text'] = 'Class Role #5';
-$phprlang['configuration_role6_text'] = 'Class Role #6';
 $phprlang['configuration_role_limit_text'] = 'Enforce Role Limits for Raid';
 $phprlang['configuration_class_limit_text'] = 'Enforce Class Limits for Raid';
 $phprlang['configuration_class_as_min'] = 'Use Class Limits as Minimums';

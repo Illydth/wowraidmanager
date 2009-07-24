@@ -97,25 +97,7 @@ $phprlang['sec_spec'] = 'Sec Talent';
 $phprlang['signup_spec'] = 'Draft As';
 
 // roles
-$phprlang['role'] = 'Ruolo';
 $phprlang['role_none'] = '-';
-$phprlang['role_tank'] = 'Tank';
-$phprlang['role_heal'] = 'Curatore';
-$phprlang['role_melee'] = 'DPS Melee';
-$phprlang['role_ranged'] = 'DPS Ranged';
-$phprlang['role_tankmelee'] = 'Tank/DPS Melee';
-
-$phprlang['role_tanks'] = 'Tank';
-$phprlang['role_heals'] = 'Curatori';
-$phprlang['role_melees'] = 'DPS Melee';
-$phprlang['role_ranges'] = 'DPS Ranged';
-$phprlang['role_tankmelees'] = 'Tank/DPS Melee';
-
-$phprlang['max_tanks'] = 'Max Tank';
-$phprlang['max_heals'] = 'Max Curatori';
-$phprlang['max_melees'] = 'Max DPS Melee';
-$phprlang['max_ranged'] = 'Max DPS Ranged';
-$phprlang['max_tkmels'] = 'Max Tank/DPS Melee';
 
 // errors
 $phprlang['connect_socked_error'] = 'Errore di connessione: %s';

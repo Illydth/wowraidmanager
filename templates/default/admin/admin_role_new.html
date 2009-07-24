@@ -1,0 +1,31 @@
+{* Smarty Template *}
+<br>
+<a name="new"></a>
+<div class="contentHeader">{$role_new.role_new_edit_header}</div><br>
+<div class="contentBody">
+<form method="post" action="{$role_new.form_action}">
+      <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+        <tr>
+          <td><table width="100%" border="0" cellspacing="1" cellpadding="3" class="dataOutline">
+              <tr>
+                <td width="200" class="row1"><strong>{$role_new.roleID_text}</strong></td>
+                <td class="row2">{$role_new.role_id}</td>
+              </tr>
+              <tr>
+                <td width="200" class="row1"><strong>{$role_new.roleName_text}</strong></td>
+                <td class="row2">{$role_new.role_name}</td>
+              </tr>
+              <tr>
+                <td width="200" class="row1"><strong>{$role_new.roleConfig_text}</strong></td>
+                <td class="row2">{$role_new.role_config}</td>
+              </tr>
+              <tr>
+                <td class="row1"><strong>{$role_new.roleImage_text}</strong></td>
+                <td class="row2">{$role_new.role_image}</td>
+              </tr>
+            </table></td>
+        </tr>
+      </table><br>
+	  <div align="center" class="button">{$role_new.buttons}</div>
+</form>
+</div>

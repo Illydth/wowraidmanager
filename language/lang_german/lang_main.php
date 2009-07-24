@@ -97,25 +97,7 @@ $phprlang['sec_spec'] = 'Sec Talent';
 $phprlang['signup_spec'] = 'Draft As';
 
 // roles
-$phprlang['role'] = 'Rolle';
 $phprlang['role_none'] = '-';
-$phprlang['role_tank'] = 'Tank';
-$phprlang['role_heal'] = 'Heiler';
-$phprlang['role_melee'] = 'Nahkämpfer';
-$phprlang['role_ranged'] = 'Fernkämpfer';
-$phprlang['role_tankmelee'] = 'Tank oder Nahkämpfer';
-
-$phprlang['role_tanks'] = 'Tanks';
-$phprlang['role_heals'] = 'Heiler';
-$phprlang['role_melees'] = 'Nahkämpfer';
-$phprlang['role_ranges'] = 'Fernkämpfer';
-$phprlang['role_tankmelees'] = 'Tanks/Nahkämpfer';
-
-$phprlang['max_tanks'] = 'Erwünschte Tanks';
-$phprlang['max_heals'] = 'Erwünschte Heiler';
-$phprlang['max_melees'] = 'Erwünschte Nahkämpfer';
-$phprlang['max_ranged'] = 'Erwünschte Fernkämpfer';
-$phprlang['max_tkmels'] = 'Erwünschte Tanks oder Nahkämpfer';
 
 // errors
 $phprlang['connect_socked_error'] = 'Fehler beim Aufbau der Socket-Verbindung:  %s';

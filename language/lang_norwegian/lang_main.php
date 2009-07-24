@@ -97,25 +97,7 @@ $phprlang['sec_spec'] = 'Sec Talent';
 $phprlang['signup_spec'] = 'Draft As';
 
 // roles
-$phprlang['role'] = 'Rolle';
 $phprlang['role_none'] = '-';
-$phprlang['role_tank'] = 'Tank';
-$phprlang['role_heal'] = 'Healer';
-$phprlang['role_melee'] = 'Melee';
-$phprlang['role_ranged'] = 'Ranged';
-$phprlang['role_tankmelee'] = 'Tank eller Melee';
-
-$phprlang['role_tanks'] = 'Tanks';
-$phprlang['role_heals'] = 'Healers';
-$phprlang['role_melees'] = 'Melee';
-$phprlang['role_ranges'] = 'Ranged';
-$phprlang['role_tankmelees'] = 'Tanks/Melee';
-
-$phprlang['max_tanks'] = 'Maks Tanks';
-$phprlang['max_heals'] = 'Maks Healers';
-$phprlang['max_melees'] = 'Maks Melee';
-$phprlang['max_ranged'] = 'Maks Ranged';
-$phprlang['max_tkmels'] = 'Maks Tank/Melee';
 
 // errors
 $phprlang['connect_socked_error'] = 'Kunne ikke koble til socket med feilmelding %s';

@@ -95,27 +95,13 @@ $phprlang['create_time'] = 'Create Time';
 $phprlang['pri_spec'] = 'Pri Talent';
 $phprlang['sec_spec'] = 'Sec Talent';
 $phprlang['signup_spec'] = 'Draft As';
+$phprlang['role_id'] = 'Role ID';
+$phprlang['role_name'] = 'Role Name';
+$phprlang['role_config'] = 'Role Config Text';
+$phprlang['role_image'] = 'Role Image';
 
 // roles
-$phprlang['role'] = 'Role';
 $phprlang['role_none'] = '-';
-$phprlang['role_tank'] = 'Tank';
-$phprlang['role_heal'] = 'Healer';
-$phprlang['role_melee'] = 'Melee';
-$phprlang['role_ranged'] = 'Ranged';
-$phprlang['role_tankmelee'] = 'Tank or Melee';
-
-$phprlang['role_tanks'] = 'Tanks';
-$phprlang['role_heals'] = 'Healers';
-$phprlang['role_melees'] = 'Melee';
-$phprlang['role_ranges'] = 'Ranged';
-$phprlang['role_tankmelees'] = 'Tanks/Melee';
-
-$phprlang['max_tanks'] = 'Max Tanks';
-$phprlang['max_heals'] = 'Max Healers';
-$phprlang['max_melees'] = 'Max Melee';
-$phprlang['max_ranged'] = 'Max Ranged';
-$phprlang['max_tkmels'] = 'Max Tank/Melee';
 
 // errors
 $phprlang['connect_socked_error'] = 'Failed to connect to socket with error %s';

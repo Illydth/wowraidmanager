@@ -134,7 +134,7 @@ $admin_signup_rights_link = '<a href="admin_signuprights.php">' . $theme_admin_s
 $admin_user_settings_link = '<a href="admin_usersettings.php">' . $theme_admin_usersettings_link . '</a>';
 $admin_user_mgt_link = '<a href="admin_usermgt.php?mode=view">' . $theme_admin_usermgt_link . '</a>';
 $admin_datatablecfg_link = '<a href="admin_datatablecfg.php">' . $theme_admin_datatablecfg_link . '</a>';
-$admin_rolecfg_link = '<a href="admin_rolecfg.php">' . $theme_admin_rolecfg_link . '</a>';
+$admin_rolecfg_link = '<a href="admin_rolecfg.php?mode=view">' . $theme_admin_rolecfg_link . '</a>';
 $admin_logs_link = '<a href="admin_logs.php?mode=view">' . $theme_admin_logs_link . '</a>';
 
 // The various Admin Menus:

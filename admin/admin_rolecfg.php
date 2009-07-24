@@ -42,144 +42,259 @@ require_once("../includes/authentication.php");
 /* 
  * Data for Index Page
  */
-// Selection box for Raid View Type.
-$raid_view_type = '<select name="raid_view_type" class="post">';
-if ($phpraid_config['raid_view_type'] == 'by_class')
-	$raid_view_type .=   '<option value="by_class" selected>' . $phprlang['configuration_raid_view_type_class'] . '</option>';
+/*************************************************************
+ * Setup Record Output Information for Data Table
+ *************************************************************/
+// Set StartRecord for Page
+if(!isset($_GET['Base']) || !is_numeric($_GET['Base']))
+	$startRecord = 1;
 else
-	$raid_view_type .=   '<option value="by_class">' . $phprlang['configuration_raid_view_type_class'] . '</option>';
-if ($phpraid_config['raid_view_type'] == 'by_role')
-	$raid_view_type .=   '<option value="by_role" selected>'. $phprlang['configuration_raid_view_type_role'] . '</option>';
-else
-	$raid_view_type .=   '<option value="by_role">' . $phprlang['configuration_raid_view_type_role'] . '</option>';
-$raid_view_type .= '</select>';
+	$startRecord = scrub_input($_GET['Base']);
 
-$buttons = '<input type="submit" name="submit" value="'.$phprlang['submit'].'" class="mainoption"> <input type="reset" name="Reset" value="'.$phprlang['reset'].'" class="liteoption">';	
-
-// Setup the Role Boxes based upon what's in the Role table.
-$role_data = array();
-
-$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "roles";
-$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-
-while($data = $db_raid->sql_fetchrow($result, true))
+// Set Sort Field for Page
+if(!isset($_GET['Sort'])||$_GET['Sort']=='')
 {
-	$var = $data['role_id'] . "_name";
-	$role_name = '<input name="'.$var.'" type="text" value="'.$data['role_name'].'" size="25" class="post">';
-	$role_text = $phprlang[$data['lang_index']];
+	$sortField="";
+	$initSort=FALSE;
+}
+else
+{
+	$sortField = scrub_input($_GET['Sort']);
+	$initSort=TRUE;
+}
 	
-	array_push($role_data,
-		array(
-			'role_name' => $role_name,
-			'role_text' => $role_text,
+// Set Sort Descending Mark
+if(!isset($_GET['SortDescending']) || !is_numeric($_GET['SortDescending']))
+	$sortDesc = 0;
+else
+	$sortDesc = scrub_input($_GET['SortDescending']);
+	
+$pageURL = 'admin_rolecfg.php?mode=view&';
+/**************************************************************
+ * End Record Output Setup for Data Table
+ **************************************************************/
+if($_GET['mode'] != 'remove') 
+{
+	//Process current Roles into Data Table.
+	$roles = array();
+
+	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "roles";
+	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+
+	while($global_role = $db_raid->sql_fetchrow($result, true))
+	{
+		array_push($roles,
+			array(
+				'ID' => $global_role['role_id'],
+				'Role Name' => $global_role['role_name'],
+				'Config Text' => $global_role['lang_index'],
+				'Image' => $global_role['image'],
+				'Buttons'=>'<a href="admin_rolecfg.php?mode=remove&amp;roleid='.$global_role['role_id'].'"><img src="../templates/' . $phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''. $phprlang['delete'] .'\');" onMouseout="hideddrivetip();" alt="delete icon"></a>
+					 <a href="admin_rolecfg.php?mode=edit&amp;roleid='.$global_role['role_id'].'"><img src="../templates/' . $phpraid_config['template'] . '/images/icons/icon_edit.gif" border="0" onMouseover="ddrivetip(\'' . $phprlang['edit'] .'\');" onMouseout="hideddrivetip();" alt="edit icon"></a>'				
 			)
 		);
-}
+	}
 
-// Display Roles for Delete (create checkboxes)
-$delete_data = array();
-
-$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "roles";
-$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-
-while($data = $db_raid->sql_fetchrow($result, true))
-{
-	$var = $data['role_id'] . "_del";
+	/**************************************************************
+	 * Code to setup for a Dynamic Table Create: guild1 View.
+	 **************************************************************/
+	$viewName = 'role1';
 	
-	$role_delete = '<input name="'.$var.'" type="checkbox" value="'.$data['role_id'].'" class="post">';
-	if ($data['role_name'] == '')
-		$role_text = '&lt;Blank Role&gt;';
+	//Setup Columns
+	$role_headers = array();
+	$record_count_array = array();
+	$role_headers = getVisibleColumns($viewName);
+
+	//Get Record Counts
+	$role_record_count_array = getRecordCounts($roles, $role_headers, $startRecord);
+	
+	//Get the Jump Menu and pass it down
+	$roleJumpMenu = getPageNavigation($roles, $startRecord, $pageURL, $sortField, $sortDesc);
+			
+	//Setup Default Data Sort from Headers Table
+	if (!$initSort)
+		foreach ($role_headers as $column_rec)
+			if ($column_rec['default_sort'])
+				$sortField = $column_rec['column_name'];
+
+	//Setup Data
+	$roles = paginateSortAndFormat($roles, $sortField, $sortDesc, $startRecord, $viewName);
+
+	/****************************************************************
+	 * Data Assign for Template.
+	 ****************************************************************/
+	$wrmadminsmarty->assign('role_data', $roles); 
+	$wrmadminsmarty->assign('role_jump_menu', $roleJumpMenu);
+	$wrmadminsmarty->assign('role_column_name', $role_headers);
+	$wrmadminsmarty->assign('role_record_counts', $role_record_count_array);
+	$wrmadminsmarty->assign('header_data',
+		array(
+			'template_name'=>$phpraid_config['template'],
+			'role_header' => $phprlang['configuration_role_header'],
+			'sort_url_base' => $pageURL,
+			'sort_descending' => $sortDesc,
+			'sort_text' => $phprlang['sort_text'],
+		)
+	);
+	
+} elseif($_GET['mode'] == 'remove') {
+	$roleid = scrub_input($_GET['roleid']);
+
+	if(!isset($_POST['submit']))
+	{
+		$form_action = "admin_rolecfg.php?mode=remove&amp;roleid=$roleid";
+		$confirm_button = '<input name="submit" type="submit" id="submit" value="'.$phprlang['confirm_deletion'].'" class="mainoption">';
+
+		$wrmadminsmarty->assign('page',
+			array(
+				'form_action'=>$form_action,
+				'confirm_button'=>$confirm_button,
+				'delete_header'=>$phprlang['confirm_deletion'],
+				'delete_msg'=>$phprlang['delete_msg'],
+				)
+			);
+		//
+		// Start output of delete page.
+		//
+		require_once('./includes/admin_page_header.php');
+		$wrmadminsmarty->display('../delete.html');
+		require_once('./includes/admin_page_footer.php');
+		
+		exit;
+	}
 	else
-		$role_text = $data['role_name'];
+	{
+		log_delete('character',$n);
+
+		$sql = sprintf("DELETE FROM " . $phpraid_config['db_prefix'] . "roles WHERE role_id=%s",quote_smart($roleid));
+		$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+
+		header("Location: admin_rolecfg.php?mode=view");
+	}
+} 
+
+if(($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')) {
+	if($_GET['mode'] == 'new') {
+		// check for errors
+		$new_role_id = scrub_input($_POST['role_id']);
+		$role_name = scrub_input($_POST['role_name']);
+		$role_config_text = scrub_input($_POST['role_config']);
+		$role_image = scrub_input($_POST['role_image']);
+	} else {
+		// edit, grab from database
+		$role_id = scrub_input($_GET['roleid']);
+
+		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "roles WHERE role_id=%s",quote_smart($role_id));
+		$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$data = $db_raid->sql_fetchrow($result, true);
+		
+		$new_role_id = $data['role_id'];
+		$role_name = $data['role_name'];
+		$role_config_text = $data['lang_index'];
+		$role_image = $data['role_image'];
+	}
+
+	if(isset($_POST['submit'])) {
+		$new_role_id = scrub_input($_POST['role_id']);
+		$role_name = scrub_input($_POST['role_name']);
+		$role_config_text = scrub_input($_POST['role_config']);
+		$role_image = scrub_input($_POST['role_image']);
+		
+		// ERROR CHECKING
+		// Setup Error Vars
+		$errorDie = 0;
+		$errorMsg = '<ul>';
+		$errorTitle = $phprlang['form_error'];
+		
+		// Verify Role not Already in Database
+		if ($_GET['mode'] == 'new' || $role_id != $new_role_id)
+		{
+			$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "roles WHERE role_id=%s",quote_smart($new_role_id));
+			$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+			if($numrows = $db_raid->sql_numrows($result)>0)
+				$errorMsg .= '<li>'.$phprlang['role_error_exists'].'</li>';
+		}
+		if($new_role_id == '')
+			$errorMsg .= '<li>'.$phprlang['role_error_role_id_blank'].'</li>';
+		if($role_name == '')
+			$errorMsg .= '<li>'.$phprlang['role_error_role_name_blank'].'</li>';
+		if($role_config_text == '')
+			$errorMsg .= '<li>'.$phprlang['role_error_role_config_blank'].'</li>';
+			
+		$errorMsg .= '</ul>';
+
+		if($errorMsg != '<ul></ul>')
+		{
+			$errorDie = 1;
+		}
+		else
+		{
+			// all is good add to database
+			if($_GET['mode'] == 'new') {
+				$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . 
+				"roles (`role_id`,`role_name`,`lang_index`,`image`)
+				VALUES(%s,%s,%s,%s)",quote_smart($new_role_id),quote_smart($role_name),
+				quote_smart($role_config_text),quote_smart($role_image));
+				
+				$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+
+				log_create('role',mysql_insert_id(),$name);
+			} elseif($_GET['mode'] == 'edit') {
+				//echo "Orig Role ID: " . $role_id;
+				//echo "<br>New Role ID: " . $new_role_id;
+				$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "roles 
+				SET role_id=%s,role_name=%s,lang_index=%s,image=%s WHERE role_id=%s",
+				quote_smart($new_role_id),quote_smart($role_name),
+				quote_smart($role_config_text), quote_smart($role_image),
+				quote_smart($role_id));
 	
-	array_push($delete_data,
-		array(
-			'role_delete_checkbox' => $role_delete,
-			'role_text' => $role_text,
-			)
-		);
+				//echo "<br>SQL: " . $sql;
+				
+				$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+			}
+			header("Location: admin_rolecfg.php?mode=view");
+		}
+	}
 }
 
-// Add Role Box
-$role_add = '<input name="role_num" type="text" value="" size="5" class="post">';
+// Display the Add New / Edit Form.
+$role_id_box = '<input type="text" name="role_id" class="post" value="' . $role_id . '" style="width:100px">';
+$role_name_box = '<input type="text" name="role_name" class="post" value="' . $role_name . '" style="width:100px">';
+$role_config_box = '<input type="text" name="role_config" class="post" value="' . $role_config_text . '" style="width:200px">';
+$role_image_box = '<input type="text" name="role_image" class="post" value="' . $role_image . '" style="width:400px">';
 
-$wrmadminsmarty->assign('role_data', $role_data);
-$wrmadminsmarty->assign('delete_data', $delete_data);
-$wrmadminsmarty->assign('config_data',
+if($_GET['mode'] == 'view' || $_GET['mode'] == 'new')
+	$form_action = 'admin_rolecfg.php?mode=new';
+else
+	$form_action = 'admin_rolecfg.php?mode=edit&amp;roleid='.$role_id;
+
+if($_GET['mode'] == 'view' || $_GET['mode'] == 'new') {
+	$buttons = '<input type="submit" name="submit" value="'.$phprlang['addrole'].'" class="mainoption"> <input type="reset" name="Reset" value="'.$phprlang['reset'].'" class="liteoption">';
+} else {
+	$buttons = '<input type="submit" name="submit" value="'.$phprlang['updaterole'].'" class="mainoption"> <input type="reset" name="Reset" value="'.$phprlang['reset'].'" class="liteoption">';
+}
+
+if($_GET['mode'] == 'view' || $_GET['mode'] == 'new')
+	$role_new_edit_header = $phprlang['configuration_role_new_header'];
+else 
+	$role_new_edit_header = $phprlang['configuration_role_edit_header'];
+
+$wrmadminsmarty->assign('role_new',
 	array(
-		'raid_view_type' => $raid_view_type,
-		'raid_view_type_text' => $phprlang['configuration_raid_view_type_text'],
-		'role_configure_header'=>$phprlang['configuration_role_header'],
-		'role_delete_header' => $phprlang['role_delete_header'],
-		'role_delete_text' => $phprlang['role_delete_text'],
-		'role_add_header' => $phprlang['role_add_header'],
-		'role_add_text' => $phprlang['role_add_text'],
-		'role_add_box_text' => $phprlang['role_add_box_text'],
-		'role_add_box' => $role_add,
+		'roleID_text' => $phprlang['role_id'],
+		'roleName_text' => $phprlang['role_name'],
+		'roleConfig_text' => $phprlang['role_config'],
+		'roleImage_text' => $phprlang['role_image'],
+		'role_id' => $role_id_box,
+		'role_name' => $role_name_box,
+		'role_config' => $role_config_box,
+		'role_image' => $role_image_box,
+		'role_new_edit_header'=>$role_new_edit_header,
+		'form_action' => $form_action,
 		'buttons' => $buttons,
 	)
 );
 
-if(isset($_POST['submit']))
-{
-	$raid_view_type = scrub_input($_POST['raid_view_type']);
-
-	// Process Roles
-	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "roles";
-	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-	
-	while($data = $db_raid->sql_fetchrow($result, true))
-	{
-		$var = $data['role_id'] . "_name";
-		$$var = scrub_input($_POST[$var]);
-
-		if ($data['role_name'] != $$var)
-		{
-			$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."roles` SET `role_name` = %s WHERE `role_id`= %s;", quote_smart($$var), quote_smart($data['role_id']));
-			$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
-		}
-	}	
-	
-	// Process Delete Checkboxes
-	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "roles";
-	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-	
-	while($data = $db_raid->sql_fetchrow($result, true))
-	{
-		$var = $data['role_id'] . "_del";
-		$$var = scrub_input($_POST[$var]);
-		//echo $var . " = " . $$var;
-		if ($$var == $data['role_id'])
-		{
-			$sql=sprintf("DELETE FROM `".$phpraid_config['db_prefix']."roles` WHERE `role_id` = %s;", quote_smart($data['role_id']));
-			$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
-		}
-	}	
-	
-	// Process the Add Role Box.
-	$var = scrub_input($_POST['role_num']);
-	if ($var != '')
-	{
-		$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "roles WHERE role_id = 'role".$var."'";
-		$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-		$exists = $db_raid->sql_fetchrow($result, true);
-		
-		if ($exists['role_id'] != '')
-			echo "Role Already Exists.";
-		else 
-		{
-			$role_id_text = 'role' . $var;
-			$lang_index_text = 'configuration_role' . $var . "_text";
-			$sql = sprintf("INSERT INTO ". $phpraid_config['db_prefix'] . "roles VALUES (%s, '', %s, NULL)", quote_smart($role_id_text), quote_smart($lang_index_text));
-			$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-		}
-	}
-
-	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'raid_view_type';", quote_smart($raid_view_type));
-	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
-	
-	header("Location: admin_rolecfg.php");
-}
 //
 // Start output of the page.
 //

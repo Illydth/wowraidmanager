@@ -97,25 +97,7 @@ $phprlang['sec_spec'] = 'Sec Talent';
 $phprlang['signup_spec'] = 'Draft As';
 
 // roles    職責
-$phprlang['role'] = '職責';
 $phprlang['role_none'] = '無';
-$phprlang['role_tank'] = '坦';
-$phprlang['role_heal'] = '補';
-$phprlang['role_melee'] = '近戰';
-$phprlang['role_ranged'] = '遠攻';
-$phprlang['role_tankmelee'] = '坦 或 近戰';
-
-$phprlang['role_tanks'] = '坦職';
-$phprlang['role_heals'] = '補職';
-$phprlang['role_melees'] = '近戰職業';
-$phprlang['role_ranges'] = '遠攻職業';
-$phprlang['role_tankmelees'] = '坦職/近戰職業';
-
-$phprlang['max_tanks'] = '最大坦職數量';
-$phprlang['max_heals'] = '最大補職數量';
-$phprlang['max_melees'] = '最大近戰職業數量';
-$phprlang['max_ranged'] = '最大遠攻職業數量';
-$phprlang['max_tkmels'] = '最大坦職/近戰職業數量';
 
 // errors
 $phprlang['connect_socked_error'] = '試圖連接Socket時出現錯誤 %s';

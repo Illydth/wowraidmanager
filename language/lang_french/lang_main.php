@@ -99,25 +99,7 @@ $phprlang['sec_spec'] = 'Sec Talent';
 $phprlang['signup_spec'] = 'Draft As';
 
 // roles
-$phprlang['role'] = 'Role';
 $phprlang['role_none'] = '-';
-$phprlang['role_tank'] = 'Tank';
-$phprlang['role_heal'] = 'Healer';
-$phprlang['role_melee'] = 'CAC';
-$phprlang['role_ranged'] = 'Distance';
-$phprlang['role_tankmelee'] = 'Tank ou CAC';
-
-$phprlang['role_tanks'] = 'Tanks';
-$phprlang['role_heals'] = 'Healers';
-$phprlang['role_melees'] = 'CACs';
-$phprlang['role_ranges'] = 'Distances';
-$phprlang['role_tankmelees'] = 'Tanks/CACs';
-
-$phprlang['max_tanks'] = 'Max Tanks';
-$phprlang['max_heals'] = 'Max Healers';
-$phprlang['max_melees'] = 'Max CACs';
-$phprlang['max_ranged'] = 'Max Distances';
-$phprlang['max_tkmels'] = 'Max Tank/CACs';
 
 // errors
 $phprlang['connect_socked_error'] = 'Erreur de connection au socket, erreur : %s';
