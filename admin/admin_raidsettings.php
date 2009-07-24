@@ -72,6 +72,18 @@ if($phpraid_config['disable_freeze'] == '0')
 else
 	$disable_freeze = '<input type="checkbox" name="disable_freeze" value="1" checked>';
 
+// Selection box for Raid View Type.
+$raid_view_type = '<select name="raid_view_type" class="post">';
+if ($phpraid_config['raid_view_type'] == 'by_class')
+	$raid_view_type .=   '<option value="by_class" selected>' . $phprlang['configuration_raid_view_type_class'] . '</option>';
+else
+	$raid_view_type .=   '<option value="by_class">' . $phprlang['configuration_raid_view_type_class'] . '</option>';
+if ($phpraid_config['raid_view_type'] == 'by_role')
+	$raid_view_type .=   '<option value="by_role" selected>'. $phprlang['configuration_raid_view_type_role'] . '</option>';
+else
+	$raid_view_type .=   '<option value="by_role">' . $phprlang['configuration_raid_view_type_role'] . '</option>';
+$raid_view_type .= '</select>';	
+	
 $buttons = '<input type="submit" name="submit" value="'.$phprlang['submit'].'" class="mainoption"> <input type="reset" name="Reset" value="'.$phprlang['reset'].'" class="liteoption">';	
 	
 $wrmadminsmarty->assign('config_data',
@@ -87,6 +99,8 @@ $wrmadminsmarty->assign('config_data',
 		'freeze_text' => $phprlang['configuration_freeze'],
 		'autoqueue_text' => $phprlang['configuration_autoqueue'],
 		'raid_settings_header'=>$phprlang['configuration_raid_settings_header'],
+		'raid_view_type' => $raid_view_type,
+		'raid_view_type_text' => $phprlang['configuration_raid_view_type_text'],	
 		'buttons' => $buttons,
 	)
 );
@@ -118,6 +132,10 @@ if(isset($_POST['submit']))
 	else
 		$d_freeze = 0;
 
+	$raid_view_type = scrub_input($_POST['raid_view_type']);
+
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'raid_view_type';", quote_smart($raid_view_type));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'auto_queue';", quote_smart($a_queue));
 	$db_raid->sql_query($sql) or print_error($sql,mysql_error($sql),1);
 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'disable_freeze';", quote_smart($d_freeze));
