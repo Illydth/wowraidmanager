@@ -1,0 +1,44 @@
+ <link href="style/stylesheet.css" rel="stylesheet" type="text/css">
+ <link href="style/stylesheetinstall.css" rel="stylesheet" type="text/css">
+ 
+{* Smarty Template *}
+<br />
+<table width="700" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tr>
+    <td><div class="contentHeader">{$install_version_info_header}</div></td>
+  </tr>
+</table>
+<br>
+ <table width="650" border="0" align="center" cellpadding="0" cellspacing="0">
+   <tr>
+     <td class="errorHeaderInstall">
+		<div align="center">
+		{$install_version_header}</div>
+		</td>
+   </tr>
+   <tr>
+     <td class="errorBodyText"><div align="center">{$install_version_message01}</div></td>
+   </tr>
+   <tr>
+     <td class="errorBodyText"><div align="center">{$install_version_message02}</div></td>
+   </tr>
+   <tr>
+     <td class="errorBodyText"><table width="100%" border="0" cellspacing="2" cellpadding="0">
+
+       <tr>
+         <td width="45%" class="errorBodyText"><div align="right">{$install_version_message03}</div></td>
+         <td width="2%" class="errorBodyText">:</td>
+         <td width="58%" class="errorBodyText"><div align="left">{$latest_version_value}</div></td>
+       </tr>
+       <tr>
+         <td class="errorBodyText"><div align="right">{$install_version_message04}</div></td>
+         <td class="errorBodyText">:</td>
+         <td class="errorBodyText"><div align="left">{$install_version_value}</div></td>
+       </tr>
+     </table></td>
+   </tr>
+   <tr>
+     <td class="errorBodyText">{$install_version_message05}</td>
+   </tr>
+ </table>
+

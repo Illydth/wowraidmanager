@@ -1,0 +1,77 @@
+ <link href="style/stylesheet.css" rel="stylesheet" type="text/css">
+<form method="post" action="{$form_action}">
+
+ <table align="center" width="650">
+  <tr>
+    <td>&nbsp;</td>
+  </tr>
+    <tr>
+    <td class="rowHover"><div align="center">{$step3_sql_server_pref}</div></td>
+  </tr>
+  {$error_msg}
+  <tr>
+   <td><table width="95%" border="0" align="center" cellpadding="2" cellspacing="2">
+     <tr>
+       <td>&nbsp;</td>
+       <td>&nbsp;</td>
+       <td>&nbsp;</td>
+     </tr>
+     <tr>
+       <td width="30%" class="row1"><div align="right">{$wrm_db_name_text}</div></td>
+       <td width="30%"><div align="center">
+         <select name="sql_db_list_name" class="post">
+			{html_options values=$sql_db_name_values selected=$sql_db_name_selected output=$sql_db_name_values}		
+          </select>     
+       </div></td>
+       <td width="40%">&nbsp;</td>
+     </tr>
+     <tr>
+       <td>&nbsp;</td>
+       <td><div align="center"><input type="text" name="wrm_db_create_name" class="post" value="{$wrm_db_create_name}" /></div></td>
+       <td class="row1">{$only_if_create_new_tab_text}</td>
+     </tr>
+     <tr>
+       <td>&nbsp;</td>
+       <td>&nbsp;</td>
+       <td>&nbsp;</td>
+     </tr>
+     <tr>
+       <td class="row2"><div align="right">{$wrm_db_tableprefix_text}</div></td>
+       <td><div align="center">
+         <input type="text" name="wrm_db_tableprefix" class="post" value="{$wrm_db_tableprefix_value}" />
+       </div></td>
+       <td class="row2">{$wrm_db_tableprefix_default_text}</td>
+     </tr>
+
+   </table>
+  <tr>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+	<td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td class="row1"><div align="center">{$hittingsubmit}</div></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+	<td>&nbsp;</td>
+  </tr>
+  <tr>
+	<td>
+	  <div align="center">
+		<input type="submit" name="submit" value="{$bd_submit}">
+	   	<input type="hidden" name="step" value="1">
+	   	<input type="hidden" name="wrm_db_server_hostname" value="{$wrm_db_server_hostname}">
+	   	<input type="hidden" name="wrm_db_username" value="{$wrm_db_username}">
+	   	<input type="hidden" name="wrm_db_password" value="{$wrm_db_password}">
+	  </div>	</td>
+  </tr>
+ </table>  
+
+</form>

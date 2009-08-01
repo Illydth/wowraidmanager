@@ -1,0 +1,60 @@
+<link href="style/stylesheet.css" rel="stylesheet" type="text/css">
+<form method="post" action="{$form_action}">
+
+ <table align="center" width="600">
+  <tr>
+   <td>&nbsp;</td>
+  </tr>
+   <tr>
+     <td class="rowHover"><div align="center">{$headtitle}</div></td>
+   </tr>
+  <tr>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td><table width="100%" border="0" align="center" cellpadding="2" cellspacing="2">
+      <tr>
+        <td width="60%" class="row1">{$bridge_type_text}</td>
+        <td width="40%"><select name="bridge_type" class="post">
+          
+		 {html_options values=$bridge_type_values selected=$bridge_type_selected output=$bridge_type_output}
+        
+        </select>        </td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+
+      <tr>
+        <td class="row2">{$bridge_database_name_text}</td>
+        <td><input type="text" name="bridge_database_name" class="post" value="{$bridge_database_name_value}" /></td>
+      </tr>
+      <tr>
+        <td class="row1">{$bridge_db_table_prefix_text}</td>
+        <td><input type="text" name="bridge_db_table_prefix" class="post" value="{$bridge_db_table_prefix_value}" /></td>
+        </tr>
+
+    </table></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td class="row1"><div align="center">{$bridge_ep01_info_text}</div></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>
+      <div align="center">
+		<input type="submit" name="submit" value="{$bd_submit}" />
+      </div>    </td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+  </tr>
+ </table>  
+
+</form>

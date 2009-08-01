@@ -2,19 +2,21 @@
 /***************************************************************************
  *                             install.php
  *                            -------------------
- *   begin                : June 15, 2008
- *	 Dev                  : Carsten HÃ¶lbing
+ *   begin                : Dec 12, 2008
+ *	 Dev                  : Carsten Hölbing
  *	 email                : hoelbin@gmx.de
  *
- *   copyright            : (C) 2007-2008 Douglas Wagner
+ *   -- WoW Raid Manager --
+ *   copyright            : (C) 2007-2009 Douglas Wagner
  *   email                : douglasw0@yahoo.com
+ *   www				  : http://www.wowraidmanager.net
  *
  ***************************************************************************/
 
 /***************************************************************************
 *
 *    WoW Raid Manager - Raid Management Software for World of Warcraft
-*    Copyright (C) 2007-2008 Douglas Wagner
+*    Copyright (C) 2007-2009 Douglas Wagner
 *
 *    This program is free software: you can redistribute it and/or modify
 *    it under the terms of the GNU General Public License as published by
@@ -27,531 +29,790 @@
 *    GNU General Public License for more details.
 *
 *    You should have received a copy of the GNU General Public License
+*    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *
 ****************************************************************************/
-	error_reporting(0);
 
-	$stepstr = $_GET['s'];
 
-	//multilanguage stuff
+if (!isset($_GET['step']))
+$step = "0";
+else
+$step = $_GET['step'];
+
+
+//set Lang. Format (default english)
+if (!isset($_GET['lang']))
+	$lang = "english";
+else
 	$lang = $_GET['lang'];
 
-	if ($stepstr == 2){
-			$lang = $_POST['classlang_type'];
-	}
-	if( !is_file('language/locale-'.$lang.'.php'))
-		{
-			$lang ='english';//en == default language
-		}
-	require_once('language/locale-'.$lang.'.php');
 
-	// This is a copy of the functions.php included "quote smart" for use by the installer.
-	function quote_smart($value = "", $nullify = false, $conn = null)
+if ($step == 2)
+{
+	if (isset($_POST['classlang_type']))
 	{
-		//reset default if second parameter is skipped
-		$nullify = ($nullify === null) ? (false) : ($nullify);
-		//undo slashes for poorly configured servers
-		$value = (get_magic_quotes_gpc()) ? (stripslashes($value)) : ($value);
-		//check for null/unset/empty strings (takes advantage of short-circuit evals to avoid a warning)
-		if ((!isset($value)) || (is_null($value)) || ($value === ""))
-		{
-			$value = ($nullify) ? ("NULL") : ("''");
-		}
-		else
-		{
-			if (is_string($value))
-			{
-				//value is a string and should be quoted; determine best method based on available extensions
-				if (function_exists('mysql_real_escape_string'))
-				{
-					$value = "'" . (((isset($conn)) && (is_resource($conn))) ? (mysql_real_escape_string($value, $conn)) : (mysql_real_escape_string($value))) . "'";
-				}
-				else
-				{
-					$value = "'" . mysql_escape_string($value) . "'";
-				}
-			}
-			else
-			{
-				//value is not a string; if not numeric, bail with error
-				$value = (is_numeric($value)) ? ($value) : ("'ERROR: unhandled datatype in quote_smart'");
-			}
-		}
-		return $value;
+		$lang = $_POST['classlang_type'];
 	}
-	
-	// Is Writeable function is bugged beyond belief, it has issues with ACL and Group accesses, use this instead.
-	//    will work in despite of Windows ACLs bug.
-	//NOTE: use a trailing slash for folders!!!
-	//see http://bugs.php.net/bug.php?id=27609
-	//see http://bugs.php.net/bug.php?id=30931
-	function is__writeable($path)
+}
+
+/*----------------------------------------------------------------*/
+
+/*
+ * name of this file
+ */
+$filename_install = "install.php?lang=".$lang."&";
+
+
+/**
+ * This is the path to the WRM Config File
+ */
+$wrm_config_file = "../config.php";
+
+/**
+ * default wrm Table prefix
+ */
+$default_file_sql_table_prefix = "wrm_";
+
+/*
+ * sql files
+ */
+$file_sql_install_schema = "database_schema/install/install_schema.sql";
+$file_sql_insert_values = "database_schema/install/insert_values.sql";
+
+/*----------------------------------------------------------------*/
+
+include_once('language/locale-'.$lang.'.php');
+
+include_once ("includes/db/db.php");
+include_once ("includes/function.php");
+
+/*----------------------------------------------------------------*/
+
+/**
+ * --------------------
+ * Step 0
+ *
+ * check: if config.php file available
+ * yes -> test database connection -> open upgrade.php 
+ * no -> jump to step1 (installation)
+ * ---------------------
+ * */
+if ($step == "0")
+{
+
+	if(is_file($wrm_config_file))
 	{
-        // Check for a directory, if the passed path is a directory create a temp file as path
-        //    and try to open, otherwise just try to open that file for writing.
-        $checkpath = $path;
-
-        if ($path{strlen($path)-1}=='/')
-                $checkpath = $path.uniqid(mt_rand()).'.tmp';
-
-        if (!($f = @fopen($checkpath, 'a+')))
-                return false;
-
-        fclose($f);
-        if ($checkpath != $path)
-                unlink($checkpath);
-        return true;
-	}
-
-	function get_mysql_version_from_phpinfo()
-	{
-		global $link;
-
-		if (function_exists('mysql_get_server_info')) {
-			$gd = mysql_get_server_info($link);
-		} else {
-			$result = @mysql_query('SELECT version()',$link);
-			$gd = @mysql_result($result,0);
-			@mysql_free_result($result);
-		}
-		return $gd;
-	}
-
-	//header
-	function print_header()
-	{
-		global $localstr;
-		echo '<html>
-			  <head><title>'.$localstr['headtitle'].'</title>
-			  <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-			  <link rel="stylesheet" type="text/css" href="stylesheet/stylesheet.css">
-			  </head>
-			  <body>
-			  <div class="installhead">
-			     <table width="500" border="0" align="center" cellspacing="5">
-                  <tr>
-                    <td><img src="logo_phpRaid.jpg" align="right"></td>
-                    <!-- <td><div class="installheadBigtxt">Wow Raid Manager</div></td> -->
-                  </tr>
-                 </table>
-			     <table width="500" border="0" align="center" cellspacing="5">
-                  <tr>
-					'.$localstr['headtitle'].'<br/>
-				    <strong>'.$localstr['headbodyinfo'].'</strong>
-                  </tr>
-                 </table>
-			  </div>
-			  <br/>';
-	}
-
-	//menu with css-style (stylesheet/stylesheet.css)
-	function step($header,$c1,$c2,$c3,$c4,$c5,$c6,$content)
-	{
-		global $localstr;
-
-		//create menu
-		$installnavmenu = '
-		<div align="left" class="installnavmenu">
-		  <ul>
-			<li>'.$localstr['InstallationProgress'].'</li>
-			<ul>
-				<li><div align="left" style="color:'.$c1.'">'.$localstr['menustep1init'].'</div></li>
-				<li><div align="left" style="color:'.$c2.'">'.$localstr['menustep2conf'].'</div></li>
-				<li><div align="left" style="color:'.$c3.'">'.$localstr['menustep3instab'].'</div></li>
-				<li><div align="left" style="color:'.$c4.'">'.$localstr['menustep4auth'].'</div></li>
-				<li><div align="left" style="color:'.$c5.'">'.$localstr['menustep5confauth'].'</div></li>
-				<li><div align="left" style="color:'.$c6.'">'.$localstr['menustep6final'].'</div></li>
-			</ul>
-		  </ul>
-		</div>';
-
-		$installmaindiv ='<div class="installmaindiv"><h1>'.$header.'</h1><br/>'.$content.'</div>';
-
-		//create table
-		echo '<table width="790" border="0" align="center" cellspacing="3" cellpadding="1"
-		 style="font-size:11px; color:#ffffff; border:1px solid #cccccc; background-color:#000000">
-			  	<tr valign="top">
-					<td width="22%">'.$installnavmenu .'</td>
-					<td width="78%" colspan="2" scope="col">'.$installmaindiv .'</td>
-			  	</tr>
-			   </table>
-			   </body>
-			   </html>
-		';
-	}
-
-	print_header();
-
-	//step 0
-	if(!isset($_GET['s']))
-	{
-		$error = 0;
-		$content = '<br/>';
-		//clearstatcache();
-		// initial step<br/>
-		// check if file is writeable
-		//$content .= '<h1>check if file is writeable</h1><br/>';
-		$content .= '<table width="90%" cellpadding="0" cellspacing="0" border="0" align="center">';
-		$content .= '<tr>';
-		$content .= '  <td width="10%" class="normaltxt"><strong><div align="center">Status</div></strong></td>';
-		$content .= '  <td width="40%" class="normaltxt"><strong><div align="center">File</div></strong></td>';
-		$content .= '  <td width="50%" class="normaltxt"><strong><div align="center">Description</div></strong></td>';
-		$content .= '</tr>';
-		$content .= '<tr>';
-
-		// NOTE: BE CAREFUL WITH IS__WRITEABLE, that is NOT the built in is_writeable function. (See Double Underscore)
-		if(!is__writeable('../config.php'))
-		{
-			$error = 1;
-			$content .= '<td class="normaltxtred">Error</td>';
-			$content .= '<td class="normaltxtred"><strong>config.php</strong></td>';
-			$content .= '<td class="normaltxtred">is not writeable by the server.';
-			$content .= 'Set proper permissions and try again</td>';
-		}
-		else
-		{
-			$content .= '  <td class="normaltxtgreen">Success</td>';
-			$content .= '  <td class="normaltxtgreen">config.php</td>';
-			$content .= '  <td class="normaltxtgreen">is writeable by the server</td>';
-		}
-		$content .= '</tr>';
-		$content .= '</table>';
-
-		$content .= '<br/><br/>';
-
-		if(!is_dir('./database_schema'))
-		{
-			$error = 1;
-			$content .= '<br/><font color=red>Error: directory <strong>database_schema</strong> does not exist!</font>';
-		}
-		else
-		{
-			$content .= '<br/><font color=#00ff00>Success: directory <strong>database_schema</strong> exists.</font>';
-		}
-
-		if($error == 0)
-		{
-				$langtype = '<select name="classlang_type" class="POST">';
-				$dir = 'language';
-				$dh = opendir($dir);
-				while(false != ($filename = readdir($dh))) {
-					$files[] = $filename;
-				}
-
-				sort($files);
-				array_shift($files);
-				array_shift($files);
-				foreach($files as $key=>$value)
-				{
-					$value = substr($value, 7);
-					$value = str_replace('.php','',$value);
-					if ($value == 'english'){
-						$langtype .= '<option value="'.$value.'" selected>'.$value.'</option>';
-					}
-					else {
-						$langtype .= '<option value="'.$value.'">'.$value.'</option>';
-					}
-				}
-
-			$langtype .= '</select>';
-			$content .= '<br/><br/><form action="install.php?s=2" method="POST">';
-			$content .= '<br/><br/>Select your Language: '.$langtype.'<br/><br/><br/>';
-			$content .= '<input type="submit" name="submit" value="'.$localstr['bd_submit'].'" class="mainoption"></form>';
-		}
-
-		step($localstr['menustep1init'],'red','white','white','white','white','white',$content);
-	}
-	else if($stepstr == 2)
-	{
-		$dir = './database_schema/upgrade';
-		$dh = opendir($dir);
-		while(false !== ($filename = readdir($dh))) {
-			$files[] = $filename;
-		}
-
-		sort($files);
-		array_shift($files);
-		array_shift($files);
-
-		$type = '<select name="type" class="post">';
-		$type .= '<option value="install/install.sql" selected>'.$localstr['step2freshinstall'].'</option>';
-
-		foreach($files as $value)
-		{
-			$type .= "<option value=\"upgrade/$value\">".$localstr['step2upgradefrom']." ".substr($value,0,-4)."</option>";
-		}
-
-		$type .= '</select>';
-
-		unset($files);
-
-		// If the config file already exists and has something in it, we'll use it.
-		include('../config.php');
-
-		$content = '<form action="install.php?s=3&lang='.$lang.'" method="POST">';
-		$content .= '<br/><br/>';
-		$content .= '<table width="100%" cellpadding="0" cellspacing="0" border="0">';
-		$content .= '<tr><td width="40%" class="normaltxt" align="right">'.$localstr['step2dbname'].':</td><td width="60%">';
-		$content .= '<input type="text" name="name" class="post" value="'.$phpraid_config['db_name'].'"></td></tr>';
-		$content .= '<tr><td class="normaltxt" align="right">'.$localstr['step2dbserverhostname'].':</td><td>';
-		if (!isset($phpraid_config['db_host']))
-			$content .= '<input type="text" name="hostname" class="post" value="localhost"></td></tr>';
-		else
-			$content .= '<input type="text" name="hostname" class="post" value="'.$phpraid_config['db_host'].'"></td></tr>';
-		$content .= '<tr><td class="normaltxt" align="right">'.$localstr['step2dbserverusername'].':</td><td>';
-		$content .= '<input type="text" name="username" class="post" value="'.$phpraid_config['db_user'].'"></td></tr>';
-		$content .= '<tr><td class="normaltxt" align="right">'.$localstr['step2dbserverpwd'].':</td><td>';
-		$content .= '<input type="text" name="password" class="post" value="'.$phpraid_config['db_pass'].'"></td></tr>';
-		$content .= '<tr><td>&nbsp;</td><td>&nbsp;</td></tr>';
-		$content .= '<tr><td class="normaltxt" align="right">'.$localstr['step2WRMtableprefix'].':</td><td>';
-		if (!isset($phpraid_config['db_prefix']))
-			$content .= '<input type="text" name="prefix" class="post" value="wrm_"></td></tr>';
-		else
-			$content .= '<input type="text" name="prefix" class="post" value="'.$phpraid_config['db_prefix'].'"></td></tr>';
-
-		//Insert Hidden boxes at this point to Store any other DB Information Needed from config.php.
-		$content .= '<input type="hidden" name="eqdkp_db_name" class="post" value="'.$phpraid_config['eqdkp_db_name'].'"></td></tr>';
-		$content .= '<input type="hidden" name="eqdkp_db_host" class="post" value="'.$phpraid_config['eqdkp_db_host'].'"></td></tr>';
-		$content .= '<input type="hidden" name="eqdkp_db_user" class="post" value="'.$phpraid_config['eqdkp_db_user'].'"></td></tr>';
-		$content .= '<input type="hidden" name="eqdkp_db_pass" class="post" value="'.$phpraid_config['eqdkp_db_pass'].'"></td></tr>';
-		$content .= '<input type="hidden" name="eqdkp_db_prefix" class="post" value="'.$phpraid_config['eqdkp_db_prefix'].'"></td></tr>';
-
-		$content .= '<tr><td>&nbsp;</td><td>&nbsp;</td></tr>';
-		$content .= '<tr><td class="normaltxt" align="right">'.$localstr['step2installtype'].': </td><td>';
-		$content .= $type.'</td></tr>';
-		$content .= '</table>';
-		$content .= '<br/><br/><div align="center"class="normaltxt"><strong>'.$localstr['hittingsubmit'].'<br/>';
-		$content .= $localstr['step2error01'].'</strong></div>';
-		$content .= '<br/><br/><input type="submit" value="'.$localstr['bd_submit'].'" class="mainoption"> ';
-		$content .= '<input type="reset" value="'.$localstr['bd_reset'].'" class="mainoption">';
-		$content .= '</form>';
-		step($localstr['menustep2conf'],'lime','red','white','white','white','white',$content);
-	}
-	else if($stepstr == 3)
-	{
-		$name = $_POST['name'];
-		$hostname = $_POST['hostname'];
-		$username = $_POST['username'];
-		$password = $_POST['password'];
-		$prefix = $_POST['prefix'];
-		$eqdkp_name = $_POST['eqdkp_db_name'];
-		$eqdkp_host = $_POST['eqdkp_db_host'];
-		$eqdkp_user = $_POST['eqdkp_db_user'];
-		$eqdkp_pass = $_POST['eqdkp_db_pass'];
-		$eqdkp_prefix = $_POST['eqdkp_db_prefix'];
-
-		$sql_file = $_POST['type'];
-
-		$sql = '';
+			
+		include_once($wrm_config_file);
 
 		// database connection
-		$link = mysql_connect($hostname, $username, $password);
-		if(!$link){
-				die('<font color=red>'.$localstr['step3errordbcon'].$localstr['pressbrowserpack'].'</font>');
+		$wrm_install = &new sql_db($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass'],$phpraid_config['db_name']);
+		
+		//if connection available -> goto upgrade.php
+		if( ($wrm_install->db_connect_id) == TRUE)
+		{
+			header("Location: upgrade.php");
+			exit;
+		}
+	}
+
+	header("Location: ".$filename_install."step=1");
+
+}
+
+/**
+ * --------------------
+ * Step 1
+ * ---------------------
+ * */
+
+else if($step == "1")
+{
+	include_once("../version.php");
+	include_once ("includes/page_header.php");
+
+	schow_online_versionnr();
+	
+	$FoundProblem_dir_fp = FALSE;
+	
+	$writable_dir_cache_bgcolor = "green";
+	$writable_dir_cache_value = $wrm_install_lang['yes'];
+	
+	//from /include/function.php
+	//load all lang file in a array
+	$files = get_language_filename();
+
+	$phpversion = (int)(str_replace(".", "", phpversion()));
+
+	//fileperm: Returns TRUE = success or FALSE = failure
+	if (!($dir_cache_fp = chmod("./cache/",0775)))
+	{
+		$FoundProblem_dir_fp = TRUE;
+		$writable_dir_cache_bgcolor = "red";
+		$writable_dir_cache_value = $wrm_install_lang['no'];
+	}
+
+	if($phpversion<401)
+	{
+		$phpversion_bgcolor = "red";
+	}
+	else
+	{
+		$phpversion_bgcolor = "green";
+	}
+
+	$gd = get_mysql_version_from_phpinfo();
+	if ($gd < "4.1.0")
+	{
+		$mysqlversion_bgcolor = "red";
+	}
+	else
+	{
+		$mysqlversion_bgcolor = "green";
+	}
+
+	// NOTE: BE CAREFUL WITH IS__WRITEABLE, that is NOT the built in is_writeable function. (See Double Underscore)
+	if (is_file($wrm_config_file))
+	{
+		if(!is__writeable($wrm_config_file))
+		{
+			$writeable_config_bgcolor = "red";
+			$writeable_config_value = $wrm_install_lang['no'];
+		}
+		else
+		{
+			$writeable_config_bgcolor = "green";
+			$writeable_config_value = $wrm_install_lang['yes'];
+		}
+	}
+	else
+	{
+		$writeable_config_bgcolor = "green";
+		$writeable_config_value = $wrm_install_lang['yes'];		
+	}
+	
+	include_once ("includes/page_header.php");
+	$smarty->assign(
+		array(
+				"form_action" => $filename_install."step=2",
+				//table
+				"headtitle" => $wrm_install_lang['headtitle'],
+				"property" => $wrm_install_lang['step0_property'],
+				"required" => $wrm_install_lang['step0_required'],
+				"exist" => $wrm_install_lang['step0_exist'],
+				"system_requirements" => $wrm_install_lang['step0_system_requirements'],
+				"phpversion_text" => $wrm_install_lang['step0_phpversion_text'],
+				"phpversion_value" => phpversion(),
+				"phpversion_bgcolor" => $phpversion_bgcolor,
+				"mysqlversion_text" => $wrm_install_lang['step0_mysqlversion'],
+				"mysqlversion_value" => $gd,
+				"mysqlversion_bgcolor" => $mysqlversion_bgcolor,
+				"nonactive" => $wrm_install_lang['step0_nonactive'],
+		
+				"writeable_config_text" => $wrm_install_lang['step0_writeable_config'],
+				"writeable_config_value" => $writeable_config_value,
+				"yes" => $wrm_install_lang['yes'],
+				"writeable_config_bgcolor" => $writeable_config_bgcolor,
+		
+				"writable_dir_cache_text" => $wrm_install_lang['writable_dir_cache_text'],
+				"writable_dir_cache_bgcolor" => $writable_dir_cache_bgcolor,
+				"writable_dir_cache_value" => $writable_dir_cache_value,
+		
+				"php_variables_text" => $wrm_install_lang['php_variables'],
+				"SERVER_SERVER_SOFTWARE_text" => '_SERVER["SERVER_SOFTWARE"]',
+				"SERVER_SERVER_SOFTWARE_value" => $_SERVER["SERVER_SOFTWARE"],
+				"SERVER_DOCUMENT_ROOT_text" => '_SERVER["DOCUMENT_ROOT"]',
+				"SERVER_DOCUMENT_ROOT_value" => $_SERVER["DOCUMENT_ROOT"],
+				"SERVER_SERVER_NAME_text" => '_SERVER["SERVER_NAME"]',
+				"SERVER_SERVER_NAME_value" => $_SERVER["SERVER_NAME"],
+				"SERVER_HTTP_ACCEPT_CHARSET_text" => '_SERVER["HTTP_ACCEPT_CHARSET"]',
+				"SERVER_HTTP_ACCEPT_CHARSET_value" => $_SERVER["HTTP_ACCEPT_CHARSET"],
+			    "classlang_type_values" => $files,
+			    "classlang_type_selected" => $lang,
+			    "select_lang" => $wrm_install_lang['select_lang'],
+				"bd_submit" => $wrm_install_lang['bd_submit'],
+		)
+	);
+	
+	$smarty->display("step1.tpl.html");
+	include_once ("includes/page_footer.php");
+}
+
+/**
+ * --------------------
+ * Step 2
+ *
+ * show/set db settings (server_hostname, db_username, db_password)
+ * ---------------------
+ * */
+else if($step == 2) {
+
+	$error_msg = "";
+
+	if ( isset($_GET['erro_con']) )
+	{
+		$error_msg .= '<div class="errorHeader">'.$wrm_install_lang['step3errordbcon_titel'].'<br/>';
+		$error_msg .= $wrm_install_lang['step3errordbcon'];
+		$error_msg .= "<br/>".$wrm_install_lang['hittingsubmit']."</div><br/>"."<br/>";
+	}
+
+	if (isset($_POST['wrm_db_server_hostname']))
+		$wrm_db_server_hostname_value = $_POST['wrm_db_server_hostname'];
+	else
+		$wrm_db_server_hostname_value = "localhost";			
+
+	if (isset($_POST['wrm_db_username']))
+		$wrm_db_username_value = $_POST['wrm_db_username'];
+	else
+		$wrm_db_username_value = "";
+			
+	if (isset($_POST['wrm_db_password']))
+		$wrm_db_password_value = $_POST['wrm_db_password'];
+	else
+		$wrm_db_password_value = "";			
+
+
+	if(is_file($wrm_config_file) and !isset($_POST['wrm_db_server_hostname']))
+	{
+		include_once($wrm_config_file);
+		
+		if (isset($phpraid_config['db_name']))
+		{
+			$wrm_db_server_hostname_value = $phpraid_config['db_host'];
+			$wrm_db_username_value = $phpraid_config['db_user'];
+			$wrm_db_password_value = $phpraid_config['db_pass'];
+		}
+	}
+	 
+	include_once ("includes/page_header.php");
+	$smarty->assign(
+		array(
+			"form_action" => $filename_install."step=3",
+			"headtitle" => $wrm_install_lang['headtitle'],
+			"wrm_db_server_hostname_text" => $wrm_install_lang['step2dbserverhostname'],
+			"wrm_db_server_hostname_value" => $wrm_db_server_hostname_value,
+			"wrm_db_username_text" => $wrm_install_lang['step2dbserverusername'],
+			"wrm_db_username_value" => $wrm_db_username_value,
+			"wrm_db_password_text" => $wrm_install_lang['step2dbserverpwd'],
+			"wrm_db_password_value" => $wrm_db_password_value,
+			"wrm_db_create_name" => $_POST['wrm_db_create_name'],
+			"wrm_db_tableprefix" => $_POST['wrm_db_tableprefix'],
+			"error_msg" => $error_msg,
+			"hittingsubmit" => $wrm_install_lang['hittingsubmit'],
+			"step2_sql_server_pref" => $wrm_install_lang['step2_sql_server_pref'],
+			"bd_submit" => $wrm_install_lang['bd_submit'],
+		)
+	);
+	$smarty->display("step2.tpl.html");
+	include_once ("includes/page_footer.php");
+}
+
+/**
+ * --------------------
+ * Step 3
+ *
+ * show/set db settings (db_name and db_tableprefix) 
+ * ---------------------
+ * */
+else if($step == 3) {
+
+	$wrm_db_server_hostname = $_POST['wrm_db_server_hostname'];
+	$wrm_db_username = $_POST['wrm_db_username'];
+	$wrm_db_password = $_POST['wrm_db_password'];
+	
+	$wrm_db_name = $_POST['wrm_db_name'];
+	$wrm_create_db_value = $_POST['wrm_db_create_name'];
+	$wrm_db_tableprefix = $_POST['wrm_db_tableprefix'];
+	$sql_db_name_selected = $_POST['list_sql_db_name'];
+	
+	$wrm_config_writeable = FALSE;
+	$FOUNDERROR_Connection = FALSE;
+	
+	if(is_file($wrm_config_file) and !isset($_POST['wrm_db_server_hostname']))
+	{
+		include_once($wrm_config_file);
+		
+		if (isset($phpraid_config['db_name']))
+		{
+			$wrm_db_server_hostname = $phpraid_config['db_host'];
+			$wrm_db_username = $phpraid_config['db_user'];
+			$wrm_db_password = $phpraid_config['db_pass'];
+			$wrm_db_name = $phpraid_config['db_name'];
+			$wrm_db_tableprefix = $phpraid_config['db_prefix'];	
+		}
+	}
+	
+	//check/test connection
+	$wrm_install = &new sql_db($wrm_db_server_hostname, $wrm_db_username, $wrm_db_password, "");
+	
+	if(!$wrm_install->db_connect_id)
+	{
+		$FOUNDERROR_Connection = TRUE;
+		header("Location: ".$filename_install."step=2&erro_con=1");
+	}
+	
+	$error_msg = "";
+
+	if ( isset($_GET['erro_con']) )
+		$error_msg .= "Error connecting to Server (Servername or Username or Password incorrect) <br/>";//. ;
+
+	if ( isset($_GET['error_db']))
+		$error_msg .= $wrm_install_lang['step3errordbcon'];
+
+	if ($error_msg != "")
+	{
+		$error_msg .= "<br/>".$wrm_install_lang['hittingsubmit'];
+	}
+			
+	if (isset($_POST['wrm_db_tableprefix'])and $_POST['wrm_db_tableprefix'] != "")
+		$wrm_db_tableprefix_value = $_POST['wrm_db_tableprefix'];
+	else
+		$wrm_db_tableprefix_value = "wrm_";
+
+
+	//load all DATABASES name in a array ($sql_all_dbname)
+	$sql_db_name_values = array();
+	$sql_db_all = "SHOW DATABASES";
+
+	$result_db_all = $wrm_install->sql_query($sql_db_all) or print_error($sql_db_all, mysql_error(), 1);
+	while ($data_db_all = $wrm_install->sql_fetchrow($result_db_all,true))
+	{
+		//show all TABLES
+		$sql_db_name_values[] = $data_db_all['Database'];
+	}
+	
+	//add create db
+	$sql_db_name_values[] = " - ".$wrm_install_lang['create_db']." - ";
+	$wrm_install->sql_close();
+	
+
+	include_once ("includes/page_header.php");
+	$smarty->assign(
+		array(
+			"form_action" => $filename_install."step=4",
+			"headtitle" => $wrm_install_lang['headtitle'],
+			"wrm_db_name_text" => $wrm_install_lang['step2dbname'],
+			"wrm_create_db_text" => $wrm_install_lang['step2_create_db'],
+			"wrm_create_db_value" => $wrm_create_db_value,
+			"wrm_db_tableprefix_text" => $wrm_install_lang['step2WRMtableprefix'],
+			"wrm_db_tableprefix_value" => $wrm_db_tableprefix_value,
+			"wrm_db_tableprefix_default_text" => "(".$wrm_install_lang['default'].":".' "wrm_" )',
+			"sql_db_name_values" => $sql_db_name_values,
+			"sql_db_name_selected" => $sql_db_name_selected,
+			"wrm_db_create_name" => $wrm_install_lang['none'],
+			"wrm_db_server_hostname" => $wrm_db_server_hostname,
+			"wrm_db_username" => $wrm_db_username,
+			"wrm_db_password" => $wrm_db_password,		
+			"error_msg" => $error_msg,
+			"only_if_create_new_tab_text" => $wrm_install_lang['only_if_create_new_tab'],
+			"step3_sql_server_pref" => $wrm_install_lang['step2_sql_server_pref'],
+			"hittingsubmit" => $wrm_install_lang['hittingsubmit'],
+			"bd_submit" => $wrm_install_lang['bd_submit'],
+		)
+	);
+
+	$smarty->display("step3.tpl.html");
+	include_once ("includes/page_footer.php");
+}
+
+/**
+ * --------------------
+ * Step 4
+ *  create datebase
+ *	write wrm configfile
+ * ---------------------
+ * */
+else if($step == 4)
+{
+	$wrm_db_server_hostname = $_POST['wrm_db_server_hostname'];
+	$wrm_db_username = $_POST['wrm_db_username'];
+	$wrm_db_password = $_POST['wrm_db_password'];
+	
+	$wrm_db_name = $_POST['wrm_db_create_name'];
+
+	$wrm_db_tableprefix = $_POST['wrm_db_tableprefix'];
+	
+	$wrm_config_writeable = FALSE;
+	$FOUNDERROR_Database = FALSE;
+	
+	if ( $_POST['sql_db_list_name'] != " - ".$wrm_install_lang['create_db']." - ")
+	{
+		$wrm_db_name = $_POST['sql_db_list_name'];
+		$wrm_install = &new sql_db($wrm_db_server_hostname, $wrm_db_username, $wrm_db_password, $wrm_db_name);
+	}
+	else
+	{
+		//load all DATABASES name in a array ($sql_all_dbname)
+		$sql_db_name_values = array();
+		$Database_Exist = FALSE;
+		$sql_db_all = "SHOW DATABASES";
+		$wrm_install = &new sql_db($wrm_db_server_hostname, $wrm_db_username, $wrm_db_password, "");
+		$result_db_all = $wrm_install->sql_query($sql_db_all) or print_error($sql_db_all, mysql_error(), 1);
+		while ($data_db_all = $wrm_install->sql_fetchrow($result_db_all,true))
+		{
+			//cmp if select db ($wrm_db_name) in/on Server exist
+			if ($wrm_db_name == $data_db_all['Database'])
+			{
+				$Database_Exist = TRUE;
 			}
+		}
+		
+		if ($Database_Exist != TRUE)
+		{
+			$wrm_install = &new sql_db($wrm_db_server_hostname, $wrm_db_username, $wrm_db_password, "");
+			$sql = "CREATE DATABASE ".$wrm_db_name;
+			$wrm_install->sql_query($sql) or print_error($sql, mysql_error() ,1);
+		}
+		else
+		{
+			$wrm_install->sql_close();
+			header("Location: ".$filename_install."step=3&db_exist=1");
+		}
+	}
+	
+	if(!$wrm_install->db_connect_id)
+	{
+		$FOUNDERROR_Database = TRUE;
+	}
 
-		include('../version.php');
+	$wrm_install->sql_close();
 
-		// write config file (config.php)
-		$output  = "<?php\n";
-		$output .= "/*\n";
-		$output .= "#**********************************************#\n";
-		$output .= "#                                              #\n";
-		$output .= "#     auto-generated configuration file        #\n";
-		$output .= "#     WoW Raid Manager ".$version."                   #\n";
-		$output .= "#     date: ".date("Y-m-d - H:i:s")."              #\n";
-		$output .= "#   Do not change anything in this file!       #\n";
-		$output .= "#                                              #\n";
-		$output .= "#**********************************************#\n";
-		$output .= "*/\n\n";
-		$output .= "global ".'$phpraid_config'.";\n";
-		$output .='$phpraid_config[\'db_name\']'." = '$name';\n".'$phpraid_config[\'db_host\']'." = '$hostname';\n";
-		$output .='$phpraid_config[\'db_user\']'." = '$username';\n".'$phpraid_config[\'db_pass\']'." = '$password';\n";
-		$output .='$phpraid_config[\'db_prefix\']'." = '$prefix';\n".'$phpraid_config[\'eqdkp_db_name\']'." = '$eqdkp_name';\n";
-		$output .='$phpraid_config[\'eqdkp_db_host\']'." = '$eqdkp_host';\n".'$phpraid_config[\'eqdkp_db_user\']'." = '$eqdkp_user';\n";
-		$output .='$phpraid_config[\'eqdkp_db_pass\']'." = '$eqdkp_pass';\n".'$phpraid_config[\'eqdkp_db_prefix\']'." = '$eqdkp_prefix';\n";
-		$output .= "?>\n";
+	//no error then write the config file "../config.php"
+	if ($FOUNDERROR_Database == FALSE) 
+	{
+		$wrm_config_writeable = write_wrm_configfile($wrm_db_name, $wrm_db_server_hostname, $wrm_db_username, $wrm_db_password, $wrm_db_tableprefix);
+	
+		//writeable 
+		if ($wrm_config_writeable == TRUE)
+		{
+			//go to next step
+			header("Location: ".$filename_install."step=".($step+1) );
+		}
+		//config FILE ist NOT writeable
+		else
+		{
+			header("Location: ".$filename_install."step=1");
+		}
+	}
 
-		$fd = fopen('../config.php','w+');
-		fwrite($fd, $output);
-		fclose($fd);
+	if ($FOUNDERROR_Database == TRUE)
+	{
+		header("Location: ".$filename_install."step=3&error_db=1");
+	}
+}
+/**
+ * --------------------
+ * Step 5
+ *
+ * test: if selected db, are wrm table include/exist
+ * ---------------------
+ * */
+else if($step == 5)
+{
 
-		mysql_select_db($name);
-		if(!$fd = fopen('./database_schema/'.$sql_file, 'r'))
-			die('<font color=red>'.$localstr['step3errorschema'].'.</font>');
+	include_once($wrm_config_file);
+	include_once("install_settings.php");
 
-		if ($fd) {
-			while (!feof($fd)) {
-				$line = fgetc($fd);
-				$sql .= $line;
+	$wrm_install = &new sql_db($phpraid_config['db_host'], $phpraid_config['db_user'], $phpraid_config['db_pass'], $phpraid_config['db_name']);
+	
+	$foundtable = FALSE;
+	
+	//load all DATABASES name in a array ($sql_all_dbname)
+	$result_list_tables = array();
+	$sql_tables = "SHOW TABLES FROM ".$phpraid_config['db_name'];
 
-				if($line == ';')
+	$result_db_all = $wrm_install->sql_query($sql_tables) or print_error($sql_tables, mysql_error(), 1);
+	while ($db_table_name = $wrm_install->sql_fetchrow($result_db_all,true))
+	{
+		//show all TABLES
+		$result_list_tables[] = $db_table_name['Database'];
+	}
+	
+	for($x=0; $x < count($result_list_tables)-1; $x++)
+	{
+			for($i=0; $i < count($result_list_tables)-1; $i++)
+			{
+				if( $result_list_tables[$x] == ($phpraid_config['db_prefix']."_".$wrm_tables[$i]) )
 				{
-			  		$sql = substr(str_replace('`wrm_','`' . $prefix, $sql), 0, -1);
-					mysql_query($sql) or die($localstr['step3errorsql'].' ' . mysql_error());
-					$sql = '';
+					$foundtable = TRUE;
 				}
 			}
-			fclose($fd);
-		}
+	}
+	
+	//close sql connection
+	$wrm_install->sql_close();
 
-		// Run the alter_tables.sql for setting Character Set and Collation if MySQL version > 4.1.0
+	if($foundtable == TRUE)
+	{
+		include_once ("includes/page_header.php");
+		$smarty->assign(
+			array(
+				"error_found_table_titel" => $wrm_install_lang['error_found_table_titel'],
+
+				"form_action_bd_next_link" => $filename_install."step=".($step+1), //6
+				"form_action_bd_back_link" => $filename_install."step=".($step-2), //3
+	
+
+				"error_found_table_bd_back_text" => $wrm_install_lang['error_found_table_bd_back'],
+				"error_found_table_bd_cont_text" => $wrm_install_lang['error_found_table_bd_cont'],
+			
+				"bd_back" => $wrm_install_lang['bd_back'],
+				"bd_submit" => $wrm_install_lang['bd_submit'],
+			)
+		);
+	
+		$smarty->display("step5.tpl.html");
+		include_once ("includes/page_footer.php");
+
+	}
+	else
+	{
+		header("Location: ".$filename_install."step=".($step+1));
+	}
+}
+
+/**
+ * --------------------
+ * Step 6
+ *
+ * del all table and then
+ * insert schema(=tables), in wrm db
+ * ---------------------
+ * */
+else if($step == 6)
+{
+	include_once($wrm_config_file);
+	include_once("install_settings.php");
+
+	$wrm_install = &new sql_db($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass'],$phpraid_config['db_name']);
+	
+
+	//DROP all TABLE (array from "install_settings.php")
+	for ($i=0; $i<count($wrm_tables);$i++)
+	{
+		$sql_del_tab = "DROP TABLE IF EXISTS ".$phpraid_config['db_prefix'].$wrm_tables[$i];
+		$wrm_install->sql_query($sql_del_tab) or print_error($sql_del_tab, mysql_error(), 1);
+	}
+
+	//install schema  (database_schema/install/install_schema.sql)
+	if(!$fd = fopen($file_sql_install_schema, 'r'))
+	die('<font color=red>'.$wrm_install_lang['step3errorschema'].'.</font>');
+
+	if ($fd) {
+		while (!feof($fd)) {
+			$line = fgetc($fd);
+			$sql .= $line;
+
+			if($line == ';')
+			{
+				$sql = substr(str_replace('`'.$default_file_sql_table_prefix,'`' . $phpraid_config['db_prefix'], $sql), 0, -1);
+				$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
+				$sql = '';
+			}
+		}
+		fclose($fd);
+	}
+	
+	$wrm_install->sql_close();
+	header("Location: ".$filename_install."step=".($step+1));
+}
+
+/**
+ * --------------------
+ * Step 7
+ *
+ * fill, wrm db, with default values
+ * ---------------------
+ * */
+else if($step == 7)
+{
+	include_once($wrm_config_file);
+	include_once("install_settings.php");
+
+	$wrm_install = &new sql_db($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass'],$phpraid_config['db_name']);
+	
+	//insert (default) values (database_schema/install/insert_values.sql)
+	if(!$fd = fopen($file_sql_insert_values, 'r'))
+	die('<font color=red>'.$wrm_install_lang['step3errorschema'].'.</font>');
+
+	if ($fd) {
+		while (!feof($fd)) {
+			$line = fgetc($fd);
+			$sql .= $line;
+
+			if($line == ';')
+			{
+				$sql = substr(str_replace('`'.$default_file_sql_table_prefix,'`' . $phpraid_config['db_prefix'], $sql), 0, -1);
+				$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
+				$sql = '';
+			}
+		}
+		fclose($fd);
+	}
+	
+	$wrm_install->sql_close();
+
+	header("Location: ".$filename_install."step=".($step+1));
+}
+
+/**
+ * --------------------
+ * Step 8
+ *
+ * install Collation on wrm tablle @ MySQL
+ * Run the alter_tables.sql for setting Character Set and Collation if MySQL version > 4.1.0
+ * ---------------------
+ * */
+else if($step == 8)
+{
+	include_once($wrm_config_file);
+	include_once("install_settings.php");
+
+	$wrm_install = &new sql_db($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass'],$phpraid_config['db_name']);
+	
+	//if db_type == mysql
+	if ( ($phpraid_config['db_type'] == "mysql") or (!isset($phpraid_config['db_type'])) )
+	{
 		$gd = get_mysql_version_from_phpinfo();
-		if (version_compare("4.1.0",$gd) == -1)
+		if ($gd >= "4.1.0")
 		{
-			if(!$fd = fopen('./database_schema/install/alter_tables.sql', 'r'))
-				die('<font color=red>'.$localstr['step3errorschema'].'.</font>');
-
-			if ($fd) {
-				while (!feof($fd)) {
-					$line = fgetc($fd);
-					$sql .= $line;
-
-					if($line == ';')
-					{
-				  		$sql = substr(str_replace('`wrm_','`' . $prefix, $sql), 0, -1);
-						mysql_query($sql) or die($localstr['step3errorsql'].' ' . mysql_error());
-						$sql = '';
-					}
-				}
-				fclose($fd);
+			include_once("install_settings.php");
+	
+			for ($i=0; $i <count($wrm_tables); $i++)
+			{
+				$sql = 	sprintf("ALTER TABLE " .$phpraid_config['db_name'] . "." . $phpraid_config['db_prefix'].$wrm_tables[$i] .
+								" DEFAULT CHARACTER SET %s COLLATE=utf8_bin", quote_smart("UTF8") );
+				$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
 			}
 		}
-
-		// Make a Version Check
-		$sql = "select max(version_number) from `" . $prefix . "version`";
-		$result = mysql_query($sql) or die($localstr['step3errorsql'].' ' . mysql_error());
-		$data = mysql_fetch_assoc($result);
-
-		if($data['max(version_number)'] != $version)
-			die('<font color=red>'.$localstr['step3errorversion'].'.</font>');
-
-		$content  = '<font color=#00ff00>'.$localstr['step3installinfo'].'</font>';
-		$content .= '<form action="install.php?s=4&lang='.$lang.'" method="POST">';
-		$content .= '<br/><br/><input type="submit" value="'.$localstr['bd_submit'].'" class="mainoption"> ';
-		$content .= '</form>';
-
-		mysql_close($link);
-
-		step($localstr['menustep3instab'],'lime','lime','red','white','white','white',$content);
 	}
-	else if($stepstr == 4)
+	
+	$wrm_install->sql_close();
+
+	header("Location: ".$filename_install."step=".($step+1));
+
+}
+
+
+
+/**
+ * --------------------
+ * Step 9
+ *
+ * jump to bridge install(/config) at/in "install_bridges.php"
+ * ---------------------
+ * */
+else if($step == 9)
+{
+	header("Location: install_bridges.php?lang=".$lang."&step=0");
+}
+
+/**
+ * --------------------
+ * Step 10
+ * tmp
+ * ---------------------
+ * */
+else if($step == 10)
+{
+
+}
+
+/**
+ * --------------------
+ * Step done
+ * 
+ * only for dynamic (default) values
+ * ---------------------
+ * */
+
+else if($step === "done")
+{
+	include_once ($wrm_config_file);
+
+	$wrmserver = 'http://'.$_SERVER['SERVER_NAME'];
+	$wrmserverfile = str_replace("/install/install.php","",$wrmserver. $_SERVER['PHP_SELF']);
+	
+	$eqdkp_url_link = $wrmserverfile."/eqdkp";
+	$default_armory_language_value = $wrm_install_lang['default_armory_language_value'];
+	$default_armory_link_value = $wrm_install_lang['default_armory_link_value'];
+	
+	//init con. to wrm
+	$wrm_install = &new sql_db($phpraid_config['db_host'], $phpraid_config['db_user'], $phpraid_config['db_pass'], $phpraid_config['db_name']);
+	
+	$sql = 	sprintf("SELECT * "  .
+					" FROM " . 	$phpraid_config['db_name'] . "." . $phpraid_config['db_prefix'] . "config" .
+					" WHERE  `config_name` = %s ", quote_smart("header_link")
+			);
+	$result = $wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
+
+	if($wrm_install->sql_numrows($result) == 0)
 	{
-		// authorization types
-		$dir = 'auth';
-		$dh = opendir($dir);
-		while(false != ($filename = readdir($dh))) {
-			$files[] = $filename;
-		}
-
-		sort($files);
-		array_shift($files);
-		array_shift($files);
-		$auth = '<select name="auth_type" class="post">';
-
-		foreach($files as $key=>$value)
-		{
-			$value = substr($value, 8);
-			$value = str_replace('.php','',$value);
-			$auth .= '<option value="'.$value.'">'.$value.'</option>';
-		}
-
-		$auth .= '</select>';
-		$content = '<table width="400" border="1" align="center">
-                          <tr>
-                            <td width="130" class="normaltxt"><strong>'.$localstr['step4auttype'].'</strong></td>
-                            <td width="270" class="normaltxt"><strong>'.$localstr['step4desc'].'</strong></td>
-                          </tr>
-                          <tr>
-                            <td class="normaltxt">e107</td>
-                            <td class="normaltxt">'.$localstr['step4desc_e107'].'</td>
-                          </tr>
-						  <tr>
-                            <td class="normaltxt">iUMS</td>
-                            <td class="normaltxt">'.$localstr['step4desc_iums'].'</td>
-                          </tr>
-                          <tr>
-                            <td class="normaltxt">Joomla</td>
-                            <td class="normaltxt">'.$localstr['step4desc_joomla'].'</td>
-                          </tr>
-                          <tr>
-                            <td class="normaltxt">phpBB</td>
-                            <td class="normaltxt">'.$localstr['step4desc_phpBB'].'</td>
-                          </tr>
-						  <tr>
-                            <td class="normaltxt">SMF</td>
-                            <td class="normaltxt">'.$localstr['step4desc_smf'].'</td>
-                          </tr>
-						  <tr>
-                            <td class="normaltxt">SMF2</td>
-                            <td class="normaltxt">'.$localstr['step4desc_smf2'].'</td>
-                          </tr>
-						  <tr>
-                            <td class="normaltxt">WBB</td>
-                            <td class="normaltxt">'.$localstr['step4desc_wbb'].'</td>
-                          </tr>
-                          <tr>
-                            <td class="normaltxt">XOOPS</td>
-                            <td class="normaltxt">'.$localstr['step4desc_xoops'].'</td>
-                          </tr>
-                        </table>';
-
-		$content .= '<form action="install.php?s=5&lang='.$lang.'" method="POST">';
-		$content .= '<br/><br/>'.$localstr['step4chooseauth'].'<br/>'.$localstr['step4unkownauth'].'<br/><br/>';
-		$content .= $auth;
-		$content .= '<br/><br/><br/><input type="submit" value="'.$localstr['bd_submit'].'" class="mainoption"> ';
-		$content .= '</form>';
-
-		step($localstr['menustep4auth'],'lime','lime','lime','red','white','white',$content);
+		$sql = sprintf(	"INSERT INTO " . $phpraid_config['db_name'] . "." .$phpraid_config['db_prefix'] . "config".
+						" VALUES(%s,%s)", quote_smart("header_link"), quote_smart($wrmserver));
+		$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$sql = sprintf(	"INSERT INTO " . $phpraid_config['db_name'] . "." .$phpraid_config['db_prefix'] . "config".
+						" VALUES(%s,%s)", quote_smart("rss_site_url"), quote_smart($wrmserverfile));
+		$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$sql = sprintf(	"INSERT INTO " . $phpraid_config['db_name'] . "." .$phpraid_config['db_prefix'] . "config".
+						" VALUES(%s,%s)", quote_smart("rss_export_url"), quote_smart($wrmserverfile));
+		$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$sql = sprintf(	"INSERT INTO " . $phpraid_config['db_name'] . "." .$phpraid_config['db_prefix'] . "config".
+						" VALUES(%s,%s)", quote_smart("eqdkp_url"), quote_smart($eqdkp_url_link));
+		$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$sql = sprintf(	"INSERT INTO " . $phpraid_config['db_name'] . "." .$phpraid_config['db_prefix'] . "config".
+						" VALUES(%s,%s)", quote_smart("armory_language"), quote_smart($default_armory_language_value));
+		$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$sql = sprintf(	"INSERT INTO " . $phpraid_config['db_name'] . "." .$phpraid_config['db_prefix'] . "config".
+						" VALUES(%s,%s)", quote_smart("armory_link"), quote_smart($default_armory_link_value));
+		$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$sql = sprintf(	"INSERT INTO " . $phpraid_config['db_name'] . "." .$phpraid_config['db_prefix'] . "config".
+						" VALUES(%s,%s)", quote_smart("wrm_created_on"), quote_smart(time()));
+		$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$sql = sprintf(	"INSERT INTO " . $phpraid_config['db_name'] . "." .$phpraid_config['db_prefix'] . "config".
+						" VALUES(%s,%s)", quote_smart("wrm_updated_on"), quote_smart(time()));
+		$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
 	}
-
-
-	else if($stepstr == 5)
+	else
 	{
-		$auth_type = $_POST['auth_type'];
-
-		// get appropriate install file.
-		require_once('./auth/install_' . $auth_type . '.php');
-
-		$retval=step5($auth_type); //Calls the installer for the selected auth function.
-
+		$sql = 	sprintf("UPDATE " . $phpraid_config['db_name'] . "." . $phpraid_config['db_prefix'] . "config" .
+						" SET `config_value` = %s WHERE %s = `config_name`", quote_smart($wrmserver), quote_smart("header_link"));
+		$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$sql = 	sprintf("UPDATE " . $phpraid_config['db_name'] . "." . $phpraid_config['db_prefix'] . "config" .
+						" SET `config_value` = %s WHERE %s = `config_name`", quote_smart($wrmserverfile), quote_smart("rss_site_url"));
+		$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$sql = 	sprintf("UPDATE " . $phpraid_config['db_name'] . "." . $phpraid_config['db_prefix'] . "config" .
+						" SET `config_value` = %s WHERE %s = `config_name`", quote_smart($wrmserverfile), quote_smart("rss_export_url"));
+		$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$sql = 	sprintf("UPDATE " . $phpraid_config['db_name'] . "." . $phpraid_config['db_prefix'] . "config" .
+						" SET `config_value` = %s WHERE %s = `config_name`", quote_smart($eqdkp_url_link), quote_smart("eqdkp_url"));
+		$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$sql = 	sprintf("UPDATE " . $phpraid_config['db_name'] . "." . $phpraid_config['db_prefix'] . "config" .
+						" SET `config_value` = %s WHERE %s = `config_name`", quote_smart($default_armory_language_value), quote_smart("armory_language"));
+		$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$sql = 	sprintf("UPDATE " . $phpraid_config['db_name'] . "." . $phpraid_config['db_prefix'] . "config" .
+						" SET `config_value` = %s WHERE %s = `config_name`", quote_smart($default_armory_link_value), quote_smart("armory_link"));
+		$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$sql = 	sprintf("UPDATE " . $phpraid_config['db_name'] . "." . $phpraid_config['db_prefix'] . "config" .
+						" SET `config_value` = %s WHERE %s = `config_name`", quote_smart(time()), quote_smart("wrm_created_on"));
+		$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$sql = 	sprintf("UPDATE " . $phpraid_config['db_name'] . "." . $phpraid_config['db_prefix'] . "config" .
+						" SET `config_value` = %s WHERE %s = `config_name`", quote_smart(time()), quote_smart("wrm_updated_on"));
+		$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
 	}
-	else if($stepstr == 'done')
-	{
-		include ("../config.php");
+	
+	$wrm_install->sql_close();
+	include_once ("includes/page_header.php");
+	$smarty->assign(
+		array(
+			"headtitle" => $wrm_install_lang['stepdonefinished'],
+			"donesetupcomplete_text" => $wrm_install_lang['stepdonesetupcomplete'],
+			"doneremovedir_text" => $wrm_install_lang['stepdoneremovedir'],
+		)
+	);
 
-		//insert default values
-		$wrmserver = 'http://'.$_SERVER['SERVER_NAME'];
-		$wrmserverfile = str_replace("/install/install.php","",$wrmserver. $_SERVER['PHP_SELF']);;
+	$smarty->display("done.tpl.html");
+	include_once ("includes/page_footer.php");
+}
 
-		$linkWRM = mysql_connect($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass']);
-		mysql_select_db($phpraid_config['db_name']);
-		$sql = "SELECT * FROM " . $phpraid_config['db_prefix']. "config WHERE config_name = 'header_link'";
-		$result =  mysql_query($sql) or die("Error verifying " . mysql_error());
-		if((mysql_num_rows($result) == 0))
-		{
-			$sql = "INSERT INTO " .$phpraid_config['db_prefix'] ."config VALUES ('header_link','$wrmserver')";
-			mysql_query($sql) or die("Error inserting " . mysql_error());
-			$sql = "INSERT INTO " .$phpraid_config['db_prefix'] ."config VALUES ('rss_site_url', '$wrmserverfile')";
-			mysql_query($sql) or die("Error inserting " . mysql_error());
-			$sql = "INSERT INTO " .$phpraid_config['db_prefix'] ."config VALUES ('rss_export_url', '$wrmserverfile')";
-			mysql_query($sql) or die("Error inserting " . mysql_error());
-		}
-		else{
-			$sql = "UPDATE " .$phpraid_config['db_prefix'] ."config SET config_value='$wrmserver' WHERE config_name='header_link'";
-			mysql_query($sql) or die("Error updating header_link in config table. " . mysql_error());
-			$sql = "UPDATE " .$phpraid_config['db_prefix'] ."config SET config_value='$wrmserverfile' WHERE config_name='rss_site_url'";
-			mysql_query($sql) or die("Error updating header_link in config table. " . mysql_error());
-			$sql = "UPDATE " .$phpraid_config['db_prefix'] ."config SET config_value='$wrmserverfile' WHERE config_name='rss_export_url'";
-			mysql_query($sql) or die("Error updating header_link in config table. " . mysql_error());
-		}
-		mysql_close($linkWRM);
-
-		$content  = '<br/><br/>';
-		$content .= $localstr['stepdonesetupcomplete'].'<br/>';
-		$content .= $localstr['stepdoneremovedir'];
-		$content .= '<br/><br/><br/><br/><br/>';
-
-		step($localstr['stepdonefinished'].'!','lime','lime','lime','lime','lime','red',$content);
-	}
 ?>
