@@ -1,3 +1,9 @@
+-- Boss Kill Type Data
+INSERT INTO `wrm_boss_kill_type` VALUES (1, 'Dungeon', 'boss_kill_type_dungeon', 2, '%', 0);
+INSERT INTO `wrm_boss_kill_type` VALUES (2, 'Raid: 25 Man', 'boss_kill_type_25_man', 1, '25', 1);
+INSERT INTO `wrm_boss_kill_type` VALUES (3, 'Raid: 10 Man', 'boss_kill_type_10_man', 1, '10', 0);
+INSERT INTO `wrm_boss_kill_type` VALUES (4, 'Raid: 40 Man', 'boss_kill_type_40_man', 1, '40', 0);
+
 
 -- Class Data
 INSERT INTO `wrm_classes` VALUES ('Death Knight', 'dk', 'deathknight', 'images/classes/deathknight_icon.gif');
@@ -434,6 +440,24 @@ UPDATE `wrm_column_headers` SET `default_sort` = '1' WHERE `view_name`='permissi
 UPDATE `wrm_column_headers` SET `default_sort` = '1' WHERE `view_name`='raidview1' AND `column_name` = 'Name' LIMIT 1 ;
 UPDATE `wrm_column_headers` SET `default_sort` = '1' WHERE `view_name`='raidview2' AND `column_name` = 'Name' LIMIT 1 ;
 
+DELETE FROM `wrm_column_headers` WHERE `view_name` = 'roster1' AND column_name = 'Role' LIMIT 1;
+INSERT INTO `wrm_column_headers` (`view_name`, `column_name`, `visible`, `position`, `img_url`, `lang_idx_hdr`, `format_code`, `default_sort`) VALUES ('roster1', 'Pri_Spec', '1', '12', NULL, 'pri_spec', NULL, '0'); 
+INSERT INTO `wrm_column_headers` (`view_name`, `column_name`, `visible`, `position`, `img_url`, `lang_idx_hdr`, `format_code`, `default_sort`) VALUES ('roster1', 'Sec_Spec', '1', '13', NULL, 'sec_spec', NULL, '0');
+UPDATE `wrm_column_headers` SET `position` = '14' WHERE view_name = 'roster1' AND column_name = 'Profile' LIMIT 1 ;
+
+-- Column Header Data - Role1 View
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
+VALUES (NULL , 'role1', 'ID', '1', '1', NULL, 'role_id', NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
+VALUES (NULL , 'role1', 'Role Name', '1', '2', NULL, 'role_name', NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
+VALUES (NULL , 'role1', 'Config Text', '1', '3', NULL, 'role_config', NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
+VALUES (NULL , 'role1', 'Image', '1', '4', NULL, 'role_image', NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
+VALUES (NULL , 'role1', 'Buttons', '1', '24', NULL, 'buttons', NULL);
+
+UPDATE `wrm_column_headers` SET `default_sort` = '1' WHERE `view_name`='role1' AND `column_name` = 'ID' LIMIT 1 ;
 
 -- Config Table Data
 INSERT INTO `wrm_config` VALUES ('admin_email','webmaster@yourdomain.com');
@@ -718,3 +742,5 @@ INSERT INTO `wrm_roles` VALUES ('role6', 'misc2', 'configuration_role6_text','')
 INSERT INTO `wrm_version` VALUES ('4.0.0','Version 4.0.0 of WoW Raid Manager');
 INSERT INTO `wrm_version` VALUES ('4.0.1','Version 4.0.1 of WoW Raid Manager');
 INSERT INTO `wrm_version` VALUES ('4.0.2','Version 4.0.2 of WoW Raid Manager');
+INSERT INTO `wrm_version` VALUES ('4.0.3','Version 4.0.3 of WoW Raid Manager');
+INSERT INTO `wrm_version` VALUES ('4.0.4','Version 4.0.4 of WoW Raid Manager');

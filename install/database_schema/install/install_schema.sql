@@ -343,3 +343,15 @@ CREATE TABLE `wrm_version` (
 	`version_desc` VARCHAR( 255 ) NOT NULL ,
 PRIMARY KEY ( `version_number` )
 ) ;
+
+-- Boss Kill Type Table Creation
+DROP TABLE IF EXISTS `wrm_boss_kill_type`;
+CREATE TABLE `wrm_boss_kill_type` (
+`boss_kill_type_id` TINYINT( 2 ) NOT NULL AUTO_INCREMENT,
+`boss_kill_type_name` VARCHAR( 50 ) NOT NULL ,
+`boss_kill_type_lang_id` VARCHAR( 50 ) NOT NULL ,
+`event_type_id` INT( 10 ) NOT NULL,
+`max` VARCHAR( 2 ) NOT NULL,
+`def` TINYINT( 1 ) NOT NULL,
+ PRIMARY KEY  (`boss_kill_type_id`)
+) ;
