@@ -57,9 +57,21 @@ $db_user_password = "password";
 
 $db_table_user_name = "users";
 $db_table_group_name = "users";
-$table_prefix = $phpraid_config['joomla_table_prefix'];
-$auth_user_class = $phpraid_config['joomla_auth_user_class'];
-$auth_alt_user_class = $phpraid_config['joomla_alt_auth_user_class'];
+
+if (isset($phpraid_config[$phpraid_config['auth_type'].'_db_name']))
+	$table_prefix = $phpraid_config[$phpraid_config['auth_type'].'_db_name'] . ".". $phpraid_config[$phpraid_config['auth_type'].'_table_prefix'];
+else
+	$table_prefix = $phpraid_config[$phpraid_config['auth_type'].'_table_prefix'];
+
+$auth_user_class = $phpraid_config[$phpraid_config['auth_type'].'_auth_user_group'];
+$auth_alt_user_class = $phpraid_config[$phpraid_config['auth_type'].'_auth_user_alt_group'];
+
+// Table Name were save all  Groups/Class Infos
+$db_table_allgroups = "core_acl_aro_groups";
+// Column Name for the ID field for the Group/Class.
+$db_allgroups_id = "id";
+// Column Name for the Groups/Class Name field.
+$db_allgroups_name = "name";
 
 //change password in WRM DB
 
@@ -340,10 +352,10 @@ function phpraid_logout()
 
 // good ole authentication
 $lifetime = get_cfg_var("session.gc_maxlifetime"); 
-$temp = session_name("WRM-joomla");
+$temp = session_name("WRM-".$phpraid_config['auth_type']);
 $temp = session_set_cookie_params($lifetime, getCookiePath());
 session_start();
-$_SESSION['name'] = "WRM-joomla";
+$_SESSION['name'] = "WRM-".$phpraid_config['auth_type'];
 
 // set session defaults
 if (!isset($_SESSION['initiated'])) 

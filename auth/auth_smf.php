@@ -59,9 +59,21 @@ $db_user_password = "passwd";
 
 $db_table_user_name = "members";
 $db_table_group_name = "members";
-$table_prefix = $phpraid_config['smf_table_prefix'];
-$auth_user_class = $phpraid_config['smf_auth_user_class'];
-$auth_alt_user_class = $phpraid_config['smf_alt_auth_user_class'];
+
+if (isset($phpraid_config[$phpraid_config['auth_type'].'_db_name']))
+	$table_prefix = $phpraid_config[$phpraid_config['auth_type'].'_db_name'] . ".". $phpraid_config[$phpraid_config['auth_type'].'_table_prefix'];
+else
+	$table_prefix = $phpraid_config[$phpraid_config['auth_type'].'_table_prefix'];
+
+$auth_user_class = $phpraid_config[$phpraid_config['auth_type'].'_auth_user_group'];
+$auth_alt_user_class = $phpraid_config[$phpraid_config['auth_type'].'_auth_user_alt_group'];
+
+// Table Name were save all  Groups/Class Infos
+$db_table_allgroups = "membergroups";
+// Column Name for the ID field for the Group/Class.
+$db_allgroups_id = "ID_GROUP";
+// Column Name for the Groups/Class Name field.
+$db_allgroups_name = "groupName";
 
 //change password in WRM DB
 
@@ -351,10 +363,10 @@ function phpraid_logout()
 
 // good ole authentication
 $lifetime = get_cfg_var("session.gc_maxlifetime"); 
-$temp = session_name("WRM-smf2");
+$temp = session_name("WRM-".$phpraid_config['auth_type']);
 $temp = session_set_cookie_params($lifetime, getCookiePath());
 session_start();
-$_SESSION['name'] = "WRM-smf2";
+$_SESSION['name'] = "WRM-".$phpraid_config['auth_type'];
 
 // set session defaults
 if (!isset($_SESSION['initiated'])) 

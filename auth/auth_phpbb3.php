@@ -51,14 +51,25 @@ $db_group_id = "group_id";
 // Column Name for the UserName field.
 $db_user_name = "username_clean";
 // Column Name for the User's E-Mail Address
-$db_user_email = "user_email";
-
 $db_user_password = "user_password";
+
 $db_table_user_name = "users";
 $db_table_group_name = "user_group";
-$table_prefix = $phpraid_config['phpbb_prefix'];
-$auth_user_class = $phpraid_config['phpBB_auth_user_class'];
-$auth_alt_user_class = $phpraid_config['phpBB_alt_auth_user_class'];
+
+if (isset($phpraid_config[$phpraid_config['auth_type'].'_db_name']))
+	$table_prefix = $phpraid_config[$phpraid_config['auth_type'].'_db_name'] . ".". $phpraid_config[$phpraid_config['auth_type'].'_table_prefix'];
+else
+	$table_prefix = $phpraid_config[$phpraid_config['auth_type'].'_table_prefix'];
+
+$auth_user_class = $phpraid_config[$phpraid_config['auth_type'].'_auth_user_group'];
+$auth_alt_user_class = $phpraid_config[$phpraid_config['auth_type'].'_auth_user_alt_group'];
+
+// Table Name were save all  Groups/Class Infos
+$db_table_allgroups = "groups";
+// Column Name for the ID field for the Group/Class.
+$db_allgroups_id = "group_id";
+// Column Name for the Groups/Class Name field.
+$db_allgroups_name = "group_name";
 
 //change password in WRM DB
 
@@ -308,10 +319,10 @@ $pwd_hasher = new PasswordHash(8, FALSE);
 
 // good ole authentication
 $lifetime = get_cfg_var("session.gc_maxlifetime"); 
-$temp = session_name("WRM-phpbb3");
+$temp = session_name("WRM-".$phpraid_config['auth_type']);
 $temp = session_set_cookie_params($lifetime, getCookiePath());
 session_start();
-$_SESSION['name'] = "WRM-phpbb3";
+$_SESSION['name'] = "WRM-".$phpraid_config['auth_type'];
 
 // set session defaults
 if (!isset($_SESSION['initiated'])) 
