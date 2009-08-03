@@ -99,6 +99,8 @@ $phprlang['role_id'] = 'Role ID';
 $phprlang['role_name'] = 'Role Name';
 $phprlang['role_config'] = 'Role Config Text';
 $phprlang['role_image'] = 'Role Image';
+$phprlang['talent_tree'] = 'Talent Tree';
+$phprlang['display_text'] = 'Display Text';
 
 // roles
 $phprlang['role_none'] = '-';

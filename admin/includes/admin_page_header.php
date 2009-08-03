@@ -136,6 +136,7 @@ $admin_user_mgt_link = '<a href="admin_usermgt.php?mode=view">' . $theme_admin_u
 $admin_datatablecfg_link = '<a href="admin_datatablecfg.php">' . $theme_admin_datatablecfg_link . '</a>';
 $admin_rolecfg_link = '<a href="admin_rolecfg.php?mode=view">' . $theme_admin_rolecfg_link . '</a>';
 $admin_logs_link = '<a href="admin_logs.php?mode=view">' . $theme_admin_logs_link . '</a>';
+$admin_roletalent_link = '<a href="admin_roletalent.php?mode=view">' . $theme_admin_roletalent_link . '</a>';
 
 // The various Admin Menus:
 $main_menu = '<div align="left" class="navContainer"><ul class="navList">';
@@ -218,6 +219,12 @@ if (preg_match("/(.*)admin_rolecfg\.php(.*)/", $_SERVER['PHP_SELF'])) {
 	$table_conf_menu .= '<li class="active">' . $admin_rolecfg_link . '</li>';
 } else {
     $table_conf_menu .= '<li class="">' . $admin_rolecfg_link . '</li>';
+}
+// To DO
+if (preg_match("/(.*)admin_roletalent\.php(.*)/", $_SERVER['PHP_SELF'])) {
+	$table_conf_menu .= '<li class="active">' . $admin_roletalent_link . '</li>';
+} else {
+    $table_conf_menu .= '<li class="">' . $admin_roletalent_link . '</li>';
 }
 
 // *** Log Menu Items ***

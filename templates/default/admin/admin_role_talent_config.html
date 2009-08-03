@@ -1,0 +1,6 @@
+{* Smarty Template *}
+<div class="contentHeader">{$header_data.roletalent_header}</div><br>
+{* Setup Role Table List *}
+<div class="contentBody">{include file='../raids_table.html' raid_data=$roletalent_data jump_menu=$roletalent_jump_menu record_counts=$roletalent_record_counts column_name=$roletalent_column_name}</div><br>
+{* Include to Add New Characters *}
+{include file='admin_role_talent_new.html'}

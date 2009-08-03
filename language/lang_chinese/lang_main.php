@@ -95,6 +95,8 @@ $phprlang['create_time'] = 'Create Time';
 $phprlang['pri_spec'] = 'Pri Talent';
 $phprlang['sec_spec'] = 'Sec Talent';
 $phprlang['signup_spec'] = 'Draft As';
+$phprlang['talent_tree'] = 'Talent Tree';
+$phprlang['display_text'] = 'Display Text';
 
 // roles    職責
 $phprlang['role_none'] = '無';

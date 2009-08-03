@@ -19,6 +19,7 @@ $image_generalcfg_link = "<img src=\"../templates/" . $phpraid_config['template'
 $image_timecfg_link = "<img src=\"../templates/" . $phpraid_config['template'] . "/images/admin/timecfg.gif\" border=\"0\">";
 $image_raid_settings_link = "<img src=\"../templates/" . $phpraid_config['template'] . "/images/admin/raidsettings.gif\" border=\"0\">";
 $image_externcfg_link = "<img src=\"../templates/" . $phpraid_config['template'] . "/images/admin/extern.gif\" border=\"0\">";
+$image_roletalent_link = "<img src=\"../templates/" . $phpraid_config['template'] . "/images/admin/roletalent.gif\" border=\"0\">";
 
 // no further editing necessary
 if($use_images == 0) {
@@ -35,6 +36,7 @@ if($use_images == 0) {
 	$theme_admin_timecfg_link = $phprlang['admin_time_config'];
 	$theme_admin_raid_settings_link = $phprlang['admin_raid_settings'];
 	$theme_admin_externcfg_link = $phprlang['admin_external_config'];
+	$theme_admin_roletalent_link = $phprlang['admin_roletalent_config'];
 } else {
 	$theme_admin_site_link = $image_admin_site_link;
 	$theme_admin_main_link = $image_admin_main_link;
@@ -49,5 +51,6 @@ if($use_images == 0) {
 	$theme_admin_timecfg_link = $image_timecfg_link;
 	$theme_admin_raid_settings_link = $image_raid_settings_link;
 	$theme_admin_externcfg_link = $image_externcfg_link;
+	$theme_admin_roletalent_link = $image_roletalent_link;
 }
 ?>
