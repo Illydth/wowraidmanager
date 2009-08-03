@@ -124,6 +124,7 @@ $email_signature = '<textarea name="email_signature" cols="30" rows="5" id="emai
 $rss_site_url = '<input name="rss_site_url" size="60" type="text" class="post" value="' . $phpraid_config['rss_site_url'] . '">';
 $rss_export_url = '<input name="rss_export_url" size="60" type="text" class="post" value="' . $phpraid_config['rss_export_url'] . '">';
 $rss_feed_amt = '<input name="rss_feed_amt" size="10" type="text" class="post" value="' . $phpraid_config['rss_feed_amt'] . '">';
+$records_per_page = '<input name="records_per_page" size="60" type="text" class="post" value="' . $phpraid_config['records_per_page'] . '">';
 
 $buttons = '<input type="submit" name="submit" value="'.$phprlang['submit'].'" class="mainoption"> <input type="reset" name="Reset" value="'.$phprlang['reset'].'" class="liteoption">';
 
@@ -162,6 +163,8 @@ $wrmadminsmarty->assign('config_data',
 		'rss_site_url' => $rss_site_url,
 		'rss_export_url' => $rss_export_url,
 		'rss_feed_amt' => $rss_feed_amt,
+		'records_per_page_text' => $phprlang['configuration_records_per_page'],
+		'records_per_page' => $records_per_page,
 		'buttons' => $buttons,
 	)
 );
@@ -201,6 +204,8 @@ if(isset($_POST['submit']))
 	$rss_export_url_p = scrub_input($_POST['rss_export_url'], true);
 	$rss_feed_amt_p = scrub_input($_POST['rss_feed_amt']);
 		
+	$records_per_page = scrub_input($_POST['records_per_page']);
+	
 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'phpraid_addon_link';", quote_smart($p_link));
 	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'header_logo';", quote_smart($h_logo));
@@ -230,6 +235,8 @@ if(isset($_POST['submit']))
 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'rss_export_url';", quote_smart($rss_export_url_p));
 	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'rss_feed_amt';", quote_smart($rss_feed_amt_p));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'records_per_page';", quote_smart($records_per_page));
 	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
 	
 	header("Location: admin_generalcfg.php");
