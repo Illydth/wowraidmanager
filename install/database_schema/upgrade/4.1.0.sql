@@ -37,6 +37,10 @@ INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible
 VALUES (NULL , 'classroletalent1', 'Role Name', '1', '4', NULL, 'role_name', NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
 VALUES (NULL , 'classroletalent1', 'Buttons', '1', '5', NULL, 'buttons', NULL);
+-- Add row to Users1 view and move buttons down a priority.
+UPDATE `wrm_column_headers` SET `position` = '8' WHERE `view_name` = 'users1' AND `column_name` = 'Buttons' LIMIT 1 ;
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
+VALUES (NULL , 'users1', 'Permission_Mod', '1', '7', NULL, 'perm_mod', NULL);
 
 -- Remove "Permissions" Permission since you have to have "configuration" permission to get there.
 DELETE FROM `wrm_column_headers` WHERE `view_name` = 'permissions1' AND `column_name` = 'Pe' LIMIT 1;
@@ -53,8 +57,6 @@ DELETE FROM `wrm_column_headers` WHERE `view_name` = 'permissions2' AND `column_
 ALTER TABLE `wrm_permissions` DROP `permissions`;
 ALTER TABLE `wrm_permissions` DROP `logs`;
 ALTER TABLE `wrm_permissions` DROP `users`;
-
-
 
 UPDATE `wrm_column_headers` SET `default_sort` = '1' WHERE `view_name`='role1' AND `column_name` = 'ID' LIMIT 1 ;
 UPDATE `wrm_column_headers` SET `default_sort` = '1' WHERE `view_name`='classroletalent1' AND `column_name` = 'Class' LIMIT 1 ;
