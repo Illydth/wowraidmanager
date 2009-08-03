@@ -526,7 +526,7 @@ INSERT INTO `wrm_config` VALUES ('disable','0');
 INSERT INTO `wrm_config` VALUES ('disable_freeze','0');
 INSERT INTO `wrm_config` VALUES ('dst','0');
 INSERT INTO `wrm_config` VALUES ('email_signature','Thanks');
-INSERT INTO `wrm_config` VALUES ('faction','alliance');
+INSERT INTO `wrm_config` VALUES ('faction','Alliance');
 INSERT INTO `wrm_config` VALUES ('guild_description','raid management made easy');
 INSERT INTO `wrm_config` VALUES ('guild_name','WoW Raid Manager');
 INSERT INTO `wrm_config` VALUES ('guild_server','Illidan');
