@@ -1,3 +1,4 @@
 {* Smarty Template *}
-<div class="contentHeader">{$version_data.version_info_header}</div>
-<div class="contentBody" align="center">{$version_data.version_info}</div>
+<div class="contentHeader">{$header_data.permissions_header}</div><br>
+<div class="contentBody">{include file='../raids_table.html' raid_data=$perm_data jump_menu=$perm_jump_menu record_counts=$perm_record_counts}</div><br>
+<div class="contentBody">{include file='admin_permissions_new.html'}</div>
