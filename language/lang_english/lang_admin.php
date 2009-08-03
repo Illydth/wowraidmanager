@@ -41,7 +41,7 @@ $phprlang['admin_main_link'] = '&raquo; Main';
 $phprlang['admin_logs_link'] = '&raquo; Logs';
 $phprlang['admin_rolecfg_link'] = '&raquo; Role Configuration';
 $phprlang['admin_datatablecfg_link'] = '&raquo; Manage Data Tables';
-$phprlang['admin_permissions'] = '&raquo; User Permissions';
+$phprlang['admin_permissions'] = '&raquo; Permission Groups';
 $phprlang['admin_signup_rights'] = '&raquo; Signup Activities';
 $phprlang['admin_user_settings'] = '&raquo; User Settings';
 $phprlang['admin_user_management'] = '&raquo; User Administration';
@@ -49,6 +49,7 @@ $phprlang['admin_general_config'] = '&raquo; General Config';
 $phprlang['admin_time_config'] = '&raquo; Time Settings';
 $phprlang['admin_raid_settings'] = '&raquo; Raid Settings';
 $phprlang['admin_external_config'] = '&raquo; External Systems';
+$phprlang['admin_roletalent_config'] = '&raquo; Link Class/Role/Talent';
 
 // Link from Main Site to Admin
 $phprlang['admin_section_link'] = 'Admin Section';
@@ -115,12 +116,14 @@ $phprlang['configuration_email_sig'] = 'E-mail signature';
 $phprlang['configuration_enable_five_man'] = 'Enable groups<br><a href="../docs/enable_groups.htm" target="_blank">help?</a>';
 $phprlang['configuration_language'] = 'Language';
 $phprlang['configuration_logo'] = 'Path to header image';
+$phprlang['configuration_records_per_page'] = 'Records Per Data Table Page';
 $phprlang['configuration_register_text'] = 'Registration URL';
 $phprlang['configuration_rss_header'] = 'RSS Configuration';
 $phprlang['configuration_show_addon'] = 'Show addon link';
 $phprlang['configuration_sitelink'] = '"Home" Link Points To';
 $phprlang['configuration_template'] = 'Template';
 $phprlang['general_configuration_header'] = 'General Settings';
+
 
 // Text on the "Time Config" Page
 $phprlang['configuration_ampm'] = 'Schedule Raids in 12h/24h format';
@@ -140,6 +143,25 @@ $phprlang['role_error_role_name_blank'] = 'Role Name Cannot Be a Blank or Null V
 $phprlang['role_error_role_config_blank'] = 'Role Config Text Cannot Be a Blank or Null Value.';
 $phprlang['role_error_role_id_blank'] = 'Role ID Cannot Be a Blank or Null Value.';
 
+// Text on the "Link Class/Role/Talent" Page.
+$phprlang['configuration_roletalent_header'] = 'Class/Role/Talent Links';
+$phprlang['configuration_roletalent_new_header'] = 'Add New Class/Role/Talent Link';
+$phprlang['configuration_roletalent_edit_header'] = 'Edit Class/Role/Talent Link';
+$phprlang['roletalent_duplicate_error'] = 'Duplicate Class/Role/Talent Link';
+$phprlang['roletalent_classid_blank_error'] = 'The Class ID Cannot be a Blank or Null Value.';
+$phprlang['roletalent_talenttree_blank_error'] = 'The Talent Tree Name Cannot be a Blank or Null Value';
+$phprlang['roletalent_displaytext_blank_error'] = 'The Display Text Value Cannot be Blank or Null.';
+$phprlang['roletalent_roleid_blank_error'] = 'The Role Name Cannot be a Blank or Null Value';
+
+// Text on the "Data Table Config" Page.
+$phprlang['configuration_datatable_header'] = 'Modify Data Table Information';
+$phprlang['configuration_datatable_view_select_text'] = 'Select the View to Modify: ';
+$phprlang['configuration_datatable_edit_header'] = 'Change View Properties';
+$phprlang['configuration_datatable_column_name'] = 'Column Name';
+$phprlang['configuration_datatable_visible'] = 'Visible';
+$phprlang['configuration_datatable_position'] = 'Column Position';
+$phprlang['configuration_datatable_image_url'] = 'Image URL';
+$phprlang['configuration_datatable_default_sort'] = 'Sort on This Column'; 
 
 $phprlang['configuraiton_admin'] = 'Administrator';
 $phprlang['configuration_anonymous'] = 'Allow anonymous viewing';
