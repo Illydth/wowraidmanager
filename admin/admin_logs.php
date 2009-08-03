@@ -32,8 +32,8 @@ define("IN_PHPRAID", true);
 require_once('./admin_common.php');
 
 // page authentication
-//define("PAGE_LVL","logs");
-//require_once("includes/authentication.php");
+define("PAGE_LVL","configuration");
+require_once("../includes/authentication.php");	
 
 $server = $phpraid_config['guild_server'];
 
