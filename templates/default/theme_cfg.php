@@ -7,15 +7,12 @@ $use_images = 0;
 // image locations
 // only if above is set to 1, else do not modify
 $image_index = "<img src=\"templates/" . $phpraid_config['template'] . "/images/index.gif\" border=\"0\">";
-$image_configure = "<img src=\"templates/" . $phpraid_config['template'] . "/images/configuration.gif\" border=\"0\">";
 $image_roster = "<img src=\"templates/" . $phpraid_config['template'] . "/images/member_list.gif\" border=\"0\">";
 $image_guild = "<img src=\"templates/" . $phpraid_config['template'] . "/images/guilds.gif\" border=\"0\">";
-$image_permissions = "<img src=\"templates/" . $phpraid_config['template'] . "/images/permissions.gif\" border=\"0\">";
 $image_home = "<img src=\"templates/" . $phpraid_config['template'] . "/images/home.gif\" border=\"0\">";
 $image_announcement = "<img src=\"templates/" . $phpraid_config['template'] . "/images/announcements.gif\" border=\"0\">";
 $image_raids = "<img src=\"templates/" . $phpraid_config['template'] . "/images/manage_raids.gif\" border=\"0\">";
 $image_locations = "<img src=\"templates/" . $phpraid_config['template'] . "/images/locations.gif\" border=\"0\">";
-//$image_logs = "<img src=\"templates/" . $phpraid_config['template'] . "/images/logs.gif\" border=\"0\">";
 $image_profile = "<img src=\"templates/" . $phpraid_config['template'] . "/images/my_profile.gif\" border=\"0\">";
 $image_register = "<img src=\"templates/" . $phpraid_config['template'] . "/images/register.gif\" border=\"0\">";
 $image_rss = "<img src=\"templates/" . $phpraid_config['template'] . "/images/rss.png\" border=\"0\">";
@@ -27,15 +24,12 @@ $image_bosstrack_link = "<img src=\"templates/" . $phpraid_config['template'] . 
 if($use_images == 0) {
 	$theme_index_link = $phprlang['index_link'];
 	$theme_lua_output_link = $phprlang['lua_output_link'];
-	$theme_configure_link = $phprlang['configuration_link'];
 	$theme_guild_link = $phprlang['guilds_link'];
-	$theme_permissions_link = $phprlang['permissions_link'];
 	$theme_home_link = $phprlang['home_link'];
 	$theme_calendar_link = $phprlang['calendar_link'];
 	$theme_announcement_link = $phprlang['announcements_link'];
 	$theme_raids_link = $phprlang['raids_link'];
 	$theme_locations_link = $phprlang['locations_link'];
-	//$theme_logs_link = $phprlang['logs_link'];
 	$theme_profile_link = $phprlang['profile_link'];
 	$theme_users_link = $phprlang['users_link'];
 	$theme_register_link = $phprlang['register_link'];
@@ -44,15 +38,12 @@ if($use_images == 0) {
 	$theme_bosstrack_link = $phprlang['bosstrack_link'];
 } else {
 	$theme_index_link = $image_index;
-	$theme_configure_link = $image_configure;
 	$theme_guild_link = $image_guild;
-	$theme_permissions_link = $image_permissions;
 	$theme_home_link = $image_home;
 	$theme_announcement_link = $image_announcement;
 	$theme_raids_link = $image_raids;
 	$theme_calendar_link = $image_calendar;
 	$theme_locations_link = $image_locations;
-	//$theme_logs_link = $image_logs;
 	$theme_profile_link = $image_profile;
 	$theme_users_link = $image_users;
 	$theme_register_link = $image_register;

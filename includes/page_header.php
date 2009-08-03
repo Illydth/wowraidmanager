@@ -36,11 +36,8 @@ $priv_announcement=scrub_input($_SESSION['priv_announcements']);
 $priv_config=scrub_input($_SESSION['priv_configuration']);
 $priv_guilds=scrub_input($_SESSION['priv_guilds']);
 $priv_locations=scrub_input($_SESSION['priv_locations']);
-$priv_logs=scrub_input($_SESSION['priv_logs']);
-$priv_permissions=scrub_input($_SESSION['priv_permissions']);
 $priv_profile=scrub_input($_SESSION['priv_profile']);
 $priv_raids=scrub_input($_SESSION['priv_raids']);
-$priv_users=scrub_input($_SESSION['priv_users']);
 $logged_in=scrub_input($_SESSION['session_logged_in']);
 
 // time variables
@@ -135,13 +132,9 @@ $boss_tracking_link = '<a href="bosstracking.php?mode=view">' . $theme_bosstrack
 
 // these links need special permissions
 $priv_announcement ? $announce_link = '<a href="announcements.php?mode=view">' . $theme_announcement_link . '</a>' : $announce_link = '';
-$priv_config ? $phpraid_configure_link = '<a href="configuration.php">' . $theme_configure_link . '</a>' : $phpraid_configure_link = '';
-$priv_permissions ? $permissions_link = '<a href="permissions.php?mode=view">' . $theme_permissions_link . '</a>' : $permissions_link = '';
 $priv_guilds ?	$guild_link = '<a href="guilds.php?mode=view">' . $theme_guild_link . '</a>' : $guild_link = '';
 $priv_locations ? $locations_link = '<a href="locations.php?mode=view">' . $theme_locations_link . '</a>' : $locations_link = '';
-//$priv_logs ? $logs_link = '<a href="logs.php?mode=view">' . $theme_logs_link . '</a>' : $logs_link = '';
 $priv_profile ? $profile_link = '<a href="profile.php?mode=view">' . $theme_profile_link . '</a>' : $profile_link = '';
-//$priv_users ? $users_link = '<a href="users.php?mode=view">' . $theme_users_link . '</a>' : $users_link = '';
 $logged_in != '1' ? $register_link = '<a href="' . $phpraid_config['register_url'] . '">' . $theme_register_link . '</a>' : $register_link = '';
 if ( $priv_raids OR ($phpraid_config['enable_five_man'] AND $priv_profile) )
 {
@@ -181,15 +174,6 @@ if($_SESSION['priv_announcements'] == 1)
 	}
 }
 
-if($_SESSION['priv_configuration'] == 1)
-{
-	if (preg_match("/(.*)configuration\.php(.*)/", $_SERVER['PHP_SELF'])) {
-	    $menu .= '<li class="active">' . $phpraid_configure_link . '</li>';
-	} else {
-	    $menu .= '<li class="">' . $phpraid_configure_link . '</li>';
-	}
-}
-
 if($_SESSION['priv_guilds'] == 1)
 {
 	if (preg_match("/(.*)guilds\.php(.*)/", $_SERVER['PHP_SELF'])) {
@@ -205,24 +189,6 @@ if($_SESSION['priv_locations'] == 1)
 	    $menu .= '<li class="active">' . $locations_link . '</li>';
 	} else {
 	    $menu .= '<li class="">' . $locations_link . '</li>';
-	}
-}
-
-//if($_SESSION['priv_logs'] == 1)
-//{
-//	if (preg_match("/(.*)logs\.php(.*)/", $_SERVER['PHP_SELF'])) {
-//	    $menu .= '<li class="active">' . $logs_link . '</li>';
-//	} else {
-//	    $menu .= '<li class="">' . $logs_link . '</li>';
-//	}
-//}
-
-if($_SESSION['priv_permissions'] == 1)
-{
-	if (preg_match("/(.*)permissions\.php(.*)/", $_SERVER['PHP_SELF'])) {
-	    $menu .= '<li class="active">' . $permissions_link . '</li>';
-	} else {
-	    $menu .= '<li class="">' . $permissions_link . '</li>';
 	}
 }
 
@@ -248,15 +214,6 @@ if ( $_SESSION['priv_raids'] OR ($phpraid_config['enable_five_man'] AND $priv_pr
 	    $menu .= '<li class="">' . $lua_output_link . '</li>';
 	}
 }
-
-//if($priv_users == 1)
-//{
-//	if (preg_match("/(.*)users\.php(.*)/", $_SERVER['PHP_SELF'])) {
-//	    $menu .= '<li class="active">' . $users_link . '</li>';
-//	} else {
-//	    $menu .= '<li class="">' . $users_link . '</li>';
-//	}
-//}
 
 if($logged_in == 0) {
 	$menu .= '<li>' . $register_link . '</li>';
