@@ -1,3 +1,5 @@
 {* Smarty Template *}
-<div class="contentHeader">{$version_data.version_info_header}</div>
-<div class="contentBody" align="center">{$version_data.version_info}</div>
+<div class="contentHeader">{$header_data.users_header}</div>
+<br>
+<div class="contentBody">{include file='../raids_table.html' raid_data=$users_data jump_menu=$users_jump_menu record_counts=$users_record_counts}</div>
+<br>
