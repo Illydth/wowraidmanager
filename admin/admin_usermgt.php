@@ -32,8 +32,8 @@ define("IN_PHPRAID", true);
 require_once('./admin_common.php');
 
 // page authentication
-define("PAGE_LVL","users");
-require_once("../includes/authentication.php");
+define("PAGE_LVL","configuration");
+require_once("../includes/authentication.php");	
 
 isset($_GET['mode']) ? $mode = scrub_input($_GET['mode']) : $mode = '';
 
@@ -85,12 +85,9 @@ if($mode == 'view')
 	
 	while($data = $db_raid->sql_fetchrow($result, true))
 	{
-		$usersname = '<!-- ' . mb_strtolower($data['username'], "UTF-8") . ' --><a href="users.php?mode=details&amp;user_id='.$data['profile_id'].'">'.$data['username'].'</a>';
+		$usersname = '<!-- ' . mb_strtolower($data['username'], "UTF-8") . ' --><a href="admin_usermgt.php?mode=details&amp;user_id='.$data['profile_id'].'">'.$data['username'].'</a>';
 
-		if($data['priv'] == 0)
-			$priv = '<a href="../permissions.php?mode=view">'.$phprlang['users_assign'].'</a>';
-		else
-			$priv = '<a href="../permissions.php?mode=details&amp;perm_id='.$data['priv'].'">'.get_priv_name($data['priv']).'</a>';
+		$priv = '<a href="admin_permissions.php?mode=view">'.get_priv_name($data['priv']).'</a>';
 
 		$actions = '<a href="admin_usermgt.php?mode=remove_user&amp;n='.$data['username'].'&amp;user_id='.$data['profile_id'].'">
 					<img src="../templates/' . $phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0"
