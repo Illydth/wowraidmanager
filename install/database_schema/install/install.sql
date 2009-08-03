@@ -427,26 +427,11 @@ VALUES (NULL , 'permissions1', 'Gu', '1', '6', NULL, 'guilds', NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
 VALUES (NULL , 'permissions1', 'Lo', '1', '7', NULL, 'locations', NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'permissions1', 'Lg', '1', '8', NULL, 'logs', NULL);
-INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'permissions1', 'Pe', '1', '9', NULL, 'permissions', NULL);
-INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
 VALUES (NULL , 'permissions1', 'Pr', '1', '10', NULL, 'profile', NULL);
-INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'permissions1', 'Us', '1', '11', NULL, 'users', NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
 VALUES (NULL , 'permissions1', 'Ra', '1', '12', NULL, 'raids', NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
 VALUES (NULL , 'permissions1', 'Buttons', '1', '13', NULL, 'buttons', NULL);
--- Column Header Data - Permissions2 View - User Details
-INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'permissions2', 'ID', '1', '1', NULL, 'id', NULL);
-INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'permissions2', 'Username', '1', '2', NULL, 'username', NULL);
-INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'permissions2', 'E-Mail', '1', '3', NULL, 'email', NULL);
-INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'permissions2', 'Buttons', '1', '4', NULL, 'buttons', NULL);
 -- Column Header Data - raidview1 View
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
 VALUES (NULL , 'raidview1', 'ID', '1', '1', NULL, 'id', NULL);
@@ -509,6 +494,29 @@ INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible
 VALUES (NULL , 'raidview2', 'Signup_Spec', '1', '12', NULL, 'signup_spec', NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
 VALUES (NULL , 'raidview2', 'Buttons', '1', '13', NULL, 'buttons', NULL);
+-- Column Header Data - Role1 View
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
+VALUES (NULL , 'role1', 'ID', '1', '1', NULL, 'role_id', NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
+VALUES (NULL , 'role1', 'Role Name', '1', '2', NULL, 'role_name', NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
+VALUES (NULL , 'role1', 'Config Text', '1', '3', NULL, 'role_config', NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
+VALUES (NULL , 'role1', 'Image', '1', '4', NULL, 'role_image', NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
+VALUES (NULL , 'role1', 'Buttons', '1', '24', NULL, 'buttons', NULL);
+-- Column Header Data - ClassRoleTalent1 View
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
+VALUES (NULL , 'classroletalent1', 'Class', '1', '1', NULL, 'class', NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
+VALUES (NULL , 'classroletalent1', 'Talent Tree', '1', '2', NULL, 'talent_tree', NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
+VALUES (NULL , 'classroletalent1', 'Display Text', '1', '3', NULL, 'display_text', NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
+VALUES (NULL , 'classroletalent1', 'Role Name', '1', '4', NULL, 'role_name', NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
+VALUES (NULL , 'classroletalent1', 'Buttons', '1', '5', NULL, 'buttons', NULL);
+
 -- So as not to have to add a 0 or 1 on to the end of everything above, we'll do this separately.
 UPDATE `wrm_column_headers` SET `default_sort` = '1' WHERE `view_name`='raids1' AND `column_name` = 'Date' LIMIT 1 ;
 UPDATE `wrm_column_headers` SET `default_sort` = '1' WHERE `view_name`='index1' AND `column_name` = 'Date' LIMIT 1 ;
@@ -525,6 +533,8 @@ UPDATE `wrm_column_headers` SET `default_sort` = '1' WHERE `view_name`='permissi
 UPDATE `wrm_column_headers` SET `default_sort` = '1' WHERE `view_name`='permissions2' AND `column_name` = 'Username' LIMIT 1 ;
 UPDATE `wrm_column_headers` SET `default_sort` = '1' WHERE `view_name`='raidview1' AND `column_name` = 'Name' LIMIT 1 ;
 UPDATE `wrm_column_headers` SET `default_sort` = '1' WHERE `view_name`='raidview2' AND `column_name` = 'Name' LIMIT 1 ;
+UPDATE `wrm_column_headers` SET `default_sort` = '1' WHERE `view_name`='role1' AND `column_name` = 'ID' LIMIT 1 ;
+UPDATE `wrm_column_headers` SET `default_sort` = '1' WHERE `view_name`='classroletalent1' AND `column_name` = 'Class' LIMIT 1 ;
 
 -- Config Table Creation
 DROP TABLE IF EXISTS `wrm_config`;
@@ -901,17 +911,14 @@ CREATE TABLE `wrm_permissions` (
   `configuration` int(1) NOT NULL default '0',
   `guilds` int(1) NOT NULL default '0',
   `locations` int(1) NOT NULL default '0',
-  `permissions` int(1) NOT NULL default '0',
   `profile` int(1) NOT NULL default '0',
   `raids` int(1) NOT NULL default '0',
-  `logs` int(1) NOT NULL default '0',
-  `users` int(1) NOT NULL default '0',
   PRIMARY KEY  (`permission_id`)
 ) ;
 
 -- Permissions Data
-INSERT INTO `wrm_permissions` (`permission_id`, `name`,`description`,`announcements`,`configuration`,`guilds`,`locations`,`permissions`,`profile`,`raids`,`logs`,`users`) VALUES ('1','WRM Superadmin','Full Access','1','1','1','1','1','1','1','1','1');
-INSERT INTO `wrm_permissions` (`permission_id`, `name`,`description`,`announcements`,`configuration`,`guilds`,`locations`,`permissions`,`profile`,`raids`,`logs`,`users`) VALUES ('2','WRM Users','Generic Access','0','0','0','0','0','1','0','0','0');
+INSERT INTO `wrm_permissions` (`permission_id`, `name`,`description`,`announcements`,`configuration`,`guilds`,`locations`,`profile`,`raids`,`logs`,`users`) VALUES ('1','WRM Superadmin','Full Access','1','1','1','1','1','1','1','1');
+INSERT INTO `wrm_permissions` (`permission_id`, `name`,`description`,`announcements`,`configuration`,`guilds`,`locations`,`profile`,`raids`,`logs`,`users`) VALUES ('2','WRM Users','Generic Access','0','0','0','0','1','0','0','0');
 
 -- Profile Table Creation
 DROP TABLE IF EXISTS `wrm_profile`;

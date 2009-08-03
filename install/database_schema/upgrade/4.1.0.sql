@@ -26,5 +26,35 @@ INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible
 VALUES (NULL , 'role1', 'Image', '1', '4', NULL, 'role_image', NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
 VALUES (NULL , 'role1', 'Buttons', '1', '24', NULL, 'buttons', NULL);
+-- Column Header Data - ClassRoleTalent1 View
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
+VALUES (NULL , 'classroletalent1', 'Class', '1', '1', NULL, 'class', NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
+VALUES (NULL , 'classroletalent1', 'Talent Tree', '1', '2', NULL, 'talent_tree', NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
+VALUES (NULL , 'classroletalent1', 'Display Text', '1', '3', NULL, 'display_text', NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
+VALUES (NULL , 'classroletalent1', 'Role Name', '1', '4', NULL, 'role_name', NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
+VALUES (NULL , 'classroletalent1', 'Buttons', '1', '5', NULL, 'buttons', NULL);
+
+-- Remove "Permissions" Permission since you have to have "configuration" permission to get there.
+DELETE FROM `wrm_column_headers` WHERE `view_name` = 'permissions1' AND `column_name` = 'Pe' LIMIT 1;
+DELETE FROM `wrm_column_headers` WHERE `view_name` = 'permissions1' AND `column_name` = 'Lg' LIMIT 1;
+DELETE FROM `wrm_column_headers` WHERE `view_name` = 'permissions1' AND `column_name` = 'Us' LIMIT 1;
+
+-- Remove the Entirety of permissions2 view since the "Details" part of permission assignment is handled in 
+--    a completely different way.
+DELETE FROM `wrm_column_headers` WHERE `view_name` = 'permissions2' AND `column_name` = 'ID' LIMIT 1;
+DELETE FROM `wrm_column_headers` WHERE `view_name` = 'permissions2' AND `column_name` = 'Username' LIMIT 1;
+DELETE FROM `wrm_column_headers` WHERE `view_name` = 'permissions2' AND `column_name` = 'E-Mail' LIMIT 1;
+DELETE FROM `wrm_column_headers` WHERE `view_name` = 'permissions2' AND `column_name` = 'Buttons' LIMIT 1;
+
+ALTER TABLE `wrm_permissions` DROP `permissions`;
+ALTER TABLE `wrm_permissions` DROP `logs`;
+ALTER TABLE `wrm_permissions` DROP `users`;
+
+
 
 UPDATE `wrm_column_headers` SET `default_sort` = '1' WHERE `view_name`='role1' AND `column_name` = 'ID' LIMIT 1 ;
+UPDATE `wrm_column_headers` SET `default_sort` = '1' WHERE `view_name`='classroletalent1' AND `column_name` = 'Class' LIMIT 1 ;
