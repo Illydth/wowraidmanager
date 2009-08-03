@@ -101,6 +101,7 @@ $phprlang['role_config'] = 'Role Config Text';
 $phprlang['role_image'] = 'Role Image';
 $phprlang['talent_tree'] = 'Talent Tree';
 $phprlang['display_text'] = 'Display Text';
+$phprlang['perm_mod'] = 'Update Permissions';
 
 // roles
 $phprlang['role_none'] = '-';

@@ -97,6 +97,7 @@ $phprlang['sec_spec'] = 'Sec Talent';
 $phprlang['signup_spec'] = 'Draft As';
 $phprlang['talent_tree'] = 'Talent Tree';
 $phprlang['display_text'] = 'Display Text';
+$phprlang['perm_mod'] = 'Update Permissions';
 
 // roles
 $phprlang['role_none'] = '-';

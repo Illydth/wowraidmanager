@@ -124,7 +124,6 @@ $phprlang['configuration_sitelink'] = '"Home" Link Points To';
 $phprlang['configuration_template'] = 'Template';
 $phprlang['general_configuration_header'] = 'General Settings';
 
-
 // Text on the "Time Config" Page
 $phprlang['configuration_ampm'] = 'Schedule Raids in 12h/24h format';
 $phprlang['configuration_date'] = 'Date format<br><a href="http://www.php.net/date/" target="_blank">help?</a>';
@@ -163,6 +162,23 @@ $phprlang['configuration_datatable_position'] = 'Column Position';
 $phprlang['configuration_datatable_image_url'] = 'Image URL';
 $phprlang['configuration_datatable_default_sort'] = 'Sort on This Column'; 
 
+// Text on the "User Administration" Page.
+$phpraid['configuration_users_modperm_header'] = 'Change Selected User(s) Permission Group';
+$phpraid['configuration_users_modperm_desc'] = 'To change the permission group for a user, do the
+												following: <br><ol><li>Select the checkboxes in the
+												table above next to the users whose permission group
+												you want to change.</li><li>Select the permission group
+												to change to from the dropdown box below</li><li>Click
+												the Submit button below.</li></ol><br>The permission
+												group for each user should update in the user list
+												table above to the selected permission group.';
+$phprlang['configuration_permission_cannot_modify'] = 'You have attempted to remove the "Admin" privledge group
+														from all of your users, this would leave you without an 
+														ability to administrate your system and is not allowed.<br><br>
+														Please add a user to the "Admin" Privledge group before
+														atempting to remove users from it.  There must be at least
+														one "Admin" privledged user.';
+													
 $phprlang['configuraiton_admin'] = 'Administrator';
 $phprlang['configuration_anonymous'] = 'Allow anonymous viewing';
 $phprlang['configuration_armory_enable'] = 'Enable Armory Lookups';

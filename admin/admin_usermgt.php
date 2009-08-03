@@ -76,7 +76,18 @@ if($mode == 'view')
 	/**************************************************************
 	 * End Record Output Setup for Data Table
 	 **************************************************************/
-	
+	// Generate the Update Permissions form elements
+	$form_action = "admin_usermgt.php?mode=mod_perms";
+	$form_buttons = '<input type="submit" name="submit" value="'.$phprlang['submit'].'" class="mainoption"> <input type="reset" name="Reset" value="'.$phprlang['reset'].'" class="liteoption">';
+	$priv_dropdown = '<select name="perm_id">';
+	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "permissions";
+	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);			
+	while($perm_data = $db_raid->sql_fetchrow($result, true))
+	{
+		$priv_dropdown .= "<option value=\"" . $perm_data['permission_id'] . "\">" . $perm_data['name']."</option>";
+	}
+	$priv_dropdown .= '</select>';
+		
 	$users = array();
 
 	// get a list of all users and assign permissions accordingly
@@ -96,6 +107,8 @@ if($mode == 'view')
 		$date = !($data['last_login_time'])?'':new_date('Y/m/d H:i:s',$data['last_login_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
 		$time = !($data['last_login_time'])?'':new_date('Y/m/d H:i:s',$data['last_login_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
 		
+		$mod_perm='<input type="checkbox" name="modperm' . $data['profile_id'] . '" value="' . $data['profile_id'] . '">';		
+		
 		array_push($users, 
 			array(
 				'ID'=>$data['profile_id'],
@@ -104,7 +117,10 @@ if($mode == 'view')
 				'E-Mail'=>$data['email'],
 				'Last Login Date'=>$date,
 				'Last Login Time'=>$time,
-				'Buttons'=>$actions));
+				'Permission_Mod'=>$mod_perm,
+				'Buttons'=>$actions
+			)
+		);
 	}
 
 	/**************************************************************
@@ -150,10 +166,16 @@ if($mode == 'view')
 		)
 	);
 	
-	require_once('includes/admin_page_header.php');
-	$wrmadminsmarty->display('admin_users.html');
-	require_once('includes/admin_page_footer.php');
-
+	$wrmadminsmarty->assign('perm_mod_data', 
+		array(
+			'form_action' => $form_action,
+			'perm_mod_header' => $phpraid['configuration_users_modperm_header'],
+			'priv_dropdown' => $priv_dropdown,
+			'dropdown_desc' => $phpraid['configuration_users_modperm_desc'],
+			'action_buttons' => $form_buttons,
+		)
+	);
+	
 }
 else if($mode == 'details')
 {
@@ -192,7 +214,7 @@ else if($mode == 'details')
 	/**************************************************************
 	 * End Record Output Setup for Data Table
 	 **************************************************************/
-	
+		
 	// check valid input
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "profile WHERE profile_id=%s",quote_smart($user_id));
 	$result = $db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
@@ -272,8 +294,9 @@ else if($mode == 'details')
 	);
 
 	require_once('includes/admin_page_header.php');
-	$wrmadminsmarty->display('admin_users_details.html');
+	$wrmadminsmarty->display('admin_user_details.html');
 	require_once('includes/admin_page_footer.php');
+	exit;
 }
 else if($mode == 'remove_user')
 {
@@ -349,11 +372,89 @@ else if($mode == 'remove_char')
 		header("Location: admin_usermgt.php?mode=details&user_id=$user_id");
 	}
 }
+else if ($mode == 'mod_perms')
+{
+	$perm_id = scrub_input($_POST['perm_id']);
+	$errorDie = 0;
+	$admin_count = 0;
+	
+	if ($perm_id != '1')
+	{
+		//Now we need to protect users from themselves, we need to verify that we're not 
+		//  unsetting the only WRM Superadmin in the system to an unprivlidged user thus
+		//  locking out anyone from admining the system.
+
+		//Start by pulling each users current Permission ID and verify whether or not we're
+		//  moving from PermID:1 -> Another Perm ID.
+		foreach($_POST as $key=>$value)
+		{
+			if(strpos($key, 'modperm')!==FALSE)
+			{
+				$sql = sprintf("SELECT priv FROM " . $phpraid_config['db_prefix'] . "profile
+						WHERE profile_id = %s", quote_smart($value));
+				$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+				$data = $db_raid->sql_fetchrow($result, true);
+				if ($data['priv'] == '1')
+					$admin_count++;
+			}
+		}
+		// We now have the number of admins being changed out of Admin Status, now check
+		//   total admins in the system.
+		$sql = "SELECT priv FROM " . $phpraid_config['db_prefix'] . "profile WHERE priv = '1'";
+		$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$numrows = $db_raid->sql_numrows($result);
+		if($numrows<=$admin_count)
+		{
+			// They're being stupid and setting the last WRM Superadmin to another value, stop them.
+			$errorMsg = $phprlang['configuration_permission_cannot_modify'];
+			$errorTitle = $phprlang['form_error'];
+			$errorDie = 1;
+		}					
+		else 
+		{
+			// The transaction is fine, process it.
+			foreach($_POST as $key=>$value)
+			{
+				if(strpos($key, 'modperm')!==FALSE)
+				{
+					$profile_id = $value;
+					$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "profile
+								SET priv=%s WHERE profile_id = %s", quote_smart($perm_id),quote_smart($profile_id));
+					$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+					
+					log_create('profile_update',mysql_insert_id(),$title);
+				}
+			}
+			header("Location: admin_usermgt.php?mode=view");
+		}	
+	}
+	else 
+	{
+		// We're updating TO WRM Superadmin, just process it.
+		foreach($_POST as $key=>$value)
+		{
+			if(strpos($key, 'modperm')!==FALSE)
+			{
+				$profile_id = $value;
+				$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "profile
+							SET priv=%s WHERE profile_id = %s", quote_smart($perm_id),quote_smart($profile_id));
+				$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+				
+				log_create('profile_update',mysql_insert_id(),$title);
+			}
+		}
+		header("Location: admin_usermgt.php?mode=view");		
+	}
+}
 else
 {
 	$errorMsg = $phprlang['invalid_option_msg'];
 	$errorTitle = $phprlang['invalid_option_title'];
 	$errorDie = 1;
 }
+
+require_once('includes/admin_page_header.php');
+$wrmadminsmarty->display('admin_user_management.html');
+require_once('includes/admin_page_footer.php');
 
 ?>
