@@ -1,3 +1,37 @@
 {* Smarty Template *}
-<div class="contentHeader">{$version_data.version_info_header}</div>
-<div class="contentBody" align="center">{$version_data.version_info}</div>
+<div class="contentHeader">{$header_data.datatable_header}</div>
+<div class="contentBody">
+<br>
+<form method="post" action="{$header_data.form_action}">
+	<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+		<tr>
+			<td align="center">{$header_data.view_select_text} {$header_data.view_select}</td>
+		</tr>
+	</table>
+</form>
+</div>
+<br>
+<div class="contentHeader">{$edit_data.edit_header}</div>
+<div class="contentBody">
+<form method="post" action="{$edit_data.form_action}">
+	<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+    	<tr>
+    		<th>{$edit_data.column_name_header}</th>
+    		<th>{$edit_data.visible_header}</th>
+    		<th>{$edit_data.position_header}</th>
+    		<th>{$edit_data.image_url_header}</th>
+    		<th>{$edit_data.default_sort_header}</th>
+    	</tr>
+    	{section name=view_data_section loop=$view_data}
+    	<tr>
+    		<td>{$view_data[view_data_section].column_name}</td>
+    		<td>{$view_data[view_data_section].visible}</td>
+    		<td>{$view_data[view_data_section].position}</td>
+    		<td>{$view_data[view_data_section].image_url}</td>
+    		<td>{$view_data[view_data_section].default_sort}</td>
+    	</tr>    		
+    	{/section}
+	</table><br>
+	<div align="center" class="button">{$edit_data.buttons}</div>
+</form>
+</div>
