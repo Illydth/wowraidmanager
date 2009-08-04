@@ -50,6 +50,10 @@ $phprlang['guilds_new_header'] = 'New Guild';
 $phprlang['guilds_master'] = '公會管理員';
 $phprlang['guilds_name'] = '公會全名';
 $phprlang['guilds_tag']	= '公會簡稱';						
+$phprlang['guilds_description'] = 'Guild Description';
+$phprlang['guilds_server'] = 'Guild Server';
+$phprlang['guilds_faction'] = 'Guild Faction';
+$phprlang['guilds_armory_code'] = 'Armory Code for Guild';
 
 // locations
 $phprlang['locations_header'] = '活動類別';

@@ -123,6 +123,9 @@ $phprlang['configuration_show_addon'] = 'Show addon link';
 $phprlang['configuration_sitelink'] = '"Home" Link Points To';
 $phprlang['configuration_template'] = 'Template';
 $phprlang['general_configuration_header'] = 'General Settings';
+$phprlang['configuration_site_name'] = 'Site Name';
+$phprlang['configuration_site_server'] = 'Site Server Name';
+$phprlang['configuration_site_description'] = 'Site Description';
 
 // Text on the "Time Config" Page
 $phprlang['configuration_ampm'] = 'Schedule Raids in 12h/24h format';
@@ -178,10 +181,21 @@ $phprlang['configuration_permission_cannot_modify'] = 'You have attempted to rem
 														Please add a user to the "Admin" Privledge group before
 														atempting to remove users from it.  There must be at least
 														one "Admin" privledged user.';
-													
+
+// Text on the "External Systems" Page.
+$phprlang['configuration_armory_cache'] = 'Cache Armory Data To';
+$phprlang['configuration_external_links_header'] = 'Integration with External Systems';
+$phprlang['configuration_eqdkp_integration_text'] = 'Integrate with EqDKP<br><a href="docs/eqdkp_link.htm" target="_blank">help?</a>';
+$phprlang['configuration_armory_enable'] = 'Enable Armory Lookups';
+$phprlang['configuration_eqdkp_link'] = 'URL to Base of EqDKP Installation (No Trailing /)';
+$phprlang['configuration_roster_text'] = 'Integrate with WoW Roster';
+$phprlang['configuration_armory_cache_database'] = 'Database Table';
+$phprlang['configuration_armory_cache_files'] = 'Files on Disk';
+$phprlang['configuration_armory_cache_none'] = 'Do not Cache Armory Data';
+
+
 $phprlang['configuraiton_admin'] = 'Administrator';
 $phprlang['configuration_anonymous'] = 'Allow anonymous viewing';
-$phprlang['configuration_armory_enable'] = 'Enable Armory Lookups';
 $phprlang['configuration_armory_link_text'] = 'Correct Armory Link for Server';
 $phprlang['configuration_armory_language_text'] = 'Language Code for Armory';
 $phprlang['configuration_autoqueue'] = 'Disallow Signup to Drafted Status';
@@ -197,9 +211,6 @@ $phprlang['configuration_delete_def'] = 'Delete = Remove User Signup Completely'
 $phprlang['configuration_draft_def'] = 'Draft = Place User into Attending Raid Area';
 $phprlang['configuration_draft'] = 'Draft';
 $phprlang['configuration_drafted'] = 'Drafted (In Raid)';
-$phprlang['configuration_eqdkp_integration_text'] = 'Integrate with EqDKP<br><a href="docs/eqdkp_link.htm" target="_blank">help?</a>';
-$phprlang['configuration_eqdkp_link'] = 'URL to Base of EqDKP Installation (No Trailing /)';
-$phprlang['configuration_external_links_header'] = 'Integration with External Systems';
 $phprlang['configuration_faction'] = 'Faction';
 $phprlang['configuration_freeze'] = 'Disable freeze checking';
 $phprlang['configuration_guild_header'] = 'Guild Configuration';
@@ -219,7 +230,6 @@ $phprlang['configuration_role_header'] = 'Role Configuration';
 $phprlang['configuration_role_limit_text'] = 'Enforce Role Limits for Raid';
 $phprlang['configuration_class_limit_text'] = 'Enforce Class Limits for Raid';
 $phprlang['configuration_class_as_min'] = 'Use Class Limits as Minimums';
-$phprlang['configuration_roster_text'] = 'Integrate with WoW Roster';
 $phprlang['configuration_rss_site'] = 'RSS: URL to phpRaid Installation (No Trailing /)';
 $phprlang['configuration_rss_export'] = 'RSS: Site to export RSS feed to';
 $phprlang['configuration_rss_feed_amt'] = 'RSS: Number of Raids to Show in Feed';

@@ -50,6 +50,10 @@ $phprlang['guilds_new_header'] = 'Nytt Guild';
 $phprlang['guilds_master'] = 'Guildmaster';
 $phprlang['guilds_name'] = 'Komplett Guild namn';
 $phprlang['guilds_tag']	= 'Guild märke';						
+$phprlang['guilds_description'] = 'Guild Description';
+$phprlang['guilds_server'] = 'Guild Server';
+$phprlang['guilds_faction'] = 'Guild Faction';
+$phprlang['guilds_armory_code'] = 'Armory Code for Guild';
 
 // locations
 $phprlang['locations_header'] = 'Sparade Instanser';

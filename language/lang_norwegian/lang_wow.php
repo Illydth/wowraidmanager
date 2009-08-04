@@ -29,6 +29,10 @@
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *
 ****************************************************************************/
+// factions
+$phprlang['alliance'] = 'Alliance';
+$phprlang['horde'] = 'Horde';
+
 // classes
 $phprlang['deathknight'] = 'Death Knight';
 $phprlang['druid'] = 'Druid';

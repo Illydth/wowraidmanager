@@ -50,6 +50,10 @@ $phprlang['guilds_new_header'] = 'Neue Gilde';
 $phprlang['guilds_master'] = 'Gildenmeister';
 $phprlang['guilds_name'] = 'Kompletter Gildenname';
 $phprlang['guilds_tag'] = 'Gildenkürzel';
+$phprlang['guilds_description'] = 'Guild Description';
+$phprlang['guilds_server'] = 'Guild Server';
+$phprlang['guilds_faction'] = 'Guild Faction';
+$phprlang['guilds_armory_code'] = 'Armory Code for Guild';
 
 // locations
 $phprlang['locations_header'] = 'Gespeicherte Instanzen';
