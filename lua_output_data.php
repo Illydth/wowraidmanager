@@ -67,6 +67,18 @@ class Output_Data
 		
 		$raid_id = scrub_input($_GET['raid_id']);
 		
+		// Build the Guild Select Box
+		$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "guilds";
+		$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);			
+		while($guild_data = $db_raid->sql_fetchrow($result, true))
+		{
+			$guild_options .= "<option ";
+			if($phpraid_config['lua_output_guild'] == $guild_data['guild_id'])
+				$guild_options .= "SELECTED ";
+			$guild_options .= "value=\"".$guild_data['guild_id']."\">".$guild_data['guild_name']."</option>";
+		}
+		$guild_select_box = '<select name="guild" class="form" id="guild">' .$guild_options. '</select>';
+		
 		$text .= '<form method="post" action="lua_output.php?raid_id=' . $raid_id . '&amp;name=post">';
 		$text .= '<table width="300" align="center">';
 		$text .= '<tr><th colspan="2">Options</th></tr>';
@@ -89,7 +101,10 @@ class Output_Data
 		$text .= '<option '.$selected[6].' value="1">RIM (Raid Invite Manager)</option>';
 		$text .= '<option '.$selected[7].' value="2">PHP Raid Viewer</option>';
 		$text .= '</select></td>';
-		$text .= '<tr>';
+		$text .= '</tr><tr>';
+		$text .= '<td>Guild:</td>';
+		$text .= '<td>'.$guild_select_box.'</td>';
+		$text .= '</tr><tr>';
 		$text .= '<td align="left" colspan="2"><input type="submit" name="parse" value="Apply options" class="mainoption"></td>';
 		$text .= '</tr>';
 		$text .= '</table>';
@@ -103,6 +118,7 @@ class Output_Data
 		$phpraid_config['lua_output_sort_signups'] = scrub_input($_POST['config']['lua_output_sort_signups']);
 		$phpraid_config['lua_output_sort_queue'] = scrub_input($_POST['config']['lua_output_sort_queue']);
 		$phpraid_config['lua_output_format'] = scrub_input($_POST['config']['lua_output_format']);
+		$phpraid_config['lua_ouptut_guild'] = scrub_input($_POST['guild']);
 		
 		//Enter the Signup Sorting order for LUA Output
 		$sql = "SELECT config_name FROM `".$phpraid_config['db_prefix']."config` WHERE `config_name`= 'lua_output_sort_signups';";
@@ -142,6 +158,17 @@ class Output_Data
 			$sql = sprintf("INSERT INTO `".$phpraid_config['db_prefix']."config` (`config_name`, `config_value`) VALUES('lua_output_format', %s);", quote_smart($phpraid_config['lua_output_format']));
 		}
 		$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+		
+		//Enter the Guild for LUA Output
+		$sql = "SELECT config_name FROM `".$phpraid_config['db_prefix']."config` WHERE `config_name`= 'lua_output_guild';";
+		$result = $db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+		if ($db_raid->sql_numrows($result) != 0)
+			$sql = sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value`=%s WHERE `config_name`= 'lua_output_guild';", quote_smart($phpraid_config['lua_ouptut_guild']));
+		else
+			$sql = sprintf("INSERT INTO `".$phpraid_config['db_prefix']."config` (`config_name`, `config_value`) VALUES('lua_output_guild', %s);", quote_smart($phpraid_config['lua_ouptut_guild']));
+		$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);		
+		
+		header("Location: lua_output.php");
 	}
 	
 	function GetClassIdByClassName($class)
@@ -225,6 +252,13 @@ class Output_Data
 		$format=$phpraid_config['lua_output_format'];
 		$raid_id=scrub_input($_GET['raid_id']);
 		
+		// Get the Guild and Server from the Selected Configuration.
+		$sql=sprintf("SELECT * FROM " . $phpraid_config['db_prefix']."guilds WHERE guild_id = %s", quote_smart($phpraid_config['lua_output_guild']));
+		$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$guild_data = $db_raid->sql_fetchrow($result, true);
+		$server = $guild_data['guild_server'];
+		$guild_name = $guild_data['guild_name'];
+		
 		// Get the total number of classes, this is max class_index from the classes table.
 		//  This will come in handy later when we're creating the LUA output.
 		$sql = "SELECT max(class_index) as max_class_index " .
@@ -266,8 +300,8 @@ class Output_Data
 		if ($format == "1")
 		{
 			$lua_output .= "\t[\"file_stamp\"] = \"{$file_date_stamp}\",\n";
-			$lua_output .= "\t[\"guild\"] = \"{$phpraid_config['guild_name']}\",\n";
-			$lua_output .= "\t[\"server\"] = \"{$phpraid_config['guild_server']}\",\n";			
+			$lua_output .= "\t[\"guild\"] = \"{$guild_name}\",\n";
+			$lua_output .= "\t[\"server\"] = \"{$server}\",\n";			
 		}
 		$lua_output .= "\t[\"raid_count\"] = \"".$db_raid->sql_numrows($raids_result)."\",\n";
 		$lua_output .= "\t[\"raids\"] = {\n";
