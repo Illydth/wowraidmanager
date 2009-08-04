@@ -57,6 +57,22 @@ else
 // URL to Base of EqDKP Installation
 $eqdkp_url='<input name="eqdkp_url" type="text" value="'.$phpraid_config['eqdkp_url'].'" size="60" class="post">';
 
+// Armory Cache Setting
+$armory_cache = '<select name="armory_cache" class="post">';
+if ($phpraid_config['armory_cache_setting'] == 'database')
+	$armory_cache .=   '<option value="database" selected>'.$phprlang['configuration_armory_cache_database'].'</option>';
+else
+	$armory_cache .=   '<option value="database">'.$phprlang['configuration_armory_cache_database'].'</option>';
+if ($phpraid_config['armory_cache_setting'] == 'file')
+	$armory_cache .=   '<option value="file" selected>'.$phprlang['configuration_armory_cache_files'].'</option>';
+else
+	$armory_cache .=   '<option value="file">'.$phprlang['configuration_armory_cache_files'].'</option>';
+if ($phpraid_config['armory_cache_setting'] == 'none')
+	$armory_cache .=   '<option value="none" selected>'.$phprlang['configuration_armory_cache_none'].'</option>';
+else 
+	$armory_cache .=   '<option value="none">'.$phprlang['configuration_armory_cache_none'].'</option>';
+$armory_cache .= '</select>';
+
 // Integrate with WoW Roster
 //if($phpraid_config['roster_integration'] == '0')
 //	$roster = '<input type="checkbox" name="roster" value="1">';
@@ -76,6 +92,8 @@ $wrmadminsmarty->assign('config_data',
 		'external_links_header'=>$phprlang['configuration_external_links_header'],
 		//'roster' => $roster,
 		//'roster_text' => $phprlang['configuration_roster_text'],
+		'armory_cache' => $armory_cache,
+		'armory_cache_text'=>$phprlang['configuration_armory_cache'],
 		'buttons' => $buttons,
 	)
 );
@@ -93,6 +111,7 @@ if(isset($_POST['submit']))
  		$enable_eqdkp = 0;
  		
  	$eqdkp_url = scrub_input($_POST['eqdkp_url'], true);
+ 	$armory_cache = scrub_input($_POST['armory_cache']);
  	
  	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'enable_armory';", quote_smart($enable_armory));
 	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
@@ -100,7 +119,9 @@ if(isset($_POST['submit']))
 	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'eqdkp_url';", quote_smart($eqdkp_url));
 	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
-
+ 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'armory_cache_setting';", quote_smart($armory_cache));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	
 	header("Location: admin_externcfg.php");
 }
 //
