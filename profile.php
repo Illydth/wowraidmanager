@@ -69,20 +69,18 @@ $pageURL = 'profile.php?mode=view&';
  * End Record Output Setup for Data Table
  **************************************************************/
 
-// Set the Guild Server for the Page.
-$server = $phpraid_config['guild_server'];
-
 if($_GET['mode'] == 'view') {
 	$chars = array();
-
+	
 	// now that we have their profile_id, let's get a list of all their characters
 	$profile_id = scrub_input($_SESSION['profile_id']);
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE profile_id=%s",quote_smart($profile_id));
 	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 	while($data = $db_raid->sql_fetchrow($result, true))
 	{
+		// Get Armory Data for Character
 		if ($phpraid_config['enable_armory'])
-			$charname = get_armorychar($data['name'], $phpraid_config['armory_language'], $server);
+			$charname = get_armorychar($data['name'], $data['guild']);
 		else
 			$charname = $data['name'];
 			
@@ -337,12 +335,12 @@ if($_GET['mode'] == 'view') {
 } elseif(($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')) {
 	if($_GET['mode'] == 'new') {
 		// check for errors
+		$guild = scrub_input($_GET['guild']);
 		$race = scrub_input($_GET['race']);
-		$class = scrub_input($_POST['class']);
+		$class = scrub_input($_GET['class']);
 		$gender = scrub_input($_POST['gender']);
 		$name = scrub_input(trim($_POST['name']));
 		$dupeChar = isCharExist($name);
-		$guild = scrub_input($_POST['guild']);
 		$level = scrub_input($_POST['level']);
 		$pri_spec = scrub_input($_POST['pri_spec']);
 		$sec_spec = scrub_input($_POST['sec_spec']);	
@@ -376,11 +374,11 @@ if($_GET['mode'] == 'view') {
 	}
 
 	if(isset($_POST['submit'])) {
+		$guild = scrub_input($_GET['guild']);
 		$race = scrub_input($_GET['race']);
 		$class = scrub_input($_GET['class']);
 		$gender = scrub_input($_POST['gender']);
 		$name = scrub_input(ucfirst(trim($_POST['name'])));
-		$guild = scrub_input($_POST['guild']);
 		$level = scrub_input($_POST['level']);
 		$pri_spec = scrub_input($_POST['pri_spec']);
 		$sec_spec = scrub_input($_POST['sec_spec']);
@@ -546,6 +544,11 @@ if($db_raid->sql_numrows($result) == 0) {
 	if($_GET['mode'] != 'remove') {
 		// form variables
 		// nothing worse than submitting a form wrong and losing all your input
+		if(isset($_GET['guild']))
+			$guild = scrub_input($_GET['guild']);
+		elseif(!isset($guild))
+			$guild = '';
+
 		if(isset($_GET['race']))
 			$race = scrub_input($_GET['race']);
 		else
@@ -563,9 +566,6 @@ if($db_raid->sql_numrows($result) == 0) {
 
 		if(!isset($name))
 			$name = '';
-
-		if(!isset($guild))
-			$guild = '';
 
 		if(!isset($level))
 			$level = '';
@@ -596,22 +596,42 @@ if($db_raid->sql_numrows($result) == 0) {
 			
 		// template variables
 		if($_GET['mode'] == 'view' || $_GET['mode'] == 'new')
-			$form_action = 'profile.php?mode=new&amp;race='.$race."&amp;class=".$class;
+			$form_action = 'profile.php?mode=new&amp;guild='.$guild.'&amp;race='.$race.'&amp;class='.$class;
 		else
-			$form_action = 'profile.php?mode=edit&amp;id='.$id.'&amp;race='.$race."&amp;class=".$class;
+			$form_action = 'profile.php?mode=edit&amp;guild='.$guild.'&amp;id='.$id.'&amp;race='.$race.'&amp;class='.$class;
 
 		if($_GET['mode'] == 'view' || $_GET['mode'] == 'new')
-			$Form_use = "value=\"profile.php?mode=view&amp;race=";
+			$Form_use = "value=\"profile.php?mode=view&amp;guild=".$guild."&amp;race=";
 		else
-			$Form_use = "value=\"profile.php?mode=edit&amp;id=".$id."&amp;race=";
+			$Form_use = "value=\"profile.php?mode=edit&amp;id=".$id."&amp;guild=".$guild."&amp;race=";
 
 		if($_GET['mode'] == 'view' || $_GET['mode'] == 'new')
-			$form_class = "value=\"profile.php?mode=view&amp;race=".$race."&amp;class=";
+			$form_class = "value=\"profile.php?mode=view&amp;guild=".$guild."&amp;race=".$race."&amp;class=";
 		else
-			$form_class = "value=\"profile.php?mode=edit&amp;id=".$id."&amp;race=".$race."&amp;class=";
+			$form_class = "value=\"profile.php?mode=edit&amp;id=".$id."&amp;guild=".$guild."&amp;race=".$race."&amp;class=";
+
+		if($_GET['mode'] == 'view' || $_GET['mode'] == 'new')
+			$form_guild = "value=\"profile.php?mode=view&amp;guild=";
+		else
+			$form_guild = "value=\"profile.php?mode=edit&amp;id=".$id."&amp;guild=".$guild."&amp;race=";
 			
+		// Set Guild Option Box.
+		$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "guilds";
+		$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);			
+		while($guild_data = $db_raid->sql_fetchrow($result, true))
+		{
+			$guild_options .= "<option ";
+			if($guild == $guild_data['guild_id'])
+				$guild_options .= "SELECTED ";
+			$guild_options .= $form_guild.$guild_data['guild_id']."\">".$guild_data['guild_name']."</option>";
+		}
+						
 		// Set Race Option Box.
-		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "races WHERE faction = %s", quote_smart($phpraid_config['faction']));
+		$sql = sprintf("SELECT guild_faction FROM " . $phpraid_config['db_prefix'] . "guilds WHERE guild_id = %s", quote_smart($guild));
+		$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$faction_data = $db_raid->sql_fetchrow($result, true);
+		$faction = $faction_data['guild_faction'];
+		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "races WHERE faction = %s", quote_smart($faction));
 		$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);			
 		while($race_data = $db_raid->sql_fetchrow($result, true))
 		{
@@ -679,14 +699,32 @@ if($db_raid->sql_numrows($result) == 0) {
 			$sec_options .= "<option value=\"\">".$phprlang['notavailable']."</option>";				
 		
 		// setup output variables for form
+		$guild_output = '<select name="guild" onChange="MM_jumpMenu(\'parent\',this,0)" class="form" style="width:100px">
+						<option value="profile.php?mode=new">'.$phprlang['form_select'].'</option>' . $guild_options . '</select>';
+			
 		$race_output = '<select name="race" onChange="MM_jumpMenu(\'parent\',this,0)" class="form" style="width:100px">
 						<option value="profile.php?mode=new">'.$phprlang['form_select'].'</option>' . $race_options . '</select>';
 
 		$class_output = '<select name="class" onChange="MM_jumpMenu(\'parent\',this,0)" class="form" style="width:100px">
 						<option value="profile.php?mode=new">'.$phprlang['form_select'].'</option>' . $class_options . '</select>';
 		
-		if(!isset($_GET['race'])) {
-			$class = '<select name="class" DISABLED><option></option></select>';
+		if(!isset($_GET['guild'])) {
+			$race_output = '<select name="race" DISABLED><option></option></select>';
+			$class_output = '<select name="class" DISABLED><option></option></select>';
+			$name = '<select name="name" DISABLED><option></option></select>';
+			$level = '<select name="level" DISABLED><option></option></select>';
+			$gender = '<select name="gender" DISABLED><option></option></select>';
+			$guild = '<select name="guild" DISABLED><option></option></select>';
+			$pri_spec = '<select name="pri_spec" DISABLED><option></option></select>';
+			$sec_spec = '<select name="sec_spec" DISABLED><option></option></select>';
+			$arcane = '<select name="arcane" DISABLED><option></option></select>';
+			$fire = '<select name="fire" DISABLED><option></option></select>';
+			$frost = '<select name="frost" DISABLED><option></option></select>';
+			$nature = '<select name="nature" DISABLED><option></option></select>';
+			$shadow = '<select name="shadow" DISABLED><option></option></select>';
+		}
+		elseif (!isset($_GET['race'])) {
+			$class_output = '<select name="class" DISABLED><option></option></select>';
 			$name = '<select name="name" DISABLED><option></option></select>';
 			$level = '<select name="level" DISABLED><option></option></select>';
 			$gender = '<select name="gender" DISABLED><option></option></select>';
@@ -699,19 +737,6 @@ if($db_raid->sql_numrows($result) == 0) {
 			$nature = '<select name="nature" DISABLED><option></option></select>';
 			$shadow = '<select name="shadow" DISABLED><option></option></select>';
 		} else {
-			// get guild list
-			$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "guilds";
-			$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-			while($data = $db_raid->sql_fetchrow($result, true))
-			{
-				if($guild == $data['guild_tag'])
-					$guild_options .= '<option value="' . $data['guild_tag'] . '"\ selected>' . $data['guild_name'] . '</option>';
-				else
-					$guild_options .= '<option value="' . $data['guild_tag'] . '">' . $data['guild_name'] . '</option>';
-			}
-			$guild = '<select name="guild" class="post" style="width:100px">' . $guild_options . '</select>';
-
-			$class = '<select name="class" id="class" class="form" style="width:100px">' . $class_options . '</select>';
 			$name = '<input type="text" name="name" class="post" value="' . $name . '" style="width:100px">';
 			$level = '<input name="level" type="text" class="post" size="2" value="' . $level . '" maxlength="2">';
 			$gender = '<select name="gender" class="form" id="gender" style="width:100px">' .$gender_options. '</select>';
@@ -750,7 +775,7 @@ if($db_raid->sql_numrows($result) == 0) {
 				'nature'=>$nature,
 				'shadow'=>$shadow,
 				'guild_text' => $phprlang['profile_guild'],
-				'guild' => $guild,
+				'guild' => $guild_output,
 				'role_text' => $phprlang['profile_role'],
 				'pri_spec' => $pri_spec,
 				'sec_spec' => $sec_spec,
