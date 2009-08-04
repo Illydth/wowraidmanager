@@ -88,9 +88,14 @@ if($_GET['mode'] == 'view' || $_GET['mode'] == 'update') {
 		array_push($guild, 
 			array(
 				'ID'=>$data['guild_id'],
-				'Guild Name'=>$data['guild_name'],
-				'Guild Tag'=>$data['guild_tag'],
+				'Name'=>$data['guild_name'],
+				'Tag'=>$data['guild_tag'],
 				'Guild Master'=>$data['guild_master'],
+				'Description'=>$data['guild_description'],
+				'Server'=>$data['guild_server'],
+				'Faction'=>$data['guild_faction'],
+				'Armory Link'=>$data['guild_armory_link'],
+				'Armory Code'=>$data['guild_armory_code'],
 				'Buttons'=>$edit . $delete,
 				)
 		);
@@ -143,6 +148,38 @@ if($_GET['mode'] == 'view' || $_GET['mode'] == 'update') {
 	$name = scrub_input($_POST['name'], false);
 	$short = scrub_input($_POST['short'], false);
 	$master = scrub_input($_POST['master'], false);
+	$description = scrub_input($_POST['description'], false);
+	$server = scrub_input($_POST['server'], false);
+	$faction = scrub_input($_POST['faction'], false);
+	$code = scrub_input($_POST['code'], false);
+	
+	switch ($code)
+	{
+		case 'US':
+			$link = 'http://www.wowarmory.com';
+			break;
+		case 'EU':
+			$link = 'http://ew.wowarmory.com';
+			break;
+		case 'DE':
+			$link = 'http://ew.wowarmory.com';
+			break;
+		case 'ES':
+			$link = 'http://ew.wowarmory.com';
+			break;
+		case 'FR':
+			$link = 'http://ew.wowarmory.com';
+			break;
+		case 'KR':
+			$link = 'http://kr.wowarmory.com';
+			break;
+		case 'TW':
+			$link = 'http://tw.wowarmory.com';
+			break;
+		default:
+			$link = '';
+			break;	
+	}
 	
 	// Added Verifications
 	$errorSpace = 1;
@@ -152,6 +189,10 @@ if($_GET['mode'] == 'view' || $_GET['mode'] == 'update') {
 		$errorMsg .= '<li>'.$phprlang['guild_name_missing'].'</li>';
 	if ($short == '')
 		$errorMsg .= '<li>'.$phprlang['guild_tag_missing'].'</li>';
+	if ($server == '')
+		$errorMsg .= '<li>'.$phprlang['guild_server_missing'].'</li>';
+	if ($faction == '')
+		$errorMsg .= '<li>'.$phprlang['guild_faction_missing'].'</li>';
 	$errorDie = 0;
 	$errorMsg .= '</ul>';
 
@@ -160,8 +201,12 @@ if($_GET['mode'] == 'view' || $_GET['mode'] == 'update') {
 	else
 	{
 		if($_GET['mode'] == 'new') 	{
-			$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "guilds (`guild_master`,`guild_name`,`guild_tag`) 
-			VALUES (%s,%s,%s)",quote_smart($master),quote_smart($name),quote_smart($short));
+			$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "guilds 
+				(`guild_master`,`guild_name`,`guild_tag`,`guild_description`,`guild_server`,
+				`guild_faction`,`guild_armory_link`,`guild_armory_code`) 
+				VALUES (%s,%s,%s,%s,%s,%s,%s,%s)",quote_smart($master),quote_smart($name),
+				quote_smart($short),quote_smart($description),quote_smart($server),
+				quote_smart($faction),quote_smart($link),quote_smart($code));
 			
 			$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 			
@@ -169,7 +214,13 @@ if($_GET['mode'] == 'view' || $_GET['mode'] == 'update') {
 		} elseif($_GET['mode'] == 'edit') {
 			$id = scrub_input($_GET['id'], false);
 			
-			$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "guilds SET guild_name=%s,guild_tag=%s,guild_master=%s WHERE guild_id=%s",quote_smart($name),quote_smart($short),quote_smart($master),quote_smart($id));
+			$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "guilds 
+				SET guild_name=%s,guild_tag=%s,guild_master=%s,guild_description=%s,
+				guild_server=%s,guild_faction=%s,guild_armory_link=%s,guild_armory_code=%s 
+				WHERE guild_id=%s",quote_smart($name),quote_smart($short),
+				quote_smart($master),quote_smart($description),quote_smart($server),
+				quote_smart($faction),quote_smart($link),quote_smart($code),
+				quote_smart($id));
 			$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 		}		
 	
@@ -222,6 +273,33 @@ if($_GET['mode'] != 'delete') {
 		$name = '<input name="name" type="text" id="name" class="post">';
 		$short = '<input name="short" type="text" id="short" class="post">';
 		$master = '<input name="master" type="text" id="master" class="post">';
+		$description = '<input name="description" type="text" id="description" class="post">';
+		$server = '<input name="server" type="text" id="server" class="post">';
+
+		// now the faction
+		$faction = '<select name="faction" class="post">';
+		$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "faction";
+		$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);			
+		while($faction_data = $db_raid->sql_fetchrow($result, true))
+		{
+			$faction .= "<option ";
+			if($faction_data['faction_name'] == $phpraid_config['faction'])
+				$faction .= "SELECTED ";
+			$faction .= "value=\"" . $faction_data['faction_name'] . "\">" . $faction_data['faction_name'] ."</option>";
+		}
+		$faction .= '</select>';
+
+		// Selection box for Armory Code.
+		$armory_box = '<select name="code" class="post">';
+		$armory_box .=   '<option value="US" selected>US : http://www.wowarmory.com : English</option>';
+		$armory_box .=   '<option value="EU">EU : http://eu.wowarmory.com : English</option>';
+		$armory_box .=   '<option value="DE">DE : http://eu.wowarmory.com : German</option>';
+		$armory_box .=   '<option value="ES">ES : http://eu.wowarmory.com : Spanish</option>';
+		$armory_box .=   '<option value="FR">FR : http://eu.wowarmory.com : French</option>';
+		$armory_box .=   '<option value="KR">KR : http://kr.wowarmory.com : Korean</option>';
+		$armory_box .=   '<option value="TW">TW : http://tw.wowarmory.com : Taiwainese</option>';
+		$armory_box .=   '<option value="None">No Armory or Not Applicable</option>';
+		$armory_box .= '</select>';
 		
 		$buttons = '<input type="submit" value="'.$phprlang['submit'].'" name="submit" class="mainoption"> <input type="reset" value="'.$phprlang['reset'].'" name="reset" class="liteoption">';
 	} elseif($_GET['mode'] == 'update') {
@@ -236,7 +314,58 @@ if($_GET['mode'] != 'delete') {
 		$name = '<input name="name" type="text" id="name" value="' . $data['guild_name'] . '" class="post">';
 		$short = '<input name="short" type="text" id="short" value="' . $data['guild_tag'] . '" class="post">';
 		$master = '<input name="master" type="text" id="master" value="' . $data['guild_master'] . '" class="post">';
+		$description = '<input name="description" type="text" id="description" value="' . $data['guild_description'] . '" class="post">';
+		$server = '<input name="server" type="text" id="server" value="' . $data['guild_server'] . '" class="post">';
+
+		// now the faction
+		$faction = '<select name="faction" class="post">';
+		$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "faction";
+		$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);			
+		while($faction_data = $db_raid->sql_fetchrow($result, true))
+		{
+			$faction .= "<option ";
+			if($faction_data['faction_name'] == $data['guild_faction'])
+				$faction .= "SELECTED ";
+			$faction .= "value=\"" . $faction_data['faction_name'] . "\">" . $faction_data['faction_name'] ."</option>";
+		}
+		$faction .= '</select>';
 		
+		// Selection box for Armory Code.
+		$armory_box = '<select name="code" class="post">';
+		if ($data['guild_armory_code'] == 'US')
+			$armory_box .=   '<option value="US" selected>US : http://www.wowarmory.com : English</option>';
+		else 
+			$armory_box .=   '<option value="US">US : http://www.wowarmory.com : English</option>';
+		if ($data['guild_armory_code'] == 'EU')
+			$armory_box .=   '<option value="EU" selected>EU : http://eu.wowarmory.com : English</option>';
+		else 
+			$armory_box .=   '<option value="EU">EU : http://eu.wowarmory.com : English</option>';
+		if ($data['guild_armory_code'] == 'DE')
+			$armory_box .=   '<option value="DE" selected>DE : http://eu.wowarmory.com : German</option>';
+		else 
+			$armory_box .=   '<option value="DE">DE : http://eu.wowarmory.com : German</option>';
+		if ($data['guild_armory_code'] == 'ES')
+			$armory_box .=   '<option value="ES" selected>ES : http://eu.wowarmory.com : Spanish</option>';
+		else 
+			$armory_box .=   '<option value="ES">ES : http://eu.wowarmory.com : Spanish</option>';
+		if ($data['guild_armory_code'] == 'FR')
+			$armory_box .=   '<option value="FR" selected>FR : http://eu.wowarmory.com : French</option>';
+		else 
+			$armory_box .=   '<option value="FR">FR : http://eu.wowarmory.com : French</option>';
+		if ($data['guild_armory_code'] == 'KR')
+			$armory_box .=   '<option value="KR" selected>KR : http://kr.wowarmory.com : Korean</option>';
+		else 
+			$armory_box .=   '<option value="KR">KR : http://kr.wowarmory.com : Korean</option>';
+		if ($data['guild_armory_code'] == 'TW')
+			$armory_box .=   '<option value="TW" selected>TW : http://tw.wowarmory.com : Taiwainese</option>';
+		else 
+			$armory_box .=   '<option value="TW">TW : http://tw.wowarmory.com : Taiwainese</option>';
+		if ($data['guild_armory_code'] == '')
+			$armory_box .=   '<option value="None" selected>No Armory or Not Applicable</option>';
+		else 
+			$armory_box .=   '<option value="None">No Armory or Not Applicable</option>';
+		$armory_box .= '</select>';
+				
 		$buttons = '<input type="submit" value="'.$phprlang['update'].'" name="submit" class="mainoption"> <input type="reset" value="'.$phprlang['reset'].'" name="reset" class="liteoption">';			
 	}
 	
@@ -246,11 +375,19 @@ if($_GET['mode'] != 'delete') {
 			'name'=>$name,
 			'short'=>$short,
 			'master'=>$master,
+			'description'=>$description,
+			'server'=>$server,
+			'faction'=>$faction,
+			'code'=>$armory_box,
 			'buttons'=>$buttons,
 			'newguild_header'=>$phprlang['guilds_new_header'],
 			'name_text'=>$phprlang['guilds_name'],
 			'short_text'=>$phprlang['guilds_tag'],
-			'master_text'=>$phprlang['guilds_master']
+			'master_text'=>$phprlang['guilds_master'],
+			'description_text'=>$phprlang['guilds_description'],
+			'server_text'=>$phprlang['guilds_server'],
+			'faction_text'=>$phprlang['guilds_faction'],
+			'code_text'=>$phprlang['guilds_armory_code'],
 		)
 	);
 }
