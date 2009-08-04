@@ -308,13 +308,23 @@ VALUES (NULL , 'team2', 'Add To Team', '1', '7', NULL, 'add_to_team', NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
 VALUES (NULL , 'guild1', 'ID', '1', '1', NULL, 'id', NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'guild1', 'Guild Name', '1', '2', NULL, 'guild_name', NULL);
+VALUES (NULL , 'guild1', 'Name', '1', '2', NULL, 'guild_name', NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'guild1', 'Guild Tag', '1', '3', NULL, 'guild_tag', NULL);
+VALUES (NULL , 'guild1', 'Tag', '1', '3', NULL, 'guild_tag', NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'guild1', 'Guild Master', '1', '4', NULL, 'guild_master', NULL);
+VALUES (NULL , 'guild1', 'Description', '1', '4', NULL, 'guild_description', NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'guild1', 'Buttons', '1', '5', NULL, 'buttons', NULL);
+VALUES (NULL , 'guild1', 'Guild Master', '1', '5', NULL, 'guild_master', NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
+VALUES (NULL , 'guild1', 'Server', '1', '6', NULL, 'guild_server', NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
+VALUES (NULL , 'guild1', 'Faction', '1', '7', NULL, 'guild_faction', NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
+VALUES (NULL , 'guild1', 'Armory Link', '1', '8', NULL, 'guild_armory_link', NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
+VALUES (NULL , 'guild1', 'Armory Code', '1', '9', NULL, 'guild_armory_code', NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
+VALUES (NULL , 'guild1', 'Buttons', '1', '10', NULL, 'buttons', NULL);
 -- Column Header Data - Location1 View
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
 VALUES (NULL , 'location1', 'ID', '1', '1', NULL, 'id', NULL);
@@ -546,6 +556,9 @@ CREATE TABLE  `wrm_config` (
 ) ;
 
 -- Config Table Data
+INSERT INTO `wrm_config` VALUES ('site_name', 'WRM');
+INSERT INTO `wrm_config` VALUES ('site_description', 'WRM');
+INSERT INTO `wrm_config` VALUES ('site_server', 'Localhost');
 INSERT INTO `wrm_config` VALUES ('admin_email','webmaster@yourdomain.com');
 INSERT INTO `wrm_config` VALUES ('anon_view', '1');
 INSERT INTO `wrm_config` VALUES ('auto_queue','0');
@@ -556,17 +569,11 @@ INSERT INTO `wrm_config` VALUES ('disable','0');
 INSERT INTO `wrm_config` VALUES ('disable_freeze','0');
 INSERT INTO `wrm_config` VALUES ('dst','0');
 INSERT INTO `wrm_config` VALUES ('email_signature','Thanks');
-INSERT INTO `wrm_config` VALUES ('faction','Alliance');
-INSERT INTO `wrm_config` VALUES ('guild_description','raid management made easy');
-INSERT INTO `wrm_config` VALUES ('guild_name','WoW Raid Manager');
-INSERT INTO `wrm_config` VALUES ('guild_server','Illidan');
 INSERT INTO `wrm_config` VALUES ('header_link','http://www.yourdomain.com/');
 INSERT INTO `wrm_config` VALUES ('header_logo','templates/default/images/logo_phpRaid.jpg');
 INSERT INTO `wrm_config` VALUES ('language','english');
 INSERT INTO `wrm_config` VALUES ('multiple_signups','0');
 INSERT INTO `wrm_config` VALUES ('phpraid_addon_link','http://www.wowraidmanager.net');
-INSERT INTO `wrm_config` VALUES ('armory_link','http://www.wowarmory.com');
-INSERT INTO `wrm_config` VALUES ('armory_language','us');
 INSERT INTO `wrm_config` VALUES ('register_url','register.php');
 INSERT INTO `wrm_config` VALUES ('roster_integration','0');
 INSERT INTO `wrm_config` VALUES ('show_id','0');
@@ -615,8 +622,6 @@ INSERT INTO `wrm_config` VALUES ('admin_drafted_delete', '0');
 INSERT INTO `wrm_config` VALUES ('rss_site_url', 'http://localhost/phpraid');
 INSERT INTO `wrm_config` VALUES ('rss_export_url', 'http://localhost/phpraid');
 INSERT INTO `wrm_config` VALUES ('rss_feed_amt', '5');
-INSERT INTO `wrm_config` VALUES ('armory_link','http://www.wowarmory.com');
-INSERT INTO `wrm_config` VALUES ('armory_language','en');
 INSERT INTO `wrm_config` VALUES ('enforce_role_limits', '1');
 INSERT INTO `wrm_config` VALUES ('enforce_class_limits', '0');
 INSERT INTO `wrm_config` VALUES ('class_as_min', '1');
@@ -798,6 +803,20 @@ INSERT INTO `wrm_expansion` (`exp_id`, `exp_name`, `exp_lang_id`, `def`) VALUES
 (2, 'BC', 'exp_burning_crusade', 0),
 (3, 'WotLK', 'exp_wrath_lich_king', 1);
 
+-- Faction Table Creation
+DROP TABLE IF EXISTS `wrm_faction`;
+CREATE TABLE `wrm_faction` (
+`faction_name` VARCHAR( 255 ) NOT NULL ,
+`lang_index` VARCHAR( 255 ) NOT NULL ,
+PRIMARY KEY ( `faction_name` )
+) ;
+
+-- Data for Faction Table
+INSERT INTO `wrm_faction` (`faction_name` , `lang_index`) VALUES 
+('Alliance', 'alliance'), 
+('Horde', 'horde'),
+('None', 'none');
+
 -- Gender Table Creation
 DROP TABLE IF EXISTS `wrm_gender`;
 CREATE TABLE `wrm_gender` (
@@ -817,6 +836,11 @@ CREATE TABLE `wrm_guilds` (
   `guild_master` varchar(80) NOT NULL default '',
   `guild_name` varchar(30) NOT NULL default '',
   `guild_tag` varchar(20) NOT NULL default '',
+  `guild_description` VARCHAR(255),
+  `guild_server` VARCHAR(255) NOT NULL default '',
+  `guild_faction` VARCHAR(50) NOT NULL default 'None',
+  `guild_armory_link` VARCHAR(255),
+  `guild_armory_code` VARCHAR(4)
   PRIMARY KEY  (`guild_id`)
 ) ;
 
