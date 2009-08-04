@@ -12,16 +12,15 @@
 * Use: [char=RealmName]CharName[/wow]
 *
 */
-
-// Include Commom file
-include("includes/common.php");
-global $armver;
-
 // Get the URL GET And decode
 $var  = $_GET['v']; // Character Name
 $var2 = $_GET['z']; // Realm/Server
 $var3 = $_GET['l']; // Language
 $var4 = $_GET['u']; // Armory URL
+
+// Include Commom file
+include("includes/common.php");
+global $armver;
 
 // Set the armory language
 //$armory->setlang($var3);

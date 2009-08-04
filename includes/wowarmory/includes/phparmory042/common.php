@@ -25,10 +25,11 @@ $query = "SELECT config_value FROM " . $phpraid_config['db_prefix'] . "config WH
 $result = mysql_query($query, $dbconnection) or die("Unable to select from config table.");
 $sqlresultdata = mysql_fetch_assoc($result);
 $armory_cache_setting = $sqlresultdata['config_value'];
-$query = "SELECT config_value FROM " . $phpraid_config['db_prefix'] . "config WHERE config_name = 'armory_language'";
-$result = mysql_query($query, $dbconnection) or die("Unable to select from config table.");
-$sqlresultdata = mysql_fetch_assoc($result);
-$locale = $sqlresultdata['config_value'];
+
+// The locale is set within the calling function, char.php.  This comes from the $_GET array
+//   retrieved within the char.php code and is available to us due to the "include" of this
+//   file from char.php.
+$locale = $var3; 
 
 echo "Armory Locale = " . $locale;
 echo "<br>Armory Cache Setting = " . $armory_cache_setting;
