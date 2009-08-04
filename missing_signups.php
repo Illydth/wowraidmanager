@@ -74,9 +74,6 @@ $pageURL = 'missing_signups.php?raid_id=' . $raid_id . '&';
  * End Record Output Setup for Data Table
  **************************************************************/
 	
-// Set the Guild Server for the Page.
-//$server = $phpraid_config['guild_server'];
-
 $users = array();
 //$signed_profile_id_arr = array();
 //$profile_list_arr = array();
