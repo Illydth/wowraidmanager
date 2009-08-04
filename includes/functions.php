@@ -40,7 +40,7 @@ function email($to, $subject, $message) {
 
 	$message .= "\n\n" . $phpraid_config['email_signature'];
 
-	$mheaders = 'From: ' . $phpraid_config['guild_name'] . '<' . $phpraid_config['admin_email'] . '>' . "\r\n" .
+	$mheaders = 'From: ' . $phpraid_config['site_name'] . '<' . $phpraid_config['admin_email'] . '>' . "\r\n" .
 		   'Reply-To: '  . $phpraid_config['admin_email'] . "\r\n" .
 		   'Return-Path: <' . $phpraid_config['admin_email'] . "\r\n" .
 		   'X-Mailer: PHP/' . phpversion();
@@ -137,15 +137,20 @@ function setup_output() {
 	$report->setFieldHeadingAttributes('class="listHeader"');
 }
 
-function get_armorychar($name, $language, $server)
+function get_armorychar($name, $guild)
 {
-	global $phpraid_config;
-	
-	//$realm = str_replace(" ", "+", ucfirst($server));
-	$realm = ucfirst($server);
-	$lang = strtolower($language);
+	global $phpraid_config, $db_raid;
 
-	$javascript = '<a href="' . $phpraid_config['armory_link'] . '/character-sheet.xml?r=' . $realm . '&amp;n=' . ucfirst($name) . '" target="new" onmouseover=\'tooltip.show("includes/wowarmory/char.php?v=' . ucfirst($name) . '&amp;z=' . str_replace("'", "\"+String.fromCharCode(39)+\"", $realm) . '&amp;l=' . $lang . '&amp;u='. $phpraid_config['armory_link'] .'");\' onmouseout="tooltip.hide();"><strong>' . ucfirst($name) . '</strong></a>';
+	// Get Armory Data from Guild.
+	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "guilds WHERE guild_id=%s",quote_smart($guild));
+	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$data = $db_raid->sql_fetchrow($result, true);
+
+	//$realm = str_replace(" ", "+", ucfirst($server));
+	$realm = ucfirst($data['guild_server']);
+	$lang = strtolower($data['guild_armory_code']);
+	
+	$javascript = '<a href="' . $data['guild_armory_link'] . '/character-sheet.xml?r=' . $realm . '&amp;n=' . ucfirst($name) . '" target="new" onmouseover=\'tooltip.show("includes/wowarmory/char.php?v=' . ucfirst($name) . '&amp;z=' . str_replace("'", "\"+String.fromCharCode(39)+\"", $realm) . '&amp;l=' . $lang . '&amp;u='. $data['guild_armory_link'] .'");\' onmouseout="tooltip.hide();"><strong>' . ucfirst($name) . '</strong></a>';
 
 	if(mb_substr($name, 0, 1, "UTF-8") == '_')
 	{

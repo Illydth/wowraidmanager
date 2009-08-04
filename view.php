@@ -89,12 +89,6 @@ $pageURL = 'view.php?mode=view&raid_id=' . $raid_id . '&';
 
 $profile_id = scrub_input($_SESSION['profile_id']);
 
-// Set the Guild Server for the Page.
-$server = $phpraid_config['guild_server'];
-
-//isset($_GET['Sort']) ? $sort_mode = scrub_input($_GET['Sort']) : $sort_mode = 'name';
-//isset($_GET['SortDescending']) ? $sort_descending = scrub_input($_GET['SortDescending']) : $sort_descending = 0;
-
 // This require sets up the flow control surrounding queueing, cancelling and drafting of users.
 require_once('./signup_flow.php');
 
@@ -309,7 +303,7 @@ if($mode == 'view')
 		$shadow = $data['shadow'];
 
 		if ($phpraid_config['enable_armory'])
-			$name = get_armorychar($data['name'], $phpraid_config['armory_language'], $server);
+			$name = get_armorychar($data['name'], $data['guild']);
 		else
 			$name = $data['name'];
 		
@@ -419,8 +413,7 @@ if($mode == 'view')
 		$actions=queuedFlow($user_perm_group, $phpraid_config, $data, $raid_id, $phprlang, $sort_mode, $sort_descending, $signups);
 
 		if ($phpraid_config['enable_armory'])
-			$name = get_armorychar($name, $phpraid_config['armory_language'], $server);
-
+			$name = get_armorychar($name, $data['guild']);
 		if($priv_raids == 1 || $user_perm_group['RL'] == 1)
 		{
 			$name .= check_dupe($data['profile_id'], $raid_id);
@@ -551,7 +544,7 @@ if($mode == 'view')
 		$actions=canceledFlow($user_perm_group, $phpraid_config, $data, $raid_id, $phprlang, $sort_mode, $sort_descending, $signups);
 
 		if ($phpraid_config['enable_armory'])
-			$name = get_armorychar($name, $phpraid_config['armory_language'], $server);
+			$name = get_armorychar($name, $data['guild']);
 		
 		if($priv_raids == 1 || $user_perm_group['RL'] == 1)
 		{

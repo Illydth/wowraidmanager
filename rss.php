@@ -38,9 +38,9 @@
 			<!DOCTYPE rss PUBLIC "-//Netscape Communications//DTD RSS 0.91//EN" "http://my.netscape.com/publish/formats/rss-0.91.dtd">
 			<rss version="0.91">
 			<channel>
-			<title>' . $phpraid_config['guild_name'] .' Raids</title>
+			<title>' . $phpraid_config['site_name'] .' Raids</title>
 			<link>' . $site_url . '</link>
-			<description>'. $phpraid_config['guild_name'] .' @ '. $phpraid_config['guild_server'] . ' Raids</description>
+			<description>'. $phpraid_config['site_name'] .' @ '. $phpraid_config['site_server'] . ' Raids</description>
 			<language>en-us</language>
 		';
 

@@ -92,9 +92,6 @@ $pageURL = 'teams.php?mode=view&raid_id='.$raid_id.'&';
  * End Record Output Setup for Data Table
  **************************************************************/
 
-// Set the Guild Server for the Page.
-$server = $phpraid_config['guild_server'];
-
 //View Mode, display the page with Current Data.
 if($mode == 'view')
 {
@@ -174,7 +171,7 @@ if($mode == 'view')
 		array_push($team_remove,
 			array(
 				'ID'=>$team['char_id'],
-				'Name'=>get_armorychar($team['name'], $phpraid_config['armory_language'], $server),
+				'Name'=>get_armorychar($team['name'], $team['guild']),
 				'Class'=>$class,
 				'Guild'=>$team['guild'],
 				'Level'=>$team['lvl'],
@@ -318,7 +315,7 @@ if($mode == 'view')
 		array_push($team_add,
 			array(
 				'ID'=>$data['char_id'],
-				'Name'=>get_armorychar($data['name'], $phpraid_config['armory_language'], $server),
+				'Name'=>get_armorychar($data['name'], $data['guild']),
 				'Class'=>$class,
 				'Guild'=>$data['guild'],
 				'Level'=>$data['lvl'],

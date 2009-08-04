@@ -111,7 +111,7 @@ if(isset($_POST['submit']))
 					quote_smart($default), quote_smart($user));
 		$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 		
-		$subject = $phprlang['register_email_header'] . ' ' . $phpraid_config['guild_name'];
+		$subject = $phprlang['register_email_header'] . ' ' . $phpraid_config['site_name'];
 		$msg = $phprlang['register_email_greeting'] . ' ' . $user . ",\n\n" . $phprlang['register_email_subject'];
 		
 		email($email, $subject, $msg);

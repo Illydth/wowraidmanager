@@ -40,9 +40,6 @@ isset($_GET['mode']) ? $mode = scrub_input($_GET['mode']) : $mode = '';
 if($mode == '')
 	log_hack();
 
-// Set the Guild Server for the Page.
-$server = $phpraid_config['guild_server'];
-
 if($mode == 'view')
 {
 	/*************************************************************
@@ -234,7 +231,7 @@ else if($mode == 'details')
 		array_push($chars,
 			array(
 				'ID'=>$data['char_id'],
-				'Name'=>get_armorychar($data['name'], $phpraid_config['armory_language'], $server),
+				'Name'=>get_armorychar($data['name'], $data['guild']), // Buggy
 				'Guild'=>$data['guild'],
 				'Level'=>$data['lvl'],
 				'Race'=>$data['race'],
@@ -247,7 +244,7 @@ else if($mode == 'details')
 				'Shadow'=>$data['shadow'],
 				'Pri_Spec'=>$data['pri_spec'],
 				'Sec_Spec'=>$data['sec_spec'],
-				'Buttons'=>'<a href="users.php?mode=remove_char&amp;n='.$data['name'].'&amp;char_id='.$data['char_id'].'&amp;user_id='.$data['profile_id'].'"><img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''. $phprlang['delete'] .'\');" onMouseout="hideddrivetip();" alt="delete icon"></a>')
+				'Buttons'=>'<a href="users.php?mode=remove_char&amp;n='.$data['name'].'&amp;char_id='.$data['char_id'].'&amp;user_id='.$data['profile_id'].'"><img src="../templates/' . $phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''. $phprlang['delete'] .'\');" onMouseout="hideddrivetip();" alt="delete icon"></a>')
 			);
 	}
 
