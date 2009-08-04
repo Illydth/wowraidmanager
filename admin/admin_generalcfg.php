@@ -125,6 +125,9 @@ $rss_site_url = '<input name="rss_site_url" size="60" type="text" class="post" v
 $rss_export_url = '<input name="rss_export_url" size="60" type="text" class="post" value="' . $phpraid_config['rss_export_url'] . '">';
 $rss_feed_amt = '<input name="rss_feed_amt" size="10" type="text" class="post" value="' . $phpraid_config['rss_feed_amt'] . '">';
 $records_per_page = '<input name="records_per_page" size="60" type="text" class="post" value="' . $phpraid_config['records_per_page'] . '">';
+$site_name = '<input name="site_name" size="60" type="text" class="post" value="' . $phpraid_config['site_name'] . '">';
+$site_server = '<input name="site_server" size="60" type="text" class="post" value="' . $phpraid_config['site_server'] . '">';
+$site_description = '<input name="site_desc" size="75" type="text" class="post" value="' . $phpraid_config['site_description'] . '">';
 
 $buttons = '<input type="submit" name="submit" value="'.$phprlang['submit'].'" class="mainoption"> <input type="reset" name="Reset" value="'.$phprlang['reset'].'" class="liteoption">';
 
@@ -163,6 +166,12 @@ $wrmadminsmarty->assign('config_data',
 		'rss_site_url' => $rss_site_url,
 		'rss_export_url' => $rss_export_url,
 		'rss_feed_amt' => $rss_feed_amt,
+		'site_name' => $site_name,
+		'site_name_text' => $phprlang['configuration_site_name'],
+		'site_server' => $site_server,
+		'site_server_text' => $phprlang['configuration_site_server'],
+		'site_description' => $site_description,
+		'site_description_text' => $phprlang['configuration_site_description'],
 		'records_per_page_text' => $phprlang['configuration_records_per_page'],
 		'records_per_page' => $records_per_page,
 		'buttons' => $buttons,
@@ -203,9 +212,18 @@ if(isset($_POST['submit']))
 	$rss_site_url_p = scrub_input($_POST['rss_site_url'], true);
 	$rss_export_url_p = scrub_input($_POST['rss_export_url'], true);
 	$rss_feed_amt_p = scrub_input($_POST['rss_feed_amt']);
-		
+	$site_name = scrub_input($_POST['site_name']);
+	$site_server = scrub_input($_POST['site_server']);
+	$site_description = scrub_input($_POST['site_desc']);
+	
 	$records_per_page = scrub_input($_POST['records_per_page']);
 	
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'site_name';", quote_smart($site_name));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'site_server';", quote_smart($site_server));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'site_description';", quote_smart($site_description));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'phpraid_addon_link';", quote_smart($p_link));
 	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'header_logo';", quote_smart($h_logo));
