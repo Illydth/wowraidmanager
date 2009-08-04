@@ -35,8 +35,6 @@ require_once('./admin_common.php');
 define("PAGE_LVL","configuration");
 require_once("../includes/authentication.php");	
 
-$server = $phpraid_config['guild_server'];
-
 if($_GET['mode'] == 'delete')
 {
 	$section = scrub_input($_GET['section']);
@@ -300,7 +298,7 @@ else
 		$raiddatum = new_date($phpraid_config['date_format'],$data_raiddetail['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
 
 		array_push($raid, sprintf($phprlang['log_raid'],$date,$time,$data['profile_id'],$data_profdetail['username'],$data['ip'],$data['raid_id'],
-			$raiddatum,$data_raiddetail['location'],$data['type'],$data['char_id'],get_armorychar($data_userdetail['name'],$phpraid_config['armory_language'],$server)));
+			$raiddatum,$data_raiddetail['location'],$data['type'],$data['char_id'],get_armorychar($data_userdetail['name'],$data_userdetail['guild'])));
 
 	}
 
