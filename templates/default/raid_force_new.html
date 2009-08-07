@@ -1,0 +1,24 @@
+{* Smarty Template *}
+<div class="contentHeader">{$force_new.force_new_header}</div><br>
+<div class="contentBody">
+<a name="new"></a>
+<form action="{$force_new.force_form_action}" method="post" name="new_raid_force" id="new_raid_force">
+  <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tr> 
+    <td> 
+      <table width="100%" border="0" cellspacing="1" cellpadding="3" class="dataOutline">
+        <tr> 
+          <td width="200" class="row1"><span class="headmed"><strong>{$force_new.raid_force_name_box_text}</strong></span></td>
+          <td class="row2">{$force_new.raid_force_name_box}</td>
+        </tr>
+        <tr> 
+          <td width="200" class="row1"><span class="headmed"><strong>{$force_new.guild_options_text}</strong></span></td>
+          <td class="row2">{$force_new.guild_options_box}</td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table><br>
+<div align="center" class="button">{$force_new.rf_buttons}</div>
+</form>
+</div>

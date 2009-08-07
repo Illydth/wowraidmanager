@@ -54,6 +54,14 @@ $phprlang['guilds_description'] = 'Guild Description';
 $phprlang['guilds_server'] = 'Guild Server';
 $phprlang['guilds_faction'] = 'Guild Faction';
 $phprlang['guilds_armory_code'] = 'Armory Code for Guild';
+$phprlang['raid_force_header'] = 'Raid Force Listing';
+$phprlang['raid_force_select_text'] = 'Select Raid Force: ';
+$phprlang['raid_force_name_box_text'] = 'Raid Force Name';
+$phprlang['raid_force_guild_options_text'] = 'Guild';
+$phprlang['raid_force_new_header'] = 'New Raid Force Link';
+$phprlang['raid_force_name_missing'] = 'Raid Force Name must not be blank or NULL.';
+$phprlang['raid_force_duplicate'] = 'Duplicate Raid Force Name/Guild Record.';
+$phprlang['raid_force_guild_id_missing'] = 'Guild ID must not be blank or NULL';
 
 // locations
 $phprlang['locations_header'] = 'Saved Locations';
