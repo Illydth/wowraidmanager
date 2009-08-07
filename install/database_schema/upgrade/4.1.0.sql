@@ -37,6 +37,17 @@ INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible
 VALUES (NULL , 'classroletalent1', 'Role Name', '1', '4', NULL, 'role_name', NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
 VALUES (NULL , 'classroletalent1', 'Buttons', '1', '5', NULL, 'buttons', NULL);
+-- Column Header Data - raidforce1 View
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
+VALUES (NULL , 'raidforce1', 'ID', '1', '1', NULL, 'raid_force_id', NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
+VALUES (NULL , 'raidforce1', 'Force Name', '1', '2', NULL, 'raid_force_name', NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
+VALUES (NULL , 'raidforce1', 'Guild ID', '1', '3', NULL, 'guild_id', NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
+VALUES (NULL , 'raidforce1', 'Guild Name', '1', '4', NULL, 'guild_name', NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
+VALUES (NULL , 'raidforce1', 'Buttons', '1', '24', NULL, 'buttons', NULL);
 
 -- Add row to Users1 view and move buttons down a priority.
 UPDATE `wrm_column_headers` SET `position` = '8' WHERE `view_name` = 'users1' AND `column_name` = 'Buttons' LIMIT 1 ;
@@ -113,3 +124,13 @@ DELETE FROM `wrm_config` WHERE `config_name` = 'armory_language';
 INSERT INTO `wrm_config` (`config_name`,`config_value`) VALUES ('site_name', 'WRM');
 INSERT INTO `wrm_config` (`config_name`,`config_value`) VALUES ('site_description', 'WRM');
 INSERT INTO `wrm_config` (`config_name`,`config_value`) VALUES ('site_server', 'Localhost');
+
+-- Raid Force Table Creation
+DROP TABLE IF EXISTS `wrm_raid_force`;
+CREATE TABLE `wrm_raid_force` (
+`raid_force_id` INT( 10 ) NOT NULL AUTO_INCREMENT,
+`raid_force_name` VARCHAR( 100 ) NOT NULL,
+`guild_id` INT( 10 ) NOT NULL ,
+PRIMARY KEY ( `raid_force_name`, `guild_id` ),
+UNIQUE ( `raid_force_id` )
+);

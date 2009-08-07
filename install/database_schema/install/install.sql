@@ -528,6 +528,17 @@ INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible
 VALUES (NULL , 'classroletalent1', 'Role Name', '1', '4', NULL, 'role_name', NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
 VALUES (NULL , 'classroletalent1', 'Buttons', '1', '5', NULL, 'buttons', NULL);
+-- Column Header Data - raidforce1 View
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
+VALUES (NULL , 'raidforce1', 'ID', '1', '1', NULL, 'raid_force_id', NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
+VALUES (NULL , 'raidforce1', 'Force Name', '1', '2', NULL, 'raid_force_name', NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
+VALUES (NULL , 'raidforce1', 'Guild ID', '1', '3', NULL, 'guild_id', NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
+VALUES (NULL , 'raidforce1', 'Guild Name', '1', '4', NULL, 'guild_name', NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
+VALUES (NULL , 'raidforce1', 'Buttons', '1', '24', NULL, 'buttons', NULL);
 
 -- So as not to have to add a 0 or 1 on to the end of everything above, we'll do this separately.
 UPDATE `wrm_column_headers` SET `default_sort` = '1' WHERE `view_name`='raids1' AND `column_name` = 'Date' LIMIT 1 ;
@@ -767,7 +778,13 @@ INSERT INTO `wrm_events` (`event_id`, `zone_desc`, `max`, `exp_id`, `event_type_
 (120, 'PvP Event', 40, 0, 3, '', 'images/instances/Misc_Icons/GEN-PvP.jpg'),
 (121, 'Meeting', 99, 0, 4, '', 'images/instances/Misc_Icons/GEN-Meeting.jpg'),
 (122, 'Ulduar', 10, 3, 1, 'Ulduar', 'images/instances/WotLK_Icons/10-Ulduar.jpg'),
-(123, 'Ulduar - Heroic', 25, 3, 1, 'Ulduar (Heroic)', 'images/instances/WotLK_Icons/25-Ulduar.jpg');
+(123, 'Ulduar - Heroic', 25, 3, 1, 'Ulduar (Heroic)', 'images/instances/WotLK_Icons/25-Ulduar.jpg'),
+(124, 'Trial - Champion', 5, 3, 2, 'Trial of the Champion', 'images/instances/WotLK_Icons/5-Trial-of-the-Champion.jpg'),
+(125, 'Trial - Champion - Heroic', 5, 3, 2, 'Trial of the Champion (Heroic)', 'images/instances/WotLK_Icons/5-Trial-of-the-Champion-Heroic.jpg'), 
+(126, 'Trial - Crusader - 10 man', 10, 3, 1, 'Trial of the Crusader (10)', 'images/instances/WotLK_Icons/10-Trial-of-the-Crusader.jpg'),
+(127, 'Trial - Crusader - 25 man', 25, 3, 1, 'Trial of the Crusader (25)', 'images/instances/WotLK_Icons/25-Trial-of-the-Crusader.jpg'),
+(128, 'Trial - Grand Crusader - 10 man', 10, 3, 1, 'Trial of the Grand Crusader (10)', 'images/instances/WotLK_Icons/10-Trial-of-the-Grand-Crusader.jpg'),
+(129, 'Trial - Grand Crusader - 25 man', 25, 3, 1, 'Trial of the Grand Crusader (25)', 'images/instances/WotLK_Icons/25-Trial-of-the-Grand-Crusader.jpg');
 
 -- Event Type Table Creation
 DROP TABLE IF EXISTS `wrm_event_type`;
@@ -1036,6 +1053,16 @@ CREATE TABLE `wrm_raid_class_lmt` (
   `class_id` varchar(100) NOT NULL,
   `lmt` int(2) NOT NULL,
   PRIMARY KEY  (`raid_id`,`class_id`)
+);
+
+-- Raid Force Table
+DROP TABLE IF EXISTS `wrm_raid_force`;
+CREATE TABLE `wrm_raid_force` (
+`raid_force_id` INT( 10 ) NOT NULL AUTO_INCREMENT,
+`raid_force_name` VARCHAR( 100 ) NOT NULL,
+`guild_id` INT( 10 ) NOT NULL ,
+PRIMARY KEY ( `raid_force_name`, `guild_id` ),
+UNIQUE ( `raid_force_id` )
 );
 
 -- Role Limits per Raid Table
