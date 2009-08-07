@@ -93,11 +93,17 @@ if($_GET['mode'] == 'view') {
 			if ($data['class'] == $global_class['class_id'])
 				$class = $phprlang[$global_class['lang_index']];
 				
+		// Get the Guild Name to Display instead of Just the ID
+		$sql = sprintf("SELECT guild_name FROM " . $phpraid_config['db_prefix'] . "guilds WHERE guild_id=%s",quote_smart($data['guild']));
+		$guild_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$guild_data = $db_raid->sql_fetchrow($guild_result, true);
+		$guild_name = $guild_data['guild_name'];
+		
 		array_push($chars,
 			array(
 				'ID'=>$data['char_id'],
 				'Name'=>$charname,
-				'Guild'=>$data['guild'],
+				'Guild'=>$guild_name,
 				'Level'=>$data['lvl'],
 				'Race'=>$race,
 				'Class'=>$class,

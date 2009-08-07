@@ -36,11 +36,8 @@ $priv_announcement=scrub_input($_SESSION['priv_announcements']);
 $priv_config=scrub_input($_SESSION['priv_configuration']);
 $priv_guilds=scrub_input($_SESSION['priv_guilds']);
 $priv_locations=scrub_input($_SESSION['priv_locations']);
-$priv_logs=scrub_input($_SESSION['priv_logs']);
-$priv_permissions=scrub_input($_SESSION['priv_permissions']);
 $priv_profile=scrub_input($_SESSION['priv_profile']);
 $priv_raids=scrub_input($_SESSION['priv_raids']);
-$priv_users=scrub_input($_SESSION['priv_users']);
 $logged_in=scrub_input($_SESSION['session_logged_in']);
 
 // time variables

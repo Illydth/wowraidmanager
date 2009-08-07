@@ -68,9 +68,6 @@ $pageURL = 'roster.php?';
  * End Record Output Setup for Data Table
  **************************************************************/
 
-// Set the Guild Server for the Page.
-$server = $phpraid_config['guild_server'];
-
 // for now, we'll let everyone view the character list
 $sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "chars";
 $result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
@@ -84,7 +81,7 @@ while($data = $db_raid->sql_fetchrow($result, true)) {
 	$data_profdetail = $db_raid->sql_fetchrow($data_result);
 	
 	if ($phpraid_config['enable_armory'])
-		$charname = get_armorychar($data['name'], $phpraid_config['armory_language'], $server);
+		$charname = get_armorychar($data['name'], $data['guild']);
 	else
 		$charname = $data['name'];
 
@@ -96,12 +93,18 @@ while($data = $db_raid->sql_fetchrow($result, true)) {
 	foreach ($wrm_global_classes as $global_class)
 		if ($data['class'] == $global_class['class_id'])
 			$class = $phprlang[$global_class['lang_index']];
-				
+
+	// Get the Guild Name to Display instead of Just the ID
+	$sql = sprintf("SELECT guild_name FROM " . $phpraid_config['db_prefix'] . "guilds WHERE guild_id=%s",quote_smart($data['guild']));
+	$guild_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$guild_data = $db_raid->sql_fetchrow($guild_result, true);
+	$guild_name = $guild_data['guild_name'];
+						
 	array_push($chars,
 		array(
 			'ID'=>$data['char_id'],
 			'Name'=> $charname,
-			'Guild'=>$data['guild'],
+			'Guild'=>$guild_name,
 			'Level'=>$data['lvl'],
 			'Race'=>$race,
 			'Class'=>$class,
@@ -117,7 +120,7 @@ while($data = $db_raid->sql_fetchrow($result, true)) {
 	);
 }
 
-if(scrub_input($_SESSION['priv_users'] != 1))
+if(scrub_input($_SESSION['priv_configuration'] != 1))
 {
 	hideCol('Profile');
 }

@@ -212,18 +212,6 @@ if($mode == 'view')
 			$team_name=$teamrow['team_name'];
 		}
 
-		// okay, push the value into the array after we
-		// get all the character and team information from the database.
-		//$sql = sprintf("SELECT " . $phpraid_config['db_prefix'] . "chars.*, " . $phpraid_config['db_prefix'] . "teams.team_name " .
-		//				"LEFT JOIN " . $phpraid_config['db_prefix'] . "chars, " . $phpraid_config['db_prefix'] . "teams " .
-		//				"WHERE " .$phpraid_config['db_prefix'] . "chars.char_id=%s " .
-		//				"and " .$phpraid_config['db_prefix'] . "chars.char_id=" .$phpraid_config['db_prefix'] . "teams.char_id " .
-		//				"and " .$phpraid_config['db_prefix'] . "teams.raid_id=%s",quote_smart($signups['char_id']),quote_smart($raid_id));
-		//$data_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-		//$data = $db_raid->sql_fetchrow($data_result, true);
-
-		//$team_name=$data['team_name'];
-
 		/**********************
 		 * Buttons applicable to users who are Signed Up (drafted) for a raid.  Buttons for Queued and Cancelled
 		 * Character signups are below.
@@ -312,7 +300,11 @@ if($mode == 'view')
 		if($priv_raids == 1 || $user_perm_group['RL'] == 1)
 		{
 			$name .= check_dupe($data['profile_id'], $raid_id);
-			$guildname = $data['guild'];
+			// Get the Guild Name to Display instead of Just the ID
+			$sql = sprintf("SELECT guild_name FROM " . $phpraid_config['db_prefix'] . "guilds WHERE guild_id=%s",quote_smart($data['guild']));
+			$guild_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+			$guild_data = $db_raid->sql_fetchrow($guild_result, true);
+			$guildname = $guild_data['guild_name'];
 		}
 
 		// now that we have the row, figure out what class or role and push into corresponding array
@@ -414,10 +406,15 @@ if($mode == 'view')
 
 		if ($phpraid_config['enable_armory'])
 			$name = get_armorychar($name, $data['guild']);
+
 		if($priv_raids == 1 || $user_perm_group['RL'] == 1)
 		{
 			$name .= check_dupe($data['profile_id'], $raid_id);
-			$guildname = $data['guild'];
+			// Get the Guild Name to Display instead of Just the ID
+			$sql = sprintf("SELECT guild_name FROM " . $phpraid_config['db_prefix'] . "guilds WHERE guild_id=%s",quote_smart($data['guild']));
+			$guild_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+			$guild_data = $db_raid->sql_fetchrow($guild_result, true);
+			$guildname = $guild_data['guild_name'];
 		}
 
 		//Create the Signup Spec Dropdown.
@@ -549,7 +546,12 @@ if($mode == 'view')
 		if($priv_raids == 1 || $user_perm_group['RL'] == 1)
 		{
 			$name .= check_dupe($data['profile_id'], $raid_id);
-			$guildname = $data['guild'];
+
+			// Get the Guild Name to Display instead of Just the ID
+			$sql = sprintf("SELECT guild_name FROM " . $phpraid_config['db_prefix'] . "guilds WHERE guild_id=%s",quote_smart($data['guild']));
+			$guild_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+			$guild_data = $db_raid->sql_fetchrow($guild_result, true);
+			$guildname = $guild_data['guild_name'];
 		}
 
 		//Create the Signup Spec Dropdown.
