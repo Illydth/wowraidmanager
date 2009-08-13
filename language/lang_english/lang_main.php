@@ -64,7 +64,7 @@ $phprlang['guild_armory_link'] = 'Armory Link';
 $phprlang['guild_armory_code'] = 'Armory Code';
 $phprlang['guild_id'] = 'Guild ID';
 $phprlang['raid_force_id'] = 'Raid Force ID';
-$phprlang['raid_force_name'] = 'Raid Force Name';
+$phprlang['raid_force_name'] = 'Raid Force';
 $phprlang['id'] = 'ID';
 $phprlang['invite_time'] = 'Invite Time';
 $phprlang['level'] = 'Level';
@@ -110,6 +110,7 @@ $phprlang['role_image'] = 'Role Image';
 $phprlang['talent_tree'] = 'Talent Tree';
 $phprlang['display_text'] = 'Display Text';
 $phprlang['perm_mod'] = 'Update Permissions';
+$phprlang['all'] = 'All';
 
 // roles
 $phprlang['role_none'] = '-';
