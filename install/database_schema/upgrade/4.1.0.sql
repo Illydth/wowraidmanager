@@ -48,6 +48,11 @@ INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible
 VALUES (NULL , 'raidforce1', 'Guild Name', '1', '4', NULL, 'guild_name', NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
 VALUES (NULL , 'raidforce1', 'Buttons', '1', '24', NULL, 'buttons', NULL);
+-- Column Header Data - raid1 View UPDATE
+UPDATE `wrm_column_headers` SET `position` = '11' WHERE `column_name` = 'Buttons' and `view_name` = 'raids1' LIMIT 1 ;
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
+VALUES (NULL , 'raids1', 'Force Name', '1', '10', NULL, 'raid_force_name', NULL);
+
 
 -- Add row to Users1 view and move buttons down a priority.
 UPDATE `wrm_column_headers` SET `position` = '8' WHERE `view_name` = 'users1' AND `column_name` = 'Buttons' LIMIT 1 ;
@@ -134,3 +139,7 @@ CREATE TABLE `wrm_raid_force` (
 PRIMARY KEY ( `raid_force_name`, `guild_id` ),
 UNIQUE ( `raid_force_id` )
 );
+
+-- Raid Table Update/Field Addition
+ALTER TABLE `wrm_raids` ADD `raid_force_id` INT( 10 ) NOT NULL DEFAULT '0',
+ADD INDEX ( raid_force_id ); 

@@ -210,21 +210,23 @@ VALUES (NULL , 'raids1', 'ID', '1', '1', NULL, 'id', NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
 VALUES (NULL , 'raids1', 'Date', '1', '2', NULL, 'date', 'wrmdate');
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'raids1', 'Dungeon', '1', '3', NULL, 'raids_dungeon', NULL);
+VALUES (NULL , 'raids1', 'Force Name', '1', '3', NULL, 'raid_force_name', NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'raids1', 'Invite Time', '1', '4', NULL, 'invite_time', 'wrmtime');
+VALUES (NULL , 'raids1', 'Dungeon', '1', '4', NULL, 'raids_dungeon', NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'raids1', 'Start Time', '1', '5', NULL, 'start_time', 'wrmtime');
+VALUES (NULL , 'raids1', 'Invite Time', '1', '5', NULL, 'invite_time', 'wrmtime');
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'raids1', 'Creator', '1', '6', NULL, 'officer', NULL);
+VALUES (NULL , 'raids1', 'Start Time', '1', '6', NULL, 'start_time', 'wrmtime');
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'raids1', '@class', '1', '7', NULL, NULL, NULL);
+VALUES (NULL , 'raids1', 'Creator', '1', '7', NULL, 'officer', NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'raids1', '@role', '1', '17', NULL, NULL, NULL);
+VALUES (NULL , 'raids1', '@class', '1', '8', NULL, NULL, NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'raids1', 'Totals', '1', '23', NULL, 'totals', NULL);
+VALUES (NULL , 'raids1', '@role', '1', '9', NULL, NULL, NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'raids1', 'Buttons', '1', '24', NULL, 'buttons', NULL);
+VALUES (NULL , 'raids1', 'Totals', '1', '10', NULL, 'totals', NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
+VALUES (NULL , 'raids1', 'Buttons', '1', '11', NULL, 'buttons', NULL);
 -- Column Header Data - Index1 View
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
 VALUES (NULL , 'index1', 'Signup', '1', '1', NULL, 'signup', NULL);
@@ -1043,7 +1045,9 @@ CREATE TABLE `wrm_raids` (
   `max` varchar(255) NOT NULL default '',
   `event_type` tinyint(1) NOT NULL default '1',
   `event_id` int(10) NOT NULL default '119',
-  PRIMARY KEY  (`raid_id`)
+  `raid_force_id` int(10) NOT NULL default '0',
+  PRIMARY KEY  (`raid_id`),
+  KEY `raid_force_id` (`raid_force_id`)
 ) ;
 
 -- Class Limits per Raid Table
