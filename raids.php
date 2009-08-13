@@ -178,13 +178,26 @@ if($_GET['mode'] == 'view')
 			$raid_role_array[$role_name['role_name']] = $raid_role_data['lmt'];
 			$role_color_count[$role_name['role_name']] = get_coloredcount($role_name['role_name'], $count[$raid_role_data['role_id']], $raid_role_array[$role_name['role_name']], $count2[$raid_role_data['role_id']]);
 		}
-					
+
+		// Get the Raid Force ID from the Raid.
+		if ($data['raid_force_id'] == 0)
+			$raid_force = "Any";
+		else
+		{
+			$sql = sprintf("SELECT raid_force_name FROM " . $phpraid_config['db_prefix'] . "raid_force WHERE raid_force_id = %s", quote_smart($data['raid_force_id']));
+			$raid_force_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+			$raid_force_data = $db_raid->sql_fetchrow($raid_force_result, true);
+			
+			$raid_force = $raid_force_data['raid_force_name'];
+		}
+		
 		// current raids
 		if($data['old'] == 0) {
 			array_push($current,
 				array(
 					'ID'=>$data['raid_id'],
 					'Date'=>$date,
+					'Force Name'=>$raid_force,
 					'Dungeon'=>$location,
 					'Invite Time'=>$invite,
 					'Start Time'=>$start,
@@ -205,6 +218,7 @@ if($_GET['mode'] == 'view')
 				array(
 					'ID'=>$data['raid_id'],
 					'Date'=>$date,
+					'Force Name'=>$raid_force,
 					'Dungeon'=>UBB2($location),
 					'Invite Time'=>$invite,
 					'Start Time'=>$start,
@@ -293,6 +307,7 @@ elseif($_GET['mode'] == 'new')
 	{
 		$location = scrub_input($_POST['location']);
 		$date = str_replace(" ", "", scrub_input($_POST['date']));
+		$raid_force_id = scrub_input($_POST['raid_force_id']);
 		$tag = scrub_input($_POST['tag']);
 		if ($tag == '')
 			$tag = "1";
@@ -437,6 +452,7 @@ elseif($_GET['mode'] == 'new')
 			$max_lvl_value = scrub_input($_POST['max_lvl']);
 			$location_value = scrub_input($_POST['location']);
 			$date_value = scrub_input($_POST['date']);
+			$raid_force_id = scrub_input($_POST['raid_force_id']);
 			$i_time_hour_value = scrub_input($_POST['i_time_hour']);
 			$i_time_minute_value = scrub_input($_POST['i_time_minute']);
 			$i_time_ampm_value = scrub_input($_POST['i_time_ampm']);
@@ -456,6 +472,21 @@ elseif($_GET['mode'] == 'new')
 		else
 			$date = '<input type="text" name="date" size="20" class="post" READONLY><a href="javascript:showCal(\'Calendar1\')"><span class="gen"> [+]</span></a>';
 
+		// This code sets up the selection box for raid force from the raid_force table.
+		$raid_force_box = '<select name="raid_force_id" class="post">';
+		$raid_force_box .= "<option SELECTED value=\"0\">" . $phprlang['all'] ."</option>";
+		
+		$sql = "SELECT raid_force_id, raid_force_name FROM " . $phpraid_config['db_prefix'] . "raid_force";
+		$raid_force_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		while($raid_force_data = $db_raid->sql_fetchrow($raid_force_result, true))
+		{
+			$raid_force_box .= "<option ";
+			if ($raid_force_id == $raid_force_data['raid_force_id'])
+				$raid_force_box .= "SELECTED ";
+			$raid_force_box .= "value=\"" . $raid_force_data['raid_force_id'] . "\">" . $raid_force_data['raid_force_name'] ."</option>";	
+		}
+		$raid_force_box .= '</select>';
+						
 		// invite time
 		$i_time_hour = '<select name="i_time_hour" class="post">';
 		for($i = 1; $i <= $phpraid_config['ampm']; $i++)
@@ -722,6 +753,8 @@ elseif($_GET['mode'] == 'new')
 				'max_text'=>$phprlang['raids_max'],
 				'minlvl_text'=>$phprlang['raids_min_lvl'],
 				'maxlvl_text'=>$phprlang['raids_max_lvl'],
+				'raid_force'=>$raid_force_box,
+				'raid_force_text'=>$phprlang['raid_force_name'],
 			)
 		);
 		
@@ -785,6 +818,7 @@ elseif($_GET['mode'] == 'new')
 		$location = scrub_input(DEUBB($_POST['location']));
 
 		$date = scrub_input($_POST['date']);
+		$raid_force_id = scrub_input($_POST['raid_force_id']);
 		$i_time_hour_value = scrub_input($_POST['i_time_hour']);
 		$i_time_minute_value = scrub_input($_POST['i_time_minute']);
 		$i_time_ampm_value = scrub_input($_POST['i_time_ampm']);
@@ -816,10 +850,10 @@ elseif($_GET['mode'] == 'new')
 
 		$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "raids (`description`,`freeze`,`invite_time`,
 				`location`,`officer`,`old`,`start_time`,
-				`min_lvl`,`max_lvl`,`max`,`event_type`,`event_id`)	VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
+				`min_lvl`,`max_lvl`,`max`,`event_type`,`event_id`,`raid_force_id`)	VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
 				quote_smart($description),quote_smart($freeze),quote_smart($invite_time),quote_smart($location),
 				quote_smart($username),quote_smart('0'),quote_smart($start_time),
-				quote_smart($min_lvl),quote_smart($max_lvl),quote_smart($max),quote_smart($tag),quote_smart($event_id));
+				quote_smart($min_lvl),quote_smart($max_lvl),quote_smart($max),quote_smart($tag),quote_smart($event_id),quote_smart($raid_force_id));
 
 		$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
 
@@ -870,6 +904,7 @@ elseif($_GET['mode'] == 'edit')
 		$max = scrub_input($_POST['max']);
 		$min_lvl = scrub_input($_POST['min_lvl']);
 		$max_lvl = scrub_input($_POST['max_lvl']);
+		$raid_force_id = scrub_input($_POST['raid_force_id']);
 
 		// Handle Classes
 		$bad_class_limit = FALSE;
@@ -955,6 +990,7 @@ elseif($_GET['mode'] == 'edit')
 			$max_lvl_value = scrub_input($_POST['max_lvl']);
 			$location_value = scrub_input($_POST['location']);
 			$date_value = scrub_input($_POST['date']);
+			$raid_force_id = scrub_input($_POST['raid_force_id']);
 			$i_time_hour_value = scrub_input($_POST['i_time_hour']);
 			$i_time_minute_value = scrub_input($_POST['i_time_minute']);
 			$i_time_ampm_value = scrub_input($_POST['i_time_ampm']);
@@ -975,6 +1011,7 @@ elseif($_GET['mode'] == 'edit')
 			$tag = $data['event_type'];
 			$event_id = $data['event_id'];
 			$max = $data['max'];
+			$raid_force_id = $data['raid_force_id'];
 			
 			// Now that we have the raid data, we need to retrieve limit data based upon Raid ID.
 			// Get Class Limits and set Colored Counts
@@ -1023,6 +1060,21 @@ elseif($_GET['mode'] == 'edit')
 		else
 			$date = '<input type="text" name="date" size="20" class="post" READONLY><a href="javascript:showCal(\'Calendar1\')"><span class="gen"> [+]</span></a>';
 
+		// This code sets up the selection box for raid force from the raid_force table.
+		$raid_force_box = '<select name="raid_force_id" class="post">';
+		$raid_force_box .= "<option SELECTED value=\"0\">" . $phprlang['all'] ."</option>";
+		
+		$sql = "SELECT raid_force_id, raid_force_name FROM " . $phpraid_config['db_prefix'] . "raid_force";
+		$raid_force_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		while($raid_force_data = $db_raid->sql_fetchrow($raid_force_result, true))
+		{
+			$raid_force_box .= "<option ";
+			if ($raid_force_id == $raid_force_data['raid_force_id'])
+				$raid_force_box .= "SELECTED ";
+			$raid_force_box .= "value=\"" . $raid_force_data['raid_force_id'] . "\">" . $raid_force_data['raid_force_name'] ."</option>";	
+		}
+		$raid_force_box .= '</select>';
+			
 		// invite time
 		$i_time_hour = '<select name="i_time_hour" class="post">';
 		for($i = 1; $i <= $phpraid_config['ampm']; $i++)
@@ -1257,6 +1309,8 @@ elseif($_GET['mode'] == 'edit')
 				'max_text'=>$phprlang['raids_max'],
 				'minlvl_text'=>$phprlang['raids_min_lvl'],
 				'maxlvl_text'=>$phprlang['raids_max_lvl'],
+				'raid_force'=>$raid_force_box,
+				'raid_force_text'=>$phprlang['raid_force_name'],
 			)
 		);
 		
@@ -1320,6 +1374,7 @@ elseif($_GET['mode'] == 'edit')
 		$location = scrub_input(DEUBB($_POST['location']));
 
 		$date = scrub_input($_POST['date']);
+		$raid_force_id = scrub_input($_POST['raid_force_id']);
 		$i_time_hour_value = scrub_input($_POST['i_time_hour']);
 		$i_time_minute_value = scrub_input($_POST['i_time_minute']);
 		$i_time_ampm_value = scrub_input($_POST['i_time_ampm']);
@@ -1350,9 +1405,9 @@ elseif($_GET['mode'] == 'edit')
 		$start_time = new_mktime($s_time_hour_value,$s_time_minute_value,0,$month,$day,$year,$phpraid_config['timezone'] + $phpraid_config['dst']);
 
 		$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "raids SET location=%s,description=%s,invite_time=%s,start_time=%s,
-				freeze=%s,max=%s,event_type=%s,event_id=%s,old='0',min_lvl=%s,max_lvl=%s WHERE raid_id=%s",
+				freeze=%s,max=%s,event_type=%s,event_id=%s,old='0',min_lvl=%s,max_lvl=%s,raid_force_id=%s WHERE raid_id=%s",
 				quote_smart($location),quote_smart($description),quote_smart($invite_time),quote_smart($start_time), quote_smart($freeze),
-				quote_smart($max),quote_smart($tag),quote_smart($event_id),quote_smart($min_lvl),quote_smart($max_lvl),quote_smart($id));
+				quote_smart($max),quote_smart($tag),quote_smart($event_id),quote_smart($min_lvl),quote_smart($max_lvl),quote_smart($raid_force_id),quote_smart($id));
 
 		$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 
