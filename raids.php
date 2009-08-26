@@ -648,7 +648,7 @@ elseif($_GET['mode'] == 'new')
 		}
 			
 		// setup vars for raid templates
-		$raid_name = '<select name="name" id="name" class="post" onChange="MM_jumpMenu(\'parent\',this,0)">
+		$raid_name = '<select name="name" id="name" class="post" onChange="MM_jumpMenu(\'self\',this,0)">
 					<option value=""></option>';
 
 		if ($priv_raids == 1)

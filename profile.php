@@ -705,13 +705,13 @@ if($db_raid->sql_numrows($result) == 0) {
 			$sec_options .= "<option value=\"\">".$phprlang['notavailable']."</option>";				
 		
 		// setup output variables for form
-		$guild_output = '<select name="guild" onChange="MM_jumpMenu(\'parent\',this,0)" class="form" style="width:100px">
+		$guild_output = '<select name="guild" onChange="MM_jumpMenu(\'self\',this,0)" class="form" style="width:100px">
 						<option value="profile.php?mode=new">'.$phprlang['form_select'].'</option>' . $guild_options . '</select>';
 			
-		$race_output = '<select name="race" onChange="MM_jumpMenu(\'parent\',this,0)" class="form" style="width:100px">
+		$race_output = '<select name="race" onChange="MM_jumpMenu(\'self\',this,0)" class="form" style="width:100px">
 						<option value="profile.php?mode=new">'.$phprlang['form_select'].'</option>' . $race_options . '</select>';
 
-		$class_output = '<select name="class" onChange="MM_jumpMenu(\'parent\',this,0)" class="form" style="width:100px">
+		$class_output = '<select name="class" onChange="MM_jumpMenu(\'self\',this,0)" class="form" style="width:100px">
 						<option value="profile.php?mode=new">'.$phprlang['form_select'].'</option>' . $class_options . '</select>';
 		
 		if(!isset($_GET['guild'])) {

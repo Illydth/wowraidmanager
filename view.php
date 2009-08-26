@@ -454,7 +454,7 @@ if($mode == 'view')
 			$signup_spec .= $form_use.$data['sec_spec']."\">".$sec_spec_role_name.":".$phprlang[$sec_spec_lang]."</option>";
 		}
 		if(($user_perm_group['admin'])||($user_perm_group['RL'])||($_SESSION['profile_id'] == $data['profile_id']))		
-			$signup_spec_output = '<select name="signup_spec" onChange="MM_jumpMenu(\'parent\',this,0)" class="form">'. $signup_spec . '</select>';		
+			$signup_spec_output = '<select name="signup_spec" onChange="MM_jumpMenu(\'self\',this,0)" class="form">'. $signup_spec . '</select>';		
 		else
 			$signup_spec_output = 'N/A';
 		
@@ -591,7 +591,7 @@ if($mode == 'view')
 			$signup_spec .= $form_use.$data['sec_spec']."\">".$sec_spec_role_name.":".$phprlang[$sec_spec_lang]."</option>";
 		}				
 		if(($user_perm_group['admin'])||($user_perm_group['RL'])||($_SESSION['profile_id'] == $data['profile_id']))		
-			$signup_spec_output = '<select name="signup_spec" onChange="MM_jumpMenu(\'parent\',this,0)" class="form">'. $signup_spec . '</select>';		
+			$signup_spec_output = '<select name="signup_spec" onChange="MM_jumpMenu(\'self\',this,0)" class="form">'. $signup_spec . '</select>';		
 		else
 			$signup_spec_output = 'N/A';
 			

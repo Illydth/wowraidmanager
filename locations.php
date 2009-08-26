@@ -370,7 +370,7 @@ if($_GET['mode'] != 'delete')
 	{
 		// setup new form information
 		// Setup Event Type Select Box.
-		$eventtype = '<select name="event_type" id="event_type" class="post" onChange="MM_jumpMenu(\'parent\',this,0)">
+		$eventtype = '<select name="event_type" id="event_type" class="post" onChange="MM_jumpMenu(\'self\',this,0)">
 					<option value=""></option>';
 
 		$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "event_type";
@@ -389,7 +389,7 @@ if($_GET['mode'] != 'delete')
 		// End Event Type Setup
 
 		// Setup Expansion Select Box.
-		$expansion = '<select name="expansion" id="expansion" class="post" onChange="MM_jumpMenu(\'parent\',this,0)">
+		$expansion = '<select name="expansion" id="expansion" class="post" onChange="MM_jumpMenu(\'self\',this,0)">
 					<option value=""></option>';
 		
 		$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "expansion";
@@ -410,7 +410,7 @@ if($_GET['mode'] != 'delete')
 		// Setup Events Select Box.
 		if ($event_type_id != '' && $expansion_id != '')
 		{
-			$events = '<select name="event" id="event" class="post" onChange="MM_jumpMenu(\'parent\',this,0)">
+			$events = '<select name="event" id="event" class="post" onChange="MM_jumpMenu(\'self\',this,0)">
 						<option value="locations.php?mode=view"></option>';
 			
 			if ($event_type_id == 1 || $event_type_id == 2) // If Dungeons or Raids pull exp_id = 0 also.
@@ -508,7 +508,7 @@ if($_GET['mode'] != 'delete')
 		}
 		
 		// Setup Event Type Select Box.
-		$eventtype = '<select name="event_type" id="event_type" class="post" onChange="MM_jumpMenu(\'parent\',this,0)">
+		$eventtype = '<select name="event_type" id="event_type" class="post" onChange="MM_jumpMenu(\'self\',this,0)">
 					<option value=""></option>';
 
 		$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "event_type";
@@ -528,7 +528,7 @@ if($_GET['mode'] != 'delete')
 		$sql = "SELECT exp_id FROM " . $phpraid_config['db_prefix'] . "events WHERE event_id = " . $event_id;
 		$result2 = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 		$event_data = $db_raid->sql_fetchrow($result2, true);
-		$expansion = '<select name="expansion" id="expansion" class="post" onChange="MM_jumpMenu(\'parent\',this,0)">
+		$expansion = '<select name="expansion" id="expansion" class="post" onChange="MM_jumpMenu(\'self\',this,0)">
 					<option value=""></option>';
 		
 		$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "expansion";
@@ -545,7 +545,7 @@ if($_GET['mode'] != 'delete')
 		// End Expansion Setup
 
 		// Setup Events Select Box.
-		$events = '<select name="event" id="event" class="post" onChange="MM_jumpMenu(\'parent\',this,0)">
+		$events = '<select name="event" id="event" class="post" onChange="MM_jumpMenu(\'self\',this,0)">
 					<option value="locations.php?mode=update&amp;id=' . $id . '"></option>';
 
 		if ($event_type_id == 1 || $event_type_id == 2) // If Dungeons or Raids pull exp_id = 0 also.
