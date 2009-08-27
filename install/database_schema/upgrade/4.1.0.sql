@@ -52,7 +52,12 @@ VALUES (NULL , 'raidforce1', 'Buttons', '1', '24', NULL, 'buttons', NULL);
 UPDATE `wrm_column_headers` SET `position` = '11' WHERE `column_name` = 'Buttons' and `view_name` = 'raids1' LIMIT 1 ;
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
 VALUES (NULL , 'raids1', 'Force Name', '1', '10', NULL, 'raid_force_name', NULL);
-
+-- Column Header Data - location1 View UPDATE
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
+VALUES (NULL , 'location1', 'Force Name', '1', '10', NULL, 'raid_force_name', NULL);
+-- Column Header Data - index1 View UPDATE
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
+VALUES (NULL , 'index1', 'Force Name', '1', '19', NULL, 'raid_force_name', NULL);
 
 -- Add row to Users1 view and move buttons down a priority.
 UPDATE `wrm_column_headers` SET `position` = '8' WHERE `view_name` = 'users1' AND `column_name` = 'Buttons' LIMIT 1 ;
@@ -142,4 +147,7 @@ UNIQUE ( `raid_force_id` )
 
 -- Raid Table Update/Field Addition
 ALTER TABLE `wrm_raids` ADD `raid_force_id` INT( 10 ) NOT NULL DEFAULT '0',
+ADD INDEX ( raid_force_id ); 
+-- Location Table Update/Field Addition
+ALTER TABLE `wrm_locations` ADD `raid_force_id` INT( 10 ) NOT NULL DEFAULT '0',
 ADD INDEX ( raid_force_id ); 

@@ -897,12 +897,48 @@ if($mode == 'view')
 		$raid_notice = '<a href="profile.php?mode=view">' . $phprlang['view_create'] . '</a>';
 	}
 
+	// check if any of their characters belong to the guild that the raid force is specfiying.
+	if ($data['raid_force_id'] != '0')
+	{
+		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raid_force WHERE raid_force_id=%s", quote_smart($data['raid_force_id']));
+		$raid_force_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$char_in_guild_check = false;
+		while($raid_force_data = $db_raid->sql_fetchrow($raid_force_result, true))
+		{
+			$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE 
+								profile_id=%s AND guild=%s", quote_smart($profile_id), 
+							quote_smart($raid_force_data['guild_id']));
+			$char_in_guild_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+			$char_count = $db_raid->sql_numrows($char_in_guild_result);
+			if($char_count > 0)
+				$char_in_guild_check = true;
+		}
+		if (!$char_in_guild_check)
+		{
+			$show_signup = 0;
+			$raid_notice = '<a href="profile.php?mode=view">' . $phprlang['view_create'] . '</a>';
+		}
+	}
+	
 	if($_SESSION['priv_profile'] == 0)
 	{
 		$show_signup = 0;
 		$raid_notice = $phprlang['view_login'];
 	}
 
+	// Get the Raid Force Assignment
+	// Get the Raid Force ID from the Raid.
+	if ($data['raid_force_id'] == 0)
+		$raid_force = "Any";
+	else
+	{
+		$sql = sprintf("SELECT raid_force_name FROM " . $phpraid_config['db_prefix'] . "raid_force WHERE raid_force_id = %s", quote_smart($data['raid_force_id']));
+		$raid_force_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$raid_force_data = $db_raid->sql_fetchrow($raid_force_result, true);
+			
+		$raid_force = $raid_force_data['raid_force_name'];
+	}
+	
 	// finally, icons
 	$class_icons = array();
 	foreach ($wrm_global_classes as $global_class)
@@ -960,6 +996,8 @@ if($mode == 'view')
 			'total_text'=>$phprlang['view_total'],
 			'information_header'=>$phprlang['view_information_header'],
 			'statistics_header'=>$phprlang['view_statistics_header'],
+			'raid_force'=>$raid_force,
+			'raid_force_text'=>$phprlang['raid_force_name'],
 		)
 	);
 
@@ -1538,20 +1576,47 @@ if($show_signup == 1 && $priv_profile == 1)
 	$username = scrub_input($_SESSION['username']);
 
 	// get character list
-	$character = '<select name="character" class="post">';
-	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE profile_id=%s", quote_smart($profile_id));
+	$sql = sprintf("SELECT raid_force_id FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id=%s", quote_smart($raid_id));
 	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-	while($data = $db_raid->sql_fetchrow($result, true))
-	{
-		$sql = sprintf("SELECT lvl FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id=%s", quote_smart($data['char_id']));
-		$result_lvl = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-		$lvl = $db_raid->sql_fetchrow($result_lvl, true);
+	$rf_data = $db_raid->sql_fetchrow($result, true);
+	$raid_force_id = $rf_data['raid_force_id'];
 
-		if($lvl['lvl'] >= $limit['min_lvl'] && $lvl['lvl'] <= $limit['max_lvl'])
-			$character .= '<option value="' . $data['char_id'] . '">' . $data['name'] . '</option>';
+	$character = '<select name="character" class="post">';
+	if ($raid_force_id != 0)
+	{
+		$sql = sprintf("SELECT guild_id FROM " . $phpraid_config['db_prefix'] . "raid_force WHERE raid_force_id=%s", quote_smart($raid_force_id));
+		$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		while($rf_data = $db_raid->sql_fetchrow($result, true))
+		{
+			$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE profile_id=%s and guild=%s", quote_smart($profile_id), quote_smart($rf_data['guild_id']));
+			$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+			while($data = $db_raid->sql_fetchrow($result, true))
+			{
+				$sql = sprintf("SELECT lvl FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id=%s", quote_smart($data['char_id']));
+				$result_lvl = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+				$lvl = $db_raid->sql_fetchrow($result_lvl, true);
+		
+				if($lvl['lvl'] >= $limit['min_lvl'] && $lvl['lvl'] <= $limit['max_lvl'])
+					$character .= '<option value="' . $data['char_id'] . '">' . $data['name'] . '</option>';
+			}			
+		}
+	}
+	else
+	{
+		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE profile_id=%s", quote_smart($profile_id));
+		$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		while($data = $db_raid->sql_fetchrow($result, true))
+		{
+			$sql = sprintf("SELECT lvl FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id=%s", quote_smart($data['char_id']));
+			$result_lvl = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+			$lvl = $db_raid->sql_fetchrow($result_lvl, true);
+	
+			if($lvl['lvl'] >= $limit['min_lvl'] && $lvl['lvl'] <= $limit['max_lvl'])
+				$character .= '<option value="' . $data['char_id'] . '">' . $data['name'] . '</option>';
+		}
 	}
 	$character .= '</select>';
-
+	
 	if($phpraid_config['auto_queue'] == 1)
 	{
 		$queue = '

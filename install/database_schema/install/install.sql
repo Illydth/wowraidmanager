@@ -237,17 +237,19 @@ VALUES (NULL , 'index1', 'Date', '1', '3', NULL, 'date', 'wrmdate');
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
 VALUES (NULL , 'index1', 'Dungeon', '1', '4', NULL, 'raids_dungeon', NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'index1', 'Invite Time', '1', '5', NULL, 'invite_time', 'wrmtime');
+VALUES (NULL , 'index1', 'Force Name', '1', '5', NULL, 'raid_force_name', NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'index1', 'Start Time', '1', '6', NULL, 'start_time', 'wrmtime');
+VALUES (NULL , 'index1', 'Invite Time', '1', '6', NULL, 'invite_time', 'wrmtime');
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'index1', 'Creator', '1', '7', NULL, 'officer', NULL);
+VALUES (NULL , 'index1', 'Start Time', '1', '7', NULL, 'start_time', 'wrmtime');
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'index1', '@class', '1', '8', NULL, NULL, NULL);
+VALUES (NULL , 'index1', 'Creator', '1', '8', NULL, 'officer', NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'index1', '@role', '1', '18', NULL, NULL, NULL);
+VALUES (NULL , 'index1', '@class', '1', '9', NULL, NULL, NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'index1', 'Totals', '1', '24', NULL, 'totals', NULL);
+VALUES (NULL , 'index1', '@role', '1', '10', NULL, NULL, NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
+VALUES (NULL , 'index1', 'Totals', '1', '11', NULL, 'totals', NULL);
 -- Column Header Data - Announcements1 View
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
 VALUES (NULL , 'announcements1', 'ID', '1', '1', NULL, 'id', NULL);
@@ -335,21 +337,23 @@ VALUES (NULL , 'location1', 'Name', '1', '2', NULL, 'name', NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
 VALUES (NULL , 'location1', 'Dungeon', '1', '3', NULL, 'raids_dungeon', NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'location1', 'Event Type', '1', '4', NULL, 'raids_eventtype_text', NULL);
+VALUES (NULL , 'location1', 'Force Name', '1', '4', NULL, 'raid_force_name', NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'location1', 'Min Level', '1', '5', NULL, 'min_lvl', NULL);
+VALUES (NULL , 'location1', 'Event Type', '1', '5', NULL, 'raids_eventtype_text', NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'location1', 'Max Level', '1', '6', NULL, 'max_lvl', NULL);
+VALUES (NULL , 'location1', 'Min Level', '1', '6', NULL, 'min_lvl', NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'location1', '@class', '1', '7', NULL, NULL, NULL);
+VALUES (NULL , 'location1', 'Max Level', '1', '7', NULL, 'max_lvl', NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'location1', '@role', '1', '17', NULL, NULL, NULL);
+VALUES (NULL , 'location1', '@class', '1', '8', NULL, NULL, NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'location1', 'Raid Max', '1', '23', NULL, 'max_raiders', NULL);
+VALUES (NULL , 'location1', '@role', '1', '9', NULL, NULL, NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'location1', 'Locked', '1', '24', NULL, 'locked_header', NULL);
+VALUES (NULL , 'location1', 'Raid Max', '1', '10', NULL, 'max_raiders', NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'location1', 'Buttons', '1', '25', NULL, 'buttons', NULL);
+VALUES (NULL , 'location1', 'Locked', '1', '11', NULL, 'locked_header', NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
+VALUES (NULL , 'location1', 'Buttons', '1', '12', NULL, 'buttons', NULL);
 -- Column Header Data - Char1 View
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
 VALUES (NULL , 'char1', 'ID', '1', '1', NULL, 'id', NULL);
@@ -875,7 +879,9 @@ CREATE TABLE `wrm_locations` (
   `locked` tinyint(1) NOT NULL default '0',
   `event_type` tinyint(2) NOT NULL default '1',
   `event_id` int(10) NOT NULL default '119',
+  `raid_force_id` int(10) NOT NULL default '0',
   PRIMARY KEY  (`location_id`)
+  KEY `raid_force_id` (`raid_force_id`)
 ) ;
 
 -- Locations Data
