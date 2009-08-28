@@ -77,7 +77,8 @@ class Output_Data
 				$guild_options .= "SELECTED ";
 			$guild_options .= "value=\"".$guild_data['guild_id']."\">".$guild_data['guild_name']."</option>";
 		}
-		$guild_select_box = '<select name="guild" class="form" id="guild">' .$guild_options. '</select>';
+		$guild_select_box = '<select name="guild" class="form" id="guild">
+							<option value="0">All</option>' .$guild_options. '</select>';
 		
 		$text .= '<form method="post" action="lua_output.php?raid_id=' . $raid_id . '&amp;name=post">';
 		$text .= '<table width="300" align="center">';
