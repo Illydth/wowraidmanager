@@ -475,7 +475,6 @@ elseif($_GET['mode'] == 'new')
 		// This code sets up the selection box for raid force from the raid_force table.
 		$raid_force_box = '<select name="raid_force_id" class="post">';
 		$raid_force_box .= "<option SELECTED value=\"0\">" . $phprlang['all'] ."</option>";
-		
 		$sql = "SELECT raid_force_id, raid_force_name FROM " . $phpraid_config['db_prefix'] . "raid_force";
 		$raid_force_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 		while($raid_force_data = $db_raid->sql_fetchrow($raid_force_result, true))
@@ -486,7 +485,21 @@ elseif($_GET['mode'] == 'new')
 			$raid_force_box .= "value=\"" . $raid_force_data['raid_force_id'] . "\">" . $raid_force_data['raid_force_name'] ."</option>";	
 		}
 		$raid_force_box .= '</select>';
-						
+
+		//Re-Occurance Items
+		if ($_SESSION['priv_raids'])
+		{
+			$reoccuring='<input name="reoccuring" type="checkbox" value="1" class="post">';
+			
+			$reoccur_interval='<select name="reoccur_interval" class="post">';
+			$reoccur_interval .= '<option value="daily">' . $phprlang['daily'] . '</option>';
+			$reoccur_interval .= '<option value="weekly">' . $phprlang['weekly'] . '</option>';
+			$reoccur_interval .= '<option value="monthly">' . $phprlang['monthly'] . '</option>';
+			$reoccur_interval .= '</select>';
+			
+			$reoccur_length = '<input type="text" name="reoccur_length" size="5" class="post">';
+		}
+			
 		// invite time
 		$i_time_hour = '<select name="i_time_hour" class="post">';
 		for($i = 1; $i <= $phpraid_config['ampm']; $i++)

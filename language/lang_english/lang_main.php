@@ -112,6 +112,15 @@ $phprlang['display_text'] = 'Display Text';
 $phprlang['perm_mod'] = 'Update Permissions';
 $phprlang['all'] = 'All';
 
+
+// Reoccurance Text Items
+$phprlang['daily'] = 'Daily';
+$phprlang['weekly'] = 'Weekly (On This Day of the Week)';
+$phprlang['monthly'] = 'Monthly (On This Day of the Month)';
+$phprlang['reoccurance'] = 'Reoccuring Raid?<br><a href="../docs/reoccuring_raids.html" target="_blank">help?</a>';
+$phprlang['reoccur_interval'] = 'Reoccurance Interval';
+$phprlang['reoccur_length'] = 'Number of Intervals to Show';
+
 // roles
 $phprlang['role_none'] = '-';
 
