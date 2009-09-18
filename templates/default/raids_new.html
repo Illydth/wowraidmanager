@@ -50,6 +50,31 @@
 			</tr>
 		</table>
 		<br>
+		{if $page.mode  == "new"} 
+			<div class="contentHeader">{$page.reoccurance_header}</div>
+			<br>
+			<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+				<tr>
+					<td>
+						<table width="100%" border="0" cellspacing="1" cellpadding="3" class="dataOutline">
+							<tr>
+								<td width="200" class="row1"><strong>{$page.recurring_check_text}</strong></td>
+								<td class="row2">{$page.recurring_checkbox}</td>
+							</tr>
+							<tr>
+								<td width="200" class="row1"><strong>{$page.recur_interval_text}</strong></td>
+								<td class="row2">{$page.recur_interval}</td>
+							</tr>
+							<tr>
+								<td width="200" class="row1"><strong>{$page.recur_length_text}</strong></td>
+								<td class="row2">{$page.recur_length}</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+			</table>
+			<br>
+		{/if}
 		<div class="contentHeader">
 			{$page.limits_text}
 		</div>

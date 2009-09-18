@@ -86,10 +86,12 @@ if($_GET['mode'] == 'view')
 	// two arrays to pass to our report class, current and previous raids
 	$current = array();
 	$previous = array();
+	$recurring = array();
 	$count = array();
 	$count2 = array();
 	$raid_loop_cur = 0;
 	$raid_loop_prev = 0;
+	$raid_loop_rec = 0;
 
 	// Create the "new raid" button. -- This needs to be created regardless of whether or not we have raids.
 	$new_raid_link = '<a href="raids.php?mode=new"><img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_new_raid.gif" border="0"  onMouseover="ddrivetip(\''.$phprlang['raids_new_header'].'\');" onMouseout="hideddrivetip();" alt="new raid icon"></a>';
@@ -97,27 +99,38 @@ if($_GET['mode'] == 'view')
 	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "raids";
 	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);	
 	while($data = $db_raid->sql_fetchrow($result, true)) {
-		if ($priv_raids or $username == $data['officer'])
+		if ($data['recurrance']==0)
 		{
-			$edit = '<a href="raids.php?mode=edit&amp;id='.$data['raid_id'].'"><img src="templates/' . $phpraid_config['template'] .
-					'/images/icons/icon_edit.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['edit'].'\');" onMouseout="hideddrivetip();" alt="edit icon"></a>';
-
-			$delete = '<a href="raids.php?mode=delete&amp;n='.$data['location'].'&amp;id='.$data['raid_id'].'"><img src="templates/' .
-						$phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['delete'].'\');"
-						onMouseout="hideddrivetip();" alt="delete icon"></a><a href="lua_output.php?raid_id=' . $data['raid_id'] . '">
-
-						<img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_minipost.gif" border="0"
-						onMouseover="ddrivetip(\''.$phprlang['lua'].'\');" onMouseout="hideddrivetip();" alt="minipost icon"></a>
-
-						<a href="raids.php?mode=mark&amp;id='.$data['raid_id'].'"><img src="templates/' . $phpraid_config['template'] .
-						'/images/icons/icon_latest_reply.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['mark'].'\');"
-						onMouseout="hideddrivetip();" alt="latest reply icon"></a>';
-
-			$old_delete = '<a href="raids.php?mode=delete&amp;id='.$data['raid_id'].'"><img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['delete'].'\');" onMouseout="hideddrivetip();" alt="delete icon"></a>';
-
-			$mark_new = '<a href="raids.php?mode=mark&amp;id='.$data['raid_id'].'"><img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_latest_reply.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['new'].'\');" onMouseout="hideddrivetip();" alt="latest reply icon"></a>';
+			if ($priv_raids || $username == $data['officer'])
+			{
+				$edit = '<a href="raids.php?mode=edit&amp;id='.$data['raid_id'].'"><img src="templates/' . $phpraid_config['template'] .
+						'/images/icons/icon_edit.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['edit'].'\');" onMouseout="hideddrivetip();" alt="edit icon"></a>';
+	
+				$delete = '<a href="raids.php?mode=delete&amp;n='.$data['location'].'&amp;id='.$data['raid_id'].'"><img src="templates/' .
+							$phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['delete'].'\');"
+							onMouseout="hideddrivetip();" alt="delete icon"></a><a href="lua_output.php?raid_id=' . $data['raid_id'] . '">
+	
+							<img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_minipost.gif" border="0"
+							onMouseover="ddrivetip(\''.$phprlang['lua'].'\');" onMouseout="hideddrivetip();" alt="minipost icon"></a>
+	
+							<a href="raids.php?mode=mark&amp;id='.$data['raid_id'].'"><img src="templates/' . $phpraid_config['template'] .
+							'/images/icons/icon_latest_reply.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['mark'].'\');"
+							onMouseout="hideddrivetip();" alt="latest reply icon"></a>';
+	
+				$old_delete = '<a href="raids.php?mode=delete&amp;id='.$data['raid_id'].'"><img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['delete'].'\');" onMouseout="hideddrivetip();" alt="delete icon"></a>';
+	
+				$mark_new = '<a href="raids.php?mode=mark&amp;id='.$data['raid_id'].'"><img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_latest_reply.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['new'].'\');" onMouseout="hideddrivetip();" alt="latest reply icon"></a>';
+			}
 		}
-
+		else
+		{
+			if ($priv_raids || $username == $data['officer'])
+			{
+				$delete = '<a href="raids.php?mode=delete&amp;n='.$data['location'].'&amp;id='.$data['raid_id'].'"><img src="templates/' .
+							$phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['delete'].'\');"
+							onMouseout="hideddrivetip();" alt="delete icon"></a>';
+			}
+		}
 		// Initialize Count Array and Totals.
 		foreach ($wrm_global_classes as $global_class)
 		{
@@ -192,7 +205,7 @@ if($_GET['mode'] == 'view')
 		}
 		
 		// current raids
-		if($data['old'] == 0) {
+		if($data['old'] == 0 && $data['recurrance']==0) {
 			array_push($current,
 				array(
 					'ID'=>$data['raid_id'],
@@ -212,7 +225,7 @@ if($_GET['mode'] == 'view')
 				$current[$raid_loop_cur][$left]= $right;
 			$raid_loop_cur++;
 		}
-		else
+		elseif($data['old'] == 1)
 		{
 			array_push($previous,
 				array(
@@ -233,6 +246,27 @@ if($_GET['mode'] == 'view')
 				$previous[$raid_loop_prev][$left]= $right;
 			$raid_loop_prev++;
 		}
+		else
+		{
+			array_push($recurring,
+				array(
+					'ID'=>$data['raid_id'],
+					'Date'=>$date,
+					'Force Name'=>$raid_force,
+					'Dungeon'=>UBB2($location),
+					'Invite Time'=>$invite,
+					'Start Time'=>$start,
+					'Creator'=>$data['officer'],
+					'Totals'=>$total.'/'.$data['max']  . '(+' . $total2. ')',
+					'Buttons'=> $delete,
+				)
+			);	
+			foreach ($class_color_count as $left => $right)
+				$recurring[$raid_loop_rec][$left]= $right;
+			foreach ($role_color_count as $left => $right)
+				$recurring[$raid_loop_rec][$left]= $right;
+			$raid_loop_rec++;
+		}
 		$edit = "";
 		$delete= "";
 		$old_delete="";
@@ -252,11 +286,13 @@ if($_GET['mode'] == 'view')
 	//Get Record Counts
 	$curr_record_count_array = getRecordCounts($current, $raid_headers, $startRecord);
 	$prev_record_count_array = getRecordCounts($previous, $raid_headers, $startRecord);
+	$recur_record_count_array = getRecordCounts($recurring, $raid_headers, $startRecord);
 	
 	//Get the Jump Menu and pass it down
 	$currJumpMenu = getPageNavigation($current, $startRecord, $pageURL, $sortField, $sortDesc);
 	$prevJumpMenu = getPageNavigation($previous, $startRecord, $pageURL, $sortField, $sortDesc);
-			
+	$recJumpMenu = getPageNavigation($recurring, $startRecord, $pageURL, $sortField, $sortDesc);
+	
 	//Setup Default Data Sort from Headers Table
 	if (!$initSort)
 		foreach ($raid_headers as $column_rec)
@@ -266,31 +302,37 @@ if($_GET['mode'] == 'view')
 	//Setup Data
 	$current = paginateSortAndFormat($current, $sortField, $sortDesc, $startRecord, $viewName);
 	$previous = paginateSortAndFormat($previous, $sortField, $sortDesc, $startRecord, $viewName);
-
+	$recurring = paginateSortAndFormat($recurring, $sortField, $sortDesc, $startRecord, $viewName);
+	
 	/****************************************************************
 	 * Data Assign for Template.
 	 ****************************************************************/
 	$wrmsmarty->assign('new_data', $current); 
 	$wrmsmarty->assign('old_data', $previous);
+	$wrmsmarty->assign('rec_data', $recurring);
 	$wrmsmarty->assign('current_jump_menu', $currJumpMenu);
 	$wrmsmarty->assign('previous_jump_menu', $prevJumpMenu);
+	$wrmsmarty->assign('recurring_jump_menu', $recJumpMenu);
 	$wrmsmarty->assign('column_name', $raid_headers);
 	$wrmsmarty->assign('curr_record_counts', $curr_record_count_array);
 	$wrmsmarty->assign('prev_record_counts', $prev_record_count_array);
+	$wrmsmarty->assign('recur_record_counts', $recur_record_count_array);
 	$wrmsmarty->assign('header_data',
 		array(
 			'template_name'=>$phpraid_config['template'],
 			'new_raid_link' => $new_raid_link,
 			'old_raids_header' => $phprlang['raids_old'],
 			'new_raids_header' => $phprlang['raids_new'],
+			'recur_raids_header' => $phprlang['raids_recur'],
 			'sort_url_base' => $pageURL,
 			'sort_descending' => $sortDesc,
 			'sort_text' => $phprlang['sort_text'],
 		)
 	);
 	
+	
 	//
-	// Start output of delete page.
+	// Start output of raids page.
 	//
 	require_once('includes/page_header.php');
 	$wrmsmarty->display('raids.html');
@@ -318,7 +360,10 @@ elseif($_GET['mode'] == 'new')
 		$max = scrub_input($_POST['max']);
 		$min_lvl = scrub_input($_POST['min_lvl']);
 		$max_lvl = scrub_input($_POST['max_lvl']);
-
+		$recurring = scrub_input($_POST['recurring']);
+		$recur_interval = scrub_input($_POST['recur_interval']);
+		$recur_length = scrub_input($_POST['recur_length']);
+		
 		// Handle Classes
 		$bad_class_limit = FALSE;
 		foreach ($wrm_global_classes as $global_class)
@@ -376,6 +421,7 @@ elseif($_GET['mode'] == 'new')
 	{
 		// setup the form action first
 		$form_action = 'raids.php?mode=new';
+		$mode = 'new';
 
 		/****************************************************************************************
 		 *  Set Data for Form Below.
@@ -489,15 +535,15 @@ elseif($_GET['mode'] == 'new')
 		//Re-Occurance Items
 		if ($_SESSION['priv_raids'])
 		{
-			$reoccuring='<input name="reoccuring" type="checkbox" value="1" class="post">';
+			$recurring='<input name="recurring" type="checkbox" value="1" class="post">';
 			
-			$reoccur_interval='<select name="reoccur_interval" class="post">';
-			$reoccur_interval .= '<option value="daily">' . $phprlang['daily'] . '</option>';
-			$reoccur_interval .= '<option value="weekly">' . $phprlang['weekly'] . '</option>';
-			$reoccur_interval .= '<option value="monthly">' . $phprlang['monthly'] . '</option>';
-			$reoccur_interval .= '</select>';
+			$recur_interval = '<select name="recur_interval" class="post">';
+			$recur_interval .= '<option value="daily">' . $phprlang['daily'] . '</option>';
+			$recur_interval .= '<option value="weekly">' . $phprlang['weekly'] . '</option>';
+			$recur_interval .= '<option value="monthly">' . $phprlang['monthly'] . '</option>';
+			$recur_interval .= '</select>';
 			
-			$reoccur_length = '<input type="text" name="reoccur_length" size="5" class="post">';
+			$recur_length = '<input type="text" name="recur_length" size="5" class="post">';
 		}
 			
 		// invite time
@@ -737,6 +783,7 @@ elseif($_GET['mode'] == 'new')
 			array(
 				'buttons'=>$buttons,
 				'form_action'=>$form_action,
+				'mode'=>$mode,
 				'raid_name'=>$raid_name,
 				'date'=>$date,
 				'i_time_hour'=>$i_time_hour,
@@ -768,6 +815,13 @@ elseif($_GET['mode'] == 'new')
 				'maxlvl_text'=>$phprlang['raids_max_lvl'],
 				'raid_force'=>$raid_force_box,
 				'raid_force_text'=>$phprlang['raid_force_name'],
+				'recurrance_header'=>$phprlang['recur_header'],
+				'recurring_checkbox'=>$recurring,
+				'recurring_check_text'=>$phprlang['recurrance'],
+				'recur_interval'=>$recur_interval,
+				'recur_interval_text'=>$phprlang['recur_interval'],
+				'recur_length'=>$recur_length,
+				'recur_length_text'=>$phprlang['recur_length'],
 			)
 		);
 		
@@ -842,11 +896,19 @@ elseif($_GET['mode'] == 'new')
 		$tag = scrub_input($_POST['tag']);
 		$event_id = scrub_input($_POST['event_id']);
 		$description = scrub_input(DEUBB($_POST['description']));
+		$recur_interval = scrub_input($_POST['recur_interval']);
+		$recur_length = scrub_input($_POST['recur_length']);
+		
 		if(isset($_GET['id']))
 			$id = scrub_input($_GET['id']);
 		else
 			$id = '';
 
+		if(isset($_POST['recurring']))
+			$recurring = 1;
+		else
+			$recurring = 0;
+			
 		// setup the date, probably the only tricky tricky part :D
 		$month = substr($date,0,2);
 		$day = substr($date,3,2);
@@ -861,13 +923,26 @@ elseif($_GET['mode'] == 'new')
 		$invite_time = new_mktime($i_time_hour_value,$i_time_minute_value,0,$month,$day,$year,$phpraid_config['timezone'] + $phpraid_config['dst']);
 		$start_time = new_mktime($s_time_hour_value,$s_time_minute_value,0,$month,$day,$year,$phpraid_config['timezone'] + $phpraid_config['dst']);
 
-		$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "raids (`description`,`freeze`,`invite_time`,
-				`location`,`officer`,`old`,`start_time`,
-				`min_lvl`,`max_lvl`,`max`,`event_type`,`event_id`,`raid_force_id`)	VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
+		if ($recurring)
+			$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "raids (`description`,`freeze`,`invite_time`,
+				`location`,`officer`,`old`,`start_time`,`min_lvl`,`max_lvl`,`max`,`event_type`,
+				`event_id`,`raid_force_id`,`recurrance`,`rec_interval`,`num_recur`)	
+				VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
 				quote_smart($description),quote_smart($freeze),quote_smart($invite_time),quote_smart($location),
 				quote_smart($username),quote_smart('0'),quote_smart($start_time),
-				quote_smart($min_lvl),quote_smart($max_lvl),quote_smart($max),quote_smart($tag),quote_smart($event_id),quote_smart($raid_force_id));
-
+				quote_smart($min_lvl),quote_smart($max_lvl),quote_smart($max),quote_smart($tag),quote_smart($event_id),
+				quote_smart($raid_force_id),quote_smart($recurring),quote_smart($recur_interval),
+				quote_smart($recur_length));
+		else
+			$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "raids (`description`,`freeze`,`invite_time`,
+				`location`,`officer`,`old`,`start_time`,`min_lvl`,`max_lvl`,`max`,`event_type`,
+				`event_id`,`raid_force_id`,`recurrance`,`rec_interval`,`num_recur`)	
+				VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
+				quote_smart($description),quote_smart($freeze),quote_smart($invite_time),quote_smart($location),
+				quote_smart($username),quote_smart('0'),quote_smart($start_time),
+				quote_smart($min_lvl),quote_smart($max_lvl),quote_smart($max),quote_smart($tag),quote_smart($event_id),
+				quote_smart($raid_force_id),'0',NULL,NULL);
+		
 		$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
 
 		// Get the Location ID of what was Just Entered to Apply to the Lookup Tables
@@ -977,6 +1052,7 @@ elseif($_GET['mode'] == 'edit')
 		// setup the form action first
 		$id = scrub_input($_GET['id']); // Raid ID
 		$form_action = 'raids.php?mode=edit&amp;id='. $id;
+		$mode = 'edit';
 
 		// They screwed up the form on submission.
 		if(isset($errorTitle))
@@ -1293,6 +1369,7 @@ elseif($_GET['mode'] == 'edit')
 			array(
 				'buttons'=>$buttons,
 				'form_action'=>$form_action,
+				'mode'=>$mode,
 				'raid_name'=>$raid_name,
 				'date'=>$date,
 				'i_time_hour'=>$i_time_hour,
