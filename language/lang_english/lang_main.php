@@ -112,14 +112,19 @@ $phprlang['display_text'] = 'Display Text';
 $phprlang['perm_mod'] = 'Update Permissions';
 $phprlang['all'] = 'All';
 
-
 // Reoccurance Text Items
-$phprlang['daily'] = 'Daily';
+$phprlang['recur_header'] = 'Raid Recurrance Settings';
+$phprlang['raids_recur'] = 'Recurring Raids';
+$phprlang['daily'] = 'Daily (Every Day At This Time)';
 $phprlang['weekly'] = 'Weekly (On This Day of the Week)';
 $phprlang['monthly'] = 'Monthly (On This Day of the Month)';
-$phprlang['reoccurance'] = 'Reoccuring Raid?<br><a href="../docs/reoccuring_raids.html" target="_blank">help?</a>';
-$phprlang['reoccur_interval'] = 'Reoccurance Interval';
-$phprlang['reoccur_length'] = 'Number of Intervals to Show';
+$phprlang['recurrance'] = 'Recurring Raid?<br><a href="../docs/recurring_raids.html" target="_blank">help?</a>';
+$phprlang['recur_interval'] = 'Recurrance Interval';
+$phprlang['recur_length'] = 'Number of Intervals to Show';
+
+// Scheduler Texts
+$phprlang['scheduler_error_header'] = 'Scheduler Error';
+$phprlang['scheduler_unknown'] = 'The scheduler threw an Unknown error, please post the error message to WRM support.';
 
 // roles
 $phprlang['role_none'] = '-';
