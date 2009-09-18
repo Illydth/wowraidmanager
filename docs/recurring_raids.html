@@ -1,19 +1,19 @@
-<H1>Reoccuring Raids Help</H1>
+<H1>Recurring Raids Help</H1>
 
-Reoccuring Raids is a new addition to WRM that allows raid administators less hastle in creating and scheduling raids.<br>  
+Recurring Raids is a new addition to WRM that allows raid administators less hastle in creating and scheduling raids.<br>  
 <br>
 When the admin sets up a re-occuring raid he or she is setting up a raid that will continue scheduing itself INDEFINATELY until deleted with<br>
-a max number showing at one time as identified by the raid administrator.  For every raid marked "reoccuring" in the system, a new raid will be<br>
+a max number showing at one time as identified by the raid administrator.  For every raid marked "recurring" in the system, a new raid will be<br>
 created that is a copy of the old raid in the selected interval up to the number of raids identifed by the raid admin.<br>
 <br>
-Reoccuring raids can be setup using the "raids" section of WRM under the "New Raid" button.  While in "New Raid" there is a section just under<br>
-the Raid Information section (Location, Date, Freeze, Description, etc.) that allows the admin to setup a reoccuring raid.<br>
+Recurring raids can be setup using the "raids" section of WRM under the "New Raid" button.  While in "New Raid" there is a section just under<br>
+the Raid Information section (Location, Date, Freeze, Description, etc.) that allows the admin to setup a recurring raid.<br>
 <br>
 There are three options for a raid admin to set:<br>
 <ul>
-     <li>Reoccuring Raid Checkbox: Checking this box tells the WRM system to make this raid a reoccuring raid.  Unchecking the box turns off
-     reoccurance for this raid.</li>
-     <li>Reoccurance Interval: This dropdown box allows for the selection of Daily, Weekly or Monthly reoccurance of the raid.
+     <li>Recurring Raid Checkbox: Checking this box tells the WRM system to make this raid a recurring raid.  Unchecking the box turns off
+     recurrance for this raid.</li>
+     <li>Reoccurance Interval: This dropdown box allows for the selection of Daily, Weekly or Monthly recurrance of the raid.
      	<ul>
      		<li>Daily: Raid reoccurs daily at the same start and end time for the same dungeon.</li>
      		<li>Weekly: Raid reoccurs every week on the same day of the week as set in the date box above.</li>
@@ -30,8 +30,8 @@ Please see the examples below for a better description.<br>
 <h2>Examples</h2>
 <b>Requirement:</b> A guild wants to set up a raid for a particular instance that runs every day at 8:30pm.  They want users to be able to sign up<br>
 for a week's worth of raids at a time (7 days).<br>
-<b>Solution:</b> The raid admin sets up a raid and selects the next date the instance will run.  The admin then checks the "reoccurance" box to tell<br>
-the system that this is a reoccuring raid.  He or she then selects "Daily" from the dropdown box (telling the software to make this raid re-occur<br>
+<b>Solution:</b> The raid admin sets up a raid and selects the next date the instance will run.  The admin then checks the "recurrance" box to tell<br>
+the system that this is a recurring raid.  He or she then selects "Daily" from the dropdown box (telling the software to make this raid re-occur<br>
 every day).  Finally the admin types a 7 into the "Number of Intervals to Show" box telling the system to keep 7 copies of that raid available<br>
 to the users to sign up to.<br>
 <b>Software:</b> Lets assume for this example that the raid was created Sunday night and set for Monday at 8:30pm start.  When the new raid is created<br>
@@ -44,7 +44,7 @@ has passed (at 8:30:01pm Monday Night) the system will generate a new raid for t
 <b>Requirement:</b> A guild wants to set up a raid for a particular instance that runs every Tuesday at 8:30pm.  They want users to be able to sign up<br>
 for a Month's worth of raids at a time.<br>
 <b>Solution:</b> First the raid admin sets up the raid and sets the date to the next occurance of the raid (the Upcoming Tuesday).  The raid admin would<br>
-check the "reoccurance" box to tell the system that this is a reoccuring raid.  He or she then selects "Weekly" from the Reoccurance Interval<br>
+check the "recurrance" box to tell the system that this is a recurring raid.  He or she then selects "Weekly" from the Reoccurance Interval<br>
 dropdown box to make the system generate this raid every week.  He then types a 4 into the Number of Intervals to Show box to allow users to<br>
 sign up for up to a month's worth of raids.<br>
 <b>Software:</b> When this occuring raid is created the software will immediately generate a raid record for the next 4 Tuesdays (The upcoming one<br>
@@ -54,8 +54,8 @@ for the 5th Tuesday.<br>
 <br>
 <b>Requirement:</b> A guild wants to set up a raid for a particular instance that runs every Tuesday, Wednesday and Thursday at 8:30pm.  They want the<br>
 users to be able to sign up for a month of raids (4 each of the T/W/Th raids) at a time.<br>
-<b>Solution:</b> The raid admin would go through the same steps above for EACH day (Tuesday, Wednesday, Thursday) setting up one reoccuring raid for<br>
-each of the three days (i.e. He or she would set up 3 new raids, each with the reoccurance flag turned on and with the same settings as in <br>
+<b>Solution:</b> The raid admin would go through the same steps above for EACH day (Tuesday, Wednesday, Thursday) setting up one recurring raid for<br>
+each of the three days (i.e. He or she would set up 3 new raids, each with the recurrance flag turned on and with the same settings as in <br>
 the example just above this one.<br>
 <b>Software:</b> As with the example above, the software will create a new raid as each Raid Start Date/Time is past.  This means that a new Tuesday<br>
 raid will be setup when the Tuesday Date/Time is past but NOT the entire week (Tuesday, Wednesday, Thursday).  For the new Wednesday raid, the<br>
@@ -63,7 +63,7 @@ users will have to wait till Wednesday's Raid Start Date/Time is past...same wit
 <br>
 <br>
 <b>Requirement:</b> A guild wants to set up a raid for a particular day of the month, every month.  They want 2 months of signups to be available.<br> 
-<b>Solution:</b> As with the weekly example above, the raid admin would check the reoccurance box, select "Monthly" from the dropdown and type a 2 into<br>
+<b>Solution:</b> As with the weekly example above, the raid admin would check the recurrance box, select "Monthly" from the dropdown and type a 2 into<br>
 the Number of Intervals box.<br>
 <b>Software:</b> Again as with weekly above 2 raids would be generated by the system for this month and next month.  When the Raid start date/time for<br>
 this month's raid passes the system would setup the raid for the 3rd month.<br>
@@ -71,7 +71,7 @@ this month's raid passes the system would setup the raid for the 3rd month.<br>
 <br>
 <b>Requirement:</b> A guild wants to set up a raid for multiple days of the month, every month.<br>
 <b>Solution:</b> Combine the Multiple Days of the Week example with the Month Example above.  The raid admin sets up raids on each day of the month he<br>
-or she wants to schedule raids on and then selects reoccurance on each of them.<br>
+or she wants to schedule raids on and then selects recurrance on each of them.<br>
 <b>Software:</b> As each day of the month passes the next raid for that day on the next applicable month will be created.<br>
 <br>
 <br>
@@ -80,14 +80,14 @@ or she wants to schedule raids on and then selects reoccurance on each of them.<
 <b>Software:</b> The WRM software does not support this kind of scheduling methodology.  Either the raid admin will need to manually schedule these<br>
 raids, or the guild will have to move to a "x day of the month" or "x day of the week" mentality.<br> 
 <br>
-<h2>Stopping Reoccuring Raids</h2>
-To stop a raid from having it's next occurance scheduled you will need to go back into the raid under the reoccuring raids list (not the normal<br>
-list of raids but the raids in the reoccuring raid list) and delete the raid.  <b>This will NOT delete any already created raids.</b>  Those<br>
+<h2>Stopping Recurring Raids</h2>
+To stop a raid from having it's next occurance scheduled you will need to go back into the raid under the recurring raids list (not the normal<br>
+list of raids but the raids in the recurring raid list) and delete the raid.  <b>This will NOT delete any already created raids.</b>  Those<br>
 will have to be deleted from the normal raid list one by one.<br>
 <br>
-<h2>Modifying Reoccuring Raids</h2>
-You can modify the occurances of the raids that are <i>created</i> through this process but you <b>cannot</b> modify the reoccuring raid record<br>
-itself.  If I have a reoccuring raid that creates a new raid every day at 8:30pm I can modify tomorrow's created 8:30pm occurance in the same way<br>
+<h2>Modifying Recurring Raids</h2>
+You can modify the occurances of the raids that are <i>created</i> through this process but you <b>cannot</b> modify the recurring raid record<br>
+itself.  If I have a recurring raid that creates a new raid every day at 8:30pm I can modify tomorrow's created 8:30pm occurance in the same way<br>
 I would modify any raid record.  I cannot, however, modify the record that creates a new occurance of that raid at 8:30.  If I need to make<br>
-modifications to that record I would need to delete the old reoccurance record, then delete any raids already created by this record, and then set<br>
-up a new reoccurance record with the modified information which would then create the new raids based upon that new information.<br>
+modifications to that record I would need to delete the old recurrance record, then delete any raids already created by this record, and then set<br>
+up a new recurrance record with the modified information which would then create the new raids based upon that new information.<br>
