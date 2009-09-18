@@ -78,6 +78,7 @@ require_once($phpraid_dir.'includes/functions_logging.php');
 require_once($phpraid_dir.'includes/functions_tables.php');
 require_once($phpraid_dir.'includes/functions_users.php');
 require_once($phpraid_dir.'includes/ubb.php');
+require_once($phpraid_dir.'includes/scheduler.php');
 
 /****************************************************
  * Report Output Setup (Deprecated)
@@ -271,4 +272,21 @@ if($phpraid_config['disable'] == 1 && $_SESSION['priv_configuration'] == 0)
 	$errorDie = 1;
 }
 
+/****************************************************
+ * Execute the Scheduler to Perform Automated Tasks
+ ****************************************************/
+// Do not execute Scheduler if the site is disabled.
+$return_code = scheduler();
+switch ($return_code)
+{
+	case 0:
+		//all good, move on.
+		break;
+	default:
+		$errorTitle = $phprlang['scheduler_error_header'];
+		$errorMsg = $phprlang['scheduler_unknown'];
+		$errorMsg .= "<br><br>Error Code: " . $return_code;
+		$errorDie = 1;
+		break;
+}
 ?>
