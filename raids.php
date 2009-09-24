@@ -936,12 +936,12 @@ elseif($_GET['mode'] == 'new')
 		else
 			$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "raids (`description`,`freeze`,`invite_time`,
 				`location`,`officer`,`old`,`start_time`,`min_lvl`,`max_lvl`,`max`,`event_type`,
-				`event_id`,`raid_force_id`,`recurrance`,`rec_interval`,`num_recur`)	
-				VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
+				`event_id`,`raid_force_id`,`recurrance`)	
+				VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
 				quote_smart($description),quote_smart($freeze),quote_smart($invite_time),quote_smart($location),
 				quote_smart($username),quote_smart('0'),quote_smart($start_time),
 				quote_smart($min_lvl),quote_smart($max_lvl),quote_smart($max),quote_smart($tag),quote_smart($event_id),
-				quote_smart($raid_force_id),'0',NULL,NULL);
+				quote_smart($raid_force_id),'0');
 		
 		$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
 
