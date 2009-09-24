@@ -91,3 +91,19 @@ itself.  If I have a recurring raid that creates a new raid every day at 8:30pm 
 I would modify any raid record.  I cannot, however, modify the record that creates a new occurance of that raid at 8:30.  If I need to make<br>
 modifications to that record I would need to delete the old recurrance record, then delete any raids already created by this record, and then set<br>
 up a new recurrance record with the modified information which would then create the new raids based upon that new information.<br>
+<br>
+<h2>Modifying/Deleting Raids Created Through the Recurrance Process</h2>
+Modifying raids created by the recurrance process is a bit different than modifying raids that are not created through this process.<br>
+The main change is that the recurring raids scheduler checks for raid start time and date and schedules any missing raids.  Because of this<br>
+you CANNOT delete recurring raids scheduled through the recurrance process...they will simply be re-created.  You CAN modify raids created<br>
+in this way SO LONG AS you do NOT modify the Raid Start Date/Time, if you do a new raid will be created at the old raid Start.<br>
+<br>
+If you modify any raid's start date/time (either by deleting the raid or by modifying the date/time of the record) created by the scheduler<br>
+the scheduler will re-create another raid for you. In other words, if a raid is scheduled at 9:00 pm a week from now as part of the Recurring Raids<br>
+process, and you delete that record another raid scheduled at 9:00 pm on that same day will be immediately created.  If a raid is scheduled at 9:00<br>
+pm a week from now and you modify that raid start time to read 9:30 pm, a new raid starting at 9:00 PM will be immediately created (so you now have<br>
+2 raids, one at 9 and one at 9:30 for the same instance).<br>
+<br>
+To modify an instance of a recurring raid's start time or to delete an instance of a recurring raid you MUST delete the recurring raid from the<br>
+recurring raids section in the raids area of WRM, THEN modify the start time or delete the record.  If you want to continue scheduling raids,<br>
+re-setup the recurring raid for a date AFTER the skip.<br>  
