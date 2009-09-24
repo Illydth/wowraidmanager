@@ -110,7 +110,7 @@ $phprlang['display_text'] = 'Display Text';
 $phprlang['perm_mod'] = 'Update Permissions';
 $phprlang['all'] = 'All';
 
-// Reoccurance Text Items
+// Recurrance Text Items
 $phprlang['recur_header'] = 'Raid Recurrance Settings';
 $phprlang['raids_recur'] = 'Recurring Raids';
 $phprlang['daily'] = 'Daily (Every Day At This Time)';
@@ -123,6 +123,15 @@ $phprlang['recur_length'] = 'Number of Intervals to Show';
 // Scheduler Texts
 $phprlang['scheduler_error_header'] = 'Scheduler Error';
 $phprlang['scheduler_unknown'] = 'The scheduler threw an Unknown error, please post the error message to WRM support.';
+$phprlang['scheduler_error_no_raid_found'] = 'No raid found when attempting to select the current recurring raid from the raids table.
+												Recurring Raid was likely deleted, please reload the page.';
+$phprlang['scheduler_error_schedule_raid'] = 'Error Scheduling New Raids from Recurring Raids.';
+$phprlang['scheduler_error_sql_error'] = 'Generic SQL Error Occured, See Above Printed Information.';
+$phprlang['scheduler_error_update_recurring'] = 'Failed to Update Timestamp on Recurring Raid.';
+$phprlang['scheduler_error_class_limits_missing'] = 'Class Limits could not be retrieved for Recurring Raid.  
+													Delete Recurring Raid and Try again.';
+$phprlang['scheduler_error_role_limits_missing'] = 'Role Limits could not be retrieved for Recurring Raid.  
+													Delete Recurring Raid and Try again.';
 
 // roles
 $phprlang['role_none'] = '-';
