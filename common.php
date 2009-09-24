@@ -276,12 +276,19 @@ if($phpraid_config['disable'] == 1 && $_SESSION['priv_configuration'] == 0)
  * Execute the Scheduler to Perform Automated Tasks
  ****************************************************/
 // Do not execute Scheduler if the site is disabled.
+$return_code = array();
 $return_code = scheduler();
-switch ($return_code)
+switch ($return_code['errval'])
 {
 	case 0:
 		//all good, move on.
 		break;
+	case 1 - 4: //Error Returned from Recurring Raids Scheduler
+		$errorTitle = $return_code['errorTitle'];
+		$errorMsg = $return_code['errorMsg'];
+		$errorMsg .= "<br><br>Error Code: " . $return_code['errval'];
+		$errorDie = $return_code['errorDie'];
+		break;	
 	default:
 		$errorTitle = $phprlang['scheduler_error_header'];
 		$errorMsg = $phprlang['scheduler_unknown'];
