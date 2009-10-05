@@ -33,16 +33,16 @@ if ($armver == '020')
 	$armory->armory = $var4 . "/";
 	$char = $armory->characterFetch($var, $var2);
 	// Url for armory icons
-	$avatar_url = $armory->armory . "images/portraits/";
-	$icons_url  = $armory->armory . "images/icons/";
+	$avatar_url = $armory->armory . "_images/portraits/";
+	$icons_url  = $armory->armory . "_images/icons/";
 }
 else
 {
 	$char = $armory->getCharacterData($var, $var2);	
 	$armoryAreaData = $armory->getArea();
 	// Url for armory icons
-	$avatar_url = $armoryAreaData[1] . "images/portraits/";
-	$icons_url  = $armoryAreaData[1] . "images/icons/";
+	$avatar_url = $armoryAreaData[1] . "_images/portraits/";
+	$icons_url  = $armoryAreaData[1] . "_images/icons/";
 }
 
 //Output the Converted Character Array to File.
@@ -468,7 +468,11 @@ return $extradata;
 
 // Create the Avatar URL
 $avatar = $avatar_url;
-if ($char['character']['level'] == 70)
+if ($char['character']['level'] == 80)
+{
+	$avatar .= "wow-80/";
+}
+if ($char['character']['level'] < 80 && $char['character']['level'] > 69)
 {
 	$avatar .= "wow-70/";
 }
