@@ -180,6 +180,7 @@ $phprlang['view_error_signed_up'] = 'Du hast dich bereits mit diesem Charakter a
 $phprlang['view_error_role_undef'] = 'Bitte weise deinem Charakter im <a href="profile.php?mode=view">Profil</a> erst eine Rolle zu';
 $phprlang['yes'] = 'Ja';
 $phprlang['teams_error_no_team'] = 'No team is selected to add users to.';
+
 // Buttons
 $phprlang['submit'] = 'Übernehmen';
 $phprlang['reset'] = 'Zurücksetzen';
@@ -192,6 +193,7 @@ $phprlang['updatechar'] = 'Charakter aktualisieren';
 $phprlang['login'] = 'Anmelden';
 $phprlang['logout'] = 'Abmelden';
 $phprlang['signup'] = 'Anmelden';
+$phprlang['apply'] = 'Apply Options';
 
 // generic information
 $phprlang['delete_msg'] = 'ACHTUNG: Die Löschung ist permanent und kann nicht rückgängig gemacht werden. <br>Klicke auf die Schaltfläche unten, um fortzufahren.';

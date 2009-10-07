@@ -199,7 +199,7 @@ $phprlang['updatechar'] = '更新角色';
 $phprlang['login'] = '登入';
 $phprlang['logout'] = '登出';
 $phprlang['signup'] = '註冊';
-
+$phprlang['apply'] = 'Apply Options';
 
 // generic information
 $phprlang['delete_msg'] = '注意: 刪除後無法回復資料 <br>點擊下面的按鈕確認刪除.';

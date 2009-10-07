@@ -201,7 +201,7 @@ $phprlang['updatechar'] = 'Modifier un Personnage';
 $phprlang['login'] = 'S\'identifier';
 $phprlang['logout'] = 'Déconnexion';
 $phprlang['signup'] = 'S\'inscrire';
-
+$phprlang['apply'] = 'Apply Options';
 
 // generic information
 $phprlang['delete_msg'] = 'NOTICE: La suppression est IRREVERSIBLE. <br>Cliquez sur le bouton pour confirmer.';

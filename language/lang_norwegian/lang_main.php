@@ -197,7 +197,7 @@ $phprlang['updatechar'] = 'Oppdater Character';
 $phprlang['login'] = 'Logg Inn';
 $phprlang['logout'] = 'Logg Ut';
 $phprlang['signup'] = 'Påmelding';
-
+$phprlang['apply'] = 'Apply Options';
 
 // generic information
 $phprlang['delete_msg'] = 'NOTIS: Sletting er permanent. <br>Klikk under for å slette.';

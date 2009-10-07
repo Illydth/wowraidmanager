@@ -203,7 +203,7 @@ $phprlang['updatechar'] = 'Update Character';
 $phprlang['login'] = 'Log In';
 $phprlang['logout'] = 'Log Out';
 $phprlang['signup'] = 'Signup';
-
+$phprlang['apply'] = 'Apply Options';
 
 // generic information
 $phprlang['delete_msg'] = 'NOTICE: Deletion is permanent and cannot be reversed. <br>Click the button below to continue.';
