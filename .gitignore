@@ -1,3 +1,7 @@
+.buildpath
+.project
+.settings
+.settings/*
 config.php
 config.*
 package
