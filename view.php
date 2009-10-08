@@ -898,9 +898,9 @@ if($mode == 'view')
 	}
 
 	// check if any of their characters belong to the guild that the raid force is specfiying.
-	if ($data['raid_force_id'] != '0')
+	if ($data['raid_force_name'] != 'None')
 	{
-		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raid_force WHERE raid_force_id=%s", quote_smart($data['raid_force_id']));
+		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raid_force WHERE raid_force_name=%s", quote_smart($data['raid_force_name']));
 		$raid_force_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 		$char_in_guild_check = false;
 		while($raid_force_data = $db_raid->sql_fetchrow($raid_force_result, true))
@@ -924,19 +924,6 @@ if($mode == 'view')
 	{
 		$show_signup = 0;
 		$raid_notice = $phprlang['view_login'];
-	}
-
-	// Get the Raid Force Assignment
-	// Get the Raid Force ID from the Raid.
-	if ($data['raid_force_id'] == 0)
-		$raid_force = "Any";
-	else
-	{
-		$sql = sprintf("SELECT raid_force_name FROM " . $phpraid_config['db_prefix'] . "raid_force WHERE raid_force_id = %s", quote_smart($data['raid_force_id']));
-		$raid_force_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-		$raid_force_data = $db_raid->sql_fetchrow($raid_force_result, true);
-			
-		$raid_force = $raid_force_data['raid_force_name'];
 	}
 	
 	// finally, icons
@@ -996,7 +983,7 @@ if($mode == 'view')
 			'total_text'=>$phprlang['view_total'],
 			'information_header'=>$phprlang['view_information_header'],
 			'statistics_header'=>$phprlang['view_statistics_header'],
-			'raid_force'=>$raid_force,
+			'raid_force'=>$data['raid_force_name'],
 			'raid_force_text'=>$phprlang['raid_force_name'],
 		)
 	);
@@ -1576,15 +1563,15 @@ if($show_signup == 1 && $priv_profile == 1)
 	$username = scrub_input($_SESSION['username']);
 
 	// get character list
-	$sql = sprintf("SELECT raid_force_id FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id=%s", quote_smart($raid_id));
+	$sql = sprintf("SELECT raid_force_name FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id=%s", quote_smart($raid_id));
 	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 	$rf_data = $db_raid->sql_fetchrow($result, true);
-	$raid_force_id = $rf_data['raid_force_id'];
+	$raid_force_name = $rf_data['raid_force_name'];
 
 	$character = '<select name="character" class="post">';
-	if ($raid_force_id != 0)
+	if ($raid_force_name != "None")
 	{
-		$sql = sprintf("SELECT guild_id FROM " . $phpraid_config['db_prefix'] . "raid_force WHERE raid_force_id=%s", quote_smart($raid_force_id));
+		$sql = sprintf("SELECT guild_id FROM " . $phpraid_config['db_prefix'] . "raid_force WHERE raid_force_name=%s", quote_smart($raid_force_name));
 		$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 		while($rf_data = $db_raid->sql_fetchrow($result, true))
 		{
