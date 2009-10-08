@@ -90,6 +90,7 @@ $phprlang['sort_queue_text'] = 'Sort Queue By:';
 $phprlang['output_format_text'] = 'Output Format:';
 $phprlang['options_header'] = 'Options';
 $phprlang['lua_output_header'] = 'Beginning LUA Output';
+$phprlang['lua_show_all_raids'] = 'Output all Open Raids';
 
 // permissions
 $phprlang['permissions_add'] = 'Add to set';
