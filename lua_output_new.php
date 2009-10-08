@@ -46,6 +46,8 @@ else
 // Standard Display of Page
 if($_GET['mode'] == 'lua') {
 	
+	isset($_GET['raid_id']) ? $raid_id = scrub_input($_GET['raid_id']) : $raid_id = '';
+	
 	// Set the output to show the LUA output, not the Macro Output
 	$wrmsmarty->assign('lua_include_file', 'lua_output_lua.html');
 	
@@ -145,9 +147,26 @@ if($_GET['mode'] == 'lua') {
 		$text .= 'Download <a href="cache/raid_lua/phpRaid_Data.lua">phpRaid_Data.lua</a> and save it to [wow-dir]\interface\addons\phpraidviewer\<br>';
 		$text .= 'or use this for copy+paste:<br>';
 	}		
-		
-	$lua_output = output_lua();
+
+	// Set the Where Clause for the Raid Selection.  Set here so that we can allow the user to display all raids by re-opening the lua_output
+	//    page without passing a raid_id in.
+	if (isset($raid_id) && is_numeric($raid_id))
+	{
+		$text .= "<a href=\"lua_output.php?mode=lua\">".$phprlang['lua_show_all_raids']."</a><br><br>";
+		$raid_sql_where = "raid_id=".quote_smart($raid_id);
+	}
+	else
+		$raid_sql_where = 'old=0';
 	
+	if ($phpraid_config['lua_output_format'] == 1)
+		$lua_output = output_lua_rim();
+	else
+		$lua_output = output_lua_prv();
+		
+	// write to lua_output file
+	$output = "\xEF\xBB\xBF" . $lua_output;
+	fwrite($file, $output);
+			
 	array_push($lua_output_data,
 		array(
 			'output_header'=>$phprlang['lua_output_header'],
