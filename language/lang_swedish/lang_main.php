@@ -199,7 +199,7 @@ $phprlang['updatechar'] = 'Uppdatera karaktär';
 $phprlang['login'] = 'Logga in';
 $phprlang['logout'] = 'Logga ut';
 $phprlang['signup'] = 'Boka';
-
+$phprlang['apply'] = 'Apply Options';
 
 // generic information
 $phprlang['delete_msg'] = 'VARNING: Radering är permanent och kan inte ångras. <br>Klicka knappen nedan för att fortsätta.';

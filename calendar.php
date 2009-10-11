@@ -188,7 +188,7 @@ $raidStartMonth = mktime("0", "0", "0", $in_month, "1", $in_year);
 $lastDayPassedMonth = date("t", $timestamp);
 $raidEndMonth = mktime("23", "59", "59", $in_month, $lastDayPassedMonth, $in_year);
 
-$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "raids WHERE start_time >= '" . $raidStartMonth . "' AND start_time <= '" . $raidEndMonth . "' ORDER BY start_time";
+$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "raids WHERE start_time >= '" . $raidStartMonth . "' AND start_time <= '" . $raidEndMonth . "'AND recurrance = 0 ORDER BY start_time";
 
 $raids_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 while($raids = $db_raid->sql_fetchrow($raids_result, true)) 
@@ -200,18 +200,6 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true))
 	$uid = scrub_input($_SESSION['profile_id']);
 	$issignedup = "";
 
-	// Get the Raid Force ID from the Raid.
-	if ($raids['raid_force_id'] == 0)
-		$raid_force = "Any";
-	else
-	{
-		$sql = sprintf("SELECT raid_force_name FROM " . $phpraid_config['db_prefix'] . "raid_force WHERE raid_force_id = %s", quote_smart($raids['raid_force_id']));
-		$raid_force_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-		$raid_force_data = $db_raid->sql_fetchrow($raid_force_result, true);
-			
-		$raid_force = $raid_force_data['raid_force_name'];
-	}
-	
 	// Get a list of all the signups for this raid for the current profile.
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id=%s AND profile_id=%s", quote_smart($raids['raid_id']), quote_smart($uid)); 
 	$resultz = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
@@ -249,7 +237,7 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true))
 	$pop_text .= "<br>";
 	$pop_text .= $phprlang['start'] . ": " . $starttime;
 	$pop_text .= "<br>";
-	$pop_text .= $phprlang['raid_force_name'] . ": " . $raid_force;
+	$pop_text .= $phprlang['raid_force_name'] . ": " . $raids['raid_force_name'];
 	$pop_text .= "<br>----------------------------<br>";
 	$pop_text .= DEUBB2($desc);
 	$pop_text .= "'";

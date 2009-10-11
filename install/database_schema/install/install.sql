@@ -863,7 +863,7 @@ CREATE TABLE `wrm_guilds` (
   `guild_server` VARCHAR(255) NOT NULL default '',
   `guild_faction` VARCHAR(50) NOT NULL default 'None',
   `guild_armory_link` VARCHAR(255),
-  `guild_armory_code` VARCHAR(4)
+  `guild_armory_code` VARCHAR(4),
   PRIMARY KEY  (`guild_id`)
 ) ;
 
@@ -879,9 +879,9 @@ CREATE TABLE `wrm_locations` (
   `locked` tinyint(1) NOT NULL default '0',
   `event_type` tinyint(2) NOT NULL default '1',
   `event_id` int(10) NOT NULL default '119',
-  `raid_force_id` int(10) NOT NULL default '0',
-  PRIMARY KEY  (`location_id`)
-  KEY `raid_force_id` (`raid_force_id`)
+  `raid_force_name` VARCHAR(100) NOT NULL default 'None',
+  PRIMARY KEY  (`location_id`),
+  KEY `raid_force_name` (`raid_force_name`)
 ) ;
 
 -- Locations Data
@@ -968,8 +968,8 @@ CREATE TABLE `wrm_permissions` (
 ) ;
 
 -- Permissions Data
-INSERT INTO `wrm_permissions` (`permission_id`, `name`,`description`,`announcements`,`configuration`,`guilds`,`locations`,`profile`,`raids`,`logs`,`users`) VALUES ('1','WRM Superadmin','Full Access','1','1','1','1','1','1','1','1');
-INSERT INTO `wrm_permissions` (`permission_id`, `name`,`description`,`announcements`,`configuration`,`guilds`,`locations`,`profile`,`raids`,`logs`,`users`) VALUES ('2','WRM Users','Generic Access','0','0','0','0','1','0','0','0');
+INSERT INTO `wrm_permissions` (`permission_id`, `name`,`description`,`announcements`,`configuration`,`guilds`,`locations`,`profile`,`raids`) VALUES ('1','WRM Superadmin','Full Access','1','1','1','1','1','1');
+INSERT INTO `wrm_permissions` (`permission_id`, `name`,`description`,`announcements`,`configuration`,`guilds`,`locations`,`profile`,`raids`) VALUES ('2','WRM Users','Generic Access','0','0','0','0','1','0');
 
 -- Profile Table Creation
 DROP TABLE IF EXISTS `wrm_profile`;
@@ -1051,12 +1051,12 @@ CREATE TABLE `wrm_raids` (
   `max` varchar(255) NOT NULL default '',
   `event_type` tinyint(1) NOT NULL default '1',
   `event_id` int(10) NOT NULL default '119',
-  `raid_force_id` int(10) NOT NULL default '0',
+  `raid_force_name` VARCHAR(100) NOT NULL default 'None',
   `recurrance` TINYINT(1) NOT NULL DEFAULT '0',
   `rec_interval` VARCHAR(15) DEFAULT NULL,
   `num_recur` TINYINT(2) NOT NULL DEFAULT '0',
   PRIMARY KEY  (`raid_id`),
-  KEY `raid_force_id` (`raid_force_id`)
+  KEY `raid_force_name` (`raid_force_name`)
   );
 
 -- Class Limits per Raid Table

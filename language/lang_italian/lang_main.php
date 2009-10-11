@@ -197,6 +197,7 @@ $phprlang['updatechar'] = 'Aggiorna Personaggio';
 $phprlang['login'] = 'Accedi';
 $phprlang['logout'] = 'Disconnettiti';
 $phprlang['signup'] = 'Iscriviti';
+$phprlang['apply'] = 'Apply Options';
 
 // generic information
 $phprlang['delete_msg'] = 'ATTENZIONE: l\'eliminazione è permanente e non reversibile.<br>Clicka il pulsante sottostante se sei sicuro di voler procedere.';

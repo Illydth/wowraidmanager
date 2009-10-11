@@ -161,18 +161,6 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true)) {
 		$raid_role_array[$role_name['role_name']] = $raid_role_data['lmt'];
 		$role_color_count[$role_name['role_name']] = get_coloredcount($role_name['role_name'], $count[$raid_role_data['role_id']], $raid_role_array[$role_name['role_name']], $count2[$raid_role_data['role_id']]);
 	}
-
-	// Get the Raid Force ID from the Raid.
-	if ($raids['raid_force_id'] == 0)
-		$raid_force = "Any";
-	else
-	{
-		$sql = sprintf("SELECT raid_force_name FROM " . $phpraid_config['db_prefix'] . "raid_force WHERE raid_force_id = %s", quote_smart($raids['raid_force_id']));
-		$raid_force_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-		$raid_force_data = $db_raid->sql_fetchrow($raid_force_result, true);
-			
-		$raid_force = $raid_force_data['raid_force_name'];
-	}
 	
 	// always show current raids
 	if($raids['old'] == 0) {
@@ -180,7 +168,7 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true)) {
 			array(
 				'ID'=>$raids['raid_id'],
 				'Signup'=>$info,
-				'Force Name'=>$raid_force,
+				'Force Name'=>$raids['raid_force_name'],
 				'Date'=>$date,
 				'Dungeon'=>$location,
 				'Invite Time'=>$invite,
@@ -199,7 +187,7 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true)) {
 			array(
 				'ID'=>$raids['raid_id'],
 				'Signup'=>$info,
-				'Force Name'=>$raid_force,
+				'Force Name'=>$raids['raid_force_name'],
 				'Date'=>$date,
 				'Dungeon'=>$raids['location'],
 				'Invite Time'=>$invite,

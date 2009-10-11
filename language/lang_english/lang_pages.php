@@ -79,8 +79,18 @@ $phprlang['locations_events_text'] = 'Event Name';
 
 // lua_output
 $phprlang['rim_download'] = 'Download RIM (Raid Information Manager)';
-$phprlang['lua_download'] = 'Download phpRaidViewer';
+$phprlang['phprv_download'] = 'Download phpRaidViewer';
 $phprlang['lua_header'] = 'LUA/Macro Output';
+$phprlang['sort_name'] = 'Name';
+$phprlang['sort_date'] = 'Date';
+$phprlang['output_rim'] = 'RIM (Raid Invite Manager)';
+$phprlang['output_phprv'] = 'PHP Raid Viewer';
+$phprlang['sort_signups_text'] = 'Sort Signups By:';
+$phprlang['sort_queue_text'] = 'Sort Queue By:';
+$phprlang['output_format_text'] = 'Output Format:';
+$phprlang['options_header'] = 'Options';
+$phprlang['lua_output_header'] = 'Beginning LUA Output';
+$phprlang['lua_show_all_raids'] = 'Output all Open Raids';
 
 // permissions
 $phprlang['permissions_add'] = 'Add to set';
