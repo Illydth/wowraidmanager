@@ -71,8 +71,30 @@ $phprlang['locations_events_text'] = 'Event Name';
 
 // lua_output
 $phprlang['rim_download'] = 'RIM (Raid Information Manager) herunterladen';
-$phprlang['lua_download'] = 'phpRaidViewer herunterladen';
+$phprlang['phprv_download'] = 'phpRaidViewer herunterladen';
 $phprlang['lua_header'] = 'LUA-/Makroausgabe';
+$phprlang['sort_name'] = 'Name';
+$phprlang['sort_date'] = 'Date';
+$phprlang['output_rim'] = 'RIM (Raid Invite Manager)';
+$phprlang['output_phprv'] = 'PHP Raid Viewer';
+$phprlang['sort_signups_text'] = 'Sort Signups By:';
+$phprlang['sort_queue_text'] = 'Sort Queue By:';
+$phprlang['output_format_text'] = 'Output Format:';
+$phprlang['options_header'] = 'Options';
+$phprlang['lua_output_header'] = 'Beginning LUA Output';
+$phprlang['lua_show_all_raids'] = 'Output all Open Raids';
+$phprlang['lua_failed_to_write'] = 'LUA file could not be created due to failure to write.</b><br/>' .
+									'Please set logging level to display warnings (E_WARNING or better) ' .
+									'to see the issue.<br>' .
+									'Use this for copy+paste:<br>';
+$phprlang['lua_rim_write_success'] = '<b>LUA file created.</b><br>' . 
+									'Download <a href="cache/raid_lua/phpRaid_Data.lua">phpRaid_Data.lua</a> and save 
+									it to [wow-dir]\interface\addons\RIM\<br>' .
+									'or use this for copy+paste:<br>';
+$phprlang['lua_prv_write_success'] = '<b>LUA file created.</b><br>' . 
+									'Download <a href="cache/raid_lua/phpRaid_Data.lua">phpRaid_Data.lua</a> and save 
+									it to [wow-dir]\interface\addons\phpraidviewer\<br>' .
+									'or use this for copy+paste:<br>';
 
 // permissions
 $phprlang['permissions_add'] = 'Benutzer zur Berechtigungsgruppe hinzufügen';
