@@ -472,7 +472,7 @@ if ($char['character']['level'] == 80)
 {
 	$avatar .= "wow-80/";
 }
-if ($char['character']['level'] < 80 && $char['character']['level'] > 69)
+elseif ($char['character']['level'] < 80 && $char['character']['level'] > 69)
 {
 	$avatar .= "wow-70/";
 }
