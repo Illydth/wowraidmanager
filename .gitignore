@@ -7,3 +7,7 @@ cache/smarty_cache/*
 cache/raid_lua/*
 cache/armory_log/*
 cache/armory_cache/*
+.buildpath
+.project
+.settings/
+.settings/*
