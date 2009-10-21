@@ -3,10 +3,8 @@
  *                            lua_output_data.php
  *                            -------------------
  *   begin                : Saturday, Jan 16, 2005
- *   copyright            : (C) 2007-2008 Douglas Wagner
+ *   copyright            : (C) 2007-2010 Douglas Wagner
  *   email                : douglasw@wagnerweb.org
- *
- *   $Id: lua_output_data.php,v 2.00 2008/03/08 13:51:56 psotfx Exp $
  *
  ***************************************************************************/
 
@@ -29,147 +27,6 @@
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *
 ****************************************************************************/
-//function GetOptions()
-//{
-//	global $phpraid_config;
-	
-	//$phpraid_config['lua_output_sort_signups']
-	//$phpraid_config['lua_output_sort_queue']
-	//	1=name, 2=date, 3=class
-	
-//	if (!array_key_exists('lua_output_sort_signups', $phpraid_config))
-//	{
-//		$phpraid_config['lua_output_sort_signups'] = 1;
-//	}
-//	if (!array_key_exists('lua_output_sort_queue', $phpraid_config))
-//	{
-//		$phpraid_config['lua_output_sort_queue'] = 2;
-//	}
-//	if (!array_key_exists('lua_output_format', $phpraid_config))
-//	{
-//		$phpraid_config['lua_output_format'] = 1;
-//	}
-//}
-
-//function ShowOptions()
-//{
-//	global $db_raid, $text, $phpraid_config;
-
-//	$selected[1] = ($phpraid_config['lua_output_sort_signups'] == 1) ? 'SELECTED' : '';
-//	$selected[2] = ($phpraid_config['lua_output_sort_signups'] == 2) ? 'SELECTED' : '';
-//	$selected[3] = ($phpraid_config['lua_output_sort_queue'] == 1) ? 'SELECTED' : '';
-//	$selected[4] = ($phpraid_config['lua_output_sort_queue'] == 2) ? 'SELECTED' : '';
-//	$selected[5] = ($phpraid_config['lua_output_sort_queue'] == 3) ? 'SELECTED' : '';
-//	$selected[6] = ($phpraid_config['lua_output_format'] == 1) ? 'SELECTED' : '';
-//	$selected[7] = ($phpraid_config['lua_output_format'] == 2) ? 'SELECTED' : '';
-	
-//	$raid_id = scrub_input($_GET['raid_id']);
-	
-	// Build the Guild Select Box
-//	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "guilds";
-//	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);			
-//	while($guild_data = $db_raid->sql_fetchrow($result, true))
-//	{
-//		$guild_options .= "<option ";
-//		if($phpraid_config['lua_output_guild'] == $guild_data['guild_id'])
-//			$guild_options .= "SELECTED ";
-//		$guild_options .= "value=\"".$guild_data['guild_id']."\">".$guild_data['guild_name']."</option>";
-//	}
-//	$guild_select_box = '<select name="guild" class="form" id="guild">
-//						<option value="0">All</option>' .$guild_options. '</select>';
-//	
-//	$text .= '<form method="post" action="lua_output.php?raid_id=' . $raid_id . '&amp;name=post">';
-//	$text .= '<table width="300" align="center">';
-//	$text .= '<tr><th colspan="2">Options</th></tr>';
-//	$text .= '<tr>';
-//	$text .= '<td>Sort signups by:</td>';
-//	$text .= '<td><select name="config[lua_output_sort_signups]" size=1>';
-//	$text .= '<option '.$selected[1].' value="1">Name</option>';
-//	$text .= '<option '.$selected[2].' value="2">Date</option>';
-//	$text .= '</select></td>';
-//	$text .= '</tr><tr>';
-//	$text .= '<td>Sort queue by:</td>';
-//	$text .= '<td><select name="config[lua_output_sort_queue]" size=1>';
-//	$text .= '<option '.$selected[3].' value="1">Name</option>';
-//	$text .= '<option '.$selected[4].' value="2">Date</option>';
-//	$text .= '<option '.$selected[5].' value="3">Class</option>';
-//	$text .= '</select></td>';
-//	$text .= '</tr><tr>';
-//	$text .= '<td>Output Format:</td>';
-//	$text .= '<td><select name="config[lua_output_format]" size=1>';
-//	$text .= '<option '.$selected[6].' value="1">RIM (Raid Invite Manager)</option>';
-//	$text .= '<option '.$selected[7].' value="2">PHP Raid Viewer</option>';
-//	$text .= '</select></td>';
-//	$text .= '</tr><tr>';
-//	$text .= '<td>Guild:</td>';
-//	$text .= '<td>'.$guild_select_box.'</td>';
-//	$text .= '</tr><tr>';
-//	$text .= '<td align="left" colspan="2"><input type="submit" name="parse" value="Apply options" class="mainoption"></td>';
-//	$text .= '</tr>';
-//	$text .= '</table>';
-//	$text .= '</form>';
-//}
-
-//function UpdateOptions()
-//{
-//	global $db_raid, $phpraid_config;
-//	
-//	$phpraid_config['lua_output_sort_signups'] = scrub_input($_POST['config']['lua_output_sort_signups']);
-//	$phpraid_config['lua_output_sort_queue'] = scrub_input($_POST['config']['lua_output_sort_queue']);
-//	$phpraid_config['lua_output_format'] = scrub_input($_POST['config']['lua_output_format']);
-//	$phpraid_config['lua_ouptut_guild'] = scrub_input($_POST['guild']);
-	
-	//Enter the Signup Sorting order for LUA Output
-//	$sql = "SELECT config_name FROM `".$phpraid_config['db_prefix']."config` WHERE `config_name`= 'lua_output_sort_signups';";
-//	$result = $db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
-//	if ($db_raid->sql_numrows($result) != 0)
-//	{
-//		$sql = sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value`=%s WHERE `config_name`= 'lua_output_sort_signups';", quote_smart($phpraid_config['lua_output_sort_signups']));
-//	}
-//	else
-//	{
-//		$sql = sprintf("INSERT INTO `".$phpraid_config['db_prefix']."config` (`config_name`, `config_value`) VALUES('lua_output_sort_signups', %s);", quote_smart($phpraid_config['lua_output_sort_signups']));
-//	}
-//	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
-//	
-	//Enter the Queue Sorting Order for LUA Output
-//	$sql = "SELECT config_name FROM `".$phpraid_config['db_prefix']."config` WHERE `config_name`= 'lua_output_sort_queue';";
-//	$result = $db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
-//	if ($db_raid->sql_numrows($result) != 0)
-//	{
-//		$sql = sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value`=%s WHERE `config_name`= 'lua_output_sort_queue';", quote_smart($phpraid_config['lua_output_sort_queue']));
-//	}
-//	else
-//	{
-//		$sql = sprintf("INSERT INTO `".$phpraid_config['db_prefix']."config` (`config_name`, `config_value`) VALUES('lua_output_sort_queue', %s);", quote_smart($phpraid_config['lua_output_sort_queue']));
-//	}
-//	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
-
-	//Enter the Output Format for LUA Output
-//	$sql = "SELECT config_name FROM `".$phpraid_config['db_prefix']."config` WHERE `config_name`= 'lua_output_format';";
-//	$result = $db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
-//	if ($db_raid->sql_numrows($result) != 0)
-//	{
-//		$sql = sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value`=%s WHERE `config_name`= 'lua_output_format';", quote_smart($phpraid_config['lua_output_format']));
-//	}
-//	else
-//	{
-//		$sql = sprintf("INSERT INTO `".$phpraid_config['db_prefix']."config` (`config_name`, `config_value`) VALUES('lua_output_format', %s);", quote_smart($phpraid_config['lua_output_format']));
-//	}
-//	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
-	
-	//Enter the Guild for LUA Output
-//	$sql = "SELECT config_name FROM `".$phpraid_config['db_prefix']."config` WHERE `config_name`= 'lua_output_guild';";
-//	$result = $db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
-//	if ($db_raid->sql_numrows($result) != 0)
-//		$sql = sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value`=%s WHERE `config_name`= 'lua_output_guild';", quote_smart($phpraid_config['lua_ouptut_guild']));
-//	else
-//		$sql = sprintf("INSERT INTO `".$phpraid_config['db_prefix']."config` (`config_name`, `config_value`) VALUES('lua_output_guild', %s);", quote_smart($phpraid_config['lua_ouptut_guild']));
-//	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);		
-//	
-//	header("Location: lua_output.php");
-//}
-
 function GetClassIdByClassName($class)
 {
 	global $phprlang, $db_raid, $phpraid_config, $wrm_global_classes;
@@ -294,11 +151,11 @@ function output_lua_rim()
 		while($guild_server_data = $db_raid->sql_fetchrow($guild_server_result, true))
 		{
 			$server = $guild_server_data['guild_server'];
-			$lua_output .= '\t["'. $server . '"] = {\n';  //Output
+			$lua_output .= "\t[\"". $server . "\"] = {\n";  //Output
 			
 			// Get the Raid Forces associated with that server. 
 			// Raids with RF Name of None are not processed...they have no server and thus RIM has no use for them.
-			$sql = "SELECT DISTINCT b.raid_force_name as raid_force_name " . 
+			$sql = "SELECT DISTINCT b.raid_force_name as raid_force_name, b.raid_force_id as raid_force_id " . 
 					"FROM ".$phpraid_config['db_prefix']."guilds a, ".$phpraid_config['db_prefix']."raid_force b " .
 					"WHERE a.guild_id = b.guild_id " .
 					"AND a.guild_server = '" . $server . "' " .
@@ -306,13 +163,13 @@ function output_lua_rim()
 			$rf_list_query = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 			while($rf_list_records = $db_raid->sql_fetchrow($rf_list_query, true))
 			{
-				$lua_output .= '\t\t["'. $rf_list_records['raid_force_name'] . '"] = {\n';  //Output
-				$lua_output .= '\t\t\t["raids"] = {\n';  //Output
+				$lua_output .= "\t\t[\"". $rf_list_records['raid_force_name'] . "\"] = {\n";  //Output
+				$lua_output .= "\t\t\t[\"raids\"] = {\n";  //Output
 				
 				// Get Raids for Each Raid Force and Process Them.
 				$count = 0;
 				$sql = "SELECT * FROM ".$phpraid_config['db_prefix']."raids 
-						WHERE raid_force_name = '" . $rf_list_records['raid_force_name'] . "' 
+						WHERE raid_force_id = '" . $rf_list_records['raid_force_id'] . "' 
 						AND " . $raid_sql_where . " ORDER BY invite_time ASC"; // raid_sql_where from lua_output.php
 				$raids_list_query = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 				while($raid_data = $db_raid->sql_fetchrow($raids_list_query, true))
@@ -448,7 +305,7 @@ function output_lua_rim()
 					// begin - add data to lua output
 					for($i=0; $i<=$max_class_index; $i++)
 					{
-						$class = $this->GetClassNameByClassId($i);
+						$class = GetClassNameByClassId($i);
 						if ($class != "skip")
 							$lua_signups[$i] = "\t\t\t\t\t[\"".$class."\"] = {\n";
 					}
@@ -474,7 +331,7 @@ function output_lua_rim()
 					
 					foreach($signups as $char)
 					{
-						$class_id = $this->GetClassIdByClassName($char['class']);
+						$class_id = GetClassIdByClassName($char['class']);
 						$lua_signups[$class_id] .= "\t\t\t\t\t\t[{$cnt[$class_id]}] = {\n";
 						$lua_signups[$class_id] .= "\t\t\t\t\t\t\t[\"name\"] = \"{$char['name']}\",\n";
 						$lua_signups[$class_id] .= "\t\t\t\t\t\t\t[\"level\"] = \"{$char['level']}\",\n";
@@ -504,16 +361,219 @@ function output_lua_rim()
 			}
 			$lua_output .= "\t\t},\n"; // Output - Close Raid Force Loop
 		}
-		$lua_output .= "\t}\n}"; // Output - Closes the Server Loop and then the phpRaid_Data Loop.
-		// end - add data to lua output			
 	}
 	else // raid_id is set
 	{
-				$sql = "SELECT * FROM ".$phpraid_config['db_prefix']."raids 
-						WHERE " . $raid_sql_where; // raid_sql_where from lua_output.php
-				$raids_list_query = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		// Get Raids for Raid ID and Process It.
+		$sql = "SELECT * FROM ".$phpraid_config['db_prefix']."raids 
+				WHERE " . $raid_sql_where; // raid_sql_where from lua_output.php
+		$raids_list_query = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$raid_data = $db_raid->sql_fetchrow($raids_list_query, true);
 		
+		// Take the Raid ID and get the Raid Force
+		$sql = "SELECT * FROM ".$phpraid_config['db_prefix']."raid_force
+				WHERE raid_force_id = '" . $raid_data['raid_force_id'] . "'";
+		$raid_force_name_query = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$raid_force_name_data = $db_raid->sql_fetchrow($raid_force_name_query, true);
+	
+		// Take Raid Force Information and get Server.
+		$sql = "SELECT * FROM ".$phpraid_config['db_prefix']."guilds
+				WHERE guild_id = '" . $raid_force_name_data['guild_id'] . "'";
+		$guild_id_query = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$guild_id_data = $db_raid->sql_fetchrow($guild_id_query, true);
+		
+		$lua_output .= '\t["'. $guild_id_data['guild_server'] . '"] = {\n';  //Output
+		$lua_output .= '\t\t["'. $raid_force_name_data['raid_force_name'] . '"] = {\n';  //Output
+		$lua_output .= '\t\t\t["raids"] = {\n';  //Output
+		$lua_output .= '\t\t\t\t[0] = {\n'; //Output
+	
+		// Ouptut Raid Data
+		$location_data=addslashes($raid_data['location']);
+		$description_data=linebreak_to_bslash_n(addslashes($raid_data['description']));
+		$lua_output .= "\t\t\t\t\t[\"location\"] = \"$location_data\",\n";
+		$lua_output .= "\t\t\t\t\t[\"date\"] = \"" . new_date($phpraid_config['date_format'],$raid_data['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']) . "\",\n";
+		$lua_output .= "\t\t\t\t\t[\"invite_time\"] = \"" . new_date("Hi",$raid_data['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']) . "\",\n";
+		$lua_output .= "\t\t\t\t\t[\"start_time\"] = \"" . new_date("Hi",$raid_data['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']) . "\",\n";
+		$lua_output .= "\t\t\t\t\t[\"event_type\"] = \"" . $raid_data['event_type'] . "\",\n";
+		$lua_output .= "\t\t\t\t\t[\"description\"] = \"$description_data\",\n";
+					
+		// sql string for signups
+		$sql = "SELECT ".$phpraid_config['db_prefix']."signups.comments AS comment,
+					   ".$phpraid_config['db_prefix']."signups.timestamp AS timestamp,
+					   ".$phpraid_config['db_prefix']."signups.profile_id AS profile_id,
+					   ".$phpraid_config['db_prefix']."chars.char_id AS ID,
+					   ".$phpraid_config['db_prefix']."chars.name AS name,
+					   ".$phpraid_config['db_prefix']."chars.lvl AS lvl,
+					   ".$phpraid_config['db_prefix']."chars.race AS race,
+					   ".$phpraid_config['db_prefix']."chars.class AS class
+				FROM ".$phpraid_config['db_prefix']."signups
+				LEFT JOIN ".$phpraid_config['db_prefix']."chars ON
+					".$phpraid_config['db_prefix']."chars.char_id = ".$phpraid_config['db_prefix']."signups.char_id
+				WHERE ".$phpraid_config['db_prefix']."signups.raid_id = ".$raid_data['raid_id']."
+					AND ".$phpraid_config['db_prefix']."signups.cancel = 0
+					AND ".$phpraid_config['db_prefix']."signups.queue = ";
+	
+		// get data signed up
+		$order_by = '';
+		$signups = array();
+		if ($phpraid_config['lua_output_sort_signups'] == 1)
+			$order_by = 'ORDER BY '.$phpraid_config['db_prefix'].'chars.name ASC';
+		elseif ($phpraid_config['lua_output_sort_signups'] == 2)
+			$order_by = 'ORDER BY '.$phpraid_config['db_prefix'].'signups.timestamp ASC';
+		$sql1 = $sql."0 ".$order_by.";";
+		$signup_result = $db_raid->sql_query($sql1) or print_error($sql1, mysql_error(), 1);
+		while($signup = $db_raid->sql_fetchrow($signup_result, true))
+		{
+			$sql2 = "SELECT team_name " .
+					"FROM ".$phpraid_config['db_prefix']."teams " .
+					"WHERE raid_id=".$raid_data['raid_id']." and char_id=".$signup['ID'];
+			$team_result = $db_raid->sql_query($sql2) or print_error($sql2, mysql_error(), 1);
+			$team = $db_raid->sql_fetchrow($team_result, true);
+	
+			// Determine access_type for each character for each raid.
+			$profile_id = $signup['profile_id'];
+			$raid_officer = $raid_data['officer'];
+				
+			$sql3 = "SELECT profile_id " .
+					"FROM ".$phpraid_config['db_prefix']."profile " .
+					"WHERE username='".$raid_officer."'";
+			$officer_profile = $db_raid->sql_query($sql3) or print_error($sql3, mysql_error(), 1);
+			$raid_officer_profile_id = $db_raid->sql_fetchrow($officer_profile, true);
+			
+			// Check for Admin Privs for Signup Profile
+			$raids_perm = check_permission("raids", $profile_id);
+			
+			// Set Access Type Priv
+			if ($raids_perm)
+				$access_type = "Admin";
+			elseif ($profile_id == $raid_officer_profile_id['profile_id'])
+				$access_type = "Moderator";
+			else
+				$access_type = "User";
+					
+			array_push($signups, array(
+				'name'		 => ucfirst(mb_strtolower($signup['name'], "UTF-8")),
+				'level'		 => $signup['lvl'],
+				'race'		 => $signup['race'],
+				'class'		 => $signup['class'],
+				'team_name'  => $team['team_name'],
+				'access_type'=> $access_type,
+				'comment'	 => linebreak_to_bslash_n(addslashes($signup['comment'])),
+				'timestamp'	 => new_date($phpraid_config['date_format'],$signup['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']) . ' - ' . new_date($phpraid_config['time_format'],$signup['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']),
+			));
+		}
+		
+		// get data queue
+		$order_by = '';
+		$queue = array();
+		if ($phpraid_config['lua_output_sort_queue'] == 1)
+			$order_by = 'ORDER BY '.$phpraid_config['db_prefix'].'chars.name ASC';
+		elseif ($phpraid_config['lua_output_sort_queue'] == 2)
+			$order_by = 'ORDER BY '.$phpraid_config['db_prefix'].'signups.timestamp ASC';
+		elseif ($phpraid_config['lua_output_sort_queue'] == 3)
+			$order_by = 'ORDER BY '.$phpraid_config['db_prefix'].'chars.class ASC';
+		$sql1 = $sql."1 ".$order_by.";";
+		$signup_result = $db_raid->sql_query($sql1) or print_error($sql1, mysql_error(), 1);
+		while($signup = $db_raid->sql_fetchrow($signup_result, true))
+		{
+			$sql2 = "SELECT team_name " .
+					"FROM ".$phpraid_config['db_prefix']."teams " .
+					"WHERE raid_id=".$raid_data['raid_id']." and char_id=".$signup['ID'];
+			$team_result = $db_raid->sql_query($sql2) or print_error($sql2, mysql_error(), 1);
+			$team = $db_raid->sql_fetchrow($team_result, true);
+	
+			// Determine access_type for each character for each raid.
+			$profile_id = $signup['profile_id'];
+			$raid_officer = $raid_data['officer'];
+			
+			$sql3 = "SELECT profile_id " .
+					"FROM ".$phpraid_config['db_prefix']."profile " .
+					"WHERE username='".$raid_officer."'";
+			$officer_profile = $db_raid->sql_query($sql3) or print_error($sql3, mysql_error(), 1);
+			$raid_officer_profile_id = $db_raid->sql_fetchrow($officer_profile, true);
+	
+			// Check for Admin Privs for Signup Profile
+			$raids_perm = check_permission("raids", $profile_id);
+				
+			// Set Access Type Priv
+			if ($raids_perm)
+				$access_type = "Admin";
+			elseif ($profile_id == $raid_officer_profile_id['profile_id'])
+				$access_type = "Moderator";
+			else
+				$access_type = "User";
+				
+			array_push($queue, array(
+				'name'		 => ucfirst(mb_strtolower($signup['name'], "UTF-8")),
+				'level'		 => $signup['lvl'],
+				'race'		 => $signup['race'],
+				'class'		 => $signup['class'],
+				'access_type'=> $access_type,
+				'team_name'  => $team['team_name'],
+				'comment'	 => linebreak_to_bslash_n(addslashes($signup['comment'])),
+				'timestamp'	 => new_date($phpraid_config['date_format'],$signup['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']) . ' - ' . new_date($phpraid_config['time_format'],$signup['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']),
+			));
+		}
+					
+		// begin - add data to lua output
+		for($i=0; $i<=$max_class_index; $i++)
+		{
+			$class = $this->GetClassNameByClassId($i);
+			if ($class != "skip")
+				$lua_signups[$i] = "\t\t\t\t\t[\"".$class."\"] = {\n";
+		}
+		// init counter vars
+		$cnt[0] = 0;
+		foreach ($wrm_global_classes as $global_class)
+			$cnt[$global_class['class_index']] = 0;
+		
+		foreach($queue as $char)
+		{
+			$lua_signups[0] .= "\t\t\t\t\t\t[{$cnt[0]}] = {\n";
+			$lua_signups[0] .= "\t\t\t\t\t\t\t[\"name\"] = \"{$char['name']}\",\n";
+			$lua_signups[0] .= "\t\t\t\t\t\t\t[\"level\"] = \"{$char['level']}\",\n";
+			$lua_signups[0] .= "\t\t\t\t\t\t\t[\"class\"] = \"".$char['class']."\",\n";
+			$lua_signups[0] .= "\t\t\t\t\t\t\t[\"race\"] = \"{$char['race']}\",\n";
+			$lua_signups[0] .= "\t\t\t\t\t\t\t[\"team_name\"] = \"{$char['team_name']}\",\n";
+			$lua_signups[0] .= "\t\t\t\t\t\t\t[\"access_type\"] = \"{$char['access_type']}\",\n";
+			$lua_signups[0] .= "\t\t\t\t\t\t\t[\"comment\"] = \"{$char['comment']}\",\n";
+			$lua_signups[0] .= "\t\t\t\t\t\t\t[\"timestamp\"] = \"{$char['timestamp']}\",\n";
+			$lua_signups[0] .= "\t\t\t\t\t\t},\n";
+			$cnt[0]++;
+		}
+		
+		foreach($signups as $char)
+		{
+			$class_id = $this->GetClassIdByClassName($char['class']);
+			$lua_signups[$class_id] .= "\t\t\t\t\t\t[{$cnt[$class_id]}] = {\n";
+			$lua_signups[$class_id] .= "\t\t\t\t\t\t\t[\"name\"] = \"{$char['name']}\",\n";
+			$lua_signups[$class_id] .= "\t\t\t\t\t\t\t[\"level\"] = \"{$char['level']}\",\n";
+			$lua_signups[$class_id] .= "\t\t\t\t\t\t\t[\"class\"] = \"".$char['class']."\",\n";
+			$lua_signups[$class_id] .= "\t\t\t\t\t\t\t[\"race\"] = \"{$char['race']}\",\n";
+			$lua_signups[$class_id] .= "\t\t\t\t\t\t\t[\"team_name\"] = \"{$char['team_name']}\",\n";
+			$lua_signups[$class_id] .= "\t\t\t\t\t\t\t[\"access_type\"] = \"{$char['access_type']}\",\n";
+			$lua_signups[$class_id] .= "\t\t\t\t\t\t\t[\"comment\"] = \"{$char['comment']}\",\n";
+			$lua_signups[$class_id] .= "\t\t\t\t\t\t\t[\"timestamp\"] = \"{$char['timestamp']}\",\n";
+			$lua_signups[$class_id] .= "\t\t\t\t\t\t},\n";
+			$cnt[$class_id]++;
+		}
+		
+		// add class counts
+		$lua_output .= "\t\t\t\t\t[\"queue_count\"] = \"".$cnt[0]."\",\n";
+		foreach ($wrm_global_classes as $global_class)
+			$lua_output .= "\t\t\t\t\t[\"".$global_class['lang_index']."s_count\"] = \"".$cnt[$global_class['class_index']]."\",\n";
+		
+		for($i=0; $i<=$max_class_index; $i++)
+			if ($i != 10) // Class ID Number 10 does not exist at this point.
+				$lua_output .= $lua_signups[$i] . "\t\t\t\t\t},\n";
+		
+		$lua_output .= "\t\t\t\t},\n"; // Output - Close [X] Raid Loop.
+		$lua_output .= "\t\t\t},\n"; // Output - Close Raids Loop
+		$lua_output .= "\t\t},\n"; // Output - Close Raid Force Loop
 	}	
+	$lua_output .= "\t}\n}"; // Output - Closes the Server Loop and then the phpRaid_Data Loop.
+	// end - add data to lua output		
+	
 	return ($lua_output);
 }
 
@@ -823,50 +883,7 @@ function output_lua_prv()
 	$lua_output .= "\t}\n}";
 	// end - add data to lua output
 	
-	// write to file
-	$output = "\xEF\xBB\xBF" . $lua_output;
-	//fwrite($file,utf8_encode($lua_output));
-	fwrite($file, $output);
-	
-	// output to textarea
-	if ( $failed_to_open == TRUE)
-	{
-		$text .= 'LUA file could not be created due to failure to write.</b><br/>';
-		$text .= 'Please set logging level to display warnings (E_WARNING or better) ';
-		$text .= 'to see the issue.<br>';
-		$text .= '<br>';
-		$text .= 'Use this for copy+paste:<br>';
-		$text .= '<textarea rows="10" cols="60" style="width: 100%">';
-		$text .= $lua_output;
-		$text .= '</textarea><br><br><br>';
-		//$output = str_replace("\n","<br>",$output);
-		//echo '<br><br>' . $output;
-	}
-	else
-	{
-		$text .= '<b>LUA file created.</b><br>';
-		$text .= 'Download <a href="cache/raid_lua/phpRaid_Data.lua">phpRaid_Data.lua</a> and save it to [wow-dir]\interface\addons\phpraidviewer\<br>';
-		$text .= 'or use this for copy+paste:<br>';
-		$text .= '<textarea rows="10" cols="60" style="width: 100%">';
-		$text .= $lua_output;
-		$text .= '</textarea><br><br><br>';
-		//$output = str_replace("\n","<br>",$output);
-		//echo '<br><br>' . $output;
-	}
-	
 	return ($lua_output);
 }
 
-//global $text;
-//$text = '';
-
-//$Output_Data = new Output_Data;
-//if (array_key_exists('config', $_POST))
-//	$Output_Data->UpdateOptions();
-//$Output_Data->GetOptions();
-//$Output_Data->ShowOptions();
-//$Output_Data->Output_Lua();
-//$raid_id=scrub_input($_GET['raid_id']);
-//if (isset($raid_id) && is_numeric($raid_id))
-//	$Output_Data->Output_Macro();
 ?>

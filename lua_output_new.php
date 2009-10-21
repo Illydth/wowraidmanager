@@ -43,8 +43,13 @@ else
 	define("PAGE_LVL","raids");
 }
 
+require_once('./lua_output_data_new.php');
+
 // Standard Display of Page
 if($_GET['mode'] == 'lua') {
+	
+	$lua_output_form = array();
+	$lua_output_data = array();
 	
 	isset($_GET['raid_id']) ? $raid_id = scrub_input($_GET['raid_id']) : $raid_id = '';
 	
@@ -111,7 +116,7 @@ if($_GET['mode'] == 'lua') {
 	//Create the Submit/Apply Options button.
 	$buttons = '<input name="submit" type="submit" id="submit" value="'.$phprlang['apply'].'" class="mainoption"> <input type="reset" name="Reset" value="'.$phprlang['reset'].'" class="liteoption">';
 		
-	array_push($lua_output_form,
+	$wrmsmarty->assign('lua_output_form',
 		array(
 			'sort_signups_text'=>$phprlang['sort_signups_text'],
 			'sort_signups'=>$sort_signups_option,
@@ -134,19 +139,12 @@ if($_GET['mode'] == 'lua') {
 
 	// output to textarea
 	if ( $failed_to_open == TRUE)
-	{
-		$text .= 'LUA file could not be created due to failure to write.</b><br/>';
-		$text .= 'Please set logging level to display warnings (E_WARNING or better) ';
-		$text .= 'to see the issue.<br>';
-		$text .= '<br>';
-		$text .= 'Use this for copy+paste:<br>';
-	}	
+		$text = $phprlang['lua_failed_to_write'];	
 	else
-	{
-		$text .= '<b>LUA file created.</b><br>';
-		$text .= 'Download <a href="cache/raid_lua/phpRaid_Data.lua">phpRaid_Data.lua</a> and save it to [wow-dir]\interface\addons\phpraidviewer\<br>';
-		$text .= 'or use this for copy+paste:<br>';
-	}		
+		if ($phpraid_config['lua_output_format'] == 1)
+			$text = $phprlang['lua_rim_write_success'];
+		else
+			$text = $phprlang['lua_prv_write_success'];
 
 	// Set the Where Clause for the Raid Selection.  Set here so that we can allow the user to display all raids by re-opening the lua_output
 	//    page without passing a raid_id in.
@@ -167,7 +165,7 @@ if($_GET['mode'] == 'lua') {
 	$output = "\xEF\xBB\xBF" . $lua_output;
 	fwrite($file, $output);
 			
-	array_push($lua_output_data,
+	$wrmsmarty->assign('lua_output_data',
 		array(
 			'output_header'=>$phprlang['lua_output_header'],
 			'intro_text'=>$text,
@@ -178,8 +176,10 @@ if($_GET['mode'] == 'lua') {
 }
 if($_GET['mode'] == 'macro') {
 
-	// Set the output to show the LUA output, not the Macro Output
+	// Set the output to show the Macro output, not the LUA Output
 	$wrmsmarty->assign('lua_include_file', 'lua_output_macro.html');
+	
+	
 
 }
 if($_GET['mode'] == 'update_options') {
@@ -218,9 +218,7 @@ if($phpraid_config['showphpraid_addon'] == 1)
 else
 	$wrmsmarty->assign('options_header',$phprlang['lua_header']);
 
-$wrmsmarty->assign('options_form_data', $lua_output_form);
-
-$wrmsmarty->display('lua_output.html');
+$wrmsmarty->display('lua_output_new.html');
 
 require_once('includes/page_footer.php');
 ?>

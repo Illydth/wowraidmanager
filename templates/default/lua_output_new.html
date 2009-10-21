@@ -1,7 +1,8 @@
 {* Smarty Template *}
 <div class="contentHeader">{$options_header}</div>
 <br>
-<form action="{$lua_output_form.form_action}" method="post" name="update_options" id="update_options">
+<!--  <form action="{$lua_output_form.form_action}" method="post" name="update_options" id="update_options">  -->
+<form action="{$form_action}" method="post" name="update_options" id="update_options">
 	<div class="contentBody">
 		<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
 			<tr>
@@ -20,9 +21,12 @@
 							<td width="200" class="row1">{$lua_output_form.output_format_text}</td>
 							<td class="row2">{$lua_output_form.output_format}</td>
 						</tr>
-						<tr><td>{$lua_output_form.Buttons}</td></tr>
 					</table>
 				</td>
+			</tr>
+			<tr><td>&nbsp</td></tr>
+			<tr>
+				<td align="center">{$lua_output_form.Buttons}</td>
 			</tr>
 		</table>
 	</div>
