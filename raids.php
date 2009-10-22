@@ -108,7 +108,7 @@ if($_GET['mode'] == 'view')
 	
 				$delete = '<a href="raids.php?mode=delete&amp;n='.$data['location'].'&amp;id='.$data['raid_id'].'"><img src="templates/' .
 							$phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['delete'].'\');"
-							onMouseout="hideddrivetip();" alt="delete icon"></a><a href="lua_output.php?raid_id=' . $data['raid_id'] . '">
+							onMouseout="hideddrivetip();" alt="delete icon"></a><a href="lua_output_new.php?mode=lua&raid_id=' . $data['raid_id'] . '">
 	
 							<img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_minipost.gif" border="0"
 							onMouseover="ddrivetip(\''.$phprlang['lua'].'\');" onMouseout="hideddrivetip();" alt="minipost icon"></a>

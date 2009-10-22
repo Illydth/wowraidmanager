@@ -52,10 +52,8 @@ if($_GET['mode'] == 'lua') {
 	$lua_output_data = array();
 	
 	isset($_GET['raid_id']) ? $raid_id = scrub_input($_GET['raid_id']) : $raid_id = '';
-	
-	// Set the output to show the LUA output, not the Macro Output
-	$wrmsmarty->assign('lua_include_file', 'lua_output_lua.html');
-	
+	isset($_GET['raid_id']) ? $raid_id_set = 1 : $raid_id_set = 0;
+
 	/******************************
 	 * Setup Options Boxes.
 	 ******************************/
@@ -102,7 +100,7 @@ if($_GET['mode'] == 'lua') {
 	$output_format_option .= '</select>';
 	
 	//Set the Form Action
-	$form_action = 'lua_output.php?mode=update_options';
+	$form_action = 'lua_output_new.php?mode=update_options';
 	
 	//Create the Download Header if Configured to do so.
 	if($phpraid_config['showphpraid_addon'] == 1)
@@ -126,6 +124,7 @@ if($_GET['mode'] == 'lua') {
 			'output_format'=>$output_format_option,
 			'form_action'=>$form_action,
 			'options_header'=>$phprlang['options_header'],
+			'raid_id_set'=>$raid_id_set,
 			'Buttons'=>$buttons,
 		)
 	);
@@ -173,14 +172,23 @@ if($_GET['mode'] == 'lua') {
 		)
 	);
 	
-}
-if($_GET['mode'] == 'macro') {
-
-	// Set the output to show the Macro output, not the LUA Output
-	$wrmsmarty->assign('lua_include_file', 'lua_output_macro.html');
-	
-	
-
+	if ($raid_id_set)
+	{
+		// Get Macro Output
+		$drafted_text = output_macro_drafted($raid_id);
+		$queued_text = output_macro_queued($raid_id);
+		
+		$wrmsmarty->assign('macro_output',
+			array(
+				'macro_header'=>$phprlang['lua_macro_header'],
+				'macro_footer'=>$phprlang['lua_macro_footer'],
+				'drafted_users_text'=>$phprlang['lua_drafted'],
+				'queued_users_text'=>$phprlang['lua_queued'],
+				'drafted_users'=>$drafted_text,
+				'queued_users'=>$queued_text,
+			)
+		);		
+	}
 }
 if($_GET['mode'] == 'update_options') {
 	$sort_signups = scrub_input($_POST['lua_output_sort_signups']);
@@ -205,7 +213,7 @@ if($_GET['mode'] == 'update_options') {
 					WHERE config_name='lua_output_format'", quote_smart($output_format));
 	$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);				
 	
-	header("Location: lua_output.php?mode=lua");
+	header("Location: lua_output_new.php?mode=lua");
 }
 
 //

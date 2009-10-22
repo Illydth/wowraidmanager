@@ -1,8 +1,7 @@
 {* Smarty Template *}
 <div class="contentHeader">{$options_header}</div>
 <br>
-<!--  <form action="{$lua_output_form.form_action}" method="post" name="update_options" id="update_options">  -->
-<form action="{$form_action}" method="post" name="update_options" id="update_options">
+<form action="{$lua_output_form.form_action}" method="post" name="update_options" id="update_options">
 	<div class="contentBody">
 		<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
 			<tr>
@@ -33,4 +32,9 @@
 </form>
 <br>
 {* Include either the Lua Output or Macro Output file depending on how we were called. *} 
-{include file=$lua_include_file}
+{include file='lua_output_lua.html'}
+
+{* Include the Macro Output if a Raid ID was sent in. *}
+{if $lua_output_form.raid_id_set}
+	{include file='lua_output_macro.html'}
+{/if}

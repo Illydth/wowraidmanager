@@ -1,10 +1,25 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
-
-</body>
-</html>
+{* Smarty Template *}
+<div class="contentHeader">{$macro_output.macro_header}</div>
+<div class="contentBody">
+<table width="100%">
+	<tr>
+		<td>{$macro_output.drafted_users_text}</td>
+		<td>{$macro_output.queued_users_text}</td>
+	</tr>
+	<tr>
+		<td width="50%">
+			<textarea align="left" rows="10" cols="60" style="width: 100%">
+{$macro_output.drafted_users}
+			</textarea>
+		</td>
+		<td width="50%">
+			<textarea align="left" rows="10" cols="60" style="width: 100%">
+{$macro_output.queued_users}
+			</textarea>
+		</td>
+	</tr>
+</table>
+</div>
+<b>
+{$macro_output.macro_footer}
+</b>

@@ -59,19 +59,9 @@ function GetClassNameByClassId($id)
 	}
 }
 
-function output_macro()
+function output_macro_drafted($raid_id)
 {
 	global $db_raid, $text, $phpraid_config;
-	
-	// macro output
-	// non-queued first
-	$text .= "<b>Macro output listing...</b>";
-	$text .= '<table width="100%"><tr>';
-	$text .= "<td>Non-queued users</td>";
-	$text .= "<td>Queued users</td></tr>";
-	$text .= '<tr><td width="50%"><textarea rows="10" cols="60" style="width: 100%">';
-	
-	$raid_id = scrub_input($_GET['raid_id']);
 	
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id=%s AND queue='0' AND cancel='0'",quote_smart($raid_id));
 	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
@@ -81,11 +71,15 @@ function output_macro()
 		$result2 = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 		$data2 = $db_raid->sql_fetchrow($result2, true);
 		$data2['name'] = ucfirst(mb_strtolower($data2['name'], "UTF-8"));
-		$text .= "/i {$data2['name']}\n";
+		$drafted_text .= "/i {$data2['name']}\n";
 	}
 	
-	$text .= '</textarea></td>';
-	$text .= '<td width="50%"><textarea rows="10" cols="60" style="width: 100%">';
+	return $drafted_text;
+}
+
+function output_macro_queued($raid_id)
+{
+	global $db_raid, $text, $phpraid_config;
 	
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id=%s AND queue='1' AND cancel='0'",quote_smart($raid_id));
 	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
@@ -95,11 +89,10 @@ function output_macro()
 		$result2 = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 		$data2 = $db_raid->sql_fetchrow($result2, true);
 		$data2['name'] = ucfirst(mb_strtolower($data2['name'], "UTF-8"));
-		$text .= "/i {$data2['name']}\n";
+		$queued_text .= "/i {$data2['name']}\n";
 	}
-	$text .= '</textarea></td></tr></table>';
-	$text .= "<b><br>Macro output listing complete.<br>";
-	$text .= "Copy and paste the above to a macro and run in-game</b>";
+	
+	return $queued_text;
 }
 
 function output_lua_rim()
@@ -382,10 +375,10 @@ function output_lua_rim()
 		$guild_id_query = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 		$guild_id_data = $db_raid->sql_fetchrow($guild_id_query, true);
 		
-		$lua_output .= '\t["'. $guild_id_data['guild_server'] . '"] = {\n';  //Output
-		$lua_output .= '\t\t["'. $raid_force_name_data['raid_force_name'] . '"] = {\n';  //Output
-		$lua_output .= '\t\t\t["raids"] = {\n';  //Output
-		$lua_output .= '\t\t\t\t[0] = {\n'; //Output
+		$lua_output .= "\t[\"". $guild_id_data['guild_server'] . "\"] = {\n";  //Output
+		$lua_output .= "\t\t[\"". $raid_force_name_data['raid_force_name'] . "\"] = {\n";  //Output
+		$lua_output .= "\t\t\t[\"raids\"] = {\n";  //Output
+		$lua_output .= "\t\t\t\t[0] = {\n"; //Output
 	
 		// Ouptut Raid Data
 		$location_data=addslashes($raid_data['location']);
@@ -518,7 +511,7 @@ function output_lua_rim()
 		// begin - add data to lua output
 		for($i=0; $i<=$max_class_index; $i++)
 		{
-			$class = $this->GetClassNameByClassId($i);
+			$class = GetClassNameByClassId($i);
 			if ($class != "skip")
 				$lua_signups[$i] = "\t\t\t\t\t[\"".$class."\"] = {\n";
 		}
@@ -544,7 +537,7 @@ function output_lua_rim()
 		
 		foreach($signups as $char)
 		{
-			$class_id = $this->GetClassIdByClassName($char['class']);
+			$class_id = GetClassIdByClassName($char['class']);
 			$lua_signups[$class_id] .= "\t\t\t\t\t\t[{$cnt[$class_id]}] = {\n";
 			$lua_signups[$class_id] .= "\t\t\t\t\t\t\t[\"name\"] = \"{$char['name']}\",\n";
 			$lua_signups[$class_id] .= "\t\t\t\t\t\t\t[\"level\"] = \"{$char['level']}\",\n";
