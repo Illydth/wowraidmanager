@@ -103,6 +103,10 @@ $phprlang['lua_prv_write_success'] = '<b>LUA file created.</b><br>' .
 									'Download <a href="cache/raid_lua/phpRaid_Data.lua">phpRaid_Data.lua</a> and save 
 									it to [wow-dir]\interface\addons\phpraidviewer\<br>' .
 									'or use this for copy+paste:<br>';
+$phprlang['lua_drafted'] = 'Drafted Users';
+$phprlang['lua_queued'] = 'Queued Users';
+$phprlang['lua_macro_header'] = 'Macro output listing...';
+$phprlang['lua_macro_footer'] = '<br>Macro output listing complete.<br>Copy and paste the above to a macro and run in-game.';
 
 // permissions
 $phprlang['permissions_add'] = 'Add to set';
