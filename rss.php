@@ -61,6 +61,7 @@
 				\t<link>$raidloc</link>\r\n
 			</item>\n
 		";
+		$i++;
 	}
 
 	echo "</channel>
