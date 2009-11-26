@@ -138,7 +138,7 @@ $logged_in != '1' ? $register_link = '<a href="' . $phpraid_config['register_url
 if ( $priv_raids OR ($phpraid_config['enable_five_man'] AND $priv_profile) )
 {
 	$raids_link = '<a href="raids.php?mode=view">' . $theme_raids_link . '</a>';
-	$lua_output_link = '<a href="lua_output.php">' . $theme_lua_output_link . '</a>';
+	$lua_output_link = '<a href="lua_output_new.php?mode=lua">' . $theme_lua_output_link . '</a>';
 }
 else
 {

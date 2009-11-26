@@ -20,13 +20,21 @@
 							<td width="200" class="row1">{$lua_output_form.output_format_text}</td>
 							<td class="row2">{$lua_output_form.output_format}</td>
 						</tr>
-						<tr><td>{$lua_output_form.Buttons}</td></tr>
 					</table>
 				</td>
+			</tr>
+			<tr><td>&nbsp</td></tr>
+			<tr>
+				<td align="center">{$lua_output_form.Buttons}</td>
 			</tr>
 		</table>
 	</div>
 </form>
 <br>
 {* Include either the Lua Output or Macro Output file depending on how we were called. *} 
-{include file=$lua_include_file}
+{include file='lua_output_lua.html'}
+
+{* Include the Macro Output if a Raid ID was sent in. *}
+{if $lua_output_form.raid_id_set}
+	{include file='lua_output_macro.html'}
+{/if}

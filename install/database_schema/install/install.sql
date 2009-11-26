@@ -879,9 +879,9 @@ CREATE TABLE `wrm_locations` (
   `locked` tinyint(1) NOT NULL default '0',
   `event_type` tinyint(2) NOT NULL default '1',
   `event_id` int(10) NOT NULL default '119',
-  `raid_force_name` VARCHAR(100) NOT NULL default 'None',
+  `raid_force_id` INT(10) NOT NULL default '0',
   PRIMARY KEY  (`location_id`),
-  KEY `raid_force_name` (`raid_force_name`)
+  KEY `raid_force_id` (`raid_force_id`)
 ) ;
 
 -- Locations Data
@@ -1051,12 +1051,12 @@ CREATE TABLE `wrm_raids` (
   `max` varchar(255) NOT NULL default '',
   `event_type` tinyint(1) NOT NULL default '1',
   `event_id` int(10) NOT NULL default '119',
-  `raid_force_name` VARCHAR(100) NOT NULL default 'None',
+  `raid_force_id` INT(10) NOT NULL DEFAULT '0',
   `recurrance` TINYINT(1) NOT NULL DEFAULT '0',
   `rec_interval` VARCHAR(15) DEFAULT NULL,
   `num_recur` TINYINT(2) NOT NULL DEFAULT '0',
   PRIMARY KEY  (`raid_id`),
-  KEY `raid_force_name` (`raid_force_name`)
+  KEY `raid_force_id` (`raid_force_id`)
   );
 
 -- Class Limits per Raid Table
