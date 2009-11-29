@@ -815,7 +815,7 @@ function output_lua_prv()
 		// begin - add data to lua output
 		for($i=0; $i<=$max_class_index; $i++)
 		{
-			$class = $this->GetClassNameByClassId($i);
+			$class = GetClassNameByClassId($i);
 			if ($class != "skip")
 				$lua_signups[$i] = "\t\t\t[\"".$class."\"] = {\n";
 		}
