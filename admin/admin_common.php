@@ -106,16 +106,16 @@ while($data = $db_raid->sql_fetchrow($result, true))
 //Load Smarty Library
 $curr_dir = dirname(__FILE__);
 $dir_split_var = array();
-preg_match('"(.*)/admin"', $curr_dir, $dir_split_var);
-$smarty_dir = $dir_split_var[1];
-define('SMARTY_DIR', $smarty_dir . '/includes/smarty/libs/');
+preg_match('"(.*)admin"', $curr_dir, $dir_split_var);
+$wrm_dir = $dir_split_var[1];
+define('SMARTY_DIR', $wrm_dir . '/includes/smarty/libs/');
 require(SMARTY_DIR . 'Smarty.class.php');
 
 $wrmadminsmarty = new Smarty();
-$wrmadminsmarty->template_dir = '../templates/' . $phpraid_config['template'] . '/admin/';
-$wrmadminsmarty->compile_dir  = '../cache/templates_c/admin/';
-$wrmadminsmarty->config_dir   = '../includes/smarty/configs/';
-$wrmadminsmarty->cache_dir    = '../cache/smarty_cache/admin/';
+$wrmadminsmarty->template_dir = $wrm_dir . 'templates/' . $phpraid_config['template'] . '/admin/';
+$wrmadminsmarty->compile_dir  = $wrm_dir . 'cache/templates_c/admin/';
+$wrmadminsmarty->config_dir   = $wrm_dir . 'includes/smarty/configs/';
+$wrmadminsmarty->cache_dir    = $wrm_dir . 'cache/smarty_cache/admin/';
 // Turning on Caching will cause many pages not to display dynamic changes properly.
 $wrmadminsmarty->caching = false;
 $wrmadminsmarty->compile_check = true;
