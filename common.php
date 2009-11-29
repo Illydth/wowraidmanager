@@ -125,24 +125,26 @@ while($data = $db_raid->sql_fetchrow($result, true))
 	$phpraid_config["{$data['0']}"] = $data['1'];
 }
 
+
 /**********************************************************
  * Load Template System Here (Smarty)
  **********************************************************/
 //Load Smarty Library
-define('SMARTY_DIR', dirname(__FILE__).'/includes/smarty/libs/');
+$wrm_dir = $curr_dir = dirname(__FILE__);
+define('SMARTY_DIR', $wrm_dir .'/includes/smarty/libs/');
 require(SMARTY_DIR . 'Smarty.class.php');
 
 $wrmsmarty = new Smarty();
-$wrmsmarty->template_dir = 'templates/' . $phpraid_config['template'] . '/';
-$wrmsmarty->compile_dir  = './cache/templates_c/';
-$wrmsmarty->config_dir   = 'includes/smarty/configs/';
-$wrmsmarty->cache_dir    = './cache/smarty_cache/';
+$wrmsmarty->template_dir = $wrm_dir . '/templates/' . $phpraid_config['template'] . '/';
+$wrmsmarty->compile_dir  = $wrm_dir . '/cache/templates_c/';
+$wrmsmarty->config_dir   = $wrm_dir . '/includes/smarty/configs/';
+$wrmsmarty->cache_dir    = $wrm_dir . '/cache/smarty_cache/';
 // Turning on Caching will cause many pages not to display dynamic changes properly.
 $wrmsmarty->caching = false;
 $wrmsmarty->compile_check = true;
 /* Turn on/off Smarty Template Debugging by commenting/uncommenting the lines below. */
-$wrmsmarty->debugging = false;
-//$wrmsmarty->debugging = true;
+//$wrmsmarty->debugging = false;
+$wrmsmarty->debugging = true;
 
 //
 /**********************************************************
