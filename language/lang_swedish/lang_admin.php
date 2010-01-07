@@ -112,7 +112,7 @@ $phprlang['configuration_debug'] = 'Debug mode';
 $phprlang['configuration_disable'] = 'Avaktivera WoW Raid Manager';
 $phprlang['configuration_email_header'] = 'E-post konfiguration';
 $phprlang['configuration_email_sig'] = 'E-post signatur';
-$phprlang['configuration_enable_five_man'] = 'Aktivera grupper<br><a href="docs/enable_groups.htm" target="_blank">hjälp?</a>';
+$phprlang['configuration_enable_five_man'] = 'Aktivera grupper<br><a href="../docs/enable_groups.htm" target="_blank">hjälp?</a>';
 $phprlang['configuration_language'] = 'Språk';
 $phprlang['configuration_logo'] = 'Sökväg till logo bild';
 $phprlang['configuration_register_text'] = 'Registrerings URL';
@@ -148,7 +148,7 @@ $phprlang['configuration_delete_def'] = 'Radera = Ta bort användares bokning he
 $phprlang['configuration_draft_def'] = 'Uppflyttningt = Placera användaren i Raidet';
 $phprlang['configuration_draft'] = 'Uppflyttning';
 $phprlang['configuration_drafted'] = 'Uppflyttad (I Raidet)';
-$phprlang['configuration_eqdkp_integration_text'] = 'Integrera med EqDKP<br><a href="docs/eqdkp_link.htm" target="_blank">hjälp?</a>';
+$phprlang['configuration_eqdkp_integration_text'] = 'Integrera med EqDKP<br><a href="../docs/eqdkp_link.htm" target="_blank">hjälp?</a>';
 $phprlang['configuration_eqdkp_link'] = 'URL till er EqDKP installation (Inget avslutande /)';
 $phprlang['configuration_external_links_header'] = 'Integrera med externa system';
 $phprlang['configuration_faction'] = 'Faktion';

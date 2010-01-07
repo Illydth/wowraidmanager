@@ -148,7 +148,7 @@ $phprlang['configuration_delete_def'] = 'Delete = Remove User Signup Completely'
 $phprlang['configuration_draft_def'] = 'Draft = Place User into Attending Raid Area';
 $phprlang['configuration_draft'] = 'Draft';
 $phprlang['configuration_drafted'] = 'Drafted (In Raid)';
-$phprlang['configuration_eqdkp_integration_text'] = 'Integrate with EqDKP<br><a href="docs/eqdkp_link.htm" target="_blank">help?</a>';
+$phprlang['configuration_eqdkp_integration_text'] = 'Integrate with EqDKP<br><a href="../docs/eqdkp_link.htm" target="_blank">help?</a>';
 $phprlang['configuration_eqdkp_link'] = 'URL to Base of EqDKP Installation (No Trailing /)';
 $phprlang['configuration_external_links_header'] = 'Integration with External Systems';
 $phprlang['configuration_faction'] = 'Faction';

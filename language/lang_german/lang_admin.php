@@ -112,7 +112,7 @@ $phprlang['configuration_debug'] = 'Debugmodus';
 $phprlang['configuration_disable'] = 'WRM deaktivieren';
 $phprlang['configuration_email_header'] = 'E-Mail-Konfiguration';
 $phprlang['configuration_email_sig'] = 'E-Mail-Signatur';
-$phprlang['configuration_enable_five_man'] = 'Gruppen aktivieren<br><a href="docs/enable_groups.htm" target="_blank">Hilfe?</a>';
+$phprlang['configuration_enable_five_man'] = 'Gruppen aktivieren<br><a href="../docs/enable_groups.htm" target="_blank">Hilfe?</a>';
 $phprlang['configuration_language'] = 'Sprache';
 $phprlang['configuration_logo'] = 'Pfad zum Logo';
 $phprlang['configuration_register_text'] = 'Registrierungs-URL';
@@ -148,7 +148,7 @@ $phprlang['configuration_delete_def'] = 'Löschen = Benutzer aus der Anmeldung k
 $phprlang['configuration_draft'] = 'Anmelden';
 $phprlang['configuration_draft_def'] = 'Anmelden = Benutzer in den Bereich der Anmeldungen platzieren';
 $phprlang['configuration_drafted'] = 'Bestätigt';
-$phprlang['configuration_eqdkp_integration_text'] = 'Integration in EqDKP<br><a href="docs/eqdkp_link.htm" target="_blank">Hilfe?</a>';
+$phprlang['configuration_eqdkp_integration_text'] = 'Integration in EqDKP<br><a href="../docs/eqdkp_link.htm" target="_blank">Hilfe?</a>';
 $phprlang['configuration_eqdkp_link'] = 'URL zur Basis der EqDKP-Installation (ohne abschließenden /)';
 $phprlang['configuration_external_links_header'] = 'Integration in externe Systeme';
 $phprlang['configuration_faction'] = 'Fraktion';
