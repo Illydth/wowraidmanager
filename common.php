@@ -143,8 +143,8 @@ $wrmsmarty->cache_dir    = $wrm_dir . '/cache/smarty_cache/';
 $wrmsmarty->caching = false;
 $wrmsmarty->compile_check = true;
 /* Turn on/off Smarty Template Debugging by commenting/uncommenting the lines below. */
-//$wrmsmarty->debugging = false;
-$wrmsmarty->debugging = true;
+$wrmsmarty->debugging = false;
+//$wrmsmarty->debugging = true;
 
 //
 /**********************************************************
