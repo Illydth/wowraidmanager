@@ -5,6 +5,61 @@ at:
 
 ****************************************************
 ****************************************************
+****             4.0.4 Release Notes             ***
+****************************************************
+****************************************************
+So it's been a while and I thought I'd go ahead and release a new version.  This is mostly 
+just a maintenance release for the known bugs and additional instances to make it "easier" 
+to install without having to go through all the patching.
+
+There are one or two small fixes to this code that were not included in the patch thread,
+so it's probably worth uploading anyway.
+
+* Patch fixing role limits not being honored when drafting to a raid have been fixed.  
+When drafting queued people to raid, the role limits set for a given raid were not being 
+honored due to a bad check.
+
+* Patch fixing image locations on Bliz Armory Website and fixing character portraits for 
+characters above level 70.
+
+* Two issues with the "roster" page have been discovered.  First, the "role" field is blank.  
+This is due to a misconfiguration in the database that should be showing "primary spec" and 
+"secondary spec" in this slot instead of "role".  Secondly, the "Profile" link is shown to 
+all users instead of only those with "users" priviledge, this causes hacking attempts when 
+users of the software click the profile link and do not have the "users" privliedge.
+
+* An issue with the Armory code causes international users (European mostly) to be forced 
+to lookup guild and charcter information on the regular wowarmory US website, causing nothing 
+to work.  The update file in this thread will patch the phpArmory.class.php file in the 
+phparmory042 installation and make it work correctly. 
+
+* An issue with sorting in all data tables in all foreign languages (languages other than 
+English) has been discovered.  Users using a language other than english will find that clicking 
+a column header in any data table to sort that header (where the header text is different from 
+the english language text) will incorrectly sort the table.
+
+* An issue with users being unable to create characters in the profile page.  The dropdown for 
+"race" is not filling in which stops all of the rest of the form from being accessable.  The 
+issue is that the config option for your faction (alliance/horde) is in lower case but in the 
+Race table (where the factions are allocated) are in upper case (alliance vs Alliance).  In MOST 
+cases, MySQL is case independent in this situation and selecting from the race table by the lower 
+case faction name does in fact pull back races with an uppercase faction name, in some 
+installations, however, this is NOT the case.
+
+* Patch for adding icons/raids for Trial of the Crusader
+
+* Patch for adding icons/raids for Icecrown Citadel
+
+* Bugfix: code doesn't use max number of RSS feeds to display.  Missed the
+incriment of the $i variable.
+
+* Fix for windows includes.  There are problems with relative pathing in a windows installation
+that are corrected by this update.  This should, hopefully, make WRM run smoother in a windows
+environment.
+
+
+****************************************************
+****************************************************
 ****             4.0.3 Release Notes             ***
 ****************************************************
 ****************************************************

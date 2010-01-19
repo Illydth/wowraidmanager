@@ -1460,19 +1460,21 @@ elseif($mode == 'cancel')
 	$char_id = scrub_input($_GET['char_id']);
 	$raid_id = scrub_input($_GET['raid_id']);
 
+	$timestamp = time();
+	
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id=%s AND char_id=%s", quote_smart($raid_id), quote_smart($char_id));
 	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 	$data = $db_raid->sql_fetchrow($result, true);
 	
 	if($S_profile_id == $data['profile_id'] || $priv_raids == 1) {
 		if($data['cancel'] == 0) {
-			$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "signups set cancel='1',queue='0' WHERE raid_id=%s AND char_id=%s", quote_smart($raid_id), quote_smart($char_id));
+			$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "signups set cancel='1',queue='0',timestamp=%s WHERE raid_id=%s AND char_id=%s", quote_smart($timestamp), quote_smart($raid_id), quote_smart($char_id));
 			$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 
 			// put in cancel
 			log_raid($char_id, $raid_id, 'cancel_in');
 		} else {
-			$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "signups set cancel='0',queue='0' WHERE raid_id=%s AND char_id=%s", quote_smart($raid_id), quote_smart($char_id));
+			$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "signups set cancel='0',queue='0',timestamp=%s WHERE raid_id=%s AND char_id=%s", quote_smart($timestamp), quote_smart($raid_id), quote_smart($char_id));
 			$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 
 			// removed from cancel

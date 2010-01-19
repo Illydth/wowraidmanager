@@ -1,0 +1,329 @@
+INSTALLATION OF THE WRM 4.0:
+----------------------------------
+******************  READ THE ENTIRE FILE FIRST *********************
+
+Especially the section related to your personal installation method COMPLETELY before starting
+this process.  YOU CAN LOOSE DATA OR BORK YOUR DATABASE DURING, ESPECIALLY, THE UPGRADE
+PROCESS IF YOU DO NOT FOLLOW THESE INSTRUCTIONS.
+
+This is your first, last, and ONLY Warning.
+
+ALL instructions start with "Backup any existing database before executing these instructions."
+I recognize that any time the word "Backup" is used most systems people laugh and move on 
+with the rest of the instructions.
+
+DO NOT DO THIS.
+
+PARTICUALRY for upgrade installations, but specifically for any installation that has a 
+database already existing, you run a risk during migration of completely hosing/borking your
+database.  It is mostly untested code you will be running.  While I am fairly confident that
+WRM 4 is functioning correctly (at least mostly), I make NO gaurentees about upgrading or 
+installing since NEITHER of these processes have been tested extensively.  Again, you have
+been warned.
+
+Update note: 4.0.3.  So with the 4.0.3 release there's at least been some testing on the
+installation.  While I suspect there are a few latent issues (especially installation on
+windows based servers), I hope that the majority of the installation problems are fixed.
+
+The Migration has also been run by several people and to my knowledge has worked to migrate
+them fro 3.6.x to 4.0.0.  Again, backing up your database is ESSENTIAL to the process to
+ensure something going wrong doesn't dump all your hard earned raid data.
+
+Quick Installation
+-------------------
+WRM 4.0, as noted on the WRM Boards, is a major re-write of the 3.x versions of WRM.  
+
+Installation of 4.0.3:
+
+* Unpackage the files from this archive into a directory on your local machine.
+* Open your FTP program and DELETE any old versions of WRM.  Ensure that all files
+    and folders from any prior WRM release (BETA or production) version have been completely 
+    deleted.  ALL WRM 4.0.0 INSTALLATIONS SHOULD BE DONE AS INSTALLS NOT UPGRADES (see 
+    Upgrading Below).
+* Open your FTP program and upload the entire contents of this archive to your web host,
+	including the WRM directory.  MAKE SURE TO UPLOAD TO A BRAND NEW DIRECTORY.  DO NOT
+	and I repeat, DO NOT upload over the top of an existing WRM installation. 
+* Change the Ownership of all files to match that of your web server.  
+* Change the permissions of the following directories and files to be writable by your
+	web server user:
+	* config.php (see below)
+	* cache/ (and all below directories)
+* Open a Database Management Tool (like phpMyAdmin) and DELETE any existing WRM BETA
+	databases.  DO NOT DELETE ANY PRODUCTION DATABASES YOU HAVE.
+* While still in the Database Management Tool, please create a new database for your
+	new installation.
+* Open a web browser and go to your WRM installation (e.g. http://www.yourdomain.com/wrm)
+* Choose your installation method (ALWAYS INSTALL) and follow the steps to install your 
+	WoW Raid Manager server.  
+* At the end of the installation please remove your Install directory (delete it completely)
+* Change the permissions on your config.php file back to read only to the world (you can 
+	leave it writable by your web server if you so choose, but it is recommended that
+	you make it read only...(400 permissions in Unix).  Keep the permissions of the other
+	files and folders listed above writable.
+	
+Please see phpRaid_install_doc.pdf for more information.
+
+NOTE on Config.php: Note that the config.php file no longer ships with the software.  
+Generally it should be created on the fly by the installation program shipping with WRM but 
+in some special cases we have found that the config file is NOT created by the installation 
+and the software has problems when being executed.  If, after installation, you do not have
+a valid config.php file in your WRM Root Directory, please create one in the following format:
+
+<?php
+/*
+#**********************************************#
+#                                              #
+#     auto-generated configuration file        #
+#     WoW Raid Manager 3.5.0                   #
+#     date: 2008-09-05 - 16:48:10              #
+#   Do not change anything in this file!       #
+#                                              #
+#**********************************************#
+*/
+
+global $phpraid_config;
+$phpraid_config['db_name'] = '<name of database>';
+$phpraid_config['db_host'] = '<name of database host>';
+$phpraid_config['db_user'] = '<database login user ID>';
+$phpraid_config['db_pass'] = '<database login user password>';
+$phpraid_config['db_prefix'] = 'wrm_'; #(Change this only if you have changed the prefix in installation).
+$phpraid_config['eqdkp_db_name'] = '';
+$phpraid_config['eqdkp_db_host'] = '';
+$phpraid_config['eqdkp_db_user'] = '';
+$phpraid_config['eqdkp_db_pass'] = '';
+$phpraid_config['eqdkp_db_prefix'] = '';
+?>
+
+It is safe to leave the eqdkp configuration blank for the moment.  Please see "eqdkp_link.htm" 
+in the docs directory for more information on linking WRM with eqdkp.
+
+"Quick" Upgrade from 4.0.x to 4.0.3
+-----------------------------------
+IF YOU ARE UPGRADING FROM 3.X or 4.0 BETA TO 4.0.3  YOU SHOULD NOT BE FOLOWING THESE
+INSTRUCTIONS.  SEE BELOW.
+
+If you are already on a 4.0.x release (4.0.0, 4.0.1, 4.0.2) then you can follow this process
+to upgrade your installation to 4.0.3.
+
+FIRST: due to updates to the default template, go into your configuration section and switch
+back to using the "default" template before you perform this upgrade, it is unlikely that any
+other templates will work properly for you till they are correctly updated for 4.0.3.
+
+* Unpackage the files from this archive into a directory on your local machine.
+* Open your FTP program and copy down your config.php file to your locally unpacked archive.
+* Make sure a second time that you have copied down your config.php file or be prepared to
+remake it by hand.
+* DELETE all files and folders inside your current WRM 4.0.x installation directory.  
+	Ensure that all files and folders from any prior WRM release version have been completely 
+    deleted from your WRM directory on your host (NOT LOCAL).  
+* Upload the entire contents of this archive to your web host, including your config.php file,
+	and including the WRM directory.  MAKE SURE TO UPLOAD TO A CLEAN DIRECTORY.  DO NOT
+	and I repeat, DO NOT upload over the top of an existing WRM installation.  This is a rule
+	for all 4.0 releases and things rapidly change and whole sections of code are getting 
+	moved from place to place. 
+* Change the Ownership of all files to match that of your web server.  
+* Change the permissions of the following directories and files to be writable by your
+	web server user:
+	* config.php (see below)
+	* cache/ (and all below directories)
+* Open a Database Management Tool (like phpMyAdmin) and execute the SQLs that are in the
+install/database_schema/upgrade directory that apply to you.  If you are currently on 4.0.1
+and you are upgrading to 4.0.3 you would run 4.0.1_4.0.2.sql and 4.0.2_4.0.3.sql into your
+WRM database.  This probably goes without saying but RUN THEM IN ORDER (4.0.1_4.0.2.sql first
+4.0.2_4.0.3.sql second, etc.).  Do not execute SQLs that do not apply to you.
+IF YOU ARE UPGRADING FROM 3.X or 4.0 BETA TO 4.0.3  YOU SHOULD NOT BE FOLOWING THESE
+INSTRUCTIONS.
+* At this point you have upgraded your installation to 4.0.3, please remove your Install 
+directory (delete it completely)
+* Change the permissions on your config.php file back to read only to the world (you can 
+	leave it writable by your web server if you so choose, but it is recommended that
+	you make it read only...(400 permissions in Unix).  Keep the permissions of the other
+	files and folders listed above writable.
+
+You should probably go to your configuration section and ensure that you aren't getting an 
+error message telling you you're out of date.  If you do, make sure you have upgraded
+ALL files.  The most common error experienced in this upgrade is not forceably overwriting
+all files or deleting all files in the directory before uploading.  I'm not joking, blow away
+your ENTIRE prior installation (other than the config.php file) before uploading.
+
+"Quick" Upgrade (not really quick) from 3.6.x or 4.0 Beta
+-----------------------------------------------------------
+Upgrading WRM from 3.6.x (Release) or 3.9.9.x.x (Beta) is NOT recommended for non-technical
+users.  The upgrade process will require the modification of SQL files and MANUALLY running
+SQL into your database.  If you are uncomfortable doing this, please use the INSTALL section
+above and install a brand new copy of WRM 4.0 to your WebHost.  Leave your existing copy
+(including database) in place (install to a new directory) so that you have your old raid
+manager software available for a while to look at archived data on while using the new raid
+manager to schedule new raids.
+
+Note also, that upgrading, particularly from 3.9.9.x.x to 4.0 is an UNTESTED PROCESS.  3.6 to
+4.0 has been tested and has worked a couple times on my local installations and my guild's 
+information but YMMV.  All this said it SHOULD work, the upgrade is not THAT technically
+difficult, though there are several steps involved in properly upgrading the database to the
+new version.  
+
+If you choose to upgrade your current installation PLEASE follow the instructions below and
+do not skip steps or ASSUME you know what I'm asking you to do.  And, BACK UP YOUR DATABASE 
+FIRST.  I am NOT responsible for any loss of data you experience from this.
+
+Lastly, do not forget to shut down/disable access to WRM during this process.  It should only
+take a couple minutes to get through everything but someone can SERIOUSLY bork things by 
+making changes while some of this stuff is being run.  Lock the application (configuration
+menu) FIRST and tell all admins NOT to be in the system while the upgrade is in progress.
+
+* BACK UP YOUR DATABASE FIRST.
+* SHUTDOWN WRM WHILE THIS PROCESS IS ACTIVE
+
+* Unpackage the files from this archive into a directory on your local machine.
+
+1) Select the CORRECT SQL in the install/database_schema/upgrade directory.  
+	* 3.6.1_4.0.0.sql is to be used if your current database is version 3.6.1 - Production release
+	* beta1_4.0.sql is to be used if you are currently running on the beta/test version of 
+	WRM and need to upgrade it to 4.0.
+	
+2) Modify the SQL for your table prefix.
+-- Search and Replace wrm_ with your particular table prefix.  You will find all tables in the
+sql file start with wrm_ (wrm_raids, wrm_column_headers, etc.).  This needs to be changed to
+match your CURRENT table's prefix.  At last count there should be 322 Matches within the 
+SQL for the 3.6 -> 4.0 upgrade file (no clue on what is there in 4.0 beta -> 4.0 Release).
+
+3) Run all code in "Safe Execution".
+-- ***NOTE: Follow this instruction CAREFULLY***, if you add too much code at this point 
+you will render all locations and raids inoperative and will have to restore your database 
+or delete all raids and locations in the system and re-create them by hand.
+-- In the SQL file you selected should be a header "Safe Execution" and under it should be 
+ALOT of SQL code.  ALL of this is "safe" to execute and will make the lions share of changes
+to your database tables and add a bunch of new tables to the system.  Once this executes your
+WRM installation should go from 18 Tables to 30 Tables.
+
+4) Modify all SQL statements in the "Manual Changes" section to meet your guilds' needs, then 
+run each statement.
+-- Next, find the section in the SQL file labeled "Manual Chages".  The SQL statements in this
+section need/can be modified by hand BEFORE being run.  This section creates the mapping of
+Class, to Talent Spec, to Role and creates the various Roles in your system.  By default this
+section creates a "Tank", "Melee", "Ranged", and "Healing" role, and adds the three talent 
+trees for each class (with extras for DK and Druid) and maps them to my concept of the
+appropriate role for each talent spec.  This may NOT match what your guild is doing or has
+already setup.  If it doesn't, change the Roles SQL to match what your guild is currently 
+running and then modify the class_role SQL to map the appropriate class/talent specs to the
+roles you have newly created.  Once done, run these two SQLs to populate the Role table and
+the class_role table with the proper data.
+
+5) Backup your config.php file to a separate location.
+-- Copy your config.php file OUT of your current installation directory to a holding place
+where it will NOT be destroyed.
+
+6) Delete all files and Code from the base WRM directory on your Website (do not overwrite 
+what's there, delete or backup and remove first).
+-- Destroy everything from the WRM root directory on down.  Leave NOTHING from any prior
+release in place.  The code base for WRM4 is so vastly different from that in 3.x that there
+would be a serious concern of leaving any old code laying around.  DO NOT overwrite a prior
+3.x release with this code.
+
+7) Upload all new 4.0 files to the deleted area for a clean set of 4.0 code.
+-- Upload the expanded archive to the newly cleaned WRM root directory (or conversely, 
+just install to a completely new directory with the new code.  This would allow you to back up
+to your prior installation (so long as you keep your old database copy) if significant problems
+are found with 4.0).
+
+* Change the Ownership of all files to match that of your web server.  
+* Change the permissions of the following directories and files to be writable by your
+	web server user:
+	* config.php (see below)
+	* cache/ (and all below directories)
+
+8) Restore your config.php file to the clean WRM 4.0 Location.
+-- Copy the backed up copy of config.php (step 5) back to your WRM directory.  This should now
+enable WRM to re-connect to your old database without a problem.  If you choose to install
+to a copy of your old WRM database (i.e. You created a seperate database for the new
+installation and copied all your old data to it) then modify your config.php file to point to
+the new database now.  MAKE SURE that the information in the config.php file is CORRECT for
+your installation.  Particularly, make SURE that the table prefix in this file matches the
+table prefix for ALL tables in your WRM installation.
+
+9) Run install/migrate.php to migrate raid/location data to the new tables.
+-- At this point you are running a custom PHP migration script that will suck the data out
+of some of the existing WRM tables and re-populate that data properly into some of the new
+cross reference tables.  DO NOT PROCEED ANY FARTHER TILL THIS STEP COMPLETES CORRECTLY.  
+Otherwise you run the risk of borking (i.e. you WILL DESTROY) the current raid and location
+data in your existing database.
+ -- You should see "All Raids and Locations are now Processed. Continue by running the 
+ 'Data Migration Prior to Run' section" at the bottom.
+-- Verify raid and location limit data through printed information on screen if necessary.
+
+10) Run the SQL in the 'Data Migration Prior to Run' section of the upgrade SQL.
+-- Go back to the upgrade SQL you have been running and page down to the "Data Migration
+Prior to Run" section.  It is now safe to execute the lines/code in this section into your
+database. 
+
+11) Delete the Install directory from your server and navigate to your old URL.  Log in 
+and all data should be good to go.
+-- At this point you should have WRM 4.0 installed and correctly running for your system.
+There is NO NEED to run through the installer application again and it would likely cause
+problems if you did so.  Your application is installed, please delete the install directory
+and proceed forward with running the application.
+  
+12) ALL PLAYERS need to go in and modify all of their characters before any draft can 
+occur.  
+-- Any players who do not have a primary spec properly selected will bork the signups 
+for their character (they will disappear if you attempt to move them out of queue to draft 
+but will take up a raid slot).  What happens is the system goes to look for the character's
+primary spec to look up what role they belong to.  Since the primary spec is blank, the
+character is put, literally into the "" (NULL) role, which doesn't have a view associated
+with it in the raid view section...thus the player will "disappear" from the raid view and
+be inaccessable through the GUI.  Raid leaders should be notified NOT to draft ANYONE who's
+primary spec is not set properly (It'll show something like ":Tank" instead of 
+"Protection:Tank").
+-- If a player does end up in this "limbo" area, you as the system admin can fix this by 
+going into the signups table, finding the character ID/Raid ID combination and setting either
+the "cancelled" or "queued" flag (put a 1 in either the cancelled or queued column of the 
+signup row) and the user will re-appear in the queued or cancelled area at the next reload
+of the page.  
+
+13) Raid Leaders/Admins should go into the Raids and Locations section and ensure that all 
+Class and Role limits are correct.  You may simply edit those locations/raids that are NOT 
+correct to correct them.
+-- The limits for roles and classes for raids and locations are now pulled from cross ref 
+tables in the system and not directly from the "locations" and "raids" tables anymore.  This
+is the data that was "migrated" in step 9 above.  RL/RA's should look through all raids and
+locations to ensure that a proper migration did in fact happen and that all of the limits
+on the raids and locations are set correctly.  Click the edit button next to those that are
+not correct and the system should correct itself upon update.
+
+14) Edit configuration "Path to Header Image" to point from templates/SpiffyJr to 
+templates/default.
+-- When you initially load WRM after installation you will LIKELY see the header image as
+incorrect (It will likely say something like "GUILD_HEADER" as a link in the upper left hand
+corner of the screen).  This is just because the name of the template has changed from
+"SpiffyJr" to "default".  Modify the path to header image config value in the config section
+and replace the reference to "SpiffyJr" in the image path to "default" and it will show up
+again.
+
+* Note: Templates other than "default" are likely NOT to work with 4.0 for a while till the 
+template editors get a chance to upgrade them.  Please switch back to default till the 
+templates get updated.
+* Note: You can remove the "Scripts" directory under any templates you are using, they are 
+no longer used.
+
+Installing WRM into a supported CMS system
+-----------------------------------------------
+At the time of this writing 4.0 supports the following CMS systems:
+
+* e107 from http://www.e107.org
+* Joomla from http://www.joomla.org (v1.5 ONLY) (NEW)
+* phpBB from http://www.phpbb.com (v2 and v3)
+* SMF from http://www.simplemachines.org/ (v1 and v2)
+* WBB from http://www.woltlab.com/products/burning_board/index_en.php
+* XOOPS from http://www.xoops.org/
+
+Also supported, if you do not have a supported CMS system, is the "iUMS" (previously phpRaid) 
+installation, which is the default non-CMS supported installation.  
+
+If you DO intend to install this application into a CMS please note that it is a
+REQUIREMENT that you install your WRM database INTO your CMS database, at the
+moment you CANNOT separate the databases and have everything work.  
+
+When entering the database information to install to, please ensure that you install
+into your CMS database to get CMS integration to work.
+
+===========================================================================================================

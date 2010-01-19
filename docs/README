@@ -42,8 +42,14 @@ thanks to them for bringing the project to where it is today.
 
 Installation/Upgrade
 ---------------------
-Please see docs/INSTALL for information on both installing WRM as well as upgrading a 
-current installation of WRM.  
+Please see the appropriate installation document for your situation.  
+
+* If you are upgrading from a 3.x or 4.0 BETA release to a 4.0 Final Release, please see
+	docs/INSTALL_4.0 for upgrade instructions.
+
+* If you are installing a 4.0.x release , or upgrading from, a 4.0 Final release to a 4.0.x 
+	release, please see docs/INSTALL for installation/upgrade instructions.  DO NOT FOLLOW 
+	INSTALL_4.0 OR YOU WILL RISK DESTROYING YOUR EXISTING DB.
 
 The old phpRaid_install_doc.pdf is still there and is a very useful resource for setup
 and installation of WRM, however it HAS NOT been updated to reflect any recent version of 

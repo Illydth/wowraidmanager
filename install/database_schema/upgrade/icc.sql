@@ -1,4 +1,4 @@
-INSERT INTO `wrm`.`wrm_events` (`event_id`, `zone_desc`, `max`, `exp_id`, `event_type_id`, `wow_name`, `icon_path`) VALUES
+INSERT INTO `wrm_events` (`event_id`, `zone_desc`, `max`, `exp_id`, `event_type_id`, `wow_name`, `icon_path`) VALUES
 (130, 'Forge of Souls', 5, 3, 2, 'The Forge of Souls', 'images/instances/WotLK_Icons/5-Forge-Of-Souls.jpg'),
 (131, 'Forge of Souls - Heroic', 5, 3, 2, 'The Forge of Souls (Heroic)', 'images/instances/WotLK_Icons/5-Forge-Of-Souls-Heroic.jpg'), 
 (132, 'Pit of Saron', 5, 3, 2, 'Pit of Saron', 'images/instances/5-Pit-Of-Saron.jpg'),
