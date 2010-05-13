@@ -112,7 +112,7 @@ $phprlang['configuration_debug'] = 'Modalità debug';
 $phprlang['configuration_disable'] = 'Disabilita WowRaidManager';
 $phprlang['configuration_email_header'] = 'Configurazione dell\'e-mail';
 $phprlang['configuration_email_sig'] = 'Firma dell\'e-mail';
-$phprlang['configuration_enable_five_man'] = 'Abilita i Gruppi<br><a href="docs/enable_groups.htm" target="_blank">(Guida)</a>';
+$phprlang['configuration_enable_five_man'] = 'Abilita i Gruppi<br><a href="../docs/enable_groups.htm" target="_blank">(Guida)</a>';
 $phprlang['configuration_language'] = 'Lingua';
 $phprlang['configuration_logo'] = 'Immagine di intestazione';
 $phprlang['configuration_register_text'] = 'Indirizzo di registrazione';
@@ -147,7 +147,7 @@ $phprlang['configuration_delete_def'] = 'Elimina = Consenti l\'eliminazione dell
 $phprlang['configuration_draft'] = 'Conferma';
 $phprlang['configuration_draft_def'] = 'Conferma = Consenti l\'inserimento fra le iscrizioni confermate';
 $phprlang['configuration_drafted'] = 'Iscrizioni confermate';
-$phprlang['configuration_eqdkp_integration_text'] = 'Integra con EqDKP<br><a href="docs/eqdkp_link.htm" target="_blank">(Guida)</a>';
+$phprlang['configuration_eqdkp_integration_text'] = 'Integra con EqDKP<br><a href="../docs/eqdkp_link.htm" target="_blank">(Guida)</a>';
 $phprlang['configuration_eqdkp_link'] = 'Indirizzo base dell\'installazione di EqDKP (senza barra finale)';
 $phprlang['configuration_external_links_header'] = 'Integrazione con sistemi esterni';
 $phprlang['configuration_faction'] = 'Fazione';

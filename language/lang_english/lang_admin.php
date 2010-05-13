@@ -185,7 +185,7 @@ $phprlang['configuration_permission_cannot_modify'] = 'You have attempted to rem
 // Text on the "External Systems" Page.
 $phprlang['configuration_armory_cache'] = 'Cache Armory Data To';
 $phprlang['configuration_external_links_header'] = 'Integration with External Systems';
-$phprlang['configuration_eqdkp_integration_text'] = 'Integrate with EqDKP<br><a href="docs/eqdkp_link.htm" target="_blank">help?</a>';
+$phprlang['configuration_eqdkp_integration_text'] = 'Integrate with EqDKP<br><a href="../docs/eqdkp_link.htm" target="_blank">help?</a>';
 $phprlang['configuration_armory_enable'] = 'Enable Armory Lookups';
 $phprlang['configuration_eqdkp_link'] = 'URL to Base of EqDKP Installation (No Trailing /)';
 $phprlang['configuration_roster_text'] = 'Integrate with WoW Roster';
