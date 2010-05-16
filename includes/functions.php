@@ -152,14 +152,14 @@ function get_armorychar($name, $guild)
 	
 	$javascript = '<a href="' . $data['guild_armory_link'] . '/character-sheet.xml?r=' . $realm . '&amp;n=' . ucfirst($name) . '" target="new" onmouseover=\'tooltip.show("includes/wowarmory/char.php?v=' . ucfirst($name) . '&amp;z=' . str_replace("'", "\"+String.fromCharCode(39)+\"", $realm) . '&amp;l=' . $lang . '&amp;u='. $data['guild_armory_link'] .'");\' onmouseout="tooltip.hide();"><strong>' . ucfirst($name) . '</strong></a>';
 
-	if(mb_substr($name, 0, 1, "UTF-8") == '_')
+	if(substr_wrap($name, 0, 1, "UTF-8") == '_')
 	{
-		$name = mb_substr($name, 1, (mb_strlen($name, "UTF-8")-1), "UTF-8");
+		$name = substr_wrap($name, 1, (strlen_wrap($name, "UTF-8")-1), "UTF-8");
 		$name = '<!-- ' . ucfirst($name) . ' -->' . $javascript;
 	}
-	else if(mb_substr($name, 0, 1, "UTF-8") == '(' && mb_substr($name, strlen($name) - 1, 1, "UTF-8") == ')')
+	else if(substr_wrap($name, 0, 1, "UTF-8") == '(' && substr_wrap($name, strlen_wrap($name) - 1, 1, "UTF-8") == ')')
 	{
-		$name = mb_substr($name, 1, mb_strlen($name, "UTF-8") - 2, "UTF-8");
+		$name = substr_wrap($name, 1, strlen_wrap($name, "UTF-8") - 2, "UTF-8");
 		$name = '<!-- ' . ucfirst($name) . ' -->' . $javascript;
 	}
 	else

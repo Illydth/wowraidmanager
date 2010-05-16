@@ -55,6 +55,7 @@ $include_list .= ":" . ini_get('include_path');
 ini_set('include_path', $include_list); 
 
 // Class require_onces
+require_once($phpraid_dir.'includes/functions_mbwrapper.php');
 require_once($phpraid_dir.'version.php');
 require_once($phpraid_dir.'config.php');
 require_once($phpraid_dir.'includes/functions_mysql.php');

@@ -161,13 +161,13 @@ function phpraid_login()
 	if(isset($_POST['username'])){
 		// User is logging in, set encryption flag to 0 to identify login with plain text password.
 		$pwdencrypt = FALSE;
-		$username = mb_strtolower(scrub_input($_POST['username']), "UTF-8");
+		$username = strtolower_wrap(scrub_input($_POST['username']), "UTF-8");
 		$password = $_POST['password'];
 		$wrmpass = md5($_POST['password']);
 	} elseif(isset($_COOKIE['username']) && isset($_COOKIE['password'])) {
 		// User is not logging in but processing cooking, set encryption flag to 1 to identify login with encrypted password.
 		$pwdencrypt = TRUE;
-		$username = mb_strtolower(scrub_input($_COOKIE['username']), "UTF-8");
+		$username = strtolower_wrap(scrub_input($_COOKIE['username']), "UTF-8");
 		$password = $_COOKIE['password'];
 		$wrmpass = '';
 	} else {
@@ -202,7 +202,7 @@ function phpraid_login()
 	while($data = $db_raid->sql_fetchrow($result, true)) {
 		//$testVal = password_check($password, $data[$db_user_id]);
 		//echo "<br>Processing: " . $data[$db_user_name] . " : Password Check: " . $testVal;
-		if( ($username == mb_strtolower($data[$db_user_name], "UTF-8")) && ($cmspass = password_check($password, $data[$db_user_id], $pwdencrypt)) ) 
+		if( ($username == strtolower_wrap($data[$db_user_name], "UTF-8")) && ($cmspass = password_check($password, $data[$db_user_id], $pwdencrypt)) ) 
 		{
 			// The user has a matching username and proper password in the phpbb database.
 			// We need to validate the users group.  If it does not contain the user group that has been set as
@@ -240,7 +240,7 @@ function phpraid_login()
 			}
 
 			// set user profile variables
-			$_SESSION['username'] = mb_strtolower($data[$db_user_name], "UTF-8");
+			$_SESSION['username'] = strtolower_wrap($data[$db_user_name], "UTF-8");
 			$_SESSION['session_logged_in'] = 1;
 			$_SESSION['profile_id'] = $data[$db_user_id];
 			$_SESSION['email'] = $data[$db_user_email];
@@ -283,7 +283,7 @@ function phpraid_login()
 				//Profile not found in the database or DB Error, insert.
 				$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "profile VALUES (%s, %s, %s, %s, %s, %s)",
 							quote_smart($_SESSION['profile_id']), quote_smart($_SESSION['email']), quote_smart($wrmuserpassword),
-							quote_smart($user_priv), quote_smart(mb_strtolower($_SESSION['username'], "UTF-8")), quote_smart(time())
+							quote_smart($user_priv), quote_smart(strtolower_wrap($_SESSION['username'], "UTF-8")), quote_smart(time())
 						);
 				$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 			}

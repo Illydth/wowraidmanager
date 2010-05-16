@@ -93,7 +93,7 @@ if($mode == 'view')
 	
 	while($data = $db_raid->sql_fetchrow($result, true))
 	{
-		$usersname = '<!-- ' . mb_strtolower($data['username'], "UTF-8") . ' --><a href="admin_usermgt.php?mode=details&amp;user_id='.$data['profile_id'].'">'.$data['username'].'</a>';
+		$usersname = '<!-- ' . strtolower_wrap($data['username'], "UTF-8") . ' --><a href="admin_usermgt.php?mode=details&amp;user_id='.$data['profile_id'].'">'.$data['username'].'</a>';
 
 		$priv = '<a href="admin_permissions.php?mode=view">'.get_priv_name($data['priv']).'</a>';
 

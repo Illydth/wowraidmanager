@@ -97,7 +97,7 @@ $result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 
 while($data = $db_raid->sql_fetchrow($result, true))
 {
-	$usersname = '<!-- ' . mb_strtolower($data['username'], "UTF-8") . ' --><a href="users.php?mode=details&amp;user_id='.$data['profile_id'].'">'.$data['username'].'</a>';
+	$usersname = '<!-- ' . strtolower_wrap($data['username'], "UTF-8") . ' --><a href="users.php?mode=details&amp;user_id='.$data['profile_id'].'">'.$data['username'].'</a>';
 
 	$date = !($data['last_login_time'])?'':new_date('Y/m/d H:i:s',$data['last_login_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
 	$time = !($data['last_login_time'])?'':new_date('Y/m/d H:i:s',$data['last_login_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);

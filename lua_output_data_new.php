@@ -70,7 +70,7 @@ function output_macro_drafted($raid_id)
 		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id=%s",quote_smart($data['char_id']));
 		$result2 = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 		$data2 = $db_raid->sql_fetchrow($result2, true);
-		$data2['name'] = ucfirst(mb_strtolower($data2['name'], "UTF-8"));
+		$data2['name'] = ucfirst(strtolower_wrap($data2['name'], "UTF-8"));
 		$drafted_text .= "/i {$data2['name']}\n";
 	}
 	
@@ -88,7 +88,7 @@ function output_macro_queued($raid_id)
 		$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id='" . $data['char_id'] . "'";
 		$result2 = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 		$data2 = $db_raid->sql_fetchrow($result2, true);
-		$data2['name'] = ucfirst(mb_strtolower($data2['name'], "UTF-8"));
+		$data2['name'] = ucfirst(strtolower_wrap($data2['name'], "UTF-8"));
 		$queued_text .= "/i {$data2['name']}\n";
 	}
 	
@@ -232,7 +232,7 @@ function output_lua_rim()
 							$access_type = "User";
 								
 						array_push($signups, array(
-							'name'		 => ucfirst(mb_strtolower($signup['name'], "UTF-8")),
+							'name'		 => ucfirst(strtolower_wrap($signup['name'], "UTF-8")),
 							'level'		 => $signup['lvl'],
 							'race'		 => $signup['race'],
 							'class'		 => $signup['class'],
@@ -284,7 +284,7 @@ function output_lua_rim()
 							$access_type = "User";
 							
 						array_push($queue, array(
-							'name'		 => ucfirst(mb_strtolower($signup['name'], "UTF-8")),
+							'name'		 => ucfirst(strtolower_wrap($signup['name'], "UTF-8")),
 							'level'		 => $signup['lvl'],
 							'race'		 => $signup['race'],
 							'class'		 => $signup['class'],
@@ -445,7 +445,7 @@ function output_lua_rim()
 				$access_type = "User";
 					
 			array_push($signups, array(
-				'name'		 => ucfirst(mb_strtolower($signup['name'], "UTF-8")),
+				'name'		 => ucfirst(strtolower_wrap($signup['name'], "UTF-8")),
 				'level'		 => $signup['lvl'],
 				'race'		 => $signup['race'],
 				'class'		 => $signup['class'],
@@ -497,7 +497,7 @@ function output_lua_rim()
 				$access_type = "User";
 				
 			array_push($queue, array(
-				'name'		 => ucfirst(mb_strtolower($signup['name'], "UTF-8")),
+				'name'		 => ucfirst(strtolower_wrap($signup['name'], "UTF-8")),
 				'level'		 => $signup['lvl'],
 				'race'		 => $signup['race'],
 				'class'		 => $signup['class'],
@@ -723,7 +723,7 @@ function output_lua_prv()
 					$access_type = "User";
 					
 				array_push($signups, array(
-					'name'		 => ucfirst(mb_strtolower($signup['name'], "UTF-8")),
+					'name'		 => ucfirst(strtolower_wrap($signup['name'], "UTF-8")),
 					'level'		 => $signup['lvl'],
 					'race'		 => $signup['race'],
 					'class'		 => $signup['class'],
@@ -736,7 +736,7 @@ function output_lua_prv()
 			else
 			{				
 				array_push($signups, array(
-					'name'		=> ucfirst(mb_strtolower($signup['name'], "UTF-8")),
+					'name'		=> ucfirst(strtolower_wrap($signup['name'], "UTF-8")),
 					'level'		=> $signup['lvl'],
 					'race'		=> $signup['race'],
 					'class'		=> $signup['class'],
@@ -789,7 +789,7 @@ function output_lua_prv()
 					$access_type = "User";
 				
 				array_push($queue, array(
-					'name'		 => ucfirst(mb_strtolower($signup['name'], "UTF-8")),
+					'name'		 => ucfirst(strtolower_wrap($signup['name'], "UTF-8")),
 					'level'		 => $signup['lvl'],
 					'race'		 => $signup['race'],
 					'class'		 => $signup['class'],
@@ -802,7 +802,7 @@ function output_lua_prv()
 			else
 			{
 				array_push($queue, array(
-					'name'		=> ucfirst(mb_strtolower($signup['name'], "UTF-8")),
+					'name'		=> ucfirst(strtolower_wrap($signup['name'], "UTF-8")),
 					'level'		=> $signup['lvl'],
 					'race'		=> $signup['race'],
 					'class'		=> $signup['class'],

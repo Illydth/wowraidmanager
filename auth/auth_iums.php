@@ -117,12 +117,12 @@ function phpraid_login() {
 	if(isset($_POST['username'])) 	{
 		// User is logging in, set encryption flag to 0 to identify login with plain text password.
 		$pwdencrypt = FALSE;
-		$username = mb_strtolower(scrub_input($_POST['username']), "UTF-8");
+		$username = strtolower_wrap(scrub_input($_POST['username']), "UTF-8");
 		$password = $_POST['password'];
 	} elseif(isset($_COOKIE['username']) && isset($_COOKIE['password'])) {
 		// User is not logging in but processing cooking, set encryption flag to 1 to identify login with encrypted password.
 		$pwdencrypt = TRUE;
-		$username = mb_strtolower(scrub_input($_COOKIE['username']), "UTF-8");
+		$username = strtolower_wrap(scrub_input($_COOKIE['username']), "UTF-8");
 		$password = $_COOKIE['password'];
 	} else {
 		phpraid_logout();
@@ -139,7 +139,7 @@ function phpraid_login() {
 	
 	while($data = $db_raid->sql_fetchrow($result, true)) 
 	{
-		if( ($username == mb_strtolower($data[$db_user_name], "UTF-8")) && ($cmspass = password_check($password, $data[$db_user_id], $pwdencrypt)) ) 
+		if( ($username == strtolower_wrap($data[$db_user_name], "UTF-8")) && ($cmspass = password_check($password, $data[$db_user_id], $pwdencrypt)) ) 
 		{
 			// User is properly logged in and is allowed to use WRM, go ahead and process his login.
 			$autologin = scrub_input($_POST['autologin']);
@@ -151,7 +151,7 @@ function phpraid_login() {
 			}
 
 			// set user profile variables
-			$_SESSION['username'] = mb_strtolower($data[$db_user_name], "UTF-8");
+			$_SESSION['username'] = strtolower_wrap($data[$db_user_name], "UTF-8");
 			$_SESSION['session_logged_in'] = 1;
 			$_SESSION['profile_id'] = $data[$db_user_id];
 			$_SESSION['email'] = $data[$db_user_email];

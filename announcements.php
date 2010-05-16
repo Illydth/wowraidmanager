@@ -83,11 +83,11 @@ if($_GET['mode'] == 'view')
 		$title = $data['title'];
 		$message = $data['message'];
 		
-		if(mb_strlen($title, "UTF-8") > 30)
-			$title = mb_substr($title, 0, 30, "UTF-8") . '...';
+		if(strlen_wrap($title, "UTF-8") > 30)
+			$title = substr_wrap($title, 0, 30, "UTF-8") . '...';
 
-		if(strlen($message) > 30)
-			$message = mb_substr($message, 0, 30, "UTF-8") . '...';
+		if(strlen_wrap($message, "UTF-8") > 30)
+			$message = substr_wrap($message, 0, 30, "UTF-8") . '...';
 
 		$posted_by = $data['posted_by'];
 		$date = new_date('Y/m/d H:i:s',$data['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']);
