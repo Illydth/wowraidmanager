@@ -134,6 +134,7 @@ DELETE FROM `wrm_config` WHERE `config_name` = 'armory_language';
 INSERT INTO `wrm_config` (`config_name`,`config_value`) VALUES ('site_name', 'WRM');
 INSERT INTO `wrm_config` (`config_name`,`config_value`) VALUES ('site_description', 'WRM');
 INSERT INTO `wrm_config` (`config_name`,`config_value`) VALUES ('site_server', 'Localhost');
+INSERT INTO `wrm_config` (`config_name`,`config_value`) VALUES ('persistent_db', '1');
 
 -- Raid Force Table Creation
 DROP TABLE IF EXISTS `wrm_raid_force`;

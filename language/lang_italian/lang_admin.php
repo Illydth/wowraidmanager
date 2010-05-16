@@ -120,6 +120,7 @@ $phprlang['configuration_show_addon'] = 'Visualizza link a WRM';
 $phprlang['configuration_sitelink'] = 'Il link "Homepage" punta a';
 $phprlang['configuration_template'] = 'Tema visuale';
 $phprlang['general_configuration_header'] = 'General Settings';
+$phprlang['configuration_persistent_db'] = 'Create Persistant Database Connection?';
 
 // Text on the "Time Config" Page
 $phprlang['configuration_ampm'] = 'Formato orario di creazione dei Raid';

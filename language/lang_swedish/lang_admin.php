@@ -120,6 +120,7 @@ $phprlang['configuration_show_addon'] = 'Visa addon länk';
 $phprlang['configuration_sitelink'] = '"Hem" länken pekar till';
 $phprlang['configuration_template'] = 'Mall';
 $phprlang['general_configuration_header'] = 'General Settings';
+$phprlang['configuration_persistent_db'] = 'Create Persistant Database Connection?';
 
 // Text on the "Time Config" Page
 $phprlang['configuration_ampm'] = 'Planera raids i 12h/24h format';

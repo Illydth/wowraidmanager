@@ -120,6 +120,7 @@ $phprlang['configuration_show_addon'] = '顯示插件連結';
 $phprlang['configuration_sitelink'] = '"頁首" 連結';
 $phprlang['configuration_template'] = '版面';
 $phprlang['general_configuration_header'] = 'General Settings';
+$phprlang['configuration_persistent_db'] = 'Create Persistant Database Connection?';
 
 // Text on the "Time Config" Page
 $phprlang['configuration_ampm'] = 'Schedule Raids in 12h/24h format';

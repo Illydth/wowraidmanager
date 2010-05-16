@@ -83,7 +83,10 @@ $eqdkp_text_link = $phprlang['eqdkp_system_link'] . '<a href="'.$phpraid_config[
 
 /*------------------------------------*/
 
-$db_dkp = &new sql_db($phpraid_config['eqdkp_db_host'],$phpraid_config['eqdkp_db_user'],$phpraid_config['eqdkp_db_pass'],$phpraid_config['eqdkp_db_name'], TRUE);
+if ($phpraid_config['persistent_db'] == TRUE)
+	$db_dkp = &new sql_db($phpraid_config['eqdkp_db_host'],$phpraid_config['eqdkp_db_user'],$phpraid_config['eqdkp_db_pass'],$phpraid_config['eqdkp_db_name'], TRUE, TRUE);
+else
+	$db_dkp = &new sql_db($phpraid_config['eqdkp_db_host'],$phpraid_config['eqdkp_db_user'],$phpraid_config['eqdkp_db_pass'],$phpraid_config['eqdkp_db_name'], TRUE, FALSE);
 
 if(!$db_dkp->db_connect_id) 
 {

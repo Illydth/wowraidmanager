@@ -61,6 +61,11 @@ if($phpraid_config['enable_five_man'] == '0')
 	$enable_five_man = '<input type="checkbox" name="enable_five_man" value="1">';
 else
 	$enable_five_man = '<input type="checkbox" name="enable_five_man" value="1" checked>';
+
+if($phpraid_config['persistent_db'] == '0')
+	$persistent_db = '<input type="checkbox" name="persistent_db" value="1">';
+else
+	$persistent_db = '<input type="checkbox" name="persistent_db" value="1" checked>';
 	
 // LANGUAGE CHECK
 // this is done by search the languages folder (PHP4 compatible)
@@ -155,6 +160,8 @@ $wrmadminsmarty->assign('config_data',
 		'showphpraid_addon_text' => $phprlang['configuration_show_addon'],
 		'enable_five_man' => $enable_five_man, 
 		'enable_five_man_text' => $phprlang['configuration_enable_five_man'],
+		'persistent_db' => $persistent_db, 
+		'persistent_db_text' => $phprlang['configuration_persistent_db'],
 		'admin_email' => $admin_email,
 		'admin_email_text' => $phprlang['configuration_admin_email'],
 		'email_signature' => $email_signature,
@@ -199,6 +206,11 @@ if(isset($_POST['submit']))
  		$enable_five_man = 1;
  	else
  		$enable_five_man = 0;
+
+ 	if(isset($_POST['persistent_db']))
+ 		$persistent_db = 1;
+ 	else
+ 		$persistent_db = 0;
  		
 	$p_link = scrub_input($_POST['phpraid_addon_link'], true);
 	$h_logo = scrub_input($_POST['header_logo'], true);
@@ -243,6 +255,8 @@ if(isset($_POST['submit']))
 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'showphpraid_addon';", quote_smart($showphpraid_addon));
 	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'enable_five_man';", quote_smart($enable_five_man));
+	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'persistent_db';", quote_smart($persistent_db));
 	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'admin_email';", quote_smart($a_email));
 	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);

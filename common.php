@@ -97,8 +97,11 @@ require_once($phpraid_dir.'includes/scheduler.php');
  ************************************************/
 // database connection
 global $db_raid, $errorTitle, $errorMsg, $errorDie;
-$db_raid = &new sql_db($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass'],$phpraid_config['db_name']);
-
+if ($phpraid_config['persistent_db'] == TRUE)
+	$db_raid = &new sql_db($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass'],$phpraid_config['db_name'],TRUE,TRUE);
+else
+	$db_raid = &new sql_db($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass'],$phpraid_config['db_name'],TRUE,FALSE);
+	
 if(!$db_raid->db_connect_id)
 {
 	die('<div align="center"><strong>There appears to be a problem with the database server.<br>We should be back up shortly.</strong></div>');

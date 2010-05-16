@@ -120,6 +120,7 @@ $phprlang['configuration_show_addon'] = 'Addon-Link zeigen';
 $phprlang['configuration_sitelink'] = 'Link zur "Gildenseite"';
 $phprlang['configuration_template'] = 'Vorlage';
 $phprlang['general_configuration_header'] = 'General Settings';
+$phprlang['configuration_persistent_db'] = 'Create Persistant Database Connection?';
 
 // Text on the "Time Config" Page
 $phprlang['configuration_ampm'] = '24-Stunden-Format verwenden';

@@ -649,6 +649,7 @@ INSERT INTO `wrm_config` VALUES ('ampm', '12');
 INSERT INTO `wrm_config` VALUES ('raid_view_type','by_class');
 INSERT INTO `wrm_config` VALUES ('records_per_page','25');
 INSERT INTO `wrm_config` VALUES ('armory_cache_setting', 'none');
+INSERT INTO `wrm_config` VALUES ('persistent_db', '1');
 
 -- Events Table Creation
 DROP TABLE IF EXISTS `wrm_events`;
