@@ -215,6 +215,21 @@
 			$content .= '  <td class="normaltxtgreen">is writeable by the server</td>';
 		}
 		$content .= '</tr>';
+		$content .= '<tr>';
+		if(function_exists(mb_strtolower))
+		{
+			$content .= '  <td class="normaltxtgreen">Success</td>';
+			$content .= '  <td class="normaltxtgreen">PHP: MB String Extension</td>';
+			$content .= '  <td class="normaltxtgreen">Available for Use.</td>';
+		}
+		else
+		{
+			$error = 0;
+			$content .= '<td class="normaltxtred">Error</td>';
+			$content .= '<td class="normaltxtred"><strong>PHP: MB String Extension</strong></td>';
+			$content .= '<td class="normaltxtred">Unavailable.  Required to support Multi-Byte Characters.  Continue at your own risk.</td>';
+		}
+		$content .= '</tr>';
 		$content .= '</table>';
 
 		$content .= '<br/><br/>';
