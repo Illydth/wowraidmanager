@@ -140,4 +140,38 @@ function remove_user() {
 	header("Location: permissions.php?mode=details&perm_id=". $perm_id);
 }
 
+//group permission
+//are all classes that could be found (in (cms) bridge) back/return 
+function get_group_array()
+{
+	global $db_raid, $table_prefix, $db_raid;
+
+	global $db_group_id, $db_table_group_name, $db_allgroups_name, $db_table_allgroups ;
+
+	$sql =  "SELECT " . $db_group_id . " , ". $db_allgroups_name .
+			" FROM " . $table_prefix . $db_table_allgroups .
+			" ORDER BY ". $db_group_id;
+
+	$result_group = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	while ($data_wrm = $db_raid->sql_fetchrow($result_group,true))
+	{
+		array_push($group,
+			array(
+				'group_name'=>$data[$db_allgroups_name],
+				'group_id'=>$data[$db_group_id]
+			)
+		);
+	
+	}
+	return $group;
+}
+
+//WRM Logout
+function wrm_logout()
+{
+	// unset the session and remove all cookies
+	clear_session();
+	setcookie('username', '', time() - 2629743);
+	setcookie('password', '', time() - 2629743);
+}
 ?>

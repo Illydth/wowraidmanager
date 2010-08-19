@@ -38,6 +38,23 @@ if(isset($_GET['phpraid_dir']) || isset($_POST['phpraid_dir']))
 
 $BridgeSupportPWDChange = TRUE;
 
+/*********************************************** 
+ * Table and Column Names - change per CMS.
+ ***********************************************/
+// Column Name for the ID field for the User.
+$db_user_id = "profile_id";
+// Column Name for the UserName field.
+$db_user_name = "username";
+// Column Name for the User's E-Mail Address
+$db_user_email = "email";
+// Column Name for the User's password
+$db_user_password = "password";
+
+$db_table_user_name = "profile";
+
+$table_prefix = $phpraid_config['db_prefix'];
+
+	
 //change password in WRM DB
 function db_password_change($profile_id, $dbusernewpassword)
 {
@@ -102,17 +119,10 @@ function password_check($oldpassword, $profile_id, $encryptflag)
 }
 
 function phpraid_login() {
-	global $groups, $db_raid, $phpraid_config;
-	$username = $password = "";
 
-	$table_prefix = $phpraid_config['db_prefix'];
-
-	//table and column name
-	$db_user_id = "profile_id";
-	$db_user_name = "username";
-	$db_user_password = "password";
-	$db_user_email = "email";
-	$db_table_user_name = "profile";
+	global $db_raid, $phpraid_config; //$groups
+	global $db_user_id,  $db_user_name, $db_user_email, $db_user_password, $table_prefix, $db_table_user_name; 
+	
 
 	if(isset($_POST['username'])) 	{
 		// User is logging in, set encryption flag to 0 to identify login with plain text password.
@@ -220,10 +230,10 @@ function phpraid_logout()
 
 // good ole authentication
 $lifetime = get_cfg_var("session.gc_maxlifetime"); 
-$temp = session_name("WRM-iums");
+$temp = session_name("WRM-" .  $phpraid_config['auth_type']);
 $temp = session_set_cookie_params($lifetime, getCookiePath());
 session_start();
-$_SESSION['name'] = "WRM-iums";
+$_SESSION['name'] = "WRM-" . $phpraid_config['auth_type'];
 
 // set session defaults
 if (!isset($_SESSION['initiated'])) 
