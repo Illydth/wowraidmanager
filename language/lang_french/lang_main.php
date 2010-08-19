@@ -294,6 +294,8 @@ $phprlang['users_link'] = '&raquo; Utilisateurs';
 $phprlang['lua_output_link'] = '&raquo; Lua output raids';
 $phprlang['index_link'] = '&raquo; Forum AC';
 $phprlang['dkp_link'] = '&raquo; DKP';
+$phprlang['bosstrack_link'] = '&raquo; Boss Kill Tracking';
+$phprlang['raidsarchive_link'] = '&raquo; Raids Archive';
 
 // sorting information
 $phprlang['sort_text'] = 'Cliquer ici pour trier par ';

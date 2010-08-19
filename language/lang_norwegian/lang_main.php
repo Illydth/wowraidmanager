@@ -263,6 +263,8 @@ $phprlang['users_link'] = '&raquo; Brukere';
 $phprlang['lua_output_link'] = '&raquo; Lua utmating raid';
 $phprlang['index_link'] = '&raquo; Hjem';
 $phprlang['dkp_link'] = '&raquo; DKP';
+$phprlang['bosstrack_link'] = '&raquo; Boss Kill Tracking';
+$phprlang['raidsarchive_link'] = '&raquo; Raids Archive';
 
 // sorting information
 $phprlang['sort_text'] = 'Trykk her for å sortere etter ';

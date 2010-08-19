@@ -292,6 +292,8 @@ $phprlang['users_link'] = '&raquo; 用戶';
 $phprlang['lua_output_link'] = '&raquo; Lua匯出';
 $phprlang['index_link'] = '&raquo; 公會網站首頁';
 $phprlang['dkp_link'] = '&raquo; DKP';
+$phprlang['bosstrack_link'] = '&raquo; Boss Kill Tracking';
+$phprlang['raidsarchive_link'] = '&raquo; Raids Archive';
 
 // sorting information
 $phprlang['sort_text'] = '排序依照';

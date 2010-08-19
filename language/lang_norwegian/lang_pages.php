@@ -240,4 +240,14 @@ $phprlang['team_remove_header'] = 'Fjern Medlen fra Lag';
 $phprlang['teams_raid_view_text'] = 'Tilbake til raid';
 $phprlang['team_cur_teams_header'] = 'Opprettende Lag';
 $phprlang['team_page_header'] = 'Lag';
+
+// Boss Kill Tracking
+$phprlang['boss_kill_type_dungeon'] = 'Dungeon (5/10 Man)';
+$phprlang['boss_kill_type_25_man'] = '25 Man Raid';
+$phprlang['boss_kill_type_10_man'] = '10 Man Raid';
+$phprlang['boss_kill_type_40_man'] = '40 Man Raid';
+$phprlang['bosskill_header'] = 'Track Named (Boss) Accomplishments';
+
+//Raids Archive
+$phprlang['raidsarchive_header'] = 'Raids Archive';
 ?>

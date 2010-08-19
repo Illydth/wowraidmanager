@@ -297,6 +297,7 @@ $phprlang['lua_output_link'] = '&raquo; Lua Output Raids';
 $phprlang['index_link'] = '&raquo; Home';
 $phprlang['dkp_link'] = '&raquo; DKP';
 $phprlang['bosstrack_link'] = '&raquo; Boss Kill Tracking';
+$phprlang['raidsarchive_link'] = '&raquo; Raids Archive';
 
 // sorting information
 $phprlang['sort_text'] = 'Click here to sort by ';

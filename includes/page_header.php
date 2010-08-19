@@ -128,7 +128,7 @@ $calendar_link = '<a href="calendar.php">' . $theme_calendar_link . '</a>';
 $roster_link = '<a href="roster.php">' . $theme_roster_link . '</a>';
 $dkp_view_link = '<a href="dkp_view.php">' . $theme_dkp_link . '</a>';
 $boss_tracking_link = '<a href="bosstracking.php?mode=view">' . $theme_bosstrack_link . '</a>';
-
+$raids_archive_link = '<a href="raidsarchive.php?mode=view">' . $theme_raids_archive_link . '</a>';
 // these links need special permissions
 $priv_announcement ? $announce_link = '<a href="announcements.php?mode=view">' . $theme_announcement_link . '</a>' : $announce_link = '';
 $priv_guilds ?	$guild_link = '<a href="guilds.php?mode=view">' . $theme_guild_link . '</a>' : $guild_link = '';
@@ -240,6 +240,13 @@ if (preg_match("/(.*)bosstracking\.php(.*)/", $_SERVER['PHP_SELF'])) {
 	$menu .= '<li class="active">' . $boss_tracking_link . '</li>';
 } else {
 	$menu .= '<li class="">' . $boss_tracking_link . '</li>';
+}
+
+// Show Raids Archives Link
+if (preg_match("/(.*)raidsarchive\.php(.*)/", $_SERVER['PHP_SELF'])) {
+	$menu .= '<li class="active">' . $raids_archive_link . '</li>';
+} else {
+	$menu .= '<li class="">' . $raids_archive_link . '</li>';
 }
 
 $menu .= '</ul></div>';

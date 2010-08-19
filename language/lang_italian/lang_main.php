@@ -290,6 +290,8 @@ $phprlang['users_link'] = '&raquo;&nbsp;Utenti';
 $phprlang['lua_output_link'] = '&raquo;&nbsp;Export&nbsp;LUA';
 $phprlang['index_link'] = '&raquo;&nbsp;Forum';
 $phprlang['dkp_link'] = '&raquo;&nbsp;DKP';
+$phprlang['bosstrack_link'] = '&raquo; Boss Kill Tracking';
+$phprlang['raidsarchive_link'] = '&raquo; Raids Archive';
 
 // sorting information
 $phprlang['sort_text'] = 'Clicka qui per ordinare per ';

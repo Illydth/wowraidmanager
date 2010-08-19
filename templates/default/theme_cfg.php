@@ -36,6 +36,7 @@ if($use_images == 0) {
 	$theme_roster_link = $phprlang['roster_link'];
 	$theme_dkp_link = $phprlang['dkp_link'];
 	$theme_bosstrack_link = $phprlang['bosstrack_link'];
+	$theme_raids_archive_link = $phprlang['raidsarchive_link'];
 } else {
 	$theme_index_link = $image_index;
 	$theme_guild_link = $image_guild;
@@ -51,5 +52,6 @@ if($use_images == 0) {
 	$theme_lua_output_link = $image_lua_output;
 	$theme_dkp_link = $image_dkp_link;
 	$theme_bosstrack_link = $image_bosstrack_link;
+	$theme_raids_archive_link = $phprlang['raidsarchive_link'];
 }
 ?>

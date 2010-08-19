@@ -286,6 +286,8 @@ $phprlang['users_link'] = '&raquo; Benutzer';
 $phprlang['lua_output_link'] = '&raquo; LUA-Raidausgabe';
 $phprlang['index_link'] = '&raquo; Gildenseite';
 $phprlang['dkp_link'] = '&raquo; DKP';
+$phprlang['bosstrack_link'] = '&raquo; Boss Kill Tracking';
+$phprlang['raidsarchive_link'] = '&raquo; Raids Archiv';
 
 // sorting information
 $phprlang['sort_text'] = 'Sortieren nach ';

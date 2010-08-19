@@ -292,6 +292,8 @@ $phprlang['users_link'] = '&raquo; Medlemmar';
 $phprlang['lua_output_link'] = '&raquo; Lua utmatning raid';
 $phprlang['index_link'] = '&raquo; Hem';
 $phprlang['dkp_link'] = '&raquo; DKP';
+$phprlang['bosstrack_link'] = '&raquo; Boss Kill Tracking';
+$phprlang['raidsarchive_link'] = '&raquo; Raids Archive';
 
 // sorting information
 $phprlang['sort_text'] = 'Klicka här för att sortera efter ';

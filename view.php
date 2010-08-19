@@ -90,7 +90,7 @@ $pageURL = 'view.php?mode=view&raid_id=' . $raid_id . '&';
 $profile_id = scrub_input($_SESSION['profile_id']);
 
 // This require sets up the flow control surrounding queueing, cancelling and drafting of users.
-require_once('./signup_flow.php');
+require_once('includes/signup_flow.php');
 
 // Determine Advanced Profile Permisions to this Raid - Note: "user" doesn't need to be checked, it's
 //	 a default permission that will be checked within the signup flow.

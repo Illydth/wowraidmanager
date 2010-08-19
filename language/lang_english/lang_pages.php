@@ -259,4 +259,7 @@ $phprlang['boss_kill_type_25_man'] = '25 Man Raid';
 $phprlang['boss_kill_type_10_man'] = '10 Man Raid';
 $phprlang['boss_kill_type_40_man'] = '40 Man Raid';
 $phprlang['bosskill_header'] = 'Track Named (Boss) Accomplishments';
+
+//Raids Archive
+$phprlang['raidsarchive_header'] = 'Raids Archive';
 ?>
