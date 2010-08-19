@@ -49,6 +49,7 @@ $phprlang['admin_general_config'] = '&raquo; General Config';
 $phprlang['admin_time_config'] = '&raquo; Time Settings';
 $phprlang['admin_raid_settings'] = '&raquo; Raid Settings';
 $phprlang['admin_external_config'] = '&raquo; External Systems';
+$phprlang['admin_roletalent_config'] = '&raquo; Link Class/Role/Talent';
 
 // Link from Main Site to Admin
 $phprlang['admin_section_link'] = 'Admin Section';
@@ -104,6 +105,12 @@ $phprlang['delete_armory_log_text'] = 'Delete the WoW Armory Output Logs';
 $phprlang['delete_template_cache_text'] = 'Delete the WRM Application Template Cache Files.';
 $phprlang['actions_header'] = 'Board Cache/Log Actions:';
 $phprlang['actions_explanation'] = 'The buttons below purge the various cache and log files associated with WRM.';
+$phprlang['configuration_version_current'] = 'Si sta utilizzando l\'ultima versione di WowRaidManager';
+$phprlang['configuration_version_info_header'] = 'Informazioni sulla versione di WRM';
+$phprlang['configuration_version_outdated_header'] = 'E\' disponibile una nuova versione di WowRaidManager!';
+$phprlang['configuration_version_outdated_message'] = 'La versione in uso di WowRaidManager non è l\'ultima disponibile: si consiglia vivamente di aggiornarla.<br>
+													   L\'ultima versione è %s, mentre quella in uso è %s.<br>
+													   Per scaricare l\'ultima versione, fare riferimento all\'area Download di <a href="http://www.wowraidmanager.net">WowRaidManager.net</a>.';
 
 // Text on the "General Config" Page
 $phprlang['configuration_addon'] = 'Sito ufficiale di WowRaidManager';
@@ -115,11 +122,19 @@ $phprlang['configuration_email_sig'] = 'Firma dell\'e-mail';
 $phprlang['configuration_enable_five_man'] = 'Abilita i Gruppi<br><a href="../docs/enable_groups.htm" target="_blank">(Guida)</a>';
 $phprlang['configuration_language'] = 'Lingua';
 $phprlang['configuration_logo'] = 'Immagine di intestazione';
+$phprlang['configuration_records_per_page'] = 'Records Per Data Table Page';
 $phprlang['configuration_register_text'] = 'Indirizzo di registrazione';
+$phprlang['configuration_rss_header'] = 'RSS Configuration';
+$phprlang['configuration_rss_site'] = 'RSS: indirizzo di installazione di WowRaidManager (senza barra finale)';
+$phprlang['configuration_rss_export'] = 'RSS: indirizzo a cui esportare il feed RSS';
+$phprlang['configuration_rss_feed_amt'] = 'RSS: numero di Raid da visualizzare';
 $phprlang['configuration_show_addon'] = 'Visualizza link a WRM';
 $phprlang['configuration_sitelink'] = 'Il link "Homepage" punta a';
 $phprlang['configuration_template'] = 'Tema visuale';
 $phprlang['general_configuration_header'] = 'General Settings';
+$phprlang['configuration_site_name'] = 'Site Name';
+$phprlang['configuration_site_server'] = 'Site Server Name';
+$phprlang['configuration_site_description'] = 'Site Description';
 $phprlang['configuration_persistent_db'] = 'Create Persistant Database Connection?';
 
 // Text on the "Time Config" Page
@@ -130,64 +145,111 @@ $phprlang['configuration_time'] = 'Formato degli orari<br><a href="http://www.ph
 $phprlang['configuration_timezone_text'] = 'Fuso orario';
 $phprlang['time_header'] = 'Time Configuration';
 
-$phprlang['configuraiton_admin'] = 'Amministratori';
-$phprlang['configuration_anonymous'] = 'Consenti la visualizzazione agli Utenti non registrati';
+// Text on the "Role Configuration" Page.
+$phprlang['configuration_role_header'] = 'Configurazione dei ruoli';
+$phprlang['addrole'] = 'Add Role';
+$phprlang['updaterole'] = 'Update Role';
+$phprlang['configuration_role_new_header'] = 'Add a New Role';
+$phprlang['configuration_role_edit_header']= 'Modify an Existing Role';
+$phprlang['role_error_exists'] = 'Role ID Already Exists, Chose Another.';
+$phprlang['role_error_role_name_blank'] = 'Role Name Cannot Be a Blank or Null Value.';
+$phprlang['role_error_role_config_blank'] = 'Role Config Text Cannot Be a Blank or Null Value.';
+$phprlang['role_error_role_id_blank'] = 'Role ID Cannot Be a Blank or Null Value.';
+
+// Text on the "Link Class/Role/Talent" Page.
+$phprlang['configuration_roletalent_header'] = 'Class/Role/Talent Links';
+$phprlang['configuration_roletalent_new_header'] = 'Add New Class/Role/Talent Link';
+$phprlang['configuration_roletalent_edit_header'] = 'Edit Class/Role/Talent Link';
+$phprlang['roletalent_duplicate_error'] = 'Duplicate Class/Role/Talent Link';
+$phprlang['roletalent_classid_blank_error'] = 'The Class ID Cannot be a Blank or Null Value.';
+$phprlang['roletalent_talenttree_blank_error'] = 'The Talent Tree Name Cannot be a Blank or Null Value';
+$phprlang['roletalent_displaytext_blank_error'] = 'The Display Text Value Cannot be Blank or Null.';
+$phprlang['roletalent_roleid_blank_error'] = 'The Role Name Cannot be a Blank or Null Value';
+
+// Text on the "Data Table Config" Page.
+$phprlang['configuration_datatable_header'] = 'Modify Data Table Information';
+$phprlang['configuration_datatable_view_select_text'] = 'Select the View to Modify: ';
+$phprlang['configuration_datatable_edit_header'] = 'Change View Properties';
+$phprlang['configuration_datatable_column_name'] = 'Column Name';
+$phprlang['configuration_datatable_visible'] = 'Visible';
+$phprlang['configuration_datatable_position'] = 'Column Position';
+$phprlang['configuration_datatable_image_url'] = 'Image URL';
+$phprlang['configuration_datatable_default_sort'] = 'Sort on This Column'; 
+
+// Text on the "User Administration" Page.
+$phpraid['configuration_users_modperm_header'] = 'Change Selected User(s) Permission Group';
+$phpraid['configuration_users_modperm_desc'] = 'To change the permission group for a user, do the
+												following: <br><ol><li>Select the checkboxes in the
+												table above next to the users whose permission group
+												you want to change.</li><li>Select the permission group
+												to change to from the dropdown box below</li><li>Click
+												the Submit button below.</li></ol><br>The permission
+												group for each user should update in the user list
+												table above to the selected permission group.';
+$phprlang['configuration_permission_cannot_modify'] = 'You have attempted to remove the "Admin" privledge group
+														from all of your users, this would leave you without an 
+														ability to administrate your system and is not allowed.<br><br>
+														Please add a user to the "Admin" Privledge group before
+														atempting to remove users from it.  There must be at least
+														one "Admin" privledged user.';
+
+// Text on the "External Systems" Page.
+$phprlang['configuration_armory_cache'] = 'Cache Armory Data To';
+$phprlang['configuration_external_links_header'] = 'Integrazione con sistemi esterni';
+$phprlang['configuration_eqdkp_integration_text'] = 'Integra con EqDKP<br><a href="../docs/eqdkp_link.htm" target="_blank">(Guida)</a>';
+$phprlang['configuration_eqdkp_link'] = 'Indirizzo base dell\'installazione di EqDKP (senza barra finale)';
+$phprlang['configuration_roster_text'] = 'Integra con WoW Roster';
 $phprlang['configuration_armory_enable'] = 'Abilita l\'integrazione con l\'Armory';
+$phprlang['configuration_armory_cache_database'] = 'Database Table';
+$phprlang['configuration_armory_cache_files'] = 'Files on Disk';
+$phprlang['configuration_armory_cache_none'] = 'Do not Cache Armory Data';
 $phprlang['configuration_armory_link_text'] = 'Indirizzo dell\'Armory';
 $phprlang['configuration_armory_language_text'] = 'Codice linguaggio dell\'Armory';
-$phprlang['configuration_autoqueue'] = 'Impedisci l\'inserimento diretto fra le iscrizioni confermate';
+
+// Text on the "User Settings" Page.
+$phprlang['configuration_multiple'] = 'Consenti iscrizioni multiple';
+$phprlang['configuration_anonymous'] = 'Consenti la visualizzazione agli Utenti non registrati';
+$phprlang['configuration_resop'] = 'Rendi opzionali i dati delle resistenze';
+
+// Text on the "Signup Rights" Page.
 $phprlang['configuration_cancel'] = 'Annulla';
 $phprlang['configuration_cancel_def'] = 'Annulla = Consenti l\'inserimento fra le iscrizioni annullate';
 $phprlang['configuration_cancelled'] = 'Iscrizioni annullate';
 $phprlang['configuration_comments'] = 'Commenti';
 $phprlang['configuration_comments_def'] = 'Commenti = Consenti la modifica dei commenti';
-$phprlang['configuration_description'] = 'Descrizione';
-$phprlang['configuration_default'] = 'Profilo Utente predefinito';
 $phprlang['configuration_delete'] = 'Elimina';
 $phprlang['configuration_delete_def'] = 'Elimina = Consenti l\'eliminazione delle iscrizioni';
 $phprlang['configuration_draft'] = 'Conferma';
 $phprlang['configuration_draft_def'] = 'Conferma = Consenti l\'inserimento fra le iscrizioni confermate';
 $phprlang['configuration_drafted'] = 'Iscrizioni confermate';
-$phprlang['configuration_eqdkp_integration_text'] = 'Integra con EqDKP<br><a href="../docs/eqdkp_link.htm" target="_blank">(Guida)</a>';
-$phprlang['configuration_eqdkp_link'] = 'Indirizzo base dell\'installazione di EqDKP (senza barra finale)';
-$phprlang['configuration_external_links_header'] = 'Integrazione con sistemi esterni';
-$phprlang['configuration_faction'] = 'Fazione';
-$phprlang['configuration_freeze'] = 'Disabilita la chiusura delle iscrizioni';
-$phprlang['configuration_guild_header'] = 'Configurazione della Gilda';
-$phprlang['configuration_guild_name'] = 'Nome';
-$phprlang['configuration_id'] = 'Visualizza l\'ID nelle tabelle';
-$phprlang['configuration_multiple'] = 'Consenti iscrizioni multiple';
 $phprlang['configuration_on_queue'] = 'Iscrizioni in coda';
 $phprlang['configuration_queue'] = 'Accoda';
 $phprlang['configuration_queue_def'] = 'Accoda = Consenti l\'inserimento fra le iscrizioni in coda';
+$phprlang['configuration_signup_rights_header'] = 'Permessi di iscrizione';
+$phprlang['configuraiton_admin'] = 'Amministratori';
+$phprlang['configuration_raidlead'] = 'Gestori Raid';
+
+// Text on the "Raid Settings" Page.
 $phprlang['configuration_raid_settings_header'] = 'Impostazioni inerenti i Raid';
 $phprlang['configuration_raid_view_type_text'] = 'Visualizzazione Raid';
 $phprlang['configuration_raid_view_type_class'] = 'Visualizzazione Raid per classe';
 $phprlang['configuration_raid_view_type_role'] = 'Visualizzazione Raid per ruolo';
-$phprlang['configuration_raidlead'] = 'Gestori Raid';
-$phprlang['configuration_resop'] = 'Rendi opzionali i dati delle resistenze';
-$phprlang['configuration_role_header'] = 'Configurazione dei ruoli';
-$phprlang['configuration_role1_text'] = 'Ruolo #1';
-$phprlang['configuration_role2_text'] = 'Ruolo #2';
-$phprlang['configuration_role3_text'] = 'Ruolo #3';
-$phprlang['configuration_role4_text'] = 'Ruolo #4';
-$phprlang['configuration_role5_text'] = 'Ruolo #5';
-$phprlang['configuration_role6_text'] = 'Ruolo #6';
 $phprlang['configuration_role_limit_text'] = 'Imponi i limiti sui ruoli';
 $phprlang['configuration_class_limit_text'] = 'Imponi i limiti sulle classi';
 $phprlang['configuration_class_as_min'] = 'Considera i limiti sulle classi come limiti minimi';
-$phprlang['configuration_roster_text'] = 'Integra con WoW Roster';
-$phprlang['configuration_rss_site'] = 'RSS: indirizzo di installazione di WowRaidManager (senza barra finale)';
-$phprlang['configuration_rss_export'] = 'RSS: indirizzo a cui esportare il feed RSS';
-$phprlang['configuration_rss_feed_amt'] = 'RSS: numero di Raid da visualizzare';
+$phprlang['configuration_freeze'] = 'Disabilita la chiusura delle iscrizioni';
+
+
+$phprlang['configuration_description'] = 'Descrizione';
+$phprlang['configuration_default'] = 'Profilo Utente predefinito';
+$phprlang['configuration_faction'] = 'Fazione';
+$phprlang['configuration_guild_header'] = 'Configurazione della Gilda';
+$phprlang['configuration_guild_name'] = 'Nome';
+$phprlang['configuration_id'] = 'Visualizza l\'ID nelle tabelle';
 $phprlang['configuration_server'] = 'Server';
-$phprlang['configuration_signup_rights_header'] = 'Permessi di iscrizione';
 $phprlang['configuration_site_header'] = 'Configurazione del sito';
 $phprlang['configuration_user'] = 'Utenti';
 $phprlang['configuration_user_rights_header'] = 'Permessi degli Utenti';
-$phprlang['configuration_version_current'] = 'Si sta utilizzando l\'ultima versione di WowRaidManager';
-$phprlang['configuration_version_info_header'] = 'Informazioni sulla versione di WRM';
-$phprlang['configuration_version_outdated_header'] = 'E\' disponibile una nuova versione di WowRaidManager!';
-$phprlang['configuration_version_outdated_message'] = 'La versione in uso di WowRaidManager non è l\'ultima disponibile: si consiglia vivamente di aggiornarla.<br>
-													   L\'ultima versione è %s, mentre quella in uso è %s.<br>
-													   Per scaricare l\'ultima versione, fare riferimento all\'area Download di <a href="http://www.wowraidmanager.net">WowRaidManager.net</a>.';
+
+// multiple use
+$phprlang['configuration_autoqueue'] = 'Impedisci l\'inserimento diretto fra le iscrizioni confermate';

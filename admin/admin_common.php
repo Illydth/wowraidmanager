@@ -124,8 +124,8 @@ $wrmadminsmarty->cache_dir    = $wrm_dir . 'cache/smarty_cache/admin/';
 $wrmadminsmarty->caching = false;
 $wrmadminsmarty->compile_check = true;
 /* Turn on/off Smarty Template Debugging by commenting/uncommenting the lines below. */
-//$wrmadminsmarty->debugging = false;
-$wrmadminsmarty->debugging = true;
+$wrmadminsmarty->debugging = false;
+//$wrmadminsmarty->debugging = true;
 
 /***************************************************
  * Load Language Files

@@ -49,6 +49,7 @@ $phprlang['admin_general_config'] = '&raquo; General Config';
 $phprlang['admin_time_config'] = '&raquo; Time Settings';
 $phprlang['admin_raid_settings'] = '&raquo; Raid Settings';
 $phprlang['admin_external_config'] = '&raquo; External Systems';
+$phprlang['admin_roletalent_config'] = '&raquo; Link Class/Role/Talent';
 
 // Link from Main Site to Admin
 $phprlang['admin_section_link'] = 'Admin Section';
@@ -104,6 +105,12 @@ $phprlang['delete_armory_log_text'] = 'Delete the WoW Armory Output Logs';
 $phprlang['delete_template_cache_text'] = 'Delete the WRM Application Template Cache Files.';
 $phprlang['actions_header'] = 'Board Cache/Log Actions:';
 $phprlang['actions_explanation'] = 'The buttons below purge the various cache and log files associated with WRM.';
+$phprlang['configuration_version_current'] = 'Du har nyaste versionen av WoW Raid Manager';
+$phprlang['configuration_version_info_header'] = 'Versions Information';
+$phprlang['configuration_version_outdated_header'] = 'WoW Raid Manager uppdatering tillgänglig!';
+$phprlang['configuration_version_outdated_message'] = 'Din version av WoW Raid Manager är gammal. Du rekommenderas starkt att uppdatera.<br>
+													   Den senaste versionen är %s och du använder för närvarande version %s.<br>
+													   För att ladda ner, besök <a href="http://www.wowraidmanager.net">WoW Raid Manager</a>.';
 
 // Text on the "General Config" Page
 $phprlang['configuration_addon'] = 'Addon URL';
@@ -115,11 +122,19 @@ $phprlang['configuration_email_sig'] = 'E-post signatur';
 $phprlang['configuration_enable_five_man'] = 'Aktivera grupper<br><a href="../docs/enable_groups.htm" target="_blank">hjälp?</a>';
 $phprlang['configuration_language'] = 'Språk';
 $phprlang['configuration_logo'] = 'Sökväg till logo bild';
+$phprlang['configuration_records_per_page'] = 'Records Per Data Table Page';
 $phprlang['configuration_register_text'] = 'Registrerings URL';
+$phprlang['configuration_rss_header'] = 'RSS Configuration';
+$phprlang['configuration_rss_site'] = 'RSS: URL tilll WoW Raid Manager Installationen (Inget avslutande /)';
+$phprlang['configuration_rss_export'] = 'RSS: sida att exportera RSS feed till';
+$phprlang['configuration_rss_feed_amt'] = 'RSS: Antal raids som visas i feeden';
 $phprlang['configuration_show_addon'] = 'Visa addon länk';
 $phprlang['configuration_sitelink'] = '"Hem" länken pekar till';
 $phprlang['configuration_template'] = 'Mall';
 $phprlang['general_configuration_header'] = 'General Settings';
+$phprlang['configuration_site_name'] = 'Site Name';
+$phprlang['configuration_site_server'] = 'Site Server Name';
+$phprlang['configuration_site_description'] = 'Site Description';
 $phprlang['configuration_persistent_db'] = 'Create Persistant Database Connection?';
 
 // Text on the "Time Config" Page
@@ -130,65 +145,111 @@ $phprlang['configuration_time'] = 'Tids format<br><a href="http://www.php.net/da
 $phprlang['configuration_timezone_text'] = 'Tidszone';
 $phprlang['time_header'] = 'Time Configuration';
 
+// Text on the "Role Configuration" Page.
+$phprlang['configuration_role_header'] = 'Roll Konfigurering';
+$phprlang['addrole'] = 'Add Role';
+$phprlang['updaterole'] = 'Update Role';
+$phprlang['configuration_role_new_header'] = 'Add a New Role';
+$phprlang['configuration_role_edit_header']= 'Modify an Existing Role';
+$phprlang['role_error_exists'] = 'Role ID Already Exists, Chose Another.';
+$phprlang['role_error_role_name_blank'] = 'Role Name Cannot Be a Blank or Null Value.';
+$phprlang['role_error_role_config_blank'] = 'Role Config Text Cannot Be a Blank or Null Value.';
+$phprlang['role_error_role_id_blank'] = 'Role ID Cannot Be a Blank or Null Value.';
 
-$phprlang['configuraiton_admin'] = 'Administratör';
-$phprlang['configuration_anonymous'] = 'Tillåt anonym insyn';
+// Text on the "Link Class/Role/Talent" Page.
+$phprlang['configuration_roletalent_header'] = 'Class/Role/Talent Links';
+$phprlang['configuration_roletalent_new_header'] = 'Add New Class/Role/Talent Link';
+$phprlang['configuration_roletalent_edit_header'] = 'Edit Class/Role/Talent Link';
+$phprlang['roletalent_duplicate_error'] = 'Duplicate Class/Role/Talent Link';
+$phprlang['roletalent_classid_blank_error'] = 'The Class ID Cannot be a Blank or Null Value.';
+$phprlang['roletalent_talenttree_blank_error'] = 'The Talent Tree Name Cannot be a Blank or Null Value';
+$phprlang['roletalent_displaytext_blank_error'] = 'The Display Text Value Cannot be Blank or Null.';
+$phprlang['roletalent_roleid_blank_error'] = 'The Role Name Cannot be a Blank or Null Value';
+
+// Text on the "Data Table Config" Page.
+$phprlang['configuration_datatable_header'] = 'Modify Data Table Information';
+$phprlang['configuration_datatable_view_select_text'] = 'Select the View to Modify: ';
+$phprlang['configuration_datatable_edit_header'] = 'Change View Properties';
+$phprlang['configuration_datatable_column_name'] = 'Column Name';
+$phprlang['configuration_datatable_visible'] = 'Visible';
+$phprlang['configuration_datatable_position'] = 'Column Position';
+$phprlang['configuration_datatable_image_url'] = 'Image URL';
+$phprlang['configuration_datatable_default_sort'] = 'Sort on This Column'; 
+
+// Text on the "User Administration" Page.
+$phpraid['configuration_users_modperm_header'] = 'Change Selected User(s) Permission Group';
+$phpraid['configuration_users_modperm_desc'] = 'To change the permission group for a user, do the
+												following: <br><ol><li>Select the checkboxes in the
+												table above next to the users whose permission group
+												you want to change.</li><li>Select the permission group
+												to change to from the dropdown box below</li><li>Click
+												the Submit button below.</li></ol><br>The permission
+												group for each user should update in the user list
+												table above to the selected permission group.';
+$phprlang['configuration_permission_cannot_modify'] = 'You have attempted to remove the "Admin" privledge group
+														from all of your users, this would leave you without an 
+														ability to administrate your system and is not allowed.<br><br>
+														Please add a user to the "Admin" Privledge group before
+														atempting to remove users from it.  There must be at least
+														one "Admin" privledged user.';
+
+// Text on the "External Systems" Page.
+$phprlang['configuration_armory_cache'] = 'Cache Armory Data To';
+$phprlang['configuration_external_links_header'] = 'Integrera med externa system';
+$phprlang['configuration_eqdkp_integration_text'] = 'Integrera med EqDKP<br><a href="../docs/eqdkp_link.htm" target="_blank">hjälp?</a>';
+$phprlang['configuration_eqdkp_link'] = 'URL till er EqDKP installation (Inget avslutande /)';
+$phprlang['configuration_roster_text'] = 'Integrera med WoW Roster';
 $phprlang['configuration_armory_enable'] = 'Aktivera Armory uppslagning';
+$phprlang['configuration_armory_cache_database'] = 'Database Table';
+$phprlang['configuration_armory_cache_files'] = 'Files on Disk';
+$phprlang['configuration_armory_cache_none'] = 'Do not Cache Armory Data';
 $phprlang['configuration_armory_link_text'] = 'Korrekt Armory länk för Server';
 $phprlang['configuration_armory_language_text'] = 'Språk kod för Armoryt';
-$phprlang['configuration_autoqueue'] = 'Förbjud bokning till uppflyttad status';
+
+// Text on the "User Settings" Page.
+$phprlang['configuration_multiple'] = 'Tillåt multipla bokningar från samma användare';
+$phprlang['configuration_anonymous'] = 'Tillåt anonym insyn';
+$phprlang['configuration_resop'] = 'Gör resistance valfritt';
+
+// Text on the "Signup Rights" Page.
 $phprlang['configuration_cancel'] = 'Avbryt';
 $phprlang['configuration_cancel_def'] = 'Avbryt = Placera en användare bland avbokade';
 $phprlang['configuration_cancelled'] = 'Avbokad status';
 $phprlang['configuration_comments'] = 'Kommentarer';
 $phprlang['configuration_comments_def'] = 'Kommentarer = Tillåt användare att editera sina kommentarer';
-$phprlang['configuration_description'] = 'Beskrivning';
-$phprlang['configuration_default'] = 'Standard Grupp';
 $phprlang['configuration_delete'] = 'Radera';
 $phprlang['configuration_delete_def'] = 'Radera = Ta bort användares bokning helt';
 $phprlang['configuration_draft_def'] = 'Uppflyttningt = Placera användaren i Raidet';
 $phprlang['configuration_draft'] = 'Uppflyttning';
 $phprlang['configuration_drafted'] = 'Uppflyttad (I Raidet)';
-$phprlang['configuration_eqdkp_integration_text'] = 'Integrera med EqDKP<br><a href="../docs/eqdkp_link.htm" target="_blank">hjälp?</a>';
-$phprlang['configuration_eqdkp_link'] = 'URL till er EqDKP installation (Inget avslutande /)';
-$phprlang['configuration_external_links_header'] = 'Integrera med externa system';
-$phprlang['configuration_faction'] = 'Faktion';
-$phprlang['configuration_freeze'] = 'Avaktivera frys kontroll';
-$phprlang['configuration_guild_header'] = 'Guild Konfiguration';
-$phprlang['configuration_guild_name'] = 'Namn';
-$phprlang['configuration_id'] = 'Visa ID i tabeller';
-$phprlang['configuration_multiple'] = 'Tillåt multipla bokningar från samma användare';
 $phprlang['configuration_on_queue'] = 'I kö';
 $phprlang['configuration_queue'] = 'Köa';
 $phprlang['configuration_queue_def'] = 'Köa = Placera en användare i bokningskön';
+$phprlang['configuration_signup_rights_header'] = 'Bokningsrättigheter';
+$phprlang['configuraiton_admin'] = 'Administratör';
+$phprlang['configuration_raidlead'] = 'Raid Ledare';
+
+// Text on the "Raid Settings" Page.
 $phprlang['configuration_raid_settings_header'] = 'Raid Inställningar';
 $phprlang['configuration_raid_view_type_text'] = 'Select Raid View Type';
 $phprlang['configuration_raid_view_type_class'] = 'Display Raid View By Class';
 $phprlang['configuration_raid_view_type_role'] = 'Display Raid View By Role';
-$phprlang['configuration_raidlead'] = 'Raid Ledare';
-$phprlang['configuration_resop'] = 'Gör resistance valfritt';
-$phprlang['configuration_role_header'] = 'Roll Konfigurering';
-$phprlang['configuration_role1_text'] = 'Klass Roll #1';
-$phprlang['configuration_role2_text'] = 'Klass Roll #2';
-$phprlang['configuration_role3_text'] = 'Klass Roll #3';
-$phprlang['configuration_role4_text'] = 'Klass Roll #4';
-$phprlang['configuration_role5_text'] = 'Klass Roll #5';
-$phprlang['configuration_role6_text'] = 'Klass Roll #6';
 $phprlang['configuration_role_limit_text'] = 'Tvinga Roll begränsningar för Raids';
 $phprlang['configuration_class_limit_text'] = 'Tvinga Klass begränsningar för Raids';
 $phprlang['configuration_class_as_min'] = 'Använd Klass begränsningar som minimum';
-$phprlang['configuration_roster_text'] = 'Integrera med WoW Roster';
-$phprlang['configuration_rss_site'] = 'RSS: URL tilll WoW Raid Manager Installationen (Inget avslutande /)';
-$phprlang['configuration_rss_export'] = 'RSS: sida att exportera RSS feed till';
-$phprlang['configuration_rss_feed_amt'] = 'RSS: Antal raids som visas i feeden';
+$phprlang['configuration_freeze'] = 'Avaktivera frys kontroll';
+
+
+$phprlang['configuration_description'] = 'Beskrivning';
+$phprlang['configuration_default'] = 'Standard Grupp';
+$phprlang['configuration_faction'] = 'Faktion';
+$phprlang['configuration_guild_header'] = 'Guild Konfiguration';
+$phprlang['configuration_guild_name'] = 'Namn';
+$phprlang['configuration_id'] = 'Visa ID i tabeller';
 $phprlang['configuration_server'] = 'Server';
-$phprlang['configuration_signup_rights_header'] = 'Bokningsrättigheter';
 $phprlang['configuration_site_header'] = 'Site Konfiguration';
 $phprlang['configuration_user'] = 'Användare';
 $phprlang['configuration_user_rights_header'] = 'Användar Rättigheter';
-$phprlang['configuration_version_current'] = 'Du har nyaste versionen av WoW Raid Manager';
-$phprlang['configuration_version_info_header'] = 'Versions Information';
-$phprlang['configuration_version_outdated_header'] = 'WoW Raid Manager uppdatering tillgänglig!';
-$phprlang['configuration_version_outdated_message'] = 'Din version av WoW Raid Manager är gammal. Du rekommenderas starkt att uppdatera.<br>
-													   Den senaste versionen är %s och du använder för närvarande version %s.<br>
-													   För att ladda ner, besök <a href="http://www.wowraidmanager.net">WoW Raid Manager</a>.';
+
+// multiple use
+$phprlang['configuration_autoqueue'] = 'Förbjud bokning till uppflyttad status';

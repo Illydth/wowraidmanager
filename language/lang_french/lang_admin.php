@@ -49,6 +49,7 @@ $phprlang['admin_general_config'] = '&raquo; General Config';
 $phprlang['admin_time_config'] = '&raquo; Time Settings';
 $phprlang['admin_raid_settings'] = '&raquo; Raid Settings';
 $phprlang['admin_external_config'] = '&raquo; External Systems';
+$phprlang['admin_roletalent_config'] = '&raquo; Link Class/Role/Talent';
 
 // Link from Main Site to Admin
 $phprlang['admin_section_link'] = 'Admin Section';
@@ -104,6 +105,12 @@ $phprlang['delete_armory_log_text'] = 'Delete the WoW Armory Output Logs';
 $phprlang['delete_template_cache_text'] = 'Delete the WRM Application Template Cache Files.';
 $phprlang['actions_header'] = 'Board Cache/Log Actions:';
 $phprlang['actions_explanation'] = 'The buttons below purge the various cache and log files associated with WRM.';
+$phprlang['configuration_version_current'] = 'You are running the latest version of WRM';
+$phprlang['configuration_version_info_header'] = 'Version Information';
+$phprlang['configuration_version_outdated_header'] = 'WoW Raid Manager update available!';
+$phprlang['configuration_version_outdated_message'] = 'Your version of WoW Raid Manager is out of date. Updating is strongly recommended.<br>
+													   The latest version is %s and you are running version %s.<br>
+													   To download, visit the <a href="http://www.wowraidmanager.net">WoW Raid Manager for BC download</a> section.';
 
 // Text on the "General Config" Page
 $phprlang['configuration_addon'] = 'Addon URL';
@@ -115,11 +122,19 @@ $phprlang['configuration_email_sig'] = 'E-mail signature';
 $phprlang['configuration_enable_five_man'] = 'Enable groups<br><a href="../docs/enable_groups.htm" target="_blank">help?</a>';
 $phprlang['configuration_language'] = 'Language';
 $phprlang['configuration_logo'] = 'Path to header image';
+$phprlang['configuration_records_per_page'] = 'Records Per Data Table Page';
 $phprlang['configuration_register_text'] = 'Registration URL';
+$phprlang['configuration_rss_header'] = 'RSS Configuration';
+$phprlang['configuration_rss_site'] = 'RSS: URL to WRM Installation (No Trailing /)';
+$phprlang['configuration_rss_export'] = 'RSS: Site to export RSS feed to';
+$phprlang['configuration_rss_feed_amt'] = 'RSS: Number of Raids to Show in Feed';
 $phprlang['configuration_show_addon'] = 'Show addon link';
 $phprlang['configuration_sitelink'] = '"Home" Link Points To';
 $phprlang['configuration_template'] = 'Template';
 $phprlang['general_configuration_header'] = 'General Settings';
+$phprlang['configuration_site_name'] = 'Site Name';
+$phprlang['configuration_site_server'] = 'Site Server Name';
+$phprlang['configuration_site_description'] = 'Site Description';
 $phprlang['configuration_persistent_db'] = 'Create Persistant Database Connection?';
 
 // Text on the "Time Config" Page
@@ -130,65 +145,111 @@ $phprlang['configuration_time'] = 'Time format<br><a href="http://www.php.net/da
 $phprlang['configuration_timezone_text'] = 'Timezone';
 $phprlang['time_header'] = 'Time Configuration';
 
+// Text on the "Role Configuration" Page.
+$phprlang['configuration_role_header'] = 'Role Configuration';
+$phprlang['addrole'] = 'Add Role';
+$phprlang['updaterole'] = 'Update Role';
+$phprlang['configuration_role_new_header'] = 'Add a New Role';
+$phprlang['configuration_role_edit_header']= 'Modify an Existing Role';
+$phprlang['role_error_exists'] = 'Role ID Already Exists, Chose Another.';
+$phprlang['role_error_role_name_blank'] = 'Role Name Cannot Be a Blank or Null Value.';
+$phprlang['role_error_role_config_blank'] = 'Role Config Text Cannot Be a Blank or Null Value.';
+$phprlang['role_error_role_id_blank'] = 'Role ID Cannot Be a Blank or Null Value.';
 
-$phprlang['configuraiton_admin'] = 'Administrateur';
-$phprlang['configuration_anonymous'] = 'Allow anonymous viewing';
+// Text on the "Link Class/Role/Talent" Page.
+$phprlang['configuration_roletalent_header'] = 'Class/Role/Talent Links';
+$phprlang['configuration_roletalent_new_header'] = 'Add New Class/Role/Talent Link';
+$phprlang['configuration_roletalent_edit_header'] = 'Edit Class/Role/Talent Link';
+$phprlang['roletalent_duplicate_error'] = 'Duplicate Class/Role/Talent Link';
+$phprlang['roletalent_classid_blank_error'] = 'The Class ID Cannot be a Blank or Null Value.';
+$phprlang['roletalent_talenttree_blank_error'] = 'The Talent Tree Name Cannot be a Blank or Null Value';
+$phprlang['roletalent_displaytext_blank_error'] = 'The Display Text Value Cannot be Blank or Null.';
+$phprlang['roletalent_roleid_blank_error'] = 'The Role Name Cannot be a Blank or Null Value';
+
+// Text on the "Data Table Config" Page.
+$phprlang['configuration_datatable_header'] = 'Modify Data Table Information';
+$phprlang['configuration_datatable_view_select_text'] = 'Select the View to Modify: ';
+$phprlang['configuration_datatable_edit_header'] = 'Change View Properties';
+$phprlang['configuration_datatable_column_name'] = 'Column Name';
+$phprlang['configuration_datatable_visible'] = 'Visible';
+$phprlang['configuration_datatable_position'] = 'Column Position';
+$phprlang['configuration_datatable_image_url'] = 'Image URL';
+$phprlang['configuration_datatable_default_sort'] = 'Sort on This Column'; 
+
+// Text on the "User Administration" Page.
+$phpraid['configuration_users_modperm_header'] = 'Change Selected User(s) Permission Group';
+$phpraid['configuration_users_modperm_desc'] = 'To change the permission group for a user, do the
+												following: <br><ol><li>Select the checkboxes in the
+												table above next to the users whose permission group
+												you want to change.</li><li>Select the permission group
+												to change to from the dropdown box below</li><li>Click
+												the Submit button below.</li></ol><br>The permission
+												group for each user should update in the user list
+												table above to the selected permission group.';
+$phprlang['configuration_permission_cannot_modify'] = 'You have attempted to remove the "Admin" privledge group
+														from all of your users, this would leave you without an 
+														ability to administrate your system and is not allowed.<br><br>
+														Please add a user to the "Admin" Privledge group before
+														atempting to remove users from it.  There must be at least
+														one "Admin" privledged user.';
+
+// Text on the "External Systems" Page.
+$phprlang['configuration_armory_cache'] = 'Cache Armory Data To';
+$phprlang['configuration_external_links_header'] = 'Integration with External Systems';
+$phprlang['configuration_eqdkp_integration_text'] = 'Integrate with EqDKP<br><a href="../docs/eqdkp_link.htm" target="_blank">help?</a>';
+$phprlang['configuration_eqdkp_link'] = 'URL to Base of EqDKP Installation (No Trailing /)';
+$phprlang['configuration_roster_text'] = 'Integrate with WoW Roster';
 $phprlang['configuration_armory_enable'] = 'Enable Armory Lookups';
+$phprlang['configuration_armory_cache_database'] = 'Database Table';
+$phprlang['configuration_armory_cache_files'] = 'Files on Disk';
+$phprlang['configuration_armory_cache_none'] = 'Do not Cache Armory Data';
 $phprlang['configuration_armory_link_text'] = 'Correct Armory Link for Server';
 $phprlang['configuration_armory_language_text'] = 'Code langage pour l\'armurerie';
-$phprlang['configuration_autoqueue'] = 'Disallow Signup to Drafted Status';
+
+// Text on the "User Settings" Page.
+$phprlang['configuration_multiple'] = 'Allow multiple signups';
+$phprlang['configuration_anonymous'] = 'Allow anonymous viewing';
+$phprlang['configuration_resop'] = 'Make resistance optional';
+
+// Text on the "Signup Rights" Page.
 $phprlang['configuration_cancel'] = 'Annuler';
 $phprlang['configuration_cancel_def'] = 'Cancel = Place User Into Cancelled Area';
 $phprlang['configuration_cancelled'] = 'Cancelled Status';
 $phprlang['configuration_comments'] = 'Commentaires';
 $phprlang['configuration_comments_def'] = 'Comments = Allow User to Edit Their Comments';
-$phprlang['configuration_description'] = 'Description';
-$phprlang['configuration_default'] = 'Default Group';
 $phprlang['configuration_delete'] = 'Supprimer';
 $phprlang['configuration_delete_def'] = 'Delete = Remove User Signup Completely';
 $phprlang['configuration_draft_def'] = 'Draft = Place User into Attending Raid Area';
 $phprlang['configuration_draft'] = 'Draft';
 $phprlang['configuration_drafted'] = 'Drafted (In Raid)';
-$phprlang['configuration_eqdkp_integration_text'] = 'Integrate with EqDKP<br><a href="../docs/eqdkp_link.htm" target="_blank">help?</a>';
-$phprlang['configuration_eqdkp_link'] = 'URL to Base of EqDKP Installation (No Trailing /)';
-$phprlang['configuration_external_links_header'] = 'Integration with External Systems';
-$phprlang['configuration_faction'] = 'Faction';
-$phprlang['configuration_freeze'] = 'Disable freeze checking';
-$phprlang['configuration_guild_header'] = 'Guild Configuration';
-$phprlang['configuration_guild_name'] = 'Nom';
-$phprlang['configuration_id'] = 'Show id in tables';
-$phprlang['configuration_multiple'] = 'Allow multiple signups';
 $phprlang['configuration_on_queue'] = 'En file d\'attente';
 $phprlang['configuration_queue'] = 'Queue';
 $phprlang['configuration_queue_def'] = 'Queue = Place User In Queued Area';
+$phprlang['configuration_signup_rights_header'] = 'Signup Rights';
+$phprlang['configuraiton_admin'] = 'Administrateur';
+$phprlang['configuration_raidlead'] = 'Raid Leader';
+
+// Text on the "Raid Settings" Page.
 $phprlang['configuration_raid_settings_header'] = 'Raid Settings';
 $phprlang['configuration_raid_view_type_text'] = 'Select Raid View Type';
 $phprlang['configuration_raid_view_type_class'] = 'Display Raid View By Class';
 $phprlang['configuration_raid_view_type_role'] = 'Display Raid View By Role';
-$phprlang['configuration_raidlead'] = 'Raid Leader';
-$phprlang['configuration_resop'] = 'Make resistance optional';
-$phprlang['configuration_role_header'] = 'Role Configuration';
-$phprlang['configuration_role1_text'] = 'Role #1';
-$phprlang['configuration_role2_text'] = 'Role #2';
-$phprlang['configuration_role3_text'] = 'Role #3';
-$phprlang['configuration_role4_text'] = 'Role #4';
-$phprlang['configuration_role5_text'] = 'Role #5';
-$phprlang['configuration_role6_text'] = 'Role #6';
 $phprlang['configuration_role_limit_text'] = 'Enforce Role Limits for Raid';
 $phprlang['configuration_class_limit_text'] = 'Enforce Class Limits for Raid';
 $phprlang['configuration_class_as_min'] = 'Use Class Limits as Minimums';
-$phprlang['configuration_roster_text'] = 'Integrate with WoW Roster';
-$phprlang['configuration_rss_site'] = 'RSS: URL to phpRaid Installation (No Trailing /)';
-$phprlang['configuration_rss_export'] = 'RSS: Site to export RSS feed to';
-$phprlang['configuration_rss_feed_amt'] = 'RSS: Number of Raids to Show in Feed';
+$phprlang['configuration_freeze'] = 'Disable freeze checking';
+
+
+$phprlang['configuration_description'] = 'Description';
+$phprlang['configuration_default'] = 'Default Group';
+$phprlang['configuration_faction'] = 'Faction';
+$phprlang['configuration_guild_header'] = 'Guild Configuration';
+$phprlang['configuration_guild_name'] = 'Nom';
+$phprlang['configuration_id'] = 'Show id in tables';
 $phprlang['configuration_server'] = 'Serveur';
-$phprlang['configuration_signup_rights_header'] = 'Signup Rights';
 $phprlang['configuration_site_header'] = 'Site Configuration';
 $phprlang['configuration_user'] = 'Utilisateurs';
 $phprlang['configuration_user_rights_header'] = 'Droits des utilisateurs';
-$phprlang['configuration_version_current'] = 'You are running the latest version of phpRaid';
-$phprlang['configuration_version_info_header'] = 'Version Information';
-$phprlang['configuration_version_outdated_header'] = 'WoW Raid Manager update available!';
-$phprlang['configuration_version_outdated_message'] = 'Your version of WoW Raid Manager is out of date. Updating is strongly recommended.<br>
-													   The latest version is %s and you are running version %s.<br>
-													   To download, visit the <a href="http://www.wowraidmanager.net">WoW Raid Manager for BC download</a> section.';
+
+// multiple use
+$phprlang['configuration_autoqueue'] = 'Disallow Signup to Drafted Status';

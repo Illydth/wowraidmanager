@@ -41,7 +41,7 @@ $phprlang['admin_main_link'] = '&raquo; Main';
 $phprlang['admin_logs_link'] = '&raquo; Logs';
 $phprlang['admin_rolecfg_link'] = '&raquo; Role Configuration';
 $phprlang['admin_datatablecfg_link'] = '&raquo; Manage Data Tables';
-$phprlang['admin_permissions'] = '&raquo; User Permissions';
+$phprlang['admin_permissions'] = '&raquo; Permission Permissions';
 $phprlang['admin_signup_rights'] = '&raquo; Signup Activities';
 $phprlang['admin_user_settings'] = '&raquo; User Settings';
 $phprlang['admin_user_management'] = '&raquo; User Administration';
@@ -49,6 +49,7 @@ $phprlang['admin_general_config'] = '&raquo; General Config';
 $phprlang['admin_time_config'] = '&raquo; Time Settings';
 $phprlang['admin_raid_settings'] = '&raquo; Raid Settings';
 $phprlang['admin_external_config'] = '&raquo; External Systems';
+$phprlang['admin_roletalent_config'] = '&raquo; Link Class/Role/Talent';
 
 // Link from Main Site to Admin
 $phprlang['admin_section_link'] = 'Admin Section';
@@ -104,6 +105,12 @@ $phprlang['delete_armory_log_text'] = 'Delete the WoW Armory Output Logs';
 $phprlang['delete_template_cache_text'] = 'Delete the WRM Application Template Cache Files.';
 $phprlang['actions_header'] = 'Board Cache/Log Actions:';
 $phprlang['actions_explanation'] = 'The buttons below purge the various cache and log files associated with WRM.';
+$phprlang['configuration_version_current'] = '您現在使用的是最新版的WRM';
+$phprlang['configuration_version_info_header'] = '版本資訊';
+$phprlang['configuration_version_outdated_header'] = '有新版的WRM可以更新!';
+$phprlang['configuration_version_outdated_message'] = '您的WRM已經是舊版的了. 強烈建議您立即更新.<br>
+													   最新的版本號是 %s 您目前的版本是 %s.<br>
+													   請到後面的鏈結下載 <a href="http://www.wowraidmanager.net">WoW Raid Manager for BC</a>.';
 
 // Text on the "General Config" Page
 $phprlang['configuration_addon'] = '插件鏈結位址';
@@ -115,11 +122,19 @@ $phprlang['configuration_email_sig'] = '信箱簽名檔';
 $phprlang['configuration_enable_five_man'] = '允許五人隊伍<br><a href="../docs/enable_groups.htm" target="_blank">help?</a>';
 $phprlang['configuration_language'] = '語言';
 $phprlang['configuration_logo'] = 'Logo鏈結位址';
+$phprlang['configuration_records_per_page'] = 'Records Per Data Table Page';
 $phprlang['configuration_register_text'] = '登寄網址';
+$phprlang['configuration_rss_header'] = 'RSS Configuration';
+$phprlang['configuration_rss_site'] = 'RSS:WRM安裝網址 (網址尾端不得輸入 /)';
+$phprlang['configuration_rss_export'] = 'RSS:輸出RSS資料至網站';
+$phprlang['configuration_rss_feed_amt'] = 'RSS:於RSS資料顯示之團隊數量';
 $phprlang['configuration_show_addon'] = '顯示插件連結';
 $phprlang['configuration_sitelink'] = '"頁首" 連結';
 $phprlang['configuration_template'] = '版面';
 $phprlang['general_configuration_header'] = 'General Settings';
+$phprlang['configuration_site_name'] = 'Site Name';
+$phprlang['configuration_site_server'] = 'Site Server Name';
+$phprlang['configuration_site_description'] = 'Site Description';
 $phprlang['configuration_persistent_db'] = 'Create Persistant Database Connection?';
 
 // Text on the "Time Config" Page
@@ -130,65 +145,111 @@ $phprlang['configuration_time'] = '時間格式 <br><a href="http://www.php.net/
 $phprlang['configuration_timezone_text'] = '時區';
 $phprlang['time_header'] = 'Time Configuration';
 
+// Text on the "Role Configuration" Page.
+$phprlang['configuration_role_header'] = '角色設定';
+$phprlang['addrole'] = 'Add Role';
+$phprlang['updaterole'] = 'Update Role';
+$phprlang['configuration_role_new_header'] = 'Add a New Role';
+$phprlang['configuration_role_edit_header']= 'Modify an Existing Role';
+$phprlang['role_error_exists'] = 'Role ID Already Exists, Chose Another.';
+$phprlang['role_error_role_name_blank'] = 'Role Name Cannot Be a Blank or Null Value.';
+$phprlang['role_error_role_config_blank'] = 'Role Config Text Cannot Be a Blank or Null Value.';
+$phprlang['role_error_role_id_blank'] = 'Role ID Cannot Be a Blank or Null Value.';
 
-$phprlang['configuraiton_admin'] = '管理者';
-$phprlang['configuration_anonymous'] = '允許遊客瀏覽';
+// Text on the "Link Class/Role/Talent" Page.
+$phprlang['configuration_roletalent_header'] = 'Class/Role/Talent Links';
+$phprlang['configuration_roletalent_new_header'] = 'Add New Class/Role/Talent Link';
+$phprlang['configuration_roletalent_edit_header'] = 'Edit Class/Role/Talent Link';
+$phprlang['roletalent_duplicate_error'] = 'Duplicate Class/Role/Talent Link';
+$phprlang['roletalent_classid_blank_error'] = 'The Class ID Cannot be a Blank or Null Value.';
+$phprlang['roletalent_talenttree_blank_error'] = 'The Talent Tree Name Cannot be a Blank or Null Value';
+$phprlang['roletalent_displaytext_blank_error'] = 'The Display Text Value Cannot be Blank or Null.';
+$phprlang['roletalent_roleid_blank_error'] = 'The Role Name Cannot be a Blank or Null Value';
+
+// Text on the "Data Table Config" Page.
+$phprlang['configuration_datatable_header'] = 'Modify Data Table Information';
+$phprlang['configuration_datatable_view_select_text'] = 'Select the View to Modify: ';
+$phprlang['configuration_datatable_edit_header'] = 'Change View Properties';
+$phprlang['configuration_datatable_column_name'] = 'Column Name';
+$phprlang['configuration_datatable_visible'] = 'Visible';
+$phprlang['configuration_datatable_position'] = 'Column Position';
+$phprlang['configuration_datatable_image_url'] = 'Image URL';
+$phprlang['configuration_datatable_default_sort'] = 'Sort on This Column'; 
+
+// Text on the "User Administration" Page.
+$phpraid['configuration_users_modperm_header'] = 'Change Selected User(s) Permission Group';
+$phpraid['configuration_users_modperm_desc'] = 'To change the permission group for a user, do the
+												following: <br><ol><li>Select the checkboxes in the
+												table above next to the users whose permission group
+												you want to change.</li><li>Select the permission group
+												to change to from the dropdown box below</li><li>Click
+												the Submit button below.</li></ol><br>The permission
+												group for each user should update in the user list
+												table above to the selected permission group.';
+$phprlang['configuration_permission_cannot_modify'] = 'You have attempted to remove the "Admin" privledge group
+														from all of your users, this would leave you without an 
+														ability to administrate your system and is not allowed.<br><br>
+														Please add a user to the "Admin" Privledge group before
+														atempting to remove users from it.  There must be at least
+														one "Admin" privledged user.';
+
+// Text on the "External Systems" Page.
+$phprlang['configuration_armory_cache'] = 'Cache Armory Data To';
+$phprlang['configuration_external_links_header'] = 'Integration with External Systems';
+$phprlang['configuration_eqdkp_integration_text'] = 'Integrate with EqDKP<br><a href="../docs/eqdkp_link.htm" target="_blank">help?</a>';
+$phprlang['configuration_eqdkp_link'] = 'URL to Base of EqDKP Installation (No Trailing /)';
+$phprlang['configuration_roster_text'] = '與WoW Roster整合';
 $phprlang['configuration_armory_enable'] = 'Enable Armory Lookups';
+$phprlang['configuration_armory_cache_database'] = 'Database Table';
+$phprlang['configuration_armory_cache_files'] = 'Files on Disk';
+$phprlang['configuration_armory_cache_none'] = 'Do not Cache Armory Data';
 $phprlang['configuration_armory_link_text'] = '正確伺服器ARMORY連結';
 $phprlang['configuration_armory_language_text'] = 'Armory語言碼';
-$phprlang['configuration_autoqueue'] = '報名時自動進入候補';
+
+// Text on the "User Settings" Page.
+$phprlang['configuration_multiple'] = '允許多重報名';
+$phprlang['configuration_anonymous'] = '允許遊客瀏覽';
+$phprlang['configuration_resop'] = '使韌性成為非必須選項';
+
+// Text on the "Signup Rights" Page.
 $phprlang['configuration_cancel'] = '取消';
 $phprlang['configuration_cancel_def'] = '取消 = 將使用者移動至取消區域';
 $phprlang['configuration_cancelled'] = '取消狀態';
 $phprlang['configuration_comments'] = '建議';
 $phprlang['configuration_comments_def'] = '建議 = 允許使用者編輯建議';
-$phprlang['configuration_description'] = '描述';
-$phprlang['configuration_default'] = '預設群組';
 $phprlang['configuration_delete'] = '刪除';
 $phprlang['configuration_delete_def'] = '刪除 = 完全移除使用者登記';
 $phprlang['configuration_draft_def'] = '參加 = 將使用者放置於參予團隊區';
 $phprlang['configuration_draft'] = '參加';
 $phprlang['configuration_drafted'] = '參加 (已列入團隊)';
-$phprlang['configuration_eqdkp_integration_text'] = 'Integrate with EqDKP<br><a href="../docs/eqdkp_link.htm" target="_blank">help?</a>';
-$phprlang['configuration_eqdkp_link'] = 'URL to Base of EqDKP Installation (No Trailing /)';
-$phprlang['configuration_external_links_header'] = 'Integration with External Systems';
-$phprlang['configuration_faction'] = '陣營';
-$phprlang['configuration_freeze'] = '關閉報名至檢查時間';
-$phprlang['configuration_guild_header'] = '公會設定';
-$phprlang['configuration_guild_name'] = '名稱';
-$phprlang['configuration_id'] = '在列表中顯示ID';
-$phprlang['configuration_multiple'] = '允許多重報名';
 $phprlang['configuration_on_queue'] = '後補中';
 $phprlang['configuration_queue'] = '後補';
 $phprlang['configuration_queue_def'] = '候補 = 將使用者放置於候補區';
+$phprlang['configuration_signup_rights_header'] = '報名權限';
+$phprlang['configuraiton_admin'] = '管理者';
+$phprlang['configuration_raidlead'] = '團隊指揮';
+
+// Text on the "Raid Settings" Page.
 $phprlang['configuration_raid_settings_header'] = '團隊設定';
 $phprlang['configuration_raid_view_type_text'] = 'Select Raid View Type';
 $phprlang['configuration_raid_view_type_class'] = 'Display Raid View By Class';
 $phprlang['configuration_raid_view_type_role'] = 'Display Raid View By Role';
-$phprlang['configuration_raidlead'] = '團隊指揮';
-$phprlang['configuration_resop'] = '使韌性成為非必須選項';
-$phprlang['configuration_role_header'] = '角色設定';
-$phprlang['configuration_role1_text'] = '職業職責 #1';
-$phprlang['configuration_role2_text'] = '職業職責 #2';
-$phprlang['configuration_role3_text'] = '職業職責 #3';
-$phprlang['configuration_role4_text'] = '職業職責 #4';
-$phprlang['configuration_role5_text'] = '職業職責 #5';
-$phprlang['configuration_role6_text'] = '職業職責 #6';
 $phprlang['configuration_role_limit_text'] = '強制團隊職責限制';
 $phprlang['configuration_class_limit_text'] = '強制團隊職業數量限制';
 $phprlang['configuration_class_as_min'] = '各職業限制最少數量';
-$phprlang['configuration_roster_text'] = '與WoW Roster整合';
-$phprlang['configuration_rss_site'] = 'RSS:phpRaid安裝網址 (網址尾端不得輸入 /)';
-$phprlang['configuration_rss_export'] = 'RSS:輸出RSS資料至網站';
-$phprlang['configuration_rss_feed_amt'] = 'RSS:於RSS資料顯示之團隊數量';
+$phprlang['configuration_freeze'] = '關閉報名至檢查時間';
+
+
+$phprlang['configuration_description'] = '描述';
+$phprlang['configuration_default'] = '預設群組';
+$phprlang['configuration_faction'] = '陣營';
+$phprlang['configuration_guild_header'] = '公會設定';
+$phprlang['configuration_guild_name'] = '名稱';
+$phprlang['configuration_id'] = '在列表中顯示ID';
 $phprlang['configuration_server'] = '伺服器';
-$phprlang['configuration_signup_rights_header'] = '報名權限';
 $phprlang['configuration_site_header'] = '網站設定';
 $phprlang['configuration_user'] = '使用者';
 $phprlang['configuration_user_rights_header'] = '使用者權限';
-$phprlang['configuration_version_current'] = '您現在使用的是最新版的phpRaid';
-$phprlang['configuration_version_info_header'] = '版本資訊';
-$phprlang['configuration_version_outdated_header'] = '有新版的phpRaid可以更新!';
-$phprlang['configuration_version_outdated_message'] = '您的phpRaid已經是舊版的了. 強烈建議您立即更新.<br>
-													   最新的版本號是 %s 您目前的版本是 %s.<br>
-													   請到後面的鏈結下載 <a href="http://www.wowraidmanager.net">WoW Raid Manager for BC</a>.';
+
+// multiple use
+$phprlang['configuration_autoqueue'] = '報名時自動進入候補';
