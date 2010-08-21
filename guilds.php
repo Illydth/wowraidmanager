@@ -191,16 +191,16 @@ if($_GET['mode'] == 'view' || $_GET['mode'] == 'update' || $_GET['mode'] == 'sel
 			$link = 'http://www.wowarmory.com';
 			break;
 		case 'EU':
-			$link = 'http://ew.wowarmory.com';
+			$link = 'http://eu.wowarmory.com';
 			break;
 		case 'DE':
-			$link = 'http://ew.wowarmory.com';
+			$link = 'http://eu.wowarmory.com';
 			break;
 		case 'ES':
-			$link = 'http://ew.wowarmory.com';
+			$link = 'http://eu.wowarmory.com';
 			break;
 		case 'FR':
-			$link = 'http://ew.wowarmory.com';
+			$link = 'http://eu.wowarmory.com';
 			break;
 		case 'KR':
 			$link = 'http://kr.wowarmory.com';
