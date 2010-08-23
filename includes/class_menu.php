@@ -215,8 +215,14 @@ class wrm_menu
 		}
 		
 		$menu .= '</ul></div>';
-		
-		$this->wrmsmarty->assign('menu',$menu);
+
+
+		$this->wrmsmarty->assign('menu_data', 
+			array(
+				'menu_header_text' => $this->phprlang['menu_header_text'],
+				'menu'=> $menu
+			)
+		);
 		$this->wrmsmarty->display('menu.html');
 		
 	}
