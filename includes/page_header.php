@@ -32,19 +32,16 @@
 // Set Page content type header:
 header('Content-Type: text/html; charset=utf-8');
 
-$priv_announcement=scrub_input($_SESSION['priv_announcements']);
-$priv_config=scrub_input($_SESSION['priv_configuration']);
-$priv_guilds=scrub_input($_SESSION['priv_guilds']);
-$priv_locations=scrub_input($_SESSION['priv_locations']);
-$priv_profile=scrub_input($_SESSION['priv_profile']);
-$priv_raids=scrub_input($_SESSION['priv_raids']);
-$logged_in=scrub_input($_SESSION['session_logged_in']);
+$priv_config = scrub_input($_SESSION['priv_configuration']);
+$logged_in = scrub_input($_SESSION['session_logged_in']);
 
 // time variables
 $guild_time = new_date($phpraid_config['time_format'],time(),$phpraid_config['timezone'] + $phpraid_config['dst']);
 $guild_date = new_date($phpraid_config['date_format'],time(),$phpraid_config['timezone'] + $phpraid_config['dst']);
 
-// login stuff
+/**************************************************************
+ * Show Login Box / Field
+ **************************************************************/
 // now for the links
 if($logged_in != 1)
 {
@@ -71,20 +68,11 @@ else
 		$login_change_pass = '<a href="login.php?mode=ch_pwd">'.$phprlang['login_chpwd'].'</a>';
 	if ( $priv_config )
 		$admin_config_link = '<a href="admin/admin_index.php?'.SID.'">'.$phprlang['admin_section_link'].'</a>';
-	else
-		echo "Priv Config not Set.";
+//	else
+//		echo "Priv Config not Set.";
 	$login_form_close = '</form>';
 }
-if(($phpraid_config['disable'] == '1') AND ($priv_config == 1))
-{
-	$site_disabled_warning = '
-	<br>
-	<div align="center">
-	<div class="errorHeader">'. $phprlang['disabled_header'] . '</div>
-	<div class="errorBody">' . $phprlang['disabled_message'] . '</div>
-	</div>
-	';
-} 
+ 
 if (isset($ShowLoginForm) and ($ShowLoginForm == FALSE))
 {
 	$login_form_open=$login_username=$login_change_pass=$login_password=$login_button=$login_remember=$login_remember_hidden=$login_form_close = "";
@@ -107,156 +95,47 @@ $wrmsmarty->assign('page_header_data',
 			'login_remember_hidden' => $login_remember_hidden,
 			'login_button' => $login_button,
 			'login_change_pass'=>$login_change_pass,
-			'site_disabled_warning' => $site_disabled_warning,
 			'of_string'=>$phprlang['of'],
 			'rss_feed_string'=>$phprlang['rss_feed_text'],
 			'guild_time_string'=>$phprlang['guild_time_string'],
-			'menu_header_text'=>$phprlang['menu_header_text'],
-			'dkp_url'=>$phpraid_config['eqdkp_url'],
+			'menu_header_text'=>$phprlang['menu_header_text'], //
+			'dkp_url'=>$phpraid_config['eqdkp_url'],//
 			'header_link'=>$phpraid_config['header_link'],
 			'admin_config_link'=>$admin_config_link,
 	)
 );
 
-// setup link permissions
-require_once($phpraid_dir.'templates/' . $phpraid_config['template'] . '/theme_cfg.php');
+$wrmsmarty->display('header.html');
 
-// links useable for everyone
-$index_link = '<a href="' . $phpraid_config['header_link'] . '">' . $theme_index_link . '</a>';
-$home_link = '<a href="index.php">' . $theme_home_link . '</a>';
-$calendar_link = '<a href="calendar.php">' . $theme_calendar_link . '</a>';
-$roster_link = '<a href="roster.php">' . $theme_roster_link . '</a>';
-$dkp_view_link = '<a href="dkp_view.php">' . $theme_dkp_link . '</a>';
-$boss_tracking_link = '<a href="bosstracking.php?mode=view">' . $theme_bosstrack_link . '</a>';
-$raids_archive_link = '<a href="raidsarchive.php?mode=view">' . $theme_raids_archive_link . '</a>';
-// these links need special permissions
-$priv_announcement ? $announce_link = '<a href="announcements.php?mode=view">' . $theme_announcement_link . '</a>' : $announce_link = '';
-$priv_guilds ?	$guild_link = '<a href="guilds.php?mode=view">' . $theme_guild_link . '</a>' : $guild_link = '';
-$priv_locations ? $locations_link = '<a href="locations.php?mode=view">' . $theme_locations_link . '</a>' : $locations_link = '';
-$priv_profile ? $profile_link = '<a href="profile.php?mode=view">' . $theme_profile_link . '</a>' : $profile_link = '';
-$logged_in != '1' ? $register_link = '<a href="' . $phpraid_config['register_url'] . '">' . $theme_register_link . '</a>' : $register_link = '';
-if ( $priv_raids OR ($phpraid_config['enable_five_man'] AND $priv_profile) )
+/**************************************************************
+ * Show Menu
+ **************************************************************/
+require_once('./includes/class_menu.php');
+$menubar = &new wrm_menu($db_raid, $phpraid_config, $phprlang, $wrmsmarty);
+$menubar->wrm_show_menu();
+
+
+$wrmsmarty->display('menu_mainfrm.html');
+
+/**************************************************************
+ * Show error_site_disable if they disable
+ **************************************************************/
+if(($phpraid_config['disable'] == '1') AND ($priv_config == 1))
 {
-	$raids_link = '<a href="raids.php?mode=view">' . $theme_raids_link . '</a>';
-	$lua_output_link = '<a href="lua_output_new.php?mode=lua">' . $theme_lua_output_link . '</a>';
-}
-else
-{
-	$raids_link = '';
-	$lua_output_link = '';
-}
-
-// setup menu
-$menu = '<div align="left" class="navContainer"><ul class="navList">';
-
-
-//Ingore link to another site
-$menu .= '<li>' . $index_link . '</li>';
-if (preg_match("/(.*)index\.php(.*)/", $_SERVER['PHP_SELF'])) {
-	$menu .= '<li class="active">' . $home_link . '</li>';
-} else {
-    $menu .= '<li class="">' . $home_link . '</li>';
-}
-if (preg_match("/(.*)calendar\.php(.*)/", $_SERVER['PHP_SELF'])) {
-    $menu .= '<li class="active">' . $calendar_link . '</li>';
-} else {
-    $menu .= '<li class="">' . $calendar_link . '</li>';
+	$wrmsmarty->assign('error_data', 
+		array(
+			'site_disabled_header' => $phprlang['disabled_header'],
+			'site_disabled_message' => $phprlang['disabled_message']
+		)
+	);
+	$wrmsmarty->display('error_site_disable.html');
 }
 
-// setup permission based links
-if($_SESSION['priv_announcements'] == 1)
-{
-	if (preg_match("/(.*)announcements\.php(.*)/", $_SERVER['PHP_SELF'])) {
-	    $menu .= '<li class="active">' . $announce_link . '</li>';
-	} else {
-	    $menu .= '<li class="">' . $announce_link . '</li>';
-	}
-}
-
-if($_SESSION['priv_guilds'] == 1)
-{
-	if (preg_match("/(.*)guilds\.php(.*)/", $_SERVER['PHP_SELF'])) {
-	    $menu .= '<li class="active">' . $guild_link . '</li>';
-	} else {
-	    $menu .= '<li class="">' . $guild_link . '</li>';
-	}
-}
-
-if($_SESSION['priv_locations'] == 1)
-{
-	if (preg_match("/(.*)locations\.php(.*)/", $_SERVER['PHP_SELF'])) {
-	    $menu .= '<li class="active">' . $locations_link . '</li>';
-	} else {
-	    $menu .= '<li class="">' . $locations_link . '</li>';
-	}
-}
-
-if($_SESSION['priv_profile'] == 1)
-{
-	if (preg_match("/(.*)profile\.php(.*)/", $_SERVER['PHP_SELF'])) {
-	    $menu .= '<li class="active">' . $profile_link . '</li>';
-	} else {
-	    $menu .= '<li class="">' . $profile_link . '</li>';
-	}
-}
-
-if ( $_SESSION['priv_raids'] OR ($phpraid_config['enable_five_man'] AND $priv_profile) )
-{
-	if (preg_match("/(.*)raids\.php(.*)/", $_SERVER['PHP_SELF'])) {
-	    $menu .= '<li class="active">' . $raids_link . '</li>';
-	} else {
-	    $menu .= '<li class="">' . $raids_link . '</li>';
-	}
-	if (preg_match("/(.*)lua_output\.php(.*)/", $_SERVER['PHP_SELF'])) {
-	    $menu .= '<li class="active">' . $lua_output_link . '</li>';
-	} else {
-	    $menu .= '<li class="">' . $lua_output_link . '</li>';
-	}
-}
-
-if($logged_in == 0) {
-	$menu .= '<li>' . $register_link . '</li>';
-	$wrmsmarty->assign('register_link',$register_link);
-}
-
-if (preg_match("/(.*)roster\.php(.*)/", $_SERVER['PHP_SELF'])) {
-    $menu .= '<li class="active">' . $roster_link . '</li>';
-} else {
-    $menu .= '<li class="">' . $roster_link . '</li>';
-}
-
-// If integration with EQDKP is enabled, add a link here.
-if ($phpraid_config['enable_eqdkp'])
-{
-	if (preg_match("/(.*)dkp_view\.php(.*)/", $_SERVER['PHP_SELF'])) {
-		$menu .= '<li class="active">' . $dkp_view_link . '</li>';
-	} else {
-		$menu .= '<li class="">' . $dkp_view_link . '</li>';
-	}
-}
-
-// Show Boss Kill Tracking Link
-if (preg_match("/(.*)bosstracking\.php(.*)/", $_SERVER['PHP_SELF'])) {
-	$menu .= '<li class="active">' . $boss_tracking_link . '</li>';
-} else {
-	$menu .= '<li class="">' . $boss_tracking_link . '</li>';
-}
-
-// Show Raids Archives Link
-if (preg_match("/(.*)raidsarchive\.php(.*)/", $_SERVER['PHP_SELF'])) {
-	$menu .= '<li class="active">' . $raids_archive_link . '</li>';
-} else {
-	$menu .= '<li class="">' . $raids_archive_link . '</li>';
-}
-
-$menu .= '</ul></div>';
-
-$wrmsmarty->assign('menu',$menu);
-
-// display any errors if they exist
+/**************************************************************
+ * display any errors if they exist
+ **************************************************************/
 if(isset($errorMsg))
 {
-	$wrmsmarty->display('header.html');
 	
 	if(isset($errorSpace) && $errorSpace == 1) {
 		$errorMsg .= '</div><br>';
@@ -278,8 +157,5 @@ if(isset($errorMsg))
 		exit;
 	}
 }
-else
-{
-	$wrmsmarty->display('header.html');
-}
+
 ?>

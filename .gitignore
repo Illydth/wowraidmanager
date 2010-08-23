@@ -8,9 +8,7 @@ package/*
 cache/templates_c/*
 cache/templates_c/admin/*
 cache/smarty_cache/*
+cache/smarty_cache/admin/*
 cache/raid_lua/*
 cache/armory_log/*
 cache/armory_cache/*
-.buildpath
-.settings/
-.settings/*
