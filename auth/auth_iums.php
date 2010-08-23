@@ -37,6 +37,7 @@ if(isset($_GET['phpraid_dir']) || isset($_POST['phpraid_dir']))
 	die("Hacking attempt detected!");
 
 $BridgeSupportPWDChange = TRUE;
+$Bridge2ColumGroup = FALSE;
 
 /*********************************************** 
  * Table and Column Names - change per CMS.
@@ -54,6 +55,8 @@ $db_table_user_name = "profile";
 
 $table_prefix = $phpraid_config['db_prefix'];
 
+$auth_user_class = "";
+$auth_alt_user_class = "";
 	
 //change password in WRM DB
 function db_password_change($profile_id, $dbusernewpassword)
@@ -157,6 +160,7 @@ function phpraid_login() {
 				// they want automatic logins so set the cookie
 				// set to expire in one month
 				setcookie('username', $data[$db_user_name], time() + 2629743);
+				setcookie('profile_id', $data[$db_user_id], time() + 2629743);
 				setcookie('password', $cmspass, time() + 2629743);
 			}
 
@@ -228,36 +232,5 @@ function phpraid_logout()
 	setcookie('password', '', time() - 2629743);
 }
 
-// good ole authentication
-$lifetime = get_cfg_var("session.gc_maxlifetime"); 
-$temp = session_name("WRM-" .  $phpraid_config['auth_type']);
-$temp = session_set_cookie_params($lifetime, getCookiePath());
-session_start();
-$_SESSION['name'] = "WRM-" . $phpraid_config['auth_type'];
 
-// set session defaults
-if (!isset($_SESSION['initiated'])) 
-{
-	if(isset($_COOKIE['username']) && isset($_COOKIE['password']))
-	{ 
-		$testval = phpraid_login();
-		if (!$testval)
-		{
-			phpraid_logout();
-			session_regenerate_id();
-			$_SESSION['initiated'] = true;
-			$_SESSION['username'] = 'Anonymous';
-			$_SESSION['session_logged_in'] = 0;
-			$_SESSION['profile_id'] = -1;
-		}
-	}
-	else 
-	{
-		session_regenerate_id();
-		$_SESSION['initiated'] = true;
-		$_SESSION['username'] = 'Anonymous';
-		$_SESSION['session_logged_in'] = 0;
-		$_SESSION['profile_id'] = -1;
-	}
-}
 ?>

@@ -44,7 +44,8 @@ if(!isset($_GET['mode']))
 	// is the user already logged in? if so, there's no need for them to login again
 	if($_SESSION['session_logged_in'] == 0) {
 		if(isset($_POST['login'])) 	{
-			$logged_in = phpraid_login();
+			//$logged_in = phpraid_login();
+			$logged_in = wrm_login();
 			if($logged_in == 0)
 			{
 				$ShowLoginForm = FALSE;
@@ -56,10 +57,6 @@ if(!isset($_GET['mode']))
 				{
 					$forgot_password_line='<a href="login.php?mode=new_pwd">'.$phprlang['login_forgot_password'].'</a>';
 				}
-
-				//$page->set_file(array(
-				//	'output' => $phpraid_config['template'] . '/error_login.htm')
-				//);
 				
 				$wrmsmarty->assign('login_frm',
 					array(
@@ -95,7 +92,7 @@ if(!isset($_GET['mode']))
 		// or they shouldn't be accessing this page
 		if(isset($_GET['logout'])) {
 			// it would appear they're trying to logout
-			phpraid_logout();
+			wrm_logout();
 					
 			header("Location: index.php");
 		} else {
@@ -140,8 +137,8 @@ if ($_GET['mode'] == "new_pwd"){
 		//check: is user in WRM DB
 		$sql = sprintf("SELECT  profile_id, email, username FROM " . $phpraid_config['db_prefix'] . "profile WHERE username = %s and email= %s", quote_smart($username),quote_smart($email));
 
-		$profilresult = $db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
-		if (mysql_num_rows($profilresult) != 1)
+		$profilresult = $db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
+		if ($db_raid->sql_numrows($profilresult) != 1)
 		{
 			$errorTitle = $phprlang['login_pwdreset_fail_title'];
 			$errorMsg = $phprlang['login_username_email_incorrect'];
@@ -211,8 +208,8 @@ if ($_GET['mode'] == "ch_pwd"){
 		//check: is user in WRM DB
 		$sql = sprintf("SELECT  profile_id, password, username FROM " . $phpraid_config['db_prefix'] . "profile WHERE username = %s and password = %s", quote_smart($username),quote_smart(md5($curr_pass)));
 
-		$profilresult = $db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
-		if (mysql_num_rows($profilresult) != 1)
+		$profilresult = $db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
+		if ($db_raid->sql_numrows($profilresult) != 1)
 		{
 			$errorTitle = $phprlang['login_pwdreset_fail_title'];
 			$errorMsg = $phprlang['login_password_incorrect'];

@@ -33,7 +33,7 @@
  */
 class wrm_loginbox
 {
-	//gerneral stuff
+	//general stuff
 	var $db_raid;
 	var $phpraid_config;
 	var $phprlang;
@@ -41,6 +41,7 @@ class wrm_loginbox
 	
 	var $loginbox_show_status;
 	var $BridgeSupportPWDChange_status;
+	
 	//
 	// Constructor
 	//
@@ -57,12 +58,28 @@ class wrm_loginbox
 	
 	function wrm_show_loginbox_gethtmlstring()
 	{
+		$wrm_db_user_name = "username";
+		$wrm_table_prefix = $this->phpraid_config['db_prefix'];
+		$wrm__db_table_user_name = "profile";
+		
 		$phpraid_dir = "./";
 		$phprlang = $this->phprlang;
 		$login_form = "";
 		
 		$priv_config = scrub_input($_SESSION['priv_configuration']);
 		$logged_in = scrub_input($_SESSION['session_logged_in']);
+		$profile_id = scrub_input($_SESSION['profile_id']);
+		
+		//database
+		$sql = sprintf(	"SELECT ". $wrm_db_user_name .
+						" FROM " . $wrm_table_prefix . $wrm__db_table_user_name. 
+						" WHERE profile_id = %s", quote_smart($profile_id)
+					);
+		$result = $this->db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$data = $this->db_raid->sql_fetchrow($result, true);
+		$login_username_name = $data[$wrm_db_user_name];
+
+		//$login_username_name = scrub_input($_SESSION['username']);		
 		
 		/**************************************************************
 		 * Show Login Box / Field
@@ -74,7 +91,7 @@ class wrm_loginbox
 			$login_username = '<input name="username" type="text" value="username" size="15" maxlength="45" onFocus="if(this.value==\'username\')this.value=\'\';" class="post">';
 			$login_password = '<input name="password" type="password" value="password" size="15" onFocus="if(this.value==\'password\')this.value=\'\';" class="post">';
 			$login_button = '<input type="submit" name="login" value="'.$phprlang['login'].'" style="font-size:10px" class="mainoption">';
-			$login_remember = '<input type="checkbox" checked="checked" name="autologin">';
+			//$login_remember = '<input type="checkbox" checked="checked" name="autologin">';
 			$login_remember_hidden = '<input type="hidden" value="1" name="autologin">';
 			
 			//$BridgeSupportPWDChange came from the bridge
@@ -88,10 +105,10 @@ class wrm_loginbox
 		else
 		{
 			$login_form_open = '<form action="login.php?logout=true" method="POST">';
-			$login_username = scrub_input($_SESSION['username']);
+			$login_username = $login_username_name;
 			$login_password = '';
 			$login_button = '<input type="submit" name="login" value="'.$phprlang['logout'].'" style="font-size:10px" class="mainoption">';
-			$login_remember = '';
+			//$login_remember = '';
 			$login_remember_hidden = '';
 			
 			//$BridgeSupportPWDChange came from the bridge
