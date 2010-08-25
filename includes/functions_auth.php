@@ -175,6 +175,8 @@ function wrm_login()
 	global $db_table_group_name, $auth_user_class, $auth_alt_user_class, $table_prefix, $db_raid, $phpraid_config;
 	global $Bridge2ColumGroup;
 
+	//$table_prefix = $phpraid_config[$phpraid_config['auth_type'].'_db_name'] . ".". $phpraid_config[$phpraid_config['auth_type'].'_table_prefix'];
+	
 	$username = $password = "";
 	$username_id = "";
 		
@@ -187,7 +189,7 @@ function wrm_login()
 		$wrmpass = md5($_POST['password']);
 		//database
 		$sql = sprintf(	"SELECT profile_id " .
-						" FROM " . $table_prefix . "profile". 
+						" FROM " . $phpraid_config['db_prefix'] . "profile". 
 						" WHERE username = %s", quote_smart($_POST['username'])
 					);
 		$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);

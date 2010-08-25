@@ -1,0 +1,63 @@
+<link href="style/stylesheet.css" rel="stylesheet" type="text/css">
+<form method="post" action="{$form_action}">
+
+
+ <table align="center" width="600">
+  <tr>
+   <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td><table width="100%" border="0" cellspacing="5" cellpadding="5">
+      <tr>
+        <td width="50%" class="row1"><div align="right">{$bridge_name_text}</div></td>
+        <td width="50%" class="row1"><div align="left"><strong>{$bridge_name_value}</strong></div></td>
+      </tr>
+      <tr>
+        <td class="row2"><div align="right">{$bridge_database_name_text}</div></td>
+        <td class="row2"><div align="left"><strong>{$bridge_database_name_value}</strong></div></td>
+      </tr>
+      <tr>
+        <td class="row1"><div align="right">{$bridge_db_table_prefix_text}</div></td>
+        <td class="row1"><div align="left"><strong>{$bridge_db_table_prefix_value}</strong></div></td>
+      </tr>
+
+      <tr>
+        <td class="row2"><div align="right">{$bridge_admin_id_text}</div></td>
+        <td class="row2"><div align="left"><strong>{$bridge_admin_id_value}</strong></div></td>
+      </tr>
+      <tr>
+        <td class="row2"><div align="right">{$bridge_auth_user_text}</div></td>
+        <td class="row2"><div align="left"><strong>{$bridge_auth_user_group_value}</strong></div></td>
+      </tr>
+      <tr>
+        <td class="row1"><div align="right">{$bridge_auth_user_alt_text}</div></td>
+        <td class="row1"><div align="left"><strong>{$bridge_auth_user_alt_group_value}</strong></div></td>
+      </tr>
+
+    </table></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>
+      <div align="center">
+		<input type="submit" name="submit" value="{$bd_submit}" />
+		<input type="hidden" name="bridge_name" value="{$bridge_name}" />
+		<input type="hidden" name="bridge_database_name" value="{$bridge_database_name}" />
+		<input type="hidden" name="bridge_db_table_prefix" value="{$bridge_db_table_prefix}" />
+		<input type="hidden" name="bridge_admin_id" value="{$bridge_admin_id}" />
+		<input type="hidden" name="bridge_auth_user_group" value="{$bridge_auth_user_group}" />
+		<input type="hidden" name="bridge_auth_user_alt_group" value="{$bridge_auth_user_alt_group}" />
+      </div>
+    </td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+  </tr>
+ </table>  
+
+</form>

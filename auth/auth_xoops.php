@@ -59,9 +59,11 @@ $db_user_password = "pass";
 $db_table_user_name = "users";
 $db_table_group_name = "groups_users_link";
 
-$table_prefix = $phpraid_config['xoops_table_prefix']."_";
-//$table_prefix = $phpraid_config[$phpraid_config['auth_type'].'_db_name'] . ".". $phpraid_config[$phpraid_config['auth_type'].'_table_prefix'];
-//$table_prefix .= "_";
+if (isset($phpraid_config[$phpraid_config['auth_type'].'_db_name']))
+	$table_prefix = $phpraid_config[$phpraid_config['auth_type'].'_db_name'] . ".". $phpraid_config[$phpraid_config['auth_type'].'_table_prefix'];
+else
+	$table_prefix = $phpraid_config[$phpraid_config['auth_type'].'_table_prefix'];
+$table_prefix .= "_";
 
 $auth_user_class = $phpraid_config[$phpraid_config['auth_type'].'_auth_user_class'];
 $auth_alt_user_class = $phpraid_config[$phpraid_config['auth_type'].'_alt_auth_user_class'];

@@ -1,0 +1,66 @@
+<link href="style/stylesheet.css" rel="stylesheet" type="text/css">
+<form method="post" action="{$form_action}">
+
+
+ <table align="center" width="600">
+  <tr>
+   <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td><table width="100%" border="0" cellspacing="2" cellpadding="2">
+
+      <tr>
+        <td width="50%" class="rowHover"><div align="right">{$found_user_from_bridge_text}</div></td>
+        <td width="50%" class="rowHover">{$found_user_from_bridge_value}</td>
+      </tr>
+      
+    </table></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td class="rowHover"><div align="center">{$import_user_text}</div></td>
+  </tr>
+  <tr>
+    <td><table width="100%" border="0" cellspacing="0" cellpadding="2">
+      <tr>
+        <td width="33%">&nbsp;</td>
+        <td width="67%" class="row1"><input type="radio" name="importUser" value="no" checked>{$text_no}</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td class="row2"><input type="radio" name="importUser" value="yes" />{$text_yes}</td>
+      </tr>
+    </table></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>
+      <div align="center">
+		<input type="submit" name="submit" value="{$bd_submit}" />
+		<input type="hidden" name="bridge_name" value="{$bridge_name}" />
+		<input type="hidden" name="bridge_database_name" value="{$bridge_database_name}" />
+		<input type="hidden" name="bridge_db_table_prefix" value="{$bridge_db_table_prefix}" />
+		<input type="hidden" name="bridge_admin_id" value="{$bridge_admin_id}" />
+		<input type="hidden" name="bridge_auth_user_group" value="{$bridge_auth_user_group}" />
+		<input type="hidden" name="bridge_auth_user_alt_group" value="{$bridge_auth_user_alt_group}" />
+      </div>    </td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+  </tr>
+ </table>  
+
+</form>

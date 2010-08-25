@@ -149,7 +149,7 @@ $phprlang['no_user_title'] = 'User does not exist';
 $phprlang['print_error_critical'] = 'a critical error!';
 $phprlang['print_error_details'] = 'Details';
 $phprlang['print_error_minor'] = 'a minor error!';
-$phprlang['print_error_msg_begin'] = 'Sorry, phpRaid has encountered ';
+$phprlang['print_error_msg_begin'] = 'Sorry, WRM has encountered ';
 $phprlang['print_error_msg_end'] = 'If this error persists, please make a post 
 									with this message <br>on the <a href="http://www.wowraidmanager.net/">wowraidmanager.net Forums</a> and
 									we will do our best to get it corrected. Thanks!';
@@ -210,7 +210,7 @@ $phprlang['delete_msg'] = 'NOTICE: Deletion is permanent and cannot be reversed.
 $phprlang['maintenance_header'] = 'Site under maintenance';
 $phprlang['maintenance_message'] = 'WoW Raid Manager is currently undergoing maintenance. Please try again later.';
 $phprlang['disabled_header'] = 'Site Disabled Notice!';
-$phprlang['disabled_message'] = 'Please note, your site is disabled. Visitors can\'t use the system right now!<br>Go to <u>Configuration</u> and then uncheck <u>Disable phpRaid</u>';
+$phprlang['disabled_message'] = 'Please note, your site is disabled. Visitors can\'t use the system right now!<br>Go to <u>Configuration</u> and then uncheck <u>Disable WRM</u>';
 $phprlang['userclass_msg'] = 'Your user is not authorized to use WoW Raid Manager , please contact the system administrator.';
 $phprlang['priv_title'] = 'Insufficient priveleges';
 $phprlang['priv_msg'] = 'You have insufficient priveleges to view this page. If you believe this is an error, please contact the site administrator';

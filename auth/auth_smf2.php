@@ -61,8 +61,10 @@ $db_user_password = "passwd";
 $db_table_user_name = "members";
 $db_table_group_name = "members";
 
-$table_prefix = $phpraid_config[$phpraid_config['auth_type'].'_table_prefix'];
-//$table_prefix = $phpraid_config[$phpraid_config['auth_type'].'_db_name'] . ".". $phpraid_config[$phpraid_config['auth_type'].'_table_prefix'];
+if (isset($phpraid_config[$phpraid_config['auth_type'].'_db_name']))
+	$table_prefix = $phpraid_config[$phpraid_config['auth_type'].'_db_name'] . ".". $phpraid_config[$phpraid_config['auth_type'].'_table_prefix'];
+else
+	$table_prefix = $phpraid_config[$phpraid_config['auth_type'].'_table_prefix'];
 
 $auth_user_class = $phpraid_config[$phpraid_config['auth_type'].'_auth_user_class'];
 $auth_alt_user_class = $phpraid_config[$phpraid_config['auth_type'].'_alt_auth_user_class'];

@@ -1,156 +1,166 @@
 <?php
 //
-//english install strings
+//italian install strings
 //
-global $localstr;
-$localstr['headtitle'] = 'Installazione di WRM 4.x.x.';
-$localstr['headbodyinfo'] = 'Attenzione: il database sul quale verrà effettuata l\'installazione dev\'essere già esistente.';
+global $wrm_install_lang;
+$wrm_install_lang['headtitle'] = 'Installazione di WRM 4.x.x.';
+//$wrm_install_lang['headbodyinfo'] = 'Attenzione: il database sul quale verrà effettuata l\'installazione dev\'essere già esistente.';
+$wrm_install_lang['select_lang'] = 'Select Language';//new
 
-//menu
-$localstr['InstallationProgress'] = 'Avanzamento dell\'installazione';
-$localstr['menustep1init'] = '1. Inizializzazione';
-$localstr['menustep2conf'] = '2. Configurazione';
-$localstr['menustep3instab'] = '3. Creazione tabelle';
-$localstr['menustep4auth'] = '4. Utenti';
-$localstr['menustep5confauth'] = '5. Config. Utenti';
-$localstr['menustep6final'] = '6. Completamento dell\'installazione';
+$wrm_install_lang['step0_system_requirements'] = 'System Requirements';//new
+$wrm_install_lang['step0_property'] = 'property';//new
+$wrm_install_lang['step0_required'] = 'required';//new
+$wrm_install_lang['step0_exist'] = 'exist';//new
+$wrm_install_lang['step0_phpversion_text'] = 'PHP Version';//new
+$wrm_install_lang['step0_mysqlversion'] = 'MySQL Version';//new
+$wrm_install_lang['step0_active'] = 'active';//new
+$wrm_install_lang['step0_nonactive'] = 'non active';//new
+$wrm_install_lang['step0_writeable_config'] = 'config.php writeable?';//new
+$wrm_install_lang['writable_dir_cache_text'] = 'directory: "./cache" writable';//new
+
+$wrm_install_lang['yes'] = 'yes';
+$wrm_install_lang['no'] = 'no';
+$wrm_install_lang['upgrade'] = 'Upgrade';//new
+$wrm_install_lang['freshinstall'] = 'Nuova installazione';
+$wrm_install_lang['change'] = 'change';//new
+$wrm_install_lang['database_text'] = 'Database';//new
+
+$wrm_install_lang['create_db'] = 'Create new Database?';//new
+$wrm_install_lang['only_if_create_new_tab'] = 'only, if you has selected: "Create new Database?"';
+$wrm_install_lang['default'] = 'default';//new
+$wrm_install_lang['php_variables'] = 'PHP Variables';//new
+$wrm_install_lang['error_found_table_titel'] = 'already, existing tables were found';//new
+$wrm_install_lang['error_found_table_bd_back'] = 'Botton Back : change Table Prefix or Database';//new
+$wrm_install_lang['error_found_table_bd_cont'] = "Botton Continue : deletes all existing tables, before the new tables are installed";//new
+
+$wrm_install_lang['install_bridge_titel'] = 'Bridge Preferences';//new
+$wrm_install_lang['txt_group'] = 'Group';//new
+$wrm_install_lang['txt_alt_group'] = 'Alternative Group';//new
+$wrm_install_lang['upgrade_headtitle'] = 'Upgrade Modus';//new
+$wrm_install_lang['expert_modus'] = 'Expert Modus';//new
+$wrm_install_lang['hittingsubmit'] = 'Verifica la correttezza di tutte le informazioni inserite prima di proseguire!';
 
 //botton
-$localstr['bd_submit'] = 'Continua';
-$localstr['bd_reset'] = 'Reset';
+$wrm_install_lang['bd_continue'] = 'Continua';
+$wrm_install_lang['bd_submit'] = 'Continua';
+$wrm_install_lang['bd_reset'] = 'Reset';
+$wrm_install_lang['bd_back'] = 'Back';//new
+$wrm_install_lang['bd_start'] = 'Start';//new
 
-//stuff
-$localstr['hittingsubmit'] = 'Verifica la correttezza di tutte le informazioni inserite prima di proseguire!';
-$localstr['pressbrowserpack'] = 'Utilizza il pulsante INDIETRO del browser per riprovare.';
-$localstr['problem'] ='Problema';
-$localstr['txtusername'] = 'Username';
-$localstr['txtpassword'] = 'Password';
-$localstr['txtemail'] = 'E-mail';
-$localstr['txtconfig'] = 'Configurazione';
+$wrm_install_lang['install_version_text'] = 'Version';
+$wrm_install_lang['install_version_current'] = 'Installation files are up to date';
+$wrm_install_lang['install_version_info_header'] = 'Version Information';
+$wrm_install_lang['install_version_header'] = 'WoW Raid Manager update available!';
+$wrm_install_lang['install_version_message01'] = 'Your Installation files of WoW Raid Manager is out of date.';
+$wrm_install_lang['install_version_message02'] = 'Updating is strongly recommended.';
+$wrm_install_lang['install_version_message03'] = 'the latest/new version is';
+$wrm_install_lang['install_version_message04'] = 'this Installation files';												   
+$wrm_install_lang['install_version_message05'] = 'To download, visit the <a href="http://www.wowraidmanager.net">WoW Raid Manager download</a> section.';
+$wrm_install_lang['install_connect_socked_error_header'] = 'Failed to connect';
+$wrm_install_lang['install_connect_socked_error'] = 'Cannot recieve version Nr from "www.wowraidmanager.net" Server';
 
 //step 2
-$localstr['step2freshinstall'] = 'Nuova installazione';
-$localstr['step2upgradefrom'] = 'Aggiornamento di';
-$localstr['step2dbname'] = 'Database MySQL';
-$localstr['step2dbserverhostname'] = 'Indirizzo del server MySQL';
-$localstr['step2dbserverusername'] = 'Username del server MySQL';
-$localstr['step2dbserverpwd'] = 'Password del server MySQL';
-$localstr['step2WRMtableprefix'] = 'Prefisso delle tabelle di WRM';
-$localstr['step2installtype'] = 'Tipo di installazione';
-$localstr['step2error01'] = 'Informazioni errate potrebbero causare errori non prevedibili per i quali non verrà fornita assistenza!';
+$wrm_install_lang['step2_sql_server_pref'] = 'SQL Server Preferences';//new
+$wrm_install_lang['step2upgradefrom'] = 'Aggiornamento di';
+$wrm_install_lang['step2dbname'] = 'Database MySQL';
+$wrm_install_lang['step2dbserverhostname'] = 'Indirizzo del server MySQL';
+$wrm_install_lang['step2dbserverusername'] = 'Username del server MySQL';
+$wrm_install_lang['step2dbserverpwd'] = 'Password del server MySQL';
+$wrm_install_lang['step2WRMtableprefix'] = 'Prefisso delle tabelle di WRM';
+$wrm_install_lang['step2installtype'] = 'Tipo di installazione';
+$wrm_install_lang['step2error01'] = 'Informazioni errate potrebbero causare errori non prevedibili per i quali non verrà fornita assistenza!';
 
 //step 3
-$localstr['step3errordbcon'] = 'Errore di connessione al database.'; 
-$localstr['step3errorschema'] = 'Errore durante l\'aggiornamento';
-$localstr['step3errorsql'] = 'Errore d\'installazione<br>Query: $sql<br>Riportato: ';
-$localstr['step3installinfo'] = 'Tabelle create correttamente!';
-$localstr['step3errorversion'] = 'La versione del software in version.php non combacia con la versione del database nella tabella delle versioni.';
+$wrm_install_lang['step3errordbcon'] = 'Errore di connessione al database.'; 
+$wrm_install_lang['step3errorschema'] = 'Errore durante l\'aggiornamento';
+$wrm_install_lang['step3errorsql'] = 'Errore d\'installazione<br>Query: $sql<br>Riportato: ';
+$wrm_install_lang['step3installinfo'] = 'Tabelle create correttamente!';
+$wrm_install_lang['step3errorversion'] = 'La versione del software in version.php non combacia con la versione del database nella tabella delle versioni.';
 
-//step 4
-$localstr['step4auttype'] = 'Tipo di autenticazione';
-$localstr['step4desc'] = 'Descrizione';
-$localstr['step4desc_e107'] = 'Portale e107';
-$localstr['step4desc_phpBB'] = 'phpBB2/phpBB3';
-$localstr['step4desc_iums'] = 'Sistema di gestione Utenti integrato';
-$localstr['step4desc_smf'] = 'Simple Machines Forum 1.x';
-$localstr['step4desc_smf2'] = 'Simple Machines Forum 2.x';
-$localstr['step4desc_wbb'] = 'WoltLab Burning Board Lite 1.x.x';
-$localstr['step4desc_xoops'] = 'XOOPS';
-$localstr['step4unkownauth'] = '(in caso di incertezza, selezionare il sistema di gestione Utenti integrato)';
-$localstr['step4chooseauth'] = 'Seleziona uno dei tipi di autenticazione.';
+//step done
+$wrm_install_lang['stepdonefinished'] = 'Finito';
+$wrm_install_lang['stepdonesetupcomplete'] = 'Installazione completata.';
+$wrm_install_lang['stepdoneremovedir'] = 'Rimuovi la cartella "install/" e clicka <a href="../index.php">qui</a> dopo averlo fatto.';
 
+//stuff
+$wrm_install_lang['hittingsubmit'] = 'Verifica la correttezza di tutte le informazioni inserite prima di proseguire!';
+$wrm_install_lang['pressbrowserpack'] = 'Utilizza il pulsante INDIETRO del browser per riprovare.';
+$wrm_install_lang['problem'] ='Problema';
+$wrm_install_lang['txtusername'] = 'Username';
+$wrm_install_lang['txt_admin_username'] = 'Administrator Username';//new
+$wrm_install_lang['txtpassword'] = 'Password';
+$wrm_install_lang['txtemail'] = 'E-mail';
+$wrm_install_lang['txtconfig'] = 'Configurazione';
+
+// errors
+$wrm_install_lang['connect_socked_error'] = 'Errore di connessione: %s';
+$wrm_install_lang['invalid_group_title'] = 'Team gi presente';
+$wrm_install_lang['invalid_group_message'] = 'Il Team selezionato  gi stato inserito. Torna indietro e riprova.';
+$wrm_install_lang['invalid_option_title'] = 'Dati non validi';
+$wrm_install_lang['invalid_option_msg'] = 'Sono stati forniti dati non validi per questa pagina.';
+$wrm_install_lang['no_user_msg'] = 'L\'Utente richiesto non esiste o  stato cancellato.';
+$wrm_install_lang['no_user_title'] = 'Utente non valido';
+$wrm_install_lang['print_error_critical'] = 'un errore critico!';
+$wrm_install_lang['print_error_details'] = 'Dettagli';
+$wrm_install_lang['print_error_minor'] = 'un errore!';
+$wrm_install_lang['print_error_msg_begin'] = 'Spiacente, WowRaidManager ha riscontrato ';
+$wrm_install_lang['print_error_msg_end'] = 'Se l\'errore persiste, segnalalo ad un Amministratore, grazie!';
+
+
+$wrm_install_lang['print_error_page'] = 'Pagina';
+$wrm_install_lang['print_error_query'] = 'Richiesta';
+$wrm_install_lang['print_error_title'] = 'Oh oh! Errore!';
+
+$wrm_install_lang['step2errordbcon_titel'] = "Error connecting to Server (Servername or Username or Password incorrect)";
 //--------------------------
 // Auth.
 //--------------------------
-$localstr['step5failconWRM'] = 'Impossibile connettersi al database di WRM';
-$localstr['step5selctusername'] = 'Assegna pieni permessi allo username selezionato';
-$localstr['step5sub1follval'] = 'Per completare l\'installazione, compila i seguenti campi';
-$localstr['step5done'] = 'fatto';
-$localstr['step5sub2usernamefullperm'] = 'Seleziona a quale username verranno garantiti pieni permessi in WowRaidManager';
-$localstr['step5sub3norest'] = 'Nessuna restrizione';
-$localstr['step5sub3noaddus'] = 'Nessun altro gruppo';
-$localstr['step5sub2failfindfile'] = 'File di configurazione non trovato:';
-$localstr['step5sub2checkdir'] = 'controlla nuovamente la cartella';
-$localstr['step5sub3group01'] = 'Seleziona il gruppo base di Utenti ai quali consentire l\'accesso a WRM';
-$localstr['step5sub3group02'] = 'Gli Utenti al di fuori di questo gruppo non avranno accesso a WRM';
-$localstr['step5sub3group03'] = 'Seleziona "Nessuna restrizione" per consentire l\'accesso a WRM a tutti gli Utenti indipendentemente dai gruppi di appartenenza';
-$localstr['step5sub3altgroup01'] = 'Seleziona un ulteriore gruppo di Utenti ai quali consentire l\'accesso a WRM';
-$localstr['step5sub3altgroup02'] = 'Agli Utenti appartenenti a questo gruppo sarà consentito l\'accesso a WRM indipendentemente dall\'appartenenza anche all\'altro gruppo specificato';
+$wrm_install_lang['expert_modus'] = "Expert Modus";
 
-// phpBB
-$localstr['step5phpBBdesc'] = 'phpBB';
-$localstr['step5phpBBsub1desc'] = 'Hai selezionato l\'autenticazione phpBB';
-$localstr['step5phpBBsub1inputdir'] = 'Percorso della cartella base di phpBB (relativo alla cartella di WRM, inclusa la barra finale!)';
-$localstr['step5phpBBsub2failincdir'] = 'il percorso della cartella di phpBB è arrato';
-$localstr['step5phpBBsub2failfindautfile'] = 'Impossibile trovare il file di configurazione "../auth/auth_phpbb3.php"';
-$localstr['step5phpBBsub2faildownautfile'] = 'scaricalo (dal sito ufficiale di WRM) e copialo in "/auth".';
-$localstr['step5phpBBsub2founddb'] = 'Trovato il database di phpBB';
-$localstr['step5phpBBsub2readconffile'] = 'Lettura del file di configurazione di phpBB';
-$localstr['step5phpBBsub3errorretusergroup'] = 'Errore durante la lettura dei gruppi Utenti di phpBB3';
-$localstr['step5phpBBsub3errorretusername'] = 'Errore durante la lettura degli username di phpBB3';
-$localstr['step5phpBBsub4wantimport'] = 'Vuoi importare tutti gli Utenti di phpBB?';
-$localstr['step5phpBBsub4srynotsupport'] = 'Importazione da phpBB2 non supportata';
-$localstr['step5phpBBsub5import'] = 'Importa';
-$localstr['step5phpBBfailconphpBB'] = 'Impossibile connettersi al database di phpBB';
+$wrm_install_lang['step5failconWRM'] = 'Impossibile connettersi al database di WRM';
+$wrm_install_lang['step5selctusername'] = 'Assegna pieni permessi allo username selezionato';
+$wrm_install_lang['step5sub1follval'] = 'Per completare l\'installazione, compila i seguenti campi';
+$wrm_install_lang['step5done'] = 'fatto';
+$wrm_install_lang['step5sub2usernamefullperm'] = 'Seleziona a quale username verranno garantiti pieni permessi in WowRaidManager';
+$wrm_install_lang['step5sub3norest'] = 'Nessuna restrizione';
+$wrm_install_lang['step5sub3noaddus'] = 'Nessun altro gruppo';
+$wrm_install_lang['step5sub2failfindfile'] = 'File di configurazione non trovato:';
+$wrm_install_lang['step5sub2checkdir'] = 'controlla nuovamente la cartella';
+$wrm_install_lang['step5sub3group01'] = 'Seleziona il gruppo base di Utenti ai quali consentire l\'accesso a WRM';
+$wrm_install_lang['step5sub3group02'] = 'Gli Utenti al di fuori di questo gruppo non avranno accesso a WRM';
+$wrm_install_lang['step5sub3group03'] = 'Seleziona "Nessuna restrizione" per consentire l\'accesso a WRM a tutti gli Utenti indipendentemente dai gruppi di appartenenza';
+$wrm_install_lang['step5sub3altgroup01'] = 'Seleziona un ulteriore gruppo di Utenti ai quali consentire l\'accesso a WRM';
+$wrm_install_lang['step5sub3altgroup02'] = 'Agli Utenti appartenenti a questo gruppo sarà consentito l\'accesso a WRM indipendentemente dall\'appartenenza anche all\'altro gruppo specificato';
 
-// e107
-$localstr['step5e107desc'] = 'e107';
-$localstr['step5e107sub1desc'] = 'Hai selezionato l\'autenticazione e107';
-$localstr['step5e107sub1inputdir'] = 'Percorso della cartella base di e107 (relativo alla cartella di WRM, inclusa la barra finale!)';;
-$localstr['step5e107sub2failincdir'] = 'il percorso della cartella di e107 è arrato';
-$localstr['step5e107sub2readconffile'] = 'Lettura del file di configurazione di e107';
-$localstr['step5e107sub3errorretusername'] = 'Errore durante la lettura degli username di e107';
-$localstr['step5e107sub3errorretuserclass'] = 'Errore durante la lettura dei gruppi Utenti di e107';
-$localstr['step5e107failcone107'] = 'Impossibile connettersi al database di e107';
+//bridge mode
+$wrm_install_lang['db_name_text'] = 'SQL Database';
+$wrm_install_lang['table_prefix_text'] = 'Table Prefix';
+$wrm_install_lang['bridge_name_text'] = 'Name';
+$wrm_install_lang['bridge_users_found_text'] = 'Users found';
+
+$wrm_install_lang['bridge_step0_unknown_auth'] = '(in caso di incertezza, selezionare il sistema di gestione Utenti integrato)';
+$wrm_install_lang['bridge_step0_choose_auth'] = 'Seleziona uno dei tipi di autenticazione.';
+
+$wrm_install_lang['found_user_from_bridge']= "found user from bridge system";//new
+$wrm_install_lang['question_wantimport'] = 'Vuoi importare tutti gli Utenti di?';
+$wrm_install_lang['import_not_support'] = 'Importazione da non supportata';
+$wrm_install_lang['import'] = 'Importa';
 
 // iums = integrated User Management System
-$localstr['step5iumsdesc'] = 'Sistema di gestione Utenti integrato';
-$localstr['step5iumssub1desc'] = 'Hai selezionato l\'autenticazione attraverso il sistema di gestione Utenti integrato';
-$localstr['step5sub1iumsfilladmindesc'] = 'Inserisci i dati per il profilo di Super Admin.';
+$wrm_install_lang['step5iumsdesc'] = 'Sistema di gestione Utenti integrato';
+$wrm_install_lang['bridge_step1_iumssub1desc'] = 'Hai selezionato l\'autenticazione attraverso il sistema di gestione Utenti integrato';
+$wrm_install_lang['bridge_step1_iumsfilladmindesc'] = 'Inserisci i dati per il profilo di Super Admin.';
 
-// Joomla
-$localstr['step5joomladesc'] = 'Joomla';
-$localstr['step5joomlasub1desc'] = 'Hai selezionato l\'autenticazione Joomla';
-$localstr['step5joomlasub1inputdir'] = 'Percorso della cartella base di Joomla (relativo alla cartella di WRM, inclusa la barra finale!)';
-$localstr['step5joomlasub2failincdir'] = 'il percorso della cartella di Joomla è arrato';
-$localstr['step5joomlasub2readconffile'] = 'Lettura del file di configurazione di Joomla';
-$localstr['step5joomlasub3errorretusername'] = 'Errore durante la lettura degli username di Joomla';
-$localstr['step5joomlasub3errorretuserclass'] = 'Errore durante la lettura dei gruppi Utenti di Joomla';
-$localstr['step5joomlafailconejoomla'] = 'Impossibile connettersi al database di Joomla';
+//update
+$wrm_install_lang['wrm_versions_nr_current_text'] = "WRM (@Server) Version Nr";
+$wrm_install_lang['wrm_versions_nr_from_install_text'] = "Install Version Nr";
+$wrm_install_lang['wrm_up_to_date'] = "your WoW Raid Manager Version is up to date";
+$wrm_install_lang['error_install_version_to_old_text'] = "install (WRM) Version is to old for Upgrade";
 
-// SMF = Simple Machines Forum
-$localstr['step5smfdesc'] = 'Simple Machines Forum (SMF)';
-$localstr['step5smfsub1desc'] = 'Hai selezionato l\'autenticazione SMF';
-$localstr['step5smfsub1inputdir'] = 'Percorso della cartella base di SMF (relativo alla cartella di WRM, inclusa la barra finale!)';
-$localstr['step5smfsub2failincdir'] = 'il percorso della cartella di SMF è arrato';
-$localstr['step5smfsub2readconffile'] = 'Lettura del file di configurazione di SMF';
-$localstr['step5smfsub3errorretusername'] = 'Errore durante la lettura degli username di SMF';
-$localstr['step5smfsub3errorretuserclass'] = 'Errore durante la lettura dei gruppi Utenti di SMF';
-$localstr['step5smffailconesmf'] = 'Impossibile connettersi al database di SMF';
+//install_bridges
+$wrm_install_lang['bridge_step0_titel'] = "Scan Result (@ your Server): Found Bridges ";
 
-// WoltLab Burning Board Lite 1.x.x = wbb
-$localstr['step5wbbdesc'] = 'WoltLab Burning Board';
-$localstr['step5wbbsub1desc'] = 'Hai selezionato l\'autenticazione WBB';
-$localstr['step5wbbsub1inputdir'] = 'Percorso della cartella base di WBB (relativo alla cartella di WRM, inclusa la barra finale!)';
-$localstr['step5wbbsub2failincdir'] = 'il percorso della cartella di WBB è arrato';
-$localstr['step5wbbsub2readconffile'] = 'Lettura del file di configurazione di WBB';
-$localstr['step5wbbsub3errorretusername'] = 'Errore durante la lettura degli username di WBB';
-$localstr['step5wbbsub3errorretuserclass'] = 'Errore durante la lettura dei gruppi Utenti di WBB';
-$localstr['step5wbbfailconesmf'] = 'Impossibile connettersi al database di WBB';
-
-// XOOPS
-$localstr['step5xoopsdesc'] = 'XOOPS';
-$localstr['step5xoopssub1desc'] = 'Hai selezionato l\'autenticazione XOOPS';
-$localstr['step5xoopssub1inputdir'] = 'Percorso della cartella base di XOOPS (relativo alla cartella di WRM, inclusa la barra finale!)';
-$localstr['step5xoopssub2failincdir'] = 'il percorso della cartella di XOOPS è arrato';
-$localstr['step5xoopssub2readconffile'] = 'Lettura del file di configurazione di XOOPS';
-$localstr['step5xoopssub3errorretusername'] = 'Errore durante la lettura degli username di XOOPS';
-$localstr['step5xoopssub3errorretuserclass'] = 'Errore durante la lettura dei gruppi Utenti di XOOPS';
-$localstr['step5xoopsfailconesmf'] = 'Impossibile connettersi al database di XOOPS';
-
-//----------------------------------------------
-//step 6
-$localstr['stepdonefinished'] = 'Finito';
-$localstr['stepdonesetupcomplete'] = 'Installazione completata.';
-$localstr['stepdoneremovedir'] = 'Rimuovi la cartella "install/" e clicka <a href="../index.php">qui</a> dopo averlo fatto.';
+//Default armory language, link
+$wrm_install_lang['default_armory_language_value'] = "en";
+$wrm_install_lang['default_armory_link_value'] = "http://eu.wowarmory.com";
 ?>

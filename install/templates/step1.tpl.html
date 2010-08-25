@@ -1,0 +1,100 @@
+ <link href="style/stylesheet.css" rel="stylesheet" type="text/css">
+<form method="post" action="{$form_action}">
+<br/>
+ <table width="700" border="0" align="center" cellpadding="0" cellspacing="0">
+   <tr>
+     <td>&nbsp;</td>
+   </tr>
+  <tr>
+   <td>&nbsp;</td>
+  </tr>
+  <tr>
+   <td><div class="contentHeader">{$system_requirements}</div>
+   <table width="100%" border="0" align="center" cellpadding="2" cellspacing="2">
+    <tr>
+     <td class="rowHover"><u>{$property}</u></td>
+     <td class="rowHover"><u>{$required}</u></td>
+     <td class="rowHover"><u>{$exist}</u></td>
+    </tr>
+    <tr>
+     <td class="row1">{$phpversion_text}</td>
+     <td class="row1">4.0.1</td>
+     <td bgcolor="{$phpversion_bgcolor}">{$phpversion_value}</td>
+    </tr>
+    <tr>
+     <td class="row2">{$mysqlversion_text}</td>
+     <td class="row2">4.1.0</td>
+     <td bgcolor="{$mysqlversion_bgcolor}">{$mysqlversion_value}</td>
+    </tr>
+    <tr>
+     <td class="row1">{$writeable_config_text}</td>
+     <td class="row1">{$yes}</td>
+     <td bgcolor="{$writeable_config_bgcolor}">{$writeable_config_value}</td>
+	</tr>
+    <tr>
+      <td class="row2">{$writable_dir_cache_text}</td>
+      <td class="row2">{$yes}</td>
+      <td bgcolor="{$writable_dir_cache_bgcolor}">{$writable_dir_cache_value}</td>
+    </tr>
+   </table>
+  <tr>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td><div class="contentHeader">{$php_variables_text}</div></td>
+  </tr>
+  <tr>
+	<td><table width="100%" border="0" cellspacing="3" cellpadding="0">
+      <tr>
+        <td width="40%" class="row1">{$SERVER_SERVER_SOFTWARE_text}</td>
+        <td class="row1">{$SERVER_SERVER_SOFTWARE_value}</td>
+      </tr>
+      <tr>
+        <td class="row2">{$SERVER_DOCUMENT_ROOT_text}</td>
+        <td class="row2">{$SERVER_DOCUMENT_ROOT_value}</td>
+      </tr>
+      <tr>
+        <td class="row1">{$SERVER_SERVER_NAME_text}</td>
+        <td class="row1">{$SERVER_SERVER_NAME_value}</td>
+      </tr>
+      <tr>
+        <td class="row2">{$SERVER_HTTP_ACCEPT_CHARSET_text}</td>
+        <td class="row2">{$SERVER_HTTP_ACCEPT_CHARSET_value}</td>
+      </tr>
+    </table></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>
+			<div align="right" class="tooltip_title">
+			  <div align="center">{$select_lang}:
+				<select name="classlang_type" class="post">
+					{html_options values=$classlang_type_values selected=$classlang_type_selected output=$classlang_type_values}
+			    </select>
+			  </div>
+			</div>	</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+	<td><div align="center">
+		<input type="submit" name="submit" value="{$bd_submit}">
+   		<input type="hidden" name="step" value="1">
+
+	  </div></td>
+  </tr>
+ </table>  
+
+</form>

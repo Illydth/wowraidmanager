@@ -1,0 +1,52 @@
+.fc_main { background: #DDDDDD; border: 1px solid #000000; font-family: Verdana; font-size: 10px; }
+.fc_date { border: 1px solid #D9D9D9;  cursor:pointer; font-size: 10px; text-align: center;}
+.fc_dateHover, TD.fc_date:hover { cursor:pointer; border-top: 1px solid #FFFFFF; border-left: 1px solid #FFFFFF; border-right: 1px solid #999999; border-bottom: 1px solid #999999; background: #E7E7E7; font-size: 10px; text-align: center; }
+.fc_wk {font-family: Verdana; font-size: 10px; text-align: center;}
+.fc_wknd { color: #FF0000; font-weight: bold; font-size: 10px; text-align: center;}
+.fc_head { background: #000066; color: #FFFFFF; font-weight:bold; text-align: left;  font-size: 11px; }
+a {color: #FFF;}
+
+#calbody {
+    text-align:     0 auto;
+    font-family:     Arial; 
+    font-size:     10px;
+    }
+
+.calhead {
+    background:        transparent;
+    text-align:        center;
+    }
+    
+.calhead a    {
+    text-decoration:    none; 
+    font-size:        22px;
+    font-weight:        bolder;
+    }
+
+.calbody {
+    background:        #000;
+    }
+    
+.calbody th{
+    color:            #FCCA00;
+    background-image:    url('../images/banner_bg.jpg');
+    background-repeat:    repeat-x;
+    font-size:         12px;
+    width:            14%;
+    height:         30px;
+    text-align:        center;
+    }
+
+.calbody td {
+    height:            100px;
+    background:        #6b6a79; 
+    vertical-align:        top;
+    }
+
+.calbody td:hover {    
+    background-color:     #1e1c34;
+    background-image:    url(./images/topbg.gif);
+    background-repeat:    no-repeat;
+    background-position:    center bottom;
+    color:             #FFF;
+    } 

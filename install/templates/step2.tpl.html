@@ -1,0 +1,66 @@
+<link href="style/stylesheet.css" rel="stylesheet" type="text/css">
+
+<form method="post" action="{$form_action}">
+
+ <table align="center" width="650">
+  <tr>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td class="rowHover"><div align="center">{$step2_sql_server_pref}</div></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>{$error_msg}</td>
+  </tr>  
+  <tr>
+   <td><table width="95%" border="0" align="center" cellpadding="2" cellspacing="2">
+    <tr>
+     <td width="40%" class="row2">{$wrm_db_server_hostname_text}</td>
+     <td width="30%"><input type="text" name="wrm_db_server_hostname" class="post" value="{$wrm_db_server_hostname_value}"></td>
+     <td width="30%">&nbsp;</td>
+    </tr>
+    <tr>
+     <td class="row1">{$wrm_db_username_text}</td>
+     <td><input type="text" name="wrm_db_username" class="post" value="{$wrm_db_username_value}"></td>
+     <td>&nbsp;</td>
+    </tr>
+    <tr>
+     <td class="row2">{$wrm_db_password_text}</td>
+     <td><input type="text" name="wrm_db_password" class="post" value="{$wrm_db_password_value}"></td>
+     <td>&nbsp;</td>
+    </tr>
+
+   </table>
+  <tr>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td class="row1"><div align="center">{$hittingsubmit}</div></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+	<td>&nbsp;</td>
+  </tr>
+  <tr>
+	<td>
+	  <div align="center">
+		<input type="submit" name="submit" value="{$bd_submit}">
+	   	<input type="hidden" name="step" value="1">
+	   	<input type="hidden" name="wrm_db_create_name" value="{$wrm_db_create_name}">
+	   	<input type="hidden" name="wrm_db_tableprefix" value="{$wrm_db_tableprefix}">
+	  </div>	</td>
+  </tr>
+ </table>  
+
+</form>
