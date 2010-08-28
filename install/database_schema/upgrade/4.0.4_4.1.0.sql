@@ -157,3 +157,5 @@ ALTER TABLE `wrm_raids` ADD INDEX ( `raid_force_id` );
 ALTER TABLE `wrm_locations` ADD `raid_force_id` INT( 10 ) NOT NULL DEFAULT '0',
 ADD INDEX ( raid_force_id ); 
 
+
+INSERT INTO `wrm_version` VALUES ('4.1.0','Version 4.1.0 of WoW Raid Manager');
