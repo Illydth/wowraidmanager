@@ -1,25 +1,3 @@
--- Announcements Table Creation
-DROP TABLE IF EXISTS `wrm_announcements`;
-CREATE TABLE  `wrm_announcements` (
-  `announcements_id` int(10) NOT NULL auto_increment,
-  `title` varchar(255) NOT NULL default '',
-  `message` text NOT NULL,
-  `timestamp` varchar(255) NOT NULL default '',
-  `posted_by` varchar(255) NOT NULL default '',
-  PRIMARY KEY  (`announcements_id`)
-) ;
-
--- Boss Kill Type Table Creation
-DROP TABLE IF EXISTS `wrm_boss_kill_type`;
-CREATE TABLE `wrm_boss_kill_type` (
-`boss_kill_type_id` TINYINT( 2 ) NOT NULL AUTO_INCREMENT,
-`boss_kill_type_name` VARCHAR( 50 ) NOT NULL ,
-`boss_kill_type_lang_id` VARCHAR( 50 ) NOT NULL ,
-`event_type_id` INT( 10 ) NOT NULL,
-`max` VARCHAR( 2 ) NOT NULL,
-`def` TINYINT( 1 ) NOT NULL,
- PRIMARY KEY  (`boss_kill_type_id`)
-) ;
 
 -- Boss Kill Type Data
 INSERT INTO `wrm_boss_kill_type` VALUES (1, 'Dungeon', 'boss_kill_type_dungeon', 2, '%', 0);
@@ -27,37 +5,6 @@ INSERT INTO `wrm_boss_kill_type` VALUES (2, 'Raid: 25 Man', 'boss_kill_type_25_m
 INSERT INTO `wrm_boss_kill_type` VALUES (3, 'Raid: 10 Man', 'boss_kill_type_10_man', 1, '10', 0);
 INSERT INTO `wrm_boss_kill_type` VALUES (4, 'Raid: 40 Man', 'boss_kill_type_40_man', 1, '40', 0);
 
--- Character Table Creation
-DROP TABLE IF EXISTS `wrm_chars`;
-CREATE TABLE  `wrm_chars` (
-  `char_id` int(10) NOT NULL auto_increment,
-  `profile_id` int(10) NOT NULL default '0',
-  `name` varchar(255) NOT NULL default '',
-  `class` varchar(255) NOT NULL default '',
-  `gender` varchar(255) NOT NULL default '',
-  `guild` varchar(255) NOT NULL default '',
-  `lvl` int(3) NOT NULL default '0',
-  `race` varchar(255) NOT NULL default '',
-  `arcane` int(5) NOT NULL default '0',
-  `fire` int(5) NOT NULL default '0',
-  `frost` int(5) NOT NULL default '0',
-  `nature` int(5) NOT NULL default '0',
-  `shadow` int(5) NOT NULL default '0',
-  `pri_spec` varchar(255) NOT NULL default '',
-  `sec_spec` varchar(255) default '',  
-  PRIMARY KEY  (`char_id`)
-) ;
-
--- Class Table Creation
-DROP TABLE IF EXISTS `wrm_classes`;
-CREATE TABLE `wrm_classes` (
-  `class_index` tinyint(2) NOT NULL,
-  `class_id` varchar(100) NOT NULL,
-  `class_code` varchar(2) NOT NULL,
-  `lang_index` varchar(100) NOT NULL,
-  `image` varchar(100) NOT NULL,
-  PRIMARY KEY  (`class_index`)
-);
 
 -- Class Data
 INSERT INTO `wrm_classes` VALUES (6, 'Death Knight', 'dk', 'deathknight', 'images/classes/deathknight_icon.gif');
@@ -71,13 +18,6 @@ INSERT INTO `wrm_classes` VALUES (7, 'Shaman', 'sh', 'shaman', 'images/classes/s
 INSERT INTO `wrm_classes` VALUES (9, 'Warlock', 'wk', 'warlock', 'images/classes/warlock_icon.gif');
 INSERT INTO `wrm_classes` VALUES (1, 'Warrior', 'wa', 'warrior', 'images/classes/warrior_icon.gif');
 
--- Race/Class Link Table Creation
-DROP TABLE IF EXISTS `wrm_class_race`;
-CREATE TABLE `wrm_class_race` (
-`race_id` VARCHAR( 100 ) NOT NULL ,
-`class_id` VARCHAR( 100 ) NOT NULL ,
-PRIMARY KEY ( `race_id` , `class_id` )
-);
 
 -- Race/Class Linking Data
 INSERT INTO `wrm_class_race` VALUES ('Draenei', 'Priest');
@@ -143,15 +83,6 @@ INSERT INTO `wrm_class_race` VALUES ('Undead', 'Mage');
 INSERT INTO `wrm_class_race` VALUES ('Undead', 'Warlock');
 INSERT INTO `wrm_class_race` VALUES ('Undead', 'Death Knight');
 
--- Class and Role Linking Table Creation
-DROP TABLE IF EXISTS `wrm_class_role`;
-CREATE TABLE `wrm_class_role` (
-  `class_id` varchar(100) NOT NULL,
-  `subclass` varchar(100) NOT NULL,
-  `lang_index` varchar(100) NOT NULL,
-  `role_id` varchar(10) NOT NULL,
-  PRIMARY KEY  (`class_id`,`subclass`)
-);
 
 -- Class and Role Link Data
 INSERT INTO `wrm_class_role` VALUES ('Priest', 'Discipline', 'disc', 'role3');
@@ -189,20 +120,6 @@ INSERT INTO `wrm_class_role` VALUES ('Death Knight', 'Frost (Melee)', 'frost_mel
 INSERT INTO `wrm_class_role` VALUES ('Death Knight', 'Unholy (Tank)', 'unholy_tank', 'role1');
 INSERT INTO `wrm_class_role` VALUES ('Death Knight', 'Unholy (Melee)', 'unholy_melee', 'role2');
 
--- Column Header Creation
-DROP TABLE IF EXISTS `wrm_column_headers`;
-CREATE TABLE `wrm_column_headers` (
-`ID` INT( 10 ) NOT NULL AUTO_INCREMENT PRIMARY KEY ,
-`view_name` VARCHAR( 50 ) NOT NULL ,
-`column_name` VARCHAR( 50 ) NOT NULL ,
-`visible` TINYINT( 1 ) NOT NULL DEFAULT '1',
-`position` TINYINT( 2 ) NOT NULL ,
-`img_url` VARCHAR( 100 ) DEFAULT NULL,
-`lang_idx_hdr` VARCHAR ( 50 ) DEFAULT NULL,
-`format_code` VARCHAR ( 25 ) DEFAULT NULL,
-`default_sort` TINYINT( 1 ) NOT NULL DEFAULT '0',
-INDEX ( `view_name` )
-) ;
 
 -- Column Header Data - Raids1 View
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
@@ -565,13 +482,6 @@ UPDATE `wrm_column_headers` SET `default_sort` = '1' WHERE `view_name`='raidview
 UPDATE `wrm_column_headers` SET `default_sort` = '1' WHERE `view_name`='role1' AND `column_name` = 'ID' LIMIT 1 ;
 UPDATE `wrm_column_headers` SET `default_sort` = '1' WHERE `view_name`='classroletalent1' AND `column_name` = 'Class' LIMIT 1 ;
 
--- Config Table Creation
-DROP TABLE IF EXISTS `wrm_config`;
-CREATE TABLE  `wrm_config` (
-  `config_name` varchar(255) NOT NULL default '',
-  `config_value` varchar(255) NOT NULL default ''
-) ;
-
 -- Config Table Data
 INSERT INTO `wrm_config` VALUES ('site_name', 'WRM');
 INSERT INTO `wrm_config` VALUES ('site_description', 'WRM');
@@ -650,19 +560,6 @@ INSERT INTO `wrm_config` VALUES ('raid_view_type','by_class');
 INSERT INTO `wrm_config` VALUES ('records_per_page','25');
 INSERT INTO `wrm_config` VALUES ('armory_cache_setting', 'none');
 INSERT INTO `wrm_config` VALUES ('persistent_db', '1');
-
--- Events Table Creation
-DROP TABLE IF EXISTS `wrm_events`;
-CREATE TABLE `wrm_events` (
-  `event_id` int(10) NOT NULL auto_increment,
-  `zone_desc` varchar(50) NOT NULL,
-  `max` tinyint(2) NOT NULL,
-  `exp_id` tinyint(2) NOT NULL,
-  `event_type_id` tinyint(2) NOT NULL,
-  `wow_name` varchar(50) NOT NULL,
-  `icon_path` varchar(100) NOT NULL,
-  PRIMARY KEY  (`event_id`)
-) ;
 
 -- Event Table Data
 INSERT INTO `wrm_events` (`event_id`, `zone_desc`, `max`, `exp_id`, `event_type_id`, `wow_name`, `icon_path`) VALUES
@@ -801,16 +698,6 @@ INSERT INTO `wrm_events` (`event_id`, `zone_desc`, `max`, `exp_id`, `event_type_
 (136, 'Icecrown Citadel - 10 man', 10, 3, 1, 'Icecrown Citadel (10)', 'images/instances/WotLK_Icons/10-Icecrown-Citadel.jpg'),
 (137, 'Icecrown Citadel - 25 man', 25, 3, 1, 'Icecrown Citadel (25)', 'images/instances/WotLK_Icons/25-Icecrown-Citadel.jpg');
 
--- Event Type Table Creation
-DROP TABLE IF EXISTS `wrm_event_type`;
-CREATE TABLE `wrm_event_type` (
-  `event_type_id` tinyint(2) NOT NULL auto_increment,
-  `event_type_name` varchar(50) NOT NULL,
-  `event_type_lang_id` varchar(50) NOT NULL,
-  `def` tinyint(1) NOT NULL,
-  PRIMARY KEY  (`event_type_id`)
-) ;
-
 -- Event Type Table Data
 INSERT INTO `wrm_event_type` (`event_type_id`, `event_type_name`, `event_type_lang_id`, `def`) VALUES
 (1, 'Raid', 'event_type_raid', 1),
@@ -819,29 +706,11 @@ INSERT INTO `wrm_event_type` (`event_type_id`, `event_type_name`, `event_type_la
 (4, 'Meeting', 'event_type_meeting', 0),
 (5, 'Other', 'event_type_other', 0);
 
--- Expansion Table Creation
-DROP TABLE IF EXISTS `wrm_expansion`;
-CREATE TABLE `wrm_expansion` (
-  `exp_id` tinyint(2) NOT NULL auto_increment,
-  `exp_name` varchar(50) NOT NULL,
-  `exp_lang_id` varchar(50) NOT NULL,
-  `def` tinyint(1) NOT NULL,
-  PRIMARY KEY  (`exp_id`)
-) ;
-
 -- Expansion Table Data
 INSERT INTO `wrm_expansion` (`exp_id`, `exp_name`, `exp_lang_id`, `def`) VALUES
 (1, 'Generic', 'exp_generic_wow', 0),
 (2, 'BC', 'exp_burning_crusade', 0),
 (3, 'WotLK', 'exp_wrath_lich_king', 1);
-
--- Faction Table Creation
-DROP TABLE IF EXISTS `wrm_faction`;
-CREATE TABLE `wrm_faction` (
-`faction_name` VARCHAR( 255 ) NOT NULL ,
-`lang_index` VARCHAR( 255 ) NOT NULL ,
-PRIMARY KEY ( `faction_name` )
-) ;
 
 -- Data for Faction Table
 INSERT INTO `wrm_faction` (`faction_name` , `lang_index`) VALUES 
@@ -849,157 +718,13 @@ INSERT INTO `wrm_faction` (`faction_name` , `lang_index`) VALUES
 ('Horde', 'horde'),
 ('None', 'none');
 
--- Gender Table Creation
-DROP TABLE IF EXISTS `wrm_gender`;
-CREATE TABLE `wrm_gender` (
-  `gender_id` varchar(10) NOT NULL,
-  `lang_index` varchar(100) NOT NULL,
-  PRIMARY KEY  (`gender_id`)
-);
-
 -- Gender Table Data
 INSERT INTO `wrm_gender` VALUES ('Male', 'male');
 INSERT INTO `wrm_gender` VALUES ('Female', 'female');
 
--- Guilds Table Creation
-DROP TABLE IF EXISTS `wrm_guilds`;
-CREATE TABLE `wrm_guilds` (
-  `guild_id` int(10) NOT NULL auto_increment,
-  `guild_master` varchar(80) NOT NULL default '',
-  `guild_name` varchar(30) NOT NULL default '',
-  `guild_tag` varchar(20) NOT NULL default '',
-  `guild_description` VARCHAR(255),
-  `guild_server` VARCHAR(255) NOT NULL default '',
-  `guild_faction` VARCHAR(50) NOT NULL default 'None',
-  `guild_armory_link` VARCHAR(255),
-  `guild_armory_code` VARCHAR(4),
-  PRIMARY KEY  (`guild_id`)
-) ;
-
--- Locations Table Creation
-DROP TABLE IF EXISTS `wrm_locations`;
-CREATE TABLE `wrm_locations` (
-  `location_id` int(10) NOT NULL auto_increment,
-  `location` varchar(255) NOT NULL default '',
-  `min_lvl` int(2) NOT NULL default '0',
-  `max_lvl` int(2) NOT NULL default '0',
-  `name` varchar(255) NOT NULL default '',
-  `max` int(2) NOT NULL default '0',
-  `locked` tinyint(1) NOT NULL default '0',
-  `event_type` tinyint(2) NOT NULL default '1',
-  `event_id` int(10) NOT NULL default '119',
-  `raid_force_id` INT(10) NOT NULL default '0',
-  PRIMARY KEY  (`location_id`),
-  KEY `raid_force_id` (`raid_force_id`)
-) ;
-
--- Locations Data
-
--- Location / Class Limit Link Table Creation
-DROP TABLE IF EXISTS `wrm_loc_class_lmt`;
-CREATE TABLE `wrm_loc_class_lmt` (
-  `location_id` int(10) NOT NULL,
-  `class_id` varchar(100) NOT NULL,
-  `lmt` int(2) NOT NULL,
-  PRIMARY KEY  (`location_id`,`class_id`)
-);
-
--- Location / Role Limit Link Table Creation
-DROP TABLE IF EXISTS `wrm_loc_role_lmt`;
-CREATE TABLE `wrm_loc_role_lmt` (
-  `location_id` int(10) NOT NULL,
-  `role_id` varchar(10) NOT NULL,
-  `lmt` int(2) NOT NULL,
-  PRIMARY KEY  (`location_id`,`role_id`)
-);
-
--- Log Create Table Creation
-DROP TABLE IF EXISTS `wrm_logs_create`;
-CREATE TABLE `wrm_logs_create` (
-  `log_id` int(11) NOT NULL auto_increment,
-  `create_id` int(11) NOT NULL default '0',
-  `profile_id` int(11) NOT NULL default '0',
-  `ip` varchar(45) NOT NULL default '',
-  `timestamp` varchar(45) NOT NULL default '',
-  `type` varchar(45) NOT NULL default '',
-  `create_name` varchar(45) NOT NULL default '',
-  PRIMARY KEY  (`log_id`)
-) ;
-
--- Log Delete Table Creation
-DROP TABLE IF EXISTS `wrm_logs_delete`;
-CREATE TABLE `wrm_logs_delete` (
-  `log_id` int(11) NOT NULL auto_increment,
-  `profile_id` int(11) NOT NULL default '0',
-  `ip` varchar(45) NOT NULL default '',
-  `timestamp` varchar(45) NOT NULL default '',
-  `type` varchar(45) NOT NULL default '',
-  `delete_name` varchar(255) NOT NULL default '',
-  PRIMARY KEY  (`log_id`)
-) ;
-
--- Log Hack Table Creation 
-DROP TABLE IF EXISTS `wrm_logs_hack`;
-CREATE TABLE `wrm_logs_hack` (
-  `log_id` int(10) unsigned NOT NULL auto_increment,
-  `ip` varchar(45) NOT NULL default '0',
-  `message` text NOT NULL,
-  `timestamp` varchar(255) NOT NULL default '',
-  PRIMARY KEY  (`log_id`)
-) ;
-
--- Log Raid Table Creation
-DROP TABLE IF EXISTS `wrm_logs_raid`;
-CREATE TABLE `wrm_logs_raid` (
-  `log_id` int(10) NOT NULL auto_increment,
-  `char_id` int(10) NOT NULL default '0',
-  `profile_id` int(10) NOT NULL default '0',
-  `raid_id` int(10) NOT NULL default '0',
-  `ip` varchar(45) NOT NULL default '',
-  `timestamp` varchar(45) NOT NULL default '',
-  `type` varchar(45) NOT NULL default '',
-  PRIMARY KEY  (`log_id`)
-) ;
-
--- Permissions Table Creation
-DROP TABLE IF EXISTS `wrm_permissions`;
-CREATE TABLE `wrm_permissions` (
-  `permission_id` int(10) NOT NULL auto_increment,
-  `name` varchar(255) NOT NULL,
-  `description` text NOT NULL,
-  `announcements` int(1) NOT NULL default '0',
-  `configuration` int(1) NOT NULL default '0',
-  `guilds` int(1) NOT NULL default '0',
-  `locations` int(1) NOT NULL default '0',
-  `profile` int(1) NOT NULL default '0',
-  `raids` int(1) NOT NULL default '0',
-  PRIMARY KEY  (`permission_id`)
-) ;
-
 -- Permissions Data
 INSERT INTO `wrm_permissions` (`permission_id`, `name`,`description`,`announcements`,`configuration`,`guilds`,`locations`,`profile`,`raids`) VALUES ('1','WRM Superadmin','Full Access','1','1','1','1','1','1');
 INSERT INTO `wrm_permissions` (`permission_id`, `name`,`description`,`announcements`,`configuration`,`guilds`,`locations`,`profile`,`raids`) VALUES ('2','WRM Users','Generic Access','0','0','0','0','1','0');
-
--- Profile Table Creation
-DROP TABLE IF EXISTS `wrm_profile`;
-CREATE TABLE `wrm_profile` (
-  `profile_id` int(10) NOT NULL auto_increment,
-  `email` varchar(255) NOT NULL default '',
-  `password` varchar(255) NOT NULL default '',
-  `priv` varchar(255) NOT NULL default '',
-  `username` varchar(255) NOT NULL default '',
-  `last_login_time` varchar(25) NOT NULL default '',
-  PRIMARY KEY  (`profile_id`)
-) ;
-
--- Race Table Creation
-DROP TABLE IF EXISTS `wrm_races`;
-CREATE TABLE `wrm_races` (
-  `race_id` varchar(100) NOT NULL,
-  `faction` varchar(100) NOT NULL,
-  `lang_index` varchar(100) NOT NULL,
-  PRIMARY KEY  (`race_id`)
-);
 
 -- Race Data
 INSERT INTO `wrm_races` VALUES ('Draenei', 'Alliance', 'draenei');
@@ -1012,15 +737,6 @@ INSERT INTO `wrm_races` VALUES ('Orc', 'Horde', 'orc');
 INSERT INTO `wrm_races` VALUES ('Tauren', 'Horde', 'tauren');
 INSERT INTO `wrm_races` VALUES ('Troll', 'Horde', 'troll');
 INSERT INTO `wrm_races` VALUES ('Undead', 'Horde', 'undead');
-
--- Race/Gender Link Table Creation
-DROP TABLE IF EXISTS `wrm_race_gender`;
-CREATE TABLE `wrm_race_gender` (
-  `race_id` varchar(100) NOT NULL,
-  `gender_id` varchar(10) NOT NULL,
-  `image` varchar(100) NOT NULL,
-  PRIMARY KEY  (`race_id`,`gender_id`)
-);
 
 -- Race/Gender Link Table Data
 INSERT INTO `wrm_race_gender` VALUES ('Draenei', 'Male', '/images/faces/dr_male.gif');
@@ -1044,68 +760,6 @@ INSERT INTO `wrm_race_gender` VALUES ('Troll', 'Female', '/images/faces/tr_femal
 INSERT INTO `wrm_race_gender` VALUES ('Undead', 'Male', '/images/faces/un_male.gif');
 INSERT INTO `wrm_race_gender` VALUES ('Undead', 'Female', '/images/faces/un_female.gif');
 
--- Raid Table Creation
-DROP TABLE IF EXISTS `wrm_raids`;
-CREATE TABLE `wrm_raids` (
-  `raid_id` int(10) NOT NULL auto_increment,
-  `description` text NOT NULL,
-  `freeze` int(10) NOT NULL default '0',
-  `invite_time` varchar(255) NOT NULL default '',
-  `location` varchar(255) NOT NULL default '',
-  `officer` varchar(255) NOT NULL default '',
-  `old` tinyint(1) NOT NULL default '0',
-  `start_time` varchar(255) NOT NULL default '',
-  `min_lvl` int(2) NOT NULL default '0',
-  `max_lvl` int(2) NOT NULL default '0',
-  `max` varchar(255) NOT NULL default '',
-  `event_type` tinyint(1) NOT NULL default '1',
-  `event_id` int(10) NOT NULL default '119',
-  `raid_force_id` INT(10) NOT NULL DEFAULT '0',
-  `recurrance` TINYINT(1) NOT NULL DEFAULT '0',
-  `rec_interval` VARCHAR(15) DEFAULT NULL,
-  `num_recur` TINYINT(2) NOT NULL DEFAULT '0',
-  PRIMARY KEY  (`raid_id`),
-  KEY `raid_force_id` (`raid_force_id`)
-  );
-
--- Class Limits per Raid Table
-DROP TABLE IF EXISTS `wrm_raid_class_lmt`;
-CREATE TABLE `wrm_raid_class_lmt` (
-  `raid_id` int(10) NOT NULL,
-  `class_id` varchar(100) NOT NULL,
-  `lmt` int(2) NOT NULL,
-  PRIMARY KEY  (`raid_id`,`class_id`)
-);
-
--- Raid Force Table
-DROP TABLE IF EXISTS `wrm_raid_force`;
-CREATE TABLE `wrm_raid_force` (
-`raid_force_id` INT( 10 ) NOT NULL AUTO_INCREMENT,
-`raid_force_name` VARCHAR( 100 ) NOT NULL,
-`guild_id` INT( 10 ) NOT NULL ,
-PRIMARY KEY ( `raid_force_name`, `guild_id` ),
-UNIQUE ( `raid_force_id` )
-);
-
--- Role Limits per Raid Table
-DROP TABLE IF EXISTS `wrm_raid_role_lmt`;
-CREATE TABLE IF NOT EXISTS `wrm_raid_role_lmt` (
-  `raid_id` int(10) NOT NULL,
-  `role_id` varchar(10) NOT NULL,
-  `lmt` int(2) NOT NULL,
-  PRIMARY KEY  (`raid_id`,`role_id`)
-);
-
--- Role Table Creation
-DROP TABLE IF EXISTS `wrm_roles`;
-CREATE TABLE IF NOT EXISTS `wrm_roles` (
-  `role_id` varchar(10) NOT NULL,
-  `role_name` varchar(100) NOT NULL,
-  `lang_index` varchar(100) NOT NULL,
-  `image` varchar(100) NOT NULL,
-  PRIMARY KEY  (`role_id`)
-);
-
 -- Role Table Data
 INSERT INTO `wrm_roles` VALUES ('role1', 'Tank', 'configuration_role1_text','');
 INSERT INTO `wrm_roles` VALUES ('role2', 'Melee', 'configuration_role2_text','');
@@ -1113,39 +767,6 @@ INSERT INTO `wrm_roles` VALUES ('role3', 'Healing', 'configuration_role3_text','
 INSERT INTO `wrm_roles` VALUES ('role4', 'Ranged', 'configuration_role4_text','');
 INSERT INTO `wrm_roles` VALUES ('role5', 'misc1', 'configuration_role5_text','');
 INSERT INTO `wrm_roles` VALUES ('role6', 'misc2', 'configuration_role6_text','');
-
--- Signup Table Creation
-DROP TABLE IF EXISTS `wrm_signups`;
-CREATE TABLE `wrm_signups` (
-  `signup_id` int(10) NOT NULL auto_increment,
-  `char_id` int(10) NOT NULL default '0',
-  `profile_id` int(10) NOT NULL default '0',
-  `raid_id` int(10) NOT NULL default '0',
-  `comments` varchar(255) NOT NULL default '',
-  `cancel` int(1) NOT NULL default '0',
-  `queue` int(1) NOT NULL default '0',
-  `timestamp` varchar(255) NOT NULL default '',
-  `selected_spec` varchar(100) NOT NULL,
-  PRIMARY KEY  (`signup_id`)
-) ;
-
--- Team Table Creation
-DROP TABLE IF EXISTS `wrm_teams`;
-CREATE TABLE `wrm_teams` (
-  `team_id` int(10) NOT NULL auto_increment,
-  `raid_id` int(10) NOT NULL default '0',
-  `team_name` varchar(255) NOT NULL default '',
-  `char_id` int(10) NOT NULL default '0',
-  PRIMARY KEY  (`team_id`)
-) ;
-
--- Version Table Creation
-DROP TABLE IF EXISTS `wrm_version`;
-CREATE TABLE `wrm_version` (
-`version_number` VARCHAR( 20 ) NOT NULL ,
-`version_desc` VARCHAR( 255 ) NOT NULL ,
-PRIMARY KEY ( `version_number` )
-) ;
 
 -- Version Data
 INSERT INTO `wrm_version` VALUES ('4.0.0','Version 4.0.0 of WoW Raid Manager');

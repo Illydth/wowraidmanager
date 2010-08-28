@@ -341,7 +341,7 @@ else if($step == 3) {
 		}
 	}
 	
-	//check/test connection
+	// check/test connection
 	$wrm_install = &new sql_db($wrm_db_server_hostname, $wrm_db_username, $wrm_db_password, "");
 	
 	if(!$wrm_install->db_connect_id)
@@ -490,7 +490,7 @@ else if($step == 4)
 		//config FILE ist NOT writeable
 		else
 		{
-			header("Location: ".$filename_install."step=1");
+			header("Location: ".$filename_install."step=1&error_confile_not_writeable");
 		}
 	}
 

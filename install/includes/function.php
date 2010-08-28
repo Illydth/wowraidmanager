@@ -36,21 +36,22 @@
 /**
  * write the WRM Config File "../config.php"
  *
- * @param var $wrm_db_name
- * @param var $wrm_db_server_hostname
- * @param var $wrm_db_username
- * @param var $wrm_db_password
- * @param var $wrm_db_tableprefix
- * @param var $wrm_db_type
- * @param var $eqdkp_db_name
- * @param var $eqdkp_db_host
- * @param var $eqdkp_db_user
- * @param var $eqdkp_db_pass
- * @param var $eqdkp_db_prefix
+ * @param String $wrm_db_name
+ * @param String $wrm_db_server_hostname
+ * @param String $wrm_db_username
+ * @param String $wrm_db_password
+ * @param String $wrm_db_tableprefix
+ * @param String $wrm_db_type
+ * @param String $eqdkp_db_name
+ * @param String $eqdkp_db_host
+ * @param String $eqdkp_db_user
+ * @param String $eqdkp_db_pass
+ * @param String $eqdkp_db_prefix
  * @return boolean 
  */
-function write_wrm_configfile($wrm_db_name,$wrm_db_server_hostname,$wrm_db_username,$wrm_db_password,$wrm_db_tableprefix,$wrm_db_type="mysql",$eqdkp_db_name = "",$eqdkp_db_host = "",$eqdkp_db_user = "",$eqdkp_db_pass = "",$eqdkp_db_prefix = "")
+function write_wrm_configfile($wrm_db_name,$wrm_db_server_hostname = "localhost",$wrm_db_username,$wrm_db_password,$wrm_db_tableprefix = "wrm_",$wrm_db_type="mysql",$eqdkp_db_name = "",$eqdkp_db_host = "",$eqdkp_db_user = "",$eqdkp_db_pass = "",$eqdkp_db_prefix = "")
 {
+	 
 	//global $wrm_config_file;
 	$wrm_config_file = "../config.php";
 	include("../version.php");
@@ -105,8 +106,8 @@ function write_wrm_configfile($wrm_db_name,$wrm_db_server_hostname,$wrm_db_usern
 /**
  * this is a copy from the function in includes/functions.php
  *
- * @param unknown_type $value
- * @param unknown_type $nullify
+ * @param Integer $value
+ * @param boolean $nullify
  * @param unknown_type $conn
  * @return unknown
  */
@@ -143,7 +144,11 @@ function quote_smart($value = "", $nullify = false, $conn = null)
 	}
 	return $value;
 }
-
+/***
+ * print error
+ * @param string $path
+ * @return boolean
+ */
 function print_error($type, $error, $die) {
 	global $wrm_install_lang, $phpraid_config;
 
@@ -166,6 +171,8 @@ function print_error($type, $error, $die) {
 
 	if($die == 1)
 		exit;
+		
+	return TRUE;
 }
 
 /**
@@ -214,9 +221,13 @@ function get_mysql_version_from_phpinfo()
 	return $gd;
 }
 
-//copy from \includes\functions.php
-// Reverses database sanitization by removing escape backslashes
-// and decoding html entities.
+/**
+ * copy from \includes\functions.php
+ * Reverses database sanitization by removing escape backslashes
+ * and decoding html entities.
+ *
+ * @return boolean
+ */
 function desanitize($array) {
   $retarr_keys = array_keys($array);
   $retarr_values = array_values($array);
@@ -237,7 +248,8 @@ function desanitize($array) {
 
 /***
  *  Get Array with all Langfiles
- *  * @param BOOL $Suffix
+ * @param boolean $Suffix
+ * @return boolean
  */
 function get_language_filename($Suffix = FALSE)
 {
@@ -255,7 +267,10 @@ function get_language_filename($Suffix = FALSE)
 	return ($files);
 }
 
-//scan the server after Bridges
+/***
+ * scan the server after Bridges
+ * @return array
+ */
 function scan_dbserver()
 {
 	
@@ -448,8 +463,9 @@ function scan_dbserver()
 }
 
 /*------------------------- Get Last Online Version Nr --------------------------------------------------*/
-/* check for new version
+/*** check for new version
  * based on code from phpBB version checking
+ * @return string
  */
 function get_last_onlineversion_nr()
 {
@@ -485,7 +501,9 @@ function get_last_onlineversion_nr()
 	}
 	
 }
-
+/***
+ * show the current 
+ */
 function schow_online_versionnr()
 {
 
@@ -562,13 +580,14 @@ function schow_online_versionnr()
 }
 /*----------------- End Online Check -------------------------------------------------------------------------*/
 
-/*
+/**
  * return values
  * 0 = all ok
  * 1 = connection failed
  * 2 = bride_type not correct 
  * 
  * check alle tablename, spalten
+ * @return integer
  */
 function test_bridge_connection($bridge_name, $bridge_database_name, $bridge_db_table_prefix)
 {
