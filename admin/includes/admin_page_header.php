@@ -32,58 +32,22 @@
 // Set Page content type header:
 header('Content-Type: text/html; charset=utf-8');
 
-$priv_announcement=scrub_input($_SESSION['priv_announcements']);
 $priv_config=scrub_input($_SESSION['priv_configuration']);
-$priv_guilds=scrub_input($_SESSION['priv_guilds']);
-$priv_locations=scrub_input($_SESSION['priv_locations']);
-$priv_profile=scrub_input($_SESSION['priv_profile']);
-$priv_raids=scrub_input($_SESSION['priv_raids']);
 $logged_in=scrub_input($_SESSION['session_logged_in']);
 
 // time variables
 $guild_time = new_date($phpraid_config['time_format'],time(),$phpraid_config['timezone'] + $phpraid_config['dst']);
 $guild_date = new_date($phpraid_config['date_format'],time(),$phpraid_config['timezone'] + $phpraid_config['dst']);
 
-// login stuff
-// now for the links
-if($logged_in != 1)
-{
-	$login_form_open = '<form action="../login.php" method="POST">';
-	$login_username = '<input name="username" type="text" value="username" size="15" maxlength="45" onFocus="if(this.value==\'username\')this.value=\'\';" class="post">';
-	$login_password = '<input name="password" type="password" value="password" size="15" onFocus="if(this.value==\'password\')this.value=\'\';" class="post">';
-	$login_button = '<input type="submit" name="login" value="'.$phprlang['login'].'" style="font-size:10px" class="mainoption">';
-	$login_remember = '<input type="checkbox" checked="checked" name="autologin">';
-	$login_remember_hidden = '<input type="hidden" value="1" name="autologin">';
-	if ( ($BridgeSupportPWDChange == TRUE) and isset($BridgeSupportPWDChange) )
-		$login_change_pass = '<a href="../login.php?mode=new_pwd">'.$phprlang['login_forgot_password'].'</a>';
-	$login_form_close = '</form>';
-}
-else
-{
-	$login_form_open = '<form action="../login.php?logout=true" method="POST">';
-	$login_username = scrub_input($_SESSION['username']);
-	$login_password = '';
-	$login_button = '<input type="submit" name="login" value="'.$phprlang['logout'].'" style="font-size:10px" class="mainoption">';
-	$login_remember = '';
-	$login_remember_hidden = '';
-	//$BridgeSupportPWDChange came from the bridge
-	if ( ($BridgeSupportPWDChange == TRUE) and isset($BridgeSupportPWDChange) )
-		$login_change_pass = '<a href="../login.php?mode=ch_pwd">'.$phprlang['login_chpwd'].'</a>';
-	$login_form_close = '</form>';
-}
 if(($phpraid_config['disable'] == '1') AND ($priv_config == 1))
 {
 	$site_disabled_warning = '
-	<br>
-	<div align="center">
-	<div class="errorHeader">'. $phprlang['disabled_header'] . '</div>
-	<div class="errorBody">' . $phprlang['disabled_message'] . '</div>
-	</div>
-	';
-} 
-if (isset($ShowLoginForm) and ($ShowLoginForm == FALSE))
-{
-	$login_form_open=$login_username=$login_change_pass=$login_password=$login_button=$login_remember=$login_remember_hidden=$login_form_close = "";
+								<br>
+								<div align="center">
+								<div class="errorHeader">'. $phprlang['disabled_header'] . '</div>
+								<div class="errorBody">' . $phprlang['disabled_message'] . '</div>
+								</div>
+								';
 }
 
 $wrmadminsmarty->assign('page_header_data', 
@@ -95,21 +59,12 @@ $wrmadminsmarty->assign('page_header_data',
 			'header_logo' => $phpraid_config['header_logo'],
 			'guild_time' => $guild_time,
 			'guild_date' => $guild_date,
-			'login_form_open' => $login_form_open,
-			'login_form_close' => $login_form_close,
-			'login_username' => $login_username,
-			'login_password' => $login_password,
-			'login_remember' => $login_remember,
-			'login_remember_hidden' => $login_remember_hidden,
-			'login_button' => $login_button,
-			'login_change_pass'=>$login_change_pass,
-			'site_disabled_warning' => $site_disabled_warning,
 			'of_string'=>$phprlang['of'],
 			'rss_feed_string'=>$phprlang['rss_feed_text'],
 			'guild_time_string'=>$phprlang['guild_time_string'],
 			'menu_header_text'=>$phprlang['menu_header_text'],
-			'dkp_url'=>$phpraid_config['eqdkp_url'],
 			'header_link'=>$phpraid_config['header_link'],
+			'site_disabled_warning' => $site_disabled_warning,
 	)
 );
 

@@ -156,6 +156,38 @@ else
  ***************************************************/
 // get auth type
 require_once($phpraid_dir.'auth/auth_' . $phpraid_config['auth_type'] . '.php');
+// good ole authentication
+$lifetime = get_cfg_var("session.gc_maxlifetime"); 
+$temp = session_name("WRM-" .  $phpraid_config['auth_type']);
+$temp = session_set_cookie_params($lifetime, getCookiePath());
+session_start();
+$_SESSION['name'] = "WRM-" . $phpraid_config['auth_type'];
+
+// set session defaults
+if (!isset($_SESSION['initiated'])) 
+{
+	if(isset($_COOKIE['profile_id']) && isset($_COOKIE['password']))
+	{ 
+		$testval = wrm_login();
+		if (!$testval)
+		{
+			wrm_logout();
+			session_regenerate_id();
+			$_SESSION['initiated'] = true;
+			$_SESSION['username'] = 'Anonymous';
+			$_SESSION['session_logged_in'] = 0;
+			$_SESSION['profile_id'] = -1;
+		}
+	}
+	else 
+	{
+		session_regenerate_id();
+		$_SESSION['initiated'] = true;
+		$_SESSION['username'] = 'Anonymous';
+		$_SESSION['session_logged_in'] = 0;
+		$_SESSION['profile_id'] = -1;
+	}
+}
 get_permissions();
 
 /****************************************************
