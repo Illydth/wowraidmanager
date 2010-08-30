@@ -93,8 +93,6 @@ $bridge_array_alt_group[0] =  $phprlang['configuration_extsys_noaddus'];
 
 $selected_group_id = 0;
 $selected_alt_group_id = 0;
-//$selected_group_name = 0;
-//$selected_alt_group_name = 0;
 
 $sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "config";
 
@@ -107,7 +105,6 @@ while ($data_wrm = $db_raid->sql_fetchrow($result_group,true))
 	if ($data_wrm['config_name'] == $phpraid_config['auth_type']."_alt_auth_user_class") 
 		$selected_alt_group_id = $data_wrm['config_value'];
 }
-
 
 $wrmadminsmarty->assign('config_data',
 	array(
