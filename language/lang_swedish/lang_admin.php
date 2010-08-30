@@ -205,6 +205,16 @@ $phprlang['configuration_armory_cache_files'] = 'Files on Disk';
 $phprlang['configuration_armory_cache_none'] = 'Do not Cache Armory Data';
 $phprlang['configuration_armory_link_text'] = 'Korrekt Armory länk för Server';
 $phprlang['configuration_armory_language_text'] = 'Språk kod för Armoryt';
+$phprlang['configuration_extsys_bridge_config_header'] = 'Bridge Config';
+$phprlang['configuration_extsys_norest'] = 'Inga Restriktioner';
+$phprlang['configuration_extsys_noaddus'] = 'Inga Ytterliggare AnvÃ€ndargrupper';
+$phprlang['configuration_extsys_group01'] = 'VÃ€lj grund gruppen/klassen som har tillgÃ¥ng attnyttja WRM';
+$phprlang['configuration_extsys_group02'] = 'Alla anvÃ€ndare utan denna grupp kommer inte atttillÃ¥tas logga in';
+$phprlang['configuration_extsys_group03'] = 'VÃ€nligen vÃ¶lj "Inga Restriktioner" hÃ€r om du vill att alla anvÃ€ndare oavsett grupp/klass skall kunna logga in och nyttja WRM';
+$phprlang['configuration_extsys_alt_group01'] = 'VÃ€lj en alternativ grupp/klass som kan nyttja WRM';
+$phprlang['configuration_extsys_alt_group02'] = 'Alla anvÃ€ndare i denna grupp kommer att tillÃ¥tas att logga in, oavsett om de Ã€r i ovanstÃ¥ende grupp/klass eller inte';
+$phprlang['configuration_extsys_group_text'] = 'Base User group';
+$phprlang['configuration_extsys_alt_group_text'] = 'Additional user group';
 
 // Text on the "User Settings" Page.
 $phprlang['configuration_multiple'] = 'Tillåt multipla bokningar från samma användare';

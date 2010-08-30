@@ -205,6 +205,16 @@ $phprlang['configuration_armory_cache_files'] = 'Files on Disk';
 $phprlang['configuration_armory_cache_none'] = 'Do not Cache Armory Data';
 $phprlang['configuration_armory_link_text'] = 'Indirizzo dell\'Armory';
 $phprlang['configuration_armory_language_text'] = 'Codice linguaggio dell\'Armory';
+$phprlang['configuration_extsys_bridge_config_header'] = 'Bridge Config';
+$phprlang['configuration_extsys_norest'] = 'Nessuna restrizione';
+$phprlang['configuration_extsys_noaddus'] = 'Nessun altro gruppo';
+$phprlang['configuration_extsys_group01'] = 'Seleziona il gruppo base di Utenti ai quali consentire l\'accesso a WRM';
+$phprlang['configuration_extsys_group02'] = 'Gli Utenti al di fuori di questo gruppo non avranno accesso a WRM';
+$phprlang['configuration_extsys_group03'] = 'Seleziona "Nessuna restrizione" per consentire l\'accesso a WRM a tutti gli Utenti indipendentemente dai gruppi di appartenenza';
+$phprlang['configuration_extsys_alt_group01'] = 'Seleziona un ulteriore gruppo di Utenti ai quali consentire l\'accesso a WRM';
+$phprlang['configuration_extsys_alt_group02'] = 'Agli Utenti appartenenti a questo gruppo sarà consentito l\'accesso a WRM indipendentemente dall\'appartenenza anche all\'altro gruppo specificato';
+$phprlang['configuration_extsys_group_text'] = 'Base User group';
+$phprlang['configuration_extsys_alt_group_text'] = 'Additional user group';
 
 // Text on the "User Settings" Page.
 $phprlang['configuration_multiple'] = 'Consenti iscrizioni multiple';

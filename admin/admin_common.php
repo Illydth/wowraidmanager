@@ -188,7 +188,11 @@ if (!isset($_SESSION['initiated']))
 		$_SESSION['profile_id'] = -1;
 	}
 }
+
 get_permissions();
+
+if($_SESSION['priv_configuration'] == 0)
+	header("Location: ../index.php");
 
 /****************************************************
  * Maintenance Flag Disable Site

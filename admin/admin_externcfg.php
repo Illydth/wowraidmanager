@@ -81,6 +81,34 @@ $armory_cache .= '</select>';
 
 $buttons = '<input type="submit" name="submit" value="'.$phprlang['submit'].'" class="mainoption"> <input type="reset" name="Reset" value="'.$phprlang['reset'].'" class="liteoption">';
 
+/**
+ * Bridge Config
+ */
+
+$bridge_array = array();
+$bridge_array_group = $bridge_array_alt_group = get_group_array();
+
+$bridge_array_group[0] =  $phprlang['configuration_extsys_norest'];
+$bridge_array_alt_group[0] =  $phprlang['configuration_extsys_noaddus'];
+
+$selected_group_id = 0;
+$selected_alt_group_id = 0;
+//$selected_group_name = 0;
+//$selected_alt_group_name = 0;
+
+$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "config";
+
+$result_group = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+while ($data_wrm = $db_raid->sql_fetchrow($result_group,true))
+{
+	if ($data_wrm['config_name'] == $phpraid_config['auth_type']."_auth_user_class") 
+		$selected_group_id = $data_wrm['config_value'];
+		
+	if ($data_wrm['config_name'] == $phpraid_config['auth_type']."_alt_auth_user_class") 
+		$selected_alt_group_id = $data_wrm['config_value'];
+}
+
+
 $wrmadminsmarty->assign('config_data',
 	array(
 		'enable_armory' => $enable_armory,
@@ -95,6 +123,22 @@ $wrmadminsmarty->assign('config_data',
 		'armory_cache' => $armory_cache,
 		'armory_cache_text'=>$phprlang['configuration_armory_cache'],
 		'buttons' => $buttons,
+	
+		'show_chang_group_conf' => "1",
+		'configuration_extsys_bridge_config_header' => $phprlang['configuration_extsys_bridge_config_header'],
+		'configuration_extsys_norest' => $phprlang['configuration_extsys_norest'],
+		'configuration_extsys_noaddus' => $phprlang['configuration_extsys_noaddus'],
+		'configuration_extsys_group01' => $phprlang['configuration_extsys_group01'],
+		'configuration_extsys_group02' => $phprlang['configuration_extsys_group02'],
+		'configuration_extsys_group03' => $phprlang['configuration_extsys_group03'],
+		'configuration_extsys_alt_group01' => $phprlang['configuration_extsys_alt_group01'],
+		'configuration_extsys_alt_group02' => $phprlang['configuration_extsys_alt_group02'],
+		'configuration_extsys_group_text' => $phprlang['configuration_extsys_group_text'],
+		'configuration_extsys_alt_group_text' => $phprlang['configuration_extsys_alt_group_text'],
+		'array_group' => $bridge_array_group,
+		'selected_group_id' => $selected_group_id,
+		'array_alt_group' => $bridge_array_alt_group,
+		'selected_alt_group_id' => $selected_alt_group_id,
 	)
 );
 
@@ -109,19 +153,27 @@ if(isset($_POST['submit']))
  		$enable_eqdkp = 1;
  	else
  		$enable_eqdkp = 0;
- 		
+ 
  	$eqdkp_url = scrub_input($_POST['eqdkp_url'], true);
  	$armory_cache = scrub_input($_POST['armory_cache']);
  	
  	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'enable_armory';", quote_smart($enable_armory));
-	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'enable_eqdkp';", quote_smart($enable_eqdkp));
-	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'eqdkp_url';", quote_smart($eqdkp_url));
-	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
  	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'armory_cache_setting';", quote_smart($armory_cache));
-	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
-	
+	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
+
+ 	if(isset($_POST['configuration_extsys_group']))
+ 	{
+ 		$bridge_selected_group_id = scrub_input($_POST['configuration_extsys_group']);
+ 		$bridge_selected_alt_group_id = scrub_input($_POST['configuration_extsys_alt_group']);
+
+ 		change_bridge_groups($bridge_selected_group_id, $bridge_selected_alt_group_id);
+ 	}
+ 	
 	header("Location: admin_externcfg.php");
 }
 //

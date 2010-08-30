@@ -205,6 +205,16 @@ $phprlang['configuration_armory_cache_files'] = 'Files on Disk';
 $phprlang['configuration_armory_cache_none'] = 'Do not Cache Armory Data';
 $phprlang['configuration_armory_link_text'] = 'Genauer Arsenal-Link für den Server';
 $phprlang['configuration_armory_language_text'] = 'Sprach-Code für Arsenal';
+$phprlang['configuration_extsys_bridge_config_header'] = 'Bridge Konfiguration';
+$phprlang['configuration_extsys_norest'] = 'Keine Einschränkung';
+$phprlang['configuration_extsys_noaddus'] = 'Keine zusätzlichen Benutzergruppe';
+$phprlang['configuration_extsys_group01'] = 'Wähle die Basis Benutzergruppe aus, welche Zugang zur Nutzung von WRM hat';
+$phprlang['configuration_extsys_group02'] = 'Benutzer die nicht in dieser Benutzergruppe sind, ist es auch nicht möglich, sich anzumelden';
+$phprlang['configuration_extsys_group03'] = 'Wenn du willst, dass alle Benutzer unabhängig von der Benutzergruppe sich im WRM anmelden können, wähle "Keine Einschränkung" aus.';
+$phprlang['configuration_extsys_alt_group01'] = 'Wähle eine alternative Benutzergruppe aus, welcher den Zugang zu WRM auch erlaubt ist';
+$phprlang['configuration_extsys_alt_group02'] = 'mit dieser alternativen Gruppe ist es dem Benutzer auch möglich, sich unabhängig davon anzumelden, ob sie in der oben genannten Benutzergruppe sind oder nicht ';
+$phprlang['configuration_extsys_group_text'] = 'Basis Benutzergruppe';
+$phprlang['configuration_extsys_alt_group_text'] = 'alternative Benutzergruppe';
 
 // Text on the "User Settings" Page.
 $phprlang['configuration_multiple'] = 'Mehrfachanmeldungen erlauben';

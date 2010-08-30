@@ -205,6 +205,16 @@ $phprlang['configuration_armory_cache_files'] = 'Files on Disk';
 $phprlang['configuration_armory_cache_none'] = 'Do not Cache Armory Data';
 $phprlang['configuration_armory_link_text'] = 'Correct Armory Link for Server';
 $phprlang['configuration_armory_language_text'] = 'Language Code for Armory';
+$phprlang['configuration_extsys_bridge_config_header'] = 'Bridge Config';
+$phprlang['configuration_extsys_norest'] = 'No Restrictions';
+$phprlang['configuration_extsys_noaddus'] = 'No Additional UserGroup';
+$phprlang['configuration_extsys_group01'] = 'Select the base user group that has access to use WRM';
+$phprlang['configuration_extsys_group02'] = 'Any user without this group set will not be allowed to log in';
+$phprlang['configuration_extsys_group03'] = 'Please select "No Restrictions" here if you want all users regardless of group to be able to login to WRM';
+$phprlang['configuration_extsys_alt_group01'] = 'Select an Additional user group/class that can access WRM';
+$phprlang['configuration_extsys_alt_group02'] = 'Any user tagged with this group will be allowed to log in regardless of whether they are in the above user group or not';
+$phprlang['configuration_extsys_group_text'] = 'Base User group';
+$phprlang['configuration_extsys_alt_group_text'] = 'Additional user group';
 
 // Text on the "User Settings" Page.
 $phprlang['configuration_multiple'] = 'Allow multiple signups';

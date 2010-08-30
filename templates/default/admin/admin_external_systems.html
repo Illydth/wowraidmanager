@@ -30,6 +30,38 @@
     </td></tr>
 </table>
 <br>
+{if ($config_data.show_chang_group_conf == '1')}
+<div class="contentHeader">{$config_data.configuration_extsys_bridge_config_header}</div><br>
+  <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tr> 
+    <td valign="top"> 
+      <table width="100%" border="0" cellspacing="1" cellpadding="3" class="dataOutline">
+        <tr>
+          <td width="200" class="row1"><strong>{$config_data.configuration_extsys_group_text}</strong></td>
+          <td class="row2">
+          			{html_options name=configuration_extsys_group options=$config_data.array_group selected=$config_data.selected_group_id class="post"}
+          			<br>
+          			{$config_data.configuration_extsys_group01}<br>
+          			{$config_data.configuration_extsys_group02}<br>
+          			{$config_data.configuration_extsys_group03}
+          </td>
+        </tr>
+        <tr>
+          <td width="200" class="row1"><strong>{$config_data.configuration_extsys_alt_group_text}</strong></td>
+          <td class="row2">
+          			{html_options name=configuration_extsys_alt_group options=$config_data.array_alt_group selected=$config_data.selected_alt_group_id class="post"}
+          			<br>
+          			{$config_data.configuration_extsys_alt_group01}<br>
+          			{$config_data.configuration_extsys_alt_group02}
+          </td>
+        </tr>
+
+      </table>
+    </td></tr>
+  </table>
+<br>
+{/if}
+
 <div align="center" class="button">{$config_data.buttons}</div>
 </div>
 </form>

@@ -140,43 +140,72 @@ function remove_user() {
 	header("Location: permissions.php?mode=details&perm_id=". $perm_id);
 }
 
-//group permission
-//get are all classes that could be found (in (cms) bridge)
+/**
+ * group permission
+ * get are all classes that could be found (in (cms) bridge)
+ * 
+ * @return array
+ */
 function get_group_array()
 {
 	global $db_raid, $table_prefix, $db_raid;
+	global $db_allgroups_id, $db_allgroups_name, $db_table_allgroups ;
 
-	global $db_group_id, $db_table_group_name, $db_allgroups_name, $db_table_allgroups ;
-
-	$sql =  "SELECT " . $db_group_id . " , ". $db_allgroups_name .
+	$group = array();
+	
+	$sql =  "SELECT " . $db_allgroups_id . " , ". $db_allgroups_name .
 			" FROM " . $table_prefix . $db_table_allgroups .
-			" ORDER BY ". $db_group_id;
-
+			" ORDER BY ". $db_allgroups_id;
+	
 	$result_group = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	while ($data_wrm = $db_raid->sql_fetchrow($result_group,true))
 	{
-		array_push($group,
-			array(
-				'group_name'=>$data[$db_allgroups_name],
-				'group_id'=>$data[$db_group_id]
-			)
-		);
-	
+		$group[$data_wrm[$db_allgroups_id]] = $data_wrm[$db_allgroups_name];
 	}
+
 	return $group;
 }
 
-/**************************************************************
+/**
+ * change bridge groups
+ */
+function change_bridge_groups($bridge_selected_group_id, $bridge_selected_alt_group_id)
+{
+	global $db_raid, $phpraid_config;
+	
+	//base group
+	$sql =	sprintf(
+					"UPDATE `".$phpraid_config['db_prefix']."config` " .
+					" SET `config_value` = %s" .
+					" WHERE `".$phpraid_config['db_prefix']."config`.`config_name` = %s ;", 
+					quote_smart($bridge_selected_group_id),
+					quote_smart($phpraid_config['auth_type'].'_auth_user_class')
+			);
+	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
+
+	//alt group
+	$sql =	sprintf(
+					"UPDATE `".$phpraid_config['db_prefix']."config` " .
+					" SET `config_value` = %s" .
+					" WHERE `".$phpraid_config['db_prefix']."config`.`config_name`= %s ;", 
+					quote_smart($bridge_selected_alt_group_id),
+					quote_smart($phpraid_config['auth_type'].'_alt_auth_user_class')
+			);
+	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
+
+}
+
+/**
  * WRM Login
- **************************************************************/
+ * @return Integer; 1 = ok
+ **/
 function wrm_login()
 {
 	global $db_user_id, $db_group_id, $db_user_name, $db_user_email, $db_user_password, $db_table_user_name; 
 	global $db_table_group_name, $auth_user_class, $auth_alt_user_class, $table_prefix, $db_raid, $phpraid_config;
 	global $Bridge2ColumGroup;
 
-	//$table_prefix = $phpraid_config[$phpraid_config['auth_type'].'_db_name'] . ".". $phpraid_config[$phpraid_config['auth_type'].'_table_prefix'];
-	
+
 	$username = $password = "";
 	$username_id = "";
 		
@@ -231,56 +260,66 @@ function wrm_login()
 		// The user has a matching username and proper password in the BRIDGE database.
 		// We need to validate the users group.  If it does not contain the user group that has been set as
 		//	authorized to use WRM, we need to fail the login with a proper message.		
-		if ($auth_user_class != "")
+		if (($auth_user_class != "") or ($auth_user_class != "0"))
 		{
 			$FoundUserInGroup = FALSE;
 	
-			$sql = sprintf( "SELECT " . $db_group_id. "," .$db_add_group_ids ." FROM " . $table_prefix . $db_table_group_name. 
-							" WHERE ".$db_user_id." = %s", quote_smart($data[$db_user_id])
-					);
-			$resultgroup = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-			$datagroup = $db_raid->sql_fetchrow($resultgroup, true);
-
 			/*e107, smf*/
 			if ($Bridge2ColumGroup == TRUE)
 			{
+				$sql = sprintf( "SELECT  " .$db_group_id .
+								" FROM "  . $table_prefix . $db_table_group_name . 
+								" WHERE " . $db_user_id . " = %s", quote_smart($data[$db_user_id])
+						);
+				$resultgroup = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+				$datagroup = $db_raid->sql_fetchrow($resultgroup, true);
+
+
 				if (($datagroup[$db_group_id] == $auth_user_class) or 
 					($datagroup[$db_group_id] == $auth_alt_user_class))
 				{
 					$FoundUserInGroup = TRUE;
 				}
 				
-				if (($datagroup[$db_add_group_ids] == $auth_user_class) or 
-					($datagroup[$db_add_group_ids] == $auth_alt_user_class))
+				if (($datagroup[$db_add_groups_id] == $auth_user_class) or 
+					($datagroup[$db_add_groups_id] == $auth_alt_user_class))
 				{
 					$FoundUserInGroup = TRUE;
 				}
 
-			/* old
-			$user_class = $datagroup[$db_group_id];
-			$user_class = $datagroup[$db_group_id] . "," . $datagroup[$db_add_group_ids];
-			
-			$pos = strpos($user_class, $auth_user_class);
-			$pos2 = strpos($user_class, $auth_alt_user_class);
-			if ($pos === false && $auth_user_class != 0)
-			{
-				if ($pos2 === false)
-					$FoundUserInGroup = FALSE;
+				/* old
+				$user_class = $datagroup[$db_group_id];
+				$user_class = $datagroup[$db_group_id] . "," . $datagroup[$db_add_group_ids];
+				
+				$pos = strpos($user_class, $auth_user_class);
+				$pos2 = strpos($user_class, $auth_alt_user_class);
+				if ($pos === false && $auth_user_class != 0)
+				{
+					if ($pos2 === false)
+						$FoundUserInGroup = FALSE;
+					else
+						$FoundUserInGroup = TRUE;
+				}
 				else
 					$FoundUserInGroup = TRUE;
-			}
-			else
-				$FoundUserInGroup = TRUE;
-			*/
+				*/
 			}
 			/* phpbb,...*/
 			else
 			{
-				if( ($datagroup[$db_group_id] == $auth_user_class) or 
-					($datagroup[$db_group_id] == $auth_alt_user_class)
-				  )
-				{	
-					$FoundUserInGroup = TRUE;
+				$sql = sprintf( "SELECT " . $db_group_id . 
+								" FROM "  . $table_prefix . $db_table_group_name . 
+								" WHERE " . $db_user_id . " = %s", quote_smart($data[$db_user_id])
+						);
+				$resultgroup = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+				while($datagroup = $db_raid->sql_fetchrow($resultgroup, true))
+				{
+					if( ($datagroup[$db_group_id] == $auth_user_class) or 
+						($datagroup[$db_group_id] == $auth_alt_user_class)
+					  )
+					{	
+						$FoundUserInGroup = TRUE;
+					}
 				}
 			}			
 			if ($FoundUserInGroup == FALSE)
