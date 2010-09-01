@@ -239,16 +239,16 @@ if($_GET['mode'] != 'delete')
 		$data = $db_raid->sql_fetchrow($result, true);
 	
 		$form_action = 'announcements.php?mode=edit&amp;id=' . $id;
-		$title = '<input type="text" size="69" name="title" class="post" value="' . $data['title'] . '">';
- 		$message = '<textarea name="message" class="post" cols="57" rows="10">' . $data['message'] . '</textarea>';
-		$buttons = '<input type="submit" name="submit" value="'.$phprlang['update'].'" class="mainoption"> <input type="reset" name="reset" value="'.$phprlang['reset'].'" class="liteoption">';
+		$title_data = $data['title'];
+		$message_data = $data['message'];
+		$button_01 = $phprlang['update'];
 	}
 	else
 	{
 		$form_action = 'announcements.php?mode=new';
-		$title = '<input type="text" size="69" name="title" class="post">';
-		$message = '<textarea name="message" class="post" cols="57" rows="10"></textarea>';
-		$buttons = '<input type="submit" name="submit" value="'.$phprlang['submit'].'" class="mainoption"> <input type="reset" name="reset" value="'.$phprlang['reset'].'" class="liteoption">';
+		$title_data = "";
+		$message_data = "";
+		$button_01 = $phprlang['submit'];
 	}
 	
 	// set variables
@@ -256,12 +256,13 @@ if($_GET['mode'] != 'delete')
 	$wrmsmarty->assign('new_announcement',
 		array(
 			'form_action'=>$form_action,
-			'title'=>$title,
+			'title_data'=>$title_data,
 			'title_text'=>$phprlang['announcements_title_text'],
 			'message_text'=>$phprlang['announcements_message_text'],
 			'header'=>$phprlang['announcements_new_header'],
-			'message'=>$message,
-			'buttons'=>$buttons,
+			'message_data'=>$message_data,
+			'button_01'=> $button_01,
+			'button_reset'=> $phprlang['reset'],
 		)
 	);
 

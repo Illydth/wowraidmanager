@@ -7,17 +7,22 @@
     <td><table width="100%" border="0" cellpadding="3" cellspacing="1" class="dataOutline">
           <tr valign="top"> 
             <td width="200" class="row1"><strong>{$new_announcement.title_text}</strong></td>
-            <td class="row2">{$new_announcement.title}</td>
+            <td class="row2"><input type="text" size="69" name="title" value="{$new_announcement.title_data}" class="post"></td>
           </tr>
           <tr valign="top">
             <td class="row1"><strong>{$new_announcement.message_text}</strong></td>
-            <td class="row2">{$new_announcement.message}</td>
+            <td class="row2">
+            	<textarea name="message" class="post" cols="57" rows="10">{$new_announcement.message_data}</textarea>
+            </td>
           </tr>
         </table></td>
   </tr>
   <tr> 
     <td><br>
-	<div align="center" class="button">{$new_announcement.buttons}</div></td>
+	<div align="center" class="button">
+		<input type="submit" name="submit" value="{$new_announcement.button_01}" class="mainoption">
+		<input type="reset" name="reset" value="{$new_announcement.button_reset}" class="liteoption">
+	{$new_announcement.buttons}</div></td>
   </tr>
 </table>
 </form>
