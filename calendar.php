@@ -42,30 +42,28 @@ else
 
 require_once("includes/authentication.php");
 
-// check for month/year passing
-isset($_POST['month']) ? $in_month = scrub_input($_POST['month']) : $in_month = '';
-isset($_POST['year']) ? $in_year = scrub_input($_POST['year']) : $in_year = '';
-
-isset($_GET['month']) ? $in_month = scrub_input($_GET['month']) : $in_month = $in_month;
-isset($_GET['year']) ? $in_year = scrub_input($_GET['year']) : $in_year = $in_year;
-
 // Generate "Current" values.
+$prevYear = date("Y")-1;
 $currYear = date("Y");
 $nextYear = date("Y")+1;
-$prevYear = date("Y")-1;
 $currMonth = date("n");
 $currDate = date("j");
 $currTimeStamp = mktime(0,0,0);
 
-// Generate the "timestamp" to use for this display.
-if ($in_month == '')
-	$in_month = $currMonth;
-if ($in_year == '')
-	$in_year = $currYear;
+// check for month/year passing
+isset($_POST['select_month']) ? $in_month = scrub_input($_POST['select_month']) : $in_month = $currMonth;
+isset($_POST['select_year']) ? $in_year = scrub_input($_POST['select_year']) : $in_year = $currYear;
+
+
+isset($_GET['month']) ? $in_month = scrub_input($_GET['month']) : $in_month = $in_month;
+isset($_GET['year']) ? $in_year = scrub_input($_GET['year']) : $in_year = $in_year;
 
 // This "timestamp" is for what the user passed into us and should be the basis for everything generated
 //     on the page.
 $timestamp = mktime('00','00','00', $in_month, '1', $in_year);
+
+$select_month = $in_month;
+$select_year = $in_year;
 
 // This is for the "next"/"previous" links.  We need the next and prev months and the year those months
 //     are in, this keeps us from moving from December 2008 to January 2008.
@@ -75,22 +73,22 @@ $nextMonth = date("n", mktime('00', '00', '00', $in_month + 1, '1', $in_year));
 $nextMonthYear = date("Y", mktime('00', '00', '00', $in_month + 1, '1', $in_year));
 
 // Generate the "Year" dropdown.
-$yearSelect = '<select name="year">';
-$yearSelect .= '<option value="'. $prevYear . '">' . $prevYear . '</option>';
-$yearSelect .= '<option value="'. $currYear . '" selected>' . $currYear . '</option>';
-$yearSelect .= '<option value="'. $nextYear . '">' . $nextYear . '</option>';
-$yearSelect .= '</select>';
+$array_select_year = array();
+$array_select_year[$prevYear]=$prevYear;
+$array_select_year[$currYear]=$currYear;
+$array_select_year[$nextYear]=$nextYear;
+$selected_select_year = $select_year;
 
 // Generate the "Month" dropdown.
-$monthSelect = '<select name="month">';
+$array_select_month = array();
 for ($x = 1; $x <= 12; $x++)
 {
-	if($currMonth == $x)
-		$monthSelect .= '<option value="' . $x . '" selected>'. $phprlang['month'.$x] . '</option>';
-	else
-		$monthSelect .= '<option value="' . $x . '">'. $phprlang['month'.$x] . '</option>';
+	$array_select_month[$x] = $phprlang['month'.$x];
+	
+	if($select_month == $x)
+		$selected_select_month = $x;
+
 }
-$monthSelect .= '</select>';
 
 // Pass Along the Headers
 $monthSelectHeader = $phprlang['calendar_month_select_header'];
@@ -161,21 +159,21 @@ for ($x = 1; $x <= $daysInMonth; $x++)
 		$boxNum = $x + $offset;
 		$varname = 'box'.$boxNum;
 		//$$varname = '<div align="right"><font size="4" color="#FF0000"><b>' . $x . '</b></font></div>';
-		$$varname = '<div class="currentDay">' . $x . '</div>';		
+		$varname = '<div class="currentDay">' . $x . '</div>';		
 	}
 	elseif ($checkDate < $currTimeStamp)
 	{
 		$boxNum = $x + $offset;
 		$varname = 'box'.$boxNum;
 		//$$varname = '<div align="right"><font size="4" color="#FFFFFF"><b>' . $x . '</b></font></div>';
-		$$varname = '<div class="priorDay">' . $x . '</div>';				
+		$varname = '<div class="priorDay">' . $x . '</div>';				
 	}
 	else
 	{
 		$boxNum = $x + $offset;
 		$varname = 'box'.$boxNum;
 		//$$varname = '<div align="right"><font size="4"><b>' . $x . '</b></font></div>';
-		$$varname = '<div class="postDay">' . $x . '</div>'; 				
+		$varname = '<div class="postDay">' . $x . '</div>'; 				
 	}
 }
 
@@ -190,7 +188,7 @@ $raidEndMonth = mktime("23", "59", "59", $in_month, $lastDayPassedMonth, $in_yea
 
 $sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "raids WHERE start_time >= '" . $raidStartMonth . "' AND start_time <= '" . $raidEndMonth . "'AND recurrance = 0 ORDER BY start_time";
 
-$raids_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+$raids_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 while($raids = $db_raid->sql_fetchrow($raids_result, true)) 
 {
 	// Calculate the Invite and Start Time for the Raid.
@@ -202,7 +200,7 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true))
 
 	// Get a list of all the signups for this raid for the current profile.
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id=%s AND profile_id=%s", quote_smart($raids['raid_id']), quote_smart($uid)); 
-	$resultz = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$resultz = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	
 	// If the profile is signed up check to see whether it should be marked for Drafted or Queued/Cancelled
 	//		the "drafted" mark overrides the "Queued/Cancel" mark for players with more than one character
@@ -221,7 +219,7 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true))
 	
 	// Get the Raid Icon for the Raid Event
 	$sql = sprintf("SELECT icon_path FROM " . $phpraid_config['db_prefix'] . "events WHERE event_id=%s", quote_smart($raids['event_id']));
-	$event_results = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$event_results = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	$raid_icon_results = $db_raid->sql_fetchrow($event_results, true);
 	$raid_icon = $raid_icon_results['icon_path'];
 	
@@ -272,8 +270,12 @@ $wrmsmarty->assign('calendar_data',
 		'submit_text'=>$phprlang['submit'],
 		'reset_text'=>$phprlang['reset'],
 		'month_select_header'=>$monthSelectHeader,
-		'month_select'=>$monthSelect,
-		'year_select'=>$yearSelect,
+		'array_select_year' => $array_select_year,
+		'selected_select_year' => $selected_select_year,
+		'array_select_month' => $array_select_month,
+		'selected_select_month' => $selected_select_month,
+		//'month_select'=>$monthSelect,
+		//'year_select'=>$yearSelect,
 		'buttons'=>$buttons,
 		'month_text'=>$phprlang['month'],
 		'year_text'=>$phprlang['year'],
@@ -339,7 +341,7 @@ $wrmsmarty->assign('calendar_data',
 $announcements = array();
 $announcement_header=$phprlang['announcements_header'];
 $sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "announcements";
-$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 if($db_raid->sql_numrows($result) > 0)
 {
 	/* fetch rows in reverse order */

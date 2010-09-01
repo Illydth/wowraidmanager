@@ -16,7 +16,14 @@
                 <td class="genmed">{$calendar_data.month_select_header}</td>
             </tr>
             <tr>
-                <td>{$calendar_data.month_select}&nbsp;&nbsp;&nbsp;{$calendar_data.year_select}&nbsp;&nbsp;&nbsp;<input type="submit" name="submit" value="{$calendar_data.submit_text}" class="mainoption">&nbsp;&nbsp;&nbsp;<input type="reset" name="Reset" value="{$calendar_data.reset_text}" class="liteoption"></td>
+                <td>
+                 {html_options name=select_year options=$calendar_data.array_select_year selected=$calendar_data.selected_select_year class="post"}
+                &nbsp;&nbsp;&nbsp;
+                {html_options name=select_month options=$calendar_data.array_select_month selected=$calendar_data.selected_select_month class="post"}
+                &nbsp;&nbsp;&nbsp;
+                <input type="submit" name="submit" value="{$calendar_data.submit_text}" class="mainoption">&nbsp;&nbsp;&nbsp;
+                <input type="reset" name="Reset" value="{$calendar_data.reset_text}" class="liteoption">
+                </td>
             </tr>
         </table>
         </form>
