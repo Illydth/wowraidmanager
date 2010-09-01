@@ -214,92 +214,92 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true)) {
 	}
 }
 
-	/**************************************************************
-	 * Code to setup for a Dynamic Table Create: raids1 View.
-	 **************************************************************/
-	$viewName = 'index1';
-	
-	//Setup Columns
-	$raid_headers = array();
-	$record_count_array = array();
-	$raid_headers = getVisibleColumns($viewName);
+/**************************************************************
+ * Code to setup for a Dynamic Table Create: raids1 View.
+ **************************************************************/
+$viewName = 'index1';
 
-	//Get Record Counts
-	$curr_record_count_array = getRecordCounts($current, $raid_headers, $startRecord);
-	$prev_record_count_array = getRecordCounts($previous, $raid_headers, $startRecord);
-	
-	//Get the Jump Menu and pass it down
-	$currJumpMenu = getPageNavigation($current, $startRecord, $pageURL, $sortField, $sortDesc);
-	$prevJumpMenu = getPageNavigation($previous, $startRecord, $pageURL, $sortField, $sortDesc);
-			
-	//Setup Default Data Sort from Headers Table
-	if (!$initSort)
-		foreach ($raid_headers as $column_rec)
-			if ($column_rec['default_sort'])
-				$sortField = $column_rec['column_name'];
-	
-	//Setup Data
-	$current = paginateSortAndFormat($current, $sortField, $sortDesc, $startRecord, $viewName);
-	$previous = paginateSortAndFormat($previous, $sortField, $sortDesc, $startRecord, $viewName);
+//Setup Columns
+$raid_headers = array();
+$record_count_array = array();
+$raid_headers = getVisibleColumns($viewName);
 
-	/****************************************************************
-	 * Data Assign for Template.
-	 ****************************************************************/
-	$wrmsmarty->assign('new_data', $current); 
-	$wrmsmarty->assign('old_data', $previous);
-	$wrmsmarty->assign('current_jump_menu', $currJumpMenu);
-	$wrmsmarty->assign('previous_jump_menu', $prevJumpMenu);
-	$wrmsmarty->assign('column_name', $raid_headers);
-	$wrmsmarty->assign('curr_record_counts', $curr_record_count_array);
-	$wrmsmarty->assign('prev_record_counts', $prev_record_count_array);
-	$wrmsmarty->assign('header_data',
-		array(
-			'template_name'=>$phpraid_config['template'],
-			'old_raids_header' => $phprlang['raids_old'],
-			'new_raids_header' => $phprlang['raids_new'],
-			'sort_url_base' => $pageURL,
-			'sort_descending' => $sortDesc,
-			'sort_text' => $phprlang['sort_text'],
-		)
-	);
-	
-	// now for announcements
-	// get announcements
-	$announcements = array();
-	$announcement_header=$phprlang['announcements_header'];
-	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "announcements";
-	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
-	if($db_raid->sql_numrows($result) > 0)
+//Get Record Counts
+$curr_record_count_array = getRecordCounts($current, $raid_headers, $startRecord);
+$prev_record_count_array = getRecordCounts($previous, $raid_headers, $startRecord);
+
+//Get the Jump Menu and pass it down
+$currJumpMenu = getPageNavigation($current, $startRecord, $pageURL, $sortField, $sortDesc);
+$prevJumpMenu = getPageNavigation($previous, $startRecord, $pageURL, $sortField, $sortDesc);
+		
+//Setup Default Data Sort from Headers Table
+if (!$initSort)
+	foreach ($raid_headers as $column_rec)
+		if ($column_rec['default_sort'])
+			$sortField = $column_rec['column_name'];
+
+//Setup Data
+$current = paginateSortAndFormat($current, $sortField, $sortDesc, $startRecord, $viewName);
+$previous = paginateSortAndFormat($previous, $sortField, $sortDesc, $startRecord, $viewName);
+
+/****************************************************************
+ * Data Assign for Template.
+ ****************************************************************/
+$wrmsmarty->assign('new_data', $current); 
+$wrmsmarty->assign('old_data', $previous);
+$wrmsmarty->assign('current_jump_menu', $currJumpMenu);
+$wrmsmarty->assign('previous_jump_menu', $prevJumpMenu);
+$wrmsmarty->assign('column_name', $raid_headers);
+$wrmsmarty->assign('curr_record_counts', $curr_record_count_array);
+$wrmsmarty->assign('prev_record_counts', $prev_record_count_array);
+$wrmsmarty->assign('header_data',
+	array(
+		'template_name'=>$phpraid_config['template'],
+		'old_raids_header' => $phprlang['raids_old'],
+		'new_raids_header' => $phprlang['raids_new'],
+		'sort_url_base' => $pageURL,
+		'sort_descending' => $sortDesc,
+		'sort_text' => $phprlang['sort_text'],
+	)
+);
+
+// now for announcements
+// get announcements
+$announcements = array();
+$announcement_header=$phprlang['announcements_header'];
+$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "announcements";
+$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+if($db_raid->sql_numrows($result) > 0)
+{
+	/* fetch rows in reverse order */
+	$i = $db_raid->sql_numrows($result) - 1;
+	while($i >= 0) 
 	{
-		/* fetch rows in reverse order */
-		$i = $db_raid->sql_numrows($result) - 1;
-		while($i >= 0) 
-		{
-			$db_raid->sql_rowseek($i, $result);
-			$data = $db_raid->sql_fetchrow($result, true);
-			$time = new_date($phpraid_config['time_format'], $data['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']);
-			$date = new_date($phpraid_config['date_format'], $data['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+		$db_raid->sql_rowseek($i, $result);
+		$data = $db_raid->sql_fetchrow($result, true);
+		$time = new_date($phpraid_config['time_format'], $data['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+		$date = new_date($phpraid_config['date_format'], $data['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+	
+		array_push($announcements,
+			array(
+				'announcement_author'=>$data['posted_by'],
+				'announcement_date'=>$date,
+				'announcement_time'=>$time,
+				'announcement_msg'=>linebreak_to_br($data['message']),
+				'announcement_title'=>$data['title'],
+			)
+		);
 		
-			array_push($announcements,
-				array(
-					'announcement_author'=>$data['posted_by'],
-					'announcement_date'=>$date,
-					'announcement_time'=>$time,
-					'announcement_msg'=>linebreak_to_br($data['message']),
-					'announcement_title'=>$data['title'],
-				)
-			);
-			
-			$i--;
-		}
-		
-		$wrmsmarty->assign('announcement_header', $announcement_header);	
-		$wrmsmarty->assign('announcement_data', $announcements);	
+		$i--;
 	}
-	//
-	// Start output of the page.
-	//
-	require_once('includes/page_header.php');
-	$wrmsmarty->display('main_page.html');
-	require_once('includes/page_footer.php');
+	
+	$wrmsmarty->assign('announcement_header', $announcement_header);	
+	$wrmsmarty->assign('announcement_data', $announcements);	
+}
+//
+// Start output of the page.
+//
+require_once('includes/page_header.php');
+$wrmsmarty->display('main_page.html');
+require_once('includes/page_footer.php');
 ?>

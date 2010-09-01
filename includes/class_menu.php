@@ -201,11 +201,11 @@ class wrm_menu
 		}
 		
 		// Show Boss Kill Tracking Link
-		if (preg_match("/(.*)bosstracking\.php(.*)/", $_SERVER['PHP_SELF'])) {
+		/*if (preg_match("/(.*)bosstracking\.php(.*)/", $_SERVER['PHP_SELF'])) {
 			$menu .= '<li class="active">' . $boss_tracking_link . '</li>';
 		} else {
 			$menu .= '<li class="">' . $boss_tracking_link . '</li>';
-		}
+		}*/
 		
 		// Show Raids Archives Link
 		if (preg_match("/(.*)raidsarchive\.php(.*)/", $_SERVER['PHP_SELF'])) {

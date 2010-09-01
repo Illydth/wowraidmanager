@@ -3,9 +3,12 @@
 <div class="contentBody">
 <br>
 <form method="post" action="{$rf_select_data.form_action}">
-	<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+	<table width="100%" border="0" cellspacing="1" cellpadding="3" class="dataOutline">
 		<tr>
-			<td align="center">{$rf_select_data.rf_select_text} {$rf_select_data.rf_select}</td>
+			<td width="200" class="row1"><span class="headmed"><strong>{$rf_select_data.rf_select_text}</strong></span></td>
+			<td class="row2">
+			   	{html_options name=raid_force_drop_name options=$rf_select_data.array_raid_force selected=$rf_select_data.selected_armory_codselected_raid_force onChange="MM_jumpMenu(\'parent\',this,0)" class="form" class="post" style="width:100px"}
+			</td>
 		</tr>
 	</table>
 </form>
