@@ -29,14 +29,15 @@
     <tr>
      <td class="row1">{$writeable_config_text}</td>
      <td class="row1">{$yes}</td>
-     <td bgcolor="{$writeable_config_bgcolor}">{$writeable_config_value}</td>
+     <td bgcolor="{$writeable_config_bgcolor}">{$writeable_config_value}&nbsp;{$file_perm_value}</td>
 	</tr>
     <tr>
       <td class="row2">{$writable_dir_cache_text}</td>
       <td class="row2">{$yes}</td>
-      <td bgcolor="{$writable_dir_cache_bgcolor}">{$writable_dir_cache_value}</td>
+      <td bgcolor="{$writable_dir_cache_bgcolor}">{$writable_dir_cache_value}&nbsp;{$writable_dir_cache_perms_value}</td>
     </tr>
    </table>
+  </tr>
   <tr>
     <td>&nbsp;</td>
   </tr>
@@ -76,9 +77,7 @@
     <td>
 			<div align="right" class="tooltip_title">
 			  <div align="center">{$select_lang}:
-				<select name="classlang_type" class="post">
-					{html_options values=$classlang_type_values selected=$classlang_type_selected output=$classlang_type_values}
-			    </select>
+			  {html_options name=classlang_type options=$array_lang_files_values selected=$classlang_type_selected class="post" onChange="MM_jumpMenu('self',this,0)"}
 			  </div>
 			</div>	</td>
   </tr>
@@ -90,7 +89,11 @@
   </tr>
   <tr>
 	<td><div align="center">
+	{if $show_next_bd == TRUE}
 		<input type="submit" name="submit" value="{$bd_submit}">
+	{else}
+		<input type="submit" name="submit" value="{$bd_submit}" disabled>
+	{/if}
    		<input type="hidden" name="step" value="1">
 
 	  </div></td>

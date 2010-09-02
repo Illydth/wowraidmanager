@@ -1,12 +1,11 @@
  <link href="style/stylesheet.css" rel="stylesheet" type="text/css">
 <form method="post" action="{$form_action}">
-
  <table align="center" width="650">
   <tr>
     <td>&nbsp;</td>
   </tr>
-    <tr>
-    <td class="rowHover"><div align="center">{$step3_sql_server_pref}</div></td>
+  <tr>
+    <td class="rowHover"><div align="center">{$head_title_wrm_sql_server}</div></td>
   </tr>
   {$error_msg}
   <tr>
@@ -19,17 +18,25 @@
      <tr>
        <td width="30%" class="row1"><div align="right">{$wrm_db_name_text}</div></td>
        <td width="30%"><div align="center">
-         <select name="sql_db_list_name" class="post">
-			{html_options values=$sql_db_name_values selected=$sql_db_name_selected output=$sql_db_name_values}		
-          </select>     
+		 {html_options name=sql_db_list_name options=$sql_db_name_values selected=$sql_db_name_selected class="POST"}    
        </div></td>
        <td width="40%">&nbsp;</td>
      </tr>
+     {if $show_create_new_DB == TRUE}
      <tr>
        <td>&nbsp;</td>
-       <td><div align="center"><input type="text" name="wrm_db_create_name" class="post" value="{$wrm_db_create_name}" /></div></td>
+       <td>
+       	   <div align="center">
+			{if $enable_wrm_db_create_name == TRUE}
+				<input type="text" name="wrm_db_create_name" class="post" value="{$wrm_db_create_name}" />
+			{else}
+				<input type="text" name="wrm_db_create_name" class="post" value="{$wrm_db_create_name}" disabled />
+			{/if}
+       	   </div>
+       </td>
        <td class="row1">{$only_if_create_new_tab_text}</td>
      </tr>
+       {/if}
      <tr>
        <td>&nbsp;</td>
        <td>&nbsp;</td>
@@ -44,6 +51,7 @@
      </tr>
 
    </table>
+  </tr>
   <tr>
     <td>&nbsp;</td>
   </tr>

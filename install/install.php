@@ -50,7 +50,7 @@ if ($step == 2)
 {
 	if (isset($_POST['classlang_type']))
 	{
-		$lang = $_POST['classlang_type'];
+		//$lang = $_POST['classlang_type'];
 	}
 }
 
@@ -131,29 +131,41 @@ else if($step == "1")
 	include_once ("includes/page_header.php");
 
 	schow_online_versionnr();
-	
-	$FoundProblem_dir_fp = FALSE;
+
+	create_armory_directory_path();
+
+	$show_next_bd = TRUE;
 	
 	$writable_dir_cache_bgcolor = "green";
 	$writable_dir_cache_value = $wrm_install_lang['yes'];
 	
 	//from /include/function.php
 	//load all lang file in a array
-	$files = get_language_filename();
+	$array_lang_files = get_language_filename();
 
 	$phpversion = (int)(str_replace(".", "", phpversion()));
 
 	//fileperm: Returns TRUE = success or FALSE = failure
-	if (!($dir_cache_fp = chmod("./cache/",0776)))
+	if (!(is_writable ("../cache/")))
 	{
-		$FoundProblem_dir_fp = TRUE;
+		$show_next_bd = FALSE;
 		$writable_dir_cache_bgcolor = "red";
 		$writable_dir_cache_value = $wrm_install_lang['no'];
+		
+		if (fileperms("../cache/"))
+		{
+			$writable_dir_cache_perms_value = " (" . substr(decoct(fileperms("../cache")),1) . ")";
+		}
+		else
+			$writable_dir_cache_perms_value = "";
 	}
-
-	if($phpversion<401)
+	else
+		$writable_dir_cache_perms_value = "";
+		 
+	if($phpversion < 401)
 	{
 		$phpversion_bgcolor = "red";
+		$show_next_bd = FALSE;
 	}
 	else
 	{
@@ -164,6 +176,7 @@ else if($step == "1")
 	if ($gd < "4.1.0")
 	{
 		$mysqlversion_bgcolor = "red";
+		$show_next_bd = FALSE;
 	}
 	else
 	{
@@ -173,23 +186,33 @@ else if($step == "1")
 	// NOTE: BE CAREFUL WITH IS__WRITEABLE, that is NOT the built in is_writeable function. (See Double Underscore)
 	if (is_file($wrm_config_file))
 	{
+		chmod($wrm_config_file,0777);
 		if(!is__writeable($wrm_config_file))
 		{
 			$writeable_config_bgcolor = "red";
 			$writeable_config_value = $wrm_install_lang['no'];
+			$show_next_bd = FALSE;
+			if (fileperms($wrm_config_file))
+			{
+				$wrm_config_file_fileperms = " (" . substr(decoct(fileperms($wrm_config_file)),2) . ")";
+			}
+			else
+				$wrm_config_file_fileperms = "";
 		}
 		else
 		{
+			$wrm_config_file_fileperms = "";
 			$writeable_config_bgcolor = "green";
 			$writeable_config_value = $wrm_install_lang['yes'];
 		}
 	}
 	else
 	{
+		$wrm_config_file_fileperms = "";
 		$writeable_config_bgcolor = "green";
 		$writeable_config_value = $wrm_install_lang['yes'];		
 	}
-	
+		
 	include_once ("includes/page_header.php");
 	$smarty->assign(
 		array(
@@ -212,10 +235,12 @@ else if($step == "1")
 				"writeable_config_value" => $writeable_config_value,
 				"yes" => $wrm_install_lang['yes'],
 				"writeable_config_bgcolor" => $writeable_config_bgcolor,
+				"file_perm_value" => $wrm_config_file_fileperms,
 		
 				"writable_dir_cache_text" => $wrm_install_lang['writable_dir_cache_text'],
 				"writable_dir_cache_bgcolor" => $writable_dir_cache_bgcolor,
 				"writable_dir_cache_value" => $writable_dir_cache_value,
+				"writable_dir_cache_perms_value" => $writable_dir_cache_perms_value,
 		
 				"php_variables_text" => $wrm_install_lang['php_variables'],
 				"SERVER_SERVER_SOFTWARE_text" => '_SERVER["SERVER_SOFTWARE"]',
@@ -226,10 +251,11 @@ else if($step == "1")
 				"SERVER_SERVER_NAME_value" => $_SERVER["SERVER_NAME"],
 				"SERVER_HTTP_ACCEPT_CHARSET_text" => '_SERVER["HTTP_ACCEPT_CHARSET"]',
 				"SERVER_HTTP_ACCEPT_CHARSET_value" => $_SERVER["HTTP_ACCEPT_CHARSET"],
-			    "classlang_type_values" => $files,
-			    "classlang_type_selected" => $lang,
+			    "array_lang_files_values" => $array_lang_files,
+			    "classlang_type_selected" => $filename_install,
 			    "select_lang" => $wrm_install_lang['select_lang'],
 				"bd_submit" => $wrm_install_lang['bd_submit'],
+				"show_next_bd" => $show_next_bd,
 		)
 	);
 	
@@ -315,6 +341,7 @@ else if($step == 2) {
  * */
 else if($step == 3) {
 
+//	echo $_POST['sql_db_list_name']. ":" . $_GET['sql_db_list_name'];
 	$wrm_db_server_hostname = $_POST['wrm_db_server_hostname'];
 	$wrm_db_username = $_POST['wrm_db_username'];
 	$wrm_db_password = $_POST['wrm_db_password'];
@@ -326,6 +353,7 @@ else if($step == 3) {
 	
 	$wrm_config_writeable = FALSE;
 	$FOUNDERROR_Connection = FALSE;
+	$enable_wrm_db_create_name = FALSE;
 	
 	if(is_file($wrm_config_file) and !isset($_POST['wrm_db_server_hostname']))
 	{
@@ -371,19 +399,25 @@ else if($step == 3) {
 
 	//load all DATABASES name in a array ($sql_all_dbname)
 	$sql_db_name_values = array();
+	//$sql_db_name_values[] = "Choose a Database";//first item in array
 	$sql_db_all = "SHOW DATABASES";
 
 	$result_db_all = $wrm_install->sql_query($sql_db_all) or print_error($sql_db_all, $wrm_install->sql_error(), 1);
 	while ($data_db_all = $wrm_install->sql_fetchrow($result_db_all,true))
 	{
 		//show all TABLES
-		$sql_db_name_values[] = $data_db_all['Database'];
+		//# without private sql Database -> readonly
+		if  (	( $data_db_all['Database'] != "mysql" ) and 
+				( $data_db_all['Database'] != "information_schema" )
+			)
+		{
+			$sql_db_name_values[$data_db_all['Database']] = $data_db_all['Database'];
+		}
 	}
 	
 	//add create db
-	$sql_db_name_values[] = " - ".$wrm_install_lang['create_db']." - ";
+//	$sql_db_name_values[] = " - ".$wrm_install_lang['create_db']." - ";//last item in array
 	$wrm_install->sql_close();
-	
 
 	include_once ("includes/page_header.php");
 	$smarty->assign(
@@ -401,12 +435,14 @@ else if($step == 3) {
 			"wrm_db_create_name" => $wrm_install_lang['none'],
 			"wrm_db_server_hostname" => $wrm_db_server_hostname,
 			"wrm_db_username" => $wrm_db_username,
-			"wrm_db_password" => $wrm_db_password,		
+			"wrm_db_password" => $wrm_db_password,
+			"enable_wrm_db_create_name" => $enable_wrm_db_create_name,		
 			"error_msg" => $error_msg,
 			"only_if_create_new_tab_text" => $wrm_install_lang['only_if_create_new_tab'],
-			"step3_sql_server_pref" => $wrm_install_lang['step2_sql_server_pref'],
+			"head_title_wrm_sql_server" => $wrm_install_lang['head_title_wrm_sql_server'],
 			"hittingsubmit" => $wrm_install_lang['hittingsubmit'],
 			"bd_submit" => $wrm_install_lang['bd_submit'],
+			"show_create_new_DB" => FALSE,
 		)
 	);
 

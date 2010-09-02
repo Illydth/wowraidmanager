@@ -30,8 +30,8 @@ $wrm_install_lang['only_if_create_new_tab'] = 'nur, wenn sie : "erstelle neue Da
 $wrm_install_lang['default'] = 'Voreinstellung';
 $wrm_install_lang['php_variables'] = 'PHP Variablen';
 $wrm_install_lang['error_found_table_titel'] = 'fertig, es wurden existierende Tabellen gefunden';
-$wrm_install_lang['error_found_table_bd_back'] = 'Knopf zurück : verändere Tabellen Prefix oder Databank';
-$wrm_install_lang['error_found_table_bd_cont'] = 'Knopf weiter : löscht alle existierenden Tabellen, bevor sie neu nstalliert werden';
+$wrm_install_lang['error_found_table_bd_back'] = 'Knopf zurÃ¼ck : verÃ¤ndere Tabellen Prefix oder Databank';
+$wrm_install_lang['error_found_table_bd_cont'] = 'Knopf weiter : lÃ¶scht alle existierenden Tabellen, bevor sie neu nstalliert werden';
 
 $wrm_install_lang['install_bridge_titel'] = 'Bridge Einstellungen';
 $wrm_install_lang['txt_group'] = 'Gruppe';
@@ -50,7 +50,7 @@ $wrm_install_lang['bd_start'] = 'Start';
 $wrm_install_lang['install_version_text'] = 'Version';
 $wrm_install_lang['install_version_current'] = 'Installations-Dateien sind auf dem Neuesten Stand';
 $wrm_install_lang['install_version_info_header'] = 'Version Information';
-$wrm_install_lang['install_version_header'] = 'Eine neuere Version von WoW Raid Manager ist verfügbar!';
+$wrm_install_lang['install_version_header'] = 'Eine neuere Version von WoW Raid Manager ist verfÃ¼gbar!';
 $wrm_install_lang['install_version_message01'] = 'Deine Installations-Dateien von WoW Raid Manager ist nicht aktuell.';
 $wrm_install_lang['install_version_message02'] = 'Ein Update wird empfohlen';
 $wrm_install_lang['install_version_message03'] = 'die letzte/neueste Version ist';
@@ -68,7 +68,7 @@ $wrm_install_lang['step2dbserverusername'] = 'SQL Server Benutzername';
 $wrm_install_lang['step2dbserverpwd'] = 'SQL Server Passwort';
 $wrm_install_lang['step2WRMtableprefix'] = 'WRM Tabellen Prefix';
 $wrm_install_lang['step2installtype'] = 'Art der Installation';
-$wrm_install_lang['step2error01'] = 'Bei falschen Eingaben könnte es zu unvorhersehbaren Auswirkungen kommen, eine Hilfe wird nicht angeboten!';
+$wrm_install_lang['step2error01'] = 'Bei falschen Eingaben kÃ¶nnte es zu unvorhersehbaren Auswirkungen kommen, eine Hilfe wird nicht angeboten!';
 
 //step 3
 $wrm_install_lang['step3errordbcon'] = 'Fehler: konnte keine Verbindung zur angegeben Datenbank herstellen.<br>';
@@ -76,6 +76,7 @@ $wrm_install_lang['step3errorschema'] = 'Fehler: das Upgrade Schema konnte nicht
 $wrm_install_lang['step3errorsql'] = 'Fehler bei der Installation :<br> SQL String: $sql<br> Bericht: ';
 $wrm_install_lang['step3installinfo'] = 'Wenn du dies hier lesen kannst, sind keine Fehler bei der Installation der SQL-Tabellen aufgetreten!';
 $wrm_install_lang['step3errorversion'] = 'Die Software-Version in version.php entsprich nicht der Version der Datenbank in der Version-Tabelle.';
+$wrm_install_lang['head_title_wrm_sql_server'] = "WRM Install SQL Server";
 
 //step done
 $wrm_install_lang['stepdonefinished'] = 'Fertig';
@@ -95,9 +96,9 @@ $wrm_install_lang['txtconfig'] = 'Konfiguration';
 //errors
 $wrm_install_lang['connect_socked_error'] = 'Fehler beim Aufbau der Socket-Verbindung:  %s';
 $wrm_install_lang['invalid_group_title'] = 'Gruppe existiert';
-$wrm_install_lang['invalid_group_message'] = 'Die ausgewählte Gruppe ist bereits ein Teil dieses Sets. Bitte benutze in deinem Browser die "Zurück"-Taste und versuche es erneut.';
-$wrm_install_lang['invalid_option_title'] = 'Ungültigte Eingabe für die Seite';
-$wrm_install_lang['invalid_option_msg'] = 'Du hast versucht, diese Seite mit ungültigen Eingaben aufzurufen.';
+$wrm_install_lang['invalid_group_message'] = 'Die ausgewÃ¤hlte Gruppe ist bereits ein Teil dieses Sets. Bitte benutze in deinem Browser die "ZurÃ¼ck"-Taste und versuche es erneut.';
+$wrm_install_lang['invalid_option_title'] = 'UngÃ¼ltigte Eingabe fÃ¼r die Seite';
+$wrm_install_lang['invalid_option_msg'] = 'Du hast versucht, diese Seite mit ungÃ¼ltigen Eingaben aufzurufen.';
 $wrm_install_lang['no_user_msg'] = 'Der Benutzer, den du dir ansehen mchtest, existiert nicht oder wurde gelscht.';
 $wrm_install_lang['no_user_title'] = 'Benutzer existiert nicht';
 $wrm_install_lang['print_error_critical'] = 'kritischen Fehler entdeckt!';
@@ -155,7 +156,7 @@ $wrm_install_lang['bridge_step1_iumsfilladmindesc'] = 'fÃ¼llen sie alle Werte fÃ
 $wrm_install_lang['wrm_versions_nr_current_text'] = "WRM (@Server) Version Nr";
 $wrm_install_lang['wrm_versions_nr_from_install_text'] = "Installation Version Nr";
 $wrm_install_lang['wrm_up_to_date'] = "Deine WoW Raid Manager Version ist auf dem aktuellsten Stand";
-$wrm_install_lang['error_install_version_to_old_text'] = "Installation (WRM) Version ist ui alt für ein Upgrade";
+$wrm_install_lang['error_install_version_to_old_text'] = "Installation (WRM) Version ist zu alt fÃ¼r ein Upgrade";
 
 //install_bridges
 $wrm_install_lang['bridge_step0_titel'] = "Scan-Ergebnis (@ dein Server): Gefundene Bridges ";

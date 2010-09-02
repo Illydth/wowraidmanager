@@ -251,20 +251,22 @@ function desanitize($array) {
  * @param boolean $Suffix
  * @return boolean
  */
-function get_language_filename($Suffix = FALSE)
+function get_language_filename($Suffix = FALSE, $linkfilename = "install.php")
 {
+	$array_lang_files = array();
 	$lang_dir = 'language';
 	$dh = opendir($lang_dir);
 	while($filename = readdir($dh))
 	{
-		$filename = substr($filename, 7);//cut from position 7 to filename.lenght end
-		$files[] = str_replace('.php','',$filename);
+		if ( strlen($filename) > 2)
+		{
+			$filename = substr($filename, 7);//cut from position 7 to filename.lenght end
+			$array_lang_files[$linkfilename."?lang=".str_replace('.php','',$filename)."&"] = str_replace('.php','',$filename);
+			//$filename_install = "install.php?lang=".$lang."&";
+		}
 	}
 
-	sort($files);
-	array_shift($files);
-	array_shift($files);
-	return ($files);
+	return ($array_lang_files);
 }
 
 /***
@@ -700,5 +702,15 @@ function test_bridge_connection($bridge_name, $bridge_database_name, $bridge_db_
 	{
 		return (2);
 	}
+}
+/**
+ * Create Armory Directory
+ */
+function create_armory_directory_path($mode = "0777")
+{
+
+	mkdir("../cache/armory_cache/",$mode);
+	mkdir("../cache/armory_log/",$mode);
+	mkdir("../cache/raid_lua/",$mode);
 }
 ?>

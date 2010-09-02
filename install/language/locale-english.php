@@ -76,6 +76,7 @@ $wrm_install_lang['step3errorschema'] = 'Error opening upgrade schema';
 //$wrm_install_lang['step3errorsql'] = 'Error installing<br>Query: $sql<br>Reported: ';
 $wrm_install_lang['step3installinfo'] = 'If you are seeing this then no errors occurred during table installation!';
 $wrm_install_lang['step3errorversion'] = 'The software version in version.php doesn\'t match database version in version table.';
+$wrm_install_lang['head_title_wrm_sql_server'] = "WRM Install SQL Server";
 
 //step done
 $wrm_install_lang['stepdonefinished'] = 'Finished';

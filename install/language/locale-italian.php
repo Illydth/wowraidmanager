@@ -76,6 +76,7 @@ $wrm_install_lang['step3errorschema'] = 'Errore durante l\'aggiornamento';
 $wrm_install_lang['step3errorsql'] = 'Errore d\'installazione<br>Query: $sql<br>Riportato: ';
 $wrm_install_lang['step3installinfo'] = 'Tabelle create correttamente!';
 $wrm_install_lang['step3errorversion'] = 'La versione del software in version.php non combacia con la versione del database nella tabella delle versioni.';
+$wrm_install_lang['head_title_wrm_sql_server'] = "WRM Install SQL Server";
 
 //step done
 $wrm_install_lang['stepdonefinished'] = 'Finito';

@@ -38,7 +38,7 @@ $wrm_install_lang['txt_group'] = 'Group';//new
 $wrm_install_lang['txt_alt_group'] = 'Alternative Group';//new
 $wrm_install_lang['upgrade_headtitle'] = 'Upgrade Modus';//new
 $wrm_install_lang['expert_modus'] = 'Expert Modus';//new
-$wrm_install_lang['hittingsubmit'] = 'V�nligen verifiera all information innan du forts�tter vidare!';
+$wrm_install_lang['hittingsubmit'] = 'V�nligen verifiera all information innan du forts�tter vidare!';
 
 //botton
 $wrm_install_lang['bd_continue'] = 'Fortsätt';
@@ -76,6 +76,7 @@ $wrm_install_lang['step3errorschema'] = 'Fel vid öppnandet av uppgraderings sch
 $wrm_install_lang['step3errorsql'] = 'Fel vid installation <br>Förfrågan: $sql<br>Rapporterade: ';
 $wrm_install_lang['step3installinfo'] = 'Om du ser detta så skedde där inga fel under installationen av tabeller!';
 $wrm_install_lang['step3errorversion'] = 'Mjukvarans version i version.php matchar inte databasens version i versions tabellen.';
+$wrm_install_lang['head_title_wrm_sql_server'] = "WRM Install SQL Server";
 
 //step done
 $wrm_install_lang['stepdonefinished'] = 'Färdigt';
