@@ -9,11 +9,15 @@
       <table width="100%" border="0" cellspacing="1" cellpadding="3" class="dataOutline">
         <tr>
           <td width="200" class="row1"><span class="headmed"><strong>{$locations_new.eventtype_text}</strong></span></td>
-          <td class="row2">{$locations_new.event_type}</td>
+          <td class="row2">
+          	{html_options name=event_type options=$locations_new.array_event_type selected=$locations_new.selected_event_type class="post" onChange="MM_jumpMenu('self',this,0)"}
+          </td>
         </tr>
         <tr>
           <td width="200" class="row1"><span class="headmed"><strong>{$locations_new.expansion_text}</strong></span></td>
-          <td class="row2">{$locations_new.expansion}</td>
+          <td class="row2">
+          	{html_options name=expansion options=$locations_new.array_expansion selected=$locations_new.selected_expansion id="expansion" class="post" onChange="MM_jumpMenu('self',this,0)"}
+          </td>
         </tr>
 		<tr>
           <td width="200" class="row1"><span class="headmed"><strong>{$locations_new.event_text}</strong></span></td>
@@ -25,31 +29,40 @@
         </tr>
         <tr>
           <td width="200" class="row1"><span class="headmed"><strong>{$locations_new.location_text}</strong></span></td>
-          <td class="row2">{$locations_new.location}&nbsp;&nbsp;{$locations_new.location_read_only_text}</td>
+          <td class="row2">
+          	<input name="location" value="{$locations_new.location_wow_name}" type="text" id="location" style="width:350px" class="post" DISABLED>
+          	&nbsp;&nbsp;{$locations_new.location_read_only_text}
+          </td>
         </tr>
         <tr>
           <td width="200" class="row1"><span class="headmed"><strong>{$locations_new.shortname_text}</strong></span></td>
-          <td class="row2">{$locations_new.name}</td>
-        </tr>
-        <tr>
-          <td width="200" class="row1"><span class="headmed"><strong>{$locations_new.eventtype_text}</strong></span></td>
-          <td class="row2">{$locations_new.event_type}</td>
+          <td class="row2">
+          		<input name="name" type="text" id="name" value="{$locations_new.location_shortname}" class="post">
+          </td>
         </tr>
         <tr>
           <td width="200" class="row1"><span class="headmed"><strong>{$locations_new.raid_force_text}</strong></span></td>
-          <td class="row2">{$locations_new.raid_force}</td>
+          <td class="row2">
+          	{html_options name=raid_force_id options=$locations_new.array_raid_force selected=$locations_new.selected_raid_force class="post" onChange="MM_jumpMenu('self',this,0)"}
+          	</td>
         </tr>
         <tr>
           <td width="200" class="row1"><span class="headmed"><strong>{$locations_new.minlvl_text}</strong></span></td>
-          <td class="row2">{$locations_new.min_lvl}</td>
+          <td class="row2">
+          	<input name="location_min_lvl" type="text" value="{$locations_new.location_min_lvl}"  class="post" style="width:20px" maxlength="2">
+          </td>
         </tr>
         <tr>
           <td width="200" class="row1"><span class="headmed"><strong>{$locations_new.maxlvl_text}</strong></span></td>
-          <td class="row2">{$locations_new.max_lvl}</td>
+          <td class="row2">
+            <input name="location_max_lvl" type="text" value="{$locations_new.location_max_lvl}"  class="post" style="width:20px" maxlength="2">
+          </td>
         </tr>
         <tr>
           <td width="200" class="row1"><span class="headmed"><strong>{$locations_new.maxattendees_text}</strong></span></td>
-          <td class="row2">{$locations_new.max}</td>
+          <td class="row2">
+          	<input name="number_max_chars" type="text" value="{$locations_new.number_max_chars}"  class="post" style="width:20px" maxlength="2">
+          </td>
         </tr>
       </table></td></tr>
 </table>
@@ -83,7 +96,10 @@
 </table>
 </div><br>
 <div class="contentBody">
-	<div align="center" class="button">{$locations_new.buttons}</div>
+	<div align="center" class="button">
+		<input type="submit" value="{$locations_new.button_01}" name="submit" class="mainoption">
+		<input type="reset" value="{$locations_new.button_reset}" name="reset" class="liteoption">
+	</div>
 </div>
 </form>
 
