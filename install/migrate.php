@@ -34,7 +34,7 @@
 	
 	// Load the Classes Array
 	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "classes";
-	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	$x = 0;
 	while($data = $db_raid->sql_fetchrow($result, true))
 	{
@@ -47,7 +47,7 @@
 	
 	// Load the Races Array
 	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "races";
-	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	$x = 0;			
 	while($data = $db_raid->sql_fetchrow($result, true))
 	{
@@ -59,7 +59,7 @@
 	
 	// Load the Roles Array
 	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "roles";
-	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	$x = 0;			
 	while($data = $db_raid->sql_fetchrow($result, true))
 	{
@@ -72,7 +72,7 @@
 	
 	// Load the Gender Array
 	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "gender";
-	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	$x = 0;			
 	while($data = $db_raid->sql_fetchrow($result, true))
 	{
@@ -84,7 +84,7 @@
 	echo "<br>Processing Locations:<hr>";
 	// Pull list of all database locations.
 	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "locations";
-	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	while($loc_data = $db_raid->sql_fetchrow($result, true))
 	{
 		echo "<br>Processing Location: " . $loc_data['location_id'] . " : " . $loc_data['name'];
@@ -95,7 +95,7 @@
 						VALUES (%s, %s, %s)", quote_smart($loc_data['location_id']), 
 						quote_smart($global_class['class_id']), $loc_data[$global_class['class_code']]);
 
-			$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+			$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		}
 		foreach($wrm_global_roles as $global_role)
 		{
@@ -106,7 +106,7 @@
 							VALUES (%s, %s, %s)", quote_smart($loc_data['location_id']), 
 							quote_smart($global_role['role_id']), $loc_data[$global_role['role_id']]);
 	
-				$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+				$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 			}
 		}
 	}
@@ -114,7 +114,7 @@
 	echo "<br><hr>Processing Raids:<hr>";
 	// Pull list of all database raids.
 	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "raids";
-	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	while($raid_data = $db_raid->sql_fetchrow($result, true))
 	{
 		echo "<br>Processing Raid: " . $raid_data['raid_id'] . " : " . $raid_data['location'];
@@ -125,7 +125,7 @@
 						VALUES (%s, %s, %s)", quote_smart($raid_data['raid_id']), 
 						quote_smart($global_class['class_id']), $raid_data[$global_class['class_code'].'_lmt']);
 
-			$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+			$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		}
 		foreach($wrm_global_roles as $global_role)
 		{
@@ -136,7 +136,7 @@
 							VALUES (%s, %s, %s)", quote_smart($raid_data['raid_id']), 
 							quote_smart($global_role['role_id']), $raid_data[$global_role['role_id'].'_lmt']);
 	
-				$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+				$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 			}
 		}
 	}

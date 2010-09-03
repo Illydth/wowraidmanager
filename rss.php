@@ -26,7 +26,7 @@
 
 	// get raid information in ascending order
 	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "raids WHERE old = 0 ORDER BY start_time ASC";
-	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 
 	// variable to count iterations
 	// stopping at $feeds iterations

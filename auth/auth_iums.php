@@ -72,7 +72,7 @@ function db_password_change($profile_id, $dbusernewpassword)
 	$sql = sprintf("SELECT profile_id FROM " . $phpraid_config['db_prefix'] . "profile WHERE profile_id = %s", 
 					quote_smart($profile_id)
 			);
-	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(),1);
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(),1);
 	if (mysql_num_rows($result) != 1) {
 		//user not found in WRM DB
 		return 2;
@@ -82,7 +82,7 @@ function db_password_change($profile_id, $dbusernewpassword)
 				quote_smart($dbusernewpassword), quote_smart($profile_id)
 			);
 
-	if (($db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1)) == true)
+	if (($db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1)) == true)
 	{
 		//pwd change
 		return 1;
@@ -102,7 +102,7 @@ function password_check($oldpassword, $profile_id, $encryptflag)
 	$sql = sprintf("SELECT password FROM " . $phpraid_config['db_prefix'] . "profile WHERE profile_id = %s",
 					quote_smart($profile_id)
 			);
-	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	$data = $db_raid->sql_fetchrow($result, true);
 	
 	if ($encryptflag)
@@ -148,7 +148,7 @@ function phpraid_login() {
 					" WHERE ".$db_user_name." = %s", quote_smart($username)
 			);
 
-	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	
 	while($data = $db_raid->sql_fetchrow($result, true)) 
 	{
@@ -187,7 +187,7 @@ function phpraid_login() {
 			/* $sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "profile WHERE profile_id = %s",
 							quote_smart($_SESSION['profile_id'])
 					);
-			$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+			$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 			if ($data = $db_raid->sql_fetchrow($result))
 			{*/
 				//We found the profile in the database, update.
@@ -196,7 +196,7 @@ function phpraid_login() {
 							quote_smart($_SESSION['email']),quote_smart($wrmuserpassword),
 							quote_smart(time()),quote_smart($_SESSION['profile_id'])
 						);
-				$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+				$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 			}
 			else
 			{
@@ -205,13 +205,13 @@ function phpraid_login() {
 							quote_smart($_SESSION['profile_id']), quote_smart($_SESSION['email']), quote_smart($wrmuserpassword),
 							quote_smart($user_priv), quote_smart(strtolower($_SESSION['username'])), quote_smart(time())
 						);
-				$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+				$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 			}*/
 
 			$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "profile SET last_login_time=%s WHERE profile_id=%s",
 							quote_smart(time()),quote_smart($_SESSION['profile_id']));
 	
-			$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+			$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 			
 			//security fix
 			unset($username);

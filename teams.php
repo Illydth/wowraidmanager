@@ -119,7 +119,7 @@ if($mode == 'view')
 		)
 	);
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "teams WHERE (raid_id=%s and char_id='-1') or char_id='-2'",quote_smart($raid_id));
-	$teams_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$teams_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	while($team = $db_raid->sql_fetchrow($teams_result, true))
 	{
 		array_push($current_teams,
@@ -150,7 +150,7 @@ if($mode == 'view')
 					  $phpraid_config['db_prefix'] . "chars " .
 			"where " . $phpraid_config['db_prefix'] . "teams.char_id = " . $phpraid_config['db_prefix'] . "chars.char_id " .
 			"and " . $phpraid_config['db_prefix'] . "teams.raid_id = %s", quote_smart($raid_id));
-	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		
 	while($team = $db_raid->sql_fetchrow($result, true))
 	{
@@ -170,7 +170,7 @@ if($mode == 'view')
 
 		// Get the Guild Name to Display instead of Just the ID
 		$sql = sprintf("SELECT guild_name FROM " . $phpraid_config['db_prefix'] . "guilds WHERE guild_id=%s",quote_smart($team['guild']));
-		$guild_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$guild_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		$guild_data = $db_raid->sql_fetchrow($guild_result, true);
 		$guild_name = $guild_data['guild_name'];
 				
@@ -257,7 +257,7 @@ if($mode == 'view')
 	//*************************************************
 	// get everyone signed up for this raid:
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id=%s and cancel='0' and queue='0'",quote_smart($raid_id));
-	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 
 	$X=0;
 	while($data = $db_raid->sql_fetchrow($result, true))
@@ -269,7 +269,7 @@ if($mode == 'view')
 
 	// get everyone already on a team for this raid
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "teams WHERE raid_id=%s",quote_smart($raid_id));
-	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 
 	$X=0;
 	while($data = $db_raid->sql_fetchrow($result, true))
@@ -307,7 +307,7 @@ if($mode == 'view')
 
 		// get character data from the characters table.
 		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id=%s",quote_smart($char_id));
-		$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		$data = $db_raid->sql_fetchrow($result, true);
 
 		$action='<input type="checkbox" name="addtolist' . $data['char_id'] . '" value="' . $data['char_id'] . '">';
@@ -319,7 +319,7 @@ if($mode == 'view')
 		
 		// Get the Guild Name to Display instead of Just the ID
 		$sql = sprintf("SELECT guild_name FROM " . $phpraid_config['db_prefix'] . "guilds WHERE guild_id=%s",quote_smart($data['guild']));
-		$guild_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$guild_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		$guild_data = $db_raid->sql_fetchrow($guild_result, true);
 		$guild_name = $guild_data['guild_name'];
 				
@@ -376,7 +376,7 @@ if($mode == 'view')
 	
 	// get character data from the teams table.
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "teams WHERE (raid_id=%s and char_id='-1') or char_id='-2'",quote_smart($raid_id));
-	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	while ($data = $db_raid->sql_fetchrow($result, true))
 	{
 		array_push($add_data,
@@ -401,7 +401,7 @@ elseif($mode == 'new')
 		else
 			$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "teams VALUES('0',%s,%s,'-1')",quote_smart($raid_id),quote_smart($team_name));
 
-		$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 
 		log_create('teams',mysql_insert_id(),$name);
 	}
@@ -417,7 +417,7 @@ elseif($mode == 'remove')
 		log_hack();
 
 	$sql = sprintf("DELETE FROM " . $phpraid_config['db_prefix'] . "teams WHERE raid_id=%s and char_id=%s", quote_smart($raid_id),quote_smart($char_id));
-	$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 
 	header("Location: teams.php?mode=view&raid_id=$raid_id");
 }
@@ -438,7 +438,7 @@ elseif($mode == 'add')
 	{
 		//get team_name from team_id: Only one team name can be passed at any given time, so only retrieve team once.
 		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "teams WHERE team_id=%s",quote_smart($team_id));
-		$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		$data = $db_raid->sql_fetchrow($result, true);
 		$team_name = $data['team_name'];
 	
@@ -451,7 +451,7 @@ elseif($mode == 'add')
 				//insert character and raid to teams table.
 				$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "teams (`team_id`,`raid_id`,`team_name`,`char_id`)
 							VALUES ('0',%s,%s,%s)", quote_smart($raid_id),quote_smart($team_name),quote_smart($char_id));
-				$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+				$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	
 				log_create('teams',mysql_insert_id(),$title);
 			}
@@ -470,7 +470,7 @@ elseif($mode == 'delteam')
 
 			//delete from teams table.
 			$sql = sprintf("DELETE FROM " . $phpraid_config['db_prefix'] . "teams WHERE team_id=%s", quote_smart($team_id));
-			$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+			$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 
 			log_delete('teams',$title);
 		}

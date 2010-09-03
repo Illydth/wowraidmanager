@@ -76,7 +76,7 @@ if($_GET['mode'] == 'view')
 {
 	$announcements = array();
 	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "announcements";
-	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	while($data = $db_raid->sql_fetchrow($result, true))
 	{
 		$id = $data['announcements_id'];
@@ -186,7 +186,7 @@ elseif($_GET['mode'] == 'delete')
 			log_delete('announcement',$delete_name);
 	
 			$sql = sprintf("DELETE FROM " . $phpraid_config['db_prefix'] . "announcements WHERE announcements_id=%s", quote_smart($id));
-			$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+			$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	
 			header("Location: announcements.php?mode=view");
 		}
@@ -212,7 +212,7 @@ elseif(($_GET['mode'] == 'new' || $_GET['mode'] = 'edit') && isset($_POST['submi
 		$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "announcements (`title`,`message`,`timestamp`,`posted_by`)
 		VALUES (%s,%s,%s,%s)", quote_smart($title),quote_smart($message),quote_smart($timestamp),quote_smart($posted_by));
 	
-		$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 
 		log_create('announcement',mysql_insert_id(),$title);
 	}
@@ -220,7 +220,7 @@ elseif(($_GET['mode'] == 'new' || $_GET['mode'] = 'edit') && isset($_POST['submi
 	{
 		$id = scrub_input($_GET['id']);
 		$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "announcements SET title=%s,message=%s WHERE announcements_id=%s",quote_smart($title),quote_smart($message),quote_smart($id));
-		$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	}
 	header("Location: announcements.php?mode=view");
 }
@@ -235,7 +235,7 @@ if($_GET['mode'] != 'delete')
 		$id = scrub_input($_GET['id']);
 	
 		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "announcements WHERE announcements_id=%s",quote_smart($id));
-		$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		$data = $db_raid->sql_fetchrow($result, true);
 	
 		$form_action = 'announcements.php?mode=edit&amp;id=' . $id;

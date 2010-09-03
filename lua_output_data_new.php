@@ -64,11 +64,11 @@ function output_macro_drafted($raid_id)
 	global $db_raid, $text, $phpraid_config;
 	
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id=%s AND queue='0' AND cancel='0'",quote_smart($raid_id));
-	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	while($data = $db_raid->sql_fetchrow($result, true))
 	{
 		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id=%s",quote_smart($data['char_id']));
-		$result2 = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$result2 = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		$data2 = $db_raid->sql_fetchrow($result2, true);
 		$data2['name'] = ucfirst(strtolower_wrap($data2['name'], "UTF-8"));
 		$drafted_text .= "/i {$data2['name']}\n";
@@ -82,11 +82,11 @@ function output_macro_queued($raid_id)
 	global $db_raid, $text, $phpraid_config;
 	
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id=%s AND queue='1' AND cancel='0'",quote_smart($raid_id));
-	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	while($data = $db_raid->sql_fetchrow($result, true))
 	{
 		$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id='" . $data['char_id'] . "'";
-		$result2 = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$result2 = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		$data2 = $db_raid->sql_fetchrow($result2, true);
 		$data2['name'] = ucfirst(strtolower_wrap($data2['name'], "UTF-8"));
 		$queued_text .= "/i {$data2['name']}\n";
@@ -112,13 +112,13 @@ function output_lua_rim()
 	$file_date_stamp=gmdate("YmdHis");
 	// Obtain the total raid count for the raid_count output.
 	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "raids WHERE ".$raid_sql_where." ORDER BY invite_time ASC";
-	$raids_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$raids_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	$total_raid_num = $db_raid->sql_numrows($raids_result);
 	// Get the total number of classes, this is max class_index from the classes table.
 	//  This will come in handy later when we're creating the LUA output.
 	$sql = "SELECT max(class_index) as max_class_index " .
 			"FROM ".$phpraid_config['db_prefix']."classes";
-	$max_class_query = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$max_class_query = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	$max_class_records = $db_raid->sql_fetchrow($max_class_query, true);
 	$max_class_index = $max_class_records['max_class_index'];
 
@@ -140,7 +140,7 @@ function output_lua_rim()
 		// Select Distinct guild_server from wrm_guilds
 		$sql = "SELECT DISTINCT guild_server as guild_server " .
 				"FROM ".$phpraid_config['db_prefix']."guilds";
-		$guild_server_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$guild_server_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		while($guild_server_data = $db_raid->sql_fetchrow($guild_server_result, true))
 		{
 			$server = $guild_server_data['guild_server'];
@@ -153,7 +153,7 @@ function output_lua_rim()
 					"WHERE a.guild_id = b.guild_id " .
 					"AND a.guild_server = '" . $server . "' " .
 					"ORDER BY b.raid_force_name";
-			$rf_list_query = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+			$rf_list_query = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 			while($rf_list_records = $db_raid->sql_fetchrow($rf_list_query, true))
 			{
 				$lua_output .= "\t\t[\"". $rf_list_records['raid_force_name'] . "\"] = {\n";  //Output
@@ -164,7 +164,7 @@ function output_lua_rim()
 				$sql = "SELECT * FROM ".$phpraid_config['db_prefix']."raids 
 						WHERE raid_force_id = '" . $rf_list_records['raid_force_id'] . "' 
 						AND " . $raid_sql_where . " ORDER BY invite_time ASC"; // raid_sql_where from lua_output.php
-				$raids_list_query = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+				$raids_list_query = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 				while($raid_data = $db_raid->sql_fetchrow($raids_list_query, true))
 				{
 					$location_data=addslashes($raid_data['location']);
@@ -201,13 +201,13 @@ function output_lua_rim()
 					elseif ($phpraid_config['lua_output_sort_signups'] == 2)
 						$order_by = 'ORDER BY '.$phpraid_config['db_prefix'].'signups.timestamp ASC';
 					$sql1 = $sql."0 ".$order_by.";";
-					$signup_result = $db_raid->sql_query($sql1) or print_error($sql1, mysql_error(), 1);
+					$signup_result = $db_raid->sql_query($sql1) or print_error($sql1, $db_raid->sql_error(), 1);
 					while($signup = $db_raid->sql_fetchrow($signup_result, true))
 					{
 						$sql2 = "SELECT team_name " .
 								"FROM ".$phpraid_config['db_prefix']."teams " .
 								"WHERE raid_id=".$raid_data['raid_id']." and char_id=".$signup['ID'];
-						$team_result = $db_raid->sql_query($sql2) or print_error($sql2, mysql_error(), 1);
+						$team_result = $db_raid->sql_query($sql2) or print_error($sql2, $db_raid->sql_error(), 1);
 						$team = $db_raid->sql_fetchrow($team_result, true);
 			
 						// Determine access_type for each character for each raid.
@@ -217,7 +217,7 @@ function output_lua_rim()
 						$sql3 = "SELECT profile_id " .
 								"FROM ".$phpraid_config['db_prefix']."profile " .
 								"WHERE username='".$raid_officer."'";
-						$officer_profile = $db_raid->sql_query($sql3) or print_error($sql3, mysql_error(), 1);
+						$officer_profile = $db_raid->sql_query($sql3) or print_error($sql3, $db_raid->sql_error(), 1);
 						$raid_officer_profile_id = $db_raid->sql_fetchrow($officer_profile, true);
 						
 						// Check for Admin Privs for Signup Profile
@@ -253,13 +253,13 @@ function output_lua_rim()
 					elseif ($phpraid_config['lua_output_sort_queue'] == 3)
 						$order_by = 'ORDER BY '.$phpraid_config['db_prefix'].'chars.class ASC';
 					$sql1 = $sql."1 ".$order_by.";";
-					$signup_result = $db_raid->sql_query($sql1) or print_error($sql1, mysql_error(), 1);
+					$signup_result = $db_raid->sql_query($sql1) or print_error($sql1, $db_raid->sql_error(), 1);
 					while($signup = $db_raid->sql_fetchrow($signup_result, true))
 					{
 						$sql2 = "SELECT team_name " .
 								"FROM ".$phpraid_config['db_prefix']."teams " .
 								"WHERE raid_id=".$raid_data['raid_id']." and char_id=".$signup['ID'];
-						$team_result = $db_raid->sql_query($sql2) or print_error($sql2, mysql_error(), 1);
+						$team_result = $db_raid->sql_query($sql2) or print_error($sql2, $db_raid->sql_error(), 1);
 						$team = $db_raid->sql_fetchrow($team_result, true);
 			
 						// Determine access_type for each character for each raid.
@@ -269,7 +269,7 @@ function output_lua_rim()
 						$sql3 = "SELECT profile_id " .
 								"FROM ".$phpraid_config['db_prefix']."profile " .
 								"WHERE username='".$raid_officer."'";
-						$officer_profile = $db_raid->sql_query($sql3) or print_error($sql3, mysql_error(), 1);
+						$officer_profile = $db_raid->sql_query($sql3) or print_error($sql3, $db_raid->sql_error(), 1);
 						$raid_officer_profile_id = $db_raid->sql_fetchrow($officer_profile, true);
 			
 						// Check for Admin Privs for Signup Profile
@@ -360,19 +360,19 @@ function output_lua_rim()
 		// Get Raids for Raid ID and Process It.
 		$sql = "SELECT * FROM ".$phpraid_config['db_prefix']."raids 
 				WHERE " . $raid_sql_where; // raid_sql_where from lua_output.php
-		$raids_list_query = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$raids_list_query = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		$raid_data = $db_raid->sql_fetchrow($raids_list_query, true);
 		
 		// Take the Raid ID and get the Raid Force
 		$sql = "SELECT * FROM ".$phpraid_config['db_prefix']."raid_force
 				WHERE raid_force_id = '" . $raid_data['raid_force_id'] . "'";
-		$raid_force_name_query = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$raid_force_name_query = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		$raid_force_name_data = $db_raid->sql_fetchrow($raid_force_name_query, true);
 	
 		// Take Raid Force Information and get Server.
 		$sql = "SELECT * FROM ".$phpraid_config['db_prefix']."guilds
 				WHERE guild_id = '" . $raid_force_name_data['guild_id'] . "'";
-		$guild_id_query = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$guild_id_query = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		$guild_id_data = $db_raid->sql_fetchrow($guild_id_query, true);
 		
 		$lua_output .= "\t[\"". $guild_id_data['guild_server'] . "\"] = {\n";  //Output
@@ -414,13 +414,13 @@ function output_lua_rim()
 		elseif ($phpraid_config['lua_output_sort_signups'] == 2)
 			$order_by = 'ORDER BY '.$phpraid_config['db_prefix'].'signups.timestamp ASC';
 		$sql1 = $sql."0 ".$order_by.";";
-		$signup_result = $db_raid->sql_query($sql1) or print_error($sql1, mysql_error(), 1);
+		$signup_result = $db_raid->sql_query($sql1) or print_error($sql1, $db_raid->sql_error(), 1);
 		while($signup = $db_raid->sql_fetchrow($signup_result, true))
 		{
 			$sql2 = "SELECT team_name " .
 					"FROM ".$phpraid_config['db_prefix']."teams " .
 					"WHERE raid_id=".$raid_data['raid_id']." and char_id=".$signup['ID'];
-			$team_result = $db_raid->sql_query($sql2) or print_error($sql2, mysql_error(), 1);
+			$team_result = $db_raid->sql_query($sql2) or print_error($sql2, $db_raid->sql_error(), 1);
 			$team = $db_raid->sql_fetchrow($team_result, true);
 	
 			// Determine access_type for each character for each raid.
@@ -430,7 +430,7 @@ function output_lua_rim()
 			$sql3 = "SELECT profile_id " .
 					"FROM ".$phpraid_config['db_prefix']."profile " .
 					"WHERE username='".$raid_officer."'";
-			$officer_profile = $db_raid->sql_query($sql3) or print_error($sql3, mysql_error(), 1);
+			$officer_profile = $db_raid->sql_query($sql3) or print_error($sql3, $db_raid->sql_error(), 1);
 			$raid_officer_profile_id = $db_raid->sql_fetchrow($officer_profile, true);
 			
 			// Check for Admin Privs for Signup Profile
@@ -466,13 +466,13 @@ function output_lua_rim()
 		elseif ($phpraid_config['lua_output_sort_queue'] == 3)
 			$order_by = 'ORDER BY '.$phpraid_config['db_prefix'].'chars.class ASC';
 		$sql1 = $sql."1 ".$order_by.";";
-		$signup_result = $db_raid->sql_query($sql1) or print_error($sql1, mysql_error(), 1);
+		$signup_result = $db_raid->sql_query($sql1) or print_error($sql1, $db_raid->sql_error(), 1);
 		while($signup = $db_raid->sql_fetchrow($signup_result, true))
 		{
 			$sql2 = "SELECT team_name " .
 					"FROM ".$phpraid_config['db_prefix']."teams " .
 					"WHERE raid_id=".$raid_data['raid_id']." and char_id=".$signup['ID'];
-			$team_result = $db_raid->sql_query($sql2) or print_error($sql2, mysql_error(), 1);
+			$team_result = $db_raid->sql_query($sql2) or print_error($sql2, $db_raid->sql_error(), 1);
 			$team = $db_raid->sql_fetchrow($team_result, true);
 	
 			// Determine access_type for each character for each raid.
@@ -482,7 +482,7 @@ function output_lua_rim()
 			$sql3 = "SELECT profile_id " .
 					"FROM ".$phpraid_config['db_prefix']."profile " .
 					"WHERE username='".$raid_officer."'";
-			$officer_profile = $db_raid->sql_query($sql3) or print_error($sql3, mysql_error(), 1);
+			$officer_profile = $db_raid->sql_query($sql3) or print_error($sql3, $db_raid->sql_error(), 1);
 			$raid_officer_profile_id = $db_raid->sql_fetchrow($officer_profile, true);
 	
 			// Check for Admin Privs for Signup Profile
@@ -578,7 +578,7 @@ function output_lua_prv()
 	
 	// Get the Guild and Server from the Selected Configuration.
 	//$sql=sprintf("SELECT * FROM " . $phpraid_config['db_prefix']."guilds WHERE guild_id = %s", quote_smart($phpraid_config['lua_output_guild']));
-	//$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	//$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	//$guild_data = $db_raid->sql_fetchrow($result, true);
 	//$server = $guild_data['guild_server'];
 	//$guild_name = $guild_data['guild_name'];
@@ -589,7 +589,7 @@ function output_lua_prv()
 	//  This will come in handy later when we're creating the LUA output.
 	$sql = "SELECT max(class_index) as max_class_index " .
 			"FROM ".$phpraid_config['db_prefix']."classes";
-	$max_class_query = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$max_class_query = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	$max_class_records = $db_raid->sql_fetchrow($max_class_query, true);
 	$max_class_index = $max_class_records['max_class_index'];
 	
@@ -618,7 +618,7 @@ function output_lua_prv()
 		$sql_where = "raid_id=".quote_smart($raid_id);
 	}
 	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "raids WHERE ".$sql_where." ORDER BY invite_time ASC";
-	$raids_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$raids_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	
 	// base output
 	$lua_output  = "phpRaid_Data = {\n";
@@ -690,7 +690,7 @@ function output_lua_prv()
 		elseif ($phpraid_config['lua_output_sort_signups'] == 2)
 			$order_by = 'ORDER BY '.$phpraid_config['db_prefix'].'signups.timestamp ASC';
 		$sql1 = $sql."0 ".$order_by.";";
-		$signup_result = $db_raid->sql_query($sql1) or print_error($sql1, mysql_error(), 1);
+		$signup_result = $db_raid->sql_query($sql1) or print_error($sql1, $db_raid->sql_error(), 1);
 		while($signup = $db_raid->sql_fetchrow($signup_result, true))
 		{
 			if ($format=="1")
@@ -698,7 +698,7 @@ function output_lua_prv()
 				$sql2 = "SELECT team_name " .
 						"FROM ".$phpraid_config['db_prefix']."teams " .
 						"WHERE raid_id=".$raid_data['raid_id']." and char_id=".$signup['ID'];
-				$team_result = $db_raid->sql_query($sql2) or print_error($sql2, mysql_error(), 1);
+				$team_result = $db_raid->sql_query($sql2) or print_error($sql2, $db_raid->sql_error(), 1);
 				$team = $db_raid->sql_fetchrow($team_result, true);
 
 				// Determine access_type for each character for each raid.
@@ -708,7 +708,7 @@ function output_lua_prv()
 				$sql3 = "SELECT profile_id " .
 						"FROM ".$phpraid_config['db_prefix']."profile " .
 						"WHERE username='".$raid_officer."'";
-				$officer_profile = $db_raid->sql_query($sql3) or print_error($sql3, mysql_error(), 1);
+				$officer_profile = $db_raid->sql_query($sql3) or print_error($sql3, $db_raid->sql_error(), 1);
 				$raid_officer_profile_id = $db_raid->sql_fetchrow($officer_profile, true);
 				
 				// Check for Admin Privs for Signup Profile
@@ -756,7 +756,7 @@ function output_lua_prv()
 		elseif ($phpraid_config['lua_output_sort_queue'] == 3)
 			$order_by = 'ORDER BY '.$phpraid_config['db_prefix'].'chars.class ASC';
 		$sql1 = $sql."1 ".$order_by.";";
-		$signup_result = $db_raid->sql_query($sql1) or print_error($sql1, mysql_error(), 1);
+		$signup_result = $db_raid->sql_query($sql1) or print_error($sql1, $db_raid->sql_error(), 1);
 		while($signup = $db_raid->sql_fetchrow($signup_result, true))
 		{
 			if ($format=="1")
@@ -764,7 +764,7 @@ function output_lua_prv()
 				$sql2 = "SELECT team_name " .
 						"FROM ".$phpraid_config['db_prefix']."teams " .
 						"WHERE raid_id=".$raid_data['raid_id']." and char_id=".$signup['ID'];
-				$team_result = $db_raid->sql_query($sql2) or print_error($sql2, mysql_error(), 1);
+				$team_result = $db_raid->sql_query($sql2) or print_error($sql2, $db_raid->sql_error(), 1);
 				$team = $db_raid->sql_fetchrow($team_result, true);
 
 				// Determine access_type for each character for each raid.
@@ -774,7 +774,7 @@ function output_lua_prv()
 				$sql3 = "SELECT profile_id " .
 						"FROM ".$phpraid_config['db_prefix']."profile " .
 						"WHERE username='".$raid_officer."'";
-				$officer_profile = $db_raid->sql_query($sql3) or print_error($sql3, mysql_error(), 1);
+				$officer_profile = $db_raid->sql_query($sql3) or print_error($sql3, $db_raid->sql_error(), 1);
 				$raid_officer_profile_id = $db_raid->sql_fetchrow($officer_profile, true);
 
 				// Check for Admin Privs for Signup Profile

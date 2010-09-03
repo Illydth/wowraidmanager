@@ -40,7 +40,7 @@ require_once("includes/authentication.php");
 if($_GET['mode'] == 'view')
 {
 	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "boss_kill_type WHERE def='1'";
-	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	$data = $db_raid->sql_fetchrow($result, true);
 	
 	isset($_GET['boss_kill_type']) ? $boss_kill_type_id = scrub_input($_GET['boss_kill_type']) : $boss_kill_type_id = $data['boss_kill_type_id'];
@@ -52,7 +52,7 @@ if($_GET['mode'] == 'view')
 				<option value=""></option>';
 
 	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "boss_kill_type";
-	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	while($data = $db_raid->sql_fetchrow($result, true))
 	{		
 		// Event Type for WoW Calendar
@@ -68,7 +68,7 @@ if($_GET['mode'] == 'view')
 	
 	// Create the Instance List Dropdown
 	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "events WHERE event_type_id='" . $event_type_id . "' AND max LIKE '" . $max . "'";
-	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	while($data = $db_raid->sql_fetchrow($result, true))
 	{
 		//Fill in dropdown that again refreshes page.		
@@ -82,11 +82,11 @@ $wrmsmarty->assign('bosstracking_new',
 	)
 );
 
-	//
-	// Start output of page
-	//
-	require_once('includes/page_header.php');
-	$wrmsmarty->display('bosstracking.html');
-	require_once('includes/page_footer.php');
+//
+// Start output of page
+//
+require_once('includes/page_header.php');
+$wrmsmarty->display('bosstracking.html');
+require_once('includes/page_footer.php');
 
 ?>

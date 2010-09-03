@@ -97,7 +97,7 @@ if(!$db_dkp->db_connect_id)
 // view the character list
 $sql = "SELECT * FROM " . $phpraid_config['eqdkp_db_prefix'] . "members, " . $phpraid_config['eqdkp_db_prefix'] . "classes WHERE " . $phpraid_config['eqdkp_db_prefix'] . "classes.class_id = " . $phpraid_config['eqdkp_db_prefix'] . "members.member_class_id";
 
-$result = $db_dkp->sql_query($sql) or print_error($sql, mysql_error(), 1);
+$result = $db_dkp->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 $members = array();
 
 		

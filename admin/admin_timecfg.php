@@ -115,15 +115,15 @@ if(isset($_POST['submit']))
 	$dst *= 100;
 	
 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'date_format';", quote_smart($d_format));
-	$db_raid->sql_query($sql) or print_error($sql,mysql_error($sql),1);
+	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error($sql),1);
 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'time_format';", quote_smart($t_format));
-	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'ampm';", quote_smart($ampm));
-    $db_raid->sql_query($sql) or print_error($sql,mysql_error($sql),1);
+    $db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error($sql),1);
 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'timezone';", quote_smart($t_zone));
-	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
     $sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'dst';", quote_smart($dst));
-	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
 	
 	header("Location: admin_timecfg.php");
 }

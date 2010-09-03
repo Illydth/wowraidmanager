@@ -82,7 +82,7 @@ $raid_loop_cur = 0;
 $raid_loop_prev = 0;
 
 $sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "raids";
-$raids_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+$raids_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 
 while($raids = $db_raid->sql_fetchrow($raids_result, true)) {
 	$invite = new_date('Y/m/d H:i:s', $raids['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
@@ -138,7 +138,7 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true)) {
 	$raid_class_array = array();
 	$class_color_count = array();
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raid_class_lmt WHERE raid_id = %s", quote_smart($raids['raid_id']));
-	$result_raid_class = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$result_raid_class = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	while($raid_class_data = $db_raid->sql_fetchrow($result_raid_class, true))
 	{
 		$raid_class_array[$raid_class_data['class_id']] = $raid_class_data['lmt'];
@@ -151,11 +151,11 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true)) {
 	$raid_role_array = array();
 	$role_color_count = array();
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raid_role_lmt WHERE raid_id = %s", quote_smart($raids['raid_id']));
-	$result_raid_role = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$result_raid_role = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	while($raid_role_data = $db_raid->sql_fetchrow($result_raid_role, true))
 	{
 		$sql2 = sprintf("SELECT role_name FROM " . $phpraid_config['db_prefix'] . "roles WHERE role_id = %s", quote_smart($raid_role_data['role_id']));
-		$result_role_name = $db_raid->sql_query($sql2) or print_error($sql2, mysql_error(), 1);
+		$result_role_name = $db_raid->sql_query($sql2) or print_error($sql2, $db_raid->sql_error(), 1);
 		$role_name = $db_raid->sql_fetchrow($result_role_name, true);
 		
 		$raid_role_array[$role_name['role_name']] = $raid_role_data['lmt'];
@@ -164,7 +164,7 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true)) {
 	
 	// Get Raid Force Name from Raid Force ID
 	$sql = sprintf("SELECT raid_force_name FROM " . $phpraid_config['db_prefix'] . "raid_force WHERE raid_force_id = %s", quote_smart($raids['raid_force_id']));
-	$result_raid_force_name = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$result_raid_force_name = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	$raid_force_name_data = $db_raid->sql_fetchrow($result_raid_force_name, true);
 	
 	if ($raids['raid_force_id'] == 0)
@@ -268,7 +268,7 @@ $wrmsmarty->assign('header_data',
 $announcements = array();
 $announcement_header=$phprlang['announcements_header'];
 $sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "announcements";
-$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 if($db_raid->sql_numrows($result) > 0)
 {
 	/* fetch rows in reverse order */

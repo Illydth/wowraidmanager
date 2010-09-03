@@ -80,7 +80,7 @@ if($_GET['mode'] == 'delete')
 	{
 		$table = $phpraid_config['db_prefix'] . substr(quote_smart($logtype), 1, strlen(quote_smart($logtype)) - 2);
 		$sql = "TRUNCATE TABLE " . $table;
-		$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		header("Location: admin_logs.php");
 	}
 }
@@ -212,7 +212,7 @@ else
 
 	// creation logs
 	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "logs_create $sql_where $sql_order $sql_order2";
-	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 
 	$create = array();
 	
@@ -222,7 +222,7 @@ else
 		$time = new_date($phpraid_config['time_format'],$data['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']);
 
 		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "profile WHERE profile_id=%s", quote_smart($data['profile_id']));
-		$data_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$data_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		$data_profdetail = $db_raid->sql_fetchrow($data_result);
 
 		array_push($create, sprintf($phprlang['log_create'],$date,$time,$data['profile_id'],$data_profdetail['username'],$data['ip'],$data['type'],$data['create_id'],scrub_input($data['create_name'])));
@@ -230,7 +230,7 @@ else
 
 	// deletion logs
 	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "logs_delete $sql_where $sql_order $sql_order2";
-	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 
 	$delete = array();
 	
@@ -240,7 +240,7 @@ else
 		$time = new_date($phpraid_config['time_format'],$data['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']);
 
 		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "profile WHERE profile_id=%s", quote_smart($data['profile_id']));
-		$data_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$data_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		$data_profdetail = $db_raid->sql_fetchrow($data_result);
 
 		array_push($delete, sprintf($phprlang['log_delete'],$date,$time,$data['profile_id'],$data_profdetail['username'],$data['ip'],$data['type'],scrub_input($data['delete_name'])));
@@ -259,7 +259,7 @@ else
 	}
 
 	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "logs_hack $sql_where $sql_order_hack $sql_order2_hack";
-	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 
 	$hack = array();
 	
@@ -273,7 +273,7 @@ else
 
 	// raid logs
 	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "logs_raid $sql_where $sql_order $sql_order2";
-	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 
 	$raid = array();
 	
@@ -284,15 +284,15 @@ else
 
 		//array_push($raid, sprintf($phprlang['log_create'],$date,$time,$data['profile_id'],$data['ip'],$data['raid_id'],$data['type'],$data['char_id']));
 		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id=%s",quote_smart($data['char_id']));
-		$data_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$data_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		$data_userdetail = $db_raid->sql_fetchrow($data_result);
 
 		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id=%s", quote_smart($data['raid_id']));
-		$data_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$data_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		$data_raiddetail = $db_raid->sql_fetchrow($data_result);
 
 		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "profile WHERE profile_id=%s", quote_smart($data['profile_id']));
-		$data_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$data_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		$data_profdetail = $db_raid->sql_fetchrow($data_result);
 
 		$raiddatum = new_date($phpraid_config['date_format'],$data_raiddetail['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);

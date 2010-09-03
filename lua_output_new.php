@@ -199,19 +199,19 @@ if($_GET['mode'] == 'update_options') {
 	$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "config 
 					SET config_value=%s
 					WHERE config_name='lua_output_sort_signups'", quote_smart($sort_signups));
-	$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);				
+	$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);				
 					
 	// Update Sort Queued
 	$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "config 
 					SET config_value=%s
 					WHERE config_name='lua_output_sort_queue'", quote_smart($sort_queue));
-	$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);				
+	$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);				
 	
 	// Update Output Format
 	$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "config 
 					SET config_value=%s
 					WHERE config_name='lua_output_format'", quote_smart($output_format));
-	$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);				
+	$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);				
 	
 	header("Location: lua_output_new.php?mode=lua");
 }

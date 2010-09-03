@@ -97,7 +97,7 @@ if($_GET['mode'] == 'view')
 	$new_raid_link = '<a href="raids.php?mode=new"><img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_new_raid.gif" border="0"  onMouseover="ddrivetip(\''.$phprlang['raids_new_header'].'\');" onMouseout="hideddrivetip();" alt="new raid icon"></a>';
 	
 	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "raids";
-	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);	
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);	
 	while($data = $db_raid->sql_fetchrow($result, true)) {
 		if ($data['recurrance']==0)
 		{
@@ -168,7 +168,7 @@ if($_GET['mode'] == 'view')
 		$raid_class_array = array();
 		$class_color_count = array();
 		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raid_class_lmt WHERE raid_id = %s", quote_smart($data['raid_id']));
-		$result_raid_class = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$result_raid_class = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		while($raid_class_data = $db_raid->sql_fetchrow($result_raid_class, true))
 		{
 			$raid_class_array[$raid_class_data['class_id']] = $raid_class_data['lmt'];
@@ -181,11 +181,11 @@ if($_GET['mode'] == 'view')
 		$raid_role_array = array();
 		$role_color_count = array();
 		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raid_role_lmt WHERE raid_id = %s", quote_smart($data['raid_id']));
-		$result_raid_role = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$result_raid_role = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		while($raid_role_data = $db_raid->sql_fetchrow($result_raid_role, true))
 		{
 			$sql2 = sprintf("SELECT role_name FROM " . $phpraid_config['db_prefix'] . "roles WHERE role_id = %s", quote_smart($raid_role_data['role_id']));
-			$result_role_name = $db_raid->sql_query($sql2) or print_error($sql2, mysql_error(), 1);
+			$result_role_name = $db_raid->sql_query($sql2) or print_error($sql2, $db_raid->sql_error(), 1);
 			$role_name = $db_raid->sql_fetchrow($result_role_name, true);
 			
 			$raid_role_array[$role_name['role_name']] = $raid_role_data['lmt'];
@@ -195,7 +195,7 @@ if($_GET['mode'] == 'view')
 			
 		// Get Raid Force Name from Raid Force ID
 		$sql = sprintf("SELECT raid_force_name FROM " . $phpraid_config['db_prefix'] . "raid_force WHERE raid_force_id = %s", quote_smart($data['raid_force_id']));
-		$result_raid_force_name = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$result_raid_force_name = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		$raid_force_name_data = $db_raid->sql_fetchrow($result_raid_force_name, true);
 		
 		if ($data['raid_force_id'] == 0)
@@ -432,13 +432,13 @@ elseif($_GET['mode'] == 'new')
 			if ($priv_raids == 1)
 			{
 				$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "locations WHERE location_id=%s", quote_smart($location));
-				$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+				$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 				$data = $db_raid->sql_fetchrow($result, true);
 			}
 			else
 			{
 				$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "locations WHERE location_id=%s and locked='0'", quote_smart($location));
-				$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+				$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 				$data = $db_raid->sql_fetchrow($result, true);
 			}
 	
@@ -450,7 +450,7 @@ elseif($_GET['mode'] == 'new')
 			// Get Class Limits
 			//$raid_class_array = array();
 			$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "loc_class_lmt WHERE location_id = %s", quote_smart($location));
-			$result_loc_class = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+			$result_loc_class = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 			while($loc_class_data = $db_raid->sql_fetchrow($result_loc_class, true))
 			{
 				$class[$loc_class_data['class_id']] = $loc_class_data['lmt'];
@@ -458,11 +458,11 @@ elseif($_GET['mode'] == 'new')
 			// Get Role Limits
 			//$raid_role_array = array();
 			$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "loc_role_lmt WHERE location_id = %s", quote_smart($location));
-			$result_loc_role = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+			$result_loc_role = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 			while($loc_role_data = $db_raid->sql_fetchrow($result_loc_role, true))
 			{
 				$sql2 = sprintf("SELECT role_name FROM " . $phpraid_config['db_prefix'] . "roles WHERE role_id = %s", quote_smart($loc_role_data['role_id']));
-				$result_role_name = $db_raid->sql_query($sql2) or print_error($sql2, mysql_error(), 1);
+				$result_role_name = $db_raid->sql_query($sql2) or print_error($sql2, $db_raid->sql_error(), 1);
 				$role_name = $db_raid->sql_fetchrow($result_role_name, true);
 				
 				$role[$role_name['role_name']] = $loc_role_data['lmt'];
@@ -521,7 +521,7 @@ elseif($_GET['mode'] == 'new')
 		$raid_force_box = '<select name="raid_force_id" class="post">';
 		$raid_force_box .= "<option SELECTED value=\"0\">" . $phprlang['none'] ."</option>";
 		$sql = "SELECT DISTINCT raid_force_name,raid_force_id FROM " . $phpraid_config['db_prefix'] . "raid_force";
-		$raid_force_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$raid_force_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		while($raid_force_data = $db_raid->sql_fetchrow($raid_force_result, true))
 		{
 			$raid_force_box .= "<option ";
@@ -671,7 +671,7 @@ elseif($_GET['mode'] == 'new')
 		// Event Type for WoW Calendar
 		$eventtype = '<select name="tag" class="post">';
 		$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "event_type";
-		$result2 = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$result2 = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		while($event_type_data = $db_raid->sql_fetchrow($result2, true))
 		{		
 			// Event Type for WoW Calendar
@@ -712,12 +712,12 @@ elseif($_GET['mode'] == 'new')
 		if ($priv_raids == 1)
 		{
 			$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "locations ORDER BY name";
-			$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+			$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		}
 		else
 		{
 			$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "locations WHERE locked='0' ORDER BY name";
-			$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+			$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		}
 		while($data = $db_raid->sql_fetchrow($result, true))
 		{
@@ -942,11 +942,11 @@ elseif($_GET['mode'] == 'new')
 				quote_smart($min_lvl),quote_smart($max_lvl),quote_smart($max),quote_smart($tag),quote_smart($event_id),
 				quote_smart($raid_force_id),'0');
 		
-		$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+		$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
 
 		// Get the Location ID of what was Just Entered to Apply to the Lookup Tables
 		$sql = "SELECT raid_id FROM " . $phpraid_config['db_prefix'] . "raids ORDER BY raid_id DESC LIMIT 1";
-		$raid_id_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$raid_id_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		$raid_id = $db_raid->sql_fetchrow($raid_id_result, true);
 		
 		// Insert Class Data to loc_class_lmt
@@ -955,7 +955,7 @@ elseif($_GET['mode'] == 'new')
 			$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "raid_class_lmt (`raid_id`, `class_id`, `lmt`)
 			VALUES (%s,%s,%s)",quote_smart($raid_id['raid_id']), quote_smart($global_class['class_id']), quote_smart($class[$global_class['class_id']]));
 			
-			$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+			$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
 		}
 		
 		// Insert Role Data to loc_role_lmt
@@ -964,7 +964,7 @@ elseif($_GET['mode'] == 'new')
 			$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "raid_role_lmt (`raid_id`, `role_id`, `lmt`)
 			VALUES (%s,%s,%s)",quote_smart($raid_id['raid_id']), quote_smart($global_role['role_id']), quote_smart($role[$global_role['role_id']]));
 			
-			$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);	
+			$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);	
 		}
 		
 		log_create('raid',mysql_insert_id(),$location);
@@ -1093,7 +1093,7 @@ elseif($_GET['mode'] == 'edit')
 			// Grab Values for Edit from Raid in DB.
 			$id = scrub_input($_GET['id']);
 			$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id=%s", quote_smart($id));
-			$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+			$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 			$data = $db_raid->sql_fetchrow($result, true);
 			            
 			$tag = $data['event_type'];
@@ -1105,7 +1105,7 @@ elseif($_GET['mode'] == 'edit')
 			// Get Class Limits and set Colored Counts
 			//$raid_class_array = array();
 			$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raid_class_lmt WHERE raid_id = %s", quote_smart($data['raid_id']));
-			$result_raid_class = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+			$result_raid_class = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 			while($raid_class_data = $db_raid->sql_fetchrow($result_raid_class, true))
 			{
 				$class[$raid_class_data['class_id']] = $raid_class_data['lmt'];
@@ -1113,11 +1113,11 @@ elseif($_GET['mode'] == 'edit')
 			// Get Role Limits and set Colored Counts
 			//$raid_role_array = array();
 			$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raid_role_lmt WHERE raid_id = %s", quote_smart($data['raid_id']));
-			$result_raid_role = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+			$result_raid_role = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 			while($raid_role_data = $db_raid->sql_fetchrow($result_raid_role, true))
 			{
 				$sql2 = sprintf("SELECT role_name FROM " . $phpraid_config['db_prefix'] . "roles WHERE role_id = %s", quote_smart($raid_role_data['role_id']));
-				$result_role_name = $db_raid->sql_query($sql2) or print_error($sql2, mysql_error(), 1);
+				$result_role_name = $db_raid->sql_query($sql2) or print_error($sql2, $db_raid->sql_error(), 1);
 				$role_name = $db_raid->sql_fetchrow($result_role_name, true);
 								
 				$role[$role_name['role_name']] = $raid_role_data['lmt'];
@@ -1153,7 +1153,7 @@ elseif($_GET['mode'] == 'edit')
 		$raid_force_box .= "<option SELECTED value=\"None\">" . $phprlang['none'] ."</option>";
 		
 		$sql = "SELECT DISTINCT raid_force_name,raid_force_id FROM " . $phpraid_config['db_prefix'] . "raid_force";
-		$raid_force_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$raid_force_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		while($raid_force_data = $db_raid->sql_fetchrow($raid_force_result, true))
 		{
 			$raid_force_box .= "<option ";
@@ -1289,7 +1289,7 @@ elseif($_GET['mode'] == 'edit')
 		// Event Type for WoW Calendar
 		$eventtype = '<select name="tag" class="post">';
 		$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "event_type";
-		$result2 = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$result2 = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		while($event_type_data = $db_raid->sql_fetchrow($result2, true))
 		{		
 			// Event Type for WoW Calendar
@@ -1316,12 +1316,12 @@ elseif($_GET['mode'] == 'edit')
 		if ($priv_raids == 1)
 		{
 			$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "locations ORDER BY name";
-			$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+			$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		}
 		else
 		{
 			$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "locations WHERE locked='0' ORDER BY name";
-			$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+			$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		}
 		while($data = $db_raid->sql_fetchrow($result, true))
 		{
@@ -1498,7 +1498,7 @@ elseif($_GET['mode'] == 'edit')
 				quote_smart($location),quote_smart($description),quote_smart($invite_time),quote_smart($start_time), quote_smart($freeze),
 				quote_smart($max),quote_smart($tag),quote_smart($event_id),quote_smart($min_lvl),quote_smart($max_lvl),quote_smart($raid_force_id),quote_smart($id));
 
-		$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 
 		// Insert Class Data to loc_class_lmt
 		foreach ($wrm_global_classes as $global_class)
@@ -1506,7 +1506,7 @@ elseif($_GET['mode'] == 'edit')
 			$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "raid_class_lmt SET lmt=%s WHERE raid_id=%s AND class_id=%s",
 			quote_smart($class[$global_class['class_id']]), quote_smart($id), quote_smart($global_class['class_id']));
 			
-			$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+			$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
 		}
 		
 		// Insert Role Data to loc_role_lmt
@@ -1515,7 +1515,7 @@ elseif($_GET['mode'] == 'edit')
 			$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "raid_role_lmt SET lmt=%s WHERE raid_id=%s AND role_id=%s",
 			quote_smart($role[$global_role['role_id']]), quote_smart($id), quote_smart($global_role['role_id']));
 			
-			$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);	
+			$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);	
 		}		
 		header("Location: raids.php?mode=view");
 	}
@@ -1553,16 +1553,16 @@ elseif($_GET['mode'] == 'delete')
 		log_delete('raid',$n);
 
 		$sql = sprintf("DELETE FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id=%s", quote_smart($id));
-		$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 
 		$sql = sprintf("DELETE FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id=%s", quote_smart($id));
-		$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 
 		$sql = sprintf("DELETE FROM " . $phpraid_config['db_prefix'] . "raid_class_lmt WHERE raid_id=%s",quote_smart($id));
-		$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 
 		$sql = sprintf("DELETE FROM " . $phpraid_config['db_prefix'] . "raid_role_lmt WHERE raid_id=%s",quote_smart($id));
-		$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		
 		header("Location: raids.php?mode=view");
 	}
@@ -1575,18 +1575,18 @@ elseif($_GET['mode'] == 'mark')
 	$raid_id = scrub_input($_GET['id']);
 
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id=%s", quote_smart($raid_id));
-	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	$data = $db_raid->sql_fetchrow($result, true);
 	
 	if($data['old'] == 1)
 	{
 		$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "raids SET old='0' WHERE raid_id=%s", quote_smart($raid_id));
-		$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	}
 	else
 	{
 		$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "raids SET old='1' WHERE raid_id=%s", quote_smart($raid_id));
-		$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	}
 
 	header("Location: raids.php?mode=view");

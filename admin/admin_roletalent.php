@@ -82,7 +82,7 @@ if($_GET['mode'] != 'remove')
 			FROM " . $phpraid_config['db_prefix'] . "class_role a, " . $phpraid_config['db_prefix'] . "roles b
 			WHERE a.role_id = b.role_id
 			ORDER BY a.class_id, a.subclass";
-	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 
 	while($data = $db_raid->sql_fetchrow($result, true))
 	{
@@ -171,7 +171,7 @@ if($_GET['mode'] != 'remove')
 
 		$sql = sprintf("DELETE FROM " . $phpraid_config['db_prefix'] . "class_role WHERE class_id=%s and subclass=%s",quote_smart($class_id), quote_smart($talent_tree_name));
 		echo "SQL: " . $sql;
-		$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 
 		header("Location: admin_roletalent.php?mode=view");
 	}
@@ -189,7 +189,7 @@ if(($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')) {
 		$talent_tree_name = scrub_input($_GET['talent_tree_name']);
 		
 		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "class_role WHERE class_id=%s AND subclass=%s",quote_smart($class_id), quote_smart($talent_tree_name));
-		$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		$data = $db_raid->sql_fetchrow($result, true);
 	
 		$display_text = $data['lang_index'];
@@ -212,7 +212,7 @@ if(($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')) {
 		if ($_GET['mode'] == 'new')
 		{
 			$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "class_role WHERE class_id=%s AND subclass=%s",quote_smart($class_id), quote_smart($talent_tree_name));
-			$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+			$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 			if($numrows = $db_raid->sql_numrows($result)>0)
 				$errorMsg .= '<li>'.$phprlang['roletalent_duplicate_error'].'</li>';
 		}
@@ -240,7 +240,7 @@ if(($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')) {
 				VALUES(%s,%s,%s,%s)",quote_smart($new_class_id),quote_smart($new_talent_tree_name),
 				quote_smart($display_text),quote_smart($role_id));
 				
-				$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+				$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 
 				log_create('class/role/talent link',mysql_insert_id(),$name);
 			} elseif($_GET['mode'] == 'edit') {
@@ -250,7 +250,7 @@ if(($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')) {
 				quote_smart($display_text), quote_smart($role_id),
 				quote_smart($class_id), quote_smart($talent_tree_name));
 	
-				$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+				$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 			}
 			header("Location: admin_roletalent.php?mode=view");
 		}
@@ -261,7 +261,7 @@ if(($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')) {
 // Fill in the Class Dropdown
 $class_options = '<select name="class_id">';
 $sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "classes";
-$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);			
+$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);			
 while($class_data = $db_raid->sql_fetchrow($result, true))
 {
 	$class_options .= "<option ";
@@ -280,7 +280,7 @@ $display_text_box = '<input type="text" name="display_text" class="post" value="
 // Finally we need the role dropdown.
 $role_options = '<select name="role_id">';
 $sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "roles";
-$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);			
+$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);			
 while($role_data = $db_raid->sql_fetchrow($result, true))
 {
 	$role_options .= "<option ";

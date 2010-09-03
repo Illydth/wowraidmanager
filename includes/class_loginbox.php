@@ -75,7 +75,7 @@ class wrm_loginbox
 						" FROM " . $wrm_table_prefix . $wrm__db_table_user_name. 
 						" WHERE profile_id = %s", quote_smart($profile_id)
 					);
-		$result = $this->db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$result = $this->db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		$data = $this->db_raid->sql_fetchrow($result, true);
 		$login_username_name = $data[$wrm_db_user_name];
 

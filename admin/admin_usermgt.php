@@ -78,7 +78,7 @@ if($mode == 'view')
 	$form_buttons = '<input type="submit" name="submit" value="'.$phprlang['submit'].'" class="mainoption"> <input type="reset" name="Reset" value="'.$phprlang['reset'].'" class="liteoption">';
 	$priv_dropdown = '<select name="perm_id">';
 	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "permissions";
-	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);			
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);			
 	while($perm_data = $db_raid->sql_fetchrow($result, true))
 	{
 		$priv_dropdown .= "<option value=\"" . $perm_data['permission_id'] . "\">" . $perm_data['name']."</option>";
@@ -89,7 +89,7 @@ if($mode == 'view')
 
 	// get a list of all users and assign permissions accordingly
 	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "profile";
-	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	
 	while($data = $db_raid->sql_fetchrow($result, true))
 	{
@@ -214,7 +214,7 @@ else if($mode == 'details')
 		
 	// check valid input
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "profile WHERE profile_id=%s",quote_smart($user_id));
-	$result = $db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$result = $db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
 	if($db_raid->sql_numrows($result) == 0)
 	{
 		// invalid user
@@ -224,7 +224,7 @@ else if($mode == 'details')
 	}
 
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE profile_id=%s",quote_smart($user_id));
-	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	
 	while($data = $db_raid->sql_fetchrow($result, true))
 	{
@@ -322,13 +322,13 @@ else if($mode == 'remove_user')
 		log_delete('user',$delete_name);
 
 		$sql = sprintf("DELETE FROM " . $phpraid_config['db_prefix'] . "profile WHERE profile_id=%s", quote_smart($user_id));
-		$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 
 		$sql = sprintf("DELETE FROM " . $phpraid_config['db_prefix'] . "chars WHERE profile_id=%s", quote_smart($user_id));
-		$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 
 		$sql = sprintf("DELETE FROM " . $phpraid_config['db_prefix'] . "signups WHERE profile_id=%s", quote_smart($user_id));
-		$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 
 		header("Location: admin_usermgt.php?mode=view");
 	}
@@ -361,10 +361,10 @@ else if($mode == 'remove_char')
 		log_delete('character',$delete_name);
 
 		$sql = sprintf("DELETE FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id=%s", quote_smart($char_id));
-		$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 
 		$sql = sprintf("DELETE FROM " . $phpraid_config['db_prefix'] . "signups WHERE char_id=%s", quote_smart($char_id));
-		$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 
 		header("Location: admin_usermgt.php?mode=details&user_id=$user_id");
 	}
@@ -389,7 +389,7 @@ else if ($mode == 'mod_perms')
 			{
 				$sql = sprintf("SELECT priv FROM " . $phpraid_config['db_prefix'] . "profile
 						WHERE profile_id = %s", quote_smart($value));
-				$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+				$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 				$data = $db_raid->sql_fetchrow($result, true);
 				if ($data['priv'] == '1')
 					$admin_count++;
@@ -398,7 +398,7 @@ else if ($mode == 'mod_perms')
 		// We now have the number of admins being changed out of Admin Status, now check
 		//   total admins in the system.
 		$sql = "SELECT priv FROM " . $phpraid_config['db_prefix'] . "profile WHERE priv = '1'";
-		$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		$numrows = $db_raid->sql_numrows($result);
 		if($numrows<=$admin_count)
 		{
@@ -417,7 +417,7 @@ else if ($mode == 'mod_perms')
 					$profile_id = $value;
 					$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "profile
 								SET priv=%s WHERE profile_id = %s", quote_smart($perm_id),quote_smart($profile_id));
-					$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+					$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 					
 					log_create('profile_update',mysql_insert_id(),$title);
 				}
@@ -435,7 +435,7 @@ else if ($mode == 'mod_perms')
 				$profile_id = $value;
 				$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "profile
 							SET priv=%s WHERE profile_id = %s", quote_smart($perm_id),quote_smart($profile_id));
-				$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+				$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 				
 				log_create('profile_update',mysql_insert_id(),$title);
 			}

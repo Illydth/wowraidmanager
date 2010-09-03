@@ -34,7 +34,7 @@ function check_frozen($raid_id) {
 	global $db_raid, $phpraid_config;
 
 	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "raids where raid_id='$raid_id'";
-	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	$data = $db_raid->sql_fetchrow($result, true);
 
  	$raid_date_month = new_date("m",$data['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
@@ -101,21 +101,21 @@ function get_char_count($id, $type) {
 	if($type == "queue") //Count Queued Signups
 	{
 		$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id='$id' AND queue='1' AND cancel='0'";
-		$result_signups = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$result_signups = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	}
 	elseif($type == "cancel") //Count Cancelled Signups
 	{
 		$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id='$id' AND queue='0' AND cancel='1'";
-		$result_signups = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);		
+		$result_signups = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);		
 	}
 	else //Count Drafted Signups
 	{
 		$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id='$id' AND queue='0' AND cancel='0'";
-		$result_signups = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$result_signups = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	}
 	while($signups = $db_raid->sql_fetchrow($result_signups, true)) {
 		$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id='{$signups['char_id']}'";
-		$result_char = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$result_char = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		$char = $db_raid->sql_fetchrow($result_char, true);
 
 		foreach ($wrm_global_classes as $global_class)
@@ -129,7 +129,7 @@ function get_char_count($id, $type) {
 
 		// Get Role from Spec
 		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "class_role WHERE subclass=%s", quote_smart($signups['selected_spec']));
-		$result_spec = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$result_spec = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		$role_id = $db_raid->sql_fetchrow($result_spec, true);
 		
 		// Handle Roles based upon what's in the Role table.
@@ -146,7 +146,7 @@ function get_priv_name($id)
 	global $db_raid, $phpraid_config;
 
 	$sql = "SELECT `name` FROM " . $phpraid_config['db_prefix'] . "permissions WHERE permission_id='$id'";
-	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	$data = $db_raid->sql_fetchrow($result, true);
 
 	return($data['name']);
@@ -158,7 +158,7 @@ function get_queued($raid_id) {
 	$queued = array();
 
 	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "queues";
-	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	while($data = $db_raid->sql_fetchrow($result, true)) {
 		if($raid_id == $data['raid_id']) {
 			// match, push onto array
@@ -178,7 +178,7 @@ function get_signups($raid_id) {
 	$signups = array();
 
 	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "signups";
-	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	while($data = $db_raid->sql_fetchrow($result, true)) 	{
 		if($raid_id == $data['raid_id']) {
 			// match, push onto array
@@ -208,7 +208,7 @@ function is_char_signed($profile_id, $raid_id) {
 	global $db_raid, $phpraid_config;
 
 	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE profile_id='$profile_id' AND raid_id='$raid_id'";
-	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	if($db_raid->sql_numrows($result) > 0)
 		return 1;
 	else
@@ -228,7 +228,7 @@ function get_user_name($profile_id)
 	global $db_raid, $phpraid_config;
 
 	$sql = "SELECT `username` FROM " . $phpraid_config['db_prefix'] . "profile WHERE profile_id='$profile_id'";
-	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	$data = $db_raid->sql_fetchrow($result);
 
 	return($data['username']);
@@ -239,7 +239,7 @@ function get_char_name($char_id)
 	global $db_raid, $phpraid_config;
 
 	$sql = "SELECT `name` FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id='$char_id'";
-	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	$data = $db_raid->sql_fetchrow($result);
 
 	return($data['name']);
@@ -280,3 +280,5 @@ function check_dupe($profile_id, $raid_id)
 	}
 	return '';
 }
+
+?>

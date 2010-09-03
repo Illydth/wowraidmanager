@@ -48,7 +48,7 @@ if(isset($_GET['view_name']))
 
 // Fill in the Class Dropdown
 $sql = "SELECT DISTINCT view_name FROM " . $phpraid_config['db_prefix'] . "column_headers";
-$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);			
+$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);			
 while($view_data = $db_raid->sql_fetchrow($result, true))
 {
 	$view_options .= "<option ";
@@ -77,7 +77,7 @@ if($_GET['mode'] == 'edit')
 	
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "column_headers 
 					WHERE view_name = %s", quote_smart($view_name));
-	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	while($view_data = $db_raid->sql_fetchrow($result, true))
 	{
 		$column_name_real = $view_data['column_name'];
@@ -92,7 +92,7 @@ if($_GET['mode'] == 'edit')
 					WHERE `view_name`= %s AND `column_name` = %s;", $visible, 
 					$position, quote_smart($image_url), $default_sort,
 					quote_smart($view_name), quote_smart($column_name_real));
-		$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+		$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
 	}
 	
 	header("Location: admin_datatablecfg.php?mode=select&view_name=" . $view_name);
@@ -105,7 +105,7 @@ if($_GET['mode'] == 'select')
 	
 	//Get number of columns in view to determine position and view data.
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "column_headers WHERE view_name = %s", quote_smart($view_name));
-	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	$numrows = $db_raid->sql_numrows($result);
 
 	while($view_data = $db_raid->sql_fetchrow($result, true))

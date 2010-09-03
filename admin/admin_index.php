@@ -65,7 +65,7 @@ elseif($_GET['mode'] == 'purge_armory_cache')
 	{
 		//purge database table
 		$sql = "DELETE FROM " . $phpraid_config['db_prefix'] . "armory_cache"; 
-		$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	}
 	elseif ($phpraid_config['armory_cache_setting']=='file')
 	{
@@ -173,7 +173,7 @@ else
 	
 	// WRM Database Version
 	$sql = "SELECT max(version_number) as db_ver FROM " . $phpraid_config['db_prefix'] . "version";
-	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	$data = $db_raid->sql_fetchrow($result, true);
 	$wrm_db_version = $data['db_ver'];
 	
@@ -188,13 +188,13 @@ else
 	
 	// MySQL Version
 	$sql = "SELECT version() as ver";
-	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	$data = $db_raid->sql_fetchrow($result, true);
 	$mysql_version = $data['ver'];
 	
 	// Number of Users
 	$sql = "SELECT count(*) as count FROM " . $phpraid_config['db_prefix'] . "profile";
-	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	$data = $db_raid->sql_fetchrow($result, true);
 	$user_count = $data['count'];
 	
@@ -204,7 +204,7 @@ else
 	// MySQL Database Size
 	$dbsize = 0;
 	$sql = "SHOW TABLE STATUS WHERE name LIKE '". $phpraid_config['db_prefix'] . "%'";
-	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	while($data = $db_raid->sql_fetchrow($result, true)) 
 	{  
 		$dbsize += $data[ "Data_length" ] + $data[ "Index_length" ];
@@ -217,14 +217,14 @@ else
 	// Number of Active Raids
 	$sql = "SELECT count(*) as count FROM " . $phpraid_config['db_prefix'] . "raids
 			WHERE old = '0' AND event_type = '1'";
-	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	$data = $db_raid->sql_fetchrow($result, true);
 	$active_raid_count = $data['count'];
 	
 	// Total Number of Raids
 	$sql = "SELECT count(*) as count FROM " . $phpraid_config['db_prefix'] . "raids
 			WHERE event_type = '1'";
-	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	$data = $db_raid->sql_fetchrow($result, true);
 	$total_raid_count = $data['count'];
 	
@@ -241,13 +241,13 @@ else
 	$sql = "SELECT raid_id, max FROM " . $phpraid_config['db_prefix'] . "raids
 			WHERE start_time >= " . $firstDayOfWeek . " AND start_time <= " . $lastDayOfWeek . "
 			AND event_type = '1'";
-	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	while($data = $db_raid->sql_fetchrow($result, true))
 	{ 
 		$raid_max_count += $data['max'];
 		$sql = "SELECT count(*) as count FROM " . $phpraid_config['db_prefix'] . "signups
 				WHERE raid_id = " . $data['raid_id'] . " AND cancel = '0'";
-		$result2 = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$result2 = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		$data2 = $db_raid->sql_fetchrow($result2, true);
 		$raid_attend_count += $data2['count'];
 	}
@@ -269,13 +269,13 @@ else
 	$sql = "SELECT raid_id, max FROM " . $phpraid_config['db_prefix'] . "raids
 			WHERE start_time >= " . $minus30d_time . " AND start_time <= " . $current_time . "
 			AND event_type = '1'";
-	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	while($data = $db_raid->sql_fetchrow($result, true))
 	{ 
 		$raid_max_count += $data['max'];
 		$sql = "SELECT count(*) as count FROM " . $phpraid_config['db_prefix'] . "signups
 				WHERE raid_id = " . $data['raid_id'] . " AND cancel = '0'";
-		$result2 = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$result2 = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		$data2 = $db_raid->sql_fetchrow($result2, true);
 		$raid_attend_count += $data2['count'];
 	}
@@ -297,13 +297,13 @@ else
 	$sql = "SELECT raid_id, max FROM " . $phpraid_config['db_prefix'] . "raids
 			WHERE start_time >= " . $minus3m_time . " AND start_time <= " . $current_time . "
 			AND event_type = '1'";
-	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	while($data = $db_raid->sql_fetchrow($result, true))
 	{ 
 		$raid_max_count += $data['max'];
 		$sql = "SELECT count(*) as count FROM " . $phpraid_config['db_prefix'] . "signups
 				WHERE raid_id = " . $data['raid_id'] . " AND cancel = '0'";
-		$result2 = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$result2 = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		$data2 = $db_raid->sql_fetchrow($result2, true);
 		$raid_attend_count += $data2['count'];
 	}
@@ -325,13 +325,13 @@ else
 	$sql = "SELECT raid_id, max FROM " . $phpraid_config['db_prefix'] . "raids
 			WHERE start_time >= " . $minus6m_time . " AND start_time <= " . $current_time . "
 			AND event_type = '1'";
-	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	while($data = $db_raid->sql_fetchrow($result, true))
 	{ 
 		$raid_max_count += $data['max'];
 		$sql = "SELECT count(*) as count FROM " . $phpraid_config['db_prefix'] . "signups
 				WHERE raid_id = " . $data['raid_id'] . " AND cancel = '0'";
-		$result2 = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$result2 = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		$data2 = $db_raid->sql_fetchrow($result2, true);
 		$raid_attend_count += $data2['count'];
 	}
@@ -353,13 +353,13 @@ else
 	$sql = "SELECT raid_id, max FROM " . $phpraid_config['db_prefix'] . "raids
 			WHERE start_time >= " . $minus1y_time . " AND start_time <= " . $current_time . "
 			AND event_type = '1'";
-	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	while($data = $db_raid->sql_fetchrow($result, true))
 	{ 
 		$raid_max_count += $data['max'];
 		$sql = "SELECT count(*) as count FROM " . $phpraid_config['db_prefix'] . "signups
 				WHERE raid_id = " . $data['raid_id'] . " AND cancel = '0'";
-		$result2 = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$result2 = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		$data2 = $db_raid->sql_fetchrow($result2, true);
 		$raid_attend_count += $data2['count'];
 	}
@@ -377,13 +377,13 @@ else
 	$raid_attend_count = 0;
 	$sql = "SELECT raid_id, max FROM " . $phpraid_config['db_prefix'] . "raids
 			WHERE event_type = '1'";
-	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	while($data = $db_raid->sql_fetchrow($result, true))
 	{ 
 		$raid_max_count += $data['max'];
 		$sql = "SELECT count(*) as count FROM " . $phpraid_config['db_prefix'] . "signups
 				WHERE raid_id = " . $data['raid_id'] . " AND cancel = '0'";
-		$result2 = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$result2 = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		$data2 = $db_raid->sql_fetchrow($result2, true);
 		$raid_attend_count += $data2['count'];
 	}
@@ -430,7 +430,7 @@ else
 	$sql = "SELECT a.username as username, a.email as email, a.last_login_time as last_login_time, b.name as perm_name
 			FROM " . $phpraid_config['db_prefix'] . "profile a, " . $phpraid_config['db_prefix'] . "permissions b
 			WHERE a.priv = b.permission_id"; 
-	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	while($data = $db_raid->sql_fetchrow($result, true))
 	{
 		if ($data['last_login_time'] >= $minus5_time)
@@ -470,7 +470,7 @@ else
 			FROM " . $phpraid_config['db_prefix'] . "profile a, " . $phpraid_config['db_prefix'] . "permissions b
 			WHERE a.priv = b.permission_id
 			ORDER BY a.last_login_time DESC"; 
-	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	$usercount=0;
 	while($data = $db_raid->sql_fetchrow($result, true))
 	{
@@ -520,7 +520,7 @@ else
 	
 	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "logs_hack 
 			ORDER BY timestamp desc LIMIT 10";
-	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	while ($data = $db_raid->sql_fetchrow($result, true))
 	{
 		array_push($log_data, 

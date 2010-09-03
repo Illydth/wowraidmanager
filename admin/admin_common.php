@@ -86,9 +86,9 @@ if(!$db_raid->db_connect_id)
 //   From this point on, everything sent from the client to the server or returned from
 //     the server to the client should now be multi-byte aware.
 $sql = "SET NAMES 'utf8'";
-$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 $sql = "SET CHARACTER SET 'utf8'";
-$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 
 // unset database password for security reasons
 // we won't use it after this point
@@ -98,7 +98,7 @@ unset($phpraid_config['db_pass']);
 // Populate the $phpraid_config array
 //
 $sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "config";
-$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 while($data = $db_raid->sql_fetchrow($result, true))
 {
 	$phpraid_config["{$data['0']}"] = $data['1'];

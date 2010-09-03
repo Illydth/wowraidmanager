@@ -77,7 +77,7 @@ if(isset($_POST['submit']))
 	
 	// check if username or email already exists
 	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "profile";
-	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	while($data = $db_raid->sql_fetchrow($result, true))
 	{
 		if($user == $data['username'])
@@ -109,7 +109,7 @@ if(isset($_POST['submit']))
 				VALUES
 					(%s,%s,%s,%s)", quote_smart($email), quote_smart($pass), 
 					quote_smart($default), quote_smart($user));
-		$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		
 		$subject = $phprlang['register_email_header'] . ' ' . $phpraid_config['site_name'];
 		$msg = $phprlang['register_email_greeting'] . ' ' . $user . ",\n\n" . $phprlang['register_email_subject'];

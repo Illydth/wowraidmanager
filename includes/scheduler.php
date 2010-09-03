@@ -76,7 +76,7 @@ function process_recurring_raids()
 	
 	// Obtain the List of "Recurring" raids from the raids table.
 	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "raids WHERE recurrance = 1";
-	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);	
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);	
 	while($data = $db_raid->sql_fetchrow($result, true)) {
 		// For each raid, determine the interval and calculate the raids that SHOULD be scheduled
 		//   for this recurring raid already.
@@ -104,7 +104,7 @@ function process_recurring_raids()
 					WHERE recurrance = 0
 					AND start_time = " . $raid_check_time . "
 					AND location = '" . $data['location'] ."'";
-			$check_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);	
+			$check_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);	
 			if (!$db_raid->sql_numrows($check_result) || $db_raid->sql_numrows($check_result) < 1)
 				$errcode = schedule_raid($new_invite_time, $raid_check_time, $data['raid_id']);
 			
@@ -164,7 +164,7 @@ function process_recurring_raids()
 			
 			if (!$db_raid->sql_query($sql))
 			{
-				print_error($sql,mysql_error(),0);
+				print_error($sql,$db_raid->sql_error(),0);
 				clean_scheduled_raids($raid_id_array);
 				$error_array['errval'] = 1;
 				$error_array['errorMsg'] = $phprlang['scheduler_error_update_recurring'];
@@ -198,7 +198,7 @@ function schedule_raid($invite_time, $start_time, $raid_id)
 	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id = ". $raid_id;
 	if (!$result = $db_raid->sql_query($sql))
 	{
-		print_error($sql, mysql_error(), 0);
+		print_error($sql, $db_raid->sql_error(), 0);
 		return -2; // SQL Error
 	}	
 	$data = $db_raid->sql_fetchrow($result, true);
@@ -217,7 +217,7 @@ function schedule_raid($invite_time, $start_time, $raid_id)
 	
 	if(!$db_raid->sql_query($sql))
 	{
-		print_error($sql, mysql_error(), 0);
+		print_error($sql, $db_raid->sql_error(), 0);
 		return -2; // SQL Error
 	}	
 	
@@ -225,7 +225,7 @@ function schedule_raid($invite_time, $start_time, $raid_id)
 	$sql = "SELECT raid_id FROM " . $phpraid_config['db_prefix'] . "raids ORDER BY raid_id DESC LIMIT 1";
 	if (!$raid_id_result = $db_raid->sql_query($sql))
 	{
-		print_error($sql, mysql_error(), 0);
+		print_error($sql, $db_raid->sql_error(), 0);
 		return -2; // SQL Error
 	}	
 	$raid_id_data = $db_raid->sql_fetchrow($raid_id_result, true);
@@ -235,7 +235,7 @@ function schedule_raid($invite_time, $start_time, $raid_id)
 	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "raid_class_lmt WHERE raid_id = ". $raid_id;
 	if (!$class_result = $db_raid->sql_query($sql))
 	{
-		print_error($sql, mysql_error(), 0);
+		print_error($sql, $db_raid->sql_error(), 0);
 		return -2; // SQL Error
 	}	
 	if (!$db_raid->sql_numrows($class_result) || $db_raid->sql_numrows($class_result) < 1)
@@ -247,7 +247,7 @@ function schedule_raid($invite_time, $start_time, $raid_id)
 		
 		if (!$db_raid->sql_query($sql))
 		{
-			print_error($sql,mysql_error(),0);
+			print_error($sql,$db_raid->sql_error(),0);
 			return -2; //SQL Error
 		} 
 	}
@@ -257,7 +257,7 @@ function schedule_raid($invite_time, $start_time, $raid_id)
 	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "raid_role_lmt WHERE raid_id = ". $raid_id;
 	if (!$role_result = $db_raid->sql_query($sql))
 	{
-		print_error($sql, mysql_error(), 0);
+		print_error($sql, $db_raid->sql_error(), 0);
 		return -2; // SQL Error
 	}	
 	if (!$db_raid->sql_numrows($role_result) || $db_raid->sql_numrows($role_result) < 1)
@@ -269,7 +269,7 @@ function schedule_raid($invite_time, $start_time, $raid_id)
 		
 		if (!$db_raid->sql_query($sql))
 		{
-			print_error($sql,mysql_error(),0);
+			print_error($sql,$db_raid->sql_error(),0);
 			return -2; //SQL Error
 		} 
 	}
@@ -294,15 +294,15 @@ function clean_scheduled_raids($raid_id_array)
 		// Raids Table
 		$sql = sprintf("DELETE FROM " . $phpraid_config['db_prefix'] . "raids
 						WHERE raid_id = " . $raid_id);
-		$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+		$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
 		
 		$sql = sprintf("DELETE FROM " . $phpraid_config['db_prefix'] . "raid_role_lmt
 						WHERE raid_id = " . $raid_id);
-		$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+		$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
 		
 		$sql = sprintf("DELETE FROM " . $phpraid_config['db_prefix'] . "raid_class_lmt
 						WHERE raid_id = " . $raid_id);
-		$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+		$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
 	}	
 }
 
@@ -337,3 +337,5 @@ function get_next_time_stamp($time, $interval, $increment)
 	}
 	return $new_time_stamp;	
 }
+
+?>

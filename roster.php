@@ -70,14 +70,14 @@ $pageURL = 'roster.php?';
 
 // for now, we'll let everyone view the character list
 $sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "chars";
-$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 $chars = array();
 		
 // get all the chars and throw them in that nice array for 
 // output by the report class
 while($data = $db_raid->sql_fetchrow($result, true)) {
 	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "profile WHERE profile_id=" . $data['profile_id'];
-	$data_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$data_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	$data_profdetail = $db_raid->sql_fetchrow($data_result);
 	
 	if ($phpraid_config['enable_armory'])
@@ -96,7 +96,7 @@ while($data = $db_raid->sql_fetchrow($result, true)) {
 
 	// Get the Guild Name to Display instead of Just the ID
 	$sql = sprintf("SELECT guild_name FROM " . $phpraid_config['db_prefix'] . "guilds WHERE guild_id=%s",quote_smart($data['guild']));
-	$guild_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$guild_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	$guild_data = $db_raid->sql_fetchrow($guild_result, true);
 	$guild_name = $guild_data['guild_name'];
 						

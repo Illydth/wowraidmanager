@@ -143,7 +143,7 @@ function get_armorychar($name, $guild)
 
 	// Get Armory Data from Guild.
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "guilds WHERE guild_id=%s",quote_smart($guild));
-	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	$data = $db_raid->sql_fetchrow($result, true);
 
 	//$realm = str_replace(" ", "+", ucfirst($server));

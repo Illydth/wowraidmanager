@@ -93,7 +93,7 @@ $sql = sprintf("SELECT a.profile_id, a.username, a.last_login_time " .
 				    "AND " . $phpraid_config['db_prefix'] . "signups.raid_id = %s " .
 				"WHERE " . $phpraid_config['db_prefix'] . "signups.profile_id IS NULL", quote_smart($raid_id));
 
-$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 
 while($data = $db_raid->sql_fetchrow($result, true))
 {

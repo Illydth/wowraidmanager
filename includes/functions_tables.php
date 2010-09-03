@@ -46,7 +46,7 @@ function getVisibleColumns($view_name)
 	// Get all the columns from the column_header table
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "column_headers WHERE view_name = %s ORDER BY position", quote_smart($view_name));
 	
-	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 
 	// Fail if something isn't returned.
 	if (!$db_raid->sql_numrows($result) || $db_raid->sql_numrows($result) < 1)

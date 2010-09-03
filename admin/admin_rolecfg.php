@@ -79,7 +79,7 @@ if($_GET['mode'] != 'remove')
 	$roles = array();
 
 	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "roles";
-	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 
 	while($global_role = $db_raid->sql_fetchrow($result, true))
 	{
@@ -167,7 +167,7 @@ if($_GET['mode'] != 'remove')
 		log_delete('character',$n);
 
 		$sql = sprintf("DELETE FROM " . $phpraid_config['db_prefix'] . "roles WHERE role_id=%s",quote_smart($roleid));
-		$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 
 		header("Location: admin_rolecfg.php?mode=view");
 	}
@@ -185,7 +185,7 @@ if(($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')) {
 		$role_id = scrub_input($_GET['roleid']);
 
 		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "roles WHERE role_id=%s",quote_smart($role_id));
-		$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		$data = $db_raid->sql_fetchrow($result, true);
 		
 		$new_role_id = $data['role_id'];
@@ -210,7 +210,7 @@ if(($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')) {
 		if ($_GET['mode'] == 'new' || $role_id != $new_role_id)
 		{
 			$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "roles WHERE role_id=%s",quote_smart($new_role_id));
-			$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+			$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 			if($numrows = $db_raid->sql_numrows($result)>0)
 				$errorMsg .= '<li>'.$phprlang['role_error_exists'].'</li>';
 		}
@@ -236,7 +236,7 @@ if(($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')) {
 				VALUES(%s,%s,%s,%s)",quote_smart($new_role_id),quote_smart($role_name),
 				quote_smart($role_config_text),quote_smart($role_image));
 				
-				$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+				$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 
 				log_create('role',mysql_insert_id(),$name);
 			} elseif($_GET['mode'] == 'edit') {
@@ -250,7 +250,7 @@ if(($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')) {
 	
 				//echo "<br>SQL: " . $sql;
 				
-				$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+				$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 			}
 			header("Location: admin_rolecfg.php?mode=view");
 		}

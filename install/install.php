@@ -769,8 +769,8 @@ else if($step === "done")
 	$wrmserverfile = str_replace("/install/install.php","",$wrmserver. $_SERVER['PHP_SELF']);
 	
 	$eqdkp_url_link = $wrmserverfile."/eqdkp";
-	$default_armory_language_value = $wrm_install_lang['default_armory_language_value'];
-	$default_armory_link_value = $wrm_install_lang['default_armory_link_value'];
+//	$default_armory_language_value = $wrm_install_lang['default_armory_language_value'];
+//	$default_armory_link_value = $wrm_install_lang['default_armory_link_value'];
 	
 	//init con. to wrm
 	$wrm_install = &new sql_db($phpraid_config['db_host'], $phpraid_config['db_user'], $phpraid_config['db_pass'], $phpraid_config['db_name']);
@@ -795,12 +795,12 @@ else if($step === "done")
 		$sql = sprintf(	"INSERT INTO " . $phpraid_config['db_name'] . "." .$phpraid_config['db_prefix'] . "config".
 						" VALUES(%s,%s)", quote_smart("eqdkp_url"), quote_smart($eqdkp_url_link));
 		$wrm_install->sql_query($sql) or print_error($sql, $wrm_install->sql_error(), 1);
-		$sql = sprintf(	"INSERT INTO " . $phpraid_config['db_name'] . "." .$phpraid_config['db_prefix'] . "config".
-						" VALUES(%s,%s)", quote_smart("armory_language"), quote_smart($default_armory_language_value));
-		$wrm_install->sql_query($sql) or print_error($sql, $wrm_install->sql_error(), 1);
-		$sql = sprintf(	"INSERT INTO " . $phpraid_config['db_name'] . "." .$phpraid_config['db_prefix'] . "config".
-						" VALUES(%s,%s)", quote_smart("armory_link"), quote_smart($default_armory_link_value));
-		$wrm_install->sql_query($sql) or print_error($sql, $wrm_install->sql_error(), 1);
+//		$sql = sprintf(	"INSERT INTO " . $phpraid_config['db_name'] . "." .$phpraid_config['db_prefix'] . "config".
+//						" VALUES(%s,%s)", quote_smart("armory_language"), quote_smart($default_armory_language_value));
+//		$wrm_install->sql_query($sql) or print_error($sql, $wrm_install->sql_error(), 1);
+//		$sql = sprintf(	"INSERT INTO " . $phpraid_config['db_name'] . "." .$phpraid_config['db_prefix'] . "config".
+//						" VALUES(%s,%s)", quote_smart("armory_link"), quote_smart($default_armory_link_value));
+//		$wrm_install->sql_query($sql) or print_error($sql, $wrm_install->sql_error(), 1);
 		$sql = sprintf(	"INSERT INTO " . $phpraid_config['db_name'] . "." .$phpraid_config['db_prefix'] . "config".
 						" VALUES(%s,%s)", quote_smart("wrm_created_on"), quote_smart(time()));
 		$wrm_install->sql_query($sql) or print_error($sql, $wrm_install->sql_error(), 1);
@@ -822,12 +822,12 @@ else if($step === "done")
 		$sql = 	sprintf("UPDATE " . $phpraid_config['db_name'] . "." . $phpraid_config['db_prefix'] . "config" .
 						" SET `config_value` = %s WHERE %s = `config_name`", quote_smart($eqdkp_url_link), quote_smart("eqdkp_url"));
 		$wrm_install->sql_query($sql) or print_error($sql, $wrm_install->sql_error(), 1);
-		$sql = 	sprintf("UPDATE " . $phpraid_config['db_name'] . "." . $phpraid_config['db_prefix'] . "config" .
-						" SET `config_value` = %s WHERE %s = `config_name`", quote_smart($default_armory_language_value), quote_smart("armory_language"));
-		$wrm_install->sql_query($sql) or print_error($sql, $wrm_install->sql_error(), 1);
-		$sql = 	sprintf("UPDATE " . $phpraid_config['db_name'] . "." . $phpraid_config['db_prefix'] . "config" .
-						" SET `config_value` = %s WHERE %s = `config_name`", quote_smart($default_armory_link_value), quote_smart("armory_link"));
-		$wrm_install->sql_query($sql) or print_error($sql, $wrm_install->sql_error(), 1);
+//		$sql = 	sprintf("UPDATE " . $phpraid_config['db_name'] . "." . $phpraid_config['db_prefix'] . "config" .
+//						" SET `config_value` = %s WHERE %s = `config_name`", quote_smart($default_armory_language_value), quote_smart("armory_language"));
+//		$wrm_install->sql_query($sql) or print_error($sql, $wrm_install->sql_error(), 1);
+//		$sql = 	sprintf("UPDATE " . $phpraid_config['db_name'] . "." . $phpraid_config['db_prefix'] . "config" .
+//						" SET `config_value` = %s WHERE %s = `config_name`", quote_smart($default_armory_link_value), quote_smart("armory_link"));
+//		$wrm_install->sql_query($sql) or print_error($sql, $wrm_install->sql_error(), 1);
 		$sql = 	sprintf("UPDATE " . $phpraid_config['db_name'] . "." . $phpraid_config['db_prefix'] . "config" .
 						" SET `config_value` = %s WHERE %s = `config_name`", quote_smart(time()), quote_smart("wrm_created_on"));
 		$wrm_install->sql_query($sql) or print_error($sql, $wrm_install->sql_error(), 1);

@@ -135,17 +135,17 @@ if(isset($_POST['submit']))
 	$raid_view_type = scrub_input($_POST['raid_view_type']);
 
 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'raid_view_type';", quote_smart($raid_view_type));
-	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'auto_queue';", quote_smart($a_queue));
-	$db_raid->sql_query($sql) or print_error($sql,mysql_error($sql),1);
+	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error($sql),1);
 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'disable_freeze';", quote_smart($d_freeze));
-	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'enforce_role_limits';", quote_smart($enforce_role_limits));
-	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'enforce_class_limits';", quote_smart($enforce_class_limits));
-	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'class_as_min';", quote_smart($class_as_min));
-	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
 	
 	header("Location: admin_raidsettings.php");
 }

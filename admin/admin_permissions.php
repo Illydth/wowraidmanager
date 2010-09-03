@@ -85,7 +85,7 @@ if($_GET['mode'] == 'view')
 	
 	// get permission sets
 	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "permissions";
-	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	
 	while($data = $db_raid->sql_fetchrow($result, true)) {
 		$edit = '<a href="admin_permissions.php?mode=edit&amp;perm_id='.$data['permission_id'].'"><img src="../templates/' . $phpraid_config['template'] . 
@@ -234,7 +234,7 @@ elseif(isset($_POST['submit']) && ($_GET['mode'] == 'edit' || $_GET['mode'] == '
 				quote_smart($phpraid_configuration),quote_smart($guilds),quote_smart($locations),
 				quote_smart($profile),quote_smart($raids));
 				
-			$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+			$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 			
 			log_create('permission',mysql_insert_id(),$name);
 			
@@ -248,7 +248,7 @@ elseif(isset($_POST['submit']) && ($_GET['mode'] == 'edit' || $_GET['mode'] == '
 				quote_smart($announcements),quote_smart($phpraid_configuration),quote_smart($guilds),quote_smart($locations),
 				quote_smart($profile),quote_smart($raids),quote_smart($perm_id));
 				
-			$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+			$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 			
 			header("Location: admin_permissions.php?mode=view");
 		}
@@ -304,7 +304,7 @@ if($_GET['mode'] != 'delete')
 	{
 		// grab from DB
 		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "permissions WHERE permission_id=%s",quote_smart($perm_id));
-		$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		$data = $db_raid->sql_fetchrow($result, true);
 		
 		$announcements = '<select name="announcements" class="post">';

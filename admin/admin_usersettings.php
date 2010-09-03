@@ -93,11 +93,11 @@ if(isset($_POST['submit']))
 		$anon = 0;
 		
 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'multiple_signups';", quote_smart($allow_multiple));
-	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'resop';", quote_smart($allow_resop));
-	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'anon_view';", quote_smart($anon));
-	$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
 
 	header("Location: admin_usersettings.php");		
 }

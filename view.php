@@ -95,7 +95,7 @@ require_once('includes/signup_flow.php');
 // Determine Advanced Profile Permisions to this Raid - Note: "user" doesn't need to be checked, it's
 //	 a default permission that will be checked within the signup flow.
 $sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id=%s", quote_smart($raid_id));
-$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 $data = $db_raid->sql_fetchrow($result, true);
 
 $priv_raids = scrub_input($_SESSION['priv_raids']);
@@ -116,7 +116,7 @@ if($mode == 'view')
 	//
 	// Obtain data for the raid
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id=%s", quote_smart($raid_id));
-	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	$data = $db_raid->sql_fetchrow($result, true);
 
 	$raid_location = UBB2($data['location']);
@@ -133,22 +133,22 @@ if($mode == 'view')
 
 	// get signup information
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id=%s AND queue='0' AND cancel='0'", quote_smart($raid_id));
-	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	$raid_count = $db_raid->sql_numrows($result);
 
 	// get cancel information
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id=%s AND queue='0' AND cancel='1'", quote_smart($raid_id));
-	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	$raid_cancel_count = $db_raid->sql_numrows($result);
 
 	// get queue information
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id=%s AND queue='1'", quote_smart($raid_id));
-	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	$raid_queue_count = $db_raid->sql_numrows($result);
 
 	// get totals
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id=%s", quote_smart($raid_id));
-	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	$raid_total = $db_raid->sql_numrows($result);
 
 	// calculate percentages
@@ -190,7 +190,7 @@ if($mode == 'view')
 	 ******************************************************************************/
 	// parse the signup array and seperate to classes or roles
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id=%s AND queue='0' AND cancel='0'", quote_smart($raid_id));
-	$signups_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$signups_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	while($signups = $db_raid->sql_fetchrow($signups_result, true))
 	{
 		$race = '';
@@ -200,11 +200,11 @@ if($mode == 'view')
 		// okay, push the value into the array after we
 		// get all the character information from the database
 		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id=%s",quote_smart($signups['char_id']));
-		$data_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$data_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		$data = $db_raid->sql_fetchrow($data_result, true);
 
 		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "teams WHERE char_id=%s and raid_id=%s",quote_smart($signups['char_id']),quote_smart($raid_id));
-		$teams_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$teams_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		$teamrow = $db_raid->sql_fetchrow($teams_result, true);
 
 		if ($db_raid->sql_numrows($teams_result) > 0)
@@ -239,7 +239,7 @@ if($mode == 'view')
 					if ($data['gender'] == $global_gender['gender_id'])
 					{
 						$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "race_gender WHERE race_id = %s and gender_id = %s", quote_smart($global_race['race_id']),quote_smart($global_gender['gender_id']));
-						$result_race_gender = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+						$result_race_gender = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 						$race_gender_data = $db_raid->sql_fetchrow($result_race_gender, true);
 						$race = '<img src="templates/' . $phpraid_config['template'] . $race_gender_data['image'] . '" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang[$global_race['lang_index']].'\');" onMouseout="hideddrivetip();" alt="'.$phprlang[$global_race['lang_index']].' '.$phprlang[$global_gender['lang_index']].'">';
 					}					
@@ -258,7 +258,7 @@ if($mode == 'view')
 		$spec = $signups['selected_spec'];
 		
 		$sql = sprintf("SELECT role_id FROM " . $phpraid_config['db_prefix'] . "class_role WHERE class_id = %s and subclass = %s", quote_smart($data['class']), quote_smart($data['pri_spec']));
-		$result_spec_lang = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$result_spec_lang = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		$spec_lang_data = $db_raid->sql_fetchrow($result_spec_lang, true);
 		//$pri_spec_lang = $spec_lang_data['lang_index'];
 		$pri_spec_role = $spec_lang_data['role_id'];
@@ -267,7 +267,7 @@ if($mode == 'view')
 				$pri_spec_role_name = $global_role['role_name'];
 		
 		$sql = sprintf("SELECT role_id FROM " . $phpraid_config['db_prefix'] . "class_role WHERE class_id = %s and subclass = %s", quote_smart($data['class']), quote_smart($data['sec_spec']));
-		$result_spec_lang = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$result_spec_lang = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		$spec_lang_data = $db_raid->sql_fetchrow($result_spec_lang, true);
 		//$sec_spec_lang = $spec_lang_data['lang_index'];
 		$sec_spec_role = $spec_lang_data['role_id'];
@@ -302,7 +302,7 @@ if($mode == 'view')
 			$name .= check_dupe($data['profile_id'], $raid_id);
 			// Get the Guild Name to Display instead of Just the ID
 			$sql = sprintf("SELECT guild_name FROM " . $phpraid_config['db_prefix'] . "guilds WHERE guild_id=%s",quote_smart($data['guild']));
-			$guild_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+			$guild_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 			$guild_data = $db_raid->sql_fetchrow($guild_result, true);
 			$guildname = $guild_data['guild_name'];
 		}
@@ -330,7 +330,7 @@ if($mode == 'view')
 					
 			// Get Role attached to primary spec by looking up in class/role table.
 			$sql = sprintf("SELECT role_id FROM " . $phpraid_config['db_prefix'] . "class_role WHERE class_id=%s and subclass=%s",quote_smart($data['class']),quote_smart($spec));
-			$role_name_data_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+			$role_name_data_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 			$role_name_data = $db_raid->sql_fetchrow($role_name_data_result, true);
 			$role_id = $role_name_data['role_id'];
 			foreach ($wrm_global_roles as $global_role)
@@ -347,13 +347,13 @@ if($mode == 'view')
 	 ******************************************************************************/
 	// parse the queue array and seperate to classes
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id=%s AND queue='1' AND cancel='0'",quote_smart($raid_id));
-	$signups_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$signups_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	while($signups = $db_raid->sql_fetchrow($signups_result, true))
 	{
 		// okay, push the value into the array after we
 		// get all the character information from the database
 		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id=%s",quote_smart($signups['char_id']));
-		$data_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$data_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		$data = $db_raid->sql_fetchrow($data_result, true);
 
 		$comments = escapePOPUP(scrub_input($signups['comments']));
@@ -378,7 +378,7 @@ if($mode == 'view')
 					if ($data['gender'] == $global_gender['gender_id'])
 					{
 						$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "race_gender WHERE race_id = %s and gender_id = %s", quote_smart($global_race['race_id']),quote_smart($global_gender['gender_id']));
-						$result_race_gender = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+						$result_race_gender = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 						$race_gender_data = $db_raid->sql_fetchrow($result_race_gender, true);
 						$race = '<img src="templates/' . $phpraid_config['template'] . $race_gender_data['image'] . '" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang[$global_race['lang_index']].'\');" onMouseout="hideddrivetip();" alt="'.$phprlang[$global_race['lang_index']].' '.$phprlang[$global_gender['lang_index']].'">';
 					}
@@ -412,14 +412,14 @@ if($mode == 'view')
 			$name .= check_dupe($data['profile_id'], $raid_id);
 			// Get the Guild Name to Display instead of Just the ID
 			$sql = sprintf("SELECT guild_name FROM " . $phpraid_config['db_prefix'] . "guilds WHERE guild_id=%s",quote_smart($data['guild']));
-			$guild_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+			$guild_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 			$guild_data = $db_raid->sql_fetchrow($guild_result, true);
 			$guildname = $guild_data['guild_name'];
 		}
 
 		//Create the Signup Spec Dropdown.
 		$sql = sprintf("SELECT role_id, lang_index FROM " . $phpraid_config['db_prefix'] . "class_role WHERE class_id = %s and subclass = %s", quote_smart($data['class']), quote_smart($data['pri_spec']));
-		$result_spec_lang = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$result_spec_lang = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		$spec_lang_data = $db_raid->sql_fetchrow($result_spec_lang, true);
 		$pri_spec_lang = $spec_lang_data['lang_index'];
 		$pri_spec_role = $spec_lang_data['role_id'];
@@ -428,7 +428,7 @@ if($mode == 'view')
 				$pri_spec_role_name = $global_role['role_name'];
 		
 		$sql = sprintf("SELECT role_id, lang_index FROM " . $phpraid_config['db_prefix'] . "class_role WHERE class_id = %s and subclass = %s", quote_smart($data['class']), quote_smart($data['sec_spec']));
-		$result_spec_lang = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$result_spec_lang = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		$spec_lang_data = $db_raid->sql_fetchrow($result_spec_lang, true);
 		$sec_spec_lang = $spec_lang_data['lang_index'];
 		$sec_spec_role = $spec_lang_data['role_id'];
@@ -483,13 +483,13 @@ if($mode == 'view')
 	 ******************************************************************************/	
 	// parse the cancel array and seperate to classes
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id=%s AND queue='0' AND cancel='1'",quote_smart($raid_id));
-	$signups_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$signups_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	while($signups = $db_raid->sql_fetchrow($signups_result, true))
 	{
 		// okay, push the value into the array after we
 		// get all the character information from the database
 		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id=%s",quote_smart($signups['char_id']));
-		$data_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$data_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		$data = $db_raid->sql_fetchrow($data_result, true);
 
 		$comments = escapePOPUP(scrub_input($signups['comments']));
@@ -514,7 +514,7 @@ if($mode == 'view')
 					if ($data['gender'] == $global_gender['gender_id'])
 					{
 						$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "race_gender WHERE race_id = %s and gender_id = %s", quote_smart($global_race['race_id']),quote_smart($global_gender['gender_id']));
-						$result_race_gender = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+						$result_race_gender = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 						$race_gender_data = $db_raid->sql_fetchrow($result_race_gender, true);
 						$race = '<img src="templates/' . $phpraid_config['template'] . $race_gender_data['image'] . '" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang[$global_race['lang_index']].'\');" onMouseout="hideddrivetip();" alt="'.$phprlang[$global_race['lang_index']].' '.$phprlang[$global_gender['lang_index']].'">';
 					}					
@@ -549,14 +549,14 @@ if($mode == 'view')
 
 			// Get the Guild Name to Display instead of Just the ID
 			$sql = sprintf("SELECT guild_name FROM " . $phpraid_config['db_prefix'] . "guilds WHERE guild_id=%s",quote_smart($data['guild']));
-			$guild_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+			$guild_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 			$guild_data = $db_raid->sql_fetchrow($guild_result, true);
 			$guildname = $guild_data['guild_name'];
 		}
 
 		//Create the Signup Spec Dropdown.
 		$sql = sprintf("SELECT role_id, lang_index FROM " . $phpraid_config['db_prefix'] . "class_role WHERE class_id = %s and subclass = %s", quote_smart($data['class']), quote_smart($data['pri_spec']));
-		$result_spec_lang = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$result_spec_lang = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		$spec_lang_data = $db_raid->sql_fetchrow($result_spec_lang, true);
 		$pri_spec_lang = $spec_lang_data['lang_index'];
 		$pri_spec_role = $spec_lang_data['role_id'];
@@ -565,7 +565,7 @@ if($mode == 'view')
 				$pri_spec_role_name = $global_role['role_name'];
 		
 		$sql = sprintf("SELECT role_id, lang_index FROM " . $phpraid_config['db_prefix'] . "class_role WHERE class_id = %s and subclass = %s", quote_smart($data['class']), quote_smart($data['sec_spec']));
-		$result_spec_lang = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$result_spec_lang = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		$spec_lang_data = $db_raid->sql_fetchrow($result_spec_lang, true);
 		$sec_spec_lang = $spec_lang_data['lang_index'];
 		$sec_spec_role = $spec_lang_data['role_id'];
@@ -818,7 +818,7 @@ if($mode == 'view')
 	
 	// last but not least, tooltips for class breakdown
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id=%s",quote_smart($raid_id));
-	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	$data = $db_raid->sql_fetchrow($result, true);
 
 	//Get Raid Total Counts
@@ -836,7 +836,7 @@ if($mode == 'view')
 	$raid_class_array = array();
 	$class_color_count = array();
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raid_class_lmt WHERE raid_id = %s", quote_smart($data['raid_id']));
-	$result_raid_class = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$result_raid_class = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	while($raid_class_data = $db_raid->sql_fetchrow($result_raid_class, true))
 	{
 		$raid_class_array[$raid_class_data['class_id']] = $raid_class_data['lmt'];
@@ -849,11 +849,11 @@ if($mode == 'view')
 	$raid_role_array = array();
 	$role_color_count = array();
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raid_role_lmt WHERE raid_id = %s", quote_smart($data['raid_id']));
-	$result_raid_role = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$result_raid_role = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	while($raid_role_data = $db_raid->sql_fetchrow($result_raid_role, true))
 	{
 		$sql2 = sprintf("SELECT role_name FROM " . $phpraid_config['db_prefix'] . "roles WHERE role_id = %s", quote_smart($raid_role_data['role_id']));
-		$result_role_name = $db_raid->sql_query($sql2) or print_error($sql2, mysql_error(), 1);
+		$result_role_name = $db_raid->sql_query($sql2) or print_error($sql2, $db_raid->sql_error(), 1);
 		$role_name = $db_raid->sql_fetchrow($result_role_name, true);
 		
 		$raid_role_array[$role_name['role_name']] = $raid_role_data['lmt'];
@@ -877,7 +877,7 @@ if($mode == 'view')
 	if($phpraid_config['multiple_signups'] == 0)
 	{
 		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id=%s AND profile_id=%s",quote_smart($raid_id),quote_smart($profile_id));
-		$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		if($db_raid->sql_numrows($result) > 0)
 		{
 			$show_signup = 0;
@@ -888,7 +888,7 @@ if($mode == 'view')
 	// check if they have chars and that they have at least one within the range limit
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE profile_id=%s
 	AND lvl<=%s AND lvl>=%s",quote_smart($profile_id),quote_smart($raid_max_lvl),quote_smart($raid_min_lvl));
-	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	$char_count = $db_raid->sql_numrows($result);
 
 	if($char_count <= 0)
@@ -901,14 +901,14 @@ if($mode == 'view')
 	if ($data['raid_force_name'] != 'None')
 	{
 		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raid_force WHERE raid_force_name=%s", quote_smart($data['raid_force_name']));
-		$raid_force_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$raid_force_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		$char_in_guild_check = false;
 		while($raid_force_data = $db_raid->sql_fetchrow($raid_force_result, true))
 		{
 			$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE 
 								profile_id=%s AND guild=%s", quote_smart($profile_id), 
 							quote_smart($raid_force_data['guild_id']));
-			$char_in_guild_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+			$char_in_guild_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 			$char_count = $db_raid->sql_numrows($char_in_guild_result);
 			if($char_count > 0)
 				$char_in_guild_check = true;
@@ -1025,7 +1025,7 @@ elseif($mode == 'switch_spec')
 	
 	// Update the Signups Table with the selected spec and forward back to the view page.
 	$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "signups set selected_spec=%s WHERE signup_id=%s", quote_smart($spec), quote_smart($signup_id));
-	$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 
 	header("Location: view.php?mode=view&raid_id=$raid_id&Sort=$sort_mode&SortDescending=$sort_descending");
 }
@@ -1084,18 +1084,18 @@ elseif($mode == 'signup')
 			// Get Class Limits and set Colored Counts
 			$raid_class_array = array();
 			$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raid_class_lmt WHERE raid_id = %s", quote_smart($raid_id));
-			$result_raid_class = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+			$result_raid_class = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 			while($raid_class_data = $db_raid->sql_fetchrow($result_raid_class, true))
 				$raid_class_array[$raid_class_data['class_id']] = $raid_class_data['lmt'];
 
 			// Get Role Limits and set Colored Counts
 			$raid_role_array = array();
 			$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raid_role_lmt WHERE raid_id = %s", quote_smart($raid_id));
-			$result_raid_role = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+			$result_raid_role = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 			while($raid_role_data = $db_raid->sql_fetchrow($result_raid_role, true))
 			{
 				$sql2 = sprintf("SELECT role_name FROM " . $phpraid_config['db_prefix'] . "roles WHERE role_id = %s", quote_smart($raid_role_data['role_id']));
-				$result_role_name = $db_raid->sql_query($sql2) or print_error($sql2, mysql_error(), 1);
+				$result_role_name = $db_raid->sql_query($sql2) or print_error($sql2, $db_raid->sql_error(), 1);
 				$role_name = $db_raid->sql_fetchrow($result_role_name, true);
 				
 				$raid_role_array[$role_name['role_name']] = $raid_role_data['lmt'];
@@ -1103,13 +1103,13 @@ elseif($mode == 'signup')
 				
 			// Get maximum raid attendees.
 			$sql = sprintf("SELECT max FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id=%s", quote_smart($raid_id));
-			$result_raid = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+			$result_raid = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 			$max_data = $db_raid->sql_fetchrow($result_raid, true);
 			$max = $max_data['max'];
 			
 			// Get the character information.
 			$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id=%s", quote_smart($char_id));
-			$result_class = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+			$result_class = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 			$class = $db_raid->sql_fetchrow($result_class, true);
 
 			// Check class limits only if the user is signing up as drafted, otherwise skip the checks and just 
@@ -1133,7 +1133,7 @@ elseif($mode == 'signup')
 									WHERE a.pri_spec = b.subclass
 									AND b.role_id = c.role_id
 									AND a.char_id=%s", quote_smart($char_id));	
-					$result_role_name = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+					$result_role_name = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 					$role_name_data = $db_raid->sql_fetchrow($result_role_name, true);
 					$role_name = $role_name_data['role_name'];
 					foreach ($wrm_global_roles as $global_role)
@@ -1153,12 +1153,12 @@ elseif($mode == 'signup')
 
 		// Get the character spec information. 
 		$sql = sprintf("SELECT pri_spec FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id=%s", quote_smart($char_id));
-		$result_spec = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$result_spec = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		$spec_data = $db_raid->sql_fetchrow($result_spec, true);
 		$selected_spec = $spec_data['pri_spec'];
 		
 		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id=%s AND char_id=%s AND profile_id=%s", quote_smart($raid_id), quote_smart($char_id), quote_smart($profile_id));
-		$result_signup = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$result_signup = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		if($db_raid->sql_numrows($result_signup) > 0) {
 			$form_error = 1;
 			$errorTitle = $phprlang['form_error'];
@@ -1173,7 +1173,7 @@ elseif($mode == 'signup')
 					VALUES
 						(%s,%s,%s,%s,%s,%s,%s,%s)", quote_smart($char_id), quote_smart($profile_id), quote_smart($raid_id),
 						quote_smart($comments), quote_smart($queue), quote_smart($timestamp), quote_smart($cancel), quote_smart($selected_spec));
-			$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+			$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 			header("Location: view.php?mode=view&raid_id=$raid_id");
 		}
 	}
@@ -1208,7 +1208,7 @@ elseif($mode == 'delete')
 			exit;
 		} else {
 			$sql = sprintf("DELETE FROM " . $phpraid_config['db_prefix'] . "signups WHERE char_id=%s AND raid_id=%s", quote_smart($char_id), quote_smart($raid_id));
-			$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+			$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 
 			log_raid($char_id, $raid_id, 'delete');
 
@@ -1230,7 +1230,7 @@ elseif($mode == 'queue')
 
 	// Get Profile ID with Char ID to verify user.
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id=%s AND char_id=%s", quote_smart($raid_id), quote_smart($char_id));
-	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	$data = $db_raid->sql_fetchrow($result, true);
 
 	$profile_id = $data['profile_id'];
@@ -1243,7 +1243,7 @@ elseif($mode == 'queue')
 		log_hack();
 
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id=%s AND char_id=%s", quote_smart($raid_id), quote_smart($char_id));
-	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	$data = $db_raid->sql_fetchrow($result, true);
 
 	//Check for a hacking attempt sending in a URL without clicking a button.
@@ -1265,7 +1265,7 @@ elseif($mode == 'queue')
 	else
 	{
 		$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "signups set queue='1',cancel='0' WHERE raid_id=%s AND char_id=%s", quote_smart($raid_id), quote_smart($char_id));
-		$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 
 		log_raid($char_id, $raid_id, 'queue_in');
 	}
@@ -1283,7 +1283,7 @@ elseif($mode == 'draft')
 
 	// Get Profile ID with Char ID to verify user.
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id=%s AND char_id=%s", quote_smart($raid_id), quote_smart($char_id));
-	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	$data = $db_raid->sql_fetchrow($result, true);
 
 	// verify user is editing own data
@@ -1311,18 +1311,18 @@ elseif($mode == 'draft')
 	// Get Class Limits and set Colored Counts
 	$raid_class_array = array();
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raid_class_lmt WHERE raid_id = %s", quote_smart($raid_id));
-	$result_raid_class = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$result_raid_class = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	while($raid_class_data = $db_raid->sql_fetchrow($result_raid_class, true))
 		$raid_class_array[$raid_class_data['class_id']] = $raid_class_data['lmt'];
 
 	// Get Role Limits and set Colored Counts
 	$raid_role_array = array();
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raid_role_lmt WHERE raid_id = %s", quote_smart($raid_id));
-	$result_raid_role = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$result_raid_role = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	while($raid_role_data = $db_raid->sql_fetchrow($result_raid_role, true))
 	{
 		$sql2 = sprintf("SELECT role_name FROM " . $phpraid_config['db_prefix'] . "roles WHERE role_id = %s", quote_smart($raid_role_data['role_id']));
-		$result_role_name = $db_raid->sql_query($sql2) or print_error($sql2, mysql_error(), 1);
+		$result_role_name = $db_raid->sql_query($sql2) or print_error($sql2, $db_raid->sql_error(), 1);
 		$role_name = $db_raid->sql_fetchrow($result_role_name, true);
 		
 		$raid_role_array[$role_name['role_name']] = $raid_role_data['lmt'];
@@ -1330,13 +1330,13 @@ elseif($mode == 'draft')
 		
 	// Get maximum raid attendees.
 	$sql = sprintf("SELECT max FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id=%s", quote_smart($raid_id));
-	$result_raid = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$result_raid = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	$max_data = $db_raid->sql_fetchrow($result_raid, true);
 	$max = $max_data['max'];
 
 	// Get the character data.
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id=%s", quote_smart($char_id));
-	$result_class = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$result_class = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	$class = $db_raid->sql_fetchrow($result_class, true);
 
 	$queue=0;
@@ -1360,7 +1360,7 @@ elseif($mode == 'draft')
 						AND a.raid_id=%s
 						AND a.char_id=%s", quote_smart($raid_id), quote_smart($char_id));	
 		
-		$result_role_name = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$result_role_name = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		$role_name_data = $db_raid->sql_fetchrow($result_role_name, true);
 		$role_name = $role_name_data['role_name'];
 		foreach ($wrm_global_roles as $global_role)
@@ -1373,7 +1373,7 @@ elseif($mode == 'draft')
 		$queue = 1;
 
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id=%s AND char_id=%s", quote_smart($raid_id), quote_smart($char_id));
-	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	$data = $db_raid->sql_fetchrow($result, true);
 
 	//Debug Section
@@ -1411,19 +1411,19 @@ elseif($mode == 'draft')
 		{
 			// Get the spec from the char table.
 			$sql = sprintf("SELECT pri_spec FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id=%s", quote_smart($char_id));
-			$spec_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+			$spec_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 			$spec_data = $db_raid->sql_fetchrow($spec_result, true);
 			$spec = $spec_data['pri_spec'];		
 			
 			$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "signups set selected_spec = %s WHERE raid_id=%s AND char_id=%s", quote_smart($spec), quote_smart($raid_id), quote_smart($char_id));
-			$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);	
+			$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);	
 		}
 		
 		if ($queue)
 		{
 			// Too many of this type, set back to queue.
 			$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "signups set queue='1',cancel='0' WHERE raid_id=%s AND char_id=%s", quote_smart($raid_id), quote_smart($char_id));
-			$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+			$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 
 			log_raid($char_id, $raid_id, 'queue_in');
 		}
@@ -1431,7 +1431,7 @@ elseif($mode == 'draft')
 		{
 			//Open spot in raid, draft them.
 			$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "signups set queue='0',cancel='0' WHERE raid_id=%s AND char_id=%s", quote_smart($raid_id), quote_smart($char_id));
-			$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+			$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 
 			log_raid($char_id, $raid_id, 'queue_out');
 		}
@@ -1463,19 +1463,19 @@ elseif($mode == 'cancel')
 	$timestamp = time();
 	
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id=%s AND char_id=%s", quote_smart($raid_id), quote_smart($char_id));
-	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	$data = $db_raid->sql_fetchrow($result, true);
 	
 	if($S_profile_id == $data['profile_id'] || $priv_raids == 1) {
 		if($data['cancel'] == 0) {
 			$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "signups set cancel='1',queue='0',timestamp=%s WHERE raid_id=%s AND char_id=%s", quote_smart($timestamp), quote_smart($raid_id), quote_smart($char_id));
-			$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+			$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 
 			// put in cancel
 			log_raid($char_id, $raid_id, 'cancel_in');
 		} else {
 			$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "signups set cancel='0',queue='0',timestamp=%s WHERE raid_id=%s AND char_id=%s", quote_smart($timestamp), quote_smart($raid_id), quote_smart($char_id));
-			$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+			$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 
 			// removed from cancel
 			log_raid($char_id, $raid_id, 'cancel_out');
@@ -1494,7 +1494,7 @@ else if($mode == 'edit_comment')
 		log_hack();
 
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE signup_id=%s", quote_smart($signup_id));
-	$result = $db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+	$result = $db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
 	$data = $db_raid->sql_fetchrow($result, true);
 
 	// verify user
@@ -1517,7 +1517,7 @@ else if($mode == 'edit_comment')
 		$comments = escapePOPUP(scrub_input($_POST['comments']));
 
 		$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "signups SET comments=%s WHERE signup_id=%s", quote_smart($comments), quote_smart($signup_id));
-		$db_raid->sql_query($sql) or print_error($sql,mysql_error(),1);
+		$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
 
 		header("Location: view.php?mode=view&raid_id=$raid_id");
 	}
@@ -1556,7 +1556,7 @@ if($show_signup == 1 && $priv_profile == 1)
 
 	// setup min/max levels
 	$sql = sprintf("SELECT min_lvl,max_lvl FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id=%s", quote_smart($raid_id));
-	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	$limit = $db_raid->sql_fetchrow($result, true);
 
 	$signup_action = 'view.php?mode=signup&amp;raid_id=' . $raid_id;
@@ -1566,7 +1566,7 @@ if($show_signup == 1 && $priv_profile == 1)
 
 	// get character list
 	$sql = sprintf("SELECT raid_force_name FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id=%s", quote_smart($raid_id));
-	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	$rf_data = $db_raid->sql_fetchrow($result, true);
 	$raid_force_name = $rf_data['raid_force_name'];
 
@@ -1574,15 +1574,15 @@ if($show_signup == 1 && $priv_profile == 1)
 	if ($raid_force_name != "None")
 	{
 		$sql = sprintf("SELECT guild_id FROM " . $phpraid_config['db_prefix'] . "raid_force WHERE raid_force_name=%s", quote_smart($raid_force_name));
-		$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		while($rf_data = $db_raid->sql_fetchrow($result, true))
 		{
 			$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE profile_id=%s and guild=%s", quote_smart($profile_id), quote_smart($rf_data['guild_id']));
-			$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+			$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 			while($data = $db_raid->sql_fetchrow($result, true))
 			{
 				$sql = sprintf("SELECT lvl FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id=%s", quote_smart($data['char_id']));
-				$result_lvl = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+				$result_lvl = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 				$lvl = $db_raid->sql_fetchrow($result_lvl, true);
 		
 				if($lvl['lvl'] >= $limit['min_lvl'] && $lvl['lvl'] <= $limit['max_lvl'])
@@ -1593,11 +1593,11 @@ if($show_signup == 1 && $priv_profile == 1)
 	else
 	{
 		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE profile_id=%s", quote_smart($profile_id));
-		$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		while($data = $db_raid->sql_fetchrow($result, true))
 		{
 			$sql = sprintf("SELECT lvl FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id=%s", quote_smart($data['char_id']));
-			$result_lvl = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+			$result_lvl = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 			$lvl = $db_raid->sql_fetchrow($result_lvl, true);
 	
 			if($lvl['lvl'] >= $limit['min_lvl'] && $lvl['lvl'] <= $limit['max_lvl'])

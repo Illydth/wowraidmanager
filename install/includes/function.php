@@ -374,7 +374,7 @@ function scan_dbserver()
 						// check table : db_table_group_name
 							
 						$sql_columns = "SHOW COLUMNS FROM ".$data_db_all['Database'].".".$db_temp_prefix.$bridge[$i]['db_table_group_name'];
-						//$result_columns = @mysql_query($sql_columns) or die("Error" . mysql_error()."<br>SQL: ". $sql_columns."<br>bridge:".$db_temp_prefix.$bridge[$i]['auth_type_name']);
+						//$result_columns = @mysql_query($sql_columns) or die("Error" . $db_raid->sql_error()."<br>SQL: ". $sql_columns."<br>bridge:".$db_temp_prefix.$bridge[$i]['auth_type_name']);
 						$result_columns = $wrm_install->sql_query($sql_columns) or print_error($sql_columns, $wrm_install->sql_error(), 1);
 						while ($data_columns = $wrm_install->sql_fetchrow($result_columns,true))
 						{
