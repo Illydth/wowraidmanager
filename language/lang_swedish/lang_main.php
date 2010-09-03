@@ -145,7 +145,7 @@ $phprlang['no_user_title'] = 'User does not exist';
 $phprlang['print_error_critical'] = 'a critical error!';
 $phprlang['print_error_details'] = 'Details';
 $phprlang['print_error_minor'] = 'a minor error!';
-$phprlang['print_error_msg_begin'] = 'Sorry, phpRaid has encountered ';
+$phprlang['print_error_msg_begin'] = 'Sorry, WRM has encountered ';
 $phprlang['print_error_msg_end'] = 'If this error persists, please make a post 
 									with this message <br>on the <a href="http://www.wowraidmanager.net/">wowraidmanager.net Forums</a> and
 									we will do our best to get it corrected. Thanks!';

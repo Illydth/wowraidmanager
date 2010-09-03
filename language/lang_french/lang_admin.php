@@ -116,7 +116,7 @@ $phprlang['configuration_version_outdated_message'] = 'Your version of WoW Raid 
 $phprlang['configuration_addon'] = 'Addon URL';
 $phprlang['configuration_admin_email'] = 'Admin e-mail';
 $phprlang['configuration_debug'] = 'Debug mode';
-$phprlang['configuration_disable'] = 'Disable phpRaid';
+$phprlang['configuration_disable'] = 'Disable WRM';
 $phprlang['configuration_email_header'] = 'E-mail configuration';
 $phprlang['configuration_email_sig'] = 'E-mail signature';
 $phprlang['configuration_enable_five_man'] = 'Enable groups<br><a href="../docs/enable_groups.htm" target="_blank">help?</a>';

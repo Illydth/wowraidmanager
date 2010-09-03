@@ -145,7 +145,7 @@ $phprlang['no_user_title'] = '用戶不存在';
 $phprlang['print_error_critical'] = '發生一個嚴重錯誤!';
 $phprlang['print_error_details'] = '細節';
 $phprlang['print_error_minor'] = '警告!';
-$phprlang['print_error_msg_begin'] = '抱歉，phpRaid發生了 ';
+$phprlang['print_error_msg_begin'] = '抱歉，WRM發生了 ';
 $phprlang['print_error_msg_end'] = '如果問題持續發生，請將錯誤訊息 
 									<br>貼至 <a href="http://www.wowraidmanager.net/">wowraidmanager.net Forums</a> 然後
 									我們會盡全力解決您的問題. 謝謝!';
@@ -206,7 +206,7 @@ $phprlang['delete_msg'] = '注意: 刪除後無法回復資料 <br>點擊下面�
 $phprlang['maintenance_header'] = '系統維護中';
 $phprlang['maintenance_message'] = 'WoW Raid Manager系統現在維護中. 請稍候再試一次.';
 $phprlang['disabled_header'] = 'Site Disabled Notice!';
-$phprlang['disabled_message'] = 'Please note, your site is disabled. Visitors can\'t use the system right now!<br>Go to <u>Configuration</u> and then uncheck <u>Disable phpRaid</u>';
+$phprlang['disabled_message'] = 'Please note, your site is disabled. Visitors can\'t use the system right now!<br>Go to <u>Configuration</u> and then uncheck <u>Disable WRM</u>';
 $phprlang['userclass_msg'] = '您的使用者帳號未被授權,請聯繫系統管理者.';
 $phprlang['priv_title'] = '權限不足';
 $phprlang['priv_msg'] = '您沒有足夠的權限訪問該頁面. 如果您認為應該擁有此權限，請與管理者聯繫.';
