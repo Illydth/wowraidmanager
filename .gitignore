@@ -2,7 +2,6 @@
 .settings
 .settings/*
 config.php
-config.*
 package
 package/*
 cache/templates_c/*
