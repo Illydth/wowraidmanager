@@ -133,7 +133,7 @@ else if($step == "1")
 	schow_online_versionnr();
 
 	create_armory_directory_path();
-
+	
 	$show_next_bd = TRUE;
 	
 	$writable_dir_cache_bgcolor = "green";
@@ -183,6 +183,19 @@ else if($step == "1")
 		$mysqlversion_bgcolor = "green";
 	}
 
+	/**
+	 * config.php Stuff
+	 */
+	if ((file_exists("config.php")) != TRUE)
+	{
+		if (rename($wrm_config_file.".tmp",$wrm_config_file) == FALSE )
+		{
+			//can not rename
+			echo "can not rename: $wrm_config_file";
+			$show_next_bd = FALSE;
+		}
+	}
+	
 	// NOTE: BE CAREFUL WITH IS__WRITEABLE, that is NOT the built in is_writeable function. (See Double Underscore)
 	if (is_file($wrm_config_file))
 	{
@@ -763,6 +776,7 @@ else if($step == 10)
 
 else if($step === "done")
 {
+	//echo "step: done";
 	include_once ($wrm_config_file);
 
 	$wrmserver = 'http://'.$_SERVER['SERVER_NAME'];

@@ -205,7 +205,6 @@ function wrm_login()
 	global $db_table_group_name, $auth_user_class, $auth_alt_user_class, $table_prefix, $db_raid, $phpraid_config;
 	global $Bridge2ColumGroup;
 
-
 	$username = $password = "";
 	$username_id = "";
 		
@@ -254,13 +253,27 @@ function wrm_login()
 	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	$data = $db_raid->sql_fetchrow($result, true);
 	
-
 	if( ($username_id == $data[$db_user_id]) && ($cmspass = password_check($password, $data[$db_user_id], $pwdencrypt)) ) 
 	{
+		/**
+		 * user with aces to admin area
+		 * ignore base and alt base group
+		 * 
+		 */
+		$sql = sprintf(	"SELECT  configuration" .
+						" FROM    `" . $phpraid_config['db_prefix'] . "permissions`" .
+						"	inner JOIN `" . $phpraid_config['db_prefix'] . "profile`" .
+						"		ON `" . $phpraid_config['db_prefix'] . "permissions`.`permission_id` = `" . $phpraid_config['db_prefix'] . "profile`.`priv`" .
+						" where `" . $phpraid_config['db_prefix'] . "profile`.`profile_id` = %s", quote_smart($data[$db_user_id])
+			);
+		$result_permissions = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+		$data_permissions = $db_raid->sql_fetchrow($result_permissions, true);
+		
 		// The user has a matching username and proper password in the BRIDGE database.
 		// We need to validate the users group.  If it does not contain the user group that has been set as
-		//	authorized to use WRM, we need to fail the login with a proper message.		
-		if (($auth_user_class != "") or ($auth_user_class != "0"))
+		//	authorized to use WRM, we need to fail the login with a proper message.
+		//echo $sql."<br>". $data_permissions["configuration"]."<br>";		
+		if ((($auth_user_class != "") or ($auth_user_class != "0")) and ($data_permissions["configuration"] != 1))
 		{
 			$FoundUserInGroup = FALSE;
 	

@@ -44,7 +44,6 @@ if(!isset($_GET['mode']))
 	// is the user already logged in? if so, there's no need for them to login again
 	if($_SESSION['session_logged_in'] == 0) {
 		if(isset($_POST['login'])) 	{
-			//$logged_in = phpraid_login();
 			$logged_in = wrm_login();
 			if($logged_in == 0)
 			{
