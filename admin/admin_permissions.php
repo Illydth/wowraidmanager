@@ -284,7 +284,7 @@ elseif($_GET['mode'] == 'delete')
 		} 
 		else 
 		{
-			delete_permissions();
+			delete_permissions($perm_id);
 			
 			header("Location: admin_permissions.php?mode=view");
 		}

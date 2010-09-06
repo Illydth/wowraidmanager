@@ -75,11 +75,11 @@ function clear_session()
 	unset($_SESSION['priv_raids']);
 }
 // gets and sets user permissions
-function get_permissions() 
+function get_permissions($profile_id) 
 {
 	global $db_raid, $phpraid_config;
 	
-	$profile_id = scrub_input($_SESSION['profile_id']);
+	//$profile_id = scrub_input($_SESSION['profile_id']);
 
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "profile WHERE profile_id=%s", quote_smart($profile_id));
 	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(),1);
@@ -117,10 +117,10 @@ function check_permission($perm_type, $profile_id) {
 		return FALSE;
 }
 
-function delete_permissions() {
+function delete_permissions($perm_id) {
 	global $db_raid, $phpraid_config;
 	
-	$id = scrub_input($_GET['perm_id']);
+	$id = scrub_input($perm_id);
 	
 	$sql = sprintf("DELETE FROM " . $phpraid_config['db_prefix'] . "permissions WHERE permission_id=%s", quote_smart($id));
 	$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
@@ -129,6 +129,7 @@ function delete_permissions() {
 	$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 }
 
+// not used
 function remove_user() {
 	global $db_raid, $phpraid_config;
 

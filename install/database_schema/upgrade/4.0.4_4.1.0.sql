@@ -135,6 +135,8 @@ INSERT INTO `wrm_config` (`config_name`,`config_value`) VALUES ('site_name', 'WR
 INSERT INTO `wrm_config` (`config_name`,`config_value`) VALUES ('site_description', 'WRM');
 INSERT INTO `wrm_config` (`config_name`,`config_value`) VALUES ('site_server', 'Localhost');
 INSERT INTO `wrm_config` (`config_name`,`config_value`) VALUES ('persistent_db', '1');
+INSERT INTO `wrm_config` (`config_name`,`config_value`) VALUES ('wrm_created_on', '1');
+INSERT INTO `wrm_config` (`config_name`,`config_value`) VALUES ('wrm_updated_on', '1');
 
 -- Raid Force Table Creation
 DROP TABLE IF EXISTS `wrm_raid_force`;

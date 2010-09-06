@@ -129,6 +129,7 @@ function scrub_input($value = "", $html_allowed = false)
 	return $value;
 }
 
+//old
 function setup_output() {
 	global $report;
 

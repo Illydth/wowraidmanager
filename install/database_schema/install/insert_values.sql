@@ -560,6 +560,8 @@ INSERT INTO `wrm_config` VALUES ('raid_view_type','by_class');
 INSERT INTO `wrm_config` VALUES ('records_per_page','25');
 INSERT INTO `wrm_config` VALUES ('armory_cache_setting', 'none');
 INSERT INTO `wrm_config` VALUES ('persistent_db', '1');
+INSERT INTO `wrm_config` VALUES ('wrm_created_on', '1');
+INSERT INTO `wrm_config` VALUES ('wrm_updated_on', '1');
 
 -- Event Table Data
 INSERT INTO `wrm_events` (`event_id`, `zone_desc`, `max`, `exp_id`, `event_type_id`, `wow_name`, `icon_path`) VALUES

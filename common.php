@@ -232,7 +232,7 @@ if (!isset($_SESSION['initiated']))
 	}
 }
 
-get_permissions();
+get_permissions($_SESSION['profile_id']);
 
 /***************************************************
  * Set Up Column Modification Array
