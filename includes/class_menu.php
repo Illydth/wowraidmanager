@@ -179,7 +179,7 @@ class wrm_menu
 		}
 		
 		// Show Register Link		
-		if(($logged_in == 0) and !isset($this->phpraid_config[$this->phpraid_config['auth_type']."_auth_user_class"])) {
+		if(($logged_in == 0) and ($this->phpraid_config['auth_type']== "iums")) {
 			$menu .= '<li>' . $register_link . '</li>';
 			$this->wrmsmarty->assign('register_link',$register_link);
 		}

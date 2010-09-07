@@ -81,7 +81,7 @@ if (($step == "0"))
 	}
 	
 	$bridge_type_output[]=$wrm_install_lang['bridge_name_text'].": 'iUMS'";// <br> ".$wrm_install_lang['step2dbname'].": '". $phpraid_config['db_name']."' ; ".$wrm_install_lang['table_prefix_text'].": '".$phpraid_config['db_prefix']."' ; ".$wrm_install_lang['bridge_users_found_text'].": '0'";
-	$bridge_type_values[]="iUms:".$phpraid_config['db_name'].":".$phpraid_config['db_prefix']."; ".$wrm_install_lang['bridge_users_found_text'].":0";
+	$bridge_type_values[]="iUms:".$phpraid_config['db_name'].":".$phpraid_config['db_prefix'].": ".$wrm_install_lang['bridge_users_found_text'].":0";
 
 	include_once ("includes/page_header.php");
 	$smarty->assign(
