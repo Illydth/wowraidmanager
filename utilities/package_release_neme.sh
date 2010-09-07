@@ -1,15 +1,16 @@
 #!/bin/sh
 
-cd ..
-cd ..
+#cd ..
+#cd ..
+cd /tmp
 # Remove Prior Package Directory and Re-Create
 rm -rf package
 
 #Creating Working Directories and Files
-mkdir package
-mkdir package/wrm
-cp -R wowraidmanager/* package/wrm
-cd package
+mkdir /tmp/package
+mkdir /tmp/package/wrm
+cp -R /opt/WRM/wowraidmanager/* /tmp/package/wrm
+cd /tmp/package
 
 #Remove Misc Stuff
 rm -rf wrm/utilities
@@ -20,6 +21,15 @@ rm -f wrm/config.php.*
 #Start Permissions Work
 ###############################
 cd wrm
+
+# Remove Cache and Compilations
+rm -rf armory_log/stderr.log
+rm -rf raid_lua/phpRaid_Data.lua
+rm -rf smarty_cache/*
+rm -rf smarty_cache/admin/*
+rm -rf templates_c/*
+rm -rf templates_c/admin/*
+rm -rf armory_cache/*
 
 # Set Directory / File Write permissions.
 chmod 777 cache/
@@ -32,15 +42,6 @@ chmod 777 cache/templates_c
 chmod 777 cache/templates_c/admin
 
 chmod 777 config.php
-
-# Remove Cache and Compilations
-rm -rf armory_log/stderr.log
-rm -rf raid_lua/phpRaid_Data.lua
-rm -rf smarty_cache/*
-rm -rf smarty_cache/admin/*
-rm -rf templates_c/*
-rm -rf templates_c/admin/*
-rm -rf armory_cache/*
 
 # recursive chmod
 chmod -R a-x *
