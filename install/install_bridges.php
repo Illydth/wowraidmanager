@@ -644,7 +644,9 @@ else if($step === "bridge_done")
 	//only for -- iums auth --
 	else
 	{
-		profile_add($_POST['user_admin_username'],$_POST['user_admin_password'],$_POST['user_admin_email']);		
+		profile_add($_POST['user_admin_username'],$_POST['user_admin_password'],$_POST['user_admin_email']);
+		$bridge_auth_user_group = "";
+		$bridge_auth_user_alt_group = "";		
 	}
 
 	/*

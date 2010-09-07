@@ -32,7 +32,7 @@
 define("IN_PHPRAID", true);	
 require_once('./common.php');
 
-// if not using phpRaid die
+// if not using iUMS die
 if($phpraid_config['auth_type'] != 'iums')
 {
 	die("You can not access this file");
@@ -43,76 +43,80 @@ if($phpraid_config['auth_type'] != 'iums')
 define("PAGE_LVL","anonymous");
 require_once("includes/authentication.php");
 
+$new_user_name = scrub_input(strtolower($_POST['new_user_name']));
+$email = scrub_input($_POST['new_user_email']);
+
 if(isset($_POST['submit']))	
 {
 	// check for errors
-	$form_error = 0;
-	
-	$user = scrub_input(strtolower($_POST['username']));
-	$pass = $_POST['password']; //Don't scrub, we'll MD5 this later which should blow away any issues.
-	$confirm = $_POST['confirm']; //Don't scrub, needs to equal pass.
-	$email = scrub_input($_POST['email']);
+	$form_error = FALSE;
+
+	$pass = $_POST['new_user_password']; //Don't scrub, we'll MD5 this later which should blow away any issues.
+	$confirm = $_POST['new_user_confirm_password']; //Don't scrub, needs to equal pass.
 	
 	// confirm passwords
 	if($pass != $confirm)
 	{
-		$form_error = 1;
+		$form_error = TRUE;
 		$msg .= '<li>' . $phprlang['register_confirm'] . '</li>';
 	}
-	if($user == '')
+	if($new_user_name == '')
 	{
-		$form_error = 1;
+		$form_error = TRUE;
 		$msg .= '<li>' . $phprlang['register_user_empty'] . '</li>';
 	}
 	if($pass == '')
 	{
-		$form_error = 1;
+		$form_error = TRUE;
 		$msg .= '<li>' . $phprlang['register_pass_empty'] . '</li>';
 	}
 	if($email == '')
 	{
-		$form_error = 1;
+		$form_error = TRUE;
 		$msg .= '<li>' . $phprlang['register_email_empty'] . '</li>';
 	}
 	
 	// check if username or email already exists
 	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "profile";
 	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-	while($data = $db_raid->sql_fetchrow($result, true))
+	while($data = $db_raid->sql_fetchrow($result))
 	{
-		if($user == $data['username'])
+		if($new_user_name == $data['username'])
 		{
-			$form_error = 1;
+			$form_error = TRUE;
 			$msg .= '<li>' . $phprlang['register_user_exists'] . '</li>';
 		}
 		
 		if($email == $data['email'])
 		{
-			$form_error = 1;
+			$form_error = TRUE;
 			$msg .= '<li>' . $phprlang['register_email_exists'] . '</li>';
 		}
 	}
 	
-	if($form_error == 0)
+	if($form_error == FALSE)
 	{
 		$pass = md5($pass);
 		
-		// default group
-		if($phpraid_config['default_group'] != 'nil')
-			$user_priv = $phpraid_config['default_group'];
-		else
-			$user_priv = '0';
-		
-		wrm_profile_add("",$email,$pass,$user_priv,$username);
+		wrm_profile_add("", $email, $pass, $new_user_name);
 		
 		$subject = $phprlang['register_email_header'] . ' ' . $phpraid_config['site_name'];
-		$msg = $phprlang['register_email_greeting'] . ' ' . $user . ",\n\n" . $phprlang['register_email_subject'];
+		$msg = $phprlang['register_email_greeting'] . ' ' . $new_user_name . ",\n\n" . $phprlang['register_email_subject'];
 		
-		email($email, $subject, $msg);
+		//email($email, $subject, $msg);
 		
-		$errorTitle = $phprlang['register_complete_header'];
-		$errorMsg = $phprlang['register_complete_msg'];
-		$errorDie = 0;
+		//
+		// Start output of page
+		//		
+		require_once('includes/page_header.php');
+		$wrmsmarty->assign('register_complete',
+			array(
+				'register_complete_header'=>$phprlang['register_complete_header'],
+				'register_complete_msg'=>$phprlang['register_complete_msg'],
+			)
+		);
+		$wrmsmarty->display('register_complete.html');
+		require_once('includes/page_footer.php');
 	}
 	else
 	{
@@ -123,38 +127,33 @@ if(isset($_POST['submit']))
 	}
 }
 
-//
-// Start output of page
-//
-require_once('includes/page_header.php');
+
 
 if(!isset($_POST['submit']) || $form_error == 1)
 {
 	$form_action = 'register.php';
-	$buttons = '<input type="submit" value="Submit" name="submit" class="mainoption"> 
-				<input type="reset" value="Reset" name="reset" class="liteoption">';
-	$username = '<input type="text" name="username" value="' . $user . '" class="post">';
-	$email = '<input type="text" name="email" value="' . $email . '" class="post">';
-	$password = '<input type="password" name="password" class="post">';
-	$confirm = '<input type="password" name="confirm" class="post">';
+
+	//
+	// Start output of page
+	//
+	require_once('includes/page_header.php');
+
 	$wrmsmarty->assign('register_data',
 		array(
 			'register_header'=>$phprlang['register_header'],
 			'buttons'=>$buttons,
-			'username'=>$username,
+			'username'=>$new_user_name,
 			'email'=>$email,
-			'password'=>$password,
-			'confirm_password'=>$confirm,
 			'username_text'=>$phprlang['register_username_text'],
 			'email_text'=>$phprlang['register_email_text'],
 			'password_text'=>$phprlang['register_password_text'],
 			'confirm_password_text'=>$phprlang['register_confirm_text'],
-			'buttons'=>$buttons
+			'button_submit'=>$phprlang['submit'],
+			'button_reset'=>$phprlang['reset'],
 		)
 	);
 	
 	$wrmsmarty->display('register.html');
+	require_once('includes/page_footer.php');
 }
-
-require_once('includes/page_footer.php');
 ?>

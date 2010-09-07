@@ -203,22 +203,25 @@ function change_bridge_groups($bridge_selected_group_id, $bridge_selected_alt_gr
 function wrm_login()
 {
 	global $db_user_id, $db_group_id, $db_user_name, $db_user_email, $db_user_password, $db_table_user_name; 
-	global $db_table_group_name, $auth_user_class, $auth_alt_user_class, $table_prefix, $db_raid, $phpraid_config;
+	global $db_table_group_name, $auth_user_class, $auth_alt_user_class, $table_prefix;
+	global $db_raid, $phpraid_config;
 	global $Bridge2ColumGroup;
 
-	$username = $password = "";
+	$password = "";
 	$username_id = "";
 		
 	//first login
-	if(isset($_POST['username'])){
+	if(isset($_POST['username']))
+	{
 		// User is logging in, set encryption flag to 0 to identify login with plain text password.
 		$pwdencrypt = FALSE;
 		//$username = strtolower_wrap(scrub_input($_POST['username']), "UTF-8");
 		$password = $_POST['password'];
+		//$password = md5($_POST['password']);//
 		$wrmpass = md5($_POST['password']);
 		
 		//check if user in wrm database available 
-		$sql = sprintf(	"SELECT profile_id " .
+		$sql = sprintf(	"SELECT profile_id, password " .
 						" FROM " . $phpraid_config['db_prefix'] . "profile". 
 						" WHERE username = %s", quote_smart($_POST['username'])
 					);
@@ -259,7 +262,7 @@ function wrm_login()
 	{
 		/**
 		 * user with aces to admin area
-		 * ignore base and alt base group
+		 * ignore base and alt base group Settings
 		 * 
 		 */
 		$sql = sprintf(	"SELECT  configuration" .
@@ -275,10 +278,10 @@ function wrm_login()
 		// We need to validate the users group.  If it does not contain the user group that has been set as
 		//	authorized to use WRM, we need to fail the login with a proper message.
 		//echo $sql."<br>". $data_permissions["configuration"]."<br>";		
-		if ((($auth_user_class != "") or ($auth_user_class != "0")) and ($data_permissions["configuration"] != 1))
+		if ((($auth_user_class != "") and ($auth_user_class != "0")) and ($data_permissions["configuration"] != 1))
 		{
 			$FoundUserInGroup = FALSE;
-	
+			echo "blub".$auth_user_class.":-:";
 			/*e107, smf*/
 			if ($Bridge2ColumGroup == TRUE)
 			{
@@ -364,16 +367,11 @@ function wrm_login()
 
 		if ($auth_user_class != "")
 		{
-			 
-			if($phpraid_config['default_group'] != 'nil')
-				$user_priv = $phpraid_config['default_group'];
-			else
-				$user_priv = '0';
-
 			// User is all logged in and setup, the session is initialized properly.  Now we need to create the users
 			//    profile in the WRM database if it does not already exist.
-			$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "profile WHERE profile_id = %s",
-							quote_smart($_SESSION['profile_id'])
+			$sql = sprintf(	"SELECT * " .
+							"	FROM " . $phpraid_config['db_prefix'] . "profile" .
+							"	WHERE profile_id = %s",	quote_smart($_SESSION['profile_id'])
 					);
 			$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 			
@@ -383,18 +381,21 @@ function wrm_login()
 			}
 			else
 			{
-				wrm_profile_add($data[$db_user_id],$data[$db_user_email],$wrmpass,$user_priv,strtolower_wrap($_SESSION['username'], "UTF-8"));
+				wrm_profile_add($data[$db_user_id],$data[$db_user_email],$wrmpass,strtolower_wrap($_SESSION['username'], "UTF-8"));
 			}
 		}
 		else
 		{
+			// ********************
+			// * NOTE * IUMS Auth does not do profile checking like external bridges do.
+			// ********************
+			
 			wrm_profile_update_last_login_time($_SESSION['profile_id']);
 		}
 		
 		get_permissions();
 		
 		//security fix
-		unset($username);
 		unset($password);
 		unset($cmspass);
 		unset($wrmpass);
@@ -409,14 +410,20 @@ function wrm_login()
 /**************************************************************
  * add new Profile to WRM
  **************************************************************/
-function wrm_profile_add($profile_id, $email, $wrmpass, $user_priv, $username)
+function wrm_profile_add($profile_id, $email, $wrmpass, $username)
 {
 	global $db_raid, $phpraid_config;
-
+	
+	// get default group 
+	if($phpraid_config['default_group'] != 'nil')
+		$user_priv = $phpraid_config['default_group'];
+	else
+		$user_priv = '0';
+		
 	if ($profile_id != "")
 	{
 		$sql = sprintf(	" INSERT INTO " . $phpraid_config['db_prefix'] . "profile ".
-						"	(`profile_id`,`email`,`password`,`priv`,`username`)".
+						"	(`profile_id`,`email`,`password`,`priv`,`username`,`last_login_time`)".
 						"	VALUES (%s, %s, %s, %s, %s, %s)",
 					quote_smart($profile_id), quote_smart($email), quote_smart($wrmpass),
 					quote_smart($user_priv), quote_smart($username), quote_smart(time())
@@ -424,13 +431,15 @@ function wrm_profile_add($profile_id, $email, $wrmpass, $user_priv, $username)
 	}
 	else
 	{
+		//iUMS
 		$sql = sprintf(	" INSERT INTO " . $phpraid_config['db_prefix'] . "profile ".
-						"	(`email`,`password`,`priv`,`username`)".
-						"	VALUES (%s, %s, %s, %s, %s, %s)",
+						"	(`email`,`password`,`priv`,`username`,`last_login_time` )".
+						"	VALUES ( %s, %s, %s, %s, %s)",
 					quote_smart($email), quote_smart($wrmpass),
 					quote_smart($user_priv), quote_smart($username), quote_smart(time())
 				);		
 	}
+	//echo $sql;
 	$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);		
 }
 

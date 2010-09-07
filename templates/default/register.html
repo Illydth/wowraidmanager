@@ -7,24 +7,27 @@
       <td> <table width="100%" border="0" cellspacing="1" cellpadding="3" class="dataOutline">
           <tr> 
             <td width="200" class="row1"><span class="headmed"><strong>{$register_data.username_text}</strong></span></td>
-            <td class="row2">{$register_data.username}</td>
+            <td class="row2"><input type="text" name="new_user_name" value="{$register_data.username}" class="post"></td>
           </tr>
           <tr> 
             <td width="200" class="row1"><span class="headmed"><strong>{$register_data.password_text}</strong></span></td>
-            <td class="row2">{$register_data.password}</td>
+            <td class="row2"><input type="password" name="new_user_password" class="post"></td>
           </tr>
           <tr> 
             <td width="200" class="row1"><span class="headmed"><strong>{$register_data.confirm_password_text}</strong></span></td>
-            <td class="row2">{$register_data.confirm_password}</td>
+            <td class="row2"><input type="password" name="new_user_confirm_password" class="post"></td>
           </tr>
           <tr> 
             <td width="200" class="row1"><span class="headmed"><strong>{$register_data.email_text}</strong></span></td>
-            <td class="row2">{$register_data.email}</td>
+            <td class="row2"><input type="text" name="new_user_email" value="{$register_data.email}" class="post"></td>
           </tr>
         </table></td>
     </tr>
   </table><br>
-  <div align="center" class="button">{$register_data.buttons}</div>
+  <div align="center" class="button">
+	<input type="submit" value="{$register_data.button_submit}" name="submit" class="mainoption">
+	<input type="reset" value="{$register_data.button_reset}" name="reset" class="liteoption">
+  </div>
 </form>
 </div>
 
