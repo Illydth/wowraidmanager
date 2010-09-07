@@ -103,15 +103,30 @@ if ($step == "0")
 	{
 			
 		include_once($wrm_config_file);
-
+		$table_profile_available = FALSE;
+		
 		// database connection
 		$wrm_install = &new sql_db($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass'],$phpraid_config['db_name']);
 		
 		//if connection available -> goto upgrade.php
 		if( ($wrm_install->db_connect_id) == TRUE)
 		{
-			header("Location: upgrade.php");
-			exit;
+			$sql_tables = "SHOW TABLES FROM ".$phpraid_config['db_name'];
+			$result_tables = $wrm_install->sql_query($sql_tables) or print_error($sql_tables, $wrm_install->sql_error(), 1);
+			while ($data_tables = $wrm_install->sql_fetchrow($result_tables,true))
+			{
+				//each version has this table
+				if ($phpraid_config['db_prefix']."_".$data_tables["profile"])
+				{
+					$table_profile_available = TRUE;
+				}
+			}
+			
+			if ($table_profile_available != TRUE)
+			{
+				header("Location: upgrade.php");
+				exit;
+			}
 		}
 	}
 
@@ -127,10 +142,39 @@ if ($step == "0")
 
 else if($step == "1")
 {
+	/**
+	 *  VersionNR, from this wrm Install File
+	 */
 	include_once("../version.php");
+	$versions_nr_install = $version;
+
 	include_once ("includes/page_header.php");
 
-	schow_online_versionnr();
+	$show_online_versionnr_value = show_online_versionnr($versions_nr_install);
+	if ($show_online_versionnr_value == -1)
+	{
+		$smarty->assign(
+			array(
+					"install_version_info_header" => $wrm_install_lang['install_version_info_header'],
+					"install_connect_socked_error_header" => $wrm_install_lang['install_connect_socked_error_header'],
+					"install_connect_socked_error" => $wrm_install_lang['install_connect_socked_error'],
+			)
+		);
+		$smarty->display("version_nr_error_socket.html");		
+	}
+	
+	else if ($show_online_versionnr_value == 0)
+	{
+			//versionsnr are equal
+			$smarty->assign(
+				array(
+						"install_version_info_header" => $wrm_install_lang['install_version_info_header'],
+						"info_Body" => $wrm_install_lang['install_version_current'],
+				
+				)
+			);
+			$smarty->display("version_nr_ok.html");		
+	}
 
 	create_armory_directory_path();
 	
@@ -183,18 +227,6 @@ else if($step == "1")
 		$mysqlversion_bgcolor = "green";
 	}
 
-	/**
-	 * config.php Stuff
-	 */
-	if ((file_exists("config.php")) != TRUE)
-	{
-		if (rename($wrm_config_file.".tmp",$wrm_config_file) == FALSE )
-		{
-			//can not rename
-			echo "can not rename: $wrm_config_file";
-			$show_next_bd = FALSE;
-		}
-	}
 	
 	// NOTE: BE CAREFUL WITH IS__WRITEABLE, that is NOT the built in is_writeable function. (See Double Underscore)
 	if (is_file($wrm_config_file))

@@ -78,6 +78,8 @@ $sql_dir_upgrade = "database_schema/upgrade/";
 //var, if table "version" exist in wrm db
 $table_version_available = FALSE;
 
+//for a test connection
+$table_profile_available = FALSE;
 /*----------------------------------------------------------------*/
 
 include_once('language/locale-'.$lang.'.php');
@@ -96,7 +98,6 @@ if($wrm_install->db_connect_id == FALSE)
 	header("Location: install.php");
 }
 
-
 //check if table "version" available
 //result ($table_version_available)
 //true -> from 3.5.0 to 4.x.x
@@ -105,10 +106,21 @@ $sql_tables = "SHOW TABLES FROM ".$phpraid_config['db_name'];
 $result_tables = $wrm_install->sql_query($sql_tables) or print_error($sql_tables, $wrm_install->sql_error(), 1);
 while ($data_tables = $wrm_install->sql_fetchrow($result_tables,true))
 {
+	// over 3.5.0
 	if ($phpraid_config['db_prefix']."_".$data_tables["Tables_in_version"])
 	{
 		$table_version_available = TRUE;
 	}
+	//each version has this table
+	if ($phpraid_config['db_prefix']."_".$data_tables["profile"])
+	{
+		$table_profile_available = TRUE;
+	}
+}
+//test con. fail
+if ($table_profile_available != TRUE)
+{
+	header("Location: install.php?step=1");
 }
 
 /*----------------------------------------------------------------*/
@@ -126,7 +138,7 @@ if ($table_version_available != FALSE)
 }
 else
 {
-	$wrm_versions_nr_current_value = "0.0.0";
+	$wrm_versions_nr_current_value = "0.0.0";	
 }
 
 
@@ -137,11 +149,55 @@ else
 if ($step === "0")
 {	
 	global $smarty;
+
+	include_once ("includes/page_header.php");
+	$show_online_versionnr_value = show_online_versionnr($versions_nr_install);
+	if ($show_online_versionnr_value == -1)
+	{
+		$smarty->assign(
+			array(
+					"install_version_info_header" => $wrm_install_lang['install_version_info_header'],
+					"install_connect_socked_error_header" => $wrm_install_lang['install_connect_socked_error_header'],
+					"install_connect_socked_error" => $wrm_install_lang['install_connect_socked_error'],
+			)
+		);
+		$smarty->display("version_nr_error_socket.html");		
+	}
+	
+	else if ($show_online_versionnr_value == 0)
+	{
+			//versionsnr are equal
+			$smarty->assign(
+				array(
+						"install_version_info_header" => $wrm_install_lang['install_version_info_header'],
+						"info_Body" => $wrm_install_lang['install_version_current'],
+				
+				)
+			);
+			$smarty->display("version_nr_ok.html");		
+	}
+	else
+	{
+			$smarty->assign(
+				array(
+						"install_version_info_header" => $wrm_install_lang['install_version_info_header'],
+						"install_version_header" => $wrm_install_lang['install_version_header'],
+						"install_version_text" => $wrm_install_lang['install_version_text'],
+						"install_version_message01" => $wrm_install_lang['install_version_message01'],
+						"install_version_message02" => $wrm_install_lang['install_version_message02'],
+						"latest_version_value" => $latest_version_info_text,
+						"install_version_message03" => $wrm_install_lang['install_version_message03'],
+						"install_version_value" => $installfiles_ver_text,
+						"install_version_message04" => $wrm_install_lang['install_version_message04'],
+						"install_version_message05" => $wrm_install_lang['install_version_message05'],
+				)
+			);
+			$smarty->display("version_nr_error.html");
+	}
+	
 	//older 3.5.0 and older 3.6.1 not support 
 	if (($table_version_available == FALSE) or ((str_replace(".","",$wrm_versions_nr_current_value)) < "361"))
 	{
-		include_once ("includes/page_header.php");
-		schow_online_versionnr();
 		$smarty->assign(
 			array(
 				"install_version_info_header" =>$wrm_install_lang['install_version_info_header'],
@@ -159,8 +215,7 @@ if ($step === "0")
 	else if ($wrm_versions_nr_current_value == $versions_nr_install)
 	{
 		// "your wrm is up to date";		
-		include_once ("includes/page_header.php");
-		schow_online_versionnr();
+		show_online_versionnr($wrm_install_lang, $versions_nr_install);
 		$smarty->assign(
 			array(
 				//"version_info" => checking_onlineversion(),
@@ -179,9 +234,8 @@ if ($step === "0")
 	}
 	else
 	{
-		//upgrade
-		include_once ("includes/page_header.php");
-		schow_online_versionnr();
+		//upgrades
+		show_online_versionnr($wrm_install_lang, $versions_nr_install);
 		$smarty->assign(
 			array(
 			//	"version_info" => checking_onlineversion(),

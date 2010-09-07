@@ -216,7 +216,8 @@ function wrm_login()
 		//$username = strtolower_wrap(scrub_input($_POST['username']), "UTF-8");
 		$password = $_POST['password'];
 		$wrmpass = md5($_POST['password']);
-		//database
+		
+		//check if user in wrm database available 
 		$sql = sprintf(	"SELECT profile_id " .
 						" FROM " . $phpraid_config['db_prefix'] . "profile". 
 						" WHERE username = %s", quote_smart($_POST['username'])
@@ -408,15 +409,29 @@ function wrm_login()
 /**************************************************************
  * add new Profile to WRM
  **************************************************************/
-function wrm_profile_add($profile_id,$email,$wrmpass,$user_priv,$username)
+function wrm_profile_add($profile_id, $email, $wrmpass, $user_priv, $username)
 {
 	global $db_raid, $phpraid_config;
-	
-	$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "profile VALUES (%s, %s, %s, %s, %s, %s)",
-				quote_smart($profile_id), quote_smart($email), quote_smart($wrmpass),
-				quote_smart($user_priv), quote_smart($username), quote_smart(time())
-			);
-	$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+
+	if ($profile_id != "")
+	{
+		$sql = sprintf(	" INSERT INTO " . $phpraid_config['db_prefix'] . "profile ".
+						"	(`profile_id`,`email`,`password`,`priv`,`username`)".
+						"	VALUES (%s, %s, %s, %s, %s, %s)",
+					quote_smart($profile_id), quote_smart($email), quote_smart($wrmpass),
+					quote_smart($user_priv), quote_smart($username), quote_smart(time())
+				);
+	}
+	else
+	{
+		$sql = sprintf(	" INSERT INTO " . $phpraid_config['db_prefix'] . "profile ".
+						"	(`email`,`password`,`priv`,`username`)".
+						"	VALUES (%s, %s, %s, %s, %s, %s)",
+					quote_smart($email), quote_smart($wrmpass),
+					quote_smart($user_priv), quote_smart($username), quote_smart(time())
+				);		
+	}
+	$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);		
 }
 
 /**************************************************************

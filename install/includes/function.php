@@ -506,10 +506,9 @@ function get_last_onlineversion_nr()
 /***
  * show the current 
  */
-function schow_online_versionnr()
+function show_online_versionnr($wrm_install_lang, $versions_nr_install)
 {
 
-	global $smarty, $wrm_install_lang, $version;
 /*
  * ----------------------- (Online) Version Check -------------------------------------------------------
  */	
@@ -518,18 +517,11 @@ function schow_online_versionnr()
 	$latest_version_info = get_last_onlineversion_nr();
 	if ($latest_version_info == false)
 	{
-		$smarty->assign(
-			array(
-					"install_version_info_header" => $wrm_install_lang['install_version_info_header'],
-					"install_connect_socked_error_header" => $wrm_install_lang['install_connect_socked_error_header'],
-					"install_connect_socked_error" => $wrm_install_lang['install_connect_socked_error'],
-			)
-		);
-		$smarty->display("version_nr_error_socket.html");
+		return -1;
 	}
 	else
 	{
-		$installfiles_ver = explode('.', $version);
+		$installfiles_ver = explode('.', $versions_nr_install);
 		$latest_version_info = explode("\n", $latest_version_info);
 		
 		if ($installfiles_ver[3] == "")
@@ -549,33 +541,12 @@ function schow_online_versionnr()
 
 		if (($installfiles_ver[0] == $latest_version_info[0]) and ($installfiles_ver[1] == $latest_version_info[1]) and ($installfiles_ver[2] == $latest_version_info[2]))
 		{
-			//versionsnr are equal
-			$smarty->assign(
-				array(
-						"install_version_info_header" => $wrm_install_lang['install_version_info_header'],
-						"info_Body" => $wrm_install_lang['install_version_current'],
-				
-				)
-			);
-			$smarty->display("version_nr_ok.html");
+			// equal
+			return 0;
 		}
 		else
 		{
-			$smarty->assign(
-				array(
-						"install_version_info_header" => $wrm_install_lang['install_version_info_header'],
-						"install_version_header" => $wrm_install_lang['install_version_header'],
-						"install_version_text" => $wrm_install_lang['install_version_text'],
-						"install_version_message01" => $wrm_install_lang['install_version_message01'],
-						"install_version_message02" => $wrm_install_lang['install_version_message02'],
-						"latest_version_value" => $latest_version_info_text,
-						"install_version_message03" => $wrm_install_lang['install_version_message03'],
-						"install_version_value" => $installfiles_ver_text,
-						"install_version_message04" => $wrm_install_lang['install_version_message04'],
-						"install_version_message05" => $wrm_install_lang['install_version_message05'],
-				)
-			);
-			$smarty->display("version_nr_error.html");
+			return 1;
 		}
 	}
 
@@ -713,4 +684,46 @@ function create_armory_directory_path($mode = "0777")
 	mkdir("../cache/armory_log/",$mode);
 	mkdir("../cache/raid_lua/",$mode);
 }
+
+/*
+ * 
+ * function profile_add
+ * only iUMS
+ */
+function profile_add($user_admin_username,$user_admin_password,$user_admin_email)
+{
+	global $wrm_install,$phpraid_config;
+	$default_admin_Priv = "1";
+	
+	$sql = sprintf(	"SELECT username, profile_id " .
+					" FROM " . 	$phpraid_config['db_name'] . "." . $phpraid_config['db_prefix'] . "profile " . 
+					" WHERE `username` = %s", quote_smart($user_admin_username)
+			);
+	$result = $wrm_install->sql_query($sql) or print_error($sql, $wrm_install->sql_error(), 1);
+	$data = $wrm_install->sql_fetchrow($result, true);
+	
+	if ($wrm_install->sql_numrows() == 0 )
+	{	
+		$sql = sprintf(	"INSERT INTO " . $phpraid_config['db_prefix'] . "profile " .
+						" (`email`, `password`,`priv`,`username`, `last_login_time`) " .
+						" VALUES ( %s, %s, %s, %s, %s)",
+						quote_smart($user_admin_email),
+						quote_smart(md5($user_admin_password)),	quote_smart($default_admin_Priv), 
+						quote_smart(strtolower($user_admin_username)), quote_smart(time())
+			);
+		$wrm_install->sql_query($sql) or print_error($sql, $wrm_install->sql_error(), 1);
+	}
+	else
+	{
+		$sql = 	sprintf("UPDATE " . $phpraid_config['db_name'] . "." . $phpraid_config['db_prefix'] . "profile" .
+						" SET `email` = %s, `priv` = %s, `password` = %s, `last_login_time` = %s, `username` = %s".
+						" WHERE " . $phpraid_config['db_name'] . "." . $phpraid_config['db_prefix'] . "profile.`profile_id` = %s",
+						 quote_smart($user_admin_email), quote_smart($default_admin_Priv), quote_smart(md5($user_admin_password)),
+						 quote_smart(time()), quote_smart($data["username"]), quote_smart($data["profile_id"])
+				);
+		$wrm_install->sql_query($sql) or print_error($sql, $wrm_install->sql_error(), 1);
+	}
+	
+}
 ?>
+

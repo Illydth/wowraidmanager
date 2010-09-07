@@ -99,17 +99,11 @@ if(isset($_POST['submit']))
 		
 		// default group
 		if($phpraid_config['default_group'] != 'nil')
-			$default = $phpraid_config['default_group'];
+			$user_priv = $phpraid_config['default_group'];
 		else
-			$default = '0';
+			$user_priv = '0';
 		
-		// no errors, insert into database
-		$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "profile 
-					(`email`,`password`,`priv`,`username`)
-				VALUES
-					(%s,%s,%s,%s)", quote_smart($email), quote_smart($pass), 
-					quote_smart($default), quote_smart($user));
-		$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+		wrm_profile_add("",$email,$pass,$user_priv,$username);
 		
 		$subject = $phprlang['register_email_header'] . ' ' . $phpraid_config['site_name'];
 		$msg = $phprlang['register_email_greeting'] . ' ' . $user . ",\n\n" . $phprlang['register_email_subject'];

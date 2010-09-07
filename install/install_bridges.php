@@ -76,12 +76,12 @@ if (($step == "0"))
 	for ($i = 0; $i < count($array_bridge_db); $i++)
 	{
 
-		$bridge_type_output[]=$wrm_install_lang['bridge_name_text'].": '". $array_bridge_db[$i]["bridge_name"]."' ; ".$wrm_install_lang['step2dbname'].": '". $array_bridge_db[$i]["bridge_database"]."' ; ".$wrm_install_lang['table_prefix_text'].": '".$array_bridge_db[$i]["bridge_table_prefix"]."' ; ".$wrm_install_lang['bridge_users_found_text'].": '".$array_bridge_db[$i]["bridge_founduser"]."'";
+		$bridge_type_output[]=$wrm_install_lang['bridge_name_text'].": '". $array_bridge_db[$i]["bridge_name"]."' <br> ".$wrm_install_lang['step2dbname'].": '". $array_bridge_db[$i]["bridge_database"]."' ; ".$wrm_install_lang['table_prefix_text'].": '".$array_bridge_db[$i]["bridge_table_prefix"]."' ; ".$wrm_install_lang['bridge_users_found_text'].": '".$array_bridge_db[$i]["bridge_founduser"]."'";
 		$bridge_type_values[]=$array_bridge_db[$i]["bridge_name"].":".$array_bridge_db[$i]["bridge_database"].":".$array_bridge_db[$i]["bridge_table_prefix"].":";
 	}
 	
-	$bridge_type_output[]=$wrm_install_lang['bridge_name_text'].": 'iums' ; ".$wrm_install_lang['step2dbname'].": '". $phpraid_config['db_name']."' ; ".$wrm_install_lang['table_prefix_text'].": '".$phpraid_config['db_prefix']."' ; ".$wrm_install_lang['bridge_users_found_text'].": '0'";
-	$bridge_type_values[]="iums:".$phpraid_config['db_name'].":".$phpraid_config['db_prefix']."; ".$wrm_install_lang['bridge_users_found_text'].":0";
+	$bridge_type_output[]=$wrm_install_lang['bridge_name_text'].": 'iUMS'";// <br> ".$wrm_install_lang['step2dbname'].": '". $phpraid_config['db_name']."' ; ".$wrm_install_lang['table_prefix_text'].": '".$phpraid_config['db_prefix']."' ; ".$wrm_install_lang['bridge_users_found_text'].": '0'";
+	$bridge_type_values[]="iUms:".$phpraid_config['db_name'].":".$phpraid_config['db_prefix']."; ".$wrm_install_lang['bridge_users_found_text'].":0";
 
 	include_once ("includes/page_header.php");
 	$smarty->assign(
@@ -238,27 +238,29 @@ if ($step == 1)
 	if ((!$_POST['allfoundbridges'])and !isset($tmp_value))
 		header("Location: ".$filename_bridge."step=0");
 
-	if ($bridge_name != "iums")
+
+	//echo "step1".$bridge_name;
+	if (isset($_POST['allfoundbridges']))
 	{
-		//echo "step1".$bridge_name;
-		if (isset($_POST['allfoundbridges']))
-		{
-			$string = $_POST['allfoundbridges'];
-			$pos = 0 ;
-			$pos_new = 0;
-			
-			$pos_new = strpos($string, ':', 0); 
-			$bridge_name = substr($string, 0, $pos_new); 
-			$pos = $pos_new + 1;
-				
-			$pos_new = strpos($string, ':', $pos);
-			$bridge_database_name = substr($string, $pos , $pos_new - $pos);
-			$pos = $pos_new + 1;
-					
-			$pos_new = strpos($string, ':', $pos);
-			$bridge_db_table_prefix = substr($string, $pos, $pos_new - $pos);
-		}
+		$string = $_POST['allfoundbridges'];
+		$pos = 0 ;
+		$pos_new = 0;
 		
+		$pos_new = strpos($string, ':', 0); 
+		$bridge_name = substr($string, 0, $pos_new);
+		$bridge_name = strtolower($bridge_name);
+		$pos = $pos_new + 1;
+			
+		$pos_new = strpos($string, ':', $pos);
+		$bridge_database_name = substr($string, $pos , $pos_new - $pos);
+		$pos = $pos_new + 1;
+				
+		$pos_new = strpos($string, ':', $pos);
+		$bridge_db_table_prefix = substr($string, $pos, $pos_new - $pos);
+	}
+
+	if (strtolower($bridge_name) != "iums")
+	{
 		include("auth/install_".$bridge_name.".php");
 	
 		$bridge_admin_id_output = array();
@@ -631,7 +633,7 @@ else if($step === "bridge_done")
 		else
 		{
 			$sql = 	sprintf("UPDATE " . $phpraid_config['db_name'] . "." . $phpraid_config['db_prefix'] . "profile" .
-							" SET `email` = %s, `priv` = %s, `username` = %s, `last_login_time` = %s WHERE %s = `profile_id`",
+							" SET `email` = %s, `priv` = %s, `username` = %s, `last_login_time` = %s WHERE `profile_id` = %s;",
 							 quote_smart($data_bridge[$bridge_setting['db_user_email']]),quote_smart($default_admin_Priv), quote_smart(strtolower($data_bridge[$bridge_setting['db_user_name']])),
 							 quote_smart(time()), quote_smart($data_bridge[$bridge_setting['db_user_id']])
 					);
@@ -642,37 +644,7 @@ else if($step === "bridge_done")
 	//only for -- iums auth --
 	else
 	{
-		$user_admin_username = $_POST['user_admin_username'];
-		$user_admin_password = $_POST['user_admin_password'];
-		$user_admin_email = $_POST['user_admin_email'];
-		
-		$sql = sprintf(	"SELECT username " .
-						" FROM " . 	$phpraid_config['db_name'] . "." . $phpraid_config['db_prefix'] . "profile " . 
-						" WHERE `username` = %s", quote_smart($user_admin_username)
-				);
-		$result = $wrm_install->sql_query($sql) or print_error($sql, $wrm_install->sql_error(), 1);
-		$data = $wrm_install->sql_fetchrow($result, true);
-		
-		if ($wrm_install->sql_numrows() == 0 )
-		{	
-			$sql = sprintf(	"INSERT INTO " . $phpraid_config['db_prefix'] . "profile " .
-							" (`email`, `password`,`priv`,`username`, `last_login_time`) " .
-							" VALUES ( %s, %s, %s, %s, %s)",
-							quote_smart($user_admin_email),
-							quote_smart($data[$db_user_password]),	quote_smart($default_admin_Priv), 
-							quote_smart(strtolower($user_admin_username)), quote_smart(time())
-				);
-			$wrm_install->sql_query($sql) or print_error($sql, $wrm_install->sql_error(), 1);
-		}
-		else
-		{
-			$sql = 	sprintf("UPDATE " . $phpraid_config['db_name'] . "." . $phpraid_config['db_prefix'] . "profile" .
-							" SET `email` = %s, `priv` = %s, `username` = %s, `last_login_time` = %s, WHERE %s = `profile_id`",
-							 quote_smart($user_admin_email),quote_smart($default_admin_Priv),quote_smart(strtolower($user_admin_username)),
-							 quote_smart(time()), quote_smart($bridge_setting['db_user_id'])
-					);
-			$wrm_install->sql_query($sql) or print_error($sql, $wrm_install->sql_error(), 1);
-		}		
+		profile_add($_POST['user_admin_username'],$_POST['user_admin_password'],$_POST['user_admin_email']);		
 	}
 
 	/*
