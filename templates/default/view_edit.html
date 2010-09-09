@@ -1,5 +1,17 @@
 {* Smarty Template *}
 <div class="contentHeader">{$edit_comment_data.header}</div>
 <br>
-<div class="contentBody">{$edit_comment_data.view_edit}</div>
+<div class="contentBody">
+<form action="{$edit_comment_data.form_action}" method="POST">
+ <textarea name="comments" cols="30" rows="7" class="post">
+	{$edit_comment_data.textarea_comment}
+ </textarea>
+ <br>
+ <br>
+  <div align="center" class="button">
+	<input type="submit" value="{$edit_comment_data.button_submit}" name="submit" class="mainoption">
+	<input type="reset" value="{$edit_comment_data.button_reset}" name="reset" class="liteoption">
+  </div>
+ </form>
+</div>
 <br>

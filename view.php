@@ -99,7 +99,22 @@ $result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 
 $data = $db_raid->sql_fetchrow($result, true);
 
 $priv_raids = scrub_input($_SESSION['priv_raids']);
+$profile_id = scrub_input($_SESSION['profile_id']);
+
+$wrm_db_user_name = "username";
+$wrm_table_prefix = $phpraid_config['db_prefix'];
+$wrm_db_table_user_name = "profile";
+		
 $username = scrub_input($_SESSION['username']);
+//database
+$sql = sprintf(	"SELECT ". $wrm_db_user_name .
+				" FROM " . $wrm_table_prefix . $wrm_db_table_user_name . 
+				" WHERE profile_id = %s", quote_smart($profile_id)
+			);
+$result_tmp = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+$data_tmp = $db_raid->sql_fetchrow($result_tmp, true);
+$username = $data_tmp[$wrm_db_user_name];
+
 
 if ($priv_raids == 1)
 	$user_perm_group['admin'] = 1;
@@ -1246,18 +1261,38 @@ elseif($mode == 'queue')
 	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	$data = $db_raid->sql_fetchrow($result, true);
 
+	$sql = sprintf(	"SELECT * FROM " . $phpraid_config['db_prefix'] . "acl_raid_signup_group".
+					" WHERE `" . $phpraid_config['db_prefix'] . "acl_raid_signup_group`.`signup_group_id` = %s;",
+					quote_smart(3)
+		);
+	$result_group = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+	$data_acl_raid_signup_group_array = $db_raid->sql_fetchrow($result_group,true);
+	
 	//Check for a hacking attempt sending in a URL without clicking a button.
 	$hackattempt=1;
-	if(($user_perm_group['admin'] && $data['cancel'] && $phpraid_config['admin_cancel_queue']) ||
+	if(($user_perm_group['admin'] && $data['cancel'] && $data_acl_raid_signup_group_array["cancelled_status_queue"]) ||
 	($user_perm_group['admin'] && !$data['queue'] && !$data['cancel'] && $phpraid_config['admin_drafted_queue']))
 		$hackattempt=0;
-
-	if (($user_perm_group['RL'] && $data['cancel'] && $phpraid_config['rl_cancel_queue']) ||
+		
+	$sql = sprintf(	"SELECT * FROM " . $phpraid_config['db_prefix'] . "acl_raid_signup_group".
+					" WHERE `" . $phpraid_config['db_prefix'] . "acl_raid_signup_group`.`signup_group_id` = %s;",
+					quote_smart(2)
+		);
+	$result_group = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+	$data_acl_raid_signup_group_array = $db_raid->sql_fetchrow($result_group,true);
+	if (($user_perm_group['RL'] && $data['cancel'] && $data_acl_raid_signup_group_array["cancelled_status_queue"]) ||
 	($user_perm_group['RL'] && !$data['queue'] && !$data['cancel'] && $phpraid_config['rl_drafted_queue']))
 		$hackattempt=0;
 
+
+	$sql = sprintf(	"SELECT * FROM " . $phpraid_config['db_prefix'] . "acl_raid_signup_group".
+					" WHERE `" . $phpraid_config['db_prefix'] . "acl_raid_signup_group`.`signup_group_id` = %s;",
+					quote_smart(1)
+		);
+	$result_group = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+	$data_acl_raid_signup_group_array = $db_raid->sql_fetchrow($result_group,true);
 	if (($data['cancel'] && $phpraid_config['user_cancel_queue']) ||
-	(!$data['queue'] && !$data['cancel'] && $phpraid_config['user_drafted_queue']))
+	(!$data['queue'] && !$data['cancel'] && $data_acl_raid_signup_group_array["cancelled_status_queue"]))
 		$hackattempt=0;
 
 	if($hackattempt)
@@ -1506,11 +1541,7 @@ else if($mode == 'edit_comment')
 	if(!isset($_POST['submit']))
 	{
 		$edit_comment = $data['comments'];
-		$view_edit = '<form action="view.php?mode=edit_comment&amp;raid_id='.$raid_id.'&signup_id='.$signup_id.'" method="POST">';
-		$view_edit .= '<textarea name="comments" cols="30" rows="7" class="post">'.$edit_comment.'</textarea><br><br>';
-		$view_edit .= '<input type="submit" name="submit" value="'.$phprlang['edit'].'" class="mainoption"> ';
-		$view_edit .= '<input type="reset" name="reset" value="'.$phprlang['reset'].'" class="liteoption">';
-		$view_edit .= '</form>';
+		$form_action = 'view.php?mode=edit_comment&amp;raid_id='.$raid_id.'&signup_id='.$signup_id;
 	}
 	else
 	{
@@ -1525,7 +1556,10 @@ else if($mode == 'edit_comment')
 	$wrmsmarty->assign('edit_comment_data',
 		array(
 			'header'=>$phprlang['view_comments'],
-			'view_edit'=>$view_edit
+			'form_action' =>$form_action,
+			'textarea_comment' =>$edit_comment,
+			'button_submit' => $phprlang['edit'],
+			'button_reset' => $phprlang['reset'],
 		)
 	);
 	require_once('./includes/page_header.php');
@@ -1562,8 +1596,18 @@ if($show_signup == 1 && $priv_profile == 1)
 	$signup_action = 'view.php?mode=signup&amp;raid_id=' . $raid_id;
 
 	// set vars
-	$username = scrub_input($_SESSION['username']);
-
+//	$username = scrub_input($_SESSION['username']);
+	$profile_id = scrub_input($_SESSION['profile_id']);
+	
+	//database
+	$sql = sprintf(	"SELECT ". $wrm_db_user_name .
+					" FROM " . $wrm_table_prefix . $wrm__db_table_user_name. 
+					" WHERE profile_id = %s", quote_smart($profile_id)
+				);
+	$result_tmp = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+	$data_tmp = $db_raid->sql_fetchrow($result_tmp, true);
+	$username = $data_tmp[$wrm_db_user_name];
+	
 	// get character list
 	$sql = sprintf("SELECT raid_force_name FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id=%s", quote_smart($raid_id));
 	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
@@ -1605,40 +1649,31 @@ if($show_signup == 1 && $priv_profile == 1)
 		}
 	}
 	$character .= '</select>';
+	$array_queue = array();
 	
 	if($phpraid_config['auto_queue'] == 1)
 	{
-		$queue = '
-				<select name="queue">
-				<option value="queue" selected>'.$phprlang['view_signup_queue'].'</option>
-				<option value="cancel">'.$phprlang['view_signup_cancel'].'</option>
-				</select>
-				';
+		$array_queue["queue"] = $phprlang['view_signup_queue'];
+		$array_queue["cancel"] = $phprlang['view_signup_cancel'];
+		$selected_queue = $phprlang['view_signup_queue'];
 	}
 	else
 	{
-		$queue = '
-				<select name="queue">
-				<option value="signup" selected>'.$phprlang['view_signup_draft'].'</option>
-				<option value="queue">'.$phprlang['view_signup_queue'].'</option>
-				<option value="cancel">'.$phprlang['view_signup_cancel'].'</option>
-				</select>
-				';
+		$array_queue["signup"] = $phprlang['view_signup_draft'];
+		$array_queue["queue"] = $phprlang['view_signup_queue'];
+		$array_queue["cancel"] = $phprlang['view_signup_cancel'];
+		$selected_queue = $phprlang['signup'];
 	}
-
-	$comments = '<textarea name="comments" cols="30" rows="7" class="post"></textarea>';
-	$timestamp = time();
-
-	$hidden_vars = '<input name="timestamp" type="hidden" value="' . $timestamp . '">';
 
 	$wrmsmarty->assign('view_signup_data',
 		array(
 			'username'=>$username,
 			'character'=>$character,
-			'queue'=>$queue,
+			'array_queue'=>$array_queue,
+			'selected_queue'=>$selected_queue,
 			'comments'=>$comments,
 			'signup_action'=>$signup_action,
-			'hidden_vars'=>$hidden_vars,
+			'hidden_vars_timestamp'=>time(),
 			'view_signup_header'=>$phprlang['view_new'],
 			'username_text'=>$phprlang['view_username'],
 			'character_text'=>$phprlang['view_character'],
