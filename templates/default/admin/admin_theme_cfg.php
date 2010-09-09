@@ -37,6 +37,7 @@ if($use_images == 0) {
 	$theme_admin_raid_settings_link = $phprlang['admin_raid_settings'];
 	$theme_admin_externcfg_link = $phprlang['admin_external_config'];
 	$theme_admin_roletalent_link = $phprlang['admin_roletalent_config'];
+	$theme_admin_raid_signupgroups_link = $phprlang['admin_raid_signupgroups'];
 } else {
 	$theme_admin_site_link = $image_admin_site_link;
 	$theme_admin_main_link = $image_admin_main_link;
@@ -52,5 +53,6 @@ if($use_images == 0) {
 	$theme_admin_raid_settings_link = $image_raid_settings_link;
 	$theme_admin_externcfg_link = $image_externcfg_link;
 	$theme_admin_roletalent_link = $image_roletalent_link;
+	$theme_admin_raid_signupgroups_link = $image_signup_rights_link;
 }
 ?>

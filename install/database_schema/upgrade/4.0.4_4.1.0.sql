@@ -159,5 +159,28 @@ ALTER TABLE `wrm_raids` ADD INDEX ( `raid_force_id` );
 ALTER TABLE `wrm_locations` ADD `raid_force_id` INT( 10 ) NOT NULL DEFAULT '0',
 ADD INDEX ( raid_force_id ); 
 
+-- Raid signup Group Table Creation
+DROP TABLE IF EXISTS `wrm_acl_raid_signup_group`;
+CREATE TABLE `wrm_acl_raid_signup_group` (
+`signup_group_id` TINYINT( 2 ) NOT NULL AUTO_INCREMENT,
+`signup_group_name` VARCHAR( 50 ) NOT NULL ,
+`on_queue_draft` TINYINT( 2 ) NOT NULL ,
+`on_queue_comments` TINYINT( 2 ) NOT NULL ,
+`on_queue_cancel` TINYINT( 2 ) NOT NULL ,
+`on_queue_delete` TINYINT( 2 ) NOT NULL ,
+`cancelled_status_queue` TINYINT( 2 ) NOT NULL ,
+`cancelled_status_draft` TINYINT( 2 ) NOT NULL ,
+`cancelled_status_comments` TINYINT( 2 ) NOT NULL ,
+`cancelled_status_delete` TINYINT( 2 ) NOT NULL ,
+`drafted_queue` TINYINT( 2 ) NOT NULL ,
+`drafted_comments` TINYINT( 2 ) NOT NULL ,
+`drafted_cancel` TINYINT( 2 ) NOT NULL ,
+`drafted_delete` TINYINT( 2 ) NOT NULL ,
+ PRIMARY KEY  (`signup_group_id`)
+) ;
+
+INSERT INTO `wrm_acl_raid_signup_group` VALUES (1,"User",0,1,1,1,1,0,1,0,1,1,1,0);
+INSERT INTO `wrm_acl_raid_signup_group` VALUES (2,"Raid Leader",1,1,0,0,0,0,1,1,1,1,0,0);
+INSERT INTO `wrm_acl_raid_signup_group` VALUES (3,"Administrator",1,1,0,0,0,0,1,1,1,1,0,0);
 
 INSERT INTO `wrm_version` VALUES ('4.1.0','Version 4.1.0 of WoW Raid Manager');

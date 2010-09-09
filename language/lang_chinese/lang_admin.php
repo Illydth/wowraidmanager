@@ -41,8 +41,9 @@ $phprlang['admin_main_link'] = '&raquo; Main';
 $phprlang['admin_logs_link'] = '&raquo; Logs';
 $phprlang['admin_rolecfg_link'] = '&raquo; Role Configuration';
 $phprlang['admin_datatablecfg_link'] = '&raquo; Manage Data Tables';
-$phprlang['admin_permissions'] = '&raquo; Permission Permissions';
+$phprlang['admin_permissions'] = '&raquo; WRM Permission Groups';
 $phprlang['admin_signup_rights'] = '&raquo; Signup Activities';
+$phprlang['admin_raid_signupgroups'] = '&raquo; Raid Permission Groups';
 $phprlang['admin_user_settings'] = '&raquo; User Settings';
 $phprlang['admin_user_management'] = '&raquo; User Administration';
 $phprlang['admin_general_config'] = '&raquo; General Config';
@@ -222,6 +223,7 @@ $phprlang['configuration_anonymous'] = '允許遊客瀏覽';
 $phprlang['configuration_resop'] = '使韌性成為非必須選項';
 
 // Text on the "Signup Rights" Page.
+$phprlang['configuration_raid_signupgroups_header'] = 'Raid Permission Groups';
 $phprlang['configuration_cancel'] = '取消';
 $phprlang['configuration_cancel_def'] = '取消 = 將使用者移動至取消區域';
 $phprlang['configuration_cancelled'] = '取消狀態';

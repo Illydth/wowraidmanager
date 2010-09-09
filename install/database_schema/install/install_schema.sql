@@ -386,3 +386,22 @@ CREATE TABLE `wrm_version` (
 PRIMARY KEY ( `version_number` )
 ) ;
 
+-- Raid signup Group Table Creation
+DROP TABLE IF EXISTS `wrm_acl_raid_signup_group`;
+CREATE TABLE `wrm_acl_raid_signup_group` (
+`signup_group_id` TINYINT( 2 ) NOT NULL AUTO_INCREMENT,
+`signup_group_name` VARCHAR( 50 ) NOT NULL ,
+`on_queue_draft` TINYINT( 2 ) NOT NULL ,
+`on_queue_comments` TINYINT( 2 ) NOT NULL ,
+`on_queue_cancel` TINYINT( 2 ) NOT NULL ,
+`on_queue_delete` TINYINT( 2 ) NOT NULL ,
+`cancelled_status_queue` TINYINT( 2 ) NOT NULL ,
+`cancelled_status_draft` TINYINT( 2 ) NOT NULL ,
+`cancelled_status_comments` TINYINT( 2 ) NOT NULL ,
+`cancelled_status_delete` TINYINT( 2 ) NOT NULL ,
+`drafted_queue` TINYINT( 2 ) NOT NULL ,
+`drafted_comments` TINYINT( 2 ) NOT NULL ,
+`drafted_cancel` TINYINT( 2 ) NOT NULL ,
+`drafted_delete` TINYINT( 2 ) NOT NULL ,
+ PRIMARY KEY  (`signup_group_id`)
+) ;

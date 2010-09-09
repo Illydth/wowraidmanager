@@ -770,6 +770,11 @@ INSERT INTO `wrm_roles` VALUES ('role4', 'Ranged', 'configuration_role4_text',''
 INSERT INTO `wrm_roles` VALUES ('role5', 'misc1', 'configuration_role5_text','');
 INSERT INTO `wrm_roles` VALUES ('role6', 'misc2', 'configuration_role6_text','');
 
+-- Raid signup Group Table Creation
+INSERT INTO `wrm_acl_raid_signup_group` VALUES (1,"User",0,1,1,1,1,0,1,0,1,1,1,0);
+INSERT INTO `wrm_acl_raid_signup_group` VALUES (2,"Raid Leader",1,1,0,0,0,0,1,1,1,1,0,0);
+INSERT INTO `wrm_acl_raid_signup_group` VALUES (3,"Administrator",1,1,0,0,0,0,1,1,1,1,0,0);
+
 -- Version Data
 INSERT INTO `wrm_version` VALUES ('4.0.0','Version 4.0.0 of WoW Raid Manager');
 INSERT INTO `wrm_version` VALUES ('4.0.1','Version 4.0.1 of WoW Raid Manager');

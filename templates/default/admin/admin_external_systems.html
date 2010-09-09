@@ -59,9 +59,14 @@
       </table>
     </td></tr>
   </table>
+ 
 <br>
 {/if}
 
-<div align="center" class="button">{$config_data.buttons}</div>
+<div align="center" class="button">
+	<input type="submit" name="submit" value="{$config_data.button_submit}" class="mainoption">
+	<input type="reset" name="reset" value="{$config_data.button_reset}" class="liteoption">
+</div>
+
 </div>
 </form>

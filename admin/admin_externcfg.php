@@ -79,8 +79,6 @@ $armory_cache .= '</select>';
 //else
 //	$roster = '<input type="checkbox" name="roster" value="1" checked>';
 
-$buttons = '<input type="submit" name="submit" value="'.$phprlang['submit'].'" class="mainoption"> <input type="reset" name="Reset" value="'.$phprlang['reset'].'" class="liteoption">';
-
 /**
  * Bridge Config
  */
@@ -119,7 +117,9 @@ $wrmadminsmarty->assign('config_data',
 		//'roster_text' => $phprlang['configuration_roster_text'],
 		'armory_cache' => $armory_cache,
 		'armory_cache_text'=>$phprlang['configuration_armory_cache'],
-		'buttons' => $buttons,
+
+		'button_submit' => $phprlang['submit'],
+		'button_reset' => $phprlang['reset'],
 	
 		'show_chang_group_conf' => "1",
 		'configuration_extsys_bridge_config_header' => $phprlang['configuration_extsys_bridge_config_header'],

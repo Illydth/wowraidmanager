@@ -81,6 +81,7 @@ $admin_timecfg_link = '<a href="admin_timecfg.php">' . $theme_admin_timecfg_link
 $admin_raid_settings_link = '<a href="admin_raidsettings.php">' . $theme_admin_raid_settings_link . '</a>';
 $admin_externcfg_link = '<a href="admin_externcfg.php">' . $theme_admin_externcfg_link . '</a>';
 $admin_permissions_link = '<a href="admin_permissions.php?mode=view">' . $theme_admin_permissions_link . '</a>';
+$admin_raid_signupgroups_link = '<a href="admin_raid_signupgroups.php?mode=view">' . $theme_admin_raid_signupgroups_link . '</a>';
 $admin_signup_rights_link = '<a href="admin_signuprights.php">' . $theme_admin_signuprights_link . '</a>';
 $admin_user_settings_link = '<a href="admin_usersettings.php">' . $theme_admin_usersettings_link . '</a>';
 $admin_user_mgt_link = '<a href="admin_usermgt.php?mode=view">' . $theme_admin_usermgt_link . '</a>';
@@ -134,10 +135,22 @@ if (preg_match("/(.*)admin_externcfg\.php(.*)/", $_SERVER['PHP_SELF'])) {
 
 // *** User Management Menu Items ***
 // To DO
+if (preg_match("/(.*)admin_usermgt\.php(.*)/", $_SERVER['PHP_SELF'])) {
+    $user_mgt_menu .= '<li class="active">' . $admin_user_mgt_link . '</li>';
+} else {
+    $user_mgt_menu .= '<li class="">' . $admin_user_mgt_link . '</li>';
+}
+// To DO
 if (preg_match("/(.*)admin_permissions\.php(.*)/", $_SERVER['PHP_SELF'])) {
     $user_mgt_menu .= '<li class="active">' . $admin_permissions_link . '</li>';
 } else {
     $user_mgt_menu .= '<li class="">' . $admin_permissions_link . '</li>';
+}
+// To DO
+if (preg_match("/(.*)admin_raid_signupgroups\.php(.*)/", $_SERVER['PHP_SELF'])) {
+    $user_mgt_menu .= '<li class="active">' . $admin_raid_signupgroups_link . '</li>';
+} else {
+    $user_mgt_menu .= '<li class="">' . $admin_raid_signupgroups_link . '</li>';
 }
 // To DO
 if (preg_match("/(.*)admin_signuprights\.php(.*)/", $_SERVER['PHP_SELF'])) {
@@ -151,12 +164,7 @@ if (preg_match("/(.*)admin_usersettings\.php(.*)/", $_SERVER['PHP_SELF'])) {
 } else {
     $user_mgt_menu .= '<li class="">' . $admin_user_settings_link . '</li>';
 }
-// To DO
-if (preg_match("/(.*)admin_usermgt\.php(.*)/", $_SERVER['PHP_SELF'])) {
-    $user_mgt_menu .= '<li class="active">' . $admin_user_mgt_link . '</li>';
-} else {
-    $user_mgt_menu .= '<li class="">' . $admin_user_mgt_link . '</li>';
-}
+
 
 // *** Table Configuration Menu Items ***
 // To DO
