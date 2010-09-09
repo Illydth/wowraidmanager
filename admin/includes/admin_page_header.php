@@ -153,11 +153,11 @@ if (preg_match("/(.*)admin_raid_signupgroups\.php(.*)/", $_SERVER['PHP_SELF'])) 
     $user_mgt_menu .= '<li class="">' . $admin_raid_signupgroups_link . '</li>';
 }
 // To DO
-if (preg_match("/(.*)admin_signuprights\.php(.*)/", $_SERVER['PHP_SELF'])) {
-    $user_mgt_menu .= '<li class="active">' . $admin_signup_rights_link . '</li>';
-} else {
-    $user_mgt_menu .= '<li class="">' . $admin_signup_rights_link . '</li>';
-}
+//if (preg_match("/(.*)admin_signuprights\.php(.*)/", $_SERVER['PHP_SELF'])) {
+//    $user_mgt_menu .= '<li class="active">' . $admin_signup_rights_link . '</li>';
+//} else {
+//    $user_mgt_menu .= '<li class="">' . $admin_signup_rights_link . '</li>';
+//}
 // To DO
 if (preg_match("/(.*)admin_usersettings\.php(.*)/", $_SERVER['PHP_SELF'])) {
     $user_mgt_menu .= '<li class="active">' . $admin_user_settings_link . '</li>';

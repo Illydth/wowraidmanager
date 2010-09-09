@@ -1,8 +1,11 @@
 <?php
 /***************************************************************************
-                                admin_index.php
+                              admin_raid_signupgroups.php
  *                            -------------------
- *   begin                : Monday, May 11, 2009
+ *   begin                : Wed, Sep 09, 2010
+ *	 Dev                  : Carsten Hölbing
+ *	 email                : carsten@hoelbing.net
+ *
  *   copyright            : (C) 2007-2009 Douglas Wagner
  *   email                : douglasw@wagnerweb.org
  *
