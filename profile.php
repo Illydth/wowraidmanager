@@ -627,14 +627,18 @@ if (($_GET['mode'] == 'new') or ($_GET['mode'] == 'edit'))
 		$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);			
 		while($guild_data = $db_raid->sql_fetchrow($result, true))
 		{
+			$tmp_url = "";
 			if($_GET['mode'] == 'new')
-				$array_guild[$page_filename."?mode=".$mode_status."&amp;guild=". $guild_data['guild_id']] = $guild_data['guild_name'];
+			
+				$tmp_url = $page_filename."?mode=".$mode_status."&amp;guild=". $guild_data['guild_id'];
 			else
-				$array_guild[$page_filename."?mode=".$mode_status."&amp;char_id=".$char_id."&amp;guild=". $guild_data['guild_id']."&race=". $race."&amp;class=".$class] = $guild_data['guild_name'];
+				$tmp_url = $page_filename."?mode=".$mode_status."&amp;char_id=".$char_id."&amp;guild=". $guild_data['guild_id']."&race=". $race."&amp;class=".$class;
+			
+			$array_guild[$tmp_url] = $guild_data['guild_name'];
 			
 			if($guild == $guild_data['guild_id'])
 			{
-				$selected_guild = $page_filename."?mode=".$mode_status."&amp;char_id=".$char_id."&amp;guild=". $guild_data['guild_id']."&race=". $race."&amp;class=".$class;
+				$selected_guild = $tmp_url; //$page_filename."?mode=".$mode_status."&amp;char_id=".$char_id."&amp;guild=". $guild_data['guild_id']."&race=". $race."&amp;class=".$class;
 			}
 		}
 
@@ -647,14 +651,17 @@ if (($_GET['mode'] == 'new') or ($_GET['mode'] == 'edit'))
 		$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);			
 		while($race_data = $db_raid->sql_fetchrow($result, true))
 		{
+			$tmp_url = "";
 			if($_GET['mode'] == 'new')
-				$array_race[$page_filename."?mode=".$mode_status."&amp;guild=". $guild."&amp;race=".$race_data['race_id']] = $phprlang[$race_data['lang_index']];
+				$tmp_url = $page_filename."?mode=".$mode_status."&amp;guild=". $guild."&amp;race=".$race_data['race_id'];
 			else
-				$array_race[$page_filename."?mode=".$mode_status."&amp;char_id=".$char_id."&amp;guild=". $guild."&race=". $race_data['race_id']."&amp;class=".$class] = $phprlang[$race_data['lang_index']];
+				$tmp_url = $page_filename."?mode=".$mode_status."&amp;char_id=".$char_id."&amp;guild=". $guild."&race=". $race_data['race_id']."&amp;class=".$class;
+			
+			$array_race[$tmp_url] = $phprlang[$race_data['lang_index']];
 			
 			if($race == $race_data['race_id'])
 			{
-				$selected_race = $page_filename."?mode=".$mode_status."&amp;char_id=".$char_id."&amp;guild=". $guild."&race=". $race_data['race_id']."&amp;class=".$class;
+				$selected_race = $tmp_url; //$page_filename."?mode=".$mode_status."&amp;char_id=".$char_id."&amp;guild=". $guild."&race=". $race_data['race_id']."&amp;class=".$class;
 			}
 		}
 
@@ -669,14 +676,17 @@ if (($_GET['mode'] == 'new') or ($_GET['mode'] == 'edit'))
 		$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);			
 		while($class_data = $db_raid->sql_fetchrow($result, true))
 		{
+			$tmp_url = "";
 			if($_GET['mode'] == 'new')
-				$array_class[$page_filename."?mode=".$mode_status."&guild=". $guild."&race=".$race."&class=".$class_data['class_id']] = $phprlang[$class_data['lang_index']];
+				$tmp_url = $page_filename."?mode=".$mode_status."&guild=". $guild."&race=".$race."&class=".$class_data['class_id'];
 			else
-				$array_class[$page_filename."?mode=".$mode_status."&amp;char_id=".$char_id."&amp;guild=". $guild."&race=". $race."&amp;class=".$class_data['class_id']] = $phprlang[$class_data['lang_index']];
+				$tmp_url = $page_filename."?mode=".$mode_status."&amp;char_id=".$char_id."&amp;guild=". $guild."&race=". $race."&amp;class=".$class_data['class_id'];
 				
+			$array_class[$tmp_url] = $phprlang[$class_data['lang_index']];
+			
 			if($class == $class_data['class_id'])
 			{
-				$selected_class = $page_filename."?mode=".$mode_status."&amp;char_id=".$char_id."&amp;guild=". $guild."&race=". $race."&amp;class=".$class_data['class_id'];
+				$selected_class = $tmp_url;//$page_filename."?mode=".$mode_status."&amp;char_id=".$char_id."&amp;guild=". $guild."&race=". $race."&amp;class=".$class_data['class_id'];
 			}
 		}
 		
