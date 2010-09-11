@@ -137,6 +137,44 @@ INSERT INTO `wrm_config` (`config_name`,`config_value`) VALUES ('site_server', '
 INSERT INTO `wrm_config` (`config_name`,`config_value`) VALUES ('persistent_db', '1');
 INSERT INTO `wrm_config` (`config_name`,`config_value`) VALUES ('wrm_created_on', '1');
 INSERT INTO `wrm_config` (`config_name`,`config_value`) VALUES ('wrm_updated_on', '1');
+INSERT INTO `wrm_config` (`config_name`,`config_value`) VALUES ('max_lvl', '85');
+
+DELETE FROM `wrm_config` WHERE `wrm_config`.`config_name` = 'user_queue_promote';
+DELETE FROM `wrm_config` WHERE `wrm_config`.`config_name` = 'user_queue_comments';
+DELETE FROM `wrm_config` WHERE `wrm_config`.`config_name` = 'user_queue_cancel';
+DELETE FROM `wrm_config` WHERE `wrm_config`.`config_name` = 'user_queue_delete';
+DELETE FROM `wrm_config` WHERE `wrm_config`.`config_name` = 'user_cancel_queue';
+DELETE FROM `wrm_config` WHERE `wrm_config`.`config_name` = 'user_cancel_promote';
+DELETE FROM `wrm_config` WHERE `wrm_config`.`config_name` = 'user_cancel_comments';
+DELETE FROM `wrm_config` WHERE `wrm_config`.`config_name` = 'user_cancel_delete';
+DELETE FROM `wrm_config` WHERE `wrm_config`.`config_name` = 'user_drafted_queue';
+DELETE FROM `wrm_config` WHERE `wrm_config`.`config_name` = 'user_drafted_comments';
+DELETE FROM `wrm_config` WHERE `wrm_config`.`config_name` = 'user_drafted_cancel';
+DELETE FROM `wrm_config` WHERE `wrm_config`.`config_name` = 'user_drafted_delete';
+DELETE FROM `wrm_config` WHERE `wrm_config`.`config_name` = 'rl_queue_promote';
+DELETE FROM `wrm_config` WHERE `wrm_config`.`config_name` = 'rl_queue_comments';
+DELETE FROM `wrm_config` WHERE `wrm_config`.`config_name` = 'rl_queue_cancel';
+DELETE FROM `wrm_config` WHERE `wrm_config`.`config_name` = 'rl_queue_delete';
+DELETE FROM `wrm_config` WHERE `wrm_config`.`config_name` = 'rl_cancel_queue';
+DELETE FROM `wrm_config` WHERE `wrm_config`.`config_name` = 'rl_cancel_promote';
+DELETE FROM `wrm_config` WHERE `wrm_config`.`config_name` = 'rl_cancel_comments';
+DELETE FROM `wrm_config` WHERE `wrm_config`.`config_name` = 'rl_cancel_delete';
+DELETE FROM `wrm_config` WHERE `wrm_config`.`config_name` = 'rl_drafted_queue';
+DELETE FROM `wrm_config` WHERE `wrm_config`.`config_name` = 'rl_drafted_comments';
+DELETE FROM `wrm_config` WHERE `wrm_config`.`config_name` = 'rl_drafted_cancel';
+DELETE FROM `wrm_config` WHERE `wrm_config`.`config_name` = 'rl_drafted_delete';
+DELETE FROM `wrm_config` WHERE `wrm_config`.`config_name` = 'admin_queue_promote';
+DELETE FROM `wrm_config` WHERE `wrm_config`.`config_name` = 'admin_queue_comments';
+DELETE FROM `wrm_config` WHERE `wrm_config`.`config_name` = 'admin_queue_cancel';
+DELETE FROM `wrm_config` WHERE `wrm_config`.`config_name` = 'admin_queue_delete';
+DELETE FROM `wrm_config` WHERE `wrm_config`.`config_name` = 'admin_cancel_queue';
+DELETE FROM `wrm_config` WHERE `wrm_config`.`config_name` = 'admin_cancel_promote';
+DELETE FROM `wrm_config` WHERE `wrm_config`.`config_name` = 'admin_cancel_comments';
+DELETE FROM `wrm_config` WHERE `wrm_config`.`config_name` = 'admin_cancel_delete';
+DELETE FROM `wrm_config` WHERE `wrm_config`.`config_name` = 'admin_drafted_queue';
+DELETE FROM `wrm_config` WHERE `wrm_config`.`config_name` = 'admin_drafted_comments';
+DELETE FROM `wrm_config` WHERE `wrm_config`.`config_name` = 'admin_drafted_cancel';
+DELETE FROM `wrm_config` WHERE `wrm_config`.`config_name` = 'admin_drafted_delete';
 
 -- Raid Force Table Creation
 DROP TABLE IF EXISTS `wrm_raid_force`;

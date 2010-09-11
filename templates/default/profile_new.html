@@ -1,67 +1,77 @@
 {* Smarty Template *}
 <br>
-<a name="new"></a>
-<div class="contentHeader">{$guilds_new.new_header}</div><br>
+{* <a name="new"></a> *}
+<div class="contentHeader">{$char_new.char_header}</div>
+<br>
 <div class="contentBody">
-<form method="post" action="{$guilds_new.form_action}">
+<form method="post" action="{$char_new.form_action}">
       <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
         <tr>
           <td><table width="100%" border="0" cellspacing="1" cellpadding="3" class="dataOutline">
               <tr>
-                <td class="row1"><strong>{$guilds_new.guild_text}</strong></td>
-                <td class="row2">{$guilds_new.guild}</td>
+                <td class="row1"><strong>{$char_new.guild_text}</strong></td>
+                <td class="row2">
+					{html_options name=guild options=$char_new.array_guild selected=$char_new.selected_guild class="post" onChange="MM_jumpMenu('self',this,0)" class="form" style="width:100px"}
+                </td>
               </tr>
               <tr>
-                <td width="200" class="row1"><strong>{$guilds_new.race_text}</strong></td>
-                <td class="row2">{$guilds_new.race}</td>
+                <td width="200" class="row1"><strong>{$char_new.race_text}</strong></td>
+                <td class="row2">
+					{html_options name=race options=$char_new.array_race selected=$char_new.selected_race class="post" onChange="MM_jumpMenu('self',this,0)" class="form" style="width:100px"}
+                </td>
               </tr>
               <tr>
-                <td width="200" class="row1"><strong>{$guilds_new.class_text}</strong></td>
-                <td class="row2">{$guilds_new.class}</td>
+                <td width="200" class="row1"><strong>{$char_new.class_text}</strong></td>
+                <td class="row2">
+					{html_options name=class options=$char_new.array_class selected=$char_new.selected_class class="post" onChange="MM_jumpMenu('self',this,0)" class="form" style="width:100px"}
+                </td>
               </tr>
               <tr>
-                <td width="200" class="row1"><strong>{$guilds_new.gender_text}</strong></td>
-                <td class="row2">{$guilds_new.gender}</td>
+                <td width="200" class="row1"><strong>{$char_new.gender_text}</strong></td>
+                <td class="row2">{$char_new.gender}</td>
               </tr>
               <tr>
-                <td width="200" class="row1"><strong>{$guilds_new.name_text}</strong></td>
-                <td class="row2">{$guilds_new.name}</td>
+                <td width="200" class="row1"><strong>{$char_new.name_text}</strong></td>
+                <td class="row2">{$char_new.name}</td>
               </tr>
 			  <tr>
-                <td class="row1"><strong>{$guilds_new.level_text}</strong></td>
-                <td class="row2">{$guilds_new.level}</td>
+                <td class="row1"><strong>{$char_new.level_text}</strong></td>
+                <td class="row2">{$char_new.level}</td>
               </tr>
               <tr>
-                <td class="row1"><strong><font color="#CCFFCC">{$guilds_new.arcane_text}</font></strong></td>
-                <td class="row2">{$guilds_new.arcane}</td>
+                <td class="row1"><strong><font color="#CCFFCC">{$char_new.arcane_text}</font></strong></td>
+                <td class="row2">{$char_new.arcane}</td>
               </tr>
               <tr>
-                <td class="row1"><strong><font color="#FF0000">{$guilds_new.fire_text}</font></strong></td>
-                <td class="row2">{$guilds_new.fire}</td>
+                <td class="row1"><strong><font color="#FF0000">{$char_new.fire_text}</font></strong></td>
+                <td class="row2">{$char_new.fire}</td>
               </tr>
               <tr>
-                <td class="row1"><strong><font color="#009900">{$guilds_new.nature_text}</font></strong></td>
-                <td class="row2">{$guilds_new.nature}</td>
+                <td class="row1"><strong><font color="#009900">{$char_new.nature_text}</font></strong></td>
+                <td class="row2">{$char_new.nature}</td>
               </tr>
               <tr>
-                <td class="row1"><strong><font color="#0000FF">{$guilds_new.frost_text}</font></strong></td>
-                <td class="row2">{$guilds_new.frost}</td>
+                <td class="row1"><strong><font color="#0000FF">{$char_new.frost_text}</font></strong></td>
+                <td class="row2">{$char_new.frost}</td>
               </tr>
               <tr>
-                <td class="row1"><strong><font color="#663366">{$guilds_new.shadow_text}</font></strong></td>
-                <td class="row2">{$guilds_new.shadow}</td>
+                <td class="row1"><strong><font color="#663366">{$char_new.shadow_text}</font></strong></td>
+                <td class="row2">{$char_new.shadow}</td>
               </tr>
               <tr>
-                <td width="200" class="row1"><strong>{$guilds_new.role_text}</strong></td>
-                <td class="row2">{$guilds_new.pri_spec}</td>
+                <td width="200" class="row1"><strong>{$char_new.role_text}</strong></td>
+                <td class="row2">{$char_new.pri_spec}</td>
               </tr>              
               <tr>
-                <td width="200" class="row1"><strong>{$guilds_new.role_text}</strong></td>
-                <td class="row2">{$guilds_new.sec_spec}</td>
+                <td width="200" class="row1"><strong>{$char_new.role_text}</strong></td>
+                <td class="row2">{$char_new.sec_spec}</td>
               </tr>              
             </table></td>
         </tr>
-      </table><br>
-		<div align="center" class="button">{$guilds_new.buttons}</div>
+      </table>
+      <br>
+		<div align="center" class="button">
+			<input type="submit" value="{$char_new.buttons_01}" name="submit" class="mainoption">
+		</div>
 </form>
 </div>

@@ -1,10 +1,19 @@
 {* Smarty Template *}
 <div class="contentHeader">{$header_data.character_header}</div><br>
 {* Setup Character Table List *}
-<div class="contentBody">{include file='raids_table.html' raid_data=$char_data jump_menu=$char_jump_menu record_counts=$char_record_counts column_name=$char_column_name}</div><br>
+<div class="contentBody">
+	{include file='raids_table.html' raid_data=$char_data jump_menu=$char_jump_menu record_counts=$char_record_counts column_name=$char_column_name}
+<br>
+<form method="post" action="{$header_data.form_action}">
+ <div align="center" class="button">
+	<input type="submit" value="{$header_data.button_addchar}" name="add_char" class="mainoption">
+ </div>
+</form>
+</div>
+<br>
 <div class="contentHeader">{$header_data.raid_header}</div><br>
 {* Setup Raid Participation List *}
-<div class="contentBody">{include file='raids_table.html' raid_data=$raid_data jump_menu=$raid_jump_menu record_counts=$raid_record_counts column_name=$raid_column_name}</div><br>
-
-{* Include to Add New Characters *}
-{include file='profile_new.html'}
+<div class="contentBody">
+	{include file='raids_table.html' raid_data=$raid_data jump_menu=$raid_jump_menu record_counts=$raid_record_counts column_name=$raid_column_name}
+</div>
+<br>

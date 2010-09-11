@@ -271,6 +271,76 @@ function has_char_multiple_signups($profile_id, $raid_id) {
 	}
 	return 0;
 }
+/**
+ * add a new Character
+ * @param $profile
+ * @param $name
+ * @param $class
+ * @param $gender
+ * @param $guild
+ * @param $level
+ * @param $race
+ * @param $arcane
+ * @param $fire
+ * @param $frost
+ * @param $nature
+ * @param $shadow
+ * @param $pri_spec
+ * @param $sec_spec
+ */
+function char_addnew($profile,$name,$class,$gender,$guild,$level,$race,$arcane="0",$fire="0",$frost="0",$nature="0",$shadow="0",$pri_spec,$sec_spec)
+{
+	global $db_raid, $phpraid_config;
+
+	$sql = sprintf(	"INSERT INTO " . $phpraid_config['db_prefix'] . "chars" .
+					"	(`profile_id`,`name`,`class`, `gender`,`guild`,`lvl`,`race`," .
+					"	 `arcane`,`fire`,`frost`,`nature`,`shadow`,`pri_spec`,`sec_spec`)" .
+					" VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
+				quote_smart($profile), quote_smart($name), quote_smart($class),
+				quote_smart($gender), quote_smart($guild), quote_smart($level), quote_smart($race),
+				quote_smart($arcane), quote_smart($fire), quote_smart($frost), quote_smart($nature),
+				quote_smart($shadow), quote_smart($pri_spec), quote_smart($sec_spec)
+			);
+
+	$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+
+	log_create('character',mysql_insert_id(),$name);
+
+	return(0);
+}
+
+function char_edit($name,$level,$race,$class,$gender,$guild,$arcane="0",$nature="0",$shadow="0",$fire="0",$frost="0",$pri_spec,$sec_spec,$char_id)
+{
+	global $db_raid, $phpraid_config;
+
+	$sql = sprintf(	"UPDATE " . $phpraid_config['db_prefix'] . "chars " .
+					"	SET name=%s,lvl=%s,race=%s, class=%s,gender=%s,guild=%s," .
+					"	arcane=%s,nature=%s,shadow=%s,fire=%s,frost=%s," .
+					"	pri_spec=%s,sec_spec=%s WHERE char_id=%s",
+					quote_smart($name),quote_smart($level),quote_smart($race),
+					quote_smart($class), quote_smart($gender), quote_smart($guild),
+					quote_smart($arcane),quote_smart($nature),quote_smart($shadow),quote_smart($fire),
+					quote_smart($frost),quote_smart($pri_spec),quote_smart($sec_spec),quote_smart($char_id));
+
+	$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+
+	return(1);
+}
+
+function char_delete($char_id,$profile_id)
+{
+	global $db_raid, $phpraid_config;
+
+	log_delete('character',$n);
+
+	$sql = sprintf("DELETE FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id=%s AND profile_id=%s",quote_smart($char_id), quote_smart($profile_id));
+	$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+
+	$sql = sprintf("DELETE FROM " . $phpraid_config['db_prefix'] . "signups WHERE char_id=%s AND profile_id=%s",quote_smart($char_id), quote_smart($profile_id));
+	$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+
+	return (1);
+}
 
 function check_dupe($profile_id, $raid_id)
 {
