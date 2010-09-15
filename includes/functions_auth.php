@@ -399,7 +399,7 @@ function wrm_login()
 			wrm_profile_update_last_login_time($_SESSION['profile_id']);
 		}
 		
-		get_permissions();
+		get_permissions($_SESSION['profile_id']);
 		
 		//security fix
 		unset($password);
