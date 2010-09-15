@@ -105,7 +105,7 @@ $wrm_db_user_name = "username";
 $wrm_table_prefix = $phpraid_config['db_prefix'];
 $wrm_db_table_user_name = "profile";
 		
-$username = scrub_input($_SESSION['username']);
+//$username = scrub_input($_SESSION['username']);
 //database
 $sql = sprintf(	"SELECT ". $wrm_db_user_name .
 				" FROM " . $wrm_table_prefix . $wrm_db_table_user_name . 
@@ -115,6 +115,7 @@ $result_tmp = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error
 $data_tmp = $db_raid->sql_fetchrow($result_tmp, true);
 $username = $data_tmp[$wrm_db_user_name];
 
+$user_perm_group = array();
 
 if ($priv_raids == 1)
 	$user_perm_group['admin'] = 1;
@@ -901,11 +902,12 @@ if($mode == 'view')
 	}
 
 	// check if they have chars and that they have at least one within the range limit
-	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE profile_id=%s
-	AND lvl<=%s AND lvl>=%s",quote_smart($profile_id),quote_smart($raid_max_lvl),quote_smart($raid_min_lvl));
+	$sql = sprintf(	"SELECT * FROM " . $phpraid_config['db_prefix'] . "chars " .
+					"	WHERE profile_id=%s AND lvl<=%s AND lvl>=%s",
+					quote_smart($profile_id),quote_smart($raid_max_lvl),quote_smart($raid_min_lvl));
+	
 	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	$char_count = $db_raid->sql_numrows($result);
-
 	if($char_count <= 0)
 	{
 		$show_signup = 0;
@@ -913,7 +915,7 @@ if($mode == 'view')
 	}
 
 	// check if any of their characters belong to the guild that the raid force is specfiying.
-	if ($data['raid_force_name'] != 'None')
+	if ($data['raid_force_id'] != '0')
 	{
 		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raid_force WHERE raid_force_name=%s", quote_smart($data['raid_force_name']));
 		$raid_force_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
@@ -1241,6 +1243,7 @@ elseif($mode == 'queue')
 
 	$char_id = scrub_input($_GET['char_id']);
 	$raid_id = scrub_input($_GET['raid_id']);
+	
 	$S_profile_id = scrub_input($_SESSION['profile_id']);
 
 	// Get Profile ID with Char ID to verify user.
@@ -1256,39 +1259,38 @@ elseif($mode == 'queue')
 	if($priv_raids != 1 && $user_perm_group['RL'] != 1 &&
 		$S_profile_id != $profile_id)
 		log_hack();
-
-	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id=%s AND char_id=%s", quote_smart($raid_id), quote_smart($char_id));
-	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-	$data = $db_raid->sql_fetchrow($result, true);
-
-	$sql = sprintf(	"SELECT * FROM " . $phpraid_config['db_prefix'] . "acl_raid_signup_group".
+/*
+	$sql = sprintf(	"SELECT * " .
+					" FROM `" . $phpraid_config['db_prefix'] . "acl_raid_signup_group`".
 					" WHERE `" . $phpraid_config['db_prefix'] . "acl_raid_signup_group`.`signup_group_id` = %s;",
 					quote_smart(3)
-		);
+			);
 	$result_group = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	$data_acl_raid_signup_group_array = $db_raid->sql_fetchrow($result_group,true);
 	
 	//Check for a hacking attempt sending in a URL without clicking a button.
 	$hackattempt=1;
 	if(($user_perm_group['admin'] && $data['cancel'] && $data_acl_raid_signup_group_array["cancelled_status_queue"]) ||
-	($user_perm_group['admin'] && !$data['queue'] && !$data['cancel'] && $phpraid_config['admin_drafted_queue']))
+	($user_perm_group['admin'] && !$data['queue'] && !$data['cancel'] && $data_acl_raid_signup_group_array['drafted_queue']))
 		$hackattempt=0;
 		
-	$sql = sprintf(	"SELECT * FROM " . $phpraid_config['db_prefix'] . "acl_raid_signup_group".
+	$sql = sprintf(	"SELECT * " .
+					" FROM `" . $phpraid_config['db_prefix'] . "acl_raid_signup_group`".
 					" WHERE `" . $phpraid_config['db_prefix'] . "acl_raid_signup_group`.`signup_group_id` = %s;",
 					quote_smart(2)
-		);
+			);
 	$result_group = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	$data_acl_raid_signup_group_array = $db_raid->sql_fetchrow($result_group,true);
 	if (($user_perm_group['RL'] && $data['cancel'] && $data_acl_raid_signup_group_array["cancelled_status_queue"]) ||
-	($user_perm_group['RL'] && !$data['queue'] && !$data['cancel'] && $phpraid_config['rl_drafted_queue']))
+	($user_perm_group['RL'] && !$data['queue'] && !$data['cancel'] && $data_acl_raid_signup_group_array['drafted_queue']))
 		$hackattempt=0;
 
 
-	$sql = sprintf(	"SELECT * FROM " . $phpraid_config['db_prefix'] . "acl_raid_signup_group".
+	$sql = sprintf(	"SELECT * " .
+					" FROM `" . $phpraid_config['db_prefix'] . "acl_raid_signup_group`".
 					" WHERE `" . $phpraid_config['db_prefix'] . "acl_raid_signup_group`.`signup_group_id` = %s;",
 					quote_smart(1)
-		);
+			);
 	$result_group = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	$data_acl_raid_signup_group_array = $db_raid->sql_fetchrow($result_group,true);
 	if (($data['cancel'] && $phpraid_config['user_cancel_queue']) ||
@@ -1296,7 +1298,7 @@ elseif($mode == 'queue')
 		$hackattempt=0;
 
 	if($hackattempt)
-		log_hack();
+		log_hack();*/
 	else
 	{
 		$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "signups set queue='1',cancel='0' WHERE raid_id=%s AND char_id=%s", quote_smart($raid_id), quote_smart($char_id));
@@ -1424,17 +1426,41 @@ elseif($mode == 'draft')
 	//echo "<br>phpraid_config: user_queue_promote :" . $phpraid_config['user_queue_promote'];
 
 	//Check for a hacking attempt sending in a URL without clicking a button.
+	$sql = sprintf(	"SELECT * " .
+					" FROM `" . $phpraid_config['db_prefix'] . "acl_raid_signup_group`".
+					" WHERE `" . $phpraid_config['db_prefix'] . "acl_raid_signup_group`.`signup_group_id` = %s;",
+					quote_smart(3)
+			);
+	$result_group = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+	$data_acl_raid_signup_group_array = $db_raid->sql_fetchrow($result_group,true);
+	
 	$hackattempt=1;
-	if(($user_perm_group['admin'] && $data['cancel'] && $phpraid_config['admin_cancel_promote']) ||
-	($user_perm_group['admin'] && $data['queue'] && $phpraid_config['admin_queue_promote']))
+	if(($user_perm_group['admin'] && $data['cancel'] && $data_acl_raid_signup_group_array['cancelled_status_comments']) ||
+//	if(($user_perm_group['admin'] && $data['cancel'] && $phpraid_config['admin_cancel_promote']) ||
+	($user_perm_group['admin'] && $data['queue'] && $data_acl_raid_signup_group_array['on_queue_comments']))
+//	($user_perm_group['admin'] && $data['queue'] && $phpraid_config['admin_queue_promote']))
+		$hackattempt=0;
+	
+	$sql = sprintf(	"SELECT * " .
+					" FROM `" . $phpraid_config['db_prefix'] . "acl_raid_signup_group`".
+					" WHERE `" . $phpraid_config['db_prefix'] . "acl_raid_signup_group`.`signup_group_id` = %s;",
+					quote_smart(2)
+			);
+	$result_group = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+	$data_acl_raid_signup_group_array = $db_raid->sql_fetchrow($result_group,true);
+	if (($user_perm_group['RL'] && $data['cancel'] && $data_acl_raid_signup_group_array['cancelled_status_comments']) ||
+	($user_perm_group['RL'] && $data['queue'] && $data_acl_raid_signup_group_array['on_queue_comments']))
 		$hackattempt=0;
 
-	if (($user_perm_group['RL'] && $data['cancel'] && $phpraid_config['rl_cancel_promote']) ||
-	($user_perm_group['RL'] && $data['queue'] && $phpraid_config['rl_queue_promote']))
-		$hackattempt=0;
-
-	if (($data['cancel'] && $phpraid_config['user_cancel_promote']) ||
-	($data['queue'] && $phpraid_config['user_queue_promote']))
+	$sql = sprintf(	"SELECT * " .
+					" FROM `" . $phpraid_config['db_prefix'] . "acl_raid_signup_group`".
+					" WHERE `" . $phpraid_config['db_prefix'] . "acl_raid_signup_group`.`signup_group_id` = %s;",
+					quote_smart(2)
+			);
+	$result_group = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+	$data_acl_raid_signup_group_array = $db_raid->sql_fetchrow($result_group,true);
+	if (($data['cancel'] && $data_acl_raid_signup_group_array['cancelled_status_comments']) ||
+	($data['queue'] && $data_acl_raid_signup_group_array['on_queue_comments']))
 		$hackattempt=0;
 		
 	if($hackattempt)
@@ -1587,7 +1613,7 @@ $priv_profile = scrub_input($_SESSION['priv_profile']);
 if($show_signup == 1 && $priv_profile == 1)
 {
 	$profile_id = scrub_input($_SESSION['profile_id']);
-
+	
 	// setup min/max levels
 	$sql = sprintf("SELECT min_lvl,max_lvl FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id=%s", quote_smart($raid_id));
 	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
@@ -1596,12 +1622,10 @@ if($show_signup == 1 && $priv_profile == 1)
 	$signup_action = 'view.php?mode=signup&amp;raid_id=' . $raid_id;
 
 	// set vars
-//	$username = scrub_input($_SESSION['username']);
-	$profile_id = scrub_input($_SESSION['profile_id']);
 	
 	//database
 	$sql = sprintf(	"SELECT ". $wrm_db_user_name .
-					" FROM " . $wrm_table_prefix . $wrm__db_table_user_name. 
+					" FROM " . $wrm_table_prefix . "profile". 
 					" WHERE profile_id = %s", quote_smart($profile_id)
 				);
 	$result_tmp = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
@@ -1609,48 +1633,57 @@ if($show_signup == 1 && $priv_profile == 1)
 	$username = $data_tmp[$wrm_db_user_name];
 	
 	// get character list
-	$sql = sprintf("SELECT raid_force_name FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id=%s", quote_smart($raid_id));
+	$sql = sprintf("SELECT raid_force_id FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id=%s", quote_smart($raid_id));
 	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	$rf_data = $db_raid->sql_fetchrow($result, true);
-	$raid_force_name = $rf_data['raid_force_name'];
-
-	$character = '<select name="character" class="post">';
-	if ($raid_force_name != "None")
+	$raid_force_id = $rf_data['raid_force_id'];
+	
+	$array_character = array();
+	if ($raid_force_id != "0")
 	{
-		$sql = sprintf("SELECT guild_id FROM " . $phpraid_config['db_prefix'] . "raid_force WHERE raid_force_name=%s", quote_smart($raid_force_name));
+		$sql = sprintf("SELECT guild_id FROM " . $phpraid_config['db_prefix'] . "raid_force WHERE raid_force_id=%s", quote_smart($raid_force_id));
 		$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		while($rf_data = $db_raid->sql_fetchrow($result, true))
 		{
-			$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE profile_id=%s and guild=%s", quote_smart($profile_id), quote_smart($rf_data['guild_id']));
+			$sql = sprintf("SELECT char_id, name FROM " . $phpraid_config['db_prefix'] . "chars WHERE profile_id=%s and guild=%s", quote_smart($profile_id), quote_smart($rf_data['guild_id']));
 			$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 			while($data = $db_raid->sql_fetchrow($result, true))
 			{
 				$sql = sprintf("SELECT lvl FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id=%s", quote_smart($data['char_id']));
 				$result_lvl = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 				$lvl = $db_raid->sql_fetchrow($result_lvl, true);
-		
 				if($lvl['lvl'] >= $limit['min_lvl'] && $lvl['lvl'] <= $limit['max_lvl'])
-					$character .= '<option value="' . $data['char_id'] . '">' . $data['name'] . '</option>';
+				{
+					$array_character[$data['char_id']] = $data['name'];
+				}
+					
 			}			
 		}
 	}
 	else
 	{
-		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE profile_id=%s", quote_smart($profile_id));
+		$sql = sprintf(	"SELECT char_id, name " .
+						"	FROM " . $phpraid_config['db_prefix'] . "chars" .
+						"	WHERE profile_id=%s", quote_smart($profile_id)
+				);
 		$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		while($data = $db_raid->sql_fetchrow($result, true))
 		{
-			$sql = sprintf("SELECT lvl FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id=%s", quote_smart($data['char_id']));
+			$sql = sprintf(	"SELECT lvl " .
+							"	FROM " . $phpraid_config['db_prefix'] . "chars" .
+							"	WHERE char_id=%s", quote_smart($data['char_id'])
+					);
 			$result_lvl = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 			$lvl = $db_raid->sql_fetchrow($result_lvl, true);
-	
+
 			if($lvl['lvl'] >= $limit['min_lvl'] && $lvl['lvl'] <= $limit['max_lvl'])
-				$character .= '<option value="' . $data['char_id'] . '">' . $data['name'] . '</option>';
+			{
+				$array_character[$data['char_id']] = $data['name'];
+			}
 		}
 	}
-	$character .= '</select>';
+
 	$array_queue = array();
-	
 	if($phpraid_config['auto_queue'] == 1)
 	{
 		$array_queue["queue"] = $phprlang['view_signup_queue'];
@@ -1669,6 +1702,7 @@ if($show_signup == 1 && $priv_profile == 1)
 		array(
 			'username'=>$username,
 			'character'=>$character,
+			'array_character' =>$array_character,
 			'array_queue'=>$array_queue,
 			'selected_queue'=>$selected_queue,
 			'comments'=>$comments,

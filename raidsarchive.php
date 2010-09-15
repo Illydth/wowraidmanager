@@ -131,7 +131,8 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true)) {
 
 	$desc = scrub_input($raids['description']);
 	$ddrivetiptxt = "'<span class=tooltip_title>" . $phprlang['description'] ."</span><br>" . DEUBB2($desc) . "'";
-	$location = '<a href="raidview.php?mode=view&amp;raid_id=' . $raids['raid_id'] . '" onMouseover="ddrivetip('.$ddrivetiptxt.');" onMouseout="hideddrivetip();">'.$raids['location'].'</a>';
+	//$location = '<a href="view.php?mode=view&amp;raid_id=' . $raids['raid_id'] . '" onMouseover="ddrivetip('.$ddrivetiptxt.');" onMouseout="hideddrivetip();">'.$raids['location'].'</a>';
+	$location = $raids['location'];
 	
 	// Now that we have the raid data, we need to retrieve limit data based upon Raid ID.
 	// Get Class Limits and set Colored Counts
@@ -175,7 +176,7 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true)) {
 	if($raids['old'] == 1) {
 		array_push($previous,
 			array(
-				'ID'=>$raids['raid_id'],
+			//	'ID'=>$raids['raid_id'],
 				//'Signup'=>$info,
 				'Force Name'=>$force_name,
 				'Date'=>$date,

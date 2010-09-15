@@ -31,7 +31,7 @@
             <td align="center" valign="middle" class="row2">
             	<div align="left">
             		<span class="genmed">
-            			{$view_signup_data.character}
+         				{html_options name=character options=$view_signup_data.array_character class="post"}
             		</span>
             	</div>
             </td>
@@ -50,8 +50,6 @@
             	<div align="left">
             		<span class="genmed">
           				{html_options name=queue options=$view_signup_data.array_queue selected=$view_signup_data.selected_queue class="post"}
-
-            			{$view_signup_data.queue}
             		</span>
             	</div>
             </td>

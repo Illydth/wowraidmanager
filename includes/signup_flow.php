@@ -93,7 +93,7 @@ function initializeButtons()
  */
 function getarray_button($signup_group_id, $type)
 {
-	global $db_raid;
+	global $db_raid, $phpraid_config;
 
 	$array_button = array();
 	$sql = sprintf(	"SELECT * FROM " . $phpraid_config['db_prefix'] . "acl_raid_signup_group".
@@ -159,56 +159,17 @@ function signedUpFlow($user_perm_group, $phpraid_config, $data, $raid_id, $phprl
 	if($user_perm_group['admin'])
 	{
 		$buttons = getarray_button(3, "drafted");
-/*		
-		if($phpraid_config['admin_drafted_queue'] == '1')
-			$buttons['Queue'] = TRUE;
-
-		if($phpraid_config['admin_drafted_comments'] == '1')
-			$buttons['Comments'] = TRUE;
-
-		if($phpraid_config['admin_drafted_cancel'] == '1')
-			$buttons['Cancel'] = TRUE;
-
-		if($phpraid_config['admin_drafted_delete'] == '1')
-			$buttons['Delete'] = TRUE;
-*/
 	}
 
 	if($user_perm_group['RL'])
 	{
 		$buttons = getarray_button(2, "drafted");
-/*		
-		if($phpraid_config['rl_drafted_queue'] == '1')
-			$buttons['Queue'] = TRUE;
-
-		if($phpraid_config['rl_drafted_comments'] == '1')
-			$buttons['Comments'] = TRUE;
-
-		if($phpraid_config['rl_drafted_cancel'] == '1')
-			$buttons['Cancel'] = TRUE;
-
-		if($phpraid_config['rl_drafted_delete'] == '1')
-			$buttons['Delete'] = TRUE;
-*/
 	}
 
 	// Users should only have options to work on themselves, they should not be able to modify other users.
 	if($_SESSION['profile_id'] == $data['profile_id'])
 	{
 		$buttons = getarray_button(1, "drafted");
-/*		
-		if($phpraid_config['user_drafted_queue'] == '1')
-			$buttons['Queue'] = TRUE;
-
-		if($phpraid_config['user_drafted_comments'] == '1')
-			$buttons['Comments'] = TRUE;
-
-		if($phpraid_config['user_drafted_cancel'] == '1')
-			$buttons['Cancel'] = TRUE;
-
-		if($phpraid_config['user_drafted_delete'] == '1')
-			$buttons['Delete'] = TRUE;
-*/
 	}
 
 	//Create Buttons
@@ -249,54 +210,17 @@ function queuedFlow($user_perm_group, $phpraid_config, $data, $raid_id, $phprlan
 	if($user_perm_group['admin'])
 	{
 		$buttons = getarray_button(3, "queue");
-/*		if($phpraid_config['admin_queue_promote'] == '1')
-			$buttons['Draft'] = TRUE;
-
-		if($phpraid_config['admin_queue_comments'] == '1')
-			$buttons['Comments'] = TRUE;
-
-		if($phpraid_config['admin_queue_cancel'] == '1')
-			$buttons['Cancel'] = TRUE;
-
-		if($phpraid_config['admin_queue_delete'] == '1')
-			$buttons['Delete'] = TRUE;
-*/
 	}
 
 	if($user_perm_group['RL'])
 	{
 		$buttons = getarray_button(2, "queue");
-/*		
-		if($phpraid_config['rl_queue_promote'] == '1')
-			$buttons['Draft'] = TRUE;
-
-		if($phpraid_config['rl_queue_comments'] == '1')
-			$buttons['Comments'] = TRUE;
-
-		if($phpraid_config['rl_queue_cancel'] == '1')
-			$buttons['Cancel'] = TRUE;
-
-		if($phpraid_config['rl_queue_delete'] == '1')
-			$buttons['Delete'] = TRUE;
-*/
 	}
 
 	// Users should only have options to work on themselves, they should not be able to modify other users.
 	if($_SESSION['profile_id'] == $data['profile_id'])
 	{
 		$buttons = getarray_button(1, "queue");
-/*		if($phpraid_config['user_queue_promote'] == '1')
-			$buttons['Draft'] = TRUE;
-
-		if($phpraid_config['user_queue_comments'] == '1')
-			$buttons['Comments'] = TRUE;
-
-		if($phpraid_config['user_queue_cancel'] == '1')
-			$buttons['Cancel'] = TRUE;
-
-		if($phpraid_config['user_queue_delete'] == '1')
-			$buttons['Delete'] = TRUE;
-*/
 	}
 
 	//Create Buttons
@@ -337,65 +261,26 @@ function canceledFlow($user_perm_group, $phpraid_config, $data, $raid_id, $phprl
 	if($user_perm_group['admin'])
 	{
 		$buttons = getarray_button(3, "cancel");
-/*		
-		if($phpraid_config['admin_cancel_queue'] == '1')
-			$buttons['Queue'] = TRUE;
-
-		if($phpraid_config['admin_cancel_promote'] == '1')
-			$buttons['Draft'] = TRUE;
-
-		if($phpraid_config['admin_cancel_comments'] == '1')
-			$buttons['Comments'] = TRUE;
-
-		if($phpraid_config['admin_cancel_delete'] == '1')
-			$buttons['Delete'] = TRUE;
-*/
 	}
 
 	if($user_perm_group['RL'])
 	{
 		$buttons = getarray_button(2, "cancel");
-/*
-		if($phpraid_config['rl_cancel_queue'] == '1')
-			$buttons['Queue'] = TRUE;
-
-		if($phpraid_config['rl_cancel_promote'] == '1')
-			$buttons['Draft'] = TRUE;
-
-		if($phpraid_config['rl_cancel_comments'] == '1')
-			$buttons['Comments'] = TRUE;
-
-		if($phpraid_config['rl_cancel_delete'] == '1')
-			$buttons['Delete'] = TRUE;
-*/
 	}
 
 	// Users should only have options to work on themselves, they should not be able to modify other users.
 	if($_SESSION['profile_id'] == $data['profile_id'])
 	{
 		$buttons = getarray_button(1, "cancel");
-/*
-		if($phpraid_config['user_cancel_queue'] == '1')
-			$buttons['Queue'] = TRUE;
-
-		if($phpraid_config['user_cancel_promote'] == '1')
-			$buttons['Draft'] = TRUE;
-
-		if($phpraid_config['user_cancel_comments'] == '1')
-			$buttons['Comments'] = TRUE;
-
-		if($phpraid_config['user_cancel_delete'] == '1')
-			$buttons['Delete'] = TRUE;
-*/
 	}
-
+	
 	//Create Buttons
 	if ($buttons['Queue'])
 	{
 		#Promote from Cancelled to Queue.
-		$actions .= '<a href="view.php?mode=queue&amp;raid_id=' . $raid_id . '&amp;char_id=' . $data['char_id'] . '&Sort=' . $sort_mode . '&SortDescending=' . $sort_descending . '">
-			<img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_demote.gif" border="0"
-			onMouseover="ddrivetip(\''.$phprlang['in_queue'].'\');" onMouseout="hideddrivetip();" alt="demote icon"></a>';
+		$actions .= '<a href="view.php?mode=queue&amp;raid_id=' . $raid_id . '&amp;char_id=' . $data['char_id'] . '&Sort=' . $sort_mode . '&SortDescending=' . $sort_descending . '">'.
+					'<img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_demote.gif" border="0"'.
+					'onMouseover="ddrivetip(\''.$phprlang['in_queue'].'\');" onMouseout="hideddrivetip();" alt="demote icon"></a>';
 	}
 	if ($buttons['Draft'])
 	{

@@ -171,7 +171,7 @@ class wrm_menu
 			} else {
 			    $menu .= '<li class="">' . $raids_link . '</li>';
 			}
-			if (preg_match("/(.*)lua_output\.php(.*)/", $_SERVER['PHP_SELF'])) {
+			if (preg_match("/(.*)lua_output_new\.php(.*)/", $_SERVER['PHP_SELF'])) {
 			    $menu .= '<li class="active">' . $lua_output_link . '</li>';
 			} else {
 			    $menu .= '<li class="">' . $lua_output_link . '</li>';

@@ -78,25 +78,31 @@ function clear_session()
 function get_permissions($profile_id) 
 {
 	global $db_raid, $phpraid_config;
-	
-	//$profile_id = scrub_input($_SESSION['profile_id']);
 
-	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "profile WHERE profile_id=%s", quote_smart($profile_id));
+	$sql = sprintf(	"SELECT * FROM " . $phpraid_config['db_prefix'] . "profile" .
+					"	WHERE profile_id=%s", quote_smart($profile_id));
 	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(),1);
 	$data = $db_raid->sql_fetchrow($result, true);
 	
 	// check all permissions
-	$sql_priv = "SELECT * FROM " . $phpraid_config['db_prefix'] . "permissions WHERE permission_id='{$data['priv']}'";
-	$result_priv = $db_raid->sql_query($sql_priv) or print_error($sql_priv, $db_raid->sql_error(),1);
-			
-	$data_priv = $db_raid->sql_fetchrow($result_priv, true);
+	$sql_priv = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "permissions".
+						"	WHERE permission_id=%s", quote_smart($data['priv']));
 	
+/*	$result_priv = $db_raid->sql_query($sql_priv) or print_error($sql_priv, $db_raid->sql_error(),1);
+	$data_priv = $db_raid->sql_fetchrow($result_priv, true);
 	$data_priv['announcements'] ? $_SESSION['priv_announcements'] = 1 : $_SESSION['priv_announcements'] = 0;	
 	$data_priv['configuration'] ? $_SESSION['priv_configuration'] = 1 :	$_SESSION['priv_configuration'] = 0;
 	$data_priv['profile'] ? $_SESSION['priv_profile'] = 1 : $_SESSION['priv_profile'] = 0;
 	$data_priv['guilds'] ? $_SESSION['priv_guilds'] = 1 : $_SESSION['priv_guilds'] = 0;
 	$data_priv['locations'] ? $_SESSION['priv_locations'] = 1 : $_SESSION['priv_locations'] = 0;
 	$data_priv['raids'] ? $_SESSION['priv_raids'] = 1 : $_SESSION['priv_raids'] = 0;
+*/	
+	if ($data_priv['announcements']==1)  $_SESSION['priv_announcements'] = 1; else $_SESSION['priv_announcements'] = 0;	
+	if ($data_priv['configuration']==1) $_SESSION['priv_configuration'] = 1; else	$_SESSION['priv_configuration'] = 0;
+	if ($data_priv['profile']==1) $_SESSION['priv_profile'] = 1; else $_SESSION['priv_profile'] = 0;
+	if ($data_priv['guilds']==1) $_SESSION['priv_guilds'] = 1; else $_SESSION['priv_guilds'] = 0;
+	if ($data_priv['locations']==1) $_SESSION['priv_locations'] = 1; else $_SESSION['priv_locations'] = 0;
+	if ($data_priv['raids']==1) $_SESSION['priv_raids'] = 1; else $_SESSION['priv_raids'] = 0;
 }
 
 function check_permission($perm_type, $profile_id) {
