@@ -173,41 +173,6 @@ function phpraid_login() {
 			// get user permissions
 			get_permissions();
 
-			// ********************
-			// * NOTE * IUMS Auth does not do profile checking like external bridges do.
-			// ********************
-
-			/* if($phpraid_config['default_group'] != 'nil')
-				$user_priv = $phpraid_config['default_group'];
-			else
-				$user_priv = '0'; */
-
-			// User is all logged in and setup, the session is initialized properly.  Now we need to create the users
-			//    profile in the WRM database if it does not already exist.
-			/* $sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "profile WHERE profile_id = %s",
-							quote_smart($_SESSION['profile_id'])
-					);
-			$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-			if ($data = $db_raid->sql_fetchrow($result))
-			{*/
-				//We found the profile in the database, update.
-			/*	$sql = sprintf(	"UPDATE " . $phpraid_config['db_prefix'] . "profile ".
-								" SET email = %s, password = %s, last_login_time = %s WHERE profile_id = %s",
-							quote_smart($_SESSION['email']),quote_smart($wrmuserpassword),
-							quote_smart(time()),quote_smart($_SESSION['profile_id'])
-						);
-				$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-			}
-			else
-			{
-				//Profile not found in the database or DB Error, insert.
-				$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "profile VALUES (%s, %s, %s, %s, %s, %s)",
-							quote_smart($_SESSION['profile_id']), quote_smart($_SESSION['email']), quote_smart($wrmuserpassword),
-							quote_smart($user_priv), quote_smart(strtolower($_SESSION['username'])), quote_smart(time())
-						);
-				$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-			}*/
-
 			$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "profile SET last_login_time=%s WHERE profile_id=%s",
 							quote_smart(time()),quote_smart($_SESSION['profile_id']));
 	
@@ -223,14 +188,5 @@ function phpraid_login() {
 	}
 	return 0;
 }
-
-function phpraid_logout()
-{
-	// unset the session and remove all cookies
-	clear_session();
-	setcookie('username', '', time() - 2629743);
-	setcookie('password', '', time() - 2629743);
-}
-
 
 ?>

@@ -216,19 +216,13 @@ if (!isset($_SESSION['initiated']))
 		{
 			wrm_logout();
 			session_regenerate_id();
-			$_SESSION['initiated'] = true;
-			$_SESSION['username'] = 'Anonymous';
-			$_SESSION['session_logged_in'] = 0;
-			$_SESSION['profile_id'] = -1;
+			set_WRM_SESSION(-1, 0, 'Anonymous', true);
 		}
 	}
 	else 
 	{
 		session_regenerate_id();
-		$_SESSION['initiated'] = true;
-		$_SESSION['username'] = 'Anonymous';
-		$_SESSION['session_logged_in'] = 0;
-		$_SESSION['profile_id'] = -1;
+		set_WRM_SESSION(-1, 0, 'Anonymous', true);
 	}
 }
 

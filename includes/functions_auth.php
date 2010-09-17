@@ -214,7 +214,7 @@ function wrm_login()
 	global $Bridge2ColumGroup;
 
 	$password = "";
-	$username_id = "";
+	$profile_id = "";
 		
 	//first login
 	if(isset($_POST['username']))
@@ -235,7 +235,7 @@ function wrm_login()
 		if ($db_raid->sql_numrows($result) > 0 )
 		{
 			$data = $db_raid->sql_fetchrow($result, true);
-			$username_id = $data['profile_id'];
+			$profile_id = $data['profile_id'];
 		}
 		else
 		{
@@ -249,7 +249,7 @@ function wrm_login()
 		$pwdencrypt = TRUE;
 		//$username = strtolower_wrap(scrub_input($_COOKIE['username']), "UTF-8");
 		$password = $_COOKIE['password'];
-		$username_id = $_COOKIE['profile_id'];
+		$profile_id = $_COOKIE['profile_id'];
 		$wrmpass = '';
 	} else {
 		wrm_logout();
@@ -258,13 +258,12 @@ function wrm_login()
 	//database
 	$sql = sprintf(	"SELECT ". $db_user_id . "," . $db_user_name . "," . $db_user_email . "," . $db_user_password.
 					" FROM " . $table_prefix . $db_table_user_name . 
-					" WHERE ". $db_user_id . " = %s", quote_smart($username_id)
+					" WHERE ". $db_user_id . " = %s", quote_smart($profile_id)
 			);
 			
 	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	$data = $db_raid->sql_fetchrow($result, true);
-	
-	if( ($username_id == $data[$db_user_id]) && ($cmspass = password_check($password, $data[$db_user_id], $pwdencrypt)) ) 
+	if( ($profile_id == $data[$db_user_id]) && ($cmspass = password_check($password, $data[$db_user_id], $pwdencrypt)) ) 
 	{
 		/**
 		 * user with aces to admin area
@@ -283,11 +282,11 @@ function wrm_login()
 		// The user has a matching username and proper password in the BRIDGE database.
 		// We need to validate the users group.  If it does not contain the user group that has been set as
 		//	authorized to use WRM, we need to fail the login with a proper message.
-		//echo $sql."<br>". $data_permissions["configuration"]."<br>";		
+		echo $sql."<br>". $data_permissions["configuration"]."<br>auth_user_class:".$auth_user_class;		
 		if ((($auth_user_class != "") and ($auth_user_class != "0")) and ($data_permissions["configuration"] != 1))
 		{
 			$FoundUserInGroup = FALSE;
-			echo "blub".$auth_user_class.":-:";
+			//echo "blub".$auth_user_class.":-:";
 			/*e107, smf*/
 			if ($Bridge2ColumGroup == TRUE)
 			{
@@ -295,6 +294,7 @@ function wrm_login()
 								" FROM "  . $table_prefix . $db_table_group_name . 
 								" WHERE " . $db_user_id . " = %s", quote_smart($data[$db_user_id])
 						);
+				echo $sql;
 				$resultgroup = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 				$datagroup = $db_raid->sql_fetchrow($resultgroup, true);
 
@@ -366,10 +366,7 @@ function wrm_login()
 		/**************************************************************
 		 * set user profile variables in SESSION
 		 **************************************************************/
-		$_SESSION['username'] = strtolower_wrap($data[$db_user_name], "UTF-8");
-		$_SESSION['session_logged_in'] = 1;
-		$_SESSION['profile_id'] = $data[$db_user_id];
-		$_SESSION['email'] = $data[$db_user_email];
+		set_WRM_SESSION($data[$db_user_id], 1, $data[$db_user_name], FALSE);
 
 		if ($auth_user_class != "")
 		{
@@ -399,7 +396,7 @@ function wrm_login()
 			wrm_profile_update_last_login_time($_SESSION['profile_id']);
 		}
 		
-		get_permissions($_SESSION['profile_id']);
+		get_permissions($profile_id);
 		
 		//security fix
 		unset($password);
@@ -412,6 +409,17 @@ function wrm_login()
 	return 0;
 	
 }// end wrm_login()
+
+/**************************************************************
+ * set user profile variables in SESSION
+ **************************************************************/
+function set_WRM_SESSION($profile_id, $session_logged_in_status, $profile_username, $SESSION_initiated = FALSE)
+{
+	$_SESSION['initiated'] = $SESSION_initiated;
+	$_SESSION['username'] = strtolower_wrap($profile_username, "UTF-8");
+	$_SESSION['session_logged_in'] = $session_logged_in_status;
+	$_SESSION['profile_id'] = $profile_id;
+}
 
 /**************************************************************
  * add new Profile to WRM
@@ -474,4 +482,5 @@ function wrm_logout()
 	setcookie('profile_id', '', time() - 2629743);
 	setcookie('password', '', time() - 2629743);
 }
+
 ?>
