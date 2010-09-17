@@ -78,8 +78,6 @@ class wrm_loginbox
 		$result = $this->db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		$data = $this->db_raid->sql_fetchrow($result, true);
 		$login_username_name = $data[$wrm_db_user_name];
-
-		//$login_username_name = scrub_input($_SESSION['username']);		
 		
 		/**************************************************************
 		 * Show Login Box / Field

@@ -67,30 +67,43 @@ function clear_session()
 	unset($_SESSION['username']);
 	unset($_SESSION['session_logged_in']);
 	unset($_SESSION['profile_id']);
+	clear_session_permissions();
+}
+
+// clears only session variables from permissions
+function clear_session_permissions()
+{
 	unset($_SESSION['priv_announcements']);
 	unset($_SESSION['priv_configuration']);
 	unset($_SESSION['priv_profile']);
 	unset($_SESSION['priv_guilds']);
 	unset($_SESSION['priv_locations']);
-	unset($_SESSION['priv_raids']);
+	unset($_SESSION['priv_raids']);	
 }
 // gets and sets user permissions
 function get_permissions($profile_id) 
 {
+	
 	global $db_raid, $phpraid_config;
 
-	$sql = sprintf(	"SELECT * FROM " . $phpraid_config['db_prefix'] . "profile" .
+	//clear first
+	clear_session_permissions();
+		
+	$sql = sprintf(	"SELECT priv ".
+					"	FROM " . $phpraid_config['db_prefix'] . "profile" .
 					"	WHERE profile_id=%s", quote_smart($profile_id));
 	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(),1);
 	$data = $db_raid->sql_fetchrow($result, true);
 	
 	// check all permissions
-	$sql_priv = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "permissions".
+	$sql_priv = sprintf("SELECT * ".
+						"	FROM " . $phpraid_config['db_prefix'] . "permissions".
 						"	WHERE permission_id=%s", quote_smart($data['priv']));
-	
-/*	$result_priv = $db_raid->sql_query($sql_priv) or print_error($sql_priv, $db_raid->sql_error(),1);
+//	echo "sql:".$sql."<br>sql_priv:".$sql_priv;
+	$result_priv = $db_raid->sql_query($sql_priv) or print_error($sql_priv, $db_raid->sql_error(),1);
 	$data_priv = $db_raid->sql_fetchrow($result_priv, true);
-	$data_priv['announcements'] ? $_SESSION['priv_announcements'] = 1 : $_SESSION['priv_announcements'] = 0;	
+	
+/*	$data_priv['announcements'] ? $_SESSION['priv_announcements'] = 1 : $_SESSION['priv_announcements'] = 0;	
 	$data_priv['configuration'] ? $_SESSION['priv_configuration'] = 1 :	$_SESSION['priv_configuration'] = 0;
 	$data_priv['profile'] ? $_SESSION['priv_profile'] = 1 : $_SESSION['priv_profile'] = 0;
 	$data_priv['guilds'] ? $_SESSION['priv_guilds'] = 1 : $_SESSION['priv_guilds'] = 0;
@@ -256,7 +269,9 @@ function wrm_login()
 	}
 	
 	if (validate_Bridge_User($profile_id,$password,$pwdencrypt) != 1)
+	{
 		wrm_logout();
+	}
 	
 	//database
 	$sql = sprintf(	"SELECT ". $db_user_id . "," . $db_user_name . "," . $db_user_email . "," . $db_user_password.
@@ -285,11 +300,10 @@ function wrm_login()
 		// The user has a matching username and proper password in the BRIDGE database.
 		// We need to validate the users group.  If it does not contain the user group that has been set as
 		//	authorized to use WRM, we need to fail the login with a proper message.
-		echo $sql."<br>". $data_permissions["configuration"]."<br>auth_user_class:".$auth_user_class;		
 		if ((($auth_user_class != "") and ($auth_user_class != "0")) and ($data_permissions["configuration"] != 1))
 		{
 			$FoundUserInGroup = FALSE;
-			//echo "blub".$auth_user_class.":-:";
+			
 			/*e107, smf*/
 			if ($Bridge2ColumGroup == TRUE)
 			{
@@ -422,7 +436,7 @@ function validate_Bridge_User($profile_id, $password, $pwdencrypt)
 	global $db_raid, $phpraid_config;
 	global $db_user_id, $table_prefix, $db_table_user_name, $db_user_id;
 
-	$sql = sprintf(	"SELECT ". $db_user_id . "," .
+	$sql = sprintf(	"SELECT ". $db_user_id .
 					" FROM " . $table_prefix . $db_table_user_name . 
 					" WHERE ". $db_user_id . " = %s", quote_smart($profile_id)
 		);
