@@ -60,6 +60,7 @@ if ($step == 2)
  * name of this file
  */
 $filename_install = "install.php?lang=".$lang."&";
+$filename_upgrade = "upgrade.php";
 
 
 /**
@@ -105,27 +106,46 @@ if ($step == "0")
 		include_once($wrm_config_file);
 		$table_profile_available = FALSE;
 		
-		// database connection
-		$wrm_install = &new sql_db($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass'],$phpraid_config['db_name']);
-		
-		//if connection available -> goto upgrade.php
-		if( ($wrm_install->db_connect_id) == TRUE)
+		//test
+		if (isset($phpraid_config['db_host']))
 		{
-			$sql_tables = "SHOW TABLES FROM ".$phpraid_config['db_name'];
-			$result_tables = $wrm_install->sql_query($sql_tables) or print_error($sql_tables, $wrm_install->sql_error(), 1);
-			while ($data_tables = $wrm_install->sql_fetchrow($result_tables,true))
-			{
-				//each version has this table
-				if ($phpraid_config['db_prefix']."_".$data_tables["profile"])
-				{
-					$table_profile_available = TRUE;
-				}
-			}
+			// database connection
+			$wrm_install = &new sql_db($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass'],$phpraid_config['db_name']);
 			
-			if ($table_profile_available != TRUE)
+			//if connection available -> goto upgrade.php
+			if( ($wrm_install->db_connect_id) == TRUE)
 			{
-				header("Location: upgrade.php");
-				exit;
+				$sql_db_all = "SHOW DATABASES";
+				$result_db_all = $wrm_install->sql_query($sql_db_all) or print_error($sql_db_all, $wrm_install->sql_error(), 1);
+				$Database_Exist = False;
+				while ($data_db_all = $wrm_install->sql_fetchrow($result_db_all,true))
+				{
+					//cmp if select db ($wrm_db_name) in/on Server exist
+					if ($phpraid_config['db_name'] == $data_db_all['Database'])
+					{
+						$Database_Exist = TRUE;
+					}
+				}
+				
+				if ($Database_Exist == TRUE)
+				{
+					$sql_tables = "SHOW TABLES FROM ".$phpraid_config['db_name'];
+					$result_tables = $wrm_install->sql_query($sql_tables) or print_error($sql_tables, $wrm_install->sql_error(), 1);
+					while ($data_tables = $wrm_install->sql_fetchrow($result_tables,true))
+					{
+						//each version has this table
+						if ($phpraid_config['db_prefix']."_".$data_tables["profile"])
+						{
+							$table_profile_available = TRUE;
+						}
+					}
+					
+					if ($table_profile_available != TRUE)
+					{
+						header("Location: " . $filename_upgrade);
+						exit;
+					}
+				}
 			}
 		}
 	}
@@ -400,7 +420,7 @@ else if($step == 3) {
 	$FOUNDERROR_Connection = FALSE;
 	$enable_wrm_db_create_name = FALSE;
 	
-	if(is_file($wrm_config_file) and !isset($_POST['wrm_db_server_hostname']))
+	if(is_file($wrm_config_file) )//and !isset($_POST['wrm_db_server_hostname']))
 	{
 		include_once($wrm_config_file);
 		
@@ -410,7 +430,8 @@ else if($step == 3) {
 			$wrm_db_username = $phpraid_config['db_user'];
 			$wrm_db_password = $phpraid_config['db_pass'];
 			$wrm_db_name = $phpraid_config['db_name'];
-			$wrm_db_tableprefix = $phpraid_config['db_prefix'];	
+			$sql_db_name_selected = $phpraid_config['db_name'];
+			$wrm_db_tableprefix = $phpraid_config['db_prefix'];
 		}
 	}
 	
@@ -545,8 +566,10 @@ else if($step == 4)
 		}
 		else
 		{
+			//write config file and then jump to upgrade.php
+			write_wrm_configfile($wrm_db_name, $wrm_db_server_hostname, $wrm_db_username, $wrm_db_password, $wrm_db_tableprefix);
 			$wrm_install->sql_close();
-			header("Location: ".$filename_install."step=3&db_exist=1");
+			header("Location: ".$filename_upgrade);
 		}
 	}
 	
