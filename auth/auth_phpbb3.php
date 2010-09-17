@@ -83,6 +83,11 @@ function db_password_change($profile_id, $dbusernewpassword)
 	global $db_user_id, $db_group_id, $db_user_name, $db_user_email, $db_user_password, $db_table_user_name; 
 	global $db_table_group_name, $auth_user_class, $auth_alt_user_class, $table_prefix, $db_raid, $phpraid_config;
 
+	require ($phpraid_dir . "includes/functions_pwdhash.php");
+	
+	// setup Password Hasher Routine
+	$pwd_hasher = new PasswordHash(8, FALSE);
+
 	//Convert PWD: Write CMS specific code here to convert the input PWD to the format of the CMS. 
 	
 	//IT IS UNKNOWN IF THIS WILL ACTUALLY WORK.
@@ -93,13 +98,14 @@ function db_password_change($profile_id, $dbusernewpassword)
 	 * Do not modify anything below here.
 	 *********************************************************************/
 	//check: is profile_id in CMS DB
-	$sql = sprintf(	"SELECT ".$db_user_id." FROM " . $table_prefix . $db_table_user_name . 
+	$sql = sprintf(	"SELECT ".$db_user_id.
+					" FROM " . $table_prefix . $db_table_user_name . 
 					" WHERE ".$db_user_id." = %s", 
 					quote_smart($profile_id)
 			);
 			
 	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-	if (mysql_num_rows($result) != 1) {
+	if ($db_raid->sql_numrows($result) != 1) {
 		//user not found in WRM DB
 		return 2;
 	}
@@ -128,10 +134,15 @@ function password_check($oldpassword, $profile_id, $encryptflag)
 {
 	global $db_user_id, $db_group_id, $db_user_name, $db_user_email, $db_user_password, $db_table_user_name; 
 	global $db_table_group_name, $auth_user_class, $auth_alt_user_class, $table_prefix, $db_raid, $phpraid_config;
-	global $pwd_hasher;
+	
+	require ($phpraid_dir . "includes/functions_pwdhash.php");
+	
+	// setup Password Hasher Routine
+	$pwd_hasher = new PasswordHash(8, FALSE);
 
-	$sql_passchk = sprintf("SELECT " . $db_user_password . " FROM " . $table_prefix . $db_table_user_name . 
-						" WHERE " . $db_user_id . " = %s", quote_smart($profile_id)
+	$sql_passchk = sprintf(	"SELECT " . $db_user_password . 
+							" FROM " . $table_prefix . $db_table_user_name . 
+							" WHERE " . $db_user_id . " = %s", quote_smart($profile_id)
 			);
 	$result_passchk = $db_raid->sql_query($sql_passchk) or print_error($sql_passchk, $db_raid->sql_error(), 1);
 	$data_passchk = $db_raid->sql_fetchrow($result_passchk, true);
@@ -157,9 +168,5 @@ function password_check($oldpassword, $profile_id, $encryptflag)
 	
 }
 
-require ($phpraid_dir . "includes/functions_pwdhash.php");
-
-// setup Password Hasher Routine
-$pwd_hasher = new PasswordHash(8, FALSE);
 
 ?>

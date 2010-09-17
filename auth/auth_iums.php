@@ -69,11 +69,12 @@ function db_password_change($profile_id, $dbusernewpassword)
 
 
 	//check: is profile_id in WRM DB
-	$sql = sprintf("SELECT profile_id FROM " . $phpraid_config['db_prefix'] . "profile WHERE profile_id = %s", 
-					quote_smart($profile_id)
+	$sql = sprintf(	"SELECT profile_id ".
+					" FROM " . $phpraid_config['db_prefix'] . "profile ".
+					" WHERE profile_id = %s", quote_smart($profile_id)
 			);
 	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(),1);
-	if (mysql_num_rows($result) != 1) {
+	if ($db_raid->sql_numrows($result) != 1) {
 		//user not found in WRM DB
 		return 2;
 	}
@@ -99,8 +100,9 @@ function db_password_change($profile_id, $dbusernewpassword)
 function password_check($oldpassword, $profile_id, $encryptflag)
 {
 	global $db_raid, $phpraid_config;
-	$sql = sprintf("SELECT password FROM " . $phpraid_config['db_prefix'] . "profile WHERE profile_id = %s",
-					quote_smart($profile_id)
+	$sql = sprintf(	"SELECT password ".
+					" FROM " . $phpraid_config['db_prefix'] . "profile ".
+					" WHERE profile_id = %s", quote_smart($profile_id)
 			);
 	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	$data = $db_raid->sql_fetchrow($result, true);
@@ -119,74 +121,6 @@ function password_check($oldpassword, $profile_id, $encryptflag)
 		else
 			return FALSE;
 	}
-}
-
-function phpraid_login() {
-
-	global $db_raid, $phpraid_config; //$groups
-	global $db_user_id,  $db_user_name, $db_user_email, $db_user_password, $table_prefix, $db_table_user_name; 
-	
-
-	if(isset($_POST['username'])) 	{
-		// User is logging in, set encryption flag to 0 to identify login with plain text password.
-		$pwdencrypt = FALSE;
-		$username = strtolower_wrap(scrub_input($_POST['username']), "UTF-8");
-		$password = $_POST['password'];
-	} elseif(isset($_COOKIE['username']) && isset($_COOKIE['password'])) {
-		// User is not logging in but processing cooking, set encryption flag to 1 to identify login with encrypted password.
-		$pwdencrypt = TRUE;
-		$username = strtolower_wrap(scrub_input($_COOKIE['username']), "UTF-8");
-		$password = $_COOKIE['password'];
-	} else {
-		phpraid_logout();
-	}
-	
-	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "profile";
-	
-	$sql = sprintf(	"SELECT ".$db_user_id." , ". $db_user_name ." , ". $db_user_email . " , " . $db_user_password .
-					" FROM " . $table_prefix . $db_table_user_name. 
-					" WHERE ".$db_user_name." = %s", quote_smart($username)
-			);
-
-	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-	
-	while($data = $db_raid->sql_fetchrow($result, true)) 
-	{
-		if( ($username == strtolower_wrap($data[$db_user_name], "UTF-8")) && ($cmspass = password_check($password, $data[$db_user_id], $pwdencrypt)) ) 
-		{
-			// User is properly logged in and is allowed to use WRM, go ahead and process his login.
-			$autologin = scrub_input($_POST['autologin']);
-			if(isset($autologin)) {
-				// they want automatic logins so set the cookie
-				// set to expire in one month
-				setcookie('username', $data[$db_user_name], time() + 2629743);
-				setcookie('profile_id', $data[$db_user_id], time() + 2629743);
-				setcookie('password', $cmspass, time() + 2629743);
-			}
-
-			// set user profile variables
-			$_SESSION['username'] = strtolower_wrap($data[$db_user_name], "UTF-8");
-			$_SESSION['session_logged_in'] = 1;
-			$_SESSION['profile_id'] = $data[$db_user_id];
-			$_SESSION['email'] = $data[$db_user_email];
-
-			// get user permissions
-			get_permissions();
-
-			$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "profile SET last_login_time=%s WHERE profile_id=%s",
-							quote_smart(time()),quote_smart($_SESSION['profile_id']));
-	
-			$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-			
-			//security fix
-			unset($username);
-			unset($password);
-			unset($cmspass);
-			
-			return 1;
-		}
-	}
-	return 0;
 }
 
 ?>

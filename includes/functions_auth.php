@@ -255,6 +255,9 @@ function wrm_login()
 		wrm_logout();
 	}
 	
+	if (validate_Bridge_User($profile_id,$password,$pwdencrypt) != 1)
+		wrm_logout();
+	
 	//database
 	$sql = sprintf(	"SELECT ". $db_user_id . "," . $db_user_name . "," . $db_user_email . "," . $db_user_password.
 					" FROM " . $table_prefix . $db_table_user_name . 
@@ -410,6 +413,29 @@ function wrm_login()
 	
 }// end wrm_login()
 
+/*
+ * validat WRM User
+ * @return Integer; 1 = ok, 0 = fail
+ */
+function validate_Bridge_User($profile_id, $password, $pwdencrypt)
+{
+	global $db_raid, $phpraid_config;
+	global $db_user_id, $table_prefix, $db_table_user_name, $db_user_id;
+
+	$sql = sprintf(	"SELECT ". $db_user_id . "," .
+					" FROM " . $table_prefix . $db_table_user_name . 
+					" WHERE ". $db_user_id . " = %s", quote_smart($profile_id)
+		);
+			
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+	if(password_check($password, $data[$db_user_id], $pwdencrypt) ) 
+	{
+		return 1;
+	}
+	
+	//fail, error
+	return 0;
+}
 /**************************************************************
  * set user profile variables in SESSION
  **************************************************************/
@@ -454,7 +480,9 @@ function wrm_profile_add($profile_id, $email, $wrmpass, $username)
 				);		
 	}
 	//echo $sql;
-	$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);		
+	$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+
+	return 1;
 }
 
 /**************************************************************
@@ -469,6 +497,8 @@ function wrm_profile_update_last_login_time($profile_id)
 					quote_smart(time()),quote_smart($profile_id)
 			);
 	$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+	
+	return 1;
 }
 
 /**************************************************************
