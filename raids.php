@@ -42,6 +42,7 @@ else
 	define("PAGE_LVL","raids");
 }
 require_once("includes/authentication.php");
+require_once("includes/functions_raids.php");
 
 /*************************************************************
  * Setup Record Output Information for Data Table
@@ -55,13 +56,13 @@ else
 // Set Sort Field for Page
 if(!isset($_GET['Sort'])||$_GET['Sort']=='')
 {
-	$sortField="";
-	$initSort=FALSE;
+	$sortField = "";
+	$initSort = FALSE;
 }
 else
 {
 	$sortField = scrub_input($_GET['Sort']);
-	$initSort=TRUE;
+	$initSort = TRUE;
 }
 	
 // Set Sort Descending Mark
@@ -69,8 +70,9 @@ if(!isset($_GET['SortDescending']) || !is_numeric($_GET['SortDescending']))
 	$sortDesc = 0;
 else
 	$sortDesc = scrub_input($_GET['SortDescending']);
-	
-$pageURL = 'raids.php?mode=view&';
+
+$pageURL_short = 'raids.php';
+$pageURL = $pageURL_short.'?mode=view&';
 /**************************************************************
  * End Record Output Setup for Data Table
  **************************************************************/
@@ -78,10 +80,26 @@ $pageURL = 'raids.php?mode=view&';
 $priv_raids = scrub_input($_SESSION['priv_raids']);
 $username = scrub_input($_SESSION['username']);
 
+/*
+ * 
+*/
+/*if (isset($_GET['raids_del']))
+{
+	
+
+}*/
+if (isset($_GET['mark_raid_as_old']))
+{
+	$array_mark = $_GET['raids'];
+	for ($i=0; $i < count($array_mark);$i++)
+	{
+		raid_mark($array_mark[$i]);
+	}
+}
 /************************************************************************************************
  *   Mode: VIEW 
  ************************************************************************************************/
-if($_GET['mode'] == 'view')
+if(($_GET['mode'] == 'view') or isset($_GET['raids_del']) or isset($_GET['mark_raid_as_old']))
 {
 	// two arrays to pass to our report class, current and previous raids
 	$current = array();
@@ -94,7 +112,8 @@ if($_GET['mode'] == 'view')
 	$raid_loop_rec = 0;
 
 	// Create the "new raid" button. -- This needs to be created regardless of whether or not we have raids.
-	$new_raid_link = '<a href="raids.php?mode=new"><img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_new_raid.gif" border="0"  onMouseover="ddrivetip(\''.$phprlang['raids_new_header'].'\');" onMouseout="hideddrivetip();" alt="new raid icon"></a>';
+	//$new_raid_link = '<a href="raids.php?mode=new"><img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_new_raid.gif" border="0"  onMouseover="ddrivetip(\''.$phprlang['raids_new_header'].'\');" onMouseout="hideddrivetip();" alt="new raid icon"></a>';
+	$form_action = "raids.php?mode=new";
 	
 	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "raids";
 	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);	
@@ -103,10 +122,10 @@ if($_GET['mode'] == 'view')
 		{
 			if ($priv_raids || $username == $data['officer'])
 			{
-				$edit = '<a href="raids.php?mode=edit&amp;id='.$data['raid_id'].'"><img src="templates/' . $phpraid_config['template'] .
+				$bd_edit = '<a href="raids.php?mode=edit&amp;id='.$data['raid_id'].'"><img src="templates/' . $phpraid_config['template'] .
 						'/images/icons/icon_edit.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['edit'].'\');" onMouseout="hideddrivetip();" alt="edit icon"></a>';
 	
-				$delete = '<a href="raids.php?mode=delete&amp;n='.$data['location'].'&amp;id='.$data['raid_id'].'"><img src="templates/' .
+				$bd_delete = '<a href="raids.php?mode=delete&amp;n='.$data['location'].'&amp;id='.$data['raid_id'].'"><img src="templates/' .
 							$phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['delete'].'\');"
 							onMouseout="hideddrivetip();" alt="delete icon"></a><a href="lua_output_new.php?mode=lua&raid_id=' . $data['raid_id'] . '">
 	
@@ -120,15 +139,17 @@ if($_GET['mode'] == 'view')
 				$old_delete = '<a href="raids.php?mode=delete&amp;id='.$data['raid_id'].'"><img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['delete'].'\');" onMouseout="hideddrivetip();" alt="delete icon"></a>';
 	
 				$mark_new = '<a href="raids.php?mode=mark&amp;id='.$data['raid_id'].'"><img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_latest_reply.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['new'].'\');" onMouseout="hideddrivetip();" alt="latest reply icon"></a>';
+				$check_box = '<input type="checkbox" name="raids[]" value="'.$data['raid_id'].'" >';				
 			}
 		}
 		else
 		{
 			if ($priv_raids || $username == $data['officer'])
 			{
-				$delete = '<a href="raids.php?mode=delete&amp;n='.$data['location'].'&amp;id='.$data['raid_id'].'"><img src="templates/' .
+				$bd_delete = '<a href="raids.php?mode=delete&amp;n='.$data['location'].'&amp;id='.$data['raid_id'].'"><img src="templates/' .
 							$phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['delete'].'\');"
 							onMouseout="hideddrivetip();" alt="delete icon"></a>';
+				$check_box = '<input type="checkbox" name="raids[]" value="'.$data['raid_id'].'" class="post">';
 			}
 		}
 		// Initialize Count Array and Totals.
@@ -145,11 +166,11 @@ if($_GET['mode'] == 'view')
 		$total = 0;
 		$total2 = 0;
 
-		$desc = scrub_input($data['description']);
-		$desc = str_replace("'", "\'", $desc);
-		$ddrivetiptxt = "'<span class=tooltip_title>" . $phprlang['description'] ."</span><br>" . DEUBB2($desc) . "'";
-		$location = '<a href="view.php?mode=view&amp;raid_id='.$data['raid_id'].'" onMouseover="ddrivetip('.$ddrivetiptxt.');" onMouseout="hideddrivetip();">'.$data['location'].'</a>';
-
+//		$desc = scrub_input($data['description']);
+//		$desc = str_replace("'", "\'", $desc);
+//		$ddrivetiptxt = "'<span class=tooltip_title>" . $phprlang['description'] ."</span><br>" . DEUBB2($desc) . "'";
+//		$location = '<a href="view.php?mode=view&amp;raid_id='.$data['raid_id'].'" onMouseover="ddrivetip('.$ddrivetiptxt.');" onMouseout="hideddrivetip();">'.$data['location'].'</a>';
+		
 		// convert unix timestamp to something readable
 		$start = new_date('Y/m/d H:i:s',$data['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
 		$invite = new_date('Y/m/d H:i:s',$data['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
@@ -202,7 +223,25 @@ if($_GET['mode'] == 'view')
 			$force_name = $phprlang['none'];
 		else
 			$force_name = $raid_force_name_data['raid_force_name'];
-		
+			
+		$raid_date = new_date($phpraid_config['date_format'],$data['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+		$raid_start_time = new_date($phpraid_config['time_format'],$data['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+		$raid_invite_time = new_date($phpraid_config['time_format'],$data['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+			
+		$desc = scrub_input($data['description']);
+		$desc = str_replace("'", "\'", $desc);
+		$raid_txt_desc = "'<span class=tooltip_title>" . $phprlang['description'] ."</span><br>" . DEUBB2($desc);
+		$raid_txt_info = "------------------";
+		$raid_txt_info .= "<br>".$phprlang['location'].":".$data['location'];
+		$raid_txt_info .= "<br>".$phprlang['officer'].":".$data['officer'];
+		$raid_txt_info .= "<br>".$phprlang['date'].":".$raid_date;
+		$raid_txt_info .= "<br>".$phprlang['start_time'].":".$raid_start_time;
+		$raid_txt_info .= "<br>".$phprlang['invite_time'].":".$raid_invite_time;
+		$raid_txt_info .= "<br>".$phprlang['totals'].": ".$total.'/'.$data['max']  . ' (+' . $total2. ')';
+//		$raid_txt_info .=
+		$ddrivetiptxt = $raid_txt_desc.'<br>'. $raid_txt_info."'";
+		$location = '<a href="view.php?mode=view&amp;raid_id='.$data['raid_id'].'" onMouseover="ddrivetip('.$ddrivetiptxt.');" onMouseout="hideddrivetip();">'.$data['location'].'</a>';
+			
 		// current raids
 		if($data['old'] == 0 && $data['recurrance']==0) {
 			array_push($current,
@@ -215,7 +254,7 @@ if($_GET['mode'] == 'view')
 					'Start Time'=>$start,
 					'Creator'=>$data['officer'],
 					'Totals'=>$total.'/'.$data['max']  . '(+' . $total2. ')',
-					'Buttons'=>$edit . $delete,
+					'Buttons'=>$bd_edit . $bd_delete.$check_box,
 				)
 			);
 			foreach ($class_color_count as $left => $right)
@@ -257,7 +296,7 @@ if($_GET['mode'] == 'view')
 					'Start Time'=>$start,
 					'Creator'=>$data['officer'],
 					'Totals'=>$total.'/'.$data['max']  . '(+' . $total2. ')',
-					'Buttons'=> $delete,
+					'Buttons'=> $bd_delete,
 				)
 			);	
 			foreach ($class_color_count as $left => $right)
@@ -266,12 +305,18 @@ if($_GET['mode'] == 'view')
 				$recurring[$raid_loop_rec][$left]= $right;
 			$raid_loop_rec++;
 		}
-		$edit = "";
-		$delete= "";
+		$bd_edit = "";
+		$bd_delete= "";
 		$old_delete="";
 		$mark_new="";
 	}
+	
 
+	if ($priv_raids)
+	{
+		$button_mark_raid_as_old = $phprlang['mark'];
+	//	$button_raids_del = $phprlang['delete'];
+	}
 	/**************************************************************
 	 * Code to setup for a Dynamic Table Create: raids1 View.
 	 **************************************************************/
@@ -319,6 +364,13 @@ if($_GET['mode'] == 'view')
 	$wrmsmarty->assign('header_data',
 		array(
 			'template_name'=>$phpraid_config['template'],
+			'form_action'=> $form_action,
+			'form_action_raids_table' => $pageURL."&",
+			'button_addraid' => $phprlang['raids_new_header'],
+
+			'button_mark_raid_as_old' => $button_mark_raid_as_old,
+			'button_raids_del' => $button_raids_del,
+		
 			'new_raid_link' => $new_raid_link,
 			'old_raids_header' => $phprlang['raids_old'],
 			'new_raids_header' => $phprlang['raids_new'],
@@ -1550,20 +1602,8 @@ elseif($_GET['mode'] == 'delete')
 	}
 	else
 	{
-		log_delete('raid',$n);
 
-		$sql = sprintf("DELETE FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id=%s", quote_smart($id));
-		$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-
-		$sql = sprintf("DELETE FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id=%s", quote_smart($id));
-		$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-
-		$sql = sprintf("DELETE FROM " . $phpraid_config['db_prefix'] . "raid_class_lmt WHERE raid_id=%s",quote_smart($id));
-		$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-
-		$sql = sprintf("DELETE FROM " . $phpraid_config['db_prefix'] . "raid_role_lmt WHERE raid_id=%s",quote_smart($id));
-		$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-		
+		raid_del($id,$n);
 		header("Location: raids.php?mode=view");
 	}
 }
@@ -1573,21 +1613,8 @@ elseif($_GET['mode'] == 'delete')
 elseif($_GET['mode'] == 'mark')
 {
 	$raid_id = scrub_input($_GET['id']);
-
-	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id=%s", quote_smart($raid_id));
-	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-	$data = $db_raid->sql_fetchrow($result, true);
 	
-	if($data['old'] == 1)
-	{
-		$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "raids SET old='0' WHERE raid_id=%s", quote_smart($raid_id));
-		$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-	}
-	else
-	{
-		$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "raids SET old='1' WHERE raid_id=%s", quote_smart($raid_id));
-		$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-	}
+	raid_mark($raid_id);
 
 	header("Location: raids.php?mode=view");
 }

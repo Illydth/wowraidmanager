@@ -1,10 +1,40 @@
 {* Smarty Template *}
-<div class="contentHeader">{$header_data.new_raids_header}</div><br>
+<div class="contentHeader"></div><br>
 <div class="contentBody">
-	{$header_data.new_raid_link}<br><br>
+<form method="post" action="{$header_data.form_action}">
+ <div align="center" class="button">
+	<input type="submit" value="{$header_data.button_addraid}" name="add_raid" class="mainoption">
+ </div>
+</form>
 </div>
-<div class="contentBody">{include file='raids_table.html' raid_data=$new_data jump_menu=$current_jump_menu record_counts=$curr_record_counts}</div><br>
-<div class="contentHeader">{$header_data.recur_raids_header}</div><br>
-<div class="contentBody">{include file='raids_table.html' raid_data=$rec_data jump_menu=$recurring_jump_menu record_counts=$recur_record_counts}</div><br>
-<div class="contentHeader">{$header_data.old_raids_header}</div><br>
-<div class="contentBody">{include file='raids_table.html' raid_data=$old_data jump_menu=$previous_jump_menu record_counts=$prev_record_counts}</div><br>
+<br>
+<div class="contentHeader">{$header_data.new_raids_header}</div>
+<br>
+<div class="contentBody">
+<form action="{$header_data.form_action_raids_table}" class="post">
+
+{include file='raids_table.html' raid_data=$new_data jump_menu=$current_jump_menu record_counts=$curr_record_counts}
+
+<br>
+{ *if $header_data.button_raids_del  != "" or  $button_mark_raid_as_old  != ""*}
+{if $header_data.button_mark_raid_as_old  != ""}
+<div align="center" class="button">
+{if $header_data.button_mark_raid_as_old  != ""}
+<input type="submit" value="{$header_data.button_mark_raid_as_old}" name="mark_raid_as_old" class="mainoption">
+{/if}
+{if $header_data.button_raids_del  != ""}
+<input type="submit" value="{$header_data.button_raids_del}" name="raids_del" class="mainoption">
+{/if}
+</div>
+</form>
+{/if}
+</div>
+<br>
+<div class="contentHeader">{$header_data.recur_raids_header}</div>
+<br>
+<div class="contentBody">{include file='raids_table.html' raid_data=$rec_data jump_menu=$recurring_jump_menu record_counts=$recur_record_counts}</div>
+<br>
+<div class="contentHeader">{$header_data.old_raids_header}</div>
+<br>
+<div class="contentBody">{include file='raids_table.html' raid_data=$old_data jump_menu=$previous_jump_menu record_counts=$prev_record_counts}</div>
+<br>

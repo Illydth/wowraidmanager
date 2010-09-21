@@ -328,7 +328,9 @@ function scan_dbserver()
 				$tmp_user_name = substr($db_table_name, strlen($db_table_name) - strlen($bridge[$i]['db_table_user_name']));
 				$counter_valid_column = 0;
 				
-				if ( (strcmp( $tmp_user_name ,$bridge[$i]['db_table_user_name']) == 0) and ($bridge[$i]['db_table_group_name'] != ""))
+				if ( (strcmp( $tmp_user_name ,$bridge[$i]['db_table_user_name']) == 0) and ($bridge[$i]['db_table_group_name'] != "") and 
+					// Bugfix: only for eqdkp
+					(!strcmp( "eqdkp_users" ,$bridge[$i]['db_table_user_name']) == 0))
 				{
 					//set table prefix
 					$db_temp_prefix = substr($db_table_name, 0 ,strlen($db_table_name) - strlen($bridge[$i]['db_table_user_name']));
@@ -506,7 +508,7 @@ function get_last_onlineversion_nr()
 /***
  * show the current 
  */
-function show_online_versionnr($wrm_install_lang, $versions_nr_install)
+function show_online_versionnr($versions_nr_install)
 {
 
 /*
