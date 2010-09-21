@@ -217,8 +217,40 @@ CREATE TABLE `wrm_acl_raid_signup_group` (
  PRIMARY KEY  (`signup_group_id`)
 ) ;
 
-INSERT INTO `wrm_acl_raid_signup_group` VALUES (1,"User",0,1,1,1,1,0,1,0,1,1,1,0);
-INSERT INTO `wrm_acl_raid_signup_group` VALUES (2,"Raid Leader",1,1,0,0,0,0,1,1,1,1,0,0);
-INSERT INTO `wrm_acl_raid_signup_group` VALUES (3,"Administrator",1,1,0,0,0,0,1,1,1,1,0,0);
+INSERT INTO `wrm_acl_raid_signup_group` VALUES (1,'User',0,1,1,1,1,0,1,0,1,1,1,0);
+INSERT INTO `wrm_acl_raid_signup_group` VALUES (2,'Raid Leader',1,1,0,0,0,0,1,1,1,1,0,0);
+INSERT INTO `wrm_acl_raid_signup_group` VALUES (3,'Administrator',1,1,0,0,0,0,1,1,1,1,0,0);
+
+INSERT INTO `wrm_expansion` (`exp_id`, `exp_name`, `exp_lang_id`, `def`) VALUES (4, 'Cataclysm', 'exp_cataclysm', 1);
+UPDATE `wrm_expansion` SET `def` = '0' WHERE `exp_lang_id`='exp_wrath_lich_king' LIMIT 1 ;
+
+-- Event Table Data
+INSERT INTO `wrm`.`wrm_events` (`event_id`, `zone_desc`, `max`, `exp_id`, `event_type_id`, `wow_name`, `icon_path`) VALUES
+('136', 'Icecrown Citadel - 10 man', '10', '3', '1', 'Icecrown Citadel (10)', 'images/instances/WotLK_Icons/10-Icecrown-Citadel.jpg'),
+('137', 'Icecrown Citadel - 25 man', '25', '3', '1', 'Icecrown Citadel (25)', 'images/instances/WotLK_Icons/25-Icecrown-Citadel.jpg');
+-- Cataclysm Events
+INSERT INTO `wrm_events` ( `zone_desc`, `max`, `exp_id`, `event_type_id`, `wow_name`, `icon_path`) VALUES
+('Abyssal Maw', 5, 4, 2, 'Abyssal Maw', 'images/instances/Cataclysm_Icons/dungeons/5-Abyssal-Maw.jpg'), 
+('Abyssal Maw - Heroic', 5, 4, 2, 'Abyssal Maw (Heroic)', 'images/instances/Cataclysm_Icons/dungeons/5-Abyssal-Maw-Heroic.jpg'),
+('Blackrock Caverns', 5, 4, 2, 'Blackrock Caverns', 'images/instances/Cataclysm_Icons/dungeons/5-Blackrock-Caverns.jpg'), 
+('Blackrock Caverns - Heroic', 5, 4, 2, 'Blackrock Caverns (Heroic)', 'images/instances/Cataclysm_Icons/dungeons/5-Blackrock-Caverns-Heroic.jpg'), 
+('Grim Batol', 5, 4, 2, 'Grim Batol', 'images/instances/Cataclysm_Icons/dungeons/5-Grim-Batol.jpg'), 
+('Grim Batol - Heroic', 5, 4, 2, 'Grim Batol (Heroic)', 'images/instances/Cataclysm_Icons/dungeons/5-Grim-Batol-Heroic.jpg'), 
+('Halls of Origination', 5, 4, 2, 'Halls of Origination', 'images/instances/Cataclysm_Icons/dungeons/5-Halls-Of-Origination.jpg'), 
+('Halls of Origination - Heroic', 5, 4, 2, 'Halls of Origination (Heroic)', 'images/instances/Cataclysm_Icons/dungeons/5-Halls-Of-Origination-Heroic.jpg'), 
+('Lost City of Tolvir', 5, 4, 2, 'Lost City of Tolvir', 'images/instances/Cataclysm_Icons/dungeons/5-Lost-City-Of-Tolvir.jpg'), 
+('Lost City of Tolvir - Heroic', 5, 4, 2, 'Lost City of Tolvir (Heroic)', 'images/instances/Cataclysm_Icons/dungeons/5-Lost-City-Of-Tolvir-Heroic.jpg'), 
+('Stonecore', 5, 4, 2, 'Stonecore', 'images/instances/Cataclysm_Icons/dungeons/5-Stonecore.jpg'), 
+('Stonecore - Heroic', 5, 4, 2, 'Stonecore', 'images/instances/Cataclysm_Icons/dungeons/5-Stonecore-Heroic.jpg'), 
+('Throne of Tides', 5, 4, 2, 'Throne of Tides', 'images/instances/Cataclysm_Icons/dungeons/5-Throne-Of-Tides.jpg'), 
+('Throne of Tides - Heroic', 5, 4, 2, 'Throne of Tides (Heroic)', 'images/instances/Cataclysm_Icons/dungeons/5-Throne-Of-Tides-Heroic.jpg'), 
+('Vortex Pinnacle', 5, 4, 2, 'Vortex Pinnacle', 'images/instances/Cataclysm_Icons/dungeons/5-Vortex-Pinnacle.jpg'),
+('Vortex Pinnacle - Heroic', 5, 4, 2, 'Vortex Pinnacle (Heroic)', 'images/instances/Cataclysm_Icons/dungeons/5-Vortex-Pinnacle-Heroic.jpg'),
+('Bastion Of Twilight - 10 man', 10, 4, 1, 'Bastion Of Twilight (10)', 'images/instances/Cataclysm_Icons/raids/10-Bastion-Of-Twilight.jpg'),
+('Blackwing Descent - 10 man', 10, 4, 1, 'Blackwing Descent (10)', 'images/instances/Cataclysm_Icons/raids/10-Blackwing-Descent.jpg'),
+('Throne Of Four Winds - 10 man', 10, 4, 1, 'Throne Of Four Winds (10)', 'images/instances/Cataclysm_Icons/raids/10-Throne-Of-Four-Winds.jpg'),
+('Bastion Of Twilight - 25 man', 10, 4, 1, 'Bastion Of Twilight (25)', 'images/instances/Cataclysm_Icons/raids/25-Bastion-Of-Twilight.jpg'),
+('Blackwing Descent - 25 man', 10, 4, 1, 'Blackwing Descent (25)', 'images/instances/Cataclysm_Icons/raids/25-Blackwing-Descent.jpg'),
+('Throne Of Four Winds - 25 man', 10, 4, 1, 'Throne Of Four Winds (25)', 'images/instances/Cataclysm_Icons/raids/25-Throne-Of-Four-Winds.jpg');
 
 INSERT INTO `wrm_version` VALUES ('4.1.0','Version 4.1.0 of WoW Raid Manager');
