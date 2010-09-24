@@ -7,7 +7,10 @@
   <tr>
     <td class="rowHover"><div align="center">{$head_title_wrm_sql_server}</div></td>
   </tr>
-  {$error_msg}
+  {if $error_msg == TRUE}
+  	<br>
+  	<div class="errorBody">{$error_msg}</div>
+  {/if}
   <tr>
    <td><table width="95%" border="0" align="center" cellpadding="2" cellspacing="2">
      <tr>
@@ -73,7 +76,11 @@
   <tr>
 	<td>
 	  <div align="center">
-		<input type="submit" name="submit" value="{$bd_submit}">
+	    {if $enable_next_bd == TRUE}
+			<input type="submit" name="submit" value="{$bd_submit}">
+		{else}
+			<input type="submit" name="submit" value="{$bd_submit}" disabled />
+		{/if}
 	   	<input type="hidden" name="step" value="1">
 	   	<input type="hidden" name="wrm_db_server_hostname" value="{$wrm_db_server_hostname}">
 	   	<input type="hidden" name="wrm_db_username" value="{$wrm_db_username}">

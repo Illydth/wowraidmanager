@@ -419,6 +419,7 @@ else if($step == 3) {
 	$wrm_config_writeable = FALSE;
 	$FOUNDERROR_Connection = FALSE;
 	$enable_wrm_db_create_name = FALSE;
+	$enable_next_bd = TRUE;
 	
 	if(is_file($wrm_config_file) )//and !isset($_POST['wrm_db_server_hostname']))
 	{
@@ -444,6 +445,7 @@ else if($step == 3) {
 		header("Location: ".$filename_install."step=2&erro_con=1");
 	}
 	
+	$wrm_install_lang['step3error_no_DB_found'] = "Open a Database Management Tool (like phpMyAdmin) and create a Database for WRM";
 	$error_msg = "";
 
 	if ( isset($_GET['erro_con']) )
@@ -465,24 +467,31 @@ else if($step == 3) {
 
 	//load all DATABASES name in a array ($sql_all_dbname)
 	$sql_db_name_values = array();
-	//$sql_db_name_values[] = "Choose a Database";//first item in array
 	$sql_db_all = "SHOW DATABASES";
 
 	$result_db_all = $wrm_install->sql_query($sql_db_all) or print_error($sql_db_all, $wrm_install->sql_error(), 1);
+	$i=0;
 	while ($data_db_all = $wrm_install->sql_fetchrow($result_db_all,true))
 	{
 		//show all TABLES
 		//# without private sql Database -> readonly
 		if  (	( $data_db_all['Database'] != "mysql" ) and 
-				( $data_db_all['Database'] != "information_schema" )
+				( $data_db_all['Database'] != "information_schema" ) and 
+				( $data_db_all['Database'] != "phpmyadmin" )
 			)
 		{
 			$sql_db_name_values[$data_db_all['Database']] = $data_db_all['Database'];
+			$i++;
 		}
+	}
+
+	if ($i == 0)
+	{
+		$enable_next_bd = FALSE;
+		$error_msg = $wrm_install_lang['step3error_no_DB_found'];
 	}
 	
 	//add create db
-//	$sql_db_name_values[] = " - ".$wrm_install_lang['create_db']." - ";//last item in array
 	$wrm_install->sql_close();
 
 	include_once ("includes/page_header.php");
@@ -506,6 +515,7 @@ else if($step == 3) {
 			"error_msg" => $error_msg,
 			"only_if_create_new_tab_text" => $wrm_install_lang['only_if_create_new_tab'],
 			"head_title_wrm_sql_server" => $wrm_install_lang['head_title_wrm_sql_server'],
+			"enable_next_bd" => $enable_next_bd,
 			"hittingsubmit" => $wrm_install_lang['hittingsubmit'],
 			"bd_submit" => $wrm_install_lang['bd_submit'],
 			"show_create_new_DB" => FALSE,
@@ -831,7 +841,6 @@ else if($step == 10)
 
 else if($step === "done")
 {
-	//echo "step: done";
 	include_once ($wrm_config_file);
 
 	$wrmserver = 'http://'.$_SERVER['SERVER_NAME'];
