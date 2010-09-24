@@ -527,7 +527,8 @@ INSERT INTO `wrm_config` VALUES ('persistent_db', '1');
 INSERT INTO `wrm_config` VALUES ('wrm_created_on', '1');
 INSERT INTO `wrm_config` VALUES ('wrm_updated_on', '1');
 INSERT INTO `wrm_config` VALUES ('max_lvl', '85');
- 
+INSERT INTO `wrm_config` VALUES ('wrm_expansion', '4');
+
 -- Event Type Table Data
 INSERT INTO `wrm_event_type` (`event_type_id`, `event_type_name`, `event_type_lang_id`, `def`) VALUES
 (1, 'Raid', 'event_type_raid', 1),
@@ -537,11 +538,11 @@ INSERT INTO `wrm_event_type` (`event_type_id`, `event_type_name`, `event_type_la
 (5, 'Other', 'event_type_other', 0);
 
 -- Expansion Table Data
-INSERT INTO `wrm_expansion` (`exp_id`, `exp_name`, `exp_lang_id`, `def`) VALUES
-(1, 'Generic', 'exp_generic_wow', 0),
-(2, 'BC', 'exp_burning_crusade', 0),
-(3, 'WotLK', 'exp_wrath_lich_king', 0),
-(4, 'Cataclysm', 'exp_cataclysm', 1);
+INSERT INTO `wrm_expansion` (`exp_id`, `exp_name`, `exp_lang_id`, `def`,`max_lvl`) VALUES
+(1, 'Generic', 'exp_generic_wow', 0,'60'),
+(2, 'BC', 'exp_burning_crusade', 0,'70'),
+(3, 'WotLK', 'exp_wrath_lich_king', 0,'80'),
+(4, 'Cataclysm', 'exp_cataclysm', 1,'85');
 
 -- Event Table Data
 INSERT INTO `wrm_events` ( `zone_desc`, `max`, `exp_id`, `event_type_id`, `wow_name`, `icon_path`) VALUES

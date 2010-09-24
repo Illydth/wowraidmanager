@@ -47,9 +47,12 @@ $phprlang['admin_raid_signupgroups'] = '&raquo; Raid Permission Groups';
 $phprlang['admin_user_settings'] = '&raquo; User Settings';
 $phprlang['admin_user_management'] = '&raquo; User Administration';
 $phprlang['admin_general_config'] = '&raquo; General Config';
+$phprlang['admin_general_rss_cfg'] = '&raquo; RSS konfiguration';
+$phprlang['admin_general_email_cfg'] = '&raquo; E-post konfiguration';
 $phprlang['admin_time_config'] = '&raquo; Time Settings';
 $phprlang['admin_raid_settings'] = '&raquo; Raid Settings';
 $phprlang['admin_external_config'] = '&raquo; External Systems';
+$phprlang['admin_game_settings'] = '&raquo; Game Settings';
 $phprlang['admin_roletalent_config'] = '&raquo; Link Class/Role/Talent';
 
 // Link from Main Site to Admin
@@ -115,20 +118,14 @@ $phprlang['configuration_version_outdated_message'] = 'Din version av WoW Raid M
 
 // Text on the "General Config" Page
 $phprlang['configuration_addon'] = 'Addon URL';
-$phprlang['configuration_admin_email'] = 'Admin e-post';
+
 $phprlang['configuration_debug'] = 'Debug mode';
 $phprlang['configuration_disable'] = 'Avaktivera WoW Raid Manager';
-$phprlang['configuration_email_header'] = 'E-post konfiguration';
-$phprlang['configuration_email_sig'] = 'E-post signatur';
 $phprlang['configuration_enable_five_man'] = 'Aktivera grupper<br><a href="../docs/enable_groups.htm" target="_blank">hjälp?</a>';
 $phprlang['configuration_language'] = 'Språk';
 $phprlang['configuration_logo'] = 'Sökväg till logo bild';
 $phprlang['configuration_records_per_page'] = 'Records Per Data Table Page';
 $phprlang['configuration_register_text'] = 'Registrerings URL';
-$phprlang['configuration_rss_header'] = 'RSS Configuration';
-$phprlang['configuration_rss_site'] = 'RSS: URL tilll WoW Raid Manager Installationen (Inget avslutande /)';
-$phprlang['configuration_rss_export'] = 'RSS: sida att exportera RSS feed till';
-$phprlang['configuration_rss_feed_amt'] = 'RSS: Antal raids som visas i feeden';
 $phprlang['configuration_show_addon'] = 'Visa addon länk';
 $phprlang['configuration_sitelink'] = '"Hem" länken pekar till';
 $phprlang['configuration_template'] = 'Mall';
@@ -137,6 +134,16 @@ $phprlang['configuration_site_name'] = 'Site Name';
 $phprlang['configuration_site_server'] = 'Site Server Name';
 $phprlang['configuration_site_description'] = 'Site Description';
 $phprlang['configuration_persistent_db'] = 'Create Persistant Database Connection?';
+$phprlang['configuration_look_and_feel_header'] = 'Look and Feel - Settings';
+
+$phprlang['configuration_admin_email'] = 'Admin e-post';
+$phprlang['configuration_email_header'] = 'E-post konfiguration';
+$phprlang['configuration_email_sig'] = 'E-post signatur';
+
+$phprlang['configuration_rss_header'] = 'RSS Configuration';
+$phprlang['configuration_rss_site'] = 'RSS: URL tilll WoW Raid Manager Installationen (Inget avslutande /)';
+$phprlang['configuration_rss_export'] = 'RSS: sida att exportera RSS feed till';
+$phprlang['configuration_rss_feed_amt'] = 'RSS: Antal raids som visas i feeden';
 
 // Text on the "Time Config" Page
 $phprlang['configuration_ampm'] = 'Planera raids i 12h/24h format';
@@ -145,6 +152,10 @@ $phprlang['configuration_dst_text'] = 'Ändra för Sommar/Vinter tid?';
 $phprlang['configuration_time'] = 'Tids format<br><a href="http://www.php.net/date/" target="_blank">hjälp?</a>';
 $phprlang['configuration_timezone_text'] = 'Tidszone';
 $phprlang['time_header'] = 'Time Configuration';
+
+// Text on the "Game Settings" Page.
+$phprlang['configuration_game_header'] = 'Game Settings';
+$phprlang['configuration_game_select_addon'] = 'select Addon';
 
 // Text on the "Role Configuration" Page.
 $phprlang['configuration_role_header'] = 'Roll Konfigurering';
@@ -265,3 +276,4 @@ $phprlang['configuration_user_rights_header'] = 'Användar Rättigheter';
 
 // multiple use
 $phprlang['configuration_autoqueue'] = 'Förbjud bokning till uppflyttad status';
+

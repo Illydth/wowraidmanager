@@ -33,6 +33,8 @@ if($use_images == 0) {
 	$theme_admin_usersettings_link = $phprlang['admin_user_settings'];
 	$theme_admin_usermgt_link = $phprlang['admin_user_management'];
 	$theme_admin_generalcfg_link = $phprlang['admin_general_config'];
+	$theme_admin_general_rss_cfg_link = $phprlang['admin_general_rss_cfg'];
+	$theme_admin_general_email_cfg_link = $phprlang['admin_general_email_cfg'];
 	$theme_admin_timecfg_link = $phprlang['admin_time_config'];
 	$theme_admin_raid_settings_link = $phprlang['admin_raid_settings'];
 	$theme_admin_externcfg_link = $phprlang['admin_external_config'];

@@ -42,12 +42,12 @@ $guild_date = new_date($phpraid_config['date_format'],time(),$phpraid_config['ti
 if(($phpraid_config['disable'] == '1') AND ($priv_config == 1))
 {
 	$site_disabled_warning = '
-								<br>
-								<div align="center">
-								<div class="errorHeader">'. $phprlang['disabled_header'] . '</div>
-								<div class="errorBody">' . $phprlang['disabled_message'] . '</div>
-								</div>
-								';
+					<br>
+					<div align="center">
+					<div class="errorHeader">'. $phprlang['disabled_header'] . '</div>
+					<div class="errorBody">' . $phprlang['disabled_message'] . '</div>
+					</div>
+					';
 }
 
 $wrmadminsmarty->assign('page_header_data', 
@@ -77,6 +77,8 @@ require_once($phpraid_dir.'templates/' . $phpraid_config['template'] . '/admin/a
 $admin_site_link = '<a href="../index.php">' . $theme_admin_site_link . "</a>";
 $admin_main_link = '<a href="admin_index.php">' . $theme_admin_main_link . '</a>';
 $admin_generalcfg_link = '<a href="admin_generalcfg.php">' . $theme_admin_generalcfg_link . '</a>';
+$admin_general_rss_cfg_link = '<a href="admin_general_rss_cfg.php">' . $theme_admin_general_rss_cfg_link . '</a>';
+$admin_general_email_cfg_link = '<a href="admin_general_email_cfg.php">' . $theme_admin_general_email_cfg_link . '</a>';
 $admin_timecfg_link = '<a href="admin_timecfg.php">' . $theme_admin_timecfg_link . '</a>';
 $admin_raid_settings_link = '<a href="admin_raidsettings.php">' . $theme_admin_raid_settings_link . '</a>';
 $admin_externcfg_link = '<a href="admin_externcfg.php">' . $theme_admin_externcfg_link . '</a>';
@@ -113,6 +115,18 @@ if (preg_match("/(.*)admin_generalcfg\.php(.*)/", $_SERVER['PHP_SELF'])) {
     $gen_conf_menu .= '<li class="active">' . $admin_generalcfg_link . '</li>';
 } else {
     $gen_conf_menu .= '<li class="">' . $admin_generalcfg_link . '</li>';
+}
+// To DO
+if (preg_match("/(.*)admin_general_rss_cfg\.php(.*)/", $_SERVER['PHP_SELF'])) {
+    $gen_conf_menu .= '<li class="active">' . $admin_general_rss_cfg_link . '</li>';
+} else {
+    $gen_conf_menu .= '<li class="">' . $admin_general_rss_cfg_link . '</li>';
+}
+// To DO
+if (preg_match("/(.*)admin_general_email_cfg\.php(.*)/", $_SERVER['PHP_SELF'])) {
+    $gen_conf_menu .= '<li class="active">' . $admin_general_email_cfg_link . '</li>';
+} else {
+    $gen_conf_menu .= '<li class="">' . $admin_general_email_cfg_link . '</li>';
 }
 // To DO
 if (preg_match("/(.*)admin_timecfg\.php(.*)/", $_SERVER['PHP_SELF'])) {
@@ -152,12 +166,6 @@ if (preg_match("/(.*)admin_raid_signupgroups\.php(.*)/", $_SERVER['PHP_SELF'])) 
 } else {
     $user_mgt_menu .= '<li class="">' . $admin_raid_signupgroups_link . '</li>';
 }
-// To DO
-//if (preg_match("/(.*)admin_signuprights\.php(.*)/", $_SERVER['PHP_SELF'])) {
-//    $user_mgt_menu .= '<li class="active">' . $admin_signup_rights_link . '</li>';
-//} else {
-//    $user_mgt_menu .= '<li class="">' . $admin_signup_rights_link . '</li>';
-//}
 // To DO
 if (preg_match("/(.*)admin_usersettings\.php(.*)/", $_SERVER['PHP_SELF'])) {
     $user_mgt_menu .= '<li class="active">' . $admin_user_settings_link . '</li>';
@@ -242,3 +250,4 @@ if(isset($errorMsg))
 }
 $wrmadminsmarty->display('admin_header.html');
 ?>
+

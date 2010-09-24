@@ -124,22 +124,15 @@ $phpraid_addon_link = '<input name="phpraid_addon_link" size="60" type="text" cl
 $header_logo = '<input name="header_logo" size="60" type="text" class="post" value="' . $phpraid_config['header_logo'] . '">';
 $register = '<input name="register" type="text" value="'.$phpraid_config['register_url'].'" size="60" class="post">';
 $header_link = '<input name="header_link" size="60" type="text" class="post" value="' . $phpraid_config['header_link'] . '">';
-$admin_email = '<input name="admin_email" type="text" class="post" value="' . $phpraid_config['admin_email'] .'" maxlength="255">';
-$email_signature = '<textarea name="email_signature" cols="30" rows="5" id="email_signature" class="post">' . $phpraid_config['email_signature'] . '</textarea>';
-$rss_site_url = '<input name="rss_site_url" size="60" type="text" class="post" value="' . $phpraid_config['rss_site_url'] . '">';
-$rss_export_url = '<input name="rss_export_url" size="60" type="text" class="post" value="' . $phpraid_config['rss_export_url'] . '">';
-$rss_feed_amt = '<input name="rss_feed_amt" size="10" type="text" class="post" value="' . $phpraid_config['rss_feed_amt'] . '">';
 $records_per_page = '<input name="records_per_page" size="60" type="text" class="post" value="' . $phpraid_config['records_per_page'] . '">';
 $site_name = '<input name="site_name" size="60" type="text" class="post" value="' . $phpraid_config['site_name'] . '">';
 $site_server = '<input name="site_server" size="60" type="text" class="post" value="' . $phpraid_config['site_server'] . '">';
 $site_description = '<input name="site_desc" size="75" type="text" class="post" value="' . $phpraid_config['site_description'] . '">';
 
-$buttons = '<input type="submit" name="submit" value="'.$phprlang['submit'].'" class="mainoption"> <input type="reset" name="Reset" value="'.$phprlang['reset'].'" class="liteoption">';
-
 $wrmadminsmarty->assign('config_data',
 	array(
 		'general_header' => $phprlang['general_configuration_header'],
-		'email_header'=>$phprlang['configuration_email_header'],
+		'look_and_feel_header' => $phprlang['configuration_look_and_feel_header'],
 		'phpraid_addon_link' => $phpraid_addon_link,
 		'phpraid_addon_link_text' => $phprlang['configuration_addon'],
 		'header_logo_path' => $header_logo,
@@ -162,17 +155,6 @@ $wrmadminsmarty->assign('config_data',
 		'enable_five_man_text' => $phprlang['configuration_enable_five_man'],
 		'persistent_db' => $persistent_db, 
 		'persistent_db_text' => $phprlang['configuration_persistent_db'],
-		'admin_email' => $admin_email,
-		'admin_email_text' => $phprlang['configuration_admin_email'],
-		'email_signature' => $email_signature,
-		'email_signature_text' => $phprlang['configuration_email_sig'],
-		'rss_header' => $phprlang['configuration_rss_header'],
-		'rss_site_text' => $phprlang['configuration_rss_site'],
-		'rss_export_text' => $phprlang['configuration_rss_export'],
-		'rss_feed_amt_txt' => $phprlang['configuration_rss_feed_amt'],
-		'rss_site_url' => $rss_site_url,
-		'rss_export_url' => $rss_export_url,
-		'rss_feed_amt' => $rss_feed_amt,
 		'site_name' => $site_name,
 		'site_name_text' => $phprlang['configuration_site_name'],
 		'site_server' => $site_server,
@@ -181,7 +163,8 @@ $wrmadminsmarty->assign('config_data',
 		'site_description_text' => $phprlang['configuration_site_description'],
 		'records_per_page_text' => $phprlang['configuration_records_per_page'],
 		'records_per_page' => $records_per_page,
-		'buttons' => $buttons,
+		'button_submit' => $phprlang['submit'],
+		'button_reset' => $phprlang['reset']
 	)
 );
 
@@ -219,11 +202,7 @@ if(isset($_POST['submit']))
 	
 	$register = scrub_input(DEUBB($_POST['register']), true);
 	$t_type = scrub_input(DEUBB($_POST['template']));
-	$a_email = scrub_input(DEUBB($_POST['admin_email']));
-	$e_sig = scrub_input(DEUBB($_POST['email_signature']));
-	$rss_site_url_p = scrub_input($_POST['rss_site_url'], true);
-	$rss_export_url_p = scrub_input($_POST['rss_export_url'], true);
-	$rss_feed_amt_p = scrub_input($_POST['rss_feed_amt']);
+
 	$site_name = scrub_input($_POST['site_name']);
 	$site_server = scrub_input($_POST['site_server']);
 	$site_description = scrub_input($_POST['site_desc']);
@@ -257,16 +236,6 @@ if(isset($_POST['submit']))
 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'enable_five_man';", quote_smart($enable_five_man));
 	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'persistent_db';", quote_smart($persistent_db));
-	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
-	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'admin_email';", quote_smart($a_email));
-	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
-	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'email_signature';", quote_smart($e_sig));
-	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
-	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'rss_site_url';", quote_smart($rss_site_url_p));
-	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
-	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'rss_export_url';", quote_smart($rss_export_url_p));
-	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
-	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'rss_feed_amt';", quote_smart($rss_feed_amt_p));
 	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'records_per_page';", quote_smart($records_per_page));
 	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);

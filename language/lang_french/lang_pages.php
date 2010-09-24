@@ -150,6 +150,7 @@ $phprlang['raids_new'] = 'Prochaines rencontres';
 $phprlang['raids_new_header'] = 'Nouveau Raid';
 $phprlang['raids_start'] = 'Départ';
 $phprlang['raids_eventtype_text'] = 'Event Type';
+$phprlang['raids_mark_selected_raids_to_old'] = "mark selected raids to old";
 
 // event type
 $phprlang['event_type_raid'] = 'Raid (10/25 man)';

@@ -18,12 +18,12 @@
 <br>
 { *if $header_data.button_raids_del  != "" or  $button_mark_raid_as_old  != ""*}
 {if $header_data.button_mark_raid_as_old  != ""}
-<div align="center" class="button">
+<div align="center" class="button" >
 {if $header_data.button_mark_raid_as_old  != ""}
-<input type="submit" value="{$header_data.button_mark_raid_as_old}" name="mark_raid_as_old" class="mainoption">
+	<input type="submit" value="{$header_data.button_mark_raid_as_old}" name="mark_raid_as_old" class="mainoption">
 {/if}
 {if $header_data.button_raids_del  != ""}
-<input type="submit" value="{$header_data.button_raids_del}" name="raids_del" class="mainoption">
+	<input type="submit" value="{$header_data.button_raids_del}" name="raids_del" class="mainoption">
 {/if}
 </div>
 </form>

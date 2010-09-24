@@ -117,7 +117,8 @@ if(($_GET['mode'] == 'view') or isset($_GET['raids_del']) or isset($_GET['mark_r
 	
 	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "raids";
 	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);	
-	while($data = $db_raid->sql_fetchrow($result, true)) {
+	while($data = $db_raid->sql_fetchrow($result, true)) 
+	{
 		if ($data['recurrance']==0)
 		{
 			if ($priv_raids || $username == $data['officer'])
@@ -312,9 +313,9 @@ if(($_GET['mode'] == 'view') or isset($_GET['raids_del']) or isset($_GET['mark_r
 	}
 	
 
-	if ($priv_raids)
+	if ($priv_raids and ($db_raid->sql_numrows($result) != FALSE))
 	{
-		$button_mark_raid_as_old = $phprlang['mark'];
+		$button_mark_raid_as_old = $phprlang['raids_mark_selected_raids_to_old'];
 	//	$button_raids_del = $phprlang['delete'];
 	}
 	/**************************************************************
@@ -380,8 +381,7 @@ if(($_GET['mode'] == 'view') or isset($_GET['raids_del']) or isset($_GET['mark_r
 			'sort_text' => $phprlang['sort_text'],
 		)
 	);
-	
-	
+
 	//
 	// Start output of raids page.
 	//

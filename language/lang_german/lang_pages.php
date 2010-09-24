@@ -150,6 +150,7 @@ $phprlang['raids_new'] = 'Aktuelle Raids';
 $phprlang['raids_new_header'] = 'Neuer Raid';
 $phprlang['raids_start'] = 'Startzeit';
 $phprlang['raids_eventtype_text'] = 'Eventart';
+$phprlang['raids_mark_selected_raids_to_old'] = "markiere ausgewählte raids als alt";
 
 // event type
 $phprlang['event_type_raid'] = 'Raid (10/25er)';

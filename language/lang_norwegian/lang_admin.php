@@ -47,9 +47,12 @@ $phprlang['admin_raid_signupgroups'] = '&raquo; Raid Permission Groups';
 $phprlang['admin_user_settings'] = '&raquo; User Settings';
 $phprlang['admin_user_management'] = '&raquo; User Administration';
 $phprlang['admin_general_config'] = '&raquo; General Config';
+$phprlang['admin_general_rss_cfg'] = '&raquo; Configurazione dell\'RSS';
+$phprlang['admin_general_email_cfg'] = '&raquo; Configurazione dell\'e-mail';
 $phprlang['admin_time_config'] = '&raquo; Time Settings';
 $phprlang['admin_raid_settings'] = '&raquo; Raid Settings';
 $phprlang['admin_external_config'] = '&raquo; External Systems';
+$phprlang['admin_game_settings'] = '&raquo; Game Settings';
 $phprlang['admin_roletalent_config'] = '&raquo; Link Class/Role/Talent';
 
 // Link from Main Site to Admin
@@ -115,20 +118,14 @@ $phprlang['configuration_version_outdated_message'] = 'La versione in uso di Wow
 
 // Text on the "General Config" Page
 $phprlang['configuration_addon'] = 'Sito ufficiale di WowRaidManager';
-$phprlang['configuration_admin_email'] = 'E-mail dell\'Amministratore';
+
 $phprlang['configuration_debug'] = 'Modalità debug';
 $phprlang['configuration_disable'] = 'Disabilita WowRaidManager';
-$phprlang['configuration_email_header'] = 'Configurazione dell\'e-mail';
-$phprlang['configuration_email_sig'] = 'Firma dell\'e-mail';
 $phprlang['configuration_enable_five_man'] = 'Abilita i Gruppi<br><a href="../docs/enable_groups.htm" target="_blank">(Guida)</a>';
 $phprlang['configuration_language'] = 'Lingua';
 $phprlang['configuration_logo'] = 'Immagine di intestazione';
 $phprlang['configuration_records_per_page'] = 'Records Per Data Table Page';
 $phprlang['configuration_register_text'] = 'Indirizzo di registrazione';
-$phprlang['configuration_rss_header'] = 'RSS Configuration';
-$phprlang['configuration_rss_site'] = 'RSS: indirizzo di installazione di WowRaidManager (senza barra finale)';
-$phprlang['configuration_rss_export'] = 'RSS: indirizzo a cui esportare il feed RSS';
-$phprlang['configuration_rss_feed_amt'] = 'RSS: numero di Raid da visualizzare';
 $phprlang['configuration_show_addon'] = 'Visualizza link a WRM';
 $phprlang['configuration_sitelink'] = 'Il link "Homepage" punta a';
 $phprlang['configuration_template'] = 'Tema visuale';
@@ -137,6 +134,16 @@ $phprlang['configuration_site_name'] = 'Site Name';
 $phprlang['configuration_site_server'] = 'Site Server Name';
 $phprlang['configuration_site_description'] = 'Site Description';
 $phprlang['configuration_persistent_db'] = 'Create Persistant Database Connection?';
+$phprlang['configuration_look_and_feel_header'] = 'Look and Feel - Settings';
+
+$phprlang['configuration_admin_email'] = 'E-mail dell\'Amministratore';
+$phprlang['configuration_email_header'] = 'Configurazione dell\'e-mail';
+$phprlang['configuration_email_sig'] = 'Firma dell\'e-mail';
+
+$phprlang['configuration_rss_header'] = 'RSS Configuration';
+$phprlang['configuration_rss_site'] = 'RSS: indirizzo di installazione di WowRaidManager (senza barra finale)';
+$phprlang['configuration_rss_export'] = 'RSS: indirizzo a cui esportare il feed RSS';
+$phprlang['configuration_rss_feed_amt'] = 'RSS: numero di Raid da visualizzare';
 
 // Text on the "Time Config" Page
 $phprlang['configuration_ampm'] = 'Formato orario di creazione dei Raid';
@@ -145,6 +152,10 @@ $phprlang['configuration_dst_text'] = 'Ora legale?';
 $phprlang['configuration_time'] = 'Formato degli orari<br><a href="http://www.php.net/date/" target="_blank">(Guida)</a>';
 $phprlang['configuration_timezone_text'] = 'Fuso orario';
 $phprlang['time_header'] = 'Time Configuration';
+
+// Text on the "Game Settings" Page.
+$phprlang['configuration_game_header'] = 'Game Settings';
+$phprlang['configuration_game_select_addon'] = 'select Addon';
 
 // Text on the "Role Configuration" Page.
 $phprlang['configuration_role_header'] = 'Configurazione dei ruoli';
@@ -265,3 +276,4 @@ $phprlang['configuration_user_rights_header'] = 'Permessi degli Utenti';
 
 // multiple use
 $phprlang['configuration_autoqueue'] = 'Impedisci l\'inserimento diretto fra le iscrizioni confermate';
+

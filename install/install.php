@@ -485,6 +485,7 @@ else if($step == 3) {
 		}
 	}
 
+	//0 == no Database found
 	if ($i == 0)
 	{
 		$enable_next_bd = FALSE;
