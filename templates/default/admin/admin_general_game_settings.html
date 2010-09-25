@@ -1,6 +1,6 @@
 {* Smarty Template *}
 <form action="{$config_data.form_action}" method="post" name="configure" id="configure">
-<div class="contentHeader">{$config_data.email_header}</div>
+<div class="contentHeader">{$config_data.game_header}</div>
 <br>
 <div class="contentBody">
 	<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
@@ -8,12 +8,10 @@
 	    <td valign="top" class="forumline">
 	      <table width="100%" border="0" cellspacing="1" cellpadding="3" class="dataOutline">
 	        <tr> 
-	          <td width="200" class="row1"><strong>{$config_data.admin_email_text}</strong></td>
-	          <td class="row2">{$config_data.admin_email}</td>
-	        </tr>
-	        <tr> 
-	          <td class="row1"><strong>{$config_data.email_signature_text}</strong></td>
-	          <td class="row2">{$config_data.email_signature}</td>
+	          <td width="200" class="row1"><strong>{$config_data.select_expansion_text}</strong></td>
+	          <td class="row2">
+	           	{html_options name=game_expansion options=$config_data.array_game_expansion selected=$config_data.selected_array_game_expansion class="post"}
+	          </td>
 	        </tr>
 	      </table>
 	    </td>

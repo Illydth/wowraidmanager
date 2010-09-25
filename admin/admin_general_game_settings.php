@@ -1,8 +1,11 @@
 <?php
 /***************************************************************************
-                                admin_index.php
+                           admin_general_game_settings.php
  *                            -------------------
- *   begin                : Monday, May 11, 2009
+ *   begin                : Fr, Sep 25, 2010
+ *	 Dev                  : Carsten Hölbing
+ *	 email                : carsten@hoelbing.net
+ *
  *   copyright            : (C) 2007-2009 Douglas Wagner
  *   email                : douglasw@wagnerweb.org
  *
@@ -37,19 +40,37 @@ require_once('./admin_common.php');
  *************************************************/
 // page authentication
 define("PAGE_LVL","configuration");
-require_once("../includes/authentication.php");	
+require_once("../includes/authentication.php");
 
-$admin_email = '<input name="admin_email" type="text" class="post" value="' . $phpraid_config['admin_email'] .'" maxlength="255">';
-$email_signature = '<textarea name="email_signature" cols="30" rows="5" id="email_signature" class="post">' . $phpraid_config['email_signature'] . '</textarea>';
+$page_url = "admin_general_game_settings.php";
 
+/**
+ * Expansion Setting
+ */
+$array_game_expansion = array();
+
+//load expansion
+$sql = "SELECT exp_lang_id, exp_id FROM " . $phpraid_config['db_prefix'] . "expansion";
+$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+while($data = $db_raid->sql_fetchrow($result, true))
+{
+	$array_game_expansion[$data['exp_id']] = $phprlang[$data['exp_lang_id']];
+	
+	if ($phpraid_config['game_expansion'] = $data['exp_id'])
+	{
+		$selected_array_game_expansion = $data['exp_id'];
+	}
+}
+	
 $wrmadminsmarty->assign('config_data',
 	array(
-		'general_header' => $phprlang['general_configuration_header'],
-		'email_header'=>$phprlang['configuration_email_header'],
-		'admin_email' => $admin_email,
-		'admin_email_text' => $phprlang['configuration_admin_email'],
-		'email_signature' => $email_signature,
-		'email_signature_text' => $phprlang['configuration_email_sig'],
+		'form_action'=> $page_url,
+		'game_header'=>$phprlang['configuration_game_header'],
+
+		'select_expansion_text' => $phprlang['configuration_game_select_addon'],
+		'array_game_expansion' => $array_game_expansion,
+		'selected_array_game_expansion' => $selected_array_game_expansion,
+	
 		'button_submit' => $phprlang['submit'],
 		'button_reset' => $phprlang['reset']
 	)
@@ -58,22 +79,19 @@ $wrmadminsmarty->assign('config_data',
 if(isset($_POST['submit']))
 {
 
-	$admin_email = scrub_input(DEUBB($_POST['admin_email']));
-	$email_signature = scrub_input(DEUBB($_POST['email_signature']));
+	$game_expansion = scrub_input(DEUBB($_POST['game_expansion']));
 
-	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'admin_email';", quote_smart($admin_email));
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'game_expansion';", quote_smart($game_expansion));
 	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
-	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'email_signature';", quote_smart($email_signature));
-	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
-	
-	header("Location: admin_general_email_cfg.php");
+
+	header("Location: ".$page_url);
 }
 
 //
 // Start output of the page.
 //
 require_once('./includes/admin_page_header.php');
-$wrmadminsmarty->display('admin_general_email_cfg.html');
+$wrmadminsmarty->display('admin_general_game_settings.html');
 require_once('./includes/admin_page_footer.php');
 
 ?>

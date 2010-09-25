@@ -79,6 +79,7 @@ $admin_main_link = '<a href="admin_index.php">' . $theme_admin_main_link . '</a>
 $admin_generalcfg_link = '<a href="admin_generalcfg.php">' . $theme_admin_generalcfg_link . '</a>';
 $admin_general_rss_cfg_link = '<a href="admin_general_rss_cfg.php">' . $theme_admin_general_rss_cfg_link . '</a>';
 $admin_general_email_cfg_link = '<a href="admin_general_email_cfg.php">' . $theme_admin_general_email_cfg_link . '</a>';
+$admin_general_game_settings_link = '<a href="admin_general_game_settings.php">' . $theme_admin_general_game_settings_link . '</a>';
 $admin_timecfg_link = '<a href="admin_timecfg.php">' . $theme_admin_timecfg_link . '</a>';
 $admin_raid_settings_link = '<a href="admin_raidsettings.php">' . $theme_admin_raid_settings_link . '</a>';
 $admin_externcfg_link = '<a href="admin_externcfg.php">' . $theme_admin_externcfg_link . '</a>';
@@ -145,6 +146,12 @@ if (preg_match("/(.*)admin_externcfg\.php(.*)/", $_SERVER['PHP_SELF'])) {
     $gen_conf_menu .= '<li class="active">' . $admin_externcfg_link . '</li>';
 } else {
     $gen_conf_menu .= '<li class="">' . $admin_externcfg_link . '</li>';
+}
+// To DO
+if (preg_match("/(.*)admin_general_game_settings\.php(.*)/", $_SERVER['PHP_SELF'])) {
+    $gen_conf_menu .= '<li class="active">' . $admin_general_game_settings_link . '</li>';
+} else {
+    $gen_conf_menu .= '<li class="">' . $admin_general_game_settings_link . '</li>';
 }
 
 // *** User Management Menu Items ***

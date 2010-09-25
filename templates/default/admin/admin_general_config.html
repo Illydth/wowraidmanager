@@ -1,13 +1,14 @@
 {* Smarty Template *}
-<form action="admin_generalcfg.php" method="post" name="configure" id="configure">
-<div class="contentHeader">{$config_data.general_header}</div><br>
+<form action="{$config_data.form_action}" method="post" name="configure" id="configure">
+<div class="contentHeader">{$config_data.general_header}</div>
+<br>
 <div class="contentBody">
 <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
 	<tr>
     	<td valign="top" class="forumline"> 
            <table width="100%" border="0" cellspacing="1" cellpadding="3" class="dataOutline">
 		      <tr>
-		        <td class="row1"><strong>{$config_data.register_text}</strong></td>
+		        <td width="200" class="row1"><strong>{$config_data.register_text}</strong></td>
 		        <td class="row2">{$config_data.register}</td>
 		      </tr>
 		      <tr>
@@ -19,7 +20,7 @@
 		        <td class="row2">{$config_data.header_link_value}</td>
 		      </tr>
 		      <tr> 
-		        <td width="200" class="row1"><strong>{$config_data.persistent_db_text}</strong></td>
+		        <td class="row1"><strong>{$config_data.persistent_db_text}</strong></td>
 		        <td class="row2">{$config_data.persistent_db}</td>
 		      </tr>
 		      <tr>
@@ -42,6 +43,7 @@
 		</td>
 	</tr>
 </table>
+</div>
 <br>
 <div class="contentHeader">{$config_data.look_and_feel_header}</div><br>
 <div class="contentBody">
@@ -82,9 +84,9 @@
 	</tr>
 </table>           
 <br>
+</div>
 <div align="center" class="button">
 	<input type="submit" value="{$config_data.button_submit}" name="submit" class="mainoption">
 	<input type="reset" value="{$config_data.button_reset}" name="reset" class="liteoption">
-</div>
 </div>
 </form>

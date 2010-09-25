@@ -39,6 +39,8 @@ require_once('./admin_common.php');
 define("PAGE_LVL","configuration");
 require_once("../includes/authentication.php");	
 
+$page_url = "admin_generalcfg.php";
+
 /* 
  * Data for Index Page
  */
@@ -131,6 +133,7 @@ $site_description = '<input name="site_desc" size="75" type="text" class="post" 
 
 $wrmadminsmarty->assign('config_data',
 	array(
+		'form_action'=> $page_url,
 		'general_header' => $phprlang['general_configuration_header'],
 		'look_and_feel_header' => $phprlang['configuration_look_and_feel_header'],
 		'phpraid_addon_link' => $phpraid_addon_link,
@@ -239,8 +242,8 @@ if(isset($_POST['submit']))
 	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'records_per_page';", quote_smart($records_per_page));
 	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
-	
-	header("Location: admin_generalcfg.php");
+
+	header("Location: ".$page_url);
 }
 
 //

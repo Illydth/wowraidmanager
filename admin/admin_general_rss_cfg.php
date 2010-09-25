@@ -1,8 +1,11 @@
 <?php
 /***************************************************************************
-                                admin_index.php
+                           admin_general_rss_cfg.php
  *                            -------------------
- *   begin                : Monday, May 11, 2009
+ *   begin                : Fr, Sep 25, 2010
+ *	 Dev                  : Carsten Hölbing
+ *	 email                : carsten@hoelbing.net
+ *
  *   copyright            : (C) 2007-2009 Douglas Wagner
  *   email                : douglasw@wagnerweb.org
  *
@@ -39,12 +42,15 @@ require_once('./admin_common.php');
 define("PAGE_LVL","configuration");
 require_once("../includes/authentication.php");	
 
+$page_url = "admin_general_rss_cfg.php";
+
 $rss_site_url = '<input name="rss_site_url" size="60" type="text" class="post" value="' . $phpraid_config['rss_site_url'] . '">';
 $rss_export_url = '<input name="rss_export_url" size="60" type="text" class="post" value="' . $phpraid_config['rss_export_url'] . '">';
 $rss_feed_amt = '<input name="rss_feed_amt" size="10" type="text" class="post" value="' . $phpraid_config['rss_feed_amt'] . '">';
 
 $wrmadminsmarty->assign('config_data',
 	array(
+		'form_action'=> $page_url,
 		'rss_header' => $phprlang['configuration_rss_header'],
 		'rss_site_text' => $phprlang['configuration_rss_site'],
 		'rss_export_text' => $phprlang['configuration_rss_export'],
@@ -71,7 +77,7 @@ if(isset($_POST['submit']))
 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'rss_feed_amt';", quote_smart($rss_feed_amt_p));
 	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
 	
-	header("Location: admin_general_rss_cfg.php");
+	header("Location: ".$page_url);
 }
 
 //

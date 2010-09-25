@@ -1,8 +1,11 @@
 <?php
 /***************************************************************************
-                                admin_index.php
+                           admin_general_email_cfg.php
  *                            -------------------
- *   begin                : Monday, May 11, 2009
+ *   begin                : Fr, Sep 25, 2010
+ *	 Dev                  : Carsten Hölbing
+ *	 email                : carsten@hoelbing.net
+ *
  *   copyright            : (C) 2007-2009 Douglas Wagner
  *   email                : douglasw@wagnerweb.org
  *
@@ -37,14 +40,16 @@ require_once('./admin_common.php');
  *************************************************/
 // page authentication
 define("PAGE_LVL","configuration");
-require_once("../includes/authentication.php");	
+require_once("../includes/authentication.php");
+
+$page_url = "admin_general_email_cfg.php";
 
 $admin_email = '<input name="admin_email" type="text" class="post" value="' . $phpraid_config['admin_email'] .'" maxlength="255">';
 $email_signature = '<textarea name="email_signature" cols="30" rows="5" id="email_signature" class="post">' . $phpraid_config['email_signature'] . '</textarea>';
 
 $wrmadminsmarty->assign('config_data',
 	array(
-		'general_header' => $phprlang['general_configuration_header'],
+		'form_action'=> $page_url,
 		'email_header'=>$phprlang['configuration_email_header'],
 		'admin_email' => $admin_email,
 		'admin_email_text' => $phprlang['configuration_admin_email'],
@@ -66,7 +71,7 @@ if(isset($_POST['submit']))
 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'email_signature';", quote_smart($email_signature));
 	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
 	
-	header("Location: admin_general_email_cfg.php");
+	header("Location: ".$page_url);
 }
 
 //

@@ -127,6 +127,7 @@ CREATE TABLE `wrm_expansion` (
   `exp_name` varchar(50) NOT NULL,
   `exp_lang_id` varchar(50) NOT NULL,
   `def` tinyint(1) NOT NULL,
+  `max_lvl` tinyint(2) NOT NULL DEFAULT '60',
   PRIMARY KEY  (`exp_id`)
 ) ;
 

@@ -40,6 +40,8 @@ if($use_images == 0) {
 	$theme_admin_externcfg_link = $phprlang['admin_external_config'];
 	$theme_admin_roletalent_link = $phprlang['admin_roletalent_config'];
 	$theme_admin_raid_signupgroups_link = $phprlang['admin_raid_signupgroups'];
+	$theme_admin_general_game_settings_link = $phprlang['admin_game_settings'];
+	
 } else {
 	$theme_admin_site_link = $image_admin_site_link;
 	$theme_admin_main_link = $image_admin_main_link;
