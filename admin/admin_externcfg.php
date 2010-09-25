@@ -43,85 +43,79 @@ require_once("../includes/authentication.php");
  * Data for Index Page
  */
 // Enable Armory Lookups
-if($phpraid_config['enable_armory'] == '0')
-	$enable_armory = '<input type="checkbox" name="enable_armory" value="1">';
-else
-	$enable_armory = '<input type="checkbox" name="enable_armory" value="1" checked>';
+if($phpraid_config['enable_armory'] == '1')
+	$enable_armory = 'checked';
 
 // Integrate with EqDKP
-if($phpraid_config['enable_eqdkp'] == '0')
-	$enable_eqdkp = '<input type="checkbox" name="enable_eqdkp" value="1">';
-else
-	$enable_eqdkp = '<input type="checkbox" name="enable_eqdkp" value="1" checked>';
+if($phpraid_config['enable_eqdkp'] == '1')
+	$enable_eqdkp = 'checked';
 
-// URL to Base of EqDKP Installation
-$eqdkp_url='<input name="eqdkp_url" type="text" value="'.$phpraid_config['eqdkp_url'].'" size="60" class="post">';
+/**
+ * Armory Cache Setting
+ */
+$array_armory_cache = array();
+$array_armory_cache['database'] = $phprlang['configuration_armory_cache_database'];
+$array_armory_cache['file'] = $phprlang['configuration_armory_cache_files'];
+$array_armory_cache['none'] = $phprlang['configuration_armory_cache_none'];
 
-// Armory Cache Setting
-$armory_cache = '<select name="armory_cache" class="post">';
 if ($phpraid_config['armory_cache_setting'] == 'database')
-	$armory_cache .=   '<option value="database" selected>'.$phprlang['configuration_armory_cache_database'].'</option>';
-else
-	$armory_cache .=   '<option value="database">'.$phprlang['configuration_armory_cache_database'].'</option>';
-if ($phpraid_config['armory_cache_setting'] == 'file')
-	$armory_cache .=   '<option value="file" selected>'.$phprlang['configuration_armory_cache_files'].'</option>';
-else
-	$armory_cache .=   '<option value="file">'.$phprlang['configuration_armory_cache_files'].'</option>';
-if ($phpraid_config['armory_cache_setting'] == 'none')
-	$armory_cache .=   '<option value="none" selected>'.$phprlang['configuration_armory_cache_none'].'</option>';
-else 
-	$armory_cache .=   '<option value="none">'.$phprlang['configuration_armory_cache_none'].'</option>';
-$armory_cache .= '</select>';
-
-// Integrate with WoW Roster
-//if($phpraid_config['roster_integration'] == '0')
-//	$roster = '<input type="checkbox" name="roster" value="1">';
-//else
-//	$roster = '<input type="checkbox" name="roster" value="1" checked>';
-
+	$selected_armory_code = 'database';
+elseif ($phpraid_config['armory_cache_setting'] == 'file')
+	$selected_armory_code = 'file';
+elseif ($phpraid_config['armory_cache_setting'] == 'none')
+	$selected_armory_code = 'none';
+	
 /**
  * Bridge Config
  */
-
-$bridge_array = array();
-$bridge_array_group = $bridge_array_alt_group = get_group_array();
-
-$bridge_array_group[0] =  $phprlang['configuration_extsys_norest'];
-$bridge_array_alt_group[0] =  $phprlang['configuration_extsys_noaddus'];
-
-$selected_group_id = 0;
-$selected_alt_group_id = 0;
-
-$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "config";
-
-$result_group = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-while ($data_wrm = $db_raid->sql_fetchrow($result_group,true))
+$show_bridge_config = TRUE;
+if (($phpraid_config[$phpraid_config['auth_type']."_auth_user_class"]) != "")
 {
-	if ($data_wrm['config_name'] == $phpraid_config['auth_type']."_auth_user_class") 
-		$selected_group_id = $data_wrm['config_value'];
-		
-	if ($data_wrm['config_name'] == $phpraid_config['auth_type']."_alt_auth_user_class") 
-		$selected_alt_group_id = $data_wrm['config_value'];
+	$bridge_array = array();
+	$bridge_array_group = $bridge_array_alt_group = get_group_array();
+	
+	$bridge_array_group[0] =  $phprlang['configuration_extsys_norest'];
+	$bridge_array_alt_group[0] =  $phprlang['configuration_extsys_noaddus'];
+	
+	$selected_group_id = 0;
+	$selected_alt_group_id = 0;
+	
+	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "config";
+	
+	$result_group = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+	while ($data_wrm = $db_raid->sql_fetchrow($result_group,true))
+	{
+		if ($data_wrm['config_name'] == $phpraid_config['auth_type']."_auth_user_class") 
+			$selected_group_id = $data_wrm['config_value'];
+			
+		if ($data_wrm['config_name'] == $phpraid_config['auth_type']."_alt_auth_user_class") 
+			$selected_alt_group_id = $data_wrm['config_value'];
+	}
 }
-
+else 
+{
+	$show_bridge_config = FALSE;
+}
 $wrmadminsmarty->assign('config_data',
 	array(
 		'enable_armory' => $enable_armory,
 		'enable_armory_text' => $phprlang['configuration_armory_enable'],
 		'enable_eqdkp' => $enable_eqdkp,
 		'enable_eqdkp_text' => $phprlang['configuration_eqdkp_integration_text'],
-		'eqdkp_url' => $eqdkp_url,
+		// URL to Base of EqDKP Installation
+		'eqdkp_url' => $phpraid_config['eqdkp_url'],
 		'eqdkp_url_text' => $phprlang['configuration_eqdkp_link'],
 		'external_links_header'=>$phprlang['configuration_external_links_header'],
 		//'roster' => $roster,
 		//'roster_text' => $phprlang['configuration_roster_text'],
-		'armory_cache' => $armory_cache,
+		'array_armory_cache' => $array_armory_cache,
+		'selected_armory_code' => $selected_armory_code,
 		'armory_cache_text'=>$phprlang['configuration_armory_cache'],
 
 		'button_submit' => $phprlang['submit'],
 		'button_reset' => $phprlang['reset'],
 	
-		'show_chang_group_conf' => "1",
+		'show_bridge_config' => $show_bridge_config,
 		'configuration_extsys_bridge_config_header' => $phprlang['configuration_extsys_bridge_config_header'],
 		'configuration_extsys_norest' => $phprlang['configuration_extsys_norest'],
 		'configuration_extsys_noaddus' => $phprlang['configuration_extsys_noaddus'],
