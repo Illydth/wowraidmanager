@@ -1,5 +1,5 @@
 UPDATE (2010-09-20)
-new Cataclysm Icons from Istari (www.wowraidmanger.net)
+new Cataclysm Icons (Cataclysm_Icons) from Istari (Iliander <george.a.cooper@gmail.com>)
 
 ------------------------------
 
