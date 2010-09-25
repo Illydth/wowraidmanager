@@ -71,8 +71,9 @@ if(!isset($_GET['SortDescending']) || !is_numeric($_GET['SortDescending']))
 else
 	$sortDesc = scrub_input($_GET['SortDescending']);
 
-$pageURL_short = 'raids.php';
-$pageURL = $pageURL_short.'?mode=view&';
+$page_url = 'raids.php';
+$pageURL = $page_url.'?mode=view&';
+$page_url_view = $page_url.'?mode=view&';
 /**************************************************************
  * End Record Output Setup for Data Table
  **************************************************************/
@@ -334,9 +335,9 @@ if(($_GET['mode'] == 'view') or isset($_GET['raids_del']) or isset($_GET['mark_r
 	$recur_record_count_array = getRecordCounts($recurring, $raid_headers, $startRecord);
 	
 	//Get the Jump Menu and pass it down
-	$currJumpMenu = getPageNavigation($current, $startRecord, $pageURL, $sortField, $sortDesc);
-	$prevJumpMenu = getPageNavigation($previous, $startRecord, $pageURL, $sortField, $sortDesc);
-	$recJumpMenu = getPageNavigation($recurring, $startRecord, $pageURL, $sortField, $sortDesc);
+	$currJumpMenu = getPageNavigation($current, $startRecord, $page_url_view, $sortField, $sortDesc);
+	$prevJumpMenu = getPageNavigation($previous, $startRecord, $page_url_view, $sortField, $sortDesc);
+	$recJumpMenu = getPageNavigation($recurring, $startRecord, $page_url_view, $sortField, $sortDesc);
 	
 	//Setup Default Data Sort from Headers Table
 	if (!$initSort)
@@ -366,7 +367,7 @@ if(($_GET['mode'] == 'view') or isset($_GET['raids_del']) or isset($_GET['mark_r
 		array(
 			'template_name'=>$phpraid_config['template'],
 			'form_action'=> $form_action,
-			'form_action_raids_table' => $pageURL."&",
+			'form_action_raids_table' => $page_url_view."&",
 			'button_addraid' => $phprlang['raids_new_header'],
 
 			'button_mark_raid_as_old' => $button_mark_raid_as_old,
@@ -376,7 +377,7 @@ if(($_GET['mode'] == 'view') or isset($_GET['raids_del']) or isset($_GET['mark_r
 			'old_raids_header' => $phprlang['raids_old'],
 			'new_raids_header' => $phprlang['raids_new'],
 			'recur_raids_header' => $phprlang['raids_recur'],
-			'sort_url_base' => $pageURL,
+			'sort_url_base' => $page_url_view,
 			'sort_descending' => $sortDesc,
 			'sort_text' => $phprlang['sort_text'],
 		)
@@ -408,7 +409,7 @@ elseif($_GET['mode'] == 'new')
 		if ($event_id == '')
 			$event_id = "0";
 		$description = scrub_input($_POST['description']);
-		$max = scrub_input($_POST['max']);
+		$max_user = scrub_input($_POST['max']);
 		$min_lvl = scrub_input($_POST['min_lvl']);
 		$max_lvl = scrub_input($_POST['max_lvl']);
 		$recurring = scrub_input($_POST['recurring']);
@@ -440,8 +441,8 @@ elseif($_GET['mode'] == 'new')
 		}
 		
 		// Verify Data to ensure Correctness, set error if not.
-		if($location == "" || $date == "" || $max == "" || $min_lvl == "" || $max_lvl == "" ||
-		   !is_numeric($max) || !is_numeric($min_lvl) || !is_numeric($max_lvl) || $bad_class_limit ||
+		if($location == "" || $date == "" || $max_user == "" || $min_lvl == "" || $max_lvl == "" ||
+		   !is_numeric($max_user) || !is_numeric($min_lvl) || !is_numeric($max_lvl) || $bad_class_limit ||
 		   $bad_role_limit)
 		{
 			$errorTitle = $phprlang['form_error'];
@@ -453,8 +454,8 @@ elseif($_GET['mode'] == 'new')
 			if($date == "")
 				$errorMsg .= '<li>' . $phprlang['raid_error_date'] . '</li>';
 
-			if($max == "" || $min_lvl == "" || $max_lvl == "" ||
-			!is_numeric($max) || !is_numeric($min_lvl) || !is_numeric($max_lvl) || $bad_class_limit ||
+			if($max_user== "" || $min_lvl == "" || $max_lvl == "" ||
+			!is_numeric($max_user) || !is_numeric($min_lvl) || !is_numeric($max_lvl) || $bad_class_limit ||
 			$bad_role_limit)
 				$errorMsg .= '<li>' . $phprlang['raid_error_limits'] . '</li>';
 		}
@@ -471,8 +472,8 @@ elseif($_GET['mode'] == 'new')
 	if(!isset($_POST['submit']) || isset($errorTitle))
 	{
 		// setup the form action first
-		$form_action = 'raids.php?mode=new';
 		$mode = 'new';
+		$form_action = 'raids.php?mode='.$mode;
 
 		/****************************************************************************************
 		 *  Set Data for Form Below.
@@ -483,20 +484,20 @@ elseif($_GET['mode'] == 'new')
 			$location = scrub_input($_GET['id']);
 			if ($priv_raids == 1)
 			{
-				$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "locations WHERE location_id=%s", quote_smart($location));
-				$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-				$data = $db_raid->sql_fetchrow($result, true);
+				$sql = sprintf(	"SELECT * FROM " . $phpraid_config['db_prefix'] . "locations ".
+								"	WHERE location_id = %s", quote_smart($location));
 			}
 			else
 			{
-				$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "locations WHERE location_id=%s and locked='0'", quote_smart($location));
-				$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-				$data = $db_raid->sql_fetchrow($result, true);
+				$sql = sprintf(	"SELECT * FROM " . $phpraid_config['db_prefix'] . "locations ".
+								"	WHERE location_id=%s and locked='0'", quote_smart($location));
 			}
-	
+			
+			$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+			$data = $db_raid->sql_fetchrow($result, true);
 			$tag = $data['event_type'];
 			$event_id = $data['event_id'];
-			$max = $data['max'];
+			$max_user= $data['max'];
 	
 			// Now that we have the location data, we need to retrieve limit data based upon location ID.
 			// Get Class Limits
@@ -529,7 +530,7 @@ elseif($_GET['mode'] == 'new')
 		{
 			$tag = scrub_input($_POST['tag']);
 			$event_id = scrub_input($_POST['event_id']);
-			$max = scrub_input($_POST['max']);
+			$max_user= scrub_input($_POST['max']);
 
 			// Handle Classes
 			foreach ($wrm_global_classes as $global_class)
@@ -758,42 +759,39 @@ elseif($_GET['mode'] == 'new')
 		}
 			
 		// setup vars for raid templates
-		$raid_name = '<select name="name" id="name" class="post" onChange="MM_jumpMenu(\'self\',this,0)">
-					<option value=""></option>';
+		$array_raid_name = array();
+		$array_raid_name[$page_url.'?mode=new'] = "";
 
 		if ($priv_raids == 1)
 		{
 			$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "locations ORDER BY name";
-			$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		}
 		else
 		{
 			$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "locations WHERE locked='0' ORDER BY name";
-			$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		}
+		$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		while($data = $db_raid->sql_fetchrow($result, true))
 		{
+			$tmp_link = $page_url.'?mode=new&id=' . $data['location_id'] . '&location=' . $data['name'];
+			$array_raid_name[$tmp_link] = $data['name'];
+			
 			if($raid_location == $data['name'])
-				  $raid_name .= '<option value="raids.php?mode=new&id=' . $data['location_id'] . '&location=' . $data['name'] .'" selected>' . $data['name'] . '</option>';
-			else
-				  $raid_name .= '<option value="raids.php?mode=new&id=' . $data['location_id'] . '&location=' . $data['name'] .'">' . $data['name'] . '</option>';
+				$selected_raid_name = $tmp_link;
 		 }
-		 $raid_name .= '</select>';
 
 		// description
-		if(isset($description_value))
-			$description = '<textarea name="description" cols="50" rows="10" wrap="PHYSICAL" class="post" id="message" style="width:300;height:150">' . $description_value . '</textarea>';
-		else
-			$description = '<textarea name="description" cols="50" rows="10" wrap="PHYSICAL" class="post" id="message" style="width:300;height:150"></textarea>';
+		if(!isset($description_value))
+			$description_value = "";
 
 		// limits
 		$raid_class_array = array();
 		$raid_role_array = array();
 		if(isset($_GET['id']))
 		{
-			$maximum = '<input name="max" type="text" class="post" style="width:20px" value="' . $max . '" maxlength="2">';
-			$minimum_level = '<input name="min_lvl" type="text" class="post" style="width:20px" value="' . $min_lvl_value . '" maxlength="2">';
-			$maximum_level =  '<input name="max_lvl" type="text" class="post" style="width:20px" value="' . $max_lvl_value . '" maxlength="2">';
+			$maximum = $max_user;
+			$minimum_level = $min_lvl_value;
+			$maximum_level = $max_lvl_value;
 			
 			// Handle Classes
 			foreach ($wrm_global_classes as $global_class)
@@ -808,9 +806,9 @@ elseif($_GET['mode'] == 'new')
 					$raid_role_array[$global_role['role_id']] = '';	
 			}					
 		} else {
-			$maximum = '<input name="max" type="text" class="post" style="width:20px" maxlength="2">';
-			$minimum_level = '<input name="min_lvl" type="text" class="post" style="width:20px" maxlength="2">';
-			$maximum_level =  '<input name="max_lvl" type="text" class="post" style="width:20px" maxlength="2">';
+			$maximum = '1';
+			$minimum_level = '1';
+			$maximum_level =  '1';
 
 			// Handle Classes
 			foreach ($wrm_global_classes as $global_class)
@@ -825,17 +823,16 @@ elseif($_GET['mode'] == 'new')
 					$raid_role_array[$global_role['role_id']] = '';	
 			}			
 		}
-		$buttons = '<input type="submit" name="submit" value="'.$phprlang['submit'].'" class="mainoption"> <input type="reset" name="reset" value="'.$phprlang['reset'].'" class="liteoption">';			
 		
 		/****************************************************************
 		 * Data Assign for Template.
 		 ****************************************************************/		
 		$wrmsmarty->assign('page',
 			array(
-				'buttons'=>$buttons,
 				'form_action'=>$form_action,
 				'mode'=>$mode,
-				'raid_name'=>$raid_name,
+				'array_raid_name'=>$array_raid_name,
+				'selected_raid_name'=>$selected_raid_name,
 				'date'=>$date,
 				'i_time_hour'=>$i_time_hour,
 				'i_time_minute'=>$i_time_minute,
@@ -847,7 +844,7 @@ elseif($_GET['mode'] == 'new')
 				'event_type'=>$eventtype,
 				'event_id_info'=>$event_id_info,
 				'location'=>$location,
-				'description'=>$description,
+				'description_value'=>$description_value,
 				'maximum'=>$maximum,
 				'minimum_level'=>$minimum_level,
 				'maximum_level'=>$maximum_level,
@@ -873,6 +870,8 @@ elseif($_GET['mode'] == 'new')
 				'recur_interval_text'=>$phprlang['recur_interval'],
 				'recur_length'=>$recur_length,
 				'recur_length_text'=>$phprlang['recur_length'],
+				'button_submit' => $phprlang['submit'],
+				'button_reset' => $phprlang['reset']
 			)
 		);
 		
@@ -913,7 +912,7 @@ elseif($_GET['mode'] == 'new')
 	{
 		// holy crap, time to put it into the database
 		// variables first
-		$max = scrub_input($_POST['max']);
+		$max_user= scrub_input($_POST['max']);
 
 		// Handle Classes
 		foreach ($wrm_global_classes as $global_class)
@@ -981,7 +980,7 @@ elseif($_GET['mode'] == 'new')
 				VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
 				quote_smart($description),quote_smart($freeze),quote_smart($invite_time),quote_smart($location),
 				quote_smart($username),quote_smart('0'),quote_smart($start_time),
-				quote_smart($min_lvl),quote_smart($max_lvl),quote_smart($max),quote_smart($tag),quote_smart($event_id),
+				quote_smart($min_lvl),quote_smart($max_lvl),quote_smart($max_user),quote_smart($tag),quote_smart($event_id),
 				quote_smart($raid_force_id),quote_smart($recurring),quote_smart($recur_interval),
 				quote_smart($recur_length));
 		else
@@ -991,7 +990,7 @@ elseif($_GET['mode'] == 'new')
 				VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
 				quote_smart($description),quote_smart($freeze),quote_smart($invite_time),quote_smart($location),
 				quote_smart($username),quote_smart('0'),quote_smart($start_time),
-				quote_smart($min_lvl),quote_smart($max_lvl),quote_smart($max),quote_smart($tag),quote_smart($event_id),
+				quote_smart($min_lvl),quote_smart($max_lvl),quote_smart($max_user),quote_smart($tag),quote_smart($event_id),
 				quote_smart($raid_force_id),'0');
 		
 		$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
@@ -1040,7 +1039,7 @@ elseif($_GET['mode'] == 'edit')
 		if ($event_id == '')
 			$event_id = "0";
 		$description = scrub_input($_POST['description']);
-		$max = scrub_input($_POST['max']);
+		$max_user = scrub_input($_POST['max']);
 		$min_lvl = scrub_input($_POST['min_lvl']);
 		$max_lvl = scrub_input($_POST['max_lvl']);
 		$raid_force_id = scrub_input($_POST['raid_force_id']);
@@ -1070,8 +1069,8 @@ elseif($_GET['mode'] == 'edit')
 		}
 		
 		// Verify Data to ensure Correctness, set error if not.
-		if($location == "" || $date == "" || $max == "" || $min_lvl == "" || $max_lvl == "" ||
-		   !is_numeric($max) || !is_numeric($min_lvl) || !is_numeric($max_lvl) || $bad_class_limit ||
+		if($location == "" || $date == "" || $max_user == "" || $min_lvl == "" || $max_lvl == "" ||
+		   !is_numeric($max_user) || !is_numeric($min_lvl) || !is_numeric($max_lvl) || $bad_class_limit ||
 		   $bad_role_limit)
 		{
 			$errorTitle = $phprlang['form_error'];
@@ -1083,8 +1082,8 @@ elseif($_GET['mode'] == 'edit')
 			if($date == "")
 				$errorMsg .= '<li>' . $phprlang['raid_error_date'] . '</li>';
 
-			if($max == "" || $min_lvl == "" || $max_lvl == "" ||
-			!is_numeric($max) || !is_numeric($min_lvl) || !is_numeric($max_lvl) || $bad_class_limit ||
+			if($max_user == "" || $min_lvl == "" || $max_lvl == "" ||
+			!is_numeric($max_user) || !is_numeric($min_lvl) || !is_numeric($max_lvl) || $bad_class_limit ||
 			$bad_role_limit)
 				$errorMsg .= '<li>' . $phprlang['raid_error_limits'] . '</li>';
 		}
@@ -1102,15 +1101,15 @@ elseif($_GET['mode'] == 'edit')
 	{
 		// setup the form action first
 		$id = scrub_input($_GET['id']); // Raid ID
-		$form_action = 'raids.php?mode=edit&amp;id='. $id;
 		$mode = 'edit';
-
+		$form_action = 'raids.php?mode='.$mode.'&amp;id='. $id;
+		
 		// They screwed up the form on submission.
 		if(isset($errorTitle))
 		{
 			$tag = scrub_input($_POST['tag']);
 			$event_id = scrub_input($_POST['event_id']);
-			$max = scrub_input($_POST['max']);
+			$max_user = scrub_input($_POST['max']);
 
 			// Handle Classes
 			foreach ($wrm_global_classes as $global_class)
@@ -1150,7 +1149,7 @@ elseif($_GET['mode'] == 'edit')
 			            
 			$tag = $data['event_type'];
 			$event_id = $data['event_id'];
-			$max = $data['max'];
+			$max_user = $data['max'];
 			$raid_force_id = $data['raid_force_id'];
 			
 			// Now that we have the raid data, we need to retrieve limit data based upon Raid ID.
@@ -1360,10 +1359,10 @@ elseif($_GET['mode'] == 'edit')
 			$location = '<input type="text" name="location" class="post" value="' . $location_value . '">';
 		else
 			$location = '<input type="text" name="location" class="post">';
-			
+
 		// setup vars for raid templates
-		$raid_name = '<select name="event_id" id="name" class="post">
-					<option value="'.$event_id.'"></option>';
+		$array_raid_name = array();
+		$array_raid_name[$event_id] = "";
 
 		if ($priv_raids == 1)
 		{
@@ -1377,27 +1376,25 @@ elseif($_GET['mode'] == 'edit')
 		}
 		while($data = $db_raid->sql_fetchrow($result, true))
 		{
+			$tmp_link = $data['event_id'];
+			$array_raid_name[$tmp_link];
+			
 			if($raid_location == $data['name'])
-				  $raid_name .= '<option value="'.$data['event_id'].'" selected>' . $data['name'] . '</option>';
-			else
-				  $raid_name .= '<option value="'.$data['event_id'].'">' . $data['name'] . '</option>';
+				$selected_raid_name = $tmp_link;
 		 }
-		 $raid_name .= '</select>';
 
 		 $event_id_info = '<input type="hidden" name="event_id_old" class="post" value="' . $event_id . '">';
-		 
+
 		// description
-		if(isset($description_value))
-			$description = '<textarea name="description" cols="50" rows="10" wrap="PHYSICAL" class="post" id="message" style="width:300;height:150">' . $description_value . '</textarea>';
-		else
-			$description = '<textarea name="description" cols="50" rows="10" wrap="PHYSICAL" class="post" id="message" style="width:300;height:150"></textarea>';
+		if(!isset($description_value))
+			$description_value = "";
 
 		// limits
 		$raid_class_array = array();
 		$raid_role_array = array();
-		$maximum = '<input name="max" type="text" class="post" style="width:20px" value="' . $max . '" maxlength="2">';
-		$minimum_level = '<input name="min_lvl" type="text" class="post" style="width:20px" value="' . $min_lvl_value . '" maxlength="2">';
-		$maximum_level =  '<input name="max_lvl" type="text" class="post" style="width:20px" value="' . $max_lvl_value . '" maxlength="2">';
+		$maximum = $max_user;
+		$minimum_level = $min_lvl_value;
+		$maximum_level = $max_lvl_value;
 		
 		// Handle Classes
 		foreach ($wrm_global_classes as $global_class)
@@ -1411,14 +1408,12 @@ elseif($_GET['mode'] == 'edit')
 			else
 				$raid_role_array[$global_role['role_id']] = '';	
 		}					
-		$buttons = '<input type="submit" name="submit" value="'.$phprlang['submit'].'" class="mainoption"> <input type="reset" name="reset" value="'.$phprlang['reset'].'" class="liteoption">';			
-		
+
 		/****************************************************************
 		 * Data Assign for Template.
 		 ****************************************************************/		
 		$wrmsmarty->assign('page',
 			array(
-				'buttons'=>$buttons,
 				'form_action'=>$form_action,
 				'mode'=>$mode,
 				'raid_name'=>$raid_name,
@@ -1433,7 +1428,7 @@ elseif($_GET['mode'] == 'edit')
 				'event_type'=>$eventtype,
 				'event_id_info'=>$event_id_info,
 				'location'=>$location,
-				'description'=>$description,
+				'description_value'=>$description_value,
 				'maximum'=>$maximum,
 				'minimum_level'=>$minimum_level,
 				'maximum_level'=>$maximum_level,
@@ -1452,6 +1447,8 @@ elseif($_GET['mode'] == 'edit')
 				'maxlvl_text'=>$phprlang['raids_max_lvl'],
 				'raid_force'=>$raid_force_box,
 				'raid_force_text'=>$phprlang['raid_force_name'],
+				'button_submit' => $phprlang['submit'],
+				'button_reset' => $phprlang['reset']
 			)
 		);
 		
@@ -1492,7 +1489,7 @@ elseif($_GET['mode'] == 'edit')
 	{
 		// holy crap, time to put it into the database
 		// variables first
-		$max = scrub_input($_POST['max']);
+		$max_user = scrub_input($_POST['max']);
 
 		// Handle Classes
 		foreach ($wrm_global_classes as $global_class)
@@ -1548,7 +1545,7 @@ elseif($_GET['mode'] == 'edit')
 		$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "raids SET location=%s,description=%s,invite_time=%s,start_time=%s,
 				freeze=%s,max=%s,event_type=%s,event_id=%s,old='0',min_lvl=%s,max_lvl=%s,raid_force_id=%s WHERE raid_id=%s",
 				quote_smart($location),quote_smart($description),quote_smart($invite_time),quote_smart($start_time), quote_smart($freeze),
-				quote_smart($max),quote_smart($tag),quote_smart($event_id),quote_smart($min_lvl),quote_smart($max_lvl),quote_smart($raid_force_id),quote_smart($id));
+				quote_smart($max_user),quote_smart($tag),quote_smart($event_id),quote_smart($min_lvl),quote_smart($max_lvl),quote_smart($raid_force_id),quote_smart($id));
 
 		$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 

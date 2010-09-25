@@ -225,12 +225,14 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
  		$locked = 1;
  	else
  		$locked = 0;
-	$number_max_chars = scrub_input($_POST['max']);
+ 	
+	$number_max_chars = scrub_input($_POST['number_max_chars']);
 
 	if($_GET['mode'] == 'new')
 	{
-		$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "locations (`location`,`min_lvl`,`max_lvl`,
-		`name`,`max`,`locked`,`event_type`,`event_id`,`raid_force_id`) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)",
+		$sql = sprintf(	"INSERT INTO " . $phpraid_config['db_prefix'] . "locations".
+						" (`location`,`min_lvl`,`max_lvl`,`name`,`max`,`locked`,`event_type`,`event_id`,`raid_force_id`)".
+						" VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)",
 		quote_smart($loc),quote_smart($location_min_lvl),quote_smart($location_max_lvl),quote_smart($location_shortname),
 		quote_smart($number_max_chars),quote_smart($locked),quote_smart($eventtype),quote_smart($event_id),quote_smart($raid_force_id));
 		
@@ -511,12 +513,12 @@ if($_GET['mode'] != 'delete')
 			
 		if ($event_id != '')
 		{
-			$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "events WHERE event_id =" . $event_id;
+			$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "events WHERE event_id = %s" ,quote_smart($event_id) );
 			$result2 = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 			$event_data = $db_raid->sql_fetchrow($result2, true);
 			$event_max = $event_data['max'];
 			$zone_desc = $event_data['zone_desc'];
-			$number_max_chars = $event_max;
+			$number_max_chars = $event_data['max'];
 			$location_wow_name = $event_data['wow_name'];
 			$icon = "templates/" . $phpraid_config['template'] . "/" . $event_data['icon_path'];
 			$form_action = $page_URL.'?mode=new&amp;event_type='.$event_type_id.'&amp;event='.$event_id.'&amp;location='.$zone_desc;
@@ -660,7 +662,6 @@ if($_GET['mode'] != 'delete')
 		$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "events WHERE event_id =" . $event_id;
 		$result2 = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		$event_data = $db_raid->sql_fetchrow($result2, true);
-		$event_max = $event_data['max'];
 		$zone_desc = $event_data['zone_desc'];
 
 		$location_wow_name = $event_data['wow_name'];

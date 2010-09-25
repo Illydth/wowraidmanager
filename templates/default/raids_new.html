@@ -11,7 +11,13 @@
 					<table width="100%" border="0" cellspacing="1" cellpadding="3" class="dataOutline">
 						<tr>
 							<td width="200" class="row1"><strong>{$page.location_text}</strong></td>
-							<td class="row2">{$page.raid_name}</td>
+							<td class="row2">
+							{if $page.mode == "new"}
+					          	{html_options name=name options=$page.array_raid_name selected=$page.selected_raid_name onChange="MM_jumpMenu('self',this,0)" class="post"}
+							{else}
+					          	{html_options name=name options=$page.array_raid_name selected=$page.selected_raid_name class="post" id="name"}
+							{/if}
+							</td>
 						</tr>
 						<tr>
 							<td width="200" class="row1"><strong>{$page.date_text}</strong></td>
@@ -43,7 +49,9 @@
 						</tr>
 						<tr>
 							<td class="row1"><strong>{$page.description_text}</strong></td>
-							<td class="row2">{$page.description}</td>
+							<td class="row2">
+								<textarea name="description" cols="50" rows="10" wrap="PHYSICAL" class="post" id="message" style="width:300;height:150">{$page.description_value}</textarea>
+							</td>
 						</tr>
 					</table>
 				</td>
@@ -85,15 +93,21 @@
 					<table width="100%" border="0" cellspacing="1" cellpadding="3" class="dataOutline">
 						<tr>
 							<td width="200" class="row1"><strong>{$page.max_text}</strong></td>
-							<td class="row2">{$page.maximum}</td>
+							<td class="row2">
+								<input name="max" type="text" class="post" style="width:20px" value="{$page.maximum}" maxlength="2">
+							</td>
 						</tr>
 						<tr>
 							<td width="200" class="row1"><strong>{$page.minlvl_text}</strong></td>
-							<td class="row2">{$page.minimum_level}</td>
+							<td class="row2">
+								<input name="min_lvl" type="text" class="post" style="width:20px" value="{$page.minimum_level}" maxlength="2">
+							</td>
 						</tr>
 						<tr>
 							<td width="200" class="row1"><strong>{$page.maxlvl_text}</strong></td>
-							<td class="row2">{$page.maximum_level}</td>
+							<td class="row2">
+								<input name="max_lvl" type="text" class="post" style="width:20px" value="{$page.maximum_level}" maxlength="2">
+							</td>
 						</tr>
         				{section name=class_data_sec loop=$class_limits}
 							<tr> 
@@ -114,9 +128,10 @@
 			</tr>
 		</table>
 	<br>
-	<div align="center" class="button">
-		{$page.buttons}
-	</div>
-	{$page.event_id_info}
-	</form>
+<div align="center" class="button">
+	<input type="submit" value="{$page.button_submit}" name="submit" class="mainoption">
+	<input type="reset" value="{$page.button_reset}" name="reset" class="liteoption">
+</div>
+{$page.event_id_info}
+</form>
 </div>	
