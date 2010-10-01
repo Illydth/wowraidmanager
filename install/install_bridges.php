@@ -34,9 +34,9 @@
 ****************************************************************************/
 
 if (!isset($_GET['step']))
-$step = "0";
+	$step = "0";
 else
-$step = $_GET['step'];
+	$step = $_GET['step'];
 
 //set Lang. Format
 if (!isset($_GET['lang']))
@@ -788,4 +788,5 @@ else if($step === "bridge_done")
 	
 	header("Location: install.php?lang=".$lang."&step=done");
 }
+
 ?>

@@ -34,9 +34,9 @@
 ****************************************************************************/
 
 if (!isset($_GET['step']))
-$step = "0";
+	$step = "0";
 else
-$step = $_GET['step'];
+	$step = $_GET['step'];
 
 
 //set Lang. Format (default english)
@@ -85,6 +85,8 @@ include_once('language/locale-'.$lang.'.php');
 
 include_once ("includes/db/db.php");
 include_once ("includes/function.php");
+//load smarty 
+include_once ("common.php");
 
 /*----------------------------------------------------------------*/
 
@@ -100,51 +102,54 @@ include_once ("includes/function.php");
 if ($step == "0")
 {
 
-	if(is_file($wrm_config_file))
+	if(validate_wrm_configfile())
 	{
 			
 		include_once($wrm_config_file);
 		$table_profile_available = FALSE;
+	
+		// database connection
+		$wrm_install = &new sql_db($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass'],$phpraid_config['db_name']);
 		
-		//test
-		if (isset($phpraid_config['db_host']))
+		//1. check: connection available 
+		//2. check:  exist $phpraid_config['db_name'] (database)-> SERVER
+		//3. check:  exist wrm tables (schema)-> $phpraid_config['db_name'] (database)
+		//then goto upgrade.php
+		if( ($wrm_install->db_connect_id) == TRUE)
 		{
-			// database connection
-			$wrm_install = &new sql_db($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass'],$phpraid_config['db_name']);
-			
-			//if connection available -> goto upgrade.php
-			if( ($wrm_install->db_connect_id) == TRUE)
+			$sql_db_all = "SHOW DATABASES";
+			$result_db_all = $wrm_install->sql_query($sql_db_all) or print_error($sql_db_all, $wrm_install->sql_error(), 1);
+			$Database_Exist = False;
+			while ($data_db_all = $wrm_install->sql_fetchrow($result_db_all,true))
 			{
-				$sql_db_all = "SHOW DATABASES";
-				$result_db_all = $wrm_install->sql_query($sql_db_all) or print_error($sql_db_all, $wrm_install->sql_error(), 1);
-				$Database_Exist = False;
-				while ($data_db_all = $wrm_install->sql_fetchrow($result_db_all,true))
+				
+				//cmp if select db ($wrm_db_name) in/on Server exist
+				if ($phpraid_config['db_name'] == $data_db_all['Database'])
 				{
-					//cmp if select db ($wrm_db_name) in/on Server exist
-					if ($phpraid_config['db_name'] == $data_db_all['Database'])
+					$Database_Exist = TRUE;
+					
+				}
+			}
+			
+			if ($Database_Exist == TRUE)
+			{
+				$sql_tables = "SHOW TABLES FROM ".$phpraid_config['db_name'];
+				$result_tables = $wrm_install->sql_query($sql_tables) or print_error($sql_tables, $wrm_install->sql_error(), 1);
+				while ($data_tables = $wrm_install->sql_fetchrow($result_tables,true))
+				{
+					//each version has this table
+					if ($data_tables['Tables_in_'.$phpraid_config['db_name']] == $phpraid_config['db_prefix']."raids")
 					{
-						$Database_Exist = TRUE;
+						$table_profile_available = TRUE;
+						//echo "true";
 					}
+					//echo $data_tables['Tables_in_'.$phpraid_config['db_name']].": == ".$phpraid_config['db_prefix']."raids"."<br>";
 				}
 				
-				if ($Database_Exist == TRUE)
+				if ($table_profile_available == TRUE)
 				{
-					$sql_tables = "SHOW TABLES FROM ".$phpraid_config['db_name'];
-					$result_tables = $wrm_install->sql_query($sql_tables) or print_error($sql_tables, $wrm_install->sql_error(), 1);
-					while ($data_tables = $wrm_install->sql_fetchrow($result_tables,true))
-					{
-						//each version has this table
-						if ($phpraid_config['db_prefix']."_".$data_tables["profile"])
-						{
-							$table_profile_available = TRUE;
-						}
-					}
-					
-					if ($table_profile_available != TRUE)
-					{
-						header("Location: " . $filename_upgrade);
-						exit;
-					}
+					header("Location: " . $filename_upgrade);
+					exit;
 				}
 			}
 		}

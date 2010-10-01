@@ -41,4 +41,5 @@ include("../version.php");
 $smarty->assign("wrm_version", $version);		
 
 $smarty->display("footer.tpl.html");
+
 ?>

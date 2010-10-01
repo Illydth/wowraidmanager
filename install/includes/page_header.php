@@ -33,28 +33,6 @@
 *
 ****************************************************************************/
 
-/**********************************************************
- * Load Template System Here (Smarty/phpLib)
- **********************************************************/
-
-//Load Smarty Library
-//define('SMARTY_DIR', dirname(__FILE__).'../includes/smarty/libs/');
-define('SMARTY_DIR', '../includes/smarty/libs/');
-include_once('../includes/smarty/libs/Smarty.class.php');
-
-$smarty = new Smarty();
-// Turning on Caching will cause many pages not to display dynamic changes properly.
-$smarty->caching = false;
-$smarty->compile_check = true;
-
-/* Turn on/off Smarty Template Debugging by commenting/uncommenting the lines below. */
-$smarty->debugging = false;
-//$smarty->debugging = true;
-
-$smarty->template_dir = 'templates';
-$smarty->compile_dir = '../cache/templates_c';
-$smarty->config_dir = '../includes/smarty/configs/';
-$smarty->cache_dir = '../cache/smarty_cache';
 
 // Set Page content type header:
 header('Content-Type: text/html; charset=utf-8');
@@ -69,4 +47,5 @@ $smarty->assign(
 );
 
 $smarty->display('header.tpl.html');
+
 ?>

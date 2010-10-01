@@ -32,7 +32,36 @@
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *
 ****************************************************************************/
-
+/*
+ * validate wrm configfile
+ * @return boolean TRUE=OK,FALSE=Error
+ */
+function validate_wrm_configfile()
+{
+	$validate_value = TRUE;
+	$wrm_config_file = "../config.php";
+	
+	if(is_file($wrm_config_file))
+	{
+		include_once($wrm_config_file);
+		if ( 	!isset($phpraid_config['db_name']) and ($phpraid_config['db_name'] != "") and 
+				!isset($phpraid_config['db_host']) and ($phpraid_config['db_host'] != "") and
+				!isset($phpraid_config['db_user']) and ($phpraid_config['db_user'] != "") and
+				!isset($phpraid_config['db_pass']) and ($phpraid_config['db_pass'] != "") and
+				!isset($phpraid_config['db_prefix']) and ($phpraid_config['db_prefix'] != "") and
+				!isset($phpraid_config['db_type']) and ($phpraid_config['db_type'] != "")
+			)
+		{
+			//error
+			$validate_value = FALSE;
+		}
+	}
+	
+	if ($validate_value == TRUE)
+		return TRUE;
+	else 
+		return FALSE;
+}
 /**
  * write the WRM Config File "../config.php"
  *

@@ -57,6 +57,7 @@ else
  * Name from this File
  */
 $filename_upgrade = "upgrade.php?lang=".$lang."&";
+$filename_install = "install.php";
 
 /**
  *  VersionNR, from this wrm Install File
@@ -86,6 +87,8 @@ include_once('language/locale-'.$lang.'.php');
 
 include_once ("includes/db/db.php");
 include_once ("includes/function.php");
+//load smarty 
+include_once ("common.php");
 
 include_once("../config.php");
 
@@ -95,13 +98,13 @@ include_once("../config.php");
 $wrm_install = &new sql_db($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass'],$phpraid_config['db_name']);
 if($wrm_install->db_connect_id == FALSE)
 {
-	header("Location: install.php");
+	header("Location: ".$filename_install);
 }
 
 //check if table "version" available
 //result ($table_version_available)
-//true -> from 3.5.0 to 4.x.x
-//false -> older 3.5.0
+//true -> from 3.5.0 to 4.x.x (table version and profile exist)
+//false -> older 3.5.0 (table version exist NOT)
 $sql_tables = "SHOW TABLES FROM ".$phpraid_config['db_name'];
 $result_tables = $wrm_install->sql_query($sql_tables) or print_error($sql_tables, $wrm_install->sql_error(), 1);
 while ($data_tables = $wrm_install->sql_fetchrow($result_tables,true))
@@ -120,7 +123,7 @@ while ($data_tables = $wrm_install->sql_fetchrow($result_tables,true))
 //test con. fail
 if ($table_profile_available != TRUE)
 {
-	header("Location: install.php?step=1");
+	header("Location: ".$filename_install."step=1");
 }
 
 /*----------------------------------------------------------------*/
@@ -490,6 +493,7 @@ if ($step == 2)
 
 /*
  * dynamic changes at wrm
+ * wrm_updated_on and if not exist insert wrm_created_on (<wrm 4.1)
  */
 if ($step == 3)
 {
