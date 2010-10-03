@@ -32,6 +32,7 @@
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *
 ****************************************************************************/
+
 /*
  * validate wrm configfile
  * @return boolean TRUE=OK,FALSE=Error
@@ -62,6 +63,7 @@ function validate_wrm_configfile()
 	else 
 		return FALSE;
 }
+
 /**
  * write the WRM Config File "../config.php"
  *
@@ -534,6 +536,7 @@ function get_last_onlineversion_nr()
 	}
 	
 }
+
 /***
  * show the current 
  */
@@ -705,6 +708,7 @@ function test_bridge_connection($bridge_name, $bridge_database_name, $bridge_db_
 		return (2);
 	}
 }
+
 /**
  * Create Armory Directory
  */
@@ -756,5 +760,6 @@ function profile_add($user_admin_username,$user_admin_password,$user_admin_email
 	}
 	
 }
+
 ?>
 

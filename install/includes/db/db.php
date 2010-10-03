@@ -30,4 +30,9 @@ if(defined("SQL_LAYER") == "mysql")
 {
 	include_once ("mysql.php");
 }
+else 
+{
+	include_once ("mysql.php");
+}
+
 ?>

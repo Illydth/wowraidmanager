@@ -46,16 +46,6 @@ else
 	$lang = $_GET['lang'];
 
 
-if ($step == 2)
-{
-	if (isset($_POST['classlang_type']))
-	{
-		//$lang = $_POST['classlang_type'];
-	}
-}
-
-/*----------------------------------------------------------------*/
-
 /*
  * name of this file
  */
@@ -79,8 +69,9 @@ $default_file_sql_table_prefix = "wrm_";
 $file_sql_install_schema = "database_schema/install/install_schema.sql";
 $file_sql_insert_values = "database_schema/install/insert_values.sql";
 
-/*----------------------------------------------------------------*/
-
+/*
+ * include libs
+ */
 include_once('language/locale-'.$lang.'.php');
 
 include_once ("includes/db/db.php");
@@ -88,7 +79,7 @@ include_once ("includes/function.php");
 //load smarty 
 include_once ("common.php");
 
-/*----------------------------------------------------------------*/
+
 
 /**
  * --------------------
@@ -127,7 +118,6 @@ if ($step == "0")
 				if ($phpraid_config['db_name'] == $data_db_all['Database'])
 				{
 					$Database_Exist = TRUE;
-					
 				}
 			}
 			
@@ -143,7 +133,6 @@ if ($step == "0")
 						$table_profile_available = TRUE;
 						//echo "true";
 					}
-					//echo $data_tables['Tables_in_'.$phpraid_config['db_name']].": == ".$phpraid_config['db_prefix']."raids"."<br>";
 				}
 				
 				if ($table_profile_available == TRUE)
@@ -409,9 +398,8 @@ else if($step == 2) {
  * show/set db settings (db_name and db_tableprefix) 
  * ---------------------
  * */
-else if($step == 3) {
-
-//	echo $_POST['sql_db_list_name']. ":" . $_GET['sql_db_list_name'];
+else if($step == 3)
+{
 	$wrm_db_server_hostname = $_POST['wrm_db_server_hostname'];
 	$wrm_db_username = $_POST['wrm_db_username'];
 	$wrm_db_password = $_POST['wrm_db_password'];
@@ -467,7 +455,7 @@ else if($step == 3) {
 	if (isset($_POST['wrm_db_tableprefix'])and $_POST['wrm_db_tableprefix'] != "")
 		$wrm_db_tableprefix_value = $_POST['wrm_db_tableprefix'];
 	else
-		$wrm_db_tableprefix_value = "wrm_";
+		$wrm_db_tableprefix_value = $default_file_sql_table_prefix;
 
 
 	//load all DATABASES name in a array ($sql_all_dbname)
@@ -479,7 +467,7 @@ else if($step == 3) {
 	while ($data_db_all = $wrm_install->sql_fetchrow($result_db_all,true))
 	{
 		//show all TABLES
-		//# without private sql Database -> readonly
+		//without private sql Database -> readonly
 		if  (	( $data_db_all['Database'] != "mysql" ) and 
 				( $data_db_all['Database'] != "information_schema" ) and 
 				( $data_db_all['Database'] != "phpmyadmin" )

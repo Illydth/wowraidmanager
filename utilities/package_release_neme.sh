@@ -1,19 +1,26 @@
 #!/bin/sh
 
-#cd ..
-#cd ..
-cd /tmp
+cd ..
+cd ..
+#cd /home/neme/WRM
 # Remove Prior Package Directory and Re-Create
 rm -rf package
 
 #Creating Working Directories and Files
-mkdir /tmp/package
-mkdir /tmp/package/wrm
-cp -R /opt/WRM/wowraidmanager/* /tmp/package/wrm
-cd /tmp/package
+#mkdir /home/neme/WRM/package
+#mkdir /home/neme/WRM/package/wrm
+#cp -R /home/neme/WRM/wowraidmanager/* /home/neme/WRM/package/wrm
+#cd /home/neme/WRM/package
+
+mkdir package
+mkdir package/wrm
+cp -R wowraidmanager/* package/wrm
+cd package
 
 #Remove Misc Stuff
 rm -rf wrm/utilities
+
+#Create (empty) config.php
 cp wrm/config.php.tmp wrm/config.php
 rm -f wrm/config.php.*
 
@@ -23,13 +30,15 @@ rm -f wrm/config.php.*
 cd wrm
 
 # Remove Cache and Compilations
-rm -rf armory_log/stderr.log
-rm -rf raid_lua/phpRaid_Data.lua
-rm -rf smarty_cache/*
-rm -rf smarty_cache/admin/*
-rm -rf templates_c/*
-rm -rf templates_c/admin/*
-rm -rf armory_cache/*
+rm -rf cache
+mkdir cache
+mkdir cache/armory_log
+mkdir cache/armory_cache
+mkdir cache/raid_lua
+mkdir cache/templates_c
+mkdir cache/templates_c/admin
+mkdir cache/smarty_cache
+mkdir cache/smarty_cache/admin
 
 # Set Directory / File Write permissions.
 chmod 777 cache/
@@ -57,4 +66,5 @@ tar -czvf wowRaidManager_v$1.tar.gz wrm/*
 zip -r wowRaidManager_v$1.zip wrm
 
 #Final Packages should be in <root>/utilities/package at this point, ready for disbursal, remove temp directories
+#chmod -R +w *
 rm -rf wrm
