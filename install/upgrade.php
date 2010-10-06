@@ -152,7 +152,11 @@ else
 if ($step === "0")
 {	
 	global $smarty;
-
+	
+	include_once ('../version.php');
+	$installfiles_ver_text = $version;
+	$latest_version_info_text = get_last_onlineversion_nr_short();
+	
 	include_once ("includes/page_header.php");
 	$show_online_versionnr_value = show_online_versionnr($versions_nr_install);
 	if ($show_online_versionnr_value == -1)
@@ -198,7 +202,7 @@ if ($step === "0")
 			$smarty->display("version_nr_error.html");
 	}
 	
-	//older 3.5.0 and older 3.6.1 not support 
+	//wrm DB is older then 3.6.1 -> not support 
 	if (($table_version_available == FALSE) or ((str_replace(".","",$wrm_versions_nr_current_value)) < "361"))
 	{
 		$smarty->assign(
@@ -218,7 +222,8 @@ if ($step === "0")
 	else if ($wrm_versions_nr_current_value == $versions_nr_install)
 	{
 		// "your wrm is up to date";		
-		show_online_versionnr($wrm_install_lang, $versions_nr_install);
+		//show_online_versionnr($wrm_install_lang, $versions_nr_install);
+		$show_next_bd = false;
 		$smarty->assign(
 			array(
 				//"version_info" => checking_onlineversion(),
@@ -229,7 +234,7 @@ if ($step === "0")
 				"wrm_versions_nr_current_text" => $wrm_install_lang['wrm_versions_nr_current_text'],
 				"wrm_versions_nr_from_install_value" => $versions_nr_install, 
 				"wrm_versions_nr_from_install_text" => $wrm_install_lang['wrm_versions_nr_from_install_text'],
-				"bd_start" => $wrm_install_lang['bd_submit'],	
+				"bd_start" => $wrm_install_lang['bd_continue'],	
 			)
 		);
 		$smarty->display("update.tpl.html");

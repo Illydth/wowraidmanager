@@ -62,7 +62,8 @@ include_once('language/locale-'.$lang.'.php');
 include_once ($wrm_config_file);
 include_once ("includes/db/db.php");
 include_once ("includes/function.php");
-
+//load smarty 
+include_once ("common.php");
 /*----------------------------------------------------------------*/
 	
 if (($step == "0"))

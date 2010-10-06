@@ -50,7 +50,7 @@ $wrm_install_lang['bd_start'] = 'Start';//new
 $wrm_install_lang['install_version_text'] = 'Version';
 $wrm_install_lang['install_version_current'] = 'Installation files are up to date';
 $wrm_install_lang['install_version_info_header'] = 'Version Information';
-$wrm_install_lang['install_version_header'] = 'WoW Raid Manager update available!';
+$wrm_install_lang['install_version_header'] = 'new WoW Raid Manager update available!';
 $wrm_install_lang['install_version_message01'] = 'Your Installation files of WoW Raid Manager is out of date.';
 $wrm_install_lang['install_version_message02'] = 'Updating is strongly recommended.';
 $wrm_install_lang['install_version_message03'] = 'the latest/new version is';
@@ -162,6 +162,7 @@ $wrm_install_lang['error_install_version_to_old_text'] = "install (WRM) Version 
 $wrm_install_lang['bridge_step0_titel'] = "Scan Result (@ your Server): Found Bridges ";
 
 //Default armory language, link
-$wrm_install_lang['default_armory_language_value'] = "en";
-$wrm_install_lang['default_armory_link_value'] = "http://eu.wowarmory.com";
+//$wrm_install_lang['default_armory_language_value'] = "en";
+//$wrm_install_lang['default_armory_link_value'] = "http://eu.wowarmory.com";
+
 ?>

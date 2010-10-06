@@ -511,13 +511,15 @@ function get_last_onlineversion_nr()
 		@fputs($fsock, "GET /vercheck/ver_check_40.txt HTTP/1.1\r\n");
 		@fputs($fsock, "HOST: www.wowraidmanager.net\r\n");
 		@fputs($fsock, "Connection: close\r\n\r\n");
-	
+       
 		$get_info = false;
+		$version_info = '';
 		while (!@feof($fsock))
 		{
 			if ($get_info)
 			{
-				$version_info .= @fread($fsock, 1024);
+				$version_info .= trim (@fgets($fsock,128)) . ".";
+				//$version_info .= @fread($fsock, 1024);
 			}
 			else
 			{
@@ -526,7 +528,9 @@ function get_last_onlineversion_nr()
 					$get_info = true;
 				}
 			}
+			
 		}
+		
 		@fclose($fsock);
 		return $version_info;
 	}
@@ -535,6 +539,15 @@ function get_last_onlineversion_nr()
 		return (false);
 	}
 	
+}
+
+/*
+ * return the first 3 numbers
+ */
+function get_last_onlineversion_nr_short()
+{
+	$value = explode('.', get_last_onlineversion_nr());
+	return $value[0].".".$value[1].".".$value[2].".".$value[4].".".$value[5].".".$value[6];
 }
 
 /***
@@ -557,6 +570,7 @@ function show_online_versionnr($versions_nr_install)
 	{
 		$installfiles_ver = explode('.', $versions_nr_install);
 		$latest_version_info = explode("\n", $latest_version_info);
+		//$latest_version_info = explode(" ", $latest_version_info);
 		
 		if ($installfiles_ver[3] == "")
 				$installfiles_ver[3]= (int) 0;
@@ -711,6 +725,7 @@ function test_bridge_connection($bridge_name, $bridge_database_name, $bridge_db_
 
 /**
  * Create Armory Directory
+ * not uses
  */
 function create_armory_directory_path($mode = "0777")
 {
