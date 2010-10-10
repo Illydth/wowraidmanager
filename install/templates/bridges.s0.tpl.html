@@ -9,39 +9,24 @@
      <td class="rowHover"><div align="center">{$headtitle}</div></td>
    </tr>
    <tr>
-     <td>&nbsp;</td>
-   </tr>
-   <tr>
-     <td><div align="center" class="row1">{$bridge_step0_choose_auth}</div></td>
-   </tr>
-  <tr>
-   <td>
-    <tr>
-	<td>
-	  <div align="Left" class="row2">
-		 {html_radios name="allfoundbridges" class="post" values=$bridge_type_values checked=$bridge_type_selected output=$bridge_type_output separator="<br>
-		 <br>"}	  
-	  </div>
-	</td>
-  </tr>
-  <tr>
-	<td>&nbsp;</td>
-  </tr>
-  <tr>
-    <td><div align="right"><span class="tooltip_title">{$expertmodus_link}</span></div></td>
-  </tr>
-  <tr>
-    <td><div align="center" class="row1">{$bridge_step0_unknown_auth}</div></td>
-  </tr>
-  <tr>
-	<td>&nbsp;</td>
-  </tr>
-  <tr>
-    <td><div align="center">
-      <input type="submit" name="submit" value="{$bd_submit}" />
-      <input type="hidden" name="step" value="1" />
-    </div></td>
-  </tr>
+    <td>
+	   <table width="100%" border="0" align="center" cellpadding="2" cellspacing="2">
+	    <tr>
+	     <td align="center" ><input type="submit" name="scan" value="{$button_scan}" class="bd_normal" /></td>
+	     <td class="row1">{$scan_text}</td>
+	    </tr>
+	    <tr>
+	     <td align="center" ><input type="submit" name="manualedit" value="{$button_manualedit}" class="bd_normal" /></td>
+	     <td class="row1">{$manualedit_text}</td>
+	    </tr>
+	    <tr>
+	     <td align="center" ><input type="submit" name="iums" value="{$button_iums}" class="bd_normal" /></td>
+	     <td class="row1">{$iums_text}</td>
+	    </tr>
+	   </table>
+     </td>
+    </tr>
+ 
  </table>  
 
 </form>

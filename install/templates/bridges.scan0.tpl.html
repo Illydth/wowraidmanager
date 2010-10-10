@@ -1,0 +1,41 @@
+<link href="style/stylesheet.css" rel="stylesheet" type="text/css">
+<form method="post" action="{$form_action}">
+
+ <table align="center" width="800">
+   <tr>
+     <td>&nbsp;</td>
+   </tr>
+   <tr>
+     <td class="rowHover"><div align="center">{$headtitle}</div></td>
+   </tr>
+   <tr>
+     <td>&nbsp;</td>
+   </tr>
+   <tr>
+     <td><div align="center" class="row1">{$bridge_step0_choose_auth}</div></td>
+   </tr>
+  <tr>
+   <td>
+    <tr>
+	<td>
+	  <div align="Left" class="row2">
+		 {html_radios name="allfoundbridges" class="post" values=$bridge_type_values checked=$bridge_type_selected output=$bridge_type_output separator="<br>
+		 <br>"}	  
+	  </div>
+	</td>
+  </tr>
+  <tr>
+	<td>&nbsp;</td>
+  </tr>
+  <tr>
+	<td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td><div align="center">
+      <input type="submit" name="submit" value="{$bd_submit}" class="bd_normal" />
+      <input type="hidden" name="step" value="1" class="bd_normal" />
+    </div></td>
+  </tr>
+ </table>  
+
+</form>

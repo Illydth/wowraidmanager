@@ -15,11 +15,9 @@
     <td><table width="100%" border="0" align="center" cellpadding="2" cellspacing="2">
       <tr>
         <td width="60%" class="row1">{$bridge_type_text}</td>
-        <td width="40%"><select name="bridge_type" class="post">
-          
-		 {html_options values=$bridge_type_values selected=$bridge_type_selected output=$bridge_type_output}
-        
-        </select>        </td>
+        <td width="40%">
+        	{html_options name=bridge_type options=$array_bridge_type selected=$selected_bridge_type class="post"}
+        </td>
       </tr>
       <tr>
         <td>&nbsp;</td>
@@ -49,8 +47,10 @@
   <tr>
     <td>
       <div align="center">
-		<input type="submit" name="submit" value="{$bd_submit}" />
-      </div>    </td>
+		<input type="submit" name="submit" value="{$bd_submit}" class="bd_normal" />
+		<input type="reset" name="submit" value="{$bd_reset}" class="bd_normal" />
+      </div>
+    </td>
   </tr>
   <tr>
     <td>&nbsp;</td>

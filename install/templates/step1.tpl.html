@@ -9,34 +9,36 @@
    <td>&nbsp;</td>
   </tr>
   <tr>
-   <td><div class="contentHeader">{$system_requirements}</div>
-   <table width="100%" border="0" align="center" cellpadding="2" cellspacing="2">
-    <tr>
-     <td class="rowHover"><u>{$property}</u></td>
-     <td class="rowHover"><u>{$required}</u></td>
-     <td class="rowHover"><u>{$exist}</u></td>
-    </tr>
-    <tr>
-     <td class="row1">{$phpversion_text}</td>
-     <td class="row1">4.0.1</td>
-     <td bgcolor="{$phpversion_bgcolor}">{$phpversion_value}</td>
-    </tr>
-    <tr>
-     <td class="row2">{$mysqlversion_text}</td>
-     <td class="row2">4.1.0</td>
-     <td bgcolor="{$mysqlversion_bgcolor}">{$mysqlversion_value}</td>
-    </tr>
-    <tr>
-     <td class="row1">{$writeable_config_text}</td>
-     <td class="row1">{$yes}</td>
-     <td bgcolor="{$writeable_config_bgcolor}">{$writeable_config_value}&nbsp;{$file_perm_value}</td>
-	</tr>
-    <tr>
-      <td class="row2">{$writable_dir_cache_text}</td>
-      <td class="row2">{$yes}</td>
-      <td bgcolor="{$writable_dir_cache_bgcolor}">{$writable_dir_cache_value}&nbsp;{$writable_dir_cache_perms_value}</td>
-    </tr>
-   </table>
+   <td>
+	   <div class="contentHeader">{$system_requirements}</div>
+	   <table width="100%" border="0" align="center" cellpadding="2" cellspacing="2">
+	    <tr>
+	     <td class="rowHover"><u>{$property}</u></td>
+	     <td class="rowHover"><u>{$required}</u></td>
+	     <td class="rowHover"><u>{$exist}</u></td>
+	    </tr>
+	    <tr>
+	     <td class="row1">{$phpversion_text}</td>
+	     <td class="row1">4.0.1</td>
+	     <td bgcolor="{$phpversion_bgcolor}">{$phpversion_value}</td>
+	    </tr>
+	    <tr>
+	     <td class="row2">{$mysqlversion_text}</td>
+	     <td class="row2">4.1.0</td>
+	     <td bgcolor="{$mysqlversion_bgcolor}">{$mysqlversion_value}</td>
+	    </tr>
+	    <tr>
+	     <td class="row1">{$writeable_config_text}</td>
+	     <td class="row1">{$yes}</td>
+	     <td bgcolor="{$writeable_config_bgcolor}">{$writeable_config_value}&nbsp;{$file_perm_value}</td>
+		</tr>
+	    <tr>
+	      <td class="row2">{$writable_dir_cache_text}</td>
+	      <td class="row2">{$yes}</td>
+	      <td bgcolor="{$writable_dir_cache_bgcolor}">{$writable_dir_cache_value}&nbsp;{$writable_dir_cache_perms_value}</td>
+	    </tr>
+	   </table>
+    </td>
   </tr>
   <tr>
     <td>&nbsp;</td>
@@ -90,9 +92,9 @@
   <tr>
 	<td><div align="center">
 	{if $show_next_bd == TRUE}
-		<input type="submit" name="submit" value="{$bd_submit}">
+		<input type="submit" name="submit" value="{$bd_submit}" class="bd_normal" />
 	{else}
-		<input type="submit" name="submit" value="{$bd_submit}" disabled>
+		<input type="submit" name="submit" value="{$bd_submit}" disabled class="bd_normal" />
 	{/if}
    		<input type="hidden" name="step" value="1">
 

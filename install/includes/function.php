@@ -175,12 +175,14 @@ function quote_smart($value = "", $nullify = false, $conn = null)
 	}
 	return $value;
 }
+
 /***
  * print error
  * @param string $path
  * @return boolean
  */
-function print_error($type, $error, $die) {
+function print_error($type, $error, $die) 
+{
 	global $wrm_install_lang, $phpraid_config;
 
 	$errorMsg = '<html><link rel="stylesheet" type="text/css" href="templates/style/stylesheet.css"><body>';
@@ -259,7 +261,8 @@ function get_mysql_version_from_phpinfo()
  *
  * @return boolean
  */
-function desanitize($array) {
+function desanitize($array)
+{
   $retarr_keys = array_keys($array);
   $retarr_values = array_values($array);
   
@@ -634,29 +637,34 @@ function show_online_versionnr($versions_nr_install)
  * 1 = connection failed
  * 2 = bride_type not correct 
  * 
- * check alle tablename, spalten
+ * check alle tablename, colums
  * @return integer
  */
 function test_bridge_connection($bridge_name, $bridge_database_name, $bridge_db_table_prefix)
 {
-	global $wrm_config_file;
-	global $phpraid_config;
-	
+/**
+ * This is the path to the WRM Config File
+ */
+$wrm_config_file = "../config.php";
 
+	global $wrm_config_file,$phpraid_config;
+	include_once($wrm_config_file);
+	
 	$column_counter = 0;
+	$found_selected_db = false;
 	
 	$found_db_table_name = array();
 	
-	$wrm_install = &new sql_db($phpraid_config['db_host'], $phpraid_config['db_user'], $phpraid_config['db_pass'], "");
-	
+	$wrm_install = &new sql_db($phpraid_config['db_host'], $phpraid_config['db_user'], $phpraid_config['db_pass']);
 	//if not connection available -> goto step epbrgstep1
-	if( ($bridge_install->db_connect_id) == true)
+//	if( ($bridge_install->db_connect_id) == true)
+	if( ($wrm_install->db_connect_id) == false)
 	{
 		return (1);
 	}
 	
 	//pre check: is $bridge_database_name availabe in the database
-	$found_selected_db = false;
+
 	$sql_db_all = "SHOW DATABASES";
 	$result_db_all = $wrm_install->sql_query($sql_db_all) or print_error($sql_db_all, $wrm_install->sql_error(), 1);
 	while ($data_db_all = $wrm_install->sql_fetchrow($result_db_all, true))
@@ -668,7 +676,7 @@ function test_bridge_connection($bridge_name, $bridge_database_name, $bridge_db_
 	}
 	if ($found_selected_db == false)
 	{
-		return (1);
+		return (3);
 	}
 	
 	//include bridge file

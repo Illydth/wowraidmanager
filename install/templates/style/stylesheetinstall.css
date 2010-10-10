@@ -1,5 +1,6 @@
 
-.errorHeaderInstall {
+.errorHeaderInstall 
+{
 	background-color:#660000;
 	border: 1px #ff0000 solid;
 	border-bottom: 0px;
@@ -12,7 +13,8 @@
 }
 
 /*new*/
-.errorBodyText {
+.errorBodyText 
+{
 	background-color:#FFD5D5;
 	color:#CC0000;
 	border-top:0px;
@@ -20,4 +22,28 @@
 	font-weight:normal;
 	padding:3px;
 	text-align:center;
+}
+
+input.bd_normal, input.bd_normal:hover
+{
+	background-color: #999999;
+	border: 2px solid #000000;
+
+	font-size: 11px; font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-weight:bolder;
+	
+	padding-left: 7px;
+	padding-right: 7px;
+	padding-bottom: 3px;
+	padding-top: 3px;
+	width: 150px;
+	
+	
+	color : #000000;
+	border-style: outset;
+}
+input.bd_normal:hover
+{
+	color : #ffff99;
+	border-style: inset;
 }
