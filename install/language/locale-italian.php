@@ -46,6 +46,9 @@ $wrm_install_lang['bd_submit'] = 'Continua';
 $wrm_install_lang['bd_reset'] = 'Reset';
 $wrm_install_lang['bd_back'] = 'Back';//new
 $wrm_install_lang['bd_start'] = 'Start';//new
+$wrm_install_lang['bd_scan_server'] = 'scan server';
+$wrm_install_lang['bd_manuel_edit'] = 'manuele Eingabe';
+$wrm_install_lang['bd_iUMS'] = 'iUMS';
 
 $wrm_install_lang['install_version_text'] = 'Version';
 $wrm_install_lang['install_version_current'] = 'Installation files are up to date';
@@ -116,7 +119,7 @@ $wrm_install_lang['step2errordbcon_titel'] = "Error connecting to Server (Server
 //--------------------------
 // Auth.
 //--------------------------
-$wrm_install_lang['expert_modus'] = "Expert Modus";
+$wrm_install_lang['manuel_edit_modus_titel'] = "manuel edit - modus";
 
 $wrm_install_lang['step5failconWRM'] = 'Impossibile connettersi al database di WRM';
 $wrm_install_lang['step5selctusername'] = 'Assegna pieni permessi allo username selezionato';
@@ -134,12 +137,16 @@ $wrm_install_lang['step5sub3altgroup01'] = 'Seleziona un ulteriore gruppo di Ute
 $wrm_install_lang['step5sub3altgroup02'] = 'Agli Utenti appartenenti a questo gruppo sarà consentito l\'accesso a WRM indipendentemente dall\'appartenenza anche all\'altro gruppo specificato';
 
 //bridge mode
+$wrm_install_lang['bridge_step0_look_for_a_valid_Auth'] = "look for a valid Auth. System in the Server (this way is recommended)";
+$wrm_install_lang['bridge_step0_conf_the_Auth_System'] = "configure the Auth. System";
+$wrm_install_lang['bridge_step0_manual_edit_text'] = "values for the auth system must be entered by yourself (this way is recommended if the scan is faulty)";
+
 $wrm_install_lang['db_name_text'] = 'SQL Database';
 $wrm_install_lang['table_prefix_text'] = 'Table Prefix';
 $wrm_install_lang['bridge_name_text'] = 'Name';
 $wrm_install_lang['bridge_users_found_text'] = 'Users found';
 
-$wrm_install_lang['bridge_step0_unknown_auth'] = '(in caso di incertezza, selezionare il sistema di gestione Utenti integrato)';
+$wrm_install_lang['bridge_step0_unknown_auth'] = 'in caso di incertezza, selezionare il sistema di gestione Utenti integrato';
 $wrm_install_lang['bridge_step0_choose_auth'] = 'Seleziona uno dei tipi di autenticazione.';
 
 $wrm_install_lang['found_user_from_bridge']= "found user from bridge system";//new

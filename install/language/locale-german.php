@@ -46,6 +46,9 @@ $wrm_install_lang['bd_submit'] = 'weiter';
 $wrm_install_lang['bd_reset'] = 'zuruecksetzen';
 $wrm_install_lang['bd_back'] = 'Back';
 $wrm_install_lang['bd_start'] = 'Start';
+$wrm_install_lang['bd_scan_server'] = 'scan server';
+$wrm_install_lang['bd_manuel_edit'] = 'manuel edit';
+$wrm_install_lang['bd_iUMS'] = 'iUMS';
 
 $wrm_install_lang['install_version_text'] = 'Version';
 $wrm_install_lang['install_version_current'] = 'Installations-Dateien sind auf dem Neuesten Stand';
@@ -116,7 +119,7 @@ $wrm_install_lang['step2errordbcon_titel'] = "Fehler beim Herstellen einer Verbi
 //--------------------------
 // Auth.
 //--------------------------
-$wrm_install_lang['expert_modus'] = "Experten-Modus";
+$wrm_install_lang['manuel_edit_modus_titel'] = "manuel edit - modus";
 
 $wrm_install_lang['step5failconWRM'] = 'Verbindung zur WRM Datenbank nicht möglich';
 $wrm_install_lang['step5selctusername'] = 'dieser Benutzer bekommt vollen Zugriff auf das WRM';
@@ -134,12 +137,16 @@ $wrm_install_lang['step5sub3altgroup01'] = 'Wählen eine alternative Benutzergru
 $wrm_install_lang['step5sub3altgroup02'] = 'mit dieser alternativen Gruppe ist es dem Benutzer möglich, sich unabhngig davon anzumelden, ob sie in der oben genannten Benutzergruppe sind oder nicht ';
 
 //bridge mode
+$wrm_install_lang['bridge_step0_look_for_a_valid_Auth'] = "look for a valid Auth. System in the Server (this way is recommended)";
+$wrm_install_lang['bridge_step0_conf_the_Auth_System'] = "configure the Auth. System";
+$wrm_install_lang['bridge_step0_manual_edit_text'] = "values for the auth system must be entered by yourself (this way is recommended if the scan is faulty)";
+
 $wrm_install_lang['db_name_text'] = 'SQL Datenbank';
 $wrm_install_lang['table_prefix_text'] = 'Tabellen Prefix';
 $wrm_install_lang['bridge_name_text'] = 'Name';
 $wrm_install_lang['bridge_users_found_text'] = 'gefundene Benutzer';
 
-$wrm_install_lang['bridge_step0_unknown_auth'] = '(wenn sie sich nicht sicher sind, wähle bitte "iUMS")';
+$wrm_install_lang['bridge_step0_unknown_auth'] = 'Sind Sie sich nicht sicher, wählen Sie bitte "iUMS"';
 $wrm_install_lang['bridge_step0_choose_auth'] = 'Bitte wähle dein Berechtigungssystem aus.';
 
 $wrm_install_lang['found_user_from_bridge']= "gefundene Benutzer von dem Berechtigungssystem";

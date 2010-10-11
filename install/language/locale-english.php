@@ -46,6 +46,9 @@ $wrm_install_lang['bd_submit'] = 'Submit';
 $wrm_install_lang['bd_reset'] = 'Reset';
 $wrm_install_lang['bd_back'] = 'Back';
 $wrm_install_lang['bd_start'] = 'Start';
+$wrm_install_lang['bd_scan_server'] = 'scan server';
+$wrm_install_lang['bd_manuel_edit'] = 'manuel edit';
+$wrm_install_lang['bd_iUMS'] = 'iUMS';
 
 $wrm_install_lang['install_version_text'] = 'Version';
 $wrm_install_lang['install_version_current'] = 'Installation files are up to date';
@@ -116,13 +119,13 @@ $wrm_install_lang['step2errordbcon_titel'] = "Error connecting to Server (Server
 //--------------------------
 // Auth.
 //--------------------------
-$wrm_install_lang['expert_modus'] = "Expert Modus";
+$wrm_install_lang['manuel_edit_modus_titel'] = "manuel edit - modus";
 
 $wrm_install_lang['step5failconWRM'] = 'Unable to connect to WRM DB';
 $wrm_install_lang['step5selctusername'] = 'set full permissions to selected Username';
 $wrm_install_lang['step5sub1follval'] = 'In order to complete the installation please fill in the following values';
 $wrm_install_lang['step5done'] = 'done';
-$wrm_install_lang['step5sub2usernamefullperm'] = 'Select the username will be given full wowRaidManager permissions';
+$wrm_install_lang['step5sub2usernamefullperm'] = 'choose an username which you can gain full wowRaidManager permissions';
 $wrm_install_lang['step5sub3norest'] = 'No Restrictions';
 $wrm_install_lang['step5sub3noaddus'] = 'No Additional UserGroup';
 $wrm_install_lang['step5sub2failfindfile'] = 'Failed to find config file:';
@@ -134,12 +137,16 @@ $wrm_install_lang['step5sub3altgroup01'] = 'Select an Additional user group/clas
 $wrm_install_lang['step5sub3altgroup02'] = 'Any user tagged with this group will be allowed to log in regardless of whether they are in the above user group or not';
 
 //bridge mode
+$wrm_install_lang['bridge_step0_look_for_a_valid_Auth'] = "look for a valid Auth. System in the Server (this way is recommended)";
+$wrm_install_lang['bridge_step0_conf_the_Auth_System'] = "configure the Auth. System";
+$wrm_install_lang['bridge_step0_manual_edit_text'] = "values for the auth system must be entered by yourself (this way is recommended if the scan is faulty)";
+
 $wrm_install_lang['db_name_text'] = 'SQL Database';
 $wrm_install_lang['table_prefix_text'] = 'Table Prefix';
 $wrm_install_lang['bridge_name_text'] = 'Name';
 $wrm_install_lang['bridge_users_found_text'] = 'Users found';
 
-$wrm_install_lang['bridge_step0_unknown_auth'] = '(if you are not sure, please select "iUMS")';
+$wrm_install_lang['bridge_step0_unknown_auth'] = 'if you are not sure, please select "iUMS"';
 $wrm_install_lang['bridge_step0_choose_auth'] = 'Please choose an authorization type.';
 
 $wrm_install_lang['found_user_from_bridge']= "found user from bridge system";

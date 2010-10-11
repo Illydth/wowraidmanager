@@ -77,12 +77,12 @@ if (($step == "0"))
 		array(
 			"form_action" => $filename_bridge."step=1" ,
 		
-			"headtitle" => "&nbsp;",//$wrm_install_lang['bridge_step0_titel'],
-			"button_scan" => "scan server",
-			"scan_text" =>"scan server",
-			"button_manualedit" => "manuel edit",
-			"manualedit_text" => "manuel edit",
-			"button_iums" => "iUMS",
+			"headtitle" => $wrm_install_lang['bridge_step0_conf_the_Auth_System'],
+			"button_scan" => $wrm_install_lang['bd_scan_server'],
+			"scan_text" => $wrm_install_lang['bridge_step0_look_for_a_valid_Auth'],
+			"button_manualedit" => $wrm_install_lang['bd_manuel_edit'],
+			"manualedit_text" => $wrm_install_lang['bridge_step0_manual_edit_text'],
+			"button_iums" => $wrm_install_lang['bd_iUMS'],
 			"iums_text" => $wrm_install_lang['bridge_step0_unknown_auth'],
 		)
 	);
@@ -200,7 +200,7 @@ else if ($step === "epbrgstep1")
 	$smarty->assign(
 		array(
 			"form_action" => $filename_bridge."step=epbrgstep2" ,
-			"headtitle" => $wrm_install_lang['expert_modus'],
+			"headtitle" => $wrm_install_lang['manuel_edit_modus_titel'],
 			"bridge_type_text" => $wrm_install_lang['bridge_step0_choose_auth'],
 			"bridge_database_name_text" => $wrm_install_lang['db_name_text'],
 			"bridge_database_name_value" => $bridge_database_name,
