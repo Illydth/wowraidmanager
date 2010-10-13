@@ -33,7 +33,7 @@
 *
 ****************************************************************************/
 
-include("../version.php");
+include_once("../version.php");
 
 //
 // Parse and show the overall footer.

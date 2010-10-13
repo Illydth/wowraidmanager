@@ -144,8 +144,9 @@ if ($step == "0")
 		}
 	}
 
-	header("Location: ".$filename_install."step=1");
-
+	$step = "1";
+	//header("Location: ".$filename_install."step=1");
+	//exit;
 }
 
 /**
@@ -154,7 +155,7 @@ if ($step == "0")
  * ---------------------
  * */
 
-else if($step == "1")
+if($step == "1")
 {
 	/**
 	 *  VersionNR, from this wrm Install File
