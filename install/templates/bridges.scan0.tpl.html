@@ -19,8 +19,19 @@
     <tr>
 	<td>
 	  <div align="Left" class="row2">
-		 {html_radios name="allfoundbridges" class="post" values=$bridge_type_values checked=$bridge_type_selected output=$bridge_type_output separator="<br>
-		 <br>"}	  
+		 <table align="center" width="800">
+		   <tr >
+		      <td class="rowHover">{$bridge_name_text}</td>
+		      <td class="rowHover">{$dbname_text}</td>
+		      <td class="rowHover">{$table_prefix_text}</td>
+		      <td class="rowHover">{$bridge_users_found_text}</td>
+		   </tr>
+		   <tr>
+		   	<td>
+	  	   		{html_radios name="allfoundbridges" options=$allfoundbridges selected=$allfoundbridges_selected separator=""}  
+		    </td>
+		   </tr>
+		  </table>
 	  </div>
 	</td>
   </tr>

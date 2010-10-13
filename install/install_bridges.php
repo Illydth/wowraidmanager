@@ -110,28 +110,43 @@ if ($step == "1")
 
 if ($step == "scan_1")
 {
+	$allfoundbridges = array();
+//@todo tabelle einfügen zur besseren übersicht
 
 	$array_bridge_db = array();
 	$array_bridge_db = scan_dbserver();
-	$bridge_type_output = array();
-	$bridge_type_values = array();
+	$bridge_type_output = "";
+	$bridge_type_values = "";
 	
 	for ($i = 0; $i < count($array_bridge_db); $i++)
 	{
+		$bridge_type_output = "".
+									"".$array_bridge_db[$i]["bridge_name"]."</td> ".
+									"<td>".$array_bridge_db[$i]["bridge_database"]."</td> ".
+									"<td>".$array_bridge_db[$i]["bridge_table_prefix"]."</td> ".
+									"<td>".$array_bridge_db[$i]["bridge_founduser"]."</td> ".
+							"</tr><tr><td>";
 
-		$bridge_type_output[]=$wrm_install_lang['bridge_name_text'].": '". $array_bridge_db[$i]["bridge_name"]."' <br> ".$wrm_install_lang['step2dbname'].": '". $array_bridge_db[$i]["bridge_database"]."' ; ".$wrm_install_lang['table_prefix_text'].": '".$array_bridge_db[$i]["bridge_table_prefix"]."' ; ".$wrm_install_lang['bridge_users_found_text'].": '".$array_bridge_db[$i]["bridge_founduser"]."'";
-		$bridge_type_values[]=$array_bridge_db[$i]["bridge_name"].":".$array_bridge_db[$i]["bridge_database"].":".$array_bridge_db[$i]["bridge_table_prefix"].":";
+		$bridge_type_values = $array_bridge_db[$i]["bridge_name"].":".$array_bridge_db[$i]["bridge_database"].":".$array_bridge_db[$i]["bridge_table_prefix"].":".$array_bridge_db[$i]["bridge_founduser"];
+		
+		$allfoundbridges[$bridge_type_values] = $bridge_type_output;
 	}
 
 	include_once ("includes/page_header.php");
+
 	$smarty->assign(
 		array(
 			"form_action" => $filename_bridge."step=2" ,
 			"headtitle" => $wrm_install_lang['bridge_step0_titel'],
 			"bridge_step0_choose_auth" => $wrm_install_lang['bridge_step0_choose_auth'],
-			"bridge_type_output" => $bridge_type_output,
-			"bridge_type_values" => $bridge_type_values,
-			"bridge_type_selected" => $bridge_type_output[(count($bridge_type_output))-1],
+			"allfoundbridges" => $allfoundbridges,
+			"allfoundbridges_selected" => $bridge_type_values,
+			"bridge_name_text" => $wrm_install_lang['bridge_name_text'],
+			"dbname_text" => $wrm_install_lang['step2dbname'],
+			"table_prefix_text" => $wrm_install_lang['table_prefix_text'],
+			"bridge_users_found_text" => $wrm_install_lang['bridge_users_found_text'],
+		
+			"bridge_step0_choose_auth" => $wrm_install_lang['bridge_step0_choose_auth'],
 			"bd_submit" => $wrm_install_lang['bd_submit'],
 		)
 	);
