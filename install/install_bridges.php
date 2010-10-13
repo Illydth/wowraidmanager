@@ -118,27 +118,61 @@ if ($step == "scan_1")
 	$bridge_type_output = "";
 	$bridge_type_values = "";
 	
-	for ($i = 0; $i < count($array_bridge_db); $i++)
+	if (count($array_bridge_db) >=1)
 	{
-		$bridge_type_output = "".
-									"".$array_bridge_db[$i]["bridge_name"]."</td> ".
-									"<td>".$array_bridge_db[$i]["bridge_database"]."</td> ".
-									"<td>".$array_bridge_db[$i]["bridge_table_prefix"]."</td> ".
-									"<td>".$array_bridge_db[$i]["bridge_founduser"]."</td> ".
-							"</tr><tr><td>";
-
-		$bridge_type_values = $array_bridge_db[$i]["bridge_name"].":".$array_bridge_db[$i]["bridge_database"].":".$array_bridge_db[$i]["bridge_table_prefix"].":".$array_bridge_db[$i]["bridge_founduser"];
+		$row_nr_type  = 2;
 		
-		$allfoundbridges[$bridge_type_values] = $bridge_type_output;
+		for ($i = 0; $i < count($array_bridge_db); $i++)
+		{
+			$bridge_type_output = "".
+										"".$array_bridge_db[$i]["bridge_name"]."</td> ".
+										"<td class='row".$row_nr_type."'>".$array_bridge_db[$i]["bridge_database"]."</td> ".
+										"<td class='row".$row_nr_type."'>".$array_bridge_db[$i]["bridge_table_prefix"]."</td> ".
+										"<td class='row".$row_nr_type."'>".$array_bridge_db[$i]["bridge_founduser"]."</td> ".
+								"</tr>";
+			//change class='rowX' type
+			if ($row_nr_type  == 1)
+			{
+				$row_nr_type  = 2;
+			}
+			else
+			{
+				$row_nr_type  = 1;
+			}
+			
+			if ($i != count($array_bridge_db)-1)
+			{
+				$bridge_type_output .= "<tr><td class='row".$row_nr_type."'>";
+			}
+			
+			$bridge_type_values = $array_bridge_db[$i]["bridge_name"].":".$array_bridge_db[$i]["bridge_database"].":".$array_bridge_db[$i]["bridge_table_prefix"].":".$array_bridge_db[$i]["bridge_founduser"];
+			
+			$allfoundbridges[$bridge_type_values] = $bridge_type_output;
+			
+
+		}
+		
+		$form_action = $filename_bridge."step=2";
+		$show_error = false;
+	}
+	else
+	{
+		//please go back and try manuel edit or iums
+		$form_action = $filename_bridge."step=0";
+		$show_error = true;
+		
+		$error_msg = $wrm_install_lang['bridge_step0_error_no_found'];
 	}
 
 	include_once ("includes/page_header.php");
 
 	$smarty->assign(
 		array(
-			"form_action" => $filename_bridge."step=2" ,
+			"form_action" => $form_action,
 			"headtitle" => $wrm_install_lang['bridge_step0_titel'],
 			"bridge_step0_choose_auth" => $wrm_install_lang['bridge_step0_choose_auth'],
+			"show_error" => $show_error,
+			"error_msg" => $error_msg,
 			"allfoundbridges" => $allfoundbridges,
 			"allfoundbridges_selected" => $bridge_type_values,
 			"bridge_name_text" => $wrm_install_lang['bridge_name_text'],

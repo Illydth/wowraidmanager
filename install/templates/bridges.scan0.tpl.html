@@ -11,30 +11,34 @@
    <tr>
      <td>&nbsp;</td>
    </tr>
-   <tr>
-     <td><div align="center" class="row1">{$bridge_step0_choose_auth}</div></td>
-   </tr>
-  <tr>
-   <td>
-    <tr>
-	<td>
-	  <div align="Left" class="row2">
-		 <table align="center" width="800">
-		   <tr >
-		      <td class="rowHover">{$bridge_name_text}</td>
-		      <td class="rowHover">{$dbname_text}</td>
-		      <td class="rowHover">{$table_prefix_text}</td>
-		      <td class="rowHover">{$bridge_users_found_text}</td>
-		   </tr>
-		   <tr>
-		   	<td>
-	  	   		{html_radios name="allfoundbridges" options=$allfoundbridges selected=$allfoundbridges_selected separator=""}  
-		    </td>
-		   </tr>
-		  </table>
-	  </div>
-	</td>
-  </tr>
+   {if ($show_error == false)}
+	   <tr>
+	     <td><div align="center" class="row1">{$bridge_step0_choose_auth}</div></td>
+	   </tr>
+	  <tr>
+	   <td>
+	    <tr>
+		<td valign="top" class="forumline">
+			 <table width="100%" border="0" cellspacing="1" cellpadding="3" class="dataOutline">
+			   <tr >
+			      <td class="rowHover"><strong>{$bridge_name_text}</strong></td>
+			      <td class="rowHover"><strong>{$dbname_text}</strong></td>
+			      <td class="rowHover"><strong>{$table_prefix_text}</strong></td>
+			      <td class="rowHover"><strong>{$bridge_users_found_text}</strong></td>
+			   </tr>
+			   <tr>
+			   	<td class='row2'>
+		  	   		{html_radios name="allfoundbridges" options=$allfoundbridges selected=$allfoundbridges_selected separator=""}  
+			    </td>
+			   </tr>
+			  </table>
+		</td>
+	  </tr>
+	 {else}
+	   <tr>
+	     <td><div align="center" class="row1">{$bridge_step0_choose_auth}</div></td>
+	   </tr>
+    {/if}
   <tr>
 	<td>&nbsp;</td>
   </tr>

@@ -116,6 +116,7 @@ $wrm_install_lang['print_error_query'] = 'Richiesta';
 $wrm_install_lang['print_error_title'] = 'Oh oh! Errore!';
 
 $wrm_install_lang['step2errordbcon_titel'] = "Error connecting to Server (Servername or Username or Password incorrect)";
+$wrm_install_lang['bridge_step0_error_no_found'] = "please go back and try manuel edit or iums";
 //--------------------------
 // Auth.
 //--------------------------
