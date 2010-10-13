@@ -52,4 +52,21 @@ $smarty->compile_dir = '../cache/templates_c';
 $smarty->config_dir = '../includes/smarty/configs/';
 $smarty->cache_dir = '../cache/smarty_cache';
 
+
+/*
+ * set Lang. Format (default english)
+ */
+if (!isset($_GET['lang']))
+	$lang = "english";
+else
+	$lang = $_GET['lang'];
+include_once('language/locale-'.$lang.'.php');
+
+
+/*
+ * include default libs
+ */
+include_once ("includes/db/db.php");
+include_once ("includes/function.php");
+
 ?>

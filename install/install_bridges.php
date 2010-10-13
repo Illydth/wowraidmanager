@@ -38,13 +38,8 @@ if (!isset($_GET['step']))
 else
 	$step = $_GET['step'];
 
-//set Lang. Format
-if (!isset($_GET['lang']))
-	$lang = "english";
-else
-	$lang = $_GET['lang'];
+include_once ("common.php");
 
-/*----------------------------------------------------------------*/
 
 //default user_priv for normal user
 $default_user_Priv = 0;
@@ -53,21 +48,14 @@ $default_user_Priv = 0;
 $default_admin_Priv = 1;
 
 $filename_bridge = "install_bridges.php?lang=".$lang."&";
+$filename_install = "install.php?lang=".$lang."&";
 
 /**
  * This is the path to the WRM Config File
  */
 $wrm_config_file = "../config.php";
-
-/*----------------------------------------------------------------*/
-
-include_once('language/locale-'.$lang.'.php');
 include_once ($wrm_config_file);
-include_once ("includes/db/db.php");
-include_once ("includes/function.php");
-//load smarty 
-include_once ("common.php");
-/*----------------------------------------------------------------*/
+
 	
 if (($step == "0"))
 {
@@ -111,7 +99,6 @@ if ($step == "1")
 if ($step == "scan_1")
 {
 	$allfoundbridges = array();
-//@todo tabelle einfügen zur besseren übersicht
 
 	$array_bridge_db = array();
 	$array_bridge_db = scan_dbserver();
@@ -876,7 +863,7 @@ else if($step === "bridge_done")
 	//close connection
 	$wrm_install->sql_close();
 	
-	header("Location: install.php?lang=".$lang."&step=done");
+	header("Location: ".$filename_install."step=done");
 }
 
 ?>

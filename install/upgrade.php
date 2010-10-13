@@ -45,11 +45,8 @@ else
 	$step = $_GET['step'];
 
 
-//set Lang. Format
-if (!isset($_GET['lang']))
-	$lang = "english";
-else
-	$lang = $_GET['lang'];
+
+include_once ("common.php");
 
 /*----------------------------------------------------------------*/
 
@@ -57,13 +54,19 @@ else
  * Name from this File
  */
 $filename_upgrade = "upgrade.php?lang=".$lang."&";
-$filename_install = "install.php";
+$filename_install = "install.php?lang=".$lang;
 
 /**
  *  VersionNR, from this wrm Install File
  */
 include_once("../version.php");
 $versions_nr_install = $version;
+
+/**
+ * This is the path to the WRM Config File
+ */
+$wrm_config_file = "../config.php";
+include_once ($wrm_config_file);
 
 /**
  * default wrm Table prefix
@@ -81,18 +84,7 @@ $table_version_available = FALSE;
 
 //for a test connection
 $table_profile_available = FALSE;
-/*----------------------------------------------------------------*/
 
-include_once('language/locale-'.$lang.'.php');
-
-include_once ("includes/db/db.php");
-include_once ("includes/function.php");
-//load smarty 
-include_once ("common.php");
-
-include_once("../config.php");
-
-/*----------------------------------------------------------------*/
 
 //connect 2 wrm server
 $wrm_install = &new sql_db($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass'],$phpraid_config['db_name']);

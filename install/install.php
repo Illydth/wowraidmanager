@@ -38,19 +38,17 @@ if (!isset($_GET['step']))
 else
 	$step = $_GET['step'];
 
-
-//set Lang. Format (default english)
-if (!isset($_GET['lang']))
-	$lang = "english";
-else
-	$lang = $_GET['lang'];
+/*
+ * include libs
+ */
+include_once ("common.php");
 
 
 /*
  * name of this file
  */
 $filename_install = "install.php?lang=".$lang."&";
-$filename_upgrade = "upgrade.php";
+$filename_upgrade = "upgrade.php?lang=".$lang;
 
 
 /**
@@ -68,18 +66,6 @@ $default_file_sql_table_prefix = "wrm_";
  */
 $file_sql_install_schema = "database_schema/install/install_schema.sql";
 $file_sql_insert_values = "database_schema/install/insert_values.sql";
-
-/*
- * include libs
- */
-include_once('language/locale-'.$lang.'.php');
-
-include_once ("includes/db/db.php");
-include_once ("includes/function.php");
-//load smarty 
-include_once ("common.php");
-
-
 
 /**
  * --------------------
@@ -131,7 +117,6 @@ if ($step == "0")
 					if ($data_tables['Tables_in_'.$phpraid_config['db_name']] == $phpraid_config['db_prefix']."raids")
 					{
 						$table_profile_available = TRUE;
-						//echo "true";
 					}
 				}
 				
@@ -191,7 +176,7 @@ if($step == "1")
 			$smarty->display("version_nr_ok.html");		
 	}
 
-	create_armory_directory_path();
+	//create_armory_directory_path();
 	
 	$show_next_bd = TRUE;
 	
@@ -595,17 +580,20 @@ else if($step == 4)
 		{
 			//go to next step
 			header("Location: ".$filename_install."step=".($step+1) );
+			exit;
 		}
 		//config FILE ist NOT writeable
 		else
 		{
 			header("Location: ".$filename_install."step=1&error_confile_not_writeable");
+			exit;
 		}
 	}
 
 	if ($FOUNDERROR_Database == TRUE)
 	{
 		header("Location: ".$filename_install."step=3&error_db=1");
+		exit;
 	}
 }
 /**

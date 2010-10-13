@@ -34,11 +34,6 @@
 ****************************************************************************/
 
 
-// Set Page content type header:
-header('Content-Type: text/html; charset=utf-8');
-
-include_once('language/locale-'.$lang.'.php');
-
 $smarty->assign(
 	array(
 		"headtitle" =>  $wrm_install_lang['headtitle'],
