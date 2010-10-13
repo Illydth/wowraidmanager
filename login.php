@@ -244,4 +244,5 @@ if (isset($errorDie)){
 	require_once('includes/page_header.php');
 }
 require_once('includes/page_footer.php');
+
 ?>

@@ -217,7 +217,9 @@ function change_bridge_groups($bridge_selected_group_id, $bridge_selected_alt_gr
 
 /**
  * WRM Login
- * @return Integer; 1 = ok
+ * @return Integer; 
+ * 1 = ok
+ * 0,-1 = fail
  **/
 function wrm_login()
 {
@@ -257,22 +259,27 @@ function wrm_login()
 		}
 		
 	}// get infos from the COOKIE
-	elseif(isset($_COOKIE['profile_id']) && isset($_COOKIE['password'])) {
+	elseif(isset($_COOKIE['profile_id']) && isset($_COOKIE['password']))
+	{
 		// User is not logging in but processing cooking, set encryption flag to 1 to identify login with encrypted password.
 		$pwdencrypt = TRUE;
 		//$username = strtolower_wrap(scrub_input($_COOKIE['username']), "UTF-8");
 		$password = $_COOKIE['password'];
 		$profile_id = $_COOKIE['profile_id'];
 		$wrmpass = '';
-	} else {
-		wrm_logout();
-	}
-	
-	if (validate_Bridge_User($profile_id,$password,$pwdencrypt) != 1)
+	} 
+	else 
 	{
 		wrm_logout();
+		return -1;
 	}
-	
+	/*
+	if ( validate_Bridge_User($profile_id, $password, $pwdencrypt) == false)
+	{
+		wrm_logout();
+		return -1;
+	}
+	*/
 	//database
 	$sql = sprintf(	"SELECT ". $db_user_id . "," . $db_user_name . "," . $db_user_email . "," . $db_user_password.
 					" FROM " . $table_prefix . $db_table_user_name . 
@@ -429,7 +436,7 @@ function wrm_login()
 
 /*
  * validat WRM User
- * @return Integer; 1 = ok, 0 = fail
+ * @return Integer;
  */
 function validate_Bridge_User($profile_id, $password, $pwdencrypt)
 {
@@ -444,11 +451,11 @@ function validate_Bridge_User($profile_id, $password, $pwdencrypt)
 	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	if(password_check($password, $data[$db_user_id], $pwdencrypt) ) 
 	{
-		return 1;
+		return true;
 	}
 	
 	//fail, error
-	return 0;
+	return false;
 }
 /**************************************************************
  * set user profile variables in SESSION
