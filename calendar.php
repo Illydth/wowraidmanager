@@ -158,22 +158,22 @@ for ($x = 1; $x <= $daysInMonth; $x++)
 	{
 		$boxNum = $x + $offset;
 		$varname = 'box'.$boxNum;
-		//$$varname = '<div align="right"><font size="4" color="#FF0000"><b>' . $x . '</b></font></div>';
-		$varname = '<div class="currentDay">' . $x . '</div>';		
+		$$varname = '<div align="right"><font size="4" color="#FF0000"><b>' . $x . '</b></font></div>';
+		//$varname = '<div class="currentDay">' . $x . '</div>';		
 	}
 	elseif ($checkDate < $currTimeStamp)
 	{
 		$boxNum = $x + $offset;
 		$varname = 'box'.$boxNum;
-		//$$varname = '<div align="right"><font size="4" color="#FFFFFF"><b>' . $x . '</b></font></div>';
-		$varname = '<div class="priorDay">' . $x . '</div>';				
+		$$varname = '<div align="right"><font size="4" color="#FFFFFF"><b>' . $x . '</b></font></div>';
+		//$varname = '<div class="priorDay">' . $x . '</div>';				
 	}
 	else
 	{
 		$boxNum = $x + $offset;
 		$varname = 'box'.$boxNum;
-		//$$varname = '<div align="right"><font size="4"><b>' . $x . '</b></font></div>';
-		$varname = '<div class="postDay">' . $x . '</div>'; 				
+		$$varname = '<div align="right"><font size="4"><b>' . $x . '</b></font></div>';
+		//$varname = '<div class="postDay">' . $x . '</div>'; 				
 	}
 }
 
