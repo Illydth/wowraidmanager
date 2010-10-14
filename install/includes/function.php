@@ -183,24 +183,31 @@ function quote_smart($value = "", $nullify = false, $conn = null)
  */
 function print_error($type, $error, $die) 
 {
-	global $wrm_install_lang, $phpraid_config;
-
-	$errorMsg = '<html><link rel="stylesheet" type="text/css" href="templates/style/stylesheet.css"><body>';
-	$errorMsg .= '<div align="center">'.$wrm_install_lang['print_error_msg_begin'];
-
+	global $wrm_install_lang, $phpraid_config, $smarty;
+	
 	if($die == 1)
-		$errorMsg .= $wrm_install_lang['print_error_critical'];
+		$print_error_msg_type = $wrm_install_lang['print_error_critical'];
 	else
-		$errorMsg .= $wrm_install_lang['print_error_minor'];
+		$print_error_msg_type = $wrm_install_lang['print_error_minor'];
 
-	$errorMsg .= '<br><br><b>'.$wrm_install_lang['print_error_page'].':</b> ' . $_SERVER['PHP_SELF'];
-	$errorMsg .= '<br><br><b>'.$wrm_install_lang['print_error_query'].':</b> ' . $type;
-	$errorMsg .= '<br><br><b>'.$wrm_install_lang['print_error_details'].':</b> ' . $error;
-	$errorMsg .= '<br><br><b>'.$wrm_install_lang['print_error_msg_end'].'</b></div></body></html>';
-	$errorTitle = $wrm_install_lang['print_error_title'];
-
-	echo '<div align="center"><div class="errorHeader" style="width:600px">'.$errorTitle .'</div>';
-	echo '<div class="errorBody" style="width:600px">'.$errorMsg.'</div>';
+	include_once ("includes/page_header.php");
+	$smarty->assign(
+		array(
+				"error_title" => $wrm_install_lang['print_error_title'],
+				"print_error_msg_type" => $print_error_msg_type,
+				"print_error_page" => $wrm_install_lang['print_error_page'],
+				"PHP_SELF" => $_SERVER['PHP_SELF'],
+				"print_error_query" => $wrm_install_lang['print_error_query'],
+				"type" => $type,
+				"print_error_details" => $wrm_install_lang['print_error_details'],
+				"error" => $error,
+				"print_error_msg_begin" => $wrm_install_lang['print_error_msg_begin'],
+				"print_error_msg_end" => $wrm_install_lang['print_error_msg_end'],
+		)
+	);
+	
+	$smarty->display("error_big.html");
+	include_once ("includes/page_footer.php");
 
 	if($die == 1)
 		exit;
