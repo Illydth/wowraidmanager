@@ -41,8 +41,7 @@ else
 /*
  * include libs
  */
-include_once ("common.php");
-
+include_once ("install_common.php");
 
 /*
  * name of this file
@@ -54,7 +53,7 @@ $filename_upgrade = "upgrade.php?lang=".$lang;
 /**
  * This is the path to the WRM Config File
  */
-$wrm_config_file = "../config.php";
+$wrm_config_file = $wrm_dir . "/config.php";
 
 /**
  * default wrm Table prefix
@@ -66,6 +65,7 @@ $default_file_sql_table_prefix = "wrm_";
  */
 $file_sql_install_schema = "database_schema/install/install_schema.sql";
 $file_sql_insert_values = "database_schema/install/insert_values.sql";
+$file_sql_game_values = "database_schema/install/games/World_Of_Warcraft.sql";
 
 /**
  * --------------------
@@ -187,25 +187,49 @@ if($step == "1")
 	//load all lang file in a array
 	$array_lang_files = get_language_filename();
 
-	$phpversion = (int)(str_replace(".", "", phpversion()));
-
-	//fileperm: Returns TRUE = success or FALSE = failure
-	if (!(is_writable ("../cache/")))
+	// Cache Directory Verification
+	// Need to check both the Compile Directory as well as the Cache Directory.
+	$cache_dir_array = array();
+	$cache_dir_array[0] = '/cache/armory_cache';
+	$cache_dir_array[1] = '/cache/armory_log';
+	$cache_dir_array[2] = '/cache/raid_lua';
+	$cache_dir_array[3] = '/cache/smarty_cache';
+	$cache_dir_array[4] = '/cache/smarty_cache/admin';
+	$cache_dir_array[5] = '/cache/templates_c';
+	$cache_dir_array[6] = '/cache/templates_c/admin';
+	
+	foreach ($cache_dir_array as $cache_dir)
 	{
-		$show_next_bd = FALSE;
-		$writable_dir_cache_bgcolor = "red";
-		$writable_dir_cache_value = $wrm_install_lang['no'];
-		
-		if (fileperms("../cache/"))
+		$retval = directory_perms($wrm_dir.$cache_dir);
+		if ($retval != "1")
 		{
-			$writable_dir_cache_perms_value = " (" . substr(decoct(fileperms("../cache")),1) . ")";
+			if ($retval == "0")
+			{
+				$show_next_bd = FALSE;
+				$writable_dir_cache_bgcolor = "red";
+				$writable_dir_cache_value = $wrm_install_lang['no'];
+				$writable_dir_cache_perms_value = "-&nbsp;" . $wrm_install_lang['dir_missing'];
+			}
+			else
+			{
+				$show_next_bd = FALSE;
+				$writable_dir_cache_bgcolor = "red";
+				$writable_dir_cache_value = $wrm_install_lang['no'];
+				$writable_dir_cache_perms_value = "-&nbsp;" . $retval;
+			}
+			$check_directory = $cache_dir;
+			$dir_check_string = $wrm_install_lang['directory'].' "'.$check_directory.'" '.$wrm_install_lang['writable'];
+			break;
 		}
 		else
 			$writable_dir_cache_perms_value = "";
+			$dir_check_string = $wrm_install_lang['all_dir_checks_passed'];
+				
 	}
-	else
-		$writable_dir_cache_perms_value = "";
-		 
+	
+
+	//PHP Version Check
+	$phpversion = (int)(str_replace(".", "", phpversion()));
 	if($phpversion < 401)
 	{
 		$phpversion_bgcolor = "red";
@@ -231,15 +255,14 @@ if($step == "1")
 	// NOTE: BE CAREFUL WITH IS__WRITEABLE, that is NOT the built in is_writeable function. (See Double Underscore)
 	if (is_file($wrm_config_file))
 	{
-		chmod($wrm_config_file,0777);
-		if(!is__writeable($wrm_config_file))
+		if(!is__writable($wrm_config_file))
 		{
 			$writeable_config_bgcolor = "red";
 			$writeable_config_value = $wrm_install_lang['no'];
 			$show_next_bd = FALSE;
 			if (fileperms($wrm_config_file))
 			{
-				$wrm_config_file_fileperms = " (" . substr(decoct(fileperms($wrm_config_file)),2) . ")";
+				$wrm_config_file_fileperms = " *(" . substr(decoct(fileperms($wrm_config_file)),2) . ")";
 			}
 			else
 				$wrm_config_file_fileperms = "";
@@ -253,9 +276,21 @@ if($step == "1")
 	}
 	else
 	{
-		$wrm_config_file_fileperms = "";
-		$writeable_config_bgcolor = "green";
-		$writeable_config_value = $wrm_install_lang['yes'];		
+		// Config file does not already exist, we now need a "touch" test to verify we can write it.
+		if ($fp=@fopen($wrm_config_file, 'a'))  //This is akin to "touch", it opens the file for write.
+		{
+			$wrm_config_file_fileperms = "";
+			$writeable_config_bgcolor = "green";
+			$writeable_config_value = $wrm_install_lang['yes'];					
+		}
+		else 
+		{
+			$show_next_bd = FALSE;
+			$wrm_config_file_fileperms = "";
+			$writeable_config_bgcolor = "red";
+			$writeable_config_value = $wrm_install_lang['no'];						
+		}
+		@fclose($fp);
 	}
 		
 	include_once ("includes/page_header.php");
@@ -266,7 +301,7 @@ if($step == "1")
 				"headtitle" => $wrm_install_lang['headtitle'],
 				"property" => $wrm_install_lang['step0_property'],
 				"required" => $wrm_install_lang['step0_required'],
-				"exist" => $wrm_install_lang['step0_exist'],
+				"exist" => $wrm_install_lang['step0_status'],
 				"system_requirements" => $wrm_install_lang['step0_system_requirements'],
 				"phpversion_text" => $wrm_install_lang['step0_phpversion_text'],
 				"phpversion_value" => phpversion(),
@@ -275,14 +310,14 @@ if($step == "1")
 				"mysqlversion_value" => $gd,
 				"mysqlversion_bgcolor" => $mysqlversion_bgcolor,
 				"nonactive" => $wrm_install_lang['step0_nonactive'],
-		
+				"permission_warning" => $wrm_install_lang['permission_warning'],
 				"writeable_config_text" => $wrm_install_lang['step0_writeable_config'],
 				"writeable_config_value" => $writeable_config_value,
 				"yes" => $wrm_install_lang['yes'],
 				"writeable_config_bgcolor" => $writeable_config_bgcolor,
 				"file_perm_value" => $wrm_config_file_fileperms,
 		
-				"writable_dir_cache_text" => $wrm_install_lang['writable_dir_cache_text'],
+				"writable_dir_cache_text" => $dir_check_string,
 				"writable_dir_cache_bgcolor" => $writable_dir_cache_bgcolor,
 				"writable_dir_cache_value" => $writable_dir_cache_value,
 				"writable_dir_cache_perms_value" => $writable_dir_cache_perms_value,
@@ -424,11 +459,10 @@ else if($step == 3)
 		header("Location: ".$filename_install."step=2&erro_con=1");
 	}
 	
-	$wrm_install_lang['step3error_no_DB_found'] = "Open a Database Management Tool (like phpMyAdmin) and create a Database for WRM";
 	$error_msg = "";
 
 	if ( isset($_GET['erro_con']) )
-		$error_msg .= "Error connecting to Server (Servername or Username or Password incorrect) <br/>";//. ;
+		$error_msg .= $wrm_install_lang['step3error_bad_con_parms'];//. ;
 
 	if ( isset($_GET['error_db']))
 		$error_msg .= $wrm_install_lang['step3errordbcon'];
@@ -728,7 +762,32 @@ else if($step == 7)
 	$wrm_install = &new sql_db($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass'],$phpraid_config['db_name']);
 	
 	//insert (default) values (database_schema/install/insert_values.sql)
+
+	// Changing this to add another Game-Specific file to the insert of values. 
+	// $file_sql_insert_values = Generic Game Data like Config, Column Header, Version, etc. data.
+	// $file_sql_game_values = Game Specific Data like class and race data.
+
+	// Load $file_sql_insert_values to DB
 	if(!$fd = fopen($file_sql_insert_values, 'r'))
+	die('<font color=red>'.$wrm_install_lang['step3errorschema'].'.</font>');
+
+	if ($fd) {
+		while (!feof($fd)) {
+			$line = fgetc($fd);
+			$sql .= $line;
+
+			if($line == ';')
+			{
+				$sql = substr(str_replace('`'.$default_file_sql_table_prefix,'`' . $phpraid_config['db_prefix'], $sql), 0, -1);
+				$wrm_install->sql_query($sql) or print_error($sql, $wrm_install->sql_error(), 1);
+				$sql = '';
+			}
+		}
+		fclose($fd);
+	}
+	
+	// Load $file_sql_game_values to DB
+	if(!$fd = fopen($file_sql_game_values, 'r'))
 	die('<font color=red>'.$wrm_install_lang['step3errorschema'].'.</font>');
 
 	if ($fd) {
