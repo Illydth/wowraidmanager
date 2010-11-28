@@ -10,7 +10,7 @@ $wrm_install_lang['select_lang'] = 'Sprache waehlen';
 $wrm_install_lang['step0_system_requirements'] = 'Systemvoraussetzungen';
 $wrm_install_lang['step0_property'] = 'Eigenschaft';
 $wrm_install_lang['step0_required'] = 'erforderlich';
-$wrm_install_lang['step0_exist'] = 'vorhanden';
+$wrm_install_lang['step0_status'] = 'vorhanden';//New - Change to "Status" instead of "Exist"
 $wrm_install_lang['step0_phpversion_text'] = 'PHP Version';
 $wrm_install_lang['step0_mysqlversion'] = 'MySQL Version';
 $wrm_install_lang['step0_active'] = 'aktiviert';
@@ -24,6 +24,10 @@ $wrm_install_lang['upgrade'] = 'Upgrade';
 $wrm_install_lang['freshinstall'] = 'Neue Installation';
 $wrm_install_lang['change'] = 'aendern';
 $wrm_install_lang['database_text'] = 'Datenbank';
+$wrm_install_lang['dir_missing'] = 'Directory Missing';//new
+$wrm_install_lang['writable'] = 'writable?';//new
+$wrm_install_lang['directory'] = 'Directory: ';//new
+$wrm_install_lang['all_dir_checks_passed'] = 'All Cache Directories Exist and are Writable?';//new
 
 $wrm_install_lang['create_db'] = 'erstelle neue Datenbank?';
 $wrm_install_lang['only_if_create_new_tab'] = 'nur, wenn sie : "erstelle neue Datenbank?" angegeben haben';
@@ -32,6 +36,11 @@ $wrm_install_lang['php_variables'] = 'PHP Variablen';
 $wrm_install_lang['error_found_table_titel'] = 'fertig, es wurden existierende Tabellen gefunden';
 $wrm_install_lang['error_found_table_bd_back'] = 'Knopf zurück : verändere Tabellen Prefix oder Databank';
 $wrm_install_lang['error_found_table_bd_cont'] = 'Knopf weiter : löscht alle existierenden Tabellen, bevor sie neu nstalliert werden';
+$wrm_install_lang['permission_warning'] = '* If installing on a Windows OS, ignore the file permissions returned in "directory:" above. ' .
+											'Windows does not recognize Unix permission (DRWX...) style permissions.  This causes the function ' .
+											'that checks and returns permissions to always report fully writable permissions for Windows directories even ' .
+											'if they are not writeable.  Make sure the ACL allows the user running the webserver to write to ' . 
+											'this directory.';//new
 
 $wrm_install_lang['install_bridge_titel'] = 'Bridge Einstellungen';
 $wrm_install_lang['txt_group'] = 'Gruppe';
@@ -80,6 +89,8 @@ $wrm_install_lang['step3errorsql'] = 'Fehler bei der Installation :<br> SQL Stri
 $wrm_install_lang['step3installinfo'] = 'Wenn du dies hier lesen kannst, sind keine Fehler bei der Installation der SQL-Tabellen aufgetreten!';
 $wrm_install_lang['step3errorversion'] = 'Die Software-Version in version.php entsprich nicht der Version der Datenbank in der Version-Tabelle.';
 $wrm_install_lang['head_title_wrm_sql_server'] = "WRM Install SQL Server";
+$wrm_install_lang['step3error_no_DB_found'] = "Open a Database Management Tool (like phpMyAdmin) and create a Database for WRM";
+$wrm_install_lang['step3error_bad_con_parms'] = "Error connecting to Server (Servername or Username or Password incorrect) <br/>";
 
 //step done
 $wrm_install_lang['stepdonefinished'] = 'Fertig';

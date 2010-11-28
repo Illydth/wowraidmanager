@@ -10,13 +10,12 @@ $wrm_install_lang['select_lang'] = 'Select Language';
 $wrm_install_lang['step0_system_requirements'] = 'System Requirements';
 $wrm_install_lang['step0_property'] = 'Property';
 $wrm_install_lang['step0_required'] = 'Required';
-$wrm_install_lang['step0_exist'] = 'Exist';
+$wrm_install_lang['step0_status'] = 'Status';
 $wrm_install_lang['step0_phpversion_text'] = 'PHP Version';
 $wrm_install_lang['step0_mysqlversion'] = 'MySQL Version';
 $wrm_install_lang['step0_active'] = 'active';
 $wrm_install_lang['step0_nonactive'] = 'non active';
 $wrm_install_lang['step0_writeable_config'] = 'config.php writable?';
-$wrm_install_lang['writable_dir_cache_text'] = 'directory: "./cache" writable';
 
 $wrm_install_lang['yes'] = 'yes';
 $wrm_install_lang['no'] = 'no';
@@ -24,6 +23,10 @@ $wrm_install_lang['upgrade'] = 'Upgrade';
 $wrm_install_lang['freshinstall'] = 'Fresh Install';
 $wrm_install_lang['change'] = 'change';
 $wrm_install_lang['database_text'] = 'Database';
+$wrm_install_lang['dir_missing'] = 'Directory Missing';
+$wrm_install_lang['writable'] = 'writable?';
+$wrm_install_lang['directory'] = 'Directory: ';
+$wrm_install_lang['all_dir_checks_passed'] = 'All Cache Directories Exist and are Writable?';
 
 $wrm_install_lang['create_db'] = 'Create new Database?';
 $wrm_install_lang['only_if_create_new_tab'] = 'only, if you has selected: "Create new Database?"';
@@ -32,6 +35,11 @@ $wrm_install_lang['php_variables'] = 'PHP Variables';
 $wrm_install_lang['error_found_table_titel'] = 'already, existing tables were found';
 $wrm_install_lang['error_found_table_bd_back'] = 'Button Back : change Table Prefix or Database';
 $wrm_install_lang['error_found_table_bd_cont'] = 'Button Continue : deletes all existing tables, before the new tables are installed';
+$wrm_install_lang['permission_warning'] = '* If installing on a Windows OS, ignore the file permissions returned in "directory:" above. ' .
+											'Windows does not recognize Unix permission (DRWX...) style permissions.  This causes the function ' .
+											'that checks and returns permissions to always report fully writable permissions for Windows directories even ' .
+											'if they are not writeable.  Make sure the ACL allows the user running the webserver to write to ' . 
+											'this directory.';
 
 $wrm_install_lang['install_bridge_titel'] = 'Bridge Preferences';
 $wrm_install_lang['txt_group'] = 'Group';
@@ -80,6 +88,8 @@ $wrm_install_lang['step3errorschema'] = 'Error opening upgrade schema';
 $wrm_install_lang['step3installinfo'] = 'If you are seeing this then no errors occurred during table installation!';
 $wrm_install_lang['step3errorversion'] = 'The software version in version.php doesn\'t match database version in version table.';
 $wrm_install_lang['head_title_wrm_sql_server'] = "WRM Install SQL Server";
+$wrm_install_lang['step3error_no_DB_found'] = "Open a Database Management Tool (like phpMyAdmin) and create a Database for WRM";
+$wrm_install_lang['step3error_bad_con_parms'] = "Error connecting to Server (Servername or Username or Password incorrect) <br/>";
 
 //step done
 $wrm_install_lang['stepdonefinished'] = 'Finished';
