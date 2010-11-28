@@ -40,7 +40,11 @@
 function validate_wrm_configfile()
 {
 	$validate_value = TRUE;
-	$wrm_config_file = "../config.php";
+	
+	$curr_dir = dirname(__FILE__);
+	$wrm_dir = substr($curr_dir, 0, strpos($curr_dir, "install")-1); //Strip the "install" directory off the end.
+	
+	$wrm_config_file = $wrm_dir . "/config.php";
 	
 	if(is_file($wrm_config_file))
 	{
@@ -57,6 +61,8 @@ function validate_wrm_configfile()
 			$validate_value = FALSE;
 		}
 	}
+	else
+		$validate_value = FALSE;
 	
 	if ($validate_value == TRUE)
 		return TRUE;
@@ -227,20 +233,34 @@ function print_error($type, $error, $die)
  * @param string $path
  * @return boolean
  */
-function is__writeable($path)
+function is__writable($path)
 {
-	$checkpath = $path;
-
-	if ($path{strlen($path)-1}=='/')
-	$checkpath = $path.uniqid(mt_rand()).'.tmp';
-
-	if (!($f = @fopen($checkpath, 'a+')))
-	return false;
-
-	fclose($f);
-	if ($checkpath != $path)
-	unlink($checkpath);
-	return true;
+	if ($path{strlen($path)-1}=='/') // recursively return a temporary file path
+        return is__writable($path.uniqid(mt_rand()).'.tmp');
+    else if (is_dir($path))
+        return is__writable($path.'/'.uniqid(mt_rand()).'.tmp');
+    // check tmp file for read/write capabilities
+    $rm = file_exists($path);
+    $f = @fopen($path, 'a');
+    if ($f===false)
+        return false;
+    fclose($f);
+    if (!$rm)
+        unlink($path);
+    return true;
+	
+	//$checkpath = $path;
+//
+	//if ($path{strlen($path)-1}=='/')
+	//$checkpath = $path.uniqid(mt_rand()).'.tmp';
+//
+	//if (!($f = @fopen($checkpath, 'a+')))
+	//return false;
+//
+	//fclose($f);
+	//if ($checkpath != $path)
+	//unlink($checkpath);
+	//return true;
 }
 
 /**
@@ -818,4 +838,50 @@ function profile_add($user_admin_username,$user_admin_password,$user_admin_email
 	
 }
 
+/**
+ * Return RWX Permissions for a Directory or "False" if the directory doesn't exist.
+ *
+ * @param string $path
+ * @return string $permissions
+ */
+function directory_perms($path)
+{		
+	clearstatcache();
+	if (is_dir($path))
+	{
+		if (is__writable($path))
+		{
+			//echo "Writeable!<br>";
+			//echo "PATH: " . $path . "<br>";
+			//echo substr(sprintf('%o', fileperms($path)), -4);
+			$permissions = "1";
+		}
+		else
+		{
+			//echo "Not Writeable!<br>";
+			//echo "PATH: " . $path . "<br>";
+			//echo substr(sprintf('%o', fileperms($path)), -4);
+			$permissions = "(" . substr(sprintf('%o', fileperms($path)), -4) . ")*";
+		}	
+			
+		//if (fileperms($path))
+		//{
+		//	$a1 = fileperms($path);
+		//	echo "A1: " . $a1 . "<br>";
+		//	$a2 = decoct($a1);
+		//	echo "A2: " . $a2 . "<br>";
+		//	$a3 = substr($a2, 1);
+		//	echo "A3: " . $a3 . "<br>";
+		//	$af = "(" . $a3 . ")";
+		//	echo "AF: " . $af . "<br>";
+		//	$permissions = "(" . substr(decoct(fileperms($path)),1) . ")"; //(0777)
+		//}
+		//else
+		//	$writable_dir_cache_perms_value = FALSE;
+	}
+	else
+		$permissions = "0";
+		
+	return $permissions;
+}
 ?>
