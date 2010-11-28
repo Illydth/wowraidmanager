@@ -1,6 +1,6 @@
 <?php
 /***************************************************************************
-*                                common.php
+*                            install_common.php
 *                            -------------------
 *   begin                : Saturday, Jan 16, 2005
 *   copyright            : (C) 2007-2008 Douglas Wagner
@@ -32,25 +32,42 @@
 /**********************************************************
  * Load Template System Here (Smarty)
  **********************************************************/
-
-//Load Smarty Library
-//define('SMARTY_DIR', dirname(__FILE__).'../includes/smarty/libs/');
-define('SMARTY_DIR', '../includes/smarty/libs/');
-include_once('../includes/smarty/libs/Smarty.class.php');
+$inst_dir = dirname(__FILE__);
+$wrm_dir = substr($inst_dir, 0, strlen($inst_dir)-8); //Strip the "install" directory off the end.
+define('SMARTY_DIR', $wrm_dir .'/includes/smarty/libs/');
+require(SMARTY_DIR . 'Smarty.class.php');
 
 $smarty = new Smarty();
+$smarty->template_dir = $inst_dir . '/templates/';
+$smarty->compile_dir  = $inst_dir . '/cache/templates_c';
+$smarty->config_dir   = $wrm_dir . '/includes/smarty/configs/';
+$smarty->cache_dir    = $inst_dir . '/cache/smarty_cache';
 // Turning on Caching will cause many pages not to display dynamic changes properly.
 $smarty->caching = false;
 $smarty->compile_check = true;
-
 /* Turn on/off Smarty Template Debugging by commenting/uncommenting the lines below. */
 $smarty->debugging = false;
 //$smarty->debugging = true;
 
-$smarty->template_dir = 'templates';
-$smarty->compile_dir = '../cache/templates_c';
-$smarty->config_dir = '../includes/smarty/configs/';
-$smarty->cache_dir = '../cache/smarty_cache';
+
+///Load Smarty Library
+///define('SMARTY_DIR', dirname(__FILE__).'../includes/smarty/libs/');
+//define('SMARTY_DIR', '../includes/smarty/libs/');
+//include_once('../includes/smarty/libs/Smarty.class.php');
+//
+//$smarty = new Smarty();
+/// Turning on Caching will cause many pages not to display dynamic changes properly.
+//$smarty->caching = false;
+//$smarty->compile_check = true;
+
+/* Turn on/off Smarty Template Debugging by commenting/uncommenting the lines below. */
+//$smarty->debugging = false;
+///$smarty->debugging = true;
+
+//$smarty->template_dir = 'templates';
+//$smarty->compile_dir = '../cache/templates_c';
+//$smarty->config_dir = '../includes/smarty/configs/';
+//$smarty->cache_dir = '../cache/smarty_cache';
 
 
 /*
