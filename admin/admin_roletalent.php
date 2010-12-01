@@ -170,7 +170,7 @@ if($_GET['mode'] != 'remove')
 		log_delete('class/role/talent link',$n);
 
 		$sql = sprintf("DELETE FROM " . $phpraid_config['db_prefix'] . "class_role WHERE class_id=%s and subclass=%s",quote_smart($class_id), quote_smart($talent_tree_name));
-		echo "SQL: " . $sql;
+		//echo "SQL: " . $sql;
 		$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 
 		header("Location: admin_roletalent.php?mode=view");
