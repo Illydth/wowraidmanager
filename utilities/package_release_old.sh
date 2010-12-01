@@ -173,3 +173,7 @@ zip -r wowRaidManager_v$1.zip wrm
 
 #Final Packages should be in <root>/utilities/package at this point, ready for disbursal, remove temp directories
 rm -rf wrm
+
+echo "Please ensure Smarty Debugging has been turned off in Common.php."
+echo "Also make sure error reporting has been set to Error, Warning and Parse ONLY in Common.php."
+echo "If either of these settings is wrong, please fix and re-produce the package."
