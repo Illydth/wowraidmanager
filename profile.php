@@ -590,6 +590,8 @@ if (($_GET['mode'] == 'new') or ($_GET['mode'] == 'edit'))
 		$errorMsg = $phprlang['profile_create_msg'];
 		$errorDie = 0;
 		$errorSpace = 1;
+		require_once('includes/page_header.php');
+		require_once('includes/page_footer.php');		
 	} 
 	else 
 	{
@@ -818,7 +820,6 @@ if (($_GET['mode'] == 'new') or ($_GET['mode'] == 'edit'))
 		$wrmsmarty->display('profile_new.html');
 		require_once('includes/page_footer.php');
 	}
-	
 }
 
 
