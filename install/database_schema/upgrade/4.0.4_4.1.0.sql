@@ -139,6 +139,9 @@ INSERT INTO `wrm_config` (`config_name`,`config_value`) VALUES ('wrm_created_on'
 INSERT INTO `wrm_config` (`config_name`,`config_value`) VALUES ('wrm_updated_on', '1');
 INSERT INTO `wrm_config` (`config_name`,`config_value`) VALUES ('max_lvl', '85');
 INSERT INTO `wrm_config` (`config_name`,`config_value`) VALUES ('wrm_expansion', '4');
+INSERT INTO `wrm_config` (`config_name`,`config_value`) VALUES ('lua_output_sort_signups', '1');
+INSERT INTO `wrm_config` (`config_name`,`config_value`) VALUES ('lua_output_sort_queue', '2');
+INSERT INTO `wrm_config` (`config_name`,`config_value`) VALUES ('lua_output_format', '1');
 
 DELETE FROM `wrm_config` WHERE `wrm_config`.`config_name` = 'user_queue_promote';
 DELETE FROM `wrm_config` WHERE `wrm_config`.`config_name` = 'user_queue_comments';
