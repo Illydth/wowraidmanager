@@ -38,7 +38,7 @@ if (!isset($_GET['step']))
 else
 	$step = $_GET['step'];
 
-include_once ("common.php");
+include_once ("install_common.php");
 
 
 //default user_priv for normal user
