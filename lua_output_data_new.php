@@ -148,7 +148,7 @@ function output_lua_rim()
 			
 			// Get the Raid Forces associated with that server. 
 			// Raids with RF Name of None are not processed...they have no server and thus RIM has no use for them.
-			$sql = "SELECT DISTINCT b.raid_force_name as raid_force_name, b.raid_force_id as raid_force_id " . 
+			$sql = "SELECT DISTINCT b.raid_force_name as raid_force_name " . 
 					"FROM ".$phpraid_config['db_prefix']."guilds a, ".$phpraid_config['db_prefix']."raid_force b " .
 					"WHERE a.guild_id = b.guild_id " .
 					"AND a.guild_server = '" . $server . "' " .
@@ -162,7 +162,7 @@ function output_lua_rim()
 				// Get Raids for Each Raid Force and Process Them.
 				$count = 0;
 				$sql = "SELECT * FROM ".$phpraid_config['db_prefix']."raids 
-						WHERE raid_force_id = '" . $rf_list_records['raid_force_id'] . "' 
+						WHERE raid_force_name = '" . $rf_list_records['raid_force_name'] . "' 
 						AND " . $raid_sql_where . " ORDER BY invite_time ASC"; // raid_sql_where from lua_output.php
 				$raids_list_query = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 				while($raid_data = $db_raid->sql_fetchrow($raids_list_query, true))
@@ -365,7 +365,7 @@ function output_lua_rim()
 		
 		// Take the Raid ID and get the Raid Force
 		$sql = "SELECT * FROM ".$phpraid_config['db_prefix']."raid_force
-				WHERE raid_force_id = '" . $raid_data['raid_force_id'] . "'";
+				WHERE raid_force_name = '" . $raid_data['raid_force_name'] . "'";
 		$raid_force_name_query = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		$raid_force_name_data = $db_raid->sql_fetchrow($raid_force_name_query, true);
 	
