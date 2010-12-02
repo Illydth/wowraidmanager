@@ -9,43 +9,36 @@
       <table width="100%" border="0" cellspacing="1" cellpadding="3" class="dataOutline">
         <tr> 
           <td width="200" class="row1"><span class="headmed"><strong>{$guilds_new.name_text}</strong></span></td>
-          <td class="row2"><input name="name" type="text" id="name" value="{$guilds_new.guild_name}" class="post"></td>
+          <td class="row2">{$guilds_new.name}</td>
         </tr>
         <tr> 
           <td width="200" class="row1"><span class="headmed"><strong>{$guilds_new.short_text}</strong></span></td>
-          <td class="row2"><input name="short" type="text" id="short" value="{$guilds_new.guild_tag}" class="post"></td>
+          <td class="row2">{$guilds_new.short}</td>
         </tr>
         <tr> 
           <td width="200" class="row1"><span class="headmed"><strong>{$guilds_new.master_text}</strong></span></td>
-          <td class="row2"><input name="master" type="text" id="master" value="{$guilds_new.guild_master}" class="post"></td>
+          <td class="row2">{$guilds_new.master}</td>
         </tr>
         <tr> 
           <td width="200" class="row1"><span class="headmed"><strong>{$guilds_new.description_text}</strong></span></td>
-          <td class="row2"><input name="description" type="text" id="description" value="{$guilds_new.guild_description}" class="post"></td>
+          <td class="row2">{$guilds_new.description}</td>
         </tr>
         <tr> 
           <td width="200" class="row1"><span class="headmed"><strong>{$guilds_new.server_text}</strong></span></td>
-          <td class="row2"><input name="server" type="text" id="server" value="{$guilds_new.guild_server}" class="post"></td>
+          <td class="row2">{$guilds_new.server}</td>
         </tr>
         <tr> 
           <td width="200" class="row1"><span class="headmed"><strong>{$guilds_new.faction_text}</strong></span></td>
-          <td class="row2">
-          	{html_options name=faction options=$guilds_new.array_faction selected=$guilds_new.selected_faction class="post"}
-          </td>
+          <td class="row2">{$guilds_new.faction}</td>
         </tr>
         <tr> 
           <td width="200" class="row1"><span class="headmed"><strong>{$guilds_new.code_text}</strong></span></td>
-          <td class="row2">
-          	{html_options name=armory_code options=$guilds_new.array_armory_code selected=$guilds_new.selected_armory_code class="post"}
-          </td>
+          <td class="row2">{$guilds_new.code}</td>
         </tr>
       </table>
     </td>
   </tr>
 </table><br>
-<div align="center" class="button">
-	<input type="submit" value="{$guilds_new.button_submit}" name="submit" class="mainoption">
-	<input type="reset" value="{$guilds_new.button_reset}" name="reset" class="liteoption">
-</div>
+<div align="center" class="button">{$guilds_new.buttons}</div>
 </form>
 </div>

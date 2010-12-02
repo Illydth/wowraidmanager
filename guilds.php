@@ -38,8 +38,6 @@ require_once('./common.php');
 define("PAGE_LVL","guilds");
 require_once("includes/authentication.php");
 
-require_once("includes/functions_guilds.php");
-
 /*************************************************************
  * Setup Record Output Information for Data Table
  *************************************************************/
@@ -68,7 +66,6 @@ else
 	$sortDesc = scrub_input($_GET['SortDescending']);
 	
 $pageURL = 'guilds.php?mode=view&';
-
 /**************************************************************
  * End Record Output Setup for Data Table
  **************************************************************/
@@ -78,7 +75,7 @@ if($_GET['mode'] == 'view' || $_GET['mode'] == 'update' || $_GET['mode'] == 'sel
 	$guild = array();
 	
 	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "guilds";
-	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(),1);
+	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(),1);
 	while($data = $db_raid->sql_fetchrow($result, true)) {
 		
 	$edit = '<a href="guilds.php?mode=update&amp;id='.$data['guild_id'].'"><img src="templates/' . $phpraid_config['template'] . 
@@ -149,47 +146,35 @@ if($_GET['mode'] == 'view' || $_GET['mode'] == 'update' || $_GET['mode'] == 'sel
 	/****************************************************************
 	 * Raid Force Table Listing.
 	 ****************************************************************/
-	$array_raid_force = array();
 	// Set View_Name if Passed
 	if(isset($_GET['raid_force_drop_name']))
 		$raid_force_name = scrub_input($_GET['raid_force_drop_name']);
 	
 	// Fill in the Class Dropdown
-	
-//	$rf_select = '<select name="raid_force_drop_name" onChange="MM_jumpMenu(\'parent\',this,0)" class="form" style="width:100px">';
-//	$rf_select .= '<option value="guilds.php?mode=view">'.$phprlang['form_select'].'</option>' . $rf_options . '</select>';
-		
-		
 	$sql = "SELECT DISTINCT raid_force_name FROM " . $phpraid_config['db_prefix'] . "raid_force";
-	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);			
+	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);			
 	while($raid_force_data = $db_raid->sql_fetchrow($result, true))
 	{
 		$force_name_url = urlencode($raid_force_data['raid_force_name']);
-		$array_raid_force["guilds.php?mode=select&amp;raid_force_drop_name=" . $force_name_url] = $raid_force_data['raid_force_name'];
-
-//		$rf_options .= "<option ";
-		
+		$rf_options .= "<option ";
 		if($raid_force_name == $raid_force_data['raid_force_name'])
-			$selected_raid_force = $raid_force_data['raid_force_name'];
-//			$rf_options .= "SELECTED ";
-			
-//		$rf_options .= "value=\"guilds.php?mode=select&amp;raid_force_drop_name=" . $force_name_url . "\">" . $raid_force_data['raid_force_name'] ."</option>";
+			$rf_options .= "SELECTED ";
+		$rf_options .= "value=\"guilds.php?mode=select&amp;raid_force_drop_name=" . $force_name_url . "\">" . $raid_force_data['raid_force_name'] ."</option>";
 	}
-	$array_raid_force[$phprlang['form_select']] = $phprlang['form_select'];
+	
+	$rf_select = '<select name="raid_force_drop_name" onChange="MM_jumpMenu(\'parent\',this,0)" class="form" style="width:100px">';
+	$rf_select .= '<option value="guilds.php?mode=view">'.$phprlang['form_select'].'</option>' . $rf_options . '</select>';
 	
 	$form_action = 'guilds.php?mode=select';
-	$rf_select_data ="";
+	
 	$wrmsmarty->assign('rf_select_data', 
 		array(
 			'datatable_header' => $phprlang['raid_force_header'],
 			'rf_select_text' => $phprlang['raid_force_select_text'],
-			'array_raid_force' => $array_raid_force,
-			'selected_raid_force' => $selected_raid_force,
-			//'rf_select' => $rf_select,
+			'rf_select' => $rf_select,
 			'form_action' => $form_action,
 		)
-	);
-
+	); 	
 } elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit') {
 	// slashes
 	$name = scrub_input($_POST['name'], false);
@@ -198,10 +183,35 @@ if($_GET['mode'] == 'view' || $_GET['mode'] == 'update' || $_GET['mode'] == 'sel
 	$description = scrub_input($_POST['description'], false);
 	$server = scrub_input($_POST['server'], false);
 	$faction = scrub_input($_POST['faction'], false);
-	$code = scrub_input($_POST['armory_code'], false);
+	$code = scrub_input($_POST['code'], false);
 	
-	$link = get_armory_link_from_code($code);
-
+	switch ($code)
+	{
+		case 'US':
+			$link = 'http://www.wowarmory.com';
+			break;
+		case 'EU':
+			$link = 'http://eu.wowarmory.com';
+			break;
+		case 'DE':
+			$link = 'http://eu.wowarmory.com';
+			break;
+		case 'ES':
+			$link = 'http://eu.wowarmory.com';
+			break;
+		case 'FR':
+			$link = 'http://eu.wowarmory.com';
+			break;
+		case 'KR':
+			$link = 'http://kr.wowarmory.com';
+			break;
+		case 'TW':
+			$link = 'http://tw.wowarmory.com';
+			break;
+		default:
+			$link = '';
+			break;	
+	}
 	
 	// Added Verifications
 	$errorSpace = 1;
@@ -222,15 +232,28 @@ if($_GET['mode'] == 'view' || $_GET['mode'] == 'update' || $_GET['mode'] == 'sel
 		$errorDie = 1;
 	else
 	{
-		if($_GET['mode'] == 'new')
-		{
-			//create new guilde
-			guild_add_new($master,$name,$short,$description,$server,$faction,$link,$code);
-		} elseif($_GET['mode'] == 'edit') 
-		{	
-			//edit guilde
+		if($_GET['mode'] == 'new') 	{
+			$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "guilds 
+				(`guild_master`,`guild_name`,`guild_tag`,`guild_description`,`guild_server`,
+				`guild_faction`,`guild_armory_link`,`guild_armory_code`) 
+				VALUES (%s,%s,%s,%s,%s,%s,%s,%s)",quote_smart($master),quote_smart($name),
+				quote_smart($short),quote_smart($description),quote_smart($server),
+				quote_smart($faction),quote_smart($link),quote_smart($code));
+			
+			$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+			
+			log_create('guild',mysql_insert_id(),$name);
+		} elseif($_GET['mode'] == 'edit') {
 			$id = scrub_input($_GET['id'], false);
-			guild_edit($name,$short,$master,$description,$server,$faction,$link,$code,$id);
+			
+			$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "guilds 
+				SET guild_name=%s,guild_tag=%s,guild_master=%s,guild_description=%s,
+				guild_server=%s,guild_faction=%s,guild_armory_link=%s,guild_armory_code=%s 
+				WHERE guild_id=%s",quote_smart($name),quote_smart($short),
+				quote_smart($master),quote_smart($description),quote_smart($server),
+				quote_smart($faction),quote_smart($link),quote_smart($code),
+				quote_smart($id));
+			$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 		}		
 	
 		header("Location: guilds.php?mode=view");
@@ -241,7 +264,7 @@ if($_GET['mode'] == 'view' || $_GET['mode'] == 'update' || $_GET['mode'] == 'sel
 	$guild_id = scrub_input($_POST['guild_id']);
 	
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raid_force WHERE raid_force_name = %s AND guild_id = %s", quote_smart($raid_force_name), quote_smart($guild_id));
-	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(),1);
+	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(),1);
 	$numrows = $db_raid->sql_numrows($result);
 
 	// Added Verifications
@@ -266,7 +289,7 @@ if($_GET['mode'] == 'view' || $_GET['mode'] == 'update' || $_GET['mode'] == 'sel
 				(`raid_force_name`,`guild_id`) VALUES (%s,%s)",
 				quote_smart($raid_force_name),quote_smart($guild_id));
 			
-			$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+			$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 			
 			log_create('raid_force',mysql_insert_id(),$name);
 		} elseif($_GET['mode'] == 'force_edit_submit') {
@@ -277,7 +300,7 @@ if($_GET['mode'] == 'view' || $_GET['mode'] == 'update' || $_GET['mode'] == 'sel
 				quote_smart($raid_force_name),quote_smart($guild_id),
 				quote_smart($rf_id));
 			
-			$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+			$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 		}		
 	
 		header("Location: guilds.php?mode=view");
@@ -307,7 +330,14 @@ if($_GET['mode'] == 'view' || $_GET['mode'] == 'update' || $_GET['mode'] == 'sel
 			require_once('includes/page_footer.php');	
 			exit;		
 		} else {
-			guild_remove($n, $id);
+			log_delete('guild',$n);
+			
+			$sql = sprintf("DELETE FROM " . $phpraid_config['db_prefix'] . "guilds WHERE guild_id=%s",quote_smart($id));
+			$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+			
+			// Deleting the guild, set all characters to a guild ID of "0" to denote they are not attached to a guild.
+			$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "chars SET guild = '0' WHERE guild = %s",quote_smart($id));
+			$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 			
 			header("Location: guilds.php?mode=view");
 		}
@@ -345,7 +375,7 @@ if($_GET['mode'] == 'view' || $_GET['mode'] == 'update' || $_GET['mode'] == 'sel
 			log_delete('raid_force',$rf_id);
 			
 			$sql = sprintf("DELETE FROM " . $phpraid_config['db_prefix'] . "raid_force WHERE raid_force_id=%s",quote_smart($rf_id));
-			$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+			$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 			
 			header("Location: guilds.php?mode=view");
 		}
@@ -363,7 +393,7 @@ if($_GET['mode'] == 'select' || $_GET['mode'] == 'force_edit') {
 	
 	$raid_force_name = scrub_input($_GET['raid_force_drop_name']);
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raid_force WHERE raid_force_name = %s", quote_smart($raid_force_name));
-	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(),1);
+	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(),1);
 	while($data = $db_raid->sql_fetchrow($result, true)) 
 	{	
 		$edit = '<a href="guilds.php?mode=force_edit&amp;rf_id='.$data['raid_force_id'].'&amp;raid_force_drop_name='.$raid_force_name.'"><img src="templates/' . $phpraid_config['template'] . 
@@ -375,7 +405,7 @@ if($_GET['mode'] == 'select' || $_GET['mode'] == 'force_edit') {
 		
 		// Get the Guild Name to Display instead of Just the ID
 		$sql = sprintf("SELECT guild_name FROM " . $phpraid_config['db_prefix'] . "guilds WHERE guild_id=%s",quote_smart($data['guild_id']));
-		$guild_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+		$guild_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 		$guild_data = $db_raid->sql_fetchrow($guild_result, true);
 		$guild_name = $guild_data['guild_name'];
 		
@@ -434,112 +464,154 @@ if($_GET['mode'] == 'select' || $_GET['mode'] == 'force_edit') {
 	);	
 }
 if($_GET['mode'] != 'delete' && $_GET['mode'] != 'force_delete') {
-
-	// Selection box for Armory Code.
-	$array_armory_code = get_armory_code_full();
-	$array_faction = array();
-	$array_guild = array();
-	
 	if($_GET['mode'] == 'view' || $_GET['mode'] == 'select') {
-		
 		// setup new form information
 		$form_action = 'guilds.php?mode=new';
-		$guild_name = "";
-		$guild_tag = "";
-		$guild_master = "";
-		$guild_description = "";
-		$guild_server = "";
-			 
-		// now the faction
-		$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "faction";
-		$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);			
-		while($faction_data = $db_raid->sql_fetchrow($result, true))
-		{
-			$array_faction[$faction_data['faction_name']] = $faction_data['faction_name'];
-
-			if($faction_data['faction_name'] == $phpraid_config['faction'])
-			{
-				$selected_faction = $faction_data['faction_name'];
-			}			
-		}
-		
-		$selected_armory_code = $data['guild_armory_code'];
+		$name = '<input name="name" type="text" id="name" class="post">';
+		$short = '<input name="short" type="text" id="short" class="post">';
+		$master = '<input name="master" type="text" id="master" class="post">';
+		$description = '<input name="description" type="text" id="description" class="post">';
+		$server = '<input name="server" type="text" id="server" class="post">';
 		
 		// Raid Force Boxes
 		$force_form_action = "guilds.php?mode=force_new";
-		$raid_force_name = "";
+		$raid_force_name = '<input name="raid_force_name" type="text" id="raid_force_name" class="post">';
 
+		$guild_options = '<select name="guild_id">';
 		$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "guilds";
-		$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);			
+		$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);			
 		while($guild_data = $db_raid->sql_fetchrow($result, true))
+			$guild_options .= "<option value=\"" . $guild_data['guild_id'] . "\">" . $guild_data['guild_name']."</option>";
+		$guild_options .= '</select>';
+		
+		// now the faction
+		$faction = '<select name="faction" class="post">';
+		$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "faction";
+		$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);			
+		while($faction_data = $db_raid->sql_fetchrow($result, true))
 		{
-			$array_guild[$guild_data['guild_id']] = $guild_data['guild_name'];
+			$faction .= "<option ";
+			if($faction_data['faction_name'] == $phpraid_config['faction'])
+				$faction .= "SELECTED ";
+			$faction .= "value=\"" . $faction_data['faction_name'] . "\">" . $faction_data['faction_name'] ."</option>";
 		}
+		$faction .= '</select>';
+
+		// Selection box for Armory Code.
+		$armory_box = '<select name="code" class="post">';
+		$armory_box .=   '<option value="US" selected>US : http://www.wowarmory.com : English</option>';
+		$armory_box .=   '<option value="EU">EU : http://eu.wowarmory.com : English</option>';
+		$armory_box .=   '<option value="DE">DE : http://eu.wowarmory.com : German</option>';
+		$armory_box .=   '<option value="ES">ES : http://eu.wowarmory.com : Spanish</option>';
+		$armory_box .=   '<option value="FR">FR : http://eu.wowarmory.com : French</option>';
+		$armory_box .=   '<option value="KR">KR : http://kr.wowarmory.com : Korean</option>';
+		$armory_box .=   '<option value="TW">TW : http://tw.wowarmory.com : Taiwainese</option>';
+		$armory_box .=   '<option value="None">No Armory or Not Applicable</option>';
+		$armory_box .= '</select>';
 		
-		$button_01 = $phprlang['submit'];
-		
+		$buttons = '<input type="submit" value="'.$phprlang['submit'].'" name="submit" class="mainoption"> <input type="reset" value="'.$phprlang['reset'].'" name="reset" class="liteoption">';
+		$rf_buttons = '<input type="submit" value="'.$phprlang['submit'].'" name="submit" class="mainoption"> <input type="reset" value="'.$phprlang['reset'].'" name="reset" class="liteoption">';
 	} elseif($_GET['mode'] == 'update' || $_GET['mode'] == 'force_edit') {
 		$id = scrub_input($_GET['id'], false);
 		$rf_id = scrub_input($_GET['rf_id'], false);
 		
 		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "guilds WHERE guild_id=%s",quote_smart($id));
-		$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+		$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 		$data = $db_raid->sql_fetchrow($result, true);
 		
 		// it's an edit... joy
 		$form_action = "guilds.php?mode=edit&amp;id=$id";
-		$guild_name = $data['guild_name'];
-		$guild_tag = $data['guild_tag'];
-		$guild_master = $data['guild_master'];
-		$guild_description = $data['guild_description'];
-		$guild_server = $data['guild_server'];
-		
-		// now the faction
-		$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "faction";
-		$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);			
-		while($faction_data = $db_raid->sql_fetchrow($result, true))
-		{
-			$array_faction[$faction_data['faction_name']] = $faction_data['faction_name'];
+		$name = '<input name="name" type="text" id="name" value="' . $data['guild_name'] . '" class="post">';
+		$short = '<input name="short" type="text" id="short" value="' . $data['guild_tag'] . '" class="post">';
+		$master = '<input name="master" type="text" id="master" value="' . $data['guild_master'] . '" class="post">';
+		$description = '<input name="description" type="text" id="description" value="' . $data['guild_description'] . '" class="post">';
+		$server = '<input name="server" type="text" id="server" value="' . $data['guild_server'] . '" class="post">';
 
-			if($faction_data['faction_name'] == $data['guild_faction'])
-			{
-				$selected_faction = $faction_data['faction_name'];
-			}
-		}
-
-		$selected_armory_code = $data['guild_armory_code'];
-		
 		// Raid Force Boxes
-		$force_form_action = "guilds.php?mode=force_edit_submit&amp;rf_id=".$rf_id;
-		$raid_force_name = $rf_data['raid_force_name'];
-		
 		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raid_force WHERE raid_force_id=%s",quote_smart($rf_id));
-		$rf_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+		$rf_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 		$rf_data = $db_raid->sql_fetchrow($rf_result, true);
 		
+		$force_form_action = "guilds.php?mode=force_edit_submit&amp;rf_id=".$rf_id;
+		
+		$raid_force_name = '<input name="raid_force_name" type="text" id="raid_force_name" class="post" value="'.$rf_data['raid_force_name'].'">';
+
+		$guild_options = '<select name="guild_id">';
 		$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "guilds";
-		$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);			
+		$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);			
 		while($guild_data = $db_raid->sql_fetchrow($result, true))
 		{
-			$array_guild[$guild_data['guild_id']] = $guild_data['guild_name'];
-			
-			if($rf_data['guild_id'] == $guild_data['guild_id'])
-				$selected_guild = $guild_data['guild_id'];				
+			$guild_options .= "<option ";
+			if($rf_data['guild_id'] == $class_data['guild_id'])
+				$guild_options .= "SELECTED ";
+			$guild_options .= "value=\"" . $guild_data['guild_id'] . "\">" . $guild_data['guild_name']."</option>";
 		}
-
-		$button_01 = $phprlang['update'];
+		$guild_options .= '</select>';
+		
+		// now the faction
+		$faction = '<select name="faction" class="post">';
+		$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "faction";
+		$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);			
+		while($faction_data = $db_raid->sql_fetchrow($result, true))
+		{
+			$faction .= "<option ";
+			if($faction_data['faction_name'] == $data['guild_faction'])
+				$faction .= "SELECTED ";
+			$faction .= "value=\"" . $faction_data['faction_name'] . "\">" . $faction_data['faction_name'] ."</option>";
+		}
+		$faction .= '</select>';
+		
+		// Selection box for Armory Code.
+		$armory_box = '<select name="code" class="post">';
+		if ($data['guild_armory_code'] == 'US')
+			$armory_box .=   '<option value="US" selected>US : http://www.wowarmory.com : English</option>';
+		else 
+			$armory_box .=   '<option value="US">US : http://www.wowarmory.com : English</option>';
+		if ($data['guild_armory_code'] == 'EU')
+			$armory_box .=   '<option value="EU" selected>EU : http://eu.wowarmory.com : English</option>';
+		else 
+			$armory_box .=   '<option value="EU">EU : http://eu.wowarmory.com : English</option>';
+		if ($data['guild_armory_code'] == 'DE')
+			$armory_box .=   '<option value="DE" selected>DE : http://eu.wowarmory.com : German</option>';
+		else 
+			$armory_box .=   '<option value="DE">DE : http://eu.wowarmory.com : German</option>';
+		if ($data['guild_armory_code'] == 'ES')
+			$armory_box .=   '<option value="ES" selected>ES : http://eu.wowarmory.com : Spanish</option>';
+		else 
+			$armory_box .=   '<option value="ES">ES : http://eu.wowarmory.com : Spanish</option>';
+		if ($data['guild_armory_code'] == 'FR')
+			$armory_box .=   '<option value="FR" selected>FR : http://eu.wowarmory.com : French</option>';
+		else 
+			$armory_box .=   '<option value="FR">FR : http://eu.wowarmory.com : French</option>';
+		if ($data['guild_armory_code'] == 'KR')
+			$armory_box .=   '<option value="KR" selected>KR : http://kr.wowarmory.com : Korean</option>';
+		else 
+			$armory_box .=   '<option value="KR">KR : http://kr.wowarmory.com : Korean</option>';
+		if ($data['guild_armory_code'] == 'TW')
+			$armory_box .=   '<option value="TW" selected>TW : http://tw.wowarmory.com : Taiwainese</option>';
+		else 
+			$armory_box .=   '<option value="TW">TW : http://tw.wowarmory.com : Taiwainese</option>';
+		if ($data['guild_armory_code'] == '')
+			$armory_box .=   '<option value="None" selected>No Armory or Not Applicable</option>';
+		else 
+			$armory_box .=   '<option value="None">No Armory or Not Applicable</option>';
+		$armory_box .= '</select>';
+				
+		$buttons = '<input type="submit" value="'.$phprlang['update'].'" name="submit" class="mainoption"> <input type="reset" value="'.$phprlang['reset'].'" name="reset" class="liteoption">';			
+		$rf_buttons = '<input type="submit" value="'.$phprlang['update'].'" name="submit" class="mainoption"> <input type="reset" value="'.$phprlang['reset'].'" name="reset" class="liteoption">';
 	}
 	
 	$wrmsmarty->assign('guilds_new',
 		array(
 			'form_action'=>$form_action,
-			'guild_name'=>$guild_name,
-			'guild_tag'=>$guild_tag,
-			'guild_master'=>$guild_master,
-			'guild_description'=>$guild_description,
-			'guild_server'=>$guild_server,
-			'array_faction' => $array_faction,
-			'selected_faction' => $selected_faction,
+			'name'=>$name,
+			'short'=>$short,
+			'master'=>$master,
+			'description'=>$description,
+			'server'=>$server,
+			'faction'=>$faction,
+			'code'=>$armory_box,
+			'buttons'=>$buttons,
 			'newguild_header'=>$phprlang['guilds_new_header'],
 			'name_text'=>$phprlang['guilds_name'],
 			'short_text'=>$phprlang['guilds_tag'],
@@ -548,10 +620,6 @@ if($_GET['mode'] != 'delete' && $_GET['mode'] != 'force_delete') {
 			'server_text'=>$phprlang['guilds_server'],
 			'faction_text'=>$phprlang['guilds_faction'],
 			'code_text'=>$phprlang['guilds_armory_code'],
-			'selected_armory_code'=>$selected_armory_code,
-			'array_armory_code'=>$array_armory_code,
-			'button_submit' => $button_01,
-			'button_reset' => $phprlang['reset']
 		)
 	);
 	
@@ -559,15 +627,11 @@ if($_GET['mode'] != 'delete' && $_GET['mode'] != 'force_delete') {
 		array(
 			'force_new_header'=>$phprlang['raid_force_new_header'],
 			'force_form_action'=>$force_form_action,
-			'raid_force_name' =>$raid_force_name,
-			'array_guild' => $array_guild,
-			'selected_guild' => $selected_guild,
-			'array_guild' => $array_guild,
-			'selected_guild' => $selected_guild,
+			'raid_force_name_box'=>$raid_force_name,
+			'guild_options_box'=>$guild_options,
 			'raid_force_name_box_text'=>$phprlang['raid_force_name_box_text'],
 			'guild_options_text'=>$phprlang['raid_force_guild_options_text'],
-			'button_submit' => $button_01,
-			'button_reset' => $phprlang['reset']
+			'rf_buttons'=>$rf_buttons,
 		)
 	);
 }

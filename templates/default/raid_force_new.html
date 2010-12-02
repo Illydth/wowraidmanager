@@ -9,20 +9,16 @@
       <table width="100%" border="0" cellspacing="1" cellpadding="3" class="dataOutline">
         <tr> 
           <td width="200" class="row1"><span class="headmed"><strong>{$force_new.raid_force_name_box_text}</strong></span></td>
-          <td class="row2">
-	          	<input name="raid_force_name" type="text" id="raid_force_name" value="{$force_new.raid_force_name}" class="post">
-          </td>
+          <td class="row2">{$force_new.raid_force_name_box}</td>
         </tr>
         <tr> 
           <td width="200" class="row1"><span class="headmed"><strong>{$force_new.guild_options_text}</strong></span></td>
-          <td class="row2">
-	          {html_options name=guild_id options=$force_new.array_guild selected=$force_new.selected_guild class="post"}
-          </td>
+          <td class="row2">{$force_new.guild_options_box}</td>
         </tr>
       </table>
     </td>
   </tr>
 </table><br>
-<div align="center" class="button"><input type="submit" value="{$force_new.button_submit}" name="submit" class="mainoption"> <input type="reset" value="{$force_new.button_reset}" name="reset" class="liteoption"></div>
+<div align="center" class="button">{$force_new.rf_buttons}</div>
 </form>
 </div>
