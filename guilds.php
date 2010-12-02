@@ -339,6 +339,11 @@ if($_GET['mode'] == 'view' || $_GET['mode'] == 'update' || $_GET['mode'] == 'sel
 			$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "chars SET guild = '0' WHERE guild = %s",quote_smart($id));
 			$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 			
+			// Delete the Guild from any Raid Force it is a part of.  This will also delete the Raid Force if it's the last
+			//   guild in an RF.
+			$sql = sprintf("DELETE FROM " . $phpraid_config['db_prefix'] . "raid_force WHERE guild_id=%s",quote_smart($id));
+			$db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+			
 			header("Location: guilds.php?mode=view");
 		}
 	} else {
