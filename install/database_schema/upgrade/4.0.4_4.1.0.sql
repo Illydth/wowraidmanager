@@ -191,15 +191,15 @@ UNIQUE ( `raid_force_id` )
 );
 
 -- Raid Table Update/Field Additions
-ALTER TABLE `wrm_raids` ADD `raid_force_id` INT( 10 ) NOT NULL DEFAULT '0'; 
+ALTER TABLE `wrm_raids` ADD `raid_force_name` varchar( 100 ) NOT NULL DEFAULT 'All'; 
 ALTER TABLE `wrm_raids` ADD `recurrance` TINYINT( 1 ) NOT NULL DEFAULT '0';
 ALTER TABLE `wrm_raids` ADD `rec_interval` VARCHAR( 15 ) DEFAULT NULL;
 ALTER TABLE `wrm_raids` ADD `num_recur` TINYINT( 2 ) NOT NULL DEFAULT '0';
-ALTER TABLE `wrm_raids` ADD INDEX ( `raid_force_id` ); 
+ALTER TABLE `wrm_raids` ADD INDEX ( `raid_force_name` ); 
 
 -- Location Table Update/Field Addition
-ALTER TABLE `wrm_locations` ADD `raid_force_id` INT( 10 ) NOT NULL DEFAULT '0',
-ADD INDEX ( raid_force_id ); 
+ALTER TABLE `wrm_locations` ADD `raid_force_name` varchar( 100 ) NOT NULL DEFAULT 'All',
+ADD INDEX ( raid_force_name ); 
 
 -- Raid signup Group Table Creation
 DROP TABLE IF EXISTS `wrm_acl_raid_signup_group`;

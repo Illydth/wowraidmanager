@@ -113,22 +113,12 @@ if($_GET['mode'] == 'view')
 			
 			$loc_role_array[$role_name['role_name']] = $loc_role_data['lmt'];
 		}
-
-		// Get Raid Force Name from Raid Force ID
-		$sql = sprintf("SELECT raid_force_name FROM " . $phpraid_config['db_prefix'] . "raid_force WHERE raid_force_id = %s", quote_smart($data['raid_force_id']));
-		$result_raid_force_name = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-		$raid_force_name_data = $db_raid->sql_fetchrow($result_raid_force_name, true);
-		
-		if ($data['raid_force_id'] == 0)
-			$force_name = $phprlang['none'];
-		else
-			$force_name = $raid_force_name_data['raid_force_name'];
-		
+	
 		array_push($loc,
 			array(
 				'ID'=>$data['location_id'],
 				'Name'=>$data['name'],
-				'Force Name'=>$force_name,
+				'Force Name'=>$data['raid_force_name'],
 				'Event Type'=>$event_type_text,
 				'Dungeon'=>$data['location'],
 				'Min Level'=>$data['min_lvl'],
@@ -204,7 +194,7 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 	$event_id = scrub_input($_GET['event']);
 	$location_min_lvl = scrub_input($_POST['location_min_lvl']);
 	$location_max_lvl = scrub_input($_POST['location_max_lvl']);
-	$raid_force_id = scrub_input($_POST['raid_force_id']);
+	$raid_force_name = scrub_input($_POST['raid_force_name']);
 	
 	// Handle Classes
 	foreach ($wrm_global_classes as $global_class)
@@ -231,10 +221,10 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 	if($_GET['mode'] == 'new')
 	{
 		$sql = sprintf(	"INSERT INTO " . $phpraid_config['db_prefix'] . "locations".
-						" (`location`,`min_lvl`,`max_lvl`,`name`,`max`,`locked`,`event_type`,`event_id`,`raid_force_id`)".
+						" (`location`,`min_lvl`,`max_lvl`,`name`,`max`,`locked`,`event_type`,`event_id`,`raid_force_name`)".
 						" VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)",
 		quote_smart($loc),quote_smart($location_min_lvl),quote_smart($location_max_lvl),quote_smart($location_shortname),
-		quote_smart($number_max_chars),quote_smart($locked),quote_smart($eventtype),quote_smart($event_id),quote_smart($raid_force_id));
+		quote_smart($number_max_chars),quote_smart($locked),quote_smart($eventtype),quote_smart($event_id),quote_smart($raid_force_name));
 		
 		$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
 
@@ -276,11 +266,11 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 
 		$sql = sprintf(	"UPDATE " . $phpraid_config['db_prefix'] . "locations ".
 						"	SET name=%s,max=%s, min_lvl=%s,max_lvl=%s,location=%s,".
-						"	locked=%s,event_type=%s,event_id=%s,raid_force_id=%s ".
+						"	locked=%s,event_type=%s,event_id=%s,raid_force_name=%s ".
 						"	WHERE location_id=%s",
 		quote_smart($location_shortname),quote_smart($number_max_chars),quote_smart($location_min_lvl),quote_smart($location_max_lvl),
 		quote_smart($loc),quote_smart($locked),quote_smart($eventtype),quote_smart($event_id),
-		quote_smart($raid_force_id),quote_smart($id));
+		quote_smart($raid_force_name),quote_smart($id));
 
 		$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 
@@ -458,15 +448,15 @@ if($_GET['mode'] != 'delete')
 		}
 		
 		// This code sets up the selection box for raid force from the raid_force table.
-		$array_raid_force[$phprlang['none']] = $phprlang['none'];
+		$array_raid_force[$phprlang['none']] = $phprlang['all'];
 
-		$sql = "SELECT DISTINCT raid_force_name,raid_force_id FROM " . $phpraid_config['db_prefix'] . "raid_force";
+		$sql = "SELECT DISTINCT raid_force_name FROM " . $phpraid_config['db_prefix'] . "raid_force";
 		$raid_force_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		while($raid_force_data = $db_raid->sql_fetchrow($raid_force_result, true))
 		{
-			$array_raid_force[$raid_force_data['raid_force_id']] = $raid_force_data['raid_force_name'];
-			if ($raid_force_id == $raid_force_data['raid_force_id'])
-				$selected_raid_force = $raid_force_data['raid_force_id'];
+			$array_raid_force[$raid_force_data['raid_force_name']] = $raid_force_data['raid_force_name'];
+			if ($raid_force_name == $raid_force_data['raid_force_name'])
+				$selected_raid_force = $raid_force_data['raid_force_name'];
 		}
 
 		$location_shortname = '';
@@ -617,23 +607,22 @@ if($_GET['mode'] != 'delete')
 		
 		// This code sets up the selection box for raid force from the raid_force table.
 		
-		$array_raid_force[$phprlang['none']] = $phprlang['all'];
-		$selected_raid_force = $phprlang['none'];
+		$array_raid_force[$phprlang['all']] = $phprlang['all'];
+		$selected_raid_force = $phprlang['all'];
 
-		$sql = "SELECT DISTINCT raid_force_name, raid_force_id FROM " . $phpraid_config['db_prefix'] . "raid_force";
+		$sql = "SELECT DISTINCT raid_force_name FROM " . $phpraid_config['db_prefix'] . "raid_force";
 		$raid_force_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		while($raid_force_data = $db_raid->sql_fetchrow($raid_force_result, true))
 		{	
-			$array_raid_force[$raid_force_data['raid_force_id']] = $raid_force_data['raid_force_name'];
-//			if ($data['raid_force_id'] == $raid_force_data['raid_force_id'])
-//				$selected_raid_force = $raid_force_data['raid_force_id'];
+			$array_raid_force[$raid_force_data['raid_force_name']] = $raid_force_data['raid_force_name'];
+			if ($data['raid_force_name'] == $raid_force_data['raid_force_name'])
+				$selected_raid_force = $raid_force_data['raid_force_name'];
 				
 //			$raid_force_box .= "<option ";
 //			if ($data['raid_force_id'] == $raid_force_data['raid_force_id'])
 //				$raid_force_box .= "SELECTED ";
 //			$raid_force_box .= "value=\"" . $raid_force_data['raid_force_id'] . "\">" . $raid_force_data['raid_force_name'] ."</option>";	
 		}
-
 		
 		$location_shortname =  $data['name'];
 		$location_min_lvl = $data['min_lvl'];

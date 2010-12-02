@@ -43,7 +43,8 @@
         <tr>
           <td width="200" class="row1"><span class="headmed"><strong>{$locations_new.raid_force_text}</strong></span></td>
           <td class="row2">
-          	{html_options name=raid_force_id options=$locations_new.array_raid_force selected=$locations_new.selected_raid_force class="post" onChange="MM_jumpMenu('self',this,0)"}
+          	<!-- {html_options name=raid_force_id options=$locations_new.array_raid_force selected=$locations_new.selected_raid_force class="post" onChange="MM_jumpMenu('self',this,0)"} -->
+          	{html_options name=raid_force_name options=$locations_new.array_raid_force selected=$locations_new.selected_raid_force class="post"}
           	</td>
         </tr>
         <tr>

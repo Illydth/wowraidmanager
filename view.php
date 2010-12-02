@@ -915,7 +915,7 @@ if($mode == 'view')
 	}
 
 	// check if any of their characters belong to the guild that the raid force is specfiying.
-	if ($data['raid_force_id'] != '0')
+	if ($data['raid_force_name'] != 'All')
 	{
 		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raid_force WHERE raid_force_name=%s", quote_smart($data['raid_force_name']));
 		$raid_force_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
@@ -1633,15 +1633,15 @@ if($show_signup == 1 && $priv_profile == 1)
 	$username = $data_tmp[$wrm_db_user_name];
 	
 	// get character list
-	$sql = sprintf("SELECT raid_force_id FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id=%s", quote_smart($raid_id));
+	$sql = sprintf("SELECT raid_force_name FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id=%s", quote_smart($raid_id));
 	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	$rf_data = $db_raid->sql_fetchrow($result, true);
-	$raid_force_id = $rf_data['raid_force_id'];
+	$raid_force_name = $rf_data['raid_force_name'];
 	
 	$array_character = array();
-	if ($raid_force_id != "0")
+	if ($raid_force_name != "All")
 	{
-		$sql = sprintf("SELECT guild_id FROM " . $phpraid_config['db_prefix'] . "raid_force WHERE raid_force_id=%s", quote_smart($raid_force_id));
+		$sql = sprintf("SELECT guild_id FROM " . $phpraid_config['db_prefix'] . "raid_force WHERE raid_force_name=%s", quote_smart($raid_force_name));
 		$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		while($rf_data = $db_raid->sql_fetchrow($result, true))
 		{
