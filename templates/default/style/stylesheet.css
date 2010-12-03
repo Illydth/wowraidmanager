@@ -263,6 +263,7 @@ input.liteoption {
 
 #leftMenuBackground {
 	background-image:url('../images/leftMenu_bg.gif');
+	white-space: nowrap;
 }
 
 #leftMenuBorder {
