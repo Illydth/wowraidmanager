@@ -208,12 +208,12 @@ function schedule_raid($invite_time, $start_time, $raid_id)
 	// Create Scheduled Record based upon Pulled Record
 	$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "raids (`description`,`freeze`,`invite_time`,
 	`location`,`officer`,`old`,`start_time`,`min_lvl`,`max_lvl`,`max`,`event_type`,
-	`event_id`,`raid_force_id`,`recurrance`)	
+	`event_id`,`raid_force_name`,`recurrance`)	
 	VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
 	quote_smart($data['description']),quote_smart($data['freeze']),quote_smart($invite_time),quote_smart($data['location']),
 	quote_smart($data['officer']),quote_smart('0'),quote_smart($start_time),quote_smart($data['min_lvl']),
 	quote_smart($data['max_lvl']),quote_smart($data['max']),quote_smart($data['tag']),quote_smart($data['event_id']),
-	quote_smart($data['raid_force_id']),'0');
+	quote_smart($data['raid_force_name']),'0');
 	
 	if(!$db_raid->sql_query($sql))
 	{
