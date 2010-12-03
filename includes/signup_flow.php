@@ -91,17 +91,18 @@ function initializeButtons()
  * @param $signup_group_id (1=user, 2=RL, 3=Admin)
  * @param $type
  */
-function getarray_button($signup_group_id, $type)
+function getarray_button($signup_group_id, $type, $buttons)
 {
 	global $db_raid, $phpraid_config;
 
-	$array_button = array();
+	$array_button = $buttons;
 	$sql = sprintf(	"SELECT * FROM " . $phpraid_config['db_prefix'] . "acl_raid_signup_group".
 					" WHERE `" . $phpraid_config['db_prefix'] . "acl_raid_signup_group`.`signup_group_id` = %s;",
 					quote_smart($signup_group_id)
 		);
 	$result_group = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	$data_wrm = $db_raid->sql_fetchrow($result_group,true);
+	//var_dump($data_wrm);
 	{
 		if ($type == "drafted")
 		{
@@ -120,7 +121,7 @@ function getarray_button($signup_group_id, $type)
 		elseif ($type == "queue")
 		{
 			if($data_wrm['on_queue_draft'] == '1')
-				$array_button['Queue'] = TRUE;
+				$array_button['Draft'] = TRUE;
 	
 			if($data_wrm['on_queue_comments'] == '1')
 				$array_button['Comments'] = TRUE;
@@ -146,6 +147,7 @@ function getarray_button($signup_group_id, $type)
 				$array_button['Delete'] = TRUE;
 		}
 	}		
+	//var_dump($array_button);
 	return $array_button;
 }
 
@@ -154,22 +156,22 @@ function signedUpFlow($user_perm_group, $phpraid_config, $data, $raid_id, $phprl
 
 	//Set Button Array to Determine which buttons are set.
 	$buttons=initializeButtons();
-
+	
 	//Signed Up Buttons
 	if($user_perm_group['admin'])
 	{
-		$buttons = getarray_button(3, "drafted");
+		$buttons = getarray_button(3, "drafted", $buttons);
 	}
 
 	if($user_perm_group['RL'])
 	{
-		$buttons = getarray_button(2, "drafted");
+		$buttons = getarray_button(2, "drafted", $buttons);
 	}
 
 	// Users should only have options to work on themselves, they should not be able to modify other users.
 	if($_SESSION['profile_id'] == $data['profile_id'])
 	{
-		$buttons = getarray_button(1, "drafted");
+		$buttons = getarray_button(1, "drafted", $buttons);
 	}
 
 	//Create Buttons
@@ -209,18 +211,18 @@ function queuedFlow($user_perm_group, $phpraid_config, $data, $raid_id, $phprlan
 	//Signed Up Buttons
 	if($user_perm_group['admin'])
 	{
-		$buttons = getarray_button(3, "queue");
+		$buttons = getarray_button(3, "queue", $buttons);
 	}
 
 	if($user_perm_group['RL'])
 	{
-		$buttons = getarray_button(2, "queue");
+		$buttons = getarray_button(2, "queue", $buttons);
 	}
 
 	// Users should only have options to work on themselves, they should not be able to modify other users.
 	if($_SESSION['profile_id'] == $data['profile_id'])
 	{
-		$buttons = getarray_button(1, "queue");
+		$buttons = getarray_button(1, "queue", $buttons);
 	}
 
 	//Create Buttons
@@ -260,18 +262,18 @@ function canceledFlow($user_perm_group, $phpraid_config, $data, $raid_id, $phprl
 	//Signed Up Buttons
 	if($user_perm_group['admin'])
 	{
-		$buttons = getarray_button(3, "cancel");
+		$buttons = getarray_button(3, "cancel", $buttons);
 	}
 
 	if($user_perm_group['RL'])
 	{
-		$buttons = getarray_button(2, "cancel");
+		$buttons = getarray_button(2, "cancel", $buttons);
 	}
 
 	// Users should only have options to work on themselves, they should not be able to modify other users.
 	if($_SESSION['profile_id'] == $data['profile_id'])
 	{
-		$buttons = getarray_button(1, "cancel");
+		$buttons = getarray_button(1, "cancel", $buttons);
 	}
 	
 	//Create Buttons
