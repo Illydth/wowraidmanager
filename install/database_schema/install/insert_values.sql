@@ -414,6 +414,7 @@ INSERT INTO `wrm_config` VALUES ('wrm_expansion', '4');
 INSERT INTO `wrm_config` VALUES ('lua_output_sort_signups', '1');
 INSERT INTO `wrm_config` VALUES ('lua_output_sort_queue', '2');
 INSERT INTO `wrm_config` VALUES ('lua_output_format', '1');
+INSERT INTO `wrm_config` VALUES ('num_old_raids_index', '20');
 
 -- Event Type Table Data
 INSERT INTO `wrm_event_type` (`event_type_id`, `event_type_name`, `event_type_lang_id`, `def`) VALUES

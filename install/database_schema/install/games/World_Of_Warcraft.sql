@@ -26,6 +26,7 @@ INSERT INTO `wrm_class_race` VALUES ('Dwarf', 'Paladin');
 INSERT INTO `wrm_class_race` VALUES ('Dwarf', 'Mage');
 INSERT INTO `wrm_class_race` VALUES ('Dwarf', 'Shaman');
 INSERT INTO `wrm_class_race` VALUES ('Dwarf', 'Death Knight');
+INSERT INTO `wrm_class_race` VALUES ('Dwarf', 'Warlock');
 INSERT INTO `wrm_class_race` VALUES ('Human', 'Priest');
 INSERT INTO `wrm_class_race` VALUES ('Human', 'Rogue');
 INSERT INTO `wrm_class_race` VALUES ('Human', 'Warrior');

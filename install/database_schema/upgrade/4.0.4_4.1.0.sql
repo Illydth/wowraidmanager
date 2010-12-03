@@ -142,6 +142,7 @@ INSERT INTO `wrm_config` (`config_name`,`config_value`) VALUES ('wrm_expansion',
 INSERT INTO `wrm_config` (`config_name`,`config_value`) VALUES ('lua_output_sort_signups', '1');
 INSERT INTO `wrm_config` (`config_name`,`config_value`) VALUES ('lua_output_sort_queue', '2');
 INSERT INTO `wrm_config` (`config_name`,`config_value`) VALUES ('lua_output_format', '1');
+INSERT INTO `wrm_config` (`config_name`,`config_value`) VALUES ('num_old_raids_index', '20');
 
 DELETE FROM `wrm_config` WHERE `wrm_config`.`config_name` = 'user_queue_promote';
 DELETE FROM `wrm_config` WHERE `wrm_config`.`config_name` = 'user_queue_comments';
@@ -231,7 +232,7 @@ INSERT INTO `wrm_expansion` (`exp_id`, `exp_name`, `exp_lang_id`, `def`,`max_lvl
 UPDATE `wrm_expansion` SET `def` = '0' WHERE `exp_lang_id`='exp_wrath_lich_king' LIMIT 1 ;
 
 -- Event Table Data
-INSERT INTO `wrm`.`wrm_events` (`event_id`, `zone_desc`, `max`, `exp_id`, `event_type_id`, `wow_name`, `icon_path`) VALUES
+INSERT INTO `wrm_events` (`event_id`, `zone_desc`, `max`, `exp_id`, `event_type_id`, `wow_name`, `icon_path`) VALUES
 ('136', 'Icecrown Citadel - 10 man', '10', '3', '1', 'Icecrown Citadel (10)', 'images/instances/WotLK_Icons/10-Icecrown-Citadel.jpg'),
 ('137', 'Icecrown Citadel - 25 man', '25', '3', '1', 'Icecrown Citadel (25)', 'images/instances/WotLK_Icons/25-Icecrown-Citadel.jpg');
 -- Cataclysm Events
@@ -258,5 +259,42 @@ INSERT INTO `wrm_events` ( `zone_desc`, `max`, `exp_id`, `event_type_id`, `wow_n
 ('Bastion Of Twilight - 25 man', 10, 4, 1, 'Bastion Of Twilight (25)', 'images/instances/Cataclysm_Icons/raids/25-Bastion-Of-Twilight.jpg'),
 ('Blackwing Descent - 25 man', 10, 4, 1, 'Blackwing Descent (25)', 'images/instances/Cataclysm_Icons/raids/25-Blackwing-Descent.jpg'),
 ('Throne Of Four Winds - 25 man', 10, 4, 1, 'Throne Of Four Winds (25)', 'images/instances/Cataclysm_Icons/raids/25-Throne-Of-Four-Winds.jpg');
+
+INSERT INTO `wrm_class_race` VALUES ('Human', 'Hunter');
+INSERT INTO `wrm_class_race` VALUES ('Dwarf', 'Mage');
+INSERT INTO `wrm_class_race` VALUES ('Dwarf', 'Shaman');
+INSERT INTO `wrm_class_race` VALUES ('Dwarf', 'Warlock');
+INSERT INTO `wrm_class_race` VALUES ('Night Elf', 'Mage');
+INSERT INTO `wrm_class_race` VALUES ('Gnome', 'Priest');
+INSERT INTO `wrm_class_race` VALUES ('Worgen', 'Death Knight');
+INSERT INTO `wrm_class_race` VALUES ('Worgen', 'Warlock');
+INSERT INTO `wrm_class_race` VALUES ('Worgen', 'Rogue');
+INSERT INTO `wrm_class_race` VALUES ('Worgen', 'Hunter');
+INSERT INTO `wrm_class_race` VALUES ('Worgen', 'Druid');
+INSERT INTO `wrm_class_race` VALUES ('Worgen', 'Mage');
+INSERT INTO `wrm_class_race` VALUES ('Worgen', 'Priest');
+INSERT INTO `wrm_class_race` VALUES ('Orc', 'Mage');
+INSERT INTO `wrm_class_race` VALUES ('Undead', 'Hunter');
+INSERT INTO `wrm_class_race` VALUES ('Tauren', 'Paladin');
+INSERT INTO `wrm_class_race` VALUES ('Tauren', 'Priest');
+INSERT INTO `wrm_class_race` VALUES ('Troll', 'Warlock');
+INSERT INTO `wrm_class_race` VALUES ('Troll', 'Druid');
+INSERT INTO `wrm_class_race` VALUES ('Blood Elf', 'Warrior');
+INSERT INTO `wrm_class_race` VALUES ('Goblin', 'Warrior');
+INSERT INTO `wrm_class_race` VALUES ('Goblin', 'Rogue');
+INSERT INTO `wrm_class_race` VALUES ('Goblin', 'Shaman');
+INSERT INTO `wrm_class_race` VALUES ('Goblin', 'Mage');
+INSERT INTO `wrm_class_race` VALUES ('Goblin', 'Priest');
+INSERT INTO `wrm_class_race` VALUES ('Goblin', 'Warlock');
+INSERT INTO `wrm_class_race` VALUES ('Goblin', 'Hunter');
+INSERT INTO `wrm_class_race` VALUES ('Goblin', 'Death Knight');
+
+INSERT INTO `wrm_races` VALUES ('Worgen', 'Alliance', 'worgen');
+INSERT INTO `wrm_races` VALUES ('Goblin', 'Horde', 'goblin');
+
+INSERT INTO `wrm_race_gender` VALUES ('Worgen', 'Male', '/images/faces/wg_male.gif');
+INSERT INTO `wrm_race_gender` VALUES ('Worgen', 'Female', '/images/faces/wg_female.gif');
+INSERT INTO `wrm_race_gender` VALUES ('Goblin', 'Male', '/images/faces/gb_male.gif');
+INSERT INTO `wrm_race_gender` VALUES ('Goblin', 'Female', '/images/faces/gb_female.gif');
 
 INSERT INTO `wrm_version` VALUES ('4.1.0','Version 4.1.0 of WoW Raid Manager');
