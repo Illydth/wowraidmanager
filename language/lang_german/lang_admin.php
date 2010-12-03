@@ -135,6 +135,7 @@ $phprlang['configuration_site_server'] = 'Site Server Name';
 $phprlang['configuration_site_description'] = 'Site Description';
 $phprlang['configuration_persistent_db'] = 'Create Persistant Database Connection?';
 $phprlang['configuration_look_and_feel_header'] = 'Look and Feel - Settings';
+$phprlang['configuration_old_raids_index'] = 'Number of Old Raids to Show on the Index Page';//new
 
 $phprlang['configuration_admin_email'] = 'Administrator-E-Mail';
 $phprlang['configuration_email_header'] = 'E-Mail-Konfiguration';

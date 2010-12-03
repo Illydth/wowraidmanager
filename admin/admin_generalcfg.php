@@ -126,10 +126,11 @@ $phpraid_addon_link = '<input name="phpraid_addon_link" size="60" type="text" cl
 $header_logo = '<input name="header_logo" size="60" type="text" class="post" value="' . $phpraid_config['header_logo'] . '">';
 $register = '<input name="register" type="text" value="'.$phpraid_config['register_url'].'" size="60" class="post">';
 $header_link = '<input name="header_link" size="60" type="text" class="post" value="' . $phpraid_config['header_link'] . '">';
-$records_per_page = '<input name="records_per_page" size="60" type="text" class="post" value="' . $phpraid_config['records_per_page'] . '">';
+$records_per_page = '<input name="records_per_page" size="5" type="text" class="post" value="' . $phpraid_config['records_per_page'] . '">';
 $site_name = '<input name="site_name" size="60" type="text" class="post" value="' . $phpraid_config['site_name'] . '">';
 $site_server = '<input name="site_server" size="60" type="text" class="post" value="' . $phpraid_config['site_server'] . '">';
 $site_description = '<input name="site_desc" size="75" type="text" class="post" value="' . $phpraid_config['site_description'] . '">';
+$num_old_raids_index = '<input name="num_old_raids_index" size="5" type="text" class="post" value="' . $phpraid_config['num_old_raids_index'] . '">';
 
 $wrmadminsmarty->assign('config_data',
 	array(
@@ -166,6 +167,8 @@ $wrmadminsmarty->assign('config_data',
 		'site_description_text' => $phprlang['configuration_site_description'],
 		'records_per_page_text' => $phprlang['configuration_records_per_page'],
 		'records_per_page' => $records_per_page,
+		'old_raids_index_text' => $phprlang['configuration_old_raids_index'],
+		'num_old_raids_index' => $num_old_raids_index,
 		'button_submit' => $phprlang['submit'],
 		'button_reset' => $phprlang['reset']
 	)
@@ -212,6 +215,8 @@ if(isset($_POST['submit']))
 	
 	$records_per_page = scrub_input($_POST['records_per_page']);
 	
+	$num_old_raids_index = scrub_input($_POST['num_old_raids_index']);
+	
 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'site_name';", quote_smart($site_name));
 	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'site_server';", quote_smart($site_server));
@@ -242,7 +247,9 @@ if(isset($_POST['submit']))
 	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'records_per_page';", quote_smart($records_per_page));
 	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
-
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'num_old_raids_index';", quote_smart($num_old_raids_index));
+	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
+	
 	header("Location: ".$page_url);
 }
 

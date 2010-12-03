@@ -81,7 +81,19 @@ $count2 = array();
 $raid_loop_cur = 0;
 $raid_loop_prev = 0;
 
-$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "raids";
+//$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "raids WHERE recurrance = 0";
+
+// Select all raids that are marked current and only the top X raids marked old and throw out any record
+//  that has recurrance set to 1.
+$sql = "(SELECT * from " . $phpraid_config['db_prefix'] . "raids " .
+		"WHERE `old` = 0 " .
+		"AND `recurrance` = 0) " .
+		"UNION ALL " .
+		"(SELECT * FROM " . $phpraid_config['db_prefix'] . "raids " . 
+		"WHERE `recurrance` = 0 " .
+		"AND `old` = 1 " .
+		"ORDER BY `raid_id` DESC " .
+		"LIMIT " . $phpraid_config['num_old_raids_index'] . ")";
 $raids_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 
 while($raids = $db_raid->sql_fetchrow($raids_result, true)) {
