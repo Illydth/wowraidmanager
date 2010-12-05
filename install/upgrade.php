@@ -46,7 +46,7 @@ else
 
 
 
-include_once ("common.php");
+include_once ("install_common.php");
 
 /*----------------------------------------------------------------*/
 
