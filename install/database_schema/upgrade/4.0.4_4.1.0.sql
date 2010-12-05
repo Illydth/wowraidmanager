@@ -227,7 +227,7 @@ INSERT INTO `wrm_acl_raid_signup_group` VALUES (2,'Raid Leader',1,1,0,0,0,0,1,1,
 INSERT INTO `wrm_acl_raid_signup_group` VALUES (3,'Administrator',1,1,0,0,0,0,1,1,1,1,0,0);
 
 -- Expansion Table Data
-ALTER TABLE `wrm_expansion` ADD `max_lvl` TINYINT( 2 ) NOT NULL DEFAULT '60'
+ALTER TABLE `wrm_expansion` ADD `max_lvl` TINYINT( 2 ) NOT NULL DEFAULT '60';
 INSERT INTO `wrm_expansion` (`exp_id`, `exp_name`, `exp_lang_id`, `def`,`max_lvl`) VALUES (4, 'Cataclysm', 'exp_cataclysm', 1,'85');
 UPDATE `wrm_expansion` SET `def` = '0' WHERE `exp_lang_id`='exp_wrath_lich_king' LIMIT 1 ;
 
