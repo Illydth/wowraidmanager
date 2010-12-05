@@ -45,6 +45,8 @@ $Bridge2ColumGroup = TRUE;
 $db_user_id = "user_id";
 // Column Name for the ID field for the Group the User belongs to.
 $db_group_id = "user_class";
+// Column Name for additional user groups the user belongs to.
+$db_add_group_ids = "";
 // Column Name for the UserName field.
 $db_user_name = "user_loginname";
 // Column Name for the User's E-Mail Address

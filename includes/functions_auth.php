@@ -236,34 +236,16 @@ function wrm_login()
 	{
 		// User is logging in, set encryption flag to 0 to identify login with plain text password.
 		$pwdencrypt = FALSE;
-		//$username = strtolower_wrap(scrub_input($_POST['username']), "UTF-8");
+		$username = strtolower_wrap(scrub_input($_POST['username']), "UTF-8");
 		$password = $_POST['password'];
 		//$password = md5($_POST['password']);//
 		$wrmpass = md5($_POST['password']);
-		
-		//check if user in wrm database available 
-		$sql = sprintf(	"SELECT profile_id, password " .
-						" FROM " . $phpraid_config['db_prefix'] . "profile". 
-						" WHERE username = %s", quote_smart($_POST['username'])
-					);
-		$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-		if ($db_raid->sql_numrows($result) > 0 )
-		{
-			$data = $db_raid->sql_fetchrow($result, true);
-			$profile_id = $data['profile_id'];
-		}
-		else
-		{
-			wrm_logout();
-			return -1;
-		}
-		
 	}// get infos from the COOKIE
-	elseif(isset($_COOKIE['profile_id']) && isset($_COOKIE['password']))
+	elseif(isset($_COOKIE['username']) && isset($_COOKIE['password']))
 	{
-		// User is not logging in but processing cooking, set encryption flag to 1 to identify login with encrypted password.
+		// User is not logging in but processing cookie, set encryption flag to 1 to identify login with encrypted password.
 		$pwdencrypt = TRUE;
-		//$username = strtolower_wrap(scrub_input($_COOKIE['username']), "UTF-8");
+		$username = $_COOKIE['username'];
 		$password = $_COOKIE['password'];
 		$profile_id = $_COOKIE['profile_id'];
 		$wrmpass = '';
@@ -280,15 +262,70 @@ function wrm_login()
 		return -1;
 	}
 	*/
-	//database
-	$sql = sprintf(	"SELECT ". $db_user_id . "," . $db_user_name . "," . $db_user_email . "," . $db_user_password.
+
+	// If auth type is iUMS, check that the user is in the database, otherwise fail authorization.
+	//  iUMS Users must be registered with WRM before using the software.  External Auth does not have
+	//  to pass this requirement.
+	if ($phpraid_config['auth_type']=='iums')
+	{
+		$sql = sprintf(	"SELECT ". $db_user_id . "," . $db_user_name . "," . $db_user_email . "," . $db_user_password.
 					" FROM " . $table_prefix . $db_table_user_name . 
-					" WHERE ". $db_user_id . " = %s", quote_smart($profile_id)
-			);
+					" WHERE ". $db_user_name . " = %s", quote_smart($username)
+					);
+		$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+		if ($db_raid->sql_numrows($result) > 0 )
+		{
+			$data = $db_raid->sql_fetchrow($result, true);
+			$profile_id = $data[$db_user_id];
+
 			
-	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-	$data = $db_raid->sql_fetchrow($result, true);
-	if( ($profile_id == $data[$db_user_id]) && ($cmspass = password_check($password, $data[$db_user_id], $pwdencrypt)) ) 
+			if( ($profile_id == $data[$db_user_id]) && ($cmspass = password_check($password, $data[$db_user_id], $pwdencrypt)) )
+				$user_auth = TRUE;
+			else
+				$user_auth = FALSE;
+		}
+		else
+		{
+			wrm_logout();
+			return -1;
+		}
+	}
+	else // We are using an external Auth System...non iUMS.  Validate the user within the auth database.
+	{
+		$sql = sprintf( "SELECT ".$db_user_id.",". $db_user_name .",".$db_user_email.",".$db_user_password.
+						" FROM " . $table_prefix . $db_table_user_name.
+						" WHERE ".$db_user_name." = %s", quote_smart($username)
+                        );
+		$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+		if ($db_raid->sql_numrows($result) > 0 )
+		{
+			$data = $db_raid->sql_fetchrow($result, true);
+			$profile_id = $data[$db_user_id];
+			if( ($username == strtolower_wrap($data[$db_user_name], "UTF-8")) && 
+					($cmspass = password_check($password, $data[$db_user_id], $pwdencrypt)) )
+				$user_auth = TRUE;
+			else
+				$user_auth = FALSE;
+		}
+		else
+		{
+			wrm_logout();
+			return -1;
+		}	
+	}		
+
+	//database
+	//$sql = sprintf(	"SELECT ". $db_user_id . "," . $db_user_name . "," . $db_user_email . "," . $db_user_password.
+	//				" FROM " . $table_prefix . $db_table_user_name . 
+	//				" WHERE ". $db_user_id . " = %s", quote_smart($profile_id)
+	//		);
+			
+	//$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+	//$data = $db_raid->sql_fetchrow($result, true);
+	
+	// Authorize User, now check if User_Auth = TRUE.
+	//if( ($profile_id == $data[$db_user_id]) && ($cmspass = password_check($password, $data[$db_user_id], $pwdencrypt)) ) 
+	if ($user_auth == TRUE)
 	{
 		/**
 		 * user with aces to admin area
@@ -312,33 +349,31 @@ function wrm_login()
 			$FoundUserInGroup = FALSE;
 			
 			/*e107, smf*/
+			// This is all of the "odd" group checking systems, each system has it's own method and it's
+			//  not as simple as "select a field from a table".  Each one of the auth systems in this
+			//  section have their own code for finding group membership.
 			if ($Bridge2ColumGroup == TRUE)
 			{
-				$sql = sprintf( "SELECT  " .$db_group_id .
-								" FROM "  . $table_prefix . $db_table_group_name . 
-								" WHERE " . $db_user_id . " = %s", quote_smart($data[$db_user_id])
-						);
-				echo $sql;
+				if ($db_add_group_ids != "")
+					$sql = sprintf( "SELECT  " .$db_group_id . "," . $db_add_group_ids . 
+									" FROM "  . $table_prefix . $db_table_group_name . 
+									" WHERE " . $db_user_id . " = %s", quote_smart($data[$db_user_id])
+							);
+				else
+					$sql = sprintf( "SELECT  " .$db_group_id .  
+									" FROM "  . $table_prefix . $db_table_group_name . 
+									" WHERE " . $db_user_id . " = %s", quote_smart($data[$db_user_id])
+							);
+				
 				$resultgroup = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 				$datagroup = $db_raid->sql_fetchrow($resultgroup, true);
 
-
-				if (($datagroup[$db_group_id] == $auth_user_class) or 
-					($datagroup[$db_group_id] == $auth_alt_user_class))
-				{
-					$FoundUserInGroup = TRUE;
-				}
+				if ($db_add_group_ids != "")
+					$user_class = $datagroup[$db_group_id] . "," . $datagroup[$db_add_group_ids];
+				else
+					$user_class = $datagroup[$db_group_id];
 				
-				if (($datagroup[$db_add_groups_id] == $auth_user_class) or 
-					($datagroup[$db_add_groups_id] == $auth_alt_user_class))
-				{
-					$FoundUserInGroup = TRUE;
-				}
-
-				/* old
-				$user_class = $datagroup[$db_group_id];
-				$user_class = $datagroup[$db_group_id] . "," . $datagroup[$db_add_group_ids];
-				
+				// Group Access Check for Auth where Groups are stored in a list in a single field.
 				$pos = strpos($user_class, $auth_user_class);
 				$pos2 = strpos($user_class, $auth_alt_user_class);
 				if ($pos === false && $auth_user_class != 0)
@@ -350,7 +385,6 @@ function wrm_login()
 				}
 				else
 					$FoundUserInGroup = TRUE;
-				*/
 			}
 			/* phpbb,...*/
 			else
@@ -370,6 +404,7 @@ function wrm_login()
 					}
 				}
 			}			
+			
 			if ($FoundUserInGroup == FALSE)
 			{
 				wrm_logout();
@@ -377,7 +412,6 @@ function wrm_login()
 			}
 		}
 
-		
 		// User is properly logged in and is allowed to use WRM, go ahead and process his login.
 		$autologin = scrub_input($_POST['autologin']);
 		if(isset($autologin)) {
@@ -391,7 +425,6 @@ function wrm_login()
 		 * set user profile variables in SESSION
 		 **************************************************************/
 		set_WRM_SESSION($data[$db_user_id], 1, $data[$db_user_name], FALSE);
-
 		if ($auth_user_class != "")
 		{
 			// User is all logged in and setup, the session is initialized properly.  Now we need to create the users
@@ -402,14 +435,10 @@ function wrm_login()
 					);
 			$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 			
-			if ($data = $db_raid->sql_fetchrow($result))
-			{
-				wrm_profile_update_last_login_time($_SESSION['profile_id']);
-			}
+			if ($profdata = $db_raid->sql_fetchrow($result))
+				wrm_profile_update($_SESSION['profile_id'],$wrmpass,$data[$db_user_email]);
 			else
-			{
-				wrm_profile_add($data[$db_user_id],$data[$db_user_email],$wrmpass,strtolower_wrap($_SESSION['username'], "UTF-8"));
-			}
+				wrm_profile_add($data[$db_user_id],$data[$db_user_email],$wrmpass,$data[$db_user_name]);
 		}
 		else
 		{
@@ -417,7 +446,7 @@ function wrm_login()
 			// * NOTE * IUMS Auth does not do profile checking like external bridges do.
 			// ********************
 			
-			wrm_profile_update_last_login_time($_SESSION['profile_id']);
+			wrm_profile_update($_SESSION['profile_id'],"",$data[$db_user_email]);
 		}
 		
 		get_permissions($profile_id);
@@ -480,7 +509,7 @@ function wrm_profile_add($profile_id, $email, $wrmpass, $username)
 		$user_priv = $phpraid_config['default_group'];
 	else
 		$user_priv = '0';
-		
+	
 	if ($profile_id != "")
 	{
 		$sql = sprintf(	" INSERT INTO " . $phpraid_config['db_prefix'] . "profile ".
@@ -509,14 +538,26 @@ function wrm_profile_add($profile_id, $email, $wrmpass, $username)
 /**************************************************************
  * WRM Profile update last_login_time
  **************************************************************/
-function wrm_profile_update_last_login_time($profile_id)
+function wrm_profile_update($profile_id, $wrmpass, $email)
 {
 	global $db_raid, $phpraid_config;
 
-	$sql = sprintf(	"UPDATE " . $phpraid_config['db_prefix'] . 
-					"profile SET last_login_time = %s WHERE profile_id = %s",
-					quote_smart(time()),quote_smart($profile_id)
-			);
+	if ($wrmpass != '')
+	{
+		$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "profile 
+						SET email = %s, password = %s, last_login_time = %s WHERE profile_id = %s",
+						quote_smart($email),quote_smart($wrmpass),quote_smart(time()),
+						quote_smart($profile_id)
+						);
+	}
+	else
+	{
+		$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "profile 
+						SET email = %s, last_login_time = %s WHERE profile_id = %s",
+						quote_smart($email),quote_smart(time()),
+						quote_smart($profile_id)
+						);
+	}
 	$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	
 	return 1;
