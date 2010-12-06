@@ -482,22 +482,38 @@ else if($step == 3)
 	$sql_db_name_values = array();
 	$sql_db_all = "SHOW DATABASES";
 
-	$result_db_all = $wrm_install->sql_query($sql_db_all) or print_error($sql_db_all, $wrm_install->sql_error(), 1);
-	$i=0;
-	while ($data_db_all = $wrm_install->sql_fetchrow($result_db_all,true))
+	//$result_db_all = $wrm_install->sql_query($sql_db_all) or print_error($sql_db_all, $wrm_install->sql_error(), 1);
+	// Many Hosts Do not allow "SHOW DATABASES" and such, this is the check.
+	$can_list_dbs = TRUE;
+	$result_db_all = $wrm_install->sql_query($sql_db_all) or $can_list_dbs = FALSE;
+	if ($can_list_dbs)
 	{
-		//show all TABLES
-		//without private sql Database -> readonly
-		if  (	( $data_db_all['Database'] != "mysql" ) and 
-				( $data_db_all['Database'] != "information_schema" ) and 
-				( $data_db_all['Database'] != "phpmyadmin" )
-			)
+		$i=0;
+		$sql_db_list_name = '<select name="sql_db_list_name" class="post" style="width:140px">';
+		while ($data_db_all = $wrm_install->sql_fetchrow($result_db_all,true))
 		{
-			$sql_db_name_values[$data_db_all['Database']] = $data_db_all['Database'];
-			$i++;
+			//show all TABLES
+			//without private sql Database -> readonly
+			if  (	( $data_db_all['Database'] != "mysql" ) and 
+					( $data_db_all['Database'] != "information_schema" ) and 
+					( $data_db_all['Database'] != "phpmyadmin" )
+				)
+			{
+				$sql_db_list_name .= "<option value=\"" . $data_db_all['Database'] . "\">" . $data_db_all['Database'] ."</option>";		
+				//$sql_db_name_values[$data_db_all['Database']] = $data_db_all['Database'];
+				$i++;
+			}
 		}
+		$sql_db_list_name .= '</select>';
 	}
-
+	else
+	{
+		// SHOW DATABASES does not work on this host or threw an error.  We now want the user to be
+		//   able to type in their database name for the next step.
+		$error_msg = $wrm_install_lang['step3error_no_show_databases'];
+		$sql_db_list_name = '<input type="text" name="sql_db_list_name" class="post"/>';
+		$i=1;
+	}
 	//0 == no Database found
 	if ($i == 0)
 	{
@@ -519,7 +535,8 @@ else if($step == 3)
 			"wrm_db_tableprefix_text" => $wrm_install_lang['step2WRMtableprefix'],
 			"wrm_db_tableprefix_value" => $wrm_db_tableprefix_value,
 			"wrm_db_tableprefix_default_text" => "(".$wrm_install_lang['default'].":".' "wrm_" )',
-			"sql_db_name_values" => $sql_db_name_values,
+			//"sql_db_name_values" => $sql_db_name_values,
+			"sql_db_list_name" => $sql_db_list_name,
 			"sql_db_name_selected" => $sql_db_name_selected,
 			"wrm_db_create_name" => $wrm_install_lang['none'],
 			"wrm_db_server_hostname" => $wrm_db_server_hostname,
@@ -565,9 +582,10 @@ else if($step == 4)
 		$wrm_db_name = $_POST['sql_db_list_name'];
 		$wrm_install = &new sql_db($wrm_db_server_hostname, $wrm_db_username, $wrm_db_password, $wrm_db_name);
 	}
-	else
+	else // This section is not implemented yet.  You cannot get here.
 	{
 		//load all DATABASES name in a array ($sql_all_dbname)
+		// @@ Will need to fix the "Show Databases" part of this.
 		$sql_db_name_values = array();
 		$Database_Exist = FALSE;
 		$sql_db_all = "SHOW DATABASES";
