@@ -127,6 +127,9 @@ else
 	$user_perm_group['RL'] = 0;
 }
 
+/* =====================================================
+ *       Mode VIEW
+   =====================================================*/
 if($mode == 'view')
 {
 	//
@@ -1646,17 +1649,14 @@ if($show_signup == 1 && $priv_profile == 1)
 		while($rf_data = $db_raid->sql_fetchrow($result, true))
 		{
 			$sql = sprintf("SELECT char_id, name FROM " . $phpraid_config['db_prefix'] . "chars WHERE profile_id=%s and guild=%s", quote_smart($profile_id), quote_smart($rf_data['guild_id']));
-			$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-			while($data = $db_raid->sql_fetchrow($result, true))
+			$result_char = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+			while($data = $db_raid->sql_fetchrow($result_char, true))
 			{
 				$sql = sprintf("SELECT lvl FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id=%s", quote_smart($data['char_id']));
 				$result_lvl = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 				$lvl = $db_raid->sql_fetchrow($result_lvl, true);
 				if($lvl['lvl'] >= $limit['min_lvl'] && $lvl['lvl'] <= $limit['max_lvl'])
-				{
 					$array_character[$data['char_id']] = $data['name'];
-				}
-					
 			}			
 		}
 	}
