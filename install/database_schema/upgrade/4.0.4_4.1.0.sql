@@ -113,6 +113,20 @@ VALUES (NULL , 'guild1', 'Armory Code', '1', '9', NULL, 'guild_armory_code', NUL
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
 VALUES (NULL , 'guild1', 'Buttons', '1', '10', NULL, 'buttons', NULL);
 
+-- Column Header Data - missingprofile1 View
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
+VALUES (NULL , 'missingprofile1', 'ID', '1', '1', NULL, 'id', NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
+VALUES (NULL , 'missingprofile1', 'Username', '1', '2', NULL, 'username', NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
+VALUES (NULL , 'missingprofile1', 'E-Mail', '1', '3', NULL, 'email', NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
+VALUES (NULL , 'missingprofile1', 'Last Login Date', '1', '5', NULL, 'last_login_date', 'wrmdate');
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
+VALUES (NULL , 'missingprofile1', 'Last Login Time', '1', '6', NULL, 'last_login_time', 'wrmtime');
+
+UPDATE `wrm_column_headers` SET `default_sort` = '1' WHERE `view_name`='missingprofile1' AND `column_name` = 'ID' LIMIT 1 ;
+
 -- Faction Table Creation
 DROP TABLE IF EXISTS `wrm_faction`;
 CREATE TABLE `wrm_faction` (

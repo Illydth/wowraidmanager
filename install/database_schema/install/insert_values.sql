@@ -345,6 +345,17 @@ INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible
 VALUES (NULL , 'raidforce1', 'Guild Name', '1', '4', NULL, 'guild_name', NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
 VALUES (NULL , 'raidforce1', 'Buttons', '1', '24', NULL, 'buttons', NULL);
+-- Column Header Data - missingprofile1 View
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
+VALUES (NULL , 'missingprofile1', 'ID', '1', '1', NULL, 'id', NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
+VALUES (NULL , 'missingprofile1', 'Username', '1', '2', NULL, 'username', NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
+VALUES (NULL , 'missingprofile1', 'E-Mail', '1', '3', NULL, 'email', NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
+VALUES (NULL , 'missingprofile1', 'Last Login Date', '1', '5', NULL, 'last_login_date', 'wrmdate');
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
+VALUES (NULL , 'missingprofile1', 'Last Login Time', '1', '6', NULL, 'last_login_time', 'wrmtime');
 
 -- So as not to have to add a 0 or 1 on to the end of everything above, we'll do this separately.
 UPDATE `wrm_column_headers` SET `default_sort` = '1' WHERE `view_name`='raids1' AND `column_name` = 'Date' LIMIT 1 ;
@@ -364,6 +375,7 @@ UPDATE `wrm_column_headers` SET `default_sort` = '1' WHERE `view_name`='raidview
 UPDATE `wrm_column_headers` SET `default_sort` = '1' WHERE `view_name`='raidview2' AND `column_name` = 'Name' LIMIT 1 ;
 UPDATE `wrm_column_headers` SET `default_sort` = '1' WHERE `view_name`='role1' AND `column_name` = 'ID' LIMIT 1 ;
 UPDATE `wrm_column_headers` SET `default_sort` = '1' WHERE `view_name`='classroletalent1' AND `column_name` = 'Class' LIMIT 1 ;
+UPDATE `wrm_column_headers` SET `default_sort` = '1' WHERE `view_name`='missingprofile1' AND `column_name` = 'ID' LIMIT 1 ;
 
 -- Config Table Data
 INSERT INTO `wrm_config` VALUES ('site_name', 'WRM');
