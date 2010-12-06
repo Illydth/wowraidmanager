@@ -226,6 +226,7 @@ $phprlang['view_statistics_header'] = '統計訊息';
 $phprlang['view_teams_link_text'] = '建立並指定隊伍供該團隊使用';
 $phprlang['view_total'] = '報名總計';
 $phprlang['view_username'] = '用戶名稱';
+$phprlang['view_missing_signups_return_to_view']= 'Back to Raid View'; //New
 
 // main page
 $phprlang['main_previous_raids'] = '活動歷史';

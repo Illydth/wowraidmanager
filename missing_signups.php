@@ -87,7 +87,30 @@ $users = array();
 //		    "(SELECT profile_id FROM " . $phpraid_config['db_prefix'] . "signups " .
 //		     "WHERE raid_id = %s)", quote_smart($raid_id));
 
-$sql = sprintf("SELECT a.profile_id, a.username, a.last_login_time " .
+// Get Validating Raid Information from the Raid Itself.
+$sql = sprintf("SELECT min_lvl, max_lvl, raid_force_name " .
+				"FROM " . $phpraid_config['db_prefix'] . "raids " . 
+				"WHERE raid_id = %s", quote_smart($raid_id));
+$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+$raid_data = $db_raid->sql_fetchrow($result, true);
+$raid_level_min = $raid_data['min_lvl'];
+$raid_level_max = $raid_data['max_lvl'];
+$raid_force_name = $raid_data['raid_force_name'];
+
+// Get List of Guild IDs part of the Raid Force.
+$guild_list = array();
+$sql = sprintf("SELECT guild_id " .
+				"FROM " . $phpraid_config['db_prefix'] . "raid_force " . 
+				"WHERE raid_force_name = %s", quote_smart($raid_force_name));
+$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+$i = 0;
+while ($guild_data = $db_raid->sql_fetchrow($result, true))
+{
+	$guild_list[$i]=$guild_data['guild_id'];
+	$i++;
+}
+
+$sql = sprintf("SELECT a.profile_id, a.username, a.email, a.last_login_time " .
 				"FROM " . $phpraid_config['db_prefix'] . "profile AS a " . 
 				"LEFT JOIN " . $phpraid_config['db_prefix'] . "signups ON a.profile_id = " . $phpraid_config['db_prefix'] . "signups.profile_id " .
 				    "AND " . $phpraid_config['db_prefix'] . "signups.raid_id = %s " .
@@ -97,24 +120,55 @@ $result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 
 
 while($data = $db_raid->sql_fetchrow($result, true))
 {
-	$usersname = '<!-- ' . strtolower_wrap($data['username'], "UTF-8") . ' --><a href="users.php?mode=details&amp;user_id='.$data['profile_id'].'">'.$data['username'].'</a>';
-
-	$date = !($data['last_login_time'])?'':new_date('Y/m/d H:i:s',$data['last_login_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
-	$time = !($data['last_login_time'])?'':new_date('Y/m/d H:i:s',$data['last_login_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+	// We now have a list of profile ID's that aren't signed up.  Check each profile ID to verify if they
+	//  have a character that has the rights to sign up to this raid.
+	$could_be_signed = FALSE;
 	
-	array_push($users, 
-		array(
-			'ID'=>$data['profile_id'],
-			'Username'=>$usersname,
-			'Last Login Date'=>$date,
-			'Last Login Time'=>$time,
-			));
+	// Get the list of characters for the profile.
+	$sql = sprintf("SELECT * " .
+					"FROM " . $phpraid_config['db_prefix'] . "chars " . 
+					"WHERE profile_id = %s", quote_smart($data['profile_id']));
+	$char_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+	while ($char_data = $db_raid->sql_fetchrow($char_result, true))
+	{
+		//For each character, validate Guild, and Level vs. Min/Max
+		$guild_valid = FALSE;
+		foreach ($guild_list as $guild_id)
+			if ($char_data['guild']==$guild_id)
+				$guild_valid=TRUE;
+				
+		$level_valid = FALSE;
+		if ($char_data['lvl']>=$raid_level_min && $char_data['lvl']<=$raid_level_max)
+			$level_valid = TRUE;
+		
+		if ($level_valid && $guild_valid)
+		{
+			$could_be_signed=TRUE;
+			break; //Short Circuit any more character checks, this profile has a valid character and thus
+					// matches the "it should be signed up" check.
+		}
+	}
+	// Ok, this profile ID does have a character, add it.
+	if ($could_be_signed)
+	{
+		$date = !($data['last_login_time'])?'':new_date('Y/m/d H:i:s',$data['last_login_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+		$time = !($data['last_login_time'])?'':new_date('Y/m/d H:i:s',$data['last_login_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+		
+		array_push($users, 
+			array(
+				'ID'=>$data['profile_id'],
+				'Username'=>$data['username'],
+				'E-Mail'=>$data['email'],
+				'Last Login Date'=>$date,
+				'Last Login Time'=>$time,
+				));
+	}
 }
 
 /**************************************************************
  * Code to setup for a Dynamic Table Create: roster1 View.
  **************************************************************/
-$viewName = 'users1';
+$viewName = 'missingprofile1';
 	
 //Setup Columns
 $missing_headers = array();
@@ -150,6 +204,8 @@ $wrmsmarty->assign('header_data',
 		'sort_url_base' => $pageURL,
 		'sort_descending' => $sortDesc,
 		'sort_text' => $phprlang['sort_text'],
+		'raid_id'=>$raid_id,
+		'return_url_text'=>$phprlang['view_missing_signups_return_to_view'],
 	)
 );
 
@@ -157,6 +213,6 @@ $wrmsmarty->assign('header_data',
 // Start output of page
 //
 require_once('includes/page_header.php');
-$wrmsmarty->display('users.html');
+$wrmsmarty->display('missing_users.html');
 require_once('includes/page_footer.php');
 ?>

@@ -226,6 +226,7 @@ $phprlang['view_statistics_header'] = 'Statistiques';
 $phprlang['view_teams_link_text'] = 'Créer et assigner une Equipe au raid';
 $phprlang['view_total'] = 'Nombre d\'inscrits';
 $phprlang['view_username'] = 'Nom d\'utilisateur';
+$phprlang['view_missing_signups_return_to_view']= 'Back to Raid View'; //New
 
 // main page
 $phprlang['main_previous_raids'] = 'Anciennes rencontres';

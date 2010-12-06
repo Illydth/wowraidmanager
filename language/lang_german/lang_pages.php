@@ -226,6 +226,7 @@ $phprlang['view_statistics_header'] = 'Statistiken';
 $phprlang['view_teams_link_text'] = 'Teams für diesen Raid erzeugen und zuweisen';
 $phprlang['view_total'] = 'Anmeldungen insgesamt';
 $phprlang['view_username'] = 'Benutzername';
+$phprlang['view_missing_signups_return_to_view']= 'Back to Raid View'; //New
 
 // main page
 $phprlang['main_previous_raids'] = 'Beendete Raids';

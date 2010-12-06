@@ -226,6 +226,7 @@ $phprlang['view_statistics_header'] = 'Statestikk';
 $phprlang['view_teams_link_text'] = 'Lag og sett Lag for dette raidet';
 $phprlang['view_total'] = 'Total påmelding';
 $phprlang['view_username'] = 'Brukernavn';
+$phprlang['view_missing_signups_return_to_view']= 'Back to Raid View'; //New
 
 // main page
 $phprlang['main_previous_raids'] = 'Tidligere begivenheter';

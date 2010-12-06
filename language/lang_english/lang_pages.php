@@ -238,6 +238,7 @@ $phprlang['view_statistics_header'] = 'Statistics';
 $phprlang['view_teams_link_text'] = 'Create and Assign Teams for This Raid';
 $phprlang['view_total'] = 'Total signups';
 $phprlang['view_username'] = 'Username';
+$phprlang['view_missing_signups_return_to_view']= 'Back to Raid View';
 
 // main page
 $phprlang['main_previous_raids'] = 'Previous events';

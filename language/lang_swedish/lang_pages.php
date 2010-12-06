@@ -226,6 +226,7 @@ $phprlang['view_statistics_header'] = 'Statestik';
 $phprlang['view_teams_link_text'] = 'Skapa och tilldela lag för detta raid';
 $phprlang['view_total'] = 'Totala bokningar';
 $phprlang['view_username'] = 'Användarnamn';
+$phprlang['view_missing_signups_return_to_view']= 'Back to Raid View'; //New
 
 // main page
 $phprlang['main_previous_raids'] = 'Föregående event';
