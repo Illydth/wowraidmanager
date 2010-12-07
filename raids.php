@@ -561,7 +561,7 @@ elseif($_GET['mode'] == 'new')
 
 		// This code sets up the selection box for raid force from the raid_force table.
 		$raid_force_box = '<select name="raid_force_name" class="post">';
-		$raid_force_box .= "<option SELECTED value=\"All\">" . $phprlang['All'] ."</option>";
+		$raid_force_box .= "<option SELECTED value=\"All\">" . $phprlang['all'] ."</option>";
 		$sql = "SELECT DISTINCT raid_force_name FROM " . $phpraid_config['db_prefix'] . "raid_force";
 		$raid_force_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		while($raid_force_data = $db_raid->sql_fetchrow($raid_force_result, true))
@@ -1190,7 +1190,7 @@ elseif($_GET['mode'] == 'edit')
 
 		// This code sets up the selection box for raid force from the raid_force table.
 		$raid_force_box = '<select name="raid_force_name" class="post">';
-		$raid_force_box .= "<option SELECTED value=\"All\">" . $phprlang['All'] ."</option>";
+		$raid_force_box .= "<option SELECTED value=\"All\">" . $phprlang['all'] ."</option>";
 		
 		$sql = "SELECT DISTINCT raid_force_name FROM " . $phpraid_config['db_prefix'] . "raid_force";
 		$raid_force_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
