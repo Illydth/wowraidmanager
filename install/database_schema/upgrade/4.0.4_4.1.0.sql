@@ -155,7 +155,7 @@ INSERT INTO `wrm_config` (`config_name`,`config_value`) VALUES ('max_lvl', '85')
 INSERT INTO `wrm_config` (`config_name`,`config_value`) VALUES ('wrm_expansion', '4');
 INSERT INTO `wrm_config` (`config_name`,`config_value`) VALUES ('lua_output_sort_signups', '1');
 INSERT INTO `wrm_config` (`config_name`,`config_value`) VALUES ('lua_output_sort_queue', '2');
-INSERT INTO `wrm_config` (`config_name`,`config_value`) VALUES ('lua_output_format', '1');
+INSERT INTO `wrm_config` (`config_name`,`config_value`) VALUES ('lua_output_format', '2');
 INSERT INTO `wrm_config` (`config_name`,`config_value`) VALUES ('num_old_raids_index', '20');
 
 DELETE FROM `wrm_config` WHERE `wrm_config`.`config_name` = 'user_queue_promote';
