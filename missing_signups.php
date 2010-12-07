@@ -97,17 +97,24 @@ $raid_level_min = $raid_data['min_lvl'];
 $raid_level_max = $raid_data['max_lvl'];
 $raid_force_name = $raid_data['raid_force_name'];
 
-// Get List of Guild IDs part of the Raid Force.
-$guild_list = array();
-$sql = sprintf("SELECT guild_id " .
-				"FROM " . $phpraid_config['db_prefix'] . "raid_force " . 
-				"WHERE raid_force_name = %s", quote_smart($raid_force_name));
-$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-$i = 0;
-while ($guild_data = $db_raid->sql_fetchrow($result, true))
+if ($raid_force_name == 'All')
 {
-	$guild_list[$i]=$guild_data['guild_id'];
-	$i++;
+	$skip_guild_check = TRUE;
+}
+else
+{
+	// Get List of Guild IDs part of the Raid Force.
+	$guild_list = array();
+	$sql = sprintf("SELECT guild_id " .
+					"FROM " . $phpraid_config['db_prefix'] . "raid_force " . 
+					"WHERE raid_force_name = %s", quote_smart($raid_force_name));
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+	$i = 0;
+	while ($guild_data = $db_raid->sql_fetchrow($result, true))
+	{
+		$guild_list[$i]=$guild_data['guild_id'];
+		$i++;
+	}
 }
 
 $sql = sprintf("SELECT a.profile_id, a.username, a.email, a.last_login_time " .
@@ -132,11 +139,16 @@ while($data = $db_raid->sql_fetchrow($result, true))
 	while ($char_data = $db_raid->sql_fetchrow($char_result, true))
 	{
 		//For each character, validate Guild, and Level vs. Min/Max
-		$guild_valid = FALSE;
-		foreach ($guild_list as $guild_id)
-			if ($char_data['guild']==$guild_id)
-				$guild_valid=TRUE;
-				
+		if (!$skip_guild_check)
+		{
+			$guild_valid = FALSE;
+			foreach ($guild_list as $guild_id)
+				if ($char_data['guild']==$guild_id)
+					$guild_valid=TRUE;
+		}
+		else
+			$guild_valid=TRUE;
+							
 		$level_valid = FALSE;
 		if ($char_data['lvl']>=$raid_level_min && $char_data['lvl']<=$raid_level_max)
 			$level_valid = TRUE;
