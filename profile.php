@@ -320,7 +320,7 @@ elseif($_GET['mode'] == 'remove')
 
 	if(!isset($_POST['submit']))
 	{
-		$form_action = "profile.php?mode=remove&amp;n=".$char_name."&amp;id=".$char_id;
+		$form_action = "profile.php?mode=remove&amp;char_name=".$char_name."&amp;char_id=".$char_id;
 		$confirm_button = '<input name="submit" type="submit" id="submit" value="'.$phprlang['confirm_deletion'].'" class="mainoption">';
 
 		$wrmsmarty->assign('page',
@@ -342,7 +342,6 @@ elseif($_GET['mode'] == 'remove')
 	else
 	{
 		log_delete('character',$char_name);
-
 		char_delete($char_id,$profile_id);
 		
 		header("Location: profile.php?mode=view");

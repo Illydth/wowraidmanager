@@ -331,7 +331,7 @@ function char_delete($char_id,$profile_id)
 {
 	global $db_raid, $phpraid_config;
 
-	log_delete('character',$n);
+	//log_delete('character',$n);
 
 	$sql = sprintf("DELETE FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id=%s AND profile_id=%s",quote_smart($char_id), quote_smart($profile_id));
 	$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
