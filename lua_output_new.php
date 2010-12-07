@@ -43,7 +43,10 @@ else
 	define("PAGE_LVL","raids");
 }
 
-require_once('./lua_output_data_new.php');
+if ($phpraid_config['lua_output_format']==1)
+	require_once('./lua_output_data_RIM.php');
+else
+	require_once('./lua_output_data_phpRaidViewer.php');
 
 // Standard Display of Page
 if($_GET['mode'] == 'lua') {
