@@ -1,16 +1,22 @@
-INSTALLATION OF WRM 4.0.x:
-----------------------------------
-Note: If you are installing WRM 4.0 for the first time (i.e. you have not already upgraded
-from WRM 3.x to 4.0) please see INSTALL_4.0 FIRST.  DO NOT FOLLOW THESE INSTRUCTIONS OR
-YOU WILL HOSE YOUR INSTALLTION BADLY and potentially unrecoverably.
+If you are upgrading from a 3.x release to a 4.x release, read "INSTALL_4.0" first before
+continuing with these instructions!  
 
-If you are simply upgrading an already installed WRM 4.x installation, please continue.
+*** FAILING TO DO SO COULD DAMAGE YOUR DATA! ***
+
+
+INSTALLATION OF WRM 4.1.x:
+----------------------------------
+If you are upgrading an already installed WRM 4.x.x installation, please see "'Quick' Upgrade 
+from 4.0.x to 4.1.0" later in the document.
+
+IN ANY CASE YOU SHOULD READ THE RELEASE NOTES FOR THIS RELEASE PRIOR TO INSTALLATION!
+(release_notes.txt).
 
 ============================
 Quick Installation
 ============================
 
-Installation of 4.0.4:
+Installation of 4.1.0:
 -----------------------
 * Unpackage the files from this archive into a directory on your local machine.
 * Upload the entire contents of this archive to your web host, including your config.php file,
@@ -27,13 +33,20 @@ Installation of 4.0.4:
 * While still in the Database Management Tool, please create a new database for your
 	new installation.
 * Open a web browser and go to your WRM installation (e.g. http://www.yourdomain.com/wrm)
-* Choose your installation method (ALWAYS INSTALL) and follow the steps to install your 
-	WoW Raid Manager server.  
+* The installation process should automatically start into "installation" mode.  If it tries
+	to start into "Upgrade" mode, please delete your WRM directory and start over.  
+	If you are actually upgrading an existing installation, stop reading these instructions
+	and go to the instructions below for Quick Upgrade.  DO NOT PERFORM AN UPGRADE WITH 
+	THE UPGRADE INSTALLER.
+* Proceed through the rest of the installation and follow instructions to install WRM.
 * At the end of the installation please remove your Install directory (delete it completely)
 * Change the permissions on your config.php file back to read only to the world (you can 
 	leave it writable by your web server if you so choose, but it is recommended that
 	you make it read only...(400 permissions in Unix).  Keep the permissions of the other
 	files and folders listed above writable.
+
+* Please see COMPLETING THE INSTALLATION Below!!!! (Even if you are a new board, you still
+	need to follow part of the instructions in that section to make your WRM work).
 	
 Please see phpRaid_install_doc.pdf for more information.
 
@@ -71,23 +84,21 @@ $phpraid_config['eqdkp_db_prefix'] = '';
 It is safe to leave the eqdkp configuration blank for the moment.  Please see "eqdkp_link.htm" 
 in the docs directory for more information on linking WRM with eqdkp.
 
+
 "Quick" Upgrade from 4.0.x to 4.0.4
 -----------------------------------
-IF YOU ARE UPGRADING FROM 3.X or 4.0 BETA TO 4.0.3  YOU SHOULD NOT BE FOLOWING THESE
+IF YOU ARE UPGRADING FROM 3.X or 4.0 BETA TO A 4.0.X INSTALLTION YOU SHOULD NOT BE FOLOWING THESE
 INSTRUCTIONS.  SEE BELOW.
 
-If you are already on a 4.0.x release (4.0.0, 4.0.1, 4.0.2, 4.0.3) then you can follow this process
-to upgrade your installation to 4.0.4.
-
-NOTE: If you have already applied all of the WRM fixes in the Patch Thread on the Support forum
-("Current Patch Status...") then you likely already have all the SQL files you need already 
-executed.  Before running any SQL in the below instructions, please identify what you have already
-executed.  If, when running an SQL, you get an error about duplicate primary keys or such, you've 
-probably already run that SQL in the past and have no need to run it again.
+If you are already on a 4.0.x release (4.0.0, 4.0.1, 4.0.2, 4.0.3, 4.0.4) then you can follow 
+this process to upgrade your installation to 4.1.x.
 
 As always, due to updates to the default template, go into your configuration section and switch
 back to using the "default" template before you perform this upgrade, it is unlikely that any
-other templates will work properly for you till they are correctly updated for 4.0.4.
+other templates will work properly for you till they are correctly updated for 4.1.0.  This is
+especially important for this version since you will be unable to configure your application 
+AT ALL (and thus be unable to change your template without a database update) if you are using
+anything OTHER than default at this point.
 
 * Unpackage the files from this archive into a directory on your local machine.
 * Open your FTP program and copy down your config.php file to your locally unpacked archive.
@@ -112,10 +123,9 @@ other templates will work properly for you till they are correctly updated for 4
 	WRM database.  This probably goes without saying but RUN THEM IN ORDER (4.0.1_4.0.2.sql first
 	4.0.2_4.0.3.sql second, etc.).  Do not execute SQLs that do not apply to you.
 	IF YOU ARE UPGRADING FROM 3.X or 4.0 BETA TO 4.0.3  YOU SHOULD NOT BE FOLOWING THESE
-	INSTRUCTIONS.  Also, if you need to install icons/raids for the Icecrown and ToTC instances 
-	please run the corresponding SQLs to add them to your installation.  Do not do this if you 
-	have already run these SQLs previously.
-* At this point you have upgraded your installation to 4.0.4, please remove your Install 
+	INSTRUCTIONS.  DO NOT run 4.1.0_4.1.1.sql or any of the TOTC/etc. sql files, these are not
+	needed to upgrade to 4.1.0.
+* At this point you have upgraded your installation to 4.1.0, please remove your Install 
 	directory (delete it completely)
 * Change the permissions on your config.php file back to read only to the world (you can 
 	leave it writable by your web server if you so choose, but it is recommended that
@@ -127,6 +137,30 @@ error message telling you you're out of date.  If you do, make sure you have upg
 ALL files.  The most common error experienced in this upgrade is not forceably overwriting
 all files or deleting all files in the directory before uploading.  I'm not joking, blow away
 your ENTIRE prior installation (other than the config.php file) before uploading.
+
+Completing the Installation
+----------------------------------------
+PLEASE FOLLOW THESE INSTRUCTIONS OR YOUR GUILD MEMBERS WILL NOT BE ABLE TO SIGN UP FOR RAIDS!
+
+Once you have installed or upgraded your existing configuration, and proceeded to check out the
+Admin interface and update any relivant settings there, you will need to perform the following
+steps:
+
+1) Exit the Admin Interface.
+2) Click on the "Guilds" Link.
+3) Update your guild (or create a new guild).
+4) Create a Raid Force and link your guild to that raid force.
+
+Once this is done, for existing WRM installations, ALL USERS need to update their profiles
+(ALL characters) in the Profile Link to re-attach the guild to their character (even if the
+guild shows up properly on their character it is NOT proper in the database).  
+
+The user should edit each character, update their guild (and any other relivant information)
+and save each character.
+
+Failure to do so will invalidate the user from signing up to raids. 
+
+
 
 Installing WRM into a supported CMS system
 -----------------------------------------------

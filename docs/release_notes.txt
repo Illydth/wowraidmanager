@@ -5,6 +5,367 @@ at:
 
 ****************************************************
 ****************************************************
+****             4.1.0 Release Notes             ***
+****************************************************
+****************************************************
+Welcome back!  I know it's been a year+ since the last release, but this one is full of
+good things, or at least I hope it is. :)  
+
+There are many many many small bug fixes and changes to the application in this version, 
+way to many for me to track and display here.  That said, the major changes for the
+release are below.
+
+PLEASE READ THEM! This is about the only documentation you're going to get! :) 
+
+Updated Installation Process
+-----------------------------
+Many many many thanks to Neme (well, for more than just this...pretty much for all of 4.1.0)
+we have a new and updated installer process that works MUCH better than the old one.  There
+are quite a few changes in the installer, too numerous to list here.  Lets just call this
+installer 2.0! :)
+
+The basic installation process is the same but many of the complexities have been taken out
+of the process.  For instance, it is no longer necessary for you to type in the path to
+the config file of the bridge you want to install...the application will scan your web
+directory to find them and present you with options related to what it's found!
+
+This should hopefully make installation of your new WRM system MUCH more easy.
+
+******** PLEASE SEE docs/INSTALL FOR INFORMATION ON UPGRADING FROM 4.0.4 to 4.1.0! *********
+********      Failing to read that document MAY DESTROY YOUR DATABASE. 			   *********
+
+
+Admin Area
+----------------------------
+The largest change in this release is the new admin section.  Instead of the "configuration"
+link on the left side menu there is now an admin area that administrators can access.  
+This has caused a whole SLEW of changes to the application.
+
+* Configuration, Logs, Permissions, and Users menus have disappeared from the front page menus
+	and have been re-implemented within the Admin area.
+* Users menu has changed to "User Administration" within the WRM Admin area and includes new
+	functionality (see below).
+* Permissions has changed to "WRM Permissions Groups" and will now hopefully be more intuitive.
+	The Users, Permissions and Logs Permissions have been done away with, "Configuration" is now
+	the administration permission and provides administrators with access to the users,
+	permission management, logs, and configuration abilites all at once.
+* New data table management sections have been added to manage/modify the following items:
+	* Views: You can now turn on/off the visibility of any column in a view by checking or 
+	   unchecking the "visible" box for that column.  You can also re-arrange the position of 
+	   any column by changing the column position dropdown.  You can also determine which colum
+	   is the "sort" column for a given view by default.  No more need to directly update the 
+	   database to add/remove columns from a view now.
+	* Roles: Roles are now configurable through the admin interface.  You can add, remove, or
+	   change any role within the system by simply modifing the roles config.
+	* Class/Role/Talent Link: Finally you can modify / manage the Class/Role/Talent links to 
+	   fine tune your guild's Roles.  For instance, if your guild does not use Frost Death Knights
+	   to tank, you can remove the "Frost(Tank)" link for Death Knights, removing that option from
+	   Knight character selection dropdowns.
+
+
+Updated "Permissions" Interface
+--------------------------------
+Yes, it's finally here!  No more confusion on "how do I change someone from one permission group
+to another?" anymore.
+
+In the admin area, under "User Administration" in the user list, check the check box next to any 
+username you want to update permissions for.  Then under "Change selected User(s) Permission Group"
+select the group you want to change to and click "submit".  That's it!  The permissions on all 
+checked users will be updated at one time to the new group.  
+
+No more remove them from here, add them to here, multiple screen loads! :)
+
+
+Multi-Guild Support
+-------------------------------
+Another large change to the release is the way Guilds are handled.  Prior to 4.1.0, a single WRM 
+installation handled a single Guild / Server combination.  If you wanted your group of friends
+to partake in multiple guilds (like for instance a Horde and an Alliance guild) you would have to
+install two seperate WRM installations to manage the raids and groups for each one (that is if you 
+wanted much of the functionality to work, like Armory lookups).
+
+WRM 4.1.0 Solves this dilema by creating a new "top level" management function: The "Raid Force".
+Now, instead of the guild being the driving factor behind WRM, the "Raid Force" has taken it's place.
+To configure WRM now you will go into the Guilds menu and create a guild as usual (The screen has 
+changed, be aware).  Note that Server, Faction and Armory Lookup URL are now part of the GUILD 
+configuration and not part of the overall WRM configuration.  The "Guild" information in the config
+section has been removed.
+
+Once you have created a guild, you proceed to the bottom of the page and create a new Raid Force for
+that guild.  A raid force can have one or more guilds within it.  The Raid force name is free-form, 
+type in whatever makes sense, then select the guild from the dropdown that will belong to that raid
+force.  To add a second guild to the same raid force, make sure both guilds are created, type in the 
+SAME FREE FORM NAME in the top box, and select the second guild from the bottom dropdown.  Note that
+to get two or more guilds connected to the same raid force, you must type in the same raid force name
+exactly.
+
+To get your WRM installation to work identically as you always have had it (i.e. To support a single
+guild) follow the following steps:
+
+1) Install WRM as normal.
+2) Log in with your admin ID and go to the "Guilds" link.
+3) Under the "New Guild" area type in the information required.  Make sure to properly set the server
+	and armory code.  When done, submit to reload the page and store your guild.
+4) Go to "New Raid Force Link" and type in "GuildRaids" (or any name appropriate) in the "Raid Force
+	Name" box.
+5) Select your newly created guild from Step 3 above in the dropdown box and click "Submit".
+6) To see that it worked correctly go to "Raid Force Listing" and select your newly created Raid Force
+	from the dropdown box.  It should display the Raid Force Name, and Guild Name for you, showing
+	you that you have a proper link.
+	
+**** NOTE/WARNING ****
+Due to the update to the guilds, ALL CURRENT CHARACTERS created in your existing WRM installation will
+need to be updated to re-select the GUILD they belong to.  The old guild link will NOT BE MAINTAINED.
+
+Until this is done NO ONE WILL BE ABLE TO SIGN UP FOR A RAID!
+***********************
+ 
+When you create a raid and/or location, you will select a "Raid Force" from the dropdown that can
+participate in that raid.  You can select "All" to allow any raid force created within
+your WRM application to sign up to that raid or you can restrict it to a specfic raid force.
+
+Example Usage:
+
+Lets say that your guild has a "raid alliance" with another guild.  You raid 25 mans with the
+other guild, but your 5 and 10 mans are seperate.
+
+First, create your guild and your partner guild within WRM.
+Next, create a raid force for your guild alone.  (Say GuildRaid) and assign your guild (only)
+	to that raid force.
+Next, create a raid force for your guild and your partner guild. (Say PartnerRaid).  Assign
+	your guild and your partner guild to that raid force.
+
+When you go to create your locations do the following:
+
+* When you create a 25 man location, select "PartnerRaid" from the dropdown.  This allows
+	your guild members and your parter's guild members to sign up to that raid.
+* When you create a 5 or 10 man location, select "GuildRaid" from the dropdown.  This 
+	will restrict signups to these events to only those members in your guild (not
+	your partner guild.
+
+You can get as complcated as you want by extending the example above to cover your 
+alliance and horde guilds, and your alliance and horde guild partners as you need.
+You can use this for larger guilds to create multiple raid forces within your own guild
+(an A and B team so to speak), or to separate newbie raids from hard core raids (or
+alt raids from main raids).  Use this as you see fit to segregate/separate raids and
+ensure that only those people who should be signed up to a raid are.
+
+
+Recurring Raids
+--------------------------
+(For full documentation and examples please click the "help" link under "Recurring Raids"
+in the Raid Link.  To get there, click "Raids", then "New Raid", then click the "help"
+link under "Recurring Raids" in the second section.)
+
+Another new feature that's a little rough yet should be working well is Reocurring Raids...
+the ability to schedule a raid for recreation so your admins don't perpetually have to 
+go in weekly or monthly or whatever and create a new raid for the same instance over and
+over again!
+
+To access reocurring raids, go into the raids link, click on "New Raid" at the top.  You can
+use a stored location to make your life easier, or you can type in the information you want.
+
+The important part is in the second section (below the time and description information and
+above the raid limits area).  Click the check box next to "Recurring Raid" to turn on 
+the recreation of this raid.  You then have 3 options:
+
+* Daily (Every Day at This Time).
+* Weekly (On this Day of the Week).
+* Montly (ON this Day of the Month).
+
+If you select daily, every day this raid will be scheduled at the current invite and 
+start time.
+
+If you select Weekly, the raid will be scheduled every week on selected day of the week
+(say, every Tuesday) at the current invite and start time.
+
+If you select Montly, the raid will be scheduled every month on the selected date of 
+the month (ignoring what day it is, only the date) at the current invite and start times.
+
+Finally, set the "number of intervals".  This means, "how many raids should I show at once?"
+
+If you have a weekly raid scheduled for Tuesday and you want to show the next three raids
+put a "3" in the box.
+
+Example:
+
+Lets assume your guild has a daily scheduled Random Heroic Instance run at 7:00 pm, a 
+raid every Tuesday and Wednesday at 8:00 pm, and a guild meeting on the first of every
+month at 11:00 pm.  You want a week's worth of dailies, 3 weeks worth of raids and only the next
+upcoming guild meeting to show.
+
+To create the Daily Random Heroic:
+------------------------------------
+1) Create a new raid for your Random Heroic, set the start time to 7:00 pm.
+2) Check "Recurring Raid"
+3) In the dropdown box select "Daily (Every Day At This Time)"
+4) In the "Number of Intervals to Show" type 7.
+5) Finish by selecting the raid limits and clicking submit.
+
+To Create the Weekly Raids on Tuesday and Wednesday:
+------------------------------------------------------
+1) Create a new raid for your Tuesday Raid.  Set the Date to the next Tuesday and the
+	time to 8:00 pm.
+2) Check "Recurring Raid"
+3) In the dropdown box select "Weekly (On This Day of the Week)"
+4) In the "Number of INtervals to Show" type 3.
+5) Finish by selecting the raid limits and clicking submit.
+6) Go back to Step 1 and create a new raid for Wednesday following the same instructions.
+
+To Create the Monthly Meeting:
+------------------------------------------------------
+1) Create a new raid for your Montly Meeting.  Set the Date to the first of next month
+	 and the time to 11:00 pm.
+2) Check "Recurring Raid"
+3) In the dropdown box select "Monthly (On This Day of the Month)"
+4) In the "Number of Intervals to Show" type 1.
+5) Finish by selecting the raid limits and clicking submit.
+
+On your front page at this point you will see the following raids:
+
+Monday Random Heroic
+Tuesday Random Heroic
+Wednesday Random Heroic
+Thursday Random Heroic
+Friday Random Heroic
+Saturday Random Heroic
+Sunday Random Heroic
+Tuesday Raid This Week
+Tuesday Raid Next Week
+Tuesday Raid 3rd Week
+Wednesday Raid This Week
+Wednesday Raid Next Week
+Wednesday Raid 3rd Week
+Monthly Meeting on the First of Next Month.
+
+Now, once 7:00 pm comes around on Monday (The start of your first scheduled Random Heroic)
+you will see the following change:
+
+Monday Random Heroic (Locked)
+Tuesday Random Heroic
+Wednesday Random Heroic
+Thursday Random Heroic
+Friday Random Heroic
+Saturday Random Heroic
+Sunday Random Heroic
+Tuesday Raid This Week
+Tuesday Raid Next Week
+Tuesday Raid 3rd Week
+Wednesday Raid This Week
+Wednesday Raid Next Week
+Wednesday Raid 3rd Week
+Monthly Meeting on the First of Next Month.
+Next Monday Random Heroic
+
+Once Tuesday at 8:00 pm (past the Tuesday Random Heroic and First Tuesday Raid) comes around
+you will see the following changes:
+
+Monday Random Heroic (Locked)
+Tuesday Random Heroic (Locked)
+Wednesday Random Heroic
+Thursday Random Heroic
+Friday Random Heroic
+Saturday Random Heroic
+Sunday Random Heroic
+Tuesday Raid This Week (Locked)
+Tuesday Raid Next Week
+Tuesday Raid 3rd Week
+Wednesday Raid This Week
+Wednesday Raid Next Week
+Wednesday Raid 3rd Week
+Monthly Meeting on the First of Next Month.
+Next Monday Random Heroic
+Next Tuesday Random Heroic
+Tuesday Raid 4th Week
+
+This will continue on forever until you cancel/stop the Recurring Raid.
+
+NOTES:
+
+* Once created the recurring raid and the raids created by the recurring raid are NOT Linked.
+	Deleting the Recurring raid DOES NOT delete the raids created BY the recurring raid.  If
+	you accidentally create a 7 interval raid for the wrong day, you will have to both delete
+	the recurring raid and all 7 of the created raids.
+
+* You cannot delete an instance of a recurring raid without deleting the recurring raid itself.
+	If you have a recurring raid showing the next three raids (one for Sat, One for Sun and one
+	for Mon), and you delete any of the three, they will IMMEDIATELY be re-created again.  You 
+	CAN mark the raid as "old" to stop it from being signed up to (that doesn't cause the 
+	scheduler to flag the raid as missing), but you cannot get rid of the 	raid.  This is a 
+	known functionality problem that will be fixed in a future release.
+	
+* To delete a recurring raid, simply go into the raids window and delete the recurring raid FIRST.
+	At that point, you can then remove any raids created by the recurring raid without having
+	them created again.
+	
+	
+Front Page Raid Limits
+-------------------------------------
+Another feature new to 4.1.0 is the limitation of how many old raids will be displayed on 
+the front page of the app (Main Page).  A new configuration parameter has been put in place
+(Admin Area -> WRM Config at the bottom) entitled "Number of Old Raids to Show on the Index
+Page."
+
+The config option does what it says it does.  It limits the number of raids marked "old" that
+are displayed on the front page.  For those guilds who are keeping up with marking their raids
+as "old", this should VASTLY improve load times for the front page of the application for
+users with hundreds to thousands of raid records.
+
+Instead of pulling every raid in the database now for display, the software will select all 
+raids not marked as old and the X most recent raids in the DB that are marked old, configured
+by this parameter.
+
+So if you set the parameter to 20 (the default) your front page will display all current raids
+and the most recent 20 old raids.
+
+To see ALL of the old raids, you can go to the new "Raids Archive" page (at the bottom of the 
+left side menu) to display all of your back raid history.
+
+This option should allow raid admins to keep the previous history of their old raids without 
+the performance degredation of having hundreds to thousands of old scheduled raids in the 
+system.
+
+
+Historical Statistics
+----------------------------
+And speaking of historical raid records being kept in the system, a new WRM/Raid statistics
+package is available as part of the WRM installation.  On the front page of the Admin
+interface (will be moved to it's own section in the future) we have the basics of a raid
+statistics package.
+
+The WRM and Database Statistics sections displays some general information about the version 
+of php, wrm, mySQL, etc. and things like the database name, size, and host.
+
+The Raid Statistics section is fairly simple at this point, pulling attendance information for
+the current week, last 30, 60, 90 days, Last 6 months, and last year, respectively.
+
+This is an intial shot at allowing raid admins to get a handle on how many people are showing 
+up for raids in a week.  There's MUCH more that could be done with this section of the application
+but for now, this is what we have.  If anyone has recommendations (or better yet mathamatical
+formula) for more statistics we can add, please do not hesitate to post them to the suggestions
+board for inclusion in a future version of the application.
+
+
+Administrative Functions
+---------------------------------
+Along with the statistics, the admin area allows you to perform some limited operations and
+get visibility into your WRM usage.  From an operations perspective,  you can clear the various
+cache areas (WRM Application Cache, WOW Armory Cache, WoW Armory Output Logs, and WRM 
+Compiled Template Files).  
+
+There are also notes for who has used the system recently, which users aren't logging into the
+application anymore (if you like a clean users area you can then remove inactive users), and 
+the most recent "Hack" logs to see if your users are trying things they shoudn't be.
+
+(NOTE: Hack logs almost always identify false positives.  I've displayed them here just so
+the system admin is informed, but 99% of the time a hack log identifies a bug in the app,
+not an attempt to do something wrong by a user.  You've been informed.)
+
+
+
+
+****************************************************
+****************************************************
 ****             4.0.4 Release Notes             ***
 ****************************************************
 ****************************************************
