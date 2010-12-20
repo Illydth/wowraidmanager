@@ -284,3 +284,4 @@ $phprlang['configuration_user_rights_header'] = 'Permessi degli Utenti';
 // multiple use
 $phprlang['configuration_autoqueue'] = 'Impedisci l\'inserimento diretto fra le iscrizioni confermate';
 
+?>

@@ -314,4 +314,5 @@ if($db_raid->sql_numrows($result) > 0)
 require_once('includes/page_header.php');
 $wrmsmarty->display('main_page.html');
 require_once('includes/page_footer.php');
+
 ?>

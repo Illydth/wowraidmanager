@@ -497,4 +497,5 @@ $wrmsmarty->assign('header_data',
 
 $wrmsmarty->display('team_main.html');
 require_once('./includes/page_footer.php');
+
 ?>

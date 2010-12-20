@@ -241,4 +241,5 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true)) {
 	require_once('includes/page_header.php');
 	$wrmsmarty->display('raidsarchive.html');
 	require_once('includes/page_footer.php');
+
 ?>

@@ -253,4 +253,5 @@ $phprlang['bosskill_header'] = 'Track Named (Boss) Accomplishments';
 
 //Raids Archive
 $phprlang['raidsarchive_header'] = 'Raids Archive';
+
 ?>

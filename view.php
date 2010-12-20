@@ -1721,4 +1721,5 @@ if($show_signup == 1 && $priv_profile == 1)
 }
 
 require_once('./includes/page_footer.php');
+
 ?>

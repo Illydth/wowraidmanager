@@ -273,4 +273,5 @@ if($_GET['mode'] != 'delete')
 	$wrmsmarty->display('announcements.html');
 	require_once('includes/page_footer.php');
 }
+
 ?>

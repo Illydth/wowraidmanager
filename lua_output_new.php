@@ -232,4 +232,5 @@ else
 $wrmsmarty->display('lua_output_new.html');
 
 require_once('includes/page_footer.php');
+
 ?>

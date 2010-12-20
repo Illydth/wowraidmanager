@@ -125,4 +125,5 @@ function get_armory_code_full()
 	
 	return $array_armory_code;
 }
+
 ?>

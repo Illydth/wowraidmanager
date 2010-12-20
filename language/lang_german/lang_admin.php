@@ -285,3 +285,4 @@ $phprlang['configuration_user_rights_header'] = 'Benutzerrechte';
 // multiple use
 $phprlang['configuration_autoqueue'] = 'Anmeldungen nur in Warteschlange erlauben';
 
+?>

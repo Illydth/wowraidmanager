@@ -227,4 +227,5 @@ $wrmsmarty->assign('header_data',
 require_once('includes/page_header.php');
 $wrmsmarty->display('missing_users.html');
 require_once('includes/page_footer.php');
+
 ?>

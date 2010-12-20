@@ -285,3 +285,4 @@ $phprlang['configuration_user_rights_header'] = 'User Rights';
 // multiple use
 $phprlang['configuration_autoqueue'] = 'Disallow Signup to Drafted Status';
 
+?>

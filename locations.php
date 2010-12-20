@@ -737,4 +737,5 @@ if($_GET['mode'] != 'delete')
 	$wrmsmarty->display('locations.html');
 	require_once('includes/page_footer.php');
 }
+
 ?>

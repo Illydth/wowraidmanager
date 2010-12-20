@@ -156,4 +156,5 @@ if(!isset($_POST['submit']) || $form_error == 1)
 	$wrmsmarty->display('register.html');
 	require_once('includes/page_footer.php');
 }
+
 ?>

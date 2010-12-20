@@ -286,3 +286,4 @@ $phprlang['configuration_user_rights_header'] = '使用者權限';
 // multiple use
 $phprlang['configuration_autoqueue'] = '報名時自動進入候補';
 
+?>

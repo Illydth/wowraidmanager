@@ -284,3 +284,4 @@ $phprlang['configuration_user_rights_header'] = 'Användar Rättigheter';
 // multiple use
 $phprlang['configuration_autoqueue'] = 'Förbjud bokning till uppflyttad status';
 
+?>

@@ -174,4 +174,5 @@ $wrmsmarty->assign('header_data',
 require_once('includes/page_header.php');
 $wrmsmarty->display('roster.html');
 require_once('includes/page_footer.php');
+
 ?>

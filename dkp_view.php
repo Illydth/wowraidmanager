@@ -177,4 +177,5 @@ $wrmsmarty->assign('header_data',
 require_once('includes/page_header.php');
 $wrmsmarty->display('dkp_view.html');
 require_once('includes/page_footer.php');
+
 ?>
