@@ -54,6 +54,8 @@ $phprlang['admin_raid_settings'] = '&raquo; Raid Settings';
 $phprlang['admin_external_config'] = '&raquo; External Systems';
 $phprlang['admin_game_settings'] = '&raquo; Game Settings';
 $phprlang['admin_roletalent_config'] = '&raquo; Link Class/Role/Talent';
+$phprlang['admin_style_conf'] = 'Template Config';
+$phprlang['admin_menubar_mgt_link'] = 'Menu Bar Settings';
 
 // Link from Main Site to Admin
 $phprlang['admin_section_link'] = 'Admin Section';
@@ -117,25 +119,19 @@ $phprlang['configuration_version_outdated_message'] = '您的WRM已經是舊版�
 													   請到後面的鏈結下載 <a href="http://www.wowraidmanager.net">WoW Raid Manager for BC</a>.';
 
 // Text on the "General Config" Page
-$phprlang['configuration_addon'] = '插件鏈結位址';
-
 $phprlang['configuration_debug'] = '除蟲模式';
 $phprlang['configuration_disable'] = '關閉活動報名系統';
 $phprlang['configuration_enable_five_man'] = '允許五人隊伍<br><a href="../docs/enable_groups.htm" target="_blank">help?</a>';
 $phprlang['configuration_language'] = '語言';
-$phprlang['configuration_logo'] = 'Logo鏈結位址';
 $phprlang['configuration_records_per_page'] = 'Records Per Data Table Page';
-$phprlang['configuration_register_text'] = '登寄網址';
-$phprlang['configuration_show_addon'] = '顯示插件連結';
-$phprlang['configuration_sitelink'] = '"頁首" 連結';
-$phprlang['configuration_template'] = '版面';
+$phprlang['configuration_persistent_db'] = 'Create Persistant Database Connection?';
 $phprlang['general_configuration_header'] = 'General Settings';
+$phprlang['configuration_old_raids_index'] = 'Number of Old Raids to Show on the Index Page';
+
+$phprlang['general_side_cfg_header'] = 'Side Config';
 $phprlang['configuration_site_name'] = 'Site Name';
 $phprlang['configuration_site_server'] = 'Site Server Name';
 $phprlang['configuration_site_description'] = 'Site Description';
-$phprlang['configuration_persistent_db'] = 'Create Persistant Database Connection?';
-$phprlang['configuration_look_and_feel_header'] = 'Look and Feel - Settings';
-$phprlang['configuration_old_raids_index'] = 'Number of Old Raids to Show on the Index Page';//new
 
 $phprlang['configuration_admin_email'] = '管理者信箱';
 $phprlang['configuration_email_header'] = '信箱設定';
@@ -145,6 +141,18 @@ $phprlang['configuration_rss_header'] = 'RSS Configuration';
 $phprlang['configuration_rss_site'] = 'RSS:WRM安裝網址 (網址尾端不得輸入 /)';
 $phprlang['configuration_rss_export'] = 'RSS:輸出RSS資料至網站';
 $phprlang['configuration_rss_feed_amt'] = 'RSS:於RSS資料顯示之團隊數量';
+
+
+// Text on the "Style Config" Page
+$phprlang['style_menu_header'] = 'Style Config';
+$phprlang['configuration_template_cfg_header'] = 'Template Config';
+$phprlang['configuration_logo'] = 'Logo鏈結位址';
+$phprlang['configuration_sitelink'] = '"頁首" 連結';
+$phprlang['configuration_template'] = '版面';
+$phprlang['configuration_addon'] = '插件鏈結位址';
+$phprlang['configuration_show_addon'] = '顯示插件連結';
+$phprlang['configuration_register_text'] = '登寄網址';
+
 
 // Text on the "Time Config" Page
 $phprlang['configuration_ampm'] = 'Schedule Raids in 12h/24h format';

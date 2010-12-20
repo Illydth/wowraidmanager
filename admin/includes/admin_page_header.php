@@ -92,10 +92,13 @@ $admin_datatablecfg_link = '<a href="admin_datatablecfg.php">' . $theme_admin_da
 $admin_rolecfg_link = '<a href="admin_rolecfg.php?mode=view">' . $theme_admin_rolecfg_link . '</a>';
 $admin_logs_link = '<a href="admin_logs.php?mode=view">' . $theme_admin_logs_link . '</a>';
 $admin_roletalent_link = '<a href="admin_roletalent.php?mode=view">' . $theme_admin_roletalent_link . '</a>';
+$admin_style_conf_link = '<a href="admin_style_cfg.php?mode=view">' . $theme_admin_style_conf_link . '</a>';
+$admin_style_menubar_mgt_link = '<a href="admin_style_menubar_mgt.php?mode=view">' . $theme_admin_style_menubar_mgt_link . '</a>';
 
 // The various Admin Menus:
 $main_menu = '<div align="left" class="navContainer"><ul class="navList">';
 $gen_conf_menu = '<div align="left" class="navContainer"><ul class="navList">';
+$style_conf_menu = '<div align="left" class="navContainer"><ul class="navList">';
 $user_mgt_menu = '<div align="left" class="navContainer"><ul class="navList">';
 $table_conf_menu = '<div align="left" class="navContainer"><ul class="navList">';
 $logs_menu = '<div align="left" class="navContainer"><ul class="navList">';
@@ -152,6 +155,20 @@ if (preg_match("/(.*)admin_general_game_settings\.php(.*)/", $_SERVER['PHP_SELF'
     $gen_conf_menu .= '<li class="active">' . $admin_general_game_settings_link . '</li>';
 } else {
     $gen_conf_menu .= '<li class="">' . $admin_general_game_settings_link . '</li>';
+}
+
+// *** Style Menu Items ***
+// To DO
+if (preg_match("/(.*)admin_style_cfg\.php(.*)/", $_SERVER['PHP_SELF'])) {
+    $style_conf_menu .= '<li class="active">' . $admin_style_conf_link . '</li>';
+} else {
+    $style_conf_menu .= '<li class="">' . $admin_style_conf_link . '</li>';
+}
+
+if (preg_match("/(.*)admin_style_menubar_mgt\.php(.*)/", $_SERVER['PHP_SELF'])) {
+    $style_conf_menu .= '<li class="active">' . $admin_style_menubar_mgt_link . '</li>';
+} else {
+    $style_conf_menu .= '<li class="">' . $admin_style_menubar_mgt_link . '</li>';
 }
 
 // *** User Management Menu Items ***
@@ -213,11 +230,13 @@ $gen_conf_menu .= '</ul></div>';
 $user_mgt_menu .= '</ul></div>';
 $table_conf_menu .= '</ul></div>';
 $logs_menu .= '</ul></div>';
-
+	
 $wrmadminsmarty->assign('menus', 
 	array(
 		'main_menu'=>$main_menu,
 		'main_menu_header'=>$phprlang['admin_menu_header'],
+		'style_menu'=>$style_conf_menu,
+		'style_menu_header'=>$phprlang['style_menu_header'],
 		'gen_conf_menu'=>$gen_conf_menu,
 		'gen_conf_menu_header'=>$phprlang['gen_conf_menu_header'],
 		'user_mgt_menu'=>$user_mgt_menu,

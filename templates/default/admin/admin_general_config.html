@@ -7,17 +7,10 @@
 	<tr>
     	<td valign="top" class="forumline"> 
            <table width="100%" border="0" cellspacing="1" cellpadding="3" class="dataOutline">
+
 		      <tr>
-		        <td width="200" class="row1"><strong>{$config_data.register_text}</strong></td>
-		        <td class="row2">{$config_data.register}</td>
-		      </tr>
-		      <tr>
-		        <td class="row1"><strong>{$config_data.language_text}</strong></td>
+		        <td width="200" class="row1"><strong>{$config_data.language_text}</strong></td>
 		        <td class="row2">{$config_data.language}</td>
-		      </tr>
-		      <tr>
-		        <td class="row1"><strong>{$config_data.header_link_text}</strong></td>
-		        <td class="row2">{$config_data.header_link_value}</td>
 		      </tr>
 		      <tr> 
 		        <td class="row1"><strong>{$config_data.persistent_db_text}</strong></td>
@@ -31,49 +24,9 @@
 		        <td class="row1"><strong>{$config_data.debug_text}</strong></td>
 		        <td class="row2">{$config_data.debug_mode}</td>
 		      </tr>
-		      <tr>
-		        <td class="row1"><strong>{$config_data.showphpraid_addon_text}</strong></td>
-		        <td class="row2">{$config_data.showphpraid_addon_value}</td>
-		      </tr>
 			  <tr>
 		        <td class="row1"><strong>{$config_data.enable_five_man_text}</strong></td>
 		        <td class="row2">{$config_data.enable_five_man}</td>
-		      </tr>
-			</table>
-		</td>
-	</tr>
-</table>
-</div>
-<br>
-<div class="contentHeader">{$config_data.look_and_feel_header}</div><br>
-<div class="contentBody">
-<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
-	<tr>
-    	<td valign="top" class="forumline"> 
-           <table width="100%" border="0" cellspacing="1" cellpadding="3" class="dataOutline">
-		      <tr>
-		        <td class="row1"><strong>{$config_data.site_name_text}</strong></td>
-		        <td class="row2">{$config_data.site_name}</td>
-		      </tr>
-		      <tr>
-		        <td class="row1"><strong>{$config_data.site_description_text}</strong></td>
-		        <td class="row2">{$config_data.site_description}</td>
-		      </tr>
-		      <tr>
-		        <td class="row1"><strong>{$config_data.site_server_text}</strong></td>
-		        <td class="row2">{$config_data.site_server}</td>
-		      </tr>
-		      <tr>
-		        <td class="row1"><strong>{$config_data.header_logo_text}</strong></td>
-		        <td class="row2">{$config_data.header_logo_path}</td>
-		      </tr>
-		      <tr>
-		        <td class="row1"><strong>{$config_data.phpraid_addon_link_text}</strong></td>
-		        <td class="row2">{$config_data.phpraid_addon_link}</td>
-		      </tr>
-		      <tr> 
-		        <td width="200" class="row1"><strong>{$config_data.template_text}</strong></td>
-		        <td class="row2">{$config_data.template_type}</td>
 		      </tr>
 		      <tr>
 		        <td class="row1"><strong>{$config_data.records_per_page_text}</strong></td>
@@ -82,6 +35,30 @@
 		      <tr>
 		        <td class="row1"><strong>{$config_data.old_raids_index_text}</strong></td>
 		        <td class="row2">{$config_data.num_old_raids_index}</td>
+		      </tr>
+			</table>
+		</td>
+	</tr>
+</table>
+</div>
+<br>
+<div class="contentHeader">{$config_data.side_cfg_header}</div><br>
+<div class="contentBody">
+<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+	<tr>
+    	<td valign="top" class="forumline"> 
+           <table width="100%" border="0" cellspacing="1" cellpadding="3" class="dataOutline">
+		      <tr>
+		        <td width="200" class="row1"><strong>{$config_data.site_name_text}</strong></td>
+		        <td class="row2"><input name="header_link" size="60" type="text" class="post" value="{$config_data.site_name_value}"></td>
+		      </tr>
+		      <tr>
+		        <td class="row1"><strong>{$config_data.site_description_text}</strong></td>
+		        <td class="row2"><input name="header_link" size="60" type="text" class="post" value="{$config_data.site_description_value}"></td>
+		      </tr>
+		      <tr>
+		        <td class="row1"><strong>{$config_data.site_server_text}</strong></td>
+		        <td class="row2"><input name="header_link" size="60" type="text" class="post" value="{$config_data.site_server_value}"></td>
 		      </tr>
 			</table>
 		</td>

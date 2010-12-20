@@ -54,6 +54,8 @@ $phprlang['admin_raid_settings'] = '&raquo; Raid Settings';
 $phprlang['admin_external_config'] = '&raquo; External Systems';
 $phprlang['admin_game_settings'] = '&raquo; Game Settings';
 $phprlang['admin_roletalent_config'] = '&raquo; Link Class/Role/Talent';
+$phprlang['admin_style_conf'] = 'Template Config';
+$phprlang['admin_menubar_mgt_link'] = 'Menu Bar Settings';
 
 // Link from Main Site to Admin
 $phprlang['admin_section_link'] = 'Admin Section';
@@ -117,25 +119,19 @@ $phprlang['configuration_version_outdated_message'] = 'Deine Version von WoW Rai
 													   Zum Herunterladen besuche bitte den <a href="http://www.wowraidmanager.net/">offiziellen WRM - Downloadbereich</a>.';
 
 // Text on the "General Config" Page
-$phprlang['configuration_addon'] = 'Addon URL';
-
 $phprlang['configuration_debug'] = 'Debugmodus';
 $phprlang['configuration_disable'] = 'WRM deaktivieren';
 $phprlang['configuration_enable_five_man'] = 'Gruppen aktivieren<br><a href="../docs/enable_groups.htm" target="_blank">Hilfe?</a>';
 $phprlang['configuration_language'] = 'Sprache';
-$phprlang['configuration_logo'] = 'Pfad zum Logo';
 $phprlang['configuration_records_per_page'] = 'Records Per Data Table Page';
-$phprlang['configuration_register_text'] = 'Registrierungs-URL';
-$phprlang['configuration_show_addon'] = 'Addon-Link zeigen';
-$phprlang['configuration_sitelink'] = 'Link zur "Gildenseite"';
-$phprlang['configuration_template'] = 'Vorlage';
-$phprlang['general_configuration_header'] = 'Allgemeine Einstellungen';
-$phprlang['configuration_site_name'] = 'Site Name';
-$phprlang['configuration_site_server'] = 'Site Server Name';
-$phprlang['configuration_site_description'] = 'Site Description';
 $phprlang['configuration_persistent_db'] = 'Create Persistant Database Connection?';
-$phprlang['configuration_look_and_feel_header'] = 'Look and Feel - Settings';
-$phprlang['configuration_old_raids_index'] = 'Number of Old Raids to Show on the Index Page';//new
+$phprlang['general_configuration_header'] = 'Allgemeine Einstellungen';
+$phprlang['configuration_old_raids_index'] = 'Number of Old Raids to Show on the Index Page';
+
+$phprlang['general_side_cfg_header'] = 'Side Config';
+$phprlang['configuration_site_name'] = 'Seite Name';
+$phprlang['configuration_site_server'] = 'Seite Server Name';
+$phprlang['configuration_site_description'] = 'Seite Beschreibung';
 
 $phprlang['configuration_admin_email'] = 'Administrator-E-Mail';
 $phprlang['configuration_email_header'] = 'E-Mail-Konfiguration';
@@ -145,6 +141,17 @@ $phprlang['configuration_rss_header'] = 'RSS Einstellungen';
 $phprlang['configuration_rss_site'] = 'RSS: URL zur WRM-Installation (ohne abschließenden /)';
 $phprlang['configuration_rss_export'] = 'RSS: Seite des RSS-Feeds';
 $phprlang['configuration_rss_feed_amt'] = 'RSS: Anzahl der Raids, die im Feed angezeigt werden sollen';
+
+// Text on the "Style Config" Page
+$phprlang['style_menu_header'] = 'Style Config';
+$phprlang['configuration_template_cfg_header'] = 'Template Config';
+$phprlang['configuration_logo'] = 'Pfad zum Logo';
+$phprlang['configuration_sitelink'] = 'Link zur "Gildenseite"';
+$phprlang['configuration_template'] = 'Vorlage';
+$phprlang['configuration_addon'] = 'Addon URL';
+$phprlang['configuration_show_addon'] = 'Addon-Link zeigen';
+$phprlang['configuration_register_text'] = 'Registrierungs-URL';
+
 
 // Text on the "Time Config" Page
 $phprlang['configuration_ampm'] = '24-Stunden-Format verwenden';

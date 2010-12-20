@@ -41,6 +41,8 @@ if($use_images == 0) {
 	$theme_admin_roletalent_link = $phprlang['admin_roletalent_config'];
 	$theme_admin_raid_signupgroups_link = $phprlang['admin_raid_signupgroups'];
 	$theme_admin_general_game_settings_link = $phprlang['admin_game_settings'];
+	$theme_admin_style_conf_link = $phprlang['admin_style_conf'];
+	$theme_admin_style_menubar_mgt_link = $phprlang['admin_menubar_mgt_link'];
 	
 } else {
 	$theme_admin_site_link = $image_admin_site_link;

@@ -1,6 +1,6 @@
 <?php
 /***************************************************************************
- *                           lang_admin.php (English)
+ *                           lang_admin.php (norwegian)
  *                            -------------------
  *   begin                : Monday, May 11, 2009
  *   copyright            : (C) 2007-2009 Douglas Wagner
@@ -54,6 +54,8 @@ $phprlang['admin_raid_settings'] = '&raquo; Raid Settings';
 $phprlang['admin_external_config'] = '&raquo; External Systems';
 $phprlang['admin_game_settings'] = '&raquo; Game Settings';
 $phprlang['admin_roletalent_config'] = '&raquo; Link Class/Role/Talent';
+$phprlang['admin_style_conf'] = 'Template Config';
+$phprlang['admin_menubar_mgt_link'] = 'Menu Bar Settings';
 
 // Link from Main Site to Admin
 $phprlang['admin_section_link'] = 'Admin Section';
@@ -115,27 +117,20 @@ $phprlang['configuration_version_outdated_header'] = 'E\' disponibile una nuova 
 $phprlang['configuration_version_outdated_message'] = 'La versione in uso di WowRaidManager non è l\'ultima disponibile: si consiglia vivamente di aggiornarla.<br>
 													   L\'ultima versione è %s, mentre quella in uso è %s.<br>
 													   Per scaricare l\'ultima versione, fare riferimento all\'area Download di <a href="http://www.wowraidmanager.net">WowRaidManager.net</a>.';
-
 // Text on the "General Config" Page
-$phprlang['configuration_addon'] = 'Sito ufficiale di WowRaidManager';
-
 $phprlang['configuration_debug'] = 'Modalità debug';
 $phprlang['configuration_disable'] = 'Disabilita WowRaidManager';
 $phprlang['configuration_enable_five_man'] = 'Abilita i Gruppi<br><a href="../docs/enable_groups.htm" target="_blank">(Guida)</a>';
 $phprlang['configuration_language'] = 'Lingua';
-$phprlang['configuration_logo'] = 'Immagine di intestazione';
 $phprlang['configuration_records_per_page'] = 'Records Per Data Table Page';
-$phprlang['configuration_register_text'] = 'Indirizzo di registrazione';
-$phprlang['configuration_show_addon'] = 'Visualizza link a WRM';
-$phprlang['configuration_sitelink'] = 'Il link "Homepage" punta a';
-$phprlang['configuration_template'] = 'Tema visuale';
+$phprlang['configuration_persistent_db'] = 'Create Persistant Database Connection?';
 $phprlang['general_configuration_header'] = 'General Settings';
+$phprlang['configuration_old_raids_index'] = 'Number of Old Raids to Show on the Index Page';
+
+$phprlang['general_side_cfg_header'] = 'Side Config';
 $phprlang['configuration_site_name'] = 'Site Name';
 $phprlang['configuration_site_server'] = 'Site Server Name';
 $phprlang['configuration_site_description'] = 'Site Description';
-$phprlang['configuration_persistent_db'] = 'Create Persistant Database Connection?';
-$phprlang['configuration_look_and_feel_header'] = 'Look and Feel - Settings';
-$phprlang['configuration_old_raids_index'] = 'Number of Old Raids to Show on the Index Page';//new
 
 $phprlang['configuration_admin_email'] = 'E-mail dell\'Amministratore';
 $phprlang['configuration_email_header'] = 'Configurazione dell\'e-mail';
@@ -145,6 +140,16 @@ $phprlang['configuration_rss_header'] = 'RSS Configuration';
 $phprlang['configuration_rss_site'] = 'RSS: indirizzo di installazione di WowRaidManager (senza barra finale)';
 $phprlang['configuration_rss_export'] = 'RSS: indirizzo a cui esportare il feed RSS';
 $phprlang['configuration_rss_feed_amt'] = 'RSS: numero di Raid da visualizzare';
+
+// Text on the "Style Config" Page
+$phprlang['style_menu_header'] = 'Style Config';
+$phprlang['configuration_template_cfg_header'] = 'Template Config';
+$phprlang['configuration_logo'] = 'Immagine di intestazione';
+$phprlang['configuration_sitelink'] = 'Il link "Homepage" punta a';
+$phprlang['configuration_template'] = 'Tema visuale';
+$phprlang['configuration_addon'] = 'Sito ufficiale di WowRaidManager';
+$phprlang['configuration_show_addon'] = 'Visualizza link a WRM';
+$phprlang['configuration_register_text'] = 'Indirizzo di registrazione';
 
 // Text on the "Time Config" Page
 $phprlang['configuration_ampm'] = 'Formato orario di creazione dei Raid';

@@ -97,78 +97,36 @@ $language .= '</select>';
 unset($files);
 // END LANGUAGE CHECK
 
-// TEMPLATE CHECK
-// and now let's check templates
-$dir = '../templates';
-$dh = opendir($dir);
-while(false != ($filename = readdir($dh))) {
-	$files[] = $filename;
-}
-
-sort($files);
-array_shift($files);
-array_shift($files);
-
-$template_type = '<select name="template">';
-
-foreach($files as $key=>$value)
-{
-	if($phpraid_config['template'] == $value)
-		$template_type .= "<option value=\"$value\" selected>$value</option>";
-	else
-		$template_type .= "<option value=\"$value\">$value</option>";
-}
-
-$template_type .= '</select>';
-//END TEMPLATE CHECK
-
-$phpraid_addon_link = '<input name="phpraid_addon_link" size="60" type="text" class="post" value="' . $phpraid_config['phpraid_addon_link'] . '">';
-$header_logo = '<input name="header_logo" size="60" type="text" class="post" value="' . $phpraid_config['header_logo'] . '">';
-$register = '<input name="register" type="text" value="'.$phpraid_config['register_url'].'" size="60" class="post">';
-$header_link = '<input name="header_link" size="60" type="text" class="post" value="' . $phpraid_config['header_link'] . '">';
 $records_per_page = '<input name="records_per_page" size="5" type="text" class="post" value="' . $phpraid_config['records_per_page'] . '">';
-$site_name = '<input name="site_name" size="60" type="text" class="post" value="' . $phpraid_config['site_name'] . '">';
-$site_server = '<input name="site_server" size="60" type="text" class="post" value="' . $phpraid_config['site_server'] . '">';
-$site_description = '<input name="site_desc" size="75" type="text" class="post" value="' . $phpraid_config['site_description'] . '">';
 $num_old_raids_index = '<input name="num_old_raids_index" size="5" type="text" class="post" value="' . $phpraid_config['num_old_raids_index'] . '">';
 
 $wrmadminsmarty->assign('config_data',
 	array(
 		'form_action'=> $page_url,
 		'general_header' => $phprlang['general_configuration_header'],
-		'look_and_feel_header' => $phprlang['configuration_look_and_feel_header'],
-		'phpraid_addon_link' => $phpraid_addon_link,
-		'phpraid_addon_link_text' => $phprlang['configuration_addon'],
-		'header_logo_path' => $header_logo,
-		'header_logo_text' => $phprlang['configuration_logo'],
-		'register' => $register,
-		'register_text' => $phprlang['configuration_register_text'],
-		'header_link_value' => $header_link,
-		'header_link_text' => $phprlang['configuration_sitelink'],
 		'language' => $language,
 		'language_text' => $phprlang['configuration_language'],
-		'template_type' => $template_type,
-		'template_text' => $phprlang['configuration_template'],
 		'disable_site' => $disable_site,
 		'disable_text' => $phprlang['configuration_disable'],
 		'debug_mode' => $debug_mode,
 		'debug_text' => $phprlang['configuration_debug'],
-		'showphpraid_addon_value' => $showphpraid_addon,
-		'showphpraid_addon_text' => $phprlang['configuration_show_addon'],
 		'enable_five_man' => $enable_five_man, 
 		'enable_five_man_text' => $phprlang['configuration_enable_five_man'],
 		'persistent_db' => $persistent_db, 
 		'persistent_db_text' => $phprlang['configuration_persistent_db'],
-		'site_name' => $site_name,
-		'site_name_text' => $phprlang['configuration_site_name'],
-		'site_server' => $site_server,
-		'site_server_text' => $phprlang['configuration_site_server'],
-		'site_description' => $site_description,
-		'site_description_text' => $phprlang['configuration_site_description'],
 		'records_per_page_text' => $phprlang['configuration_records_per_page'],
 		'records_per_page' => $records_per_page,
 		'old_raids_index_text' => $phprlang['configuration_old_raids_index'],
 		'num_old_raids_index' => $num_old_raids_index,
+	
+		'side_cfg_header' => $phprlang['general_side_cfg_header'],
+	
+		'site_name_value' =>  $phpraid_config['site_name'],
+		'site_name_text' => $phprlang['configuration_site_name'],
+		'site_description_value' => $phpraid_config['site_description'],
+		'site_description_text' => $phprlang['configuration_site_description'],
+		'site_server_value' => $phpraid_config['site_server'],
+		'site_server_text' => $phprlang['configuration_site_server'],
 		'button_submit' => $phprlang['submit'],
 		'button_reset' => $phprlang['reset']
 	)
@@ -185,11 +143,6 @@ if(isset($_POST['submit']))
 		$p_debug = 1;
 	else
 		$p_debug = 0;
-		
- 	if(isset($_POST['showphpraid_addon']))
- 		$showphpraid_addon = 1;
- 	else
- 		$showphpraid_addon = 0;
 
  	if(isset($_POST['enable_five_man']))
  		$enable_five_man = 1;
@@ -201,45 +154,24 @@ if(isset($_POST['submit']))
  	else
  		$persistent_db = 0;
  		
-	$p_link = scrub_input($_POST['phpraid_addon_link'], true);
-	$h_logo = scrub_input($_POST['header_logo'], true);
-	$h_link = scrub_input($_POST['header_link'], true);
+
 	$lang = scrub_input($_POST['language']);
 	
-	$register = scrub_input(DEUBB($_POST['register']), true);
-	$t_type = scrub_input(DEUBB($_POST['template']));
-
-	$site_name = scrub_input($_POST['site_name']);
-	$site_server = scrub_input($_POST['site_server']);
-	$site_description = scrub_input($_POST['site_desc']);
 	
 	$records_per_page = scrub_input($_POST['records_per_page']);
 	
 	$num_old_raids_index = scrub_input($_POST['num_old_raids_index']);
 	
-	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'site_name';", quote_smart($site_name));
-	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
-	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'site_server';", quote_smart($site_server));
-	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
-	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'site_description';", quote_smart($site_description));
-	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
-	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'phpraid_addon_link';", quote_smart($p_link));
-	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
-	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'header_logo';", quote_smart($h_logo));
-	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
-	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'register_url';", quote_smart($register));
-	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
-	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'header_link';", quote_smart($h_link));
+	$site_name = scrub_input($_POST['site_name']);
+	$site_description = scrub_input($_POST['site_desc']);
+	$site_server = scrub_input($_POST['site_server']);
+
 	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'language';", quote_smart($lang));
-	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
-	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'template';", quote_smart($t_type));
 	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'disable';", quote_smart($disable));
 	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'debug';", quote_smart($p_debug));
-	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
-	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'showphpraid_addon';", quote_smart($showphpraid_addon));
 	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'enable_five_man';", quote_smart($enable_five_man));
 	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
@@ -248,6 +180,13 @@ if(isset($_POST['submit']))
 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'records_per_page';", quote_smart($records_per_page));
 	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'num_old_raids_index';", quote_smart($num_old_raids_index));
+	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
+	
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'site_name';", quote_smart($site_name));
+	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'site_description';", quote_smart($site_description));
+	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'site_server';", quote_smart($site_server));
 	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
 	
 	header("Location: ".$page_url);
