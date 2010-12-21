@@ -11,3 +11,5 @@ cache/smarty_cache/admin/*
 cache/raid_lua/*
 cache/armory_log/*
 cache/armory_cache/*
+install/cache/smarty_cache/*
+install/cache/templates_c/*

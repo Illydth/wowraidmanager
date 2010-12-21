@@ -31,6 +31,14 @@ cd wrm
 
 # Remove Cache and Compilations
 rm -rf cache
+rm -rf install/cache
+
+
+# Create Directory
+mkdir install/cache
+mkdir install/cache/smarty_cache
+mkdir install/cache/templates_c
+
 mkdir cache
 mkdir cache/armory_log
 mkdir cache/armory_cache
