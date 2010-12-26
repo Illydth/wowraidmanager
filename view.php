@@ -276,32 +276,34 @@ if($mode == 'view')
 		//Get Spec Information.
 		$spec = $signups['selected_spec'];
 		
-		$sql = sprintf("SELECT role_id FROM " . $phpraid_config['db_prefix'] . "class_role WHERE class_id = %s and subclass = %s", quote_smart($data['class']), quote_smart($data['pri_spec']));
+		$sql = sprintf("SELECT role_id,lang_index FROM " . $phpraid_config['db_prefix'] . "class_role WHERE class_id = %s and subclass = %s", quote_smart($data['class']), quote_smart($data['pri_spec']));
 		$result_spec_lang = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		$spec_lang_data = $db_raid->sql_fetchrow($result_spec_lang, true);
 		//$pri_spec_lang = $spec_lang_data['lang_index'];
 		$pri_spec_role = $spec_lang_data['role_id'];
+		$pri_spec_lang_index = $spec_lang_data['lang_index'];
 		foreach ($wrm_global_roles as $global_role)
 			if($pri_spec_role == $global_role['role_id'])
 				$pri_spec_role_name = $global_role['role_name'];
 		
-		$sql = sprintf("SELECT role_id FROM " . $phpraid_config['db_prefix'] . "class_role WHERE class_id = %s and subclass = %s", quote_smart($data['class']), quote_smart($data['sec_spec']));
+		$sql = sprintf("SELECT role_id,lang_index FROM " . $phpraid_config['db_prefix'] . "class_role WHERE class_id = %s and subclass = %s", quote_smart($data['class']), quote_smart($data['sec_spec']));
 		$result_spec_lang = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		$spec_lang_data = $db_raid->sql_fetchrow($result_spec_lang, true);
 		//$sec_spec_lang = $spec_lang_data['lang_index'];
 		$sec_spec_role = $spec_lang_data['role_id'];
+		$sec_spec_lang_index = $spec_lang_data['lang_index'];
 		foreach ($wrm_global_roles as $global_role)
 			if($sec_spec_role == $global_role['role_id'])
 				$sec_spec_role_name = $global_role['role_name'];
 			
 		if ($spec == $data['pri_spec'])
-			$pri_spec = "<b>" . $pri_spec_role_name . ":" . $data['pri_spec'] . "</b>";
+			$pri_spec = "<b>" . $pri_spec_role_name . ":" . $phprlang[$pri_spec_lang_index] . "</b>";
 		else
-			$pri_spec = $pri_spec_role_name . ":" . $data['pri_spec'];
+			$pri_spec = $pri_spec_role_name . ":" . $phprlang[$pri_spec_lang_index];
 		if ($spec == $data['sec_spec'])
-			$sec_spec = "<b>" . $sec_spec_role_name . ":" . $data['sec_spec'] . "</b>";
+			$sec_spec = "<b>" . $sec_spec_role_name . ":" . $phprlang[$sec_spec_lang_index] . "</b>";
 		else
-			$sec_spec = $sec_spec_role_name . ":" . $data['sec_spec'];
+			$sec_spec = $sec_spec_role_name . ":" . $phprlang[$sec_spec_lang_index];
 				
 		$arcane = $data['arcane'];
 		$fire = $data['fire'];
