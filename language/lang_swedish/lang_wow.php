@@ -50,12 +50,14 @@ $phprlang['blood_elf'] = 'Blood Elf';
 $phprlang['draenei'] = 'Draenei';
 $phprlang['dwarf'] = 'Dwarf';
 $phprlang['gnome'] = 'Gnome';
+$phprlang['goblin'] = 'Goblin'; //New
 $phprlang['human'] = 'Human';
 $phprlang['night_elf'] = 'Night Elf';
 $phprlang['orc'] = 'Orc';
 $phprlang['tauren'] = 'Tauren';
 $phprlang['troll'] = 'Troll';
 $phprlang['undead'] = 'Undead';
+$phprlang['worgen'] = 'Worgen'; //New
 
 // Talent Specs
 $phprlang['disc'] = "Discipline";

@@ -50,12 +50,14 @@ $phprlang['blood_elf'] = '血精靈';
 $phprlang['draenei'] = '德萊尼';
 $phprlang['dwarf'] = '矮人';
 $phprlang['gnome'] = '地精';
+$phprlang['goblin'] = 'Goblin'; //New
 $phprlang['human'] = '人類';
 $phprlang['night_elf'] = '夜精靈';
 $phprlang['orc'] = '獸人';
 $phprlang['tauren'] = '牛頭人';
 $phprlang['troll'] = '食人妖';
 $phprlang['undead'] = '不死族';
+$phprlang['worgen'] = 'Worgen'; //New
 
 // Talent Specs
 $phprlang['disc'] = "Discipline";
