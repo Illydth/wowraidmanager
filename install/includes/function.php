@@ -626,17 +626,18 @@ function show_online_versionnr($versions_nr_install)
 	else
 	{
 		$installfiles_ver = explode('.', $versions_nr_install);
-		$latest_version_info = explode("\n", $latest_version_info);
+		//$latest_version_info = explode("\n", $latest_version_info);
 		//$latest_version_info = explode(" ", $latest_version_info);
+		$latest_version_info = explode(".", $latest_version_info);
 		
-		if ($installfiles_ver[3] == "")
-				$installfiles_ver[3]= (int) 0;
-		if ($installfiles_ver[4] == "")
-				$installfiles_ver[4]= (int) 0;
-		if ($installfiles_ver[5] == "")
-				$installfiles_ver[5]= (int) 0;
-		if ($installfiles_ver[6] == "")
-				$installfiles_ver[6]= (int) 0;
+		if (!isset($installfiles_ver[3]))
+			$installfiles_ver[3]= (int) 0;
+		if (!isset($installfiles_ver[4]))
+			$installfiles_ver[4]= (int) 0;
+		if (!isset($installfiles_ver[5]))
+			$installfiles_ver[5]= (int) 0;
+		if (!isset($installfiles_ver[6]))
+			$installfiles_ver[6]= (int) 0;
 
 		$installfiles_ver_text = $installfiles_ver[0].".".$installfiles_ver[1].".".$installfiles_ver[2]." ".$latest_version_info[3];
 		$installfiles_ver_text = $installfiles_ver_text." ".$installfiles_ver[3].".".$installfiles_ver[4].".".$installfiles_ver[5];
