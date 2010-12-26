@@ -62,6 +62,14 @@ $phprlang['raid_force_new_header'] = 'New Raid Force Link';
 $phprlang['raid_force_name_missing'] = 'Raid Force Name must not be blank or NULL.';
 $phprlang['raid_force_duplicate'] = 'Duplicate Raid Force Name/Guild Record.';
 $phprlang['raid_force_guild_id_missing'] = 'Guild ID must not be blank or NULL';
+$phprlang['armory_lang_US'] = 'US : http://us.battle.net/wow/ : English';
+$phprlang['armory_lang_EU'] = 'EU : http://eu.battle.net/wow/ : English';
+$phprlang['armory_lang_DE'] = 'DE : http://eu.battle.net/wow/ : German';
+$phprlang['armory_lang_ES'] = 'ES : http://eu.battle.net/wow/ : Spanish';
+$phprlang['armory_lang_FR'] = 'FR : http://eu.battle.net/wow/ : French';
+$phprlang['armory_lang_KR'] = 'KR : http://kr.battle.net/wow/ : Korean';
+$phprlang['armory_lang_TW'] = 'TW : http://tw.battle.net/wow/ : Taiwainese';
+$phprlang['armory_lang_none'] = 'No Armory or Not Applicable';
 
 // locations
 $phprlang['locations_header'] = 'Saved Locations';

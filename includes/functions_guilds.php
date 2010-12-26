@@ -79,29 +79,57 @@ function guild_remove($n, $id)
  */
 function get_armory_link_from_code($code)
 {
-
-	if ($code == 'US')
-		$link = 'http://www.wowarmory.com';
-
-	elseif ($code == 'EU')
-		$link = 'http://eu.wowarmory.com';
-
-	elseif ($code == 'DE')
-		$link = 'http://eu.wowarmory.com';
-
-	elseif ($code == 'ES')
-		$link = 'http://eu.wowarmory.com';
-
-	elseif ($code == 'FR')
-		$link = 'http://eu.wowarmory.com';
-
-	elseif ($code == 'KR')
-		$link = 'http://kr.wowarmory.com';
-
-	elseif ($code == 'TW')
-		$link = 'http://tw.wowarmory.com';
-	else
-		$link = '';
+	switch ($code)
+	{
+		case 'US':
+			$link = 'http://us.battle.net/wow/en/character/';
+			break;
+		case 'EU':
+			$link = 'http://eu.battle.net/wow/en/character/';
+			break;
+		case 'DE':
+			$link = 'http://eu.battle.net/wow/de/character/';
+			break;
+		case 'ES':
+			$link = 'http://eu.battle.net/wow/es/character/';
+			break;
+		case 'FR':
+			$link = 'http://eu.battle.net/wow/fr/character/';
+			break;
+		case 'KR':
+			$link = 'http://kr.battle.net/wow/ko/character/';
+			break;
+		case 'TW':
+			$link = 'http://tw.battle.net/wow/tw/character/';
+			break;
+		default:
+			$link = '';
+			break;	
+	}
+	
+	
+	//if ($code == 'US')
+	//	$link = 'http://www.wowarmory.com';
+//
+	//elseif ($code == 'EU')
+	//	$link = 'http://eu.wowarmory.com';
+//
+	//elseif ($code == 'DE')
+	//	$link = 'http://eu.wowarmory.com';
+//
+	//elseif ($code == 'ES')
+	//	$link = 'http://eu.wowarmory.com';
+//
+	//elseif ($code == 'FR')
+	//	$link = 'http://eu.wowarmory.com';
+//
+	//elseif ($code == 'KR')
+	//	$link = 'http://kr.wowarmory.com';
+//
+	//elseif ($code == 'TW')
+	//	$link = 'http://tw.wowarmory.com';
+	//else
+	//	$link = '';
 			
 	return ($link);
 }
@@ -114,16 +142,15 @@ function get_armory_code_full()
 {
 	$array_armory_code = array();
 
-	$array_armory_code["US"] = "US : http://www.wowarmory.com : English";
-	$array_armory_code["EU"] = "EU : http://eu.wowarmory.com : English";
-	$array_armory_code["DE"] = "DE : http://eu.wowarmory.com : German";
-	$array_armory_code["ES"] = "ES : http://eu.wowarmory.com : Spanish";
-	$array_armory_code["FR"] = "FR : http://eu.wowarmory.com : French";
-	$array_armory_code["KR"] = "KR : http://kr.wowarmory.com : Korean";
-	$array_armory_code["TW"] = "TW : http://tw.wowarmory.com : Taiwaines";
-	$array_armory_code["None"] = "No Armory or Not Applicable";
+	$array_armory_code["US"] = $phprlang['armory_lang_US'];
+	$array_armory_code["EU"] = $phprlang['armory_lang_EU'];
+	$array_armory_code["DE"] = $phprlang['armory_lang_DE'];
+	$array_armory_code["ES"] = $phprlang['armory_lang_ES'];
+	$array_armory_code["FR"] = $phprlang['armory_lang_FR'];
+	$array_armory_code["KR"] = $phprlang['armory_lang_KR'];
+	$array_armory_code["TW"] = $phprlang['armory_lang_TW'];
+	$array_armory_code["None"] = $phprlang['armory_lang_none'];
 	
 	return $array_armory_code;
 }
-
 ?>

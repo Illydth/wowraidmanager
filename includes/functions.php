@@ -150,9 +150,11 @@ function get_armorychar($name, $guild)
 	//$realm = str_replace(" ", "+", ucfirst($server));
 	$realm = ucfirst($data['guild_server']);
 	$lang = strtolower($data['guild_armory_code']);
+	// Pre-Cataclysm Armory Links
+	//$javascript = '<a href="' . $data['guild_armory_link'] . '/character-sheet.xml?r=' . $realm . '&amp;n=' . ucfirst($name) . '" target="new" onmouseover=\'tooltip.show("includes/wowarmory/char.php?v=' . ucfirst($name) . '&amp;z=' . str_replace("'", "\"+String.fromCharCode(39)+\"", $realm) . '&amp;l=' . $lang . '&amp;u='. $data['guild_armory_link'] .'");\' onmouseout="tooltip.hide();"><strong>' . ucfirst($name) . '</strong></a>';
+	// Post-Cataclysm Armory Links.
+	$javascript = '<a href="' . $data['guild_armory_link'] . $realm . '/' . ucfirst($name) . '/advanced" target="new" onmouseover=\'tooltip.show("includes/wowarmory/char.php?v=' . ucfirst($name) . '&amp;z=' . str_replace("'", "\"+String.fromCharCode(39)+\"", $realm) . '&amp;l=' . $lang . '&amp;u='. $data['guild_armory_link'] .'");\' onmouseout="tooltip.hide();"><strong>' . ucfirst($name) . '</strong></a>';
 	
-	$javascript = '<a href="' . $data['guild_armory_link'] . '/character-sheet.xml?r=' . $realm . '&amp;n=' . ucfirst($name) . '" target="new" onmouseover=\'tooltip.show("includes/wowarmory/char.php?v=' . ucfirst($name) . '&amp;z=' . str_replace("'", "\"+String.fromCharCode(39)+\"", $realm) . '&amp;l=' . $lang . '&amp;u='. $data['guild_armory_link'] .'");\' onmouseout="tooltip.hide();"><strong>' . ucfirst($name) . '</strong></a>';
-
 	if(substr_wrap($name, 0, 1, "UTF-8") == '_')
 	{
 		$name = substr_wrap($name, 1, (strlen_wrap($name, "UTF-8")-1), "UTF-8");

@@ -188,25 +188,25 @@ if($_GET['mode'] == 'view' || $_GET['mode'] == 'update' || $_GET['mode'] == 'sel
 	switch ($code)
 	{
 		case 'US':
-			$link = 'http://www.wowarmory.com';
+			$link = 'http://us.battle.net/wow/en/character/';
 			break;
 		case 'EU':
-			$link = 'http://eu.wowarmory.com';
+			$link = 'http://eu.battle.net/wow/en/character/';
 			break;
 		case 'DE':
-			$link = 'http://eu.wowarmory.com';
+			$link = 'http://eu.battle.net/wow/de/character/';
 			break;
 		case 'ES':
-			$link = 'http://eu.wowarmory.com';
+			$link = 'http://eu.battle.net/wow/es/character/';
 			break;
 		case 'FR':
-			$link = 'http://eu.wowarmory.com';
+			$link = 'http://eu.battle.net/wow/fr/character/';
 			break;
 		case 'KR':
-			$link = 'http://kr.wowarmory.com';
+			$link = 'http://kr.battle.net/wow/ko/character/';
 			break;
 		case 'TW':
-			$link = 'http://tw.wowarmory.com';
+			$link = 'http://tw.battle.net/wow/tw/character/';
 			break;
 		default:
 			$link = '';
@@ -504,14 +504,14 @@ if($_GET['mode'] != 'delete' && $_GET['mode'] != 'force_delete') {
 
 		// Selection box for Armory Code.
 		$armory_box = '<select name="code" class="post">';
-		$armory_box .=   '<option value="US" selected>US : http://www.wowarmory.com : English</option>';
-		$armory_box .=   '<option value="EU">EU : http://eu.wowarmory.com : English</option>';
-		$armory_box .=   '<option value="DE">DE : http://eu.wowarmory.com : German</option>';
-		$armory_box .=   '<option value="ES">ES : http://eu.wowarmory.com : Spanish</option>';
-		$armory_box .=   '<option value="FR">FR : http://eu.wowarmory.com : French</option>';
-		$armory_box .=   '<option value="KR">KR : http://kr.wowarmory.com : Korean</option>';
-		$armory_box .=   '<option value="TW">TW : http://tw.wowarmory.com : Taiwainese</option>';
-		$armory_box .=   '<option value="None">No Armory or Not Applicable</option>';
+		$armory_box .=   '<option value="US" selected>'.$phprlang['armory_lang_US'].'</option>';
+		$armory_box .=   '<option value="EU">'.$phprlang['armory_lang_EU'].'</option>';
+		$armory_box .=   '<option value="DE">'.$phprlang['armory_lang_DE'].'</option>';
+		$armory_box .=   '<option value="ES">'.$phprlang['armory_lang_ES'].'</option>';
+		$armory_box .=   '<option value="FR">'.$phprlang['armory_lang_FR'].'</option>';
+		$armory_box .=   '<option value="KR">'.$phprlang['armory_lang_KR'].'</option>';
+		$armory_box .=   '<option value="TW">'.$phprlang['armory_lang_TW'].'</option>';
+		$armory_box .=   '<option value="None">'.$phprlang['armory_lang_none'].'</option>';
 		$armory_box .= '</select>';
 		
 		$buttons = '<input type="submit" value="'.$phprlang['submit'].'" name="submit" class="mainoption"> <input type="reset" value="'.$phprlang['reset'].'" name="reset" class="liteoption">';
@@ -569,37 +569,37 @@ if($_GET['mode'] != 'delete' && $_GET['mode'] != 'force_delete') {
 		// Selection box for Armory Code.
 		$armory_box = '<select name="code" class="post">';
 		if ($data['guild_armory_code'] == 'US')
-			$armory_box .=   '<option value="US" selected>US : http://www.wowarmory.com : English</option>';
+			$armory_box .=   '<option value="US" selected>'.$phprlang['armory_lang_US'].'</option>';
 		else 
-			$armory_box .=   '<option value="US">US : http://www.wowarmory.com : English</option>';
+			$armory_box .=   '<option value="US">'.$phprlang['armory_lang_US'].'</option>';
 		if ($data['guild_armory_code'] == 'EU')
-			$armory_box .=   '<option value="EU" selected>EU : http://eu.wowarmory.com : English</option>';
+			$armory_box .=   '<option value="EU" selected>'.$phprlang['armory_lang_EU'].'</option>';
 		else 
-			$armory_box .=   '<option value="EU">EU : http://eu.wowarmory.com : English</option>';
+			$armory_box .=   '<option value="EU">'.$phprlang['armory_lang_EU'].'</option>';
 		if ($data['guild_armory_code'] == 'DE')
-			$armory_box .=   '<option value="DE" selected>DE : http://eu.wowarmory.com : German</option>';
+			$armory_box .=   '<option value="DE" selected>'.$phprlang['armory_lang_DE'].'</option>';
 		else 
-			$armory_box .=   '<option value="DE">DE : http://eu.wowarmory.com : German</option>';
+			$armory_box .=   '<option value="DE">'.$phprlang['armory_lang_DE'].'</option>';
 		if ($data['guild_armory_code'] == 'ES')
-			$armory_box .=   '<option value="ES" selected>ES : http://eu.wowarmory.com : Spanish</option>';
+			$armory_box .=   '<option value="ES" selected>'.$phprlang['armory_lang_ES'].'</option>';
 		else 
-			$armory_box .=   '<option value="ES">ES : http://eu.wowarmory.com : Spanish</option>';
+			$armory_box .=   '<option value="ES">'.$phprlang['armory_lang_ES'].'</option>';
 		if ($data['guild_armory_code'] == 'FR')
-			$armory_box .=   '<option value="FR" selected>FR : http://eu.wowarmory.com : French</option>';
+			$armory_box .=   '<option value="FR" selected>'.$phprlang['armory_lang_FR'].'</option>';
 		else 
-			$armory_box .=   '<option value="FR">FR : http://eu.wowarmory.com : French</option>';
+			$armory_box .=   '<option value="FR">'.$phprlang['armory_lang_FR'].'</option>';
 		if ($data['guild_armory_code'] == 'KR')
-			$armory_box .=   '<option value="KR" selected>KR : http://kr.wowarmory.com : Korean</option>';
+			$armory_box .=   '<option value="KR" selected>'.$phprlang['armory_lang_KR'].'</option>';
 		else 
-			$armory_box .=   '<option value="KR">KR : http://kr.wowarmory.com : Korean</option>';
+			$armory_box .=   '<option value="KR">'.$phprlang['armory_lang_KR'].'</option>';
 		if ($data['guild_armory_code'] == 'TW')
-			$armory_box .=   '<option value="TW" selected>TW : http://tw.wowarmory.com : Taiwainese</option>';
+			$armory_box .=   '<option value="TW" selected>'.$phprlang['armory_lang_TW'].'</option>';
 		else 
-			$armory_box .=   '<option value="TW">TW : http://tw.wowarmory.com : Taiwainese</option>';
+			$armory_box .=   '<option value="TW">'.$phprlang['armory_lang_TW'].'</option>';
 		if ($data['guild_armory_code'] == '')
-			$armory_box .=   '<option value="None" selected>No Armory or Not Applicable</option>';
+			$armory_box .=   '<option value="None" selected>'.$phprlang['armory_lang_none'].'</option>';
 		else 
-			$armory_box .=   '<option value="None">No Armory or Not Applicable</option>';
+			$armory_box .=   '<option value="None">'.$phprlang['armory_lang_none'].'</option>';
 		$armory_box .= '</select>';
 				
 		$buttons = '<input type="submit" value="'.$phprlang['update'].'" name="submit" class="mainoption"> <input type="reset" value="'.$phprlang['reset'].'" name="reset" class="liteoption">';			

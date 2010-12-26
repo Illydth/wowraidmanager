@@ -43,7 +43,7 @@ class phpArmory5 {
      * @access      protected
      * @var         string      Contains the URL of the armory website.
      */
-    protected $armory = "http://www.wowarmory.com/";
+    protected $armory = "http://us.battle.net/wow/";
 
     /**
      * The URL of the World of Warcraft website to be used.
@@ -174,55 +174,55 @@ class phpArmory5 {
         switch($areaName) {
             case 'eu':
                 $this->areaName 	= 'eu';
-                $this->armory   	= 'http://eu.wowarmory.com/';
+                $this->armory   	= 'http://eu.battle.net/wow/en/';
                 $this->wow      	= 'http://www.wow-europe.com/';
                 $this->localeName 	= 'en';
                 break;
             case 'de':
                 $this->areaName 	= 'eu';
-                $this->armory   	= 'http://eu.wowarmory.com/';
+                $this->armory   	= 'http://eu.battle.net/wow/de/';
                 $this->wow      	= 'http://www.wow-europe.com/';
                 $this->localeName 	= 'de';
                 break;    
             case 'es':
                 $this->areaName 	= 'eu';
-                $this->armory   	= 'http://eu.wowarmory.com/';
+                $this->armory   	= 'http://eu.battle.net/wow/es/';
                 $this->wow      	= 'http://www.wow-europe.com/';
                 $this->localeName 	= 'es';
                 break;
             case 'fr':
                 $this->areaName 	= 'eu';
-                $this->armory   	= 'http://eu.wowarmory.com/';
+                $this->armory   	= 'http://eu.battle.net/wow/fr/';
                 $this->wow      	= 'http://www.wow-europe.com/';
                 $this->localeName 	= 'fr';
                 break;    
             case 'us':
                 $this->areaName 	= 'us';
-                $this->armory   	= 'http://www.wowarmory.com/';
+                $this->armory   	= 'http://us.battle.net/wow/en/';
                 $this->wow      	= 'http://www.worldofwarcraft.com/';
                 $this->localeName 	= 'en';
                 break;
             case 'en': //Duplicate of US
                 $this->areaName 	= 'us';
-                $this->armory   	= 'http://www.wowarmory.com/';
+                $this->armory   	= 'http://us.battle.net/wow/en/';
                 $this->wow      	= 'http://www.worldofwarcraft.com/';
                 $this->localeName 	= 'en';
                 break;    
             case 'kr':
-                $this->areaName 	= 'us';
-                $this->armory   	= 'http://kr.wowarmory.com/';
+                $this->areaName 	= 'kr';
+                $this->armory   	= 'http://kr.battle.net/wow/ko/';
                 $this->wow      	= 'http://www.worldofwarcraft.co.kr';
-                $this->localeName 	= 'en';
+                $this->localeName 	= 'ko';
                 break;
             case 'tw':
-                $this->areaName 	= 'us';
-                $this->armory   	= 'http://tw.wowarmory.com/';
+                $this->areaName 	= 'tw';
+                $this->armory   	= 'http://tw.battle.net/wow/tw/';
                 $this->wow      	= 'http://www.wowtaiwan.com.tw/';
-                $this->localeName 	= 'en';
+                $this->localeName 	= 'tw';
                 break;
 			default:
                 $this->areaName 	= 'us';
-                $this->armory   	= 'http://www.wowarmory.com/';
+                $this->armory   	= 'http://us.battle.net/wow/en/';
                 $this->wow      	= 'http://www.worldofwarcraft.com/';
                 $this->localeName 	= 'en';
             	break;

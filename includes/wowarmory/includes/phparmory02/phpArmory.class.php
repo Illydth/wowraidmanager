@@ -59,7 +59,7 @@ class phpArmory {
 	 * 
 	 * @var string 
 	 */
-	var $armory = "http://www.wowarmory.com/"; 
+	var $armory = "http://us.battle.net/wow/"; 
 	//var $armory = "http://eu.wowarmory.com/";
 	//var $armory = "http://kr.wowarmory.com/";
 	//var $armory = "http://tw.wowarmory.com/";

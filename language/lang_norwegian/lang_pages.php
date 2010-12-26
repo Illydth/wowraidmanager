@@ -54,6 +54,14 @@ $phprlang['guilds_description'] = 'Guild Description';
 $phprlang['guilds_server'] = 'Guild Server';
 $phprlang['guilds_faction'] = 'Guild Faction';
 $phprlang['guilds_armory_code'] = 'Armory Code for Guild';
+$phprlang['armory_lang_US'] = 'US : http://us.battle.net/wow/ : English'; //New
+$phprlang['armory_lang_EU'] = 'EU : http://eu.battle.net/wow/ : English'; //New
+$phprlang['armory_lang_DE'] = 'DE : http://eu.battle.net/wow/ : German'; //New
+$phprlang['armory_lang_ES'] = 'ES : http://eu.battle.net/wow/ : Spanish'; //New
+$phprlang['armory_lang_FR'] = 'FR : http://eu.battle.net/wow/ : French'; //New
+$phprlang['armory_lang_KR'] = 'KR : http://kr.battle.net/wow/ : Korean'; //New
+$phprlang['armory_lang_TW'] = 'TW : http://tw.battle.net/wow/ : Taiwainese'; //New
+$phprlang['armory_lang_none'] = 'No Armory or Not Applicable'; //New
 
 // locations
 $phprlang['locations_header'] = 'Lagret sted';
