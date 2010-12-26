@@ -94,18 +94,26 @@ if ($step == "0")
 		//then goto upgrade.php
 		if( ($wrm_install->db_connect_id) == TRUE)
 		{
-			$sql_db_all = "SHOW DATABASES";
-			$result_db_all = $wrm_install->sql_query($sql_db_all) or print_error($sql_db_all, $wrm_install->sql_error(), 1);
-			$Database_Exist = False;
-			while ($data_db_all = $wrm_install->sql_fetchrow($result_db_all,true))
-			{
-				
+			// Since we've passed Database above, we are assuming that the connection was
+			//   made to the actual WRM database, thus it HAS to exist.  The check if the
+			//   database is listed in a "show databases" list is redundant, and causes
+			//   problems for those who's ISP has removed the show database functionality.
+			// Also if the database doesn't exist the "do the tables exist" check below 
+			//   will catch it.
+			
+			//$sql_db_all = "SHOW DATABASES";
+			//$result_db_all = $wrm_install->sql_query($sql_db_all) or print_error($sql_db_all, $wrm_install->sql_error(), 1);
+			//$Database_Exist = False;
+			$Database_Exist = TRUE;
+			//while ($data_db_all = $wrm_install->sql_fetchrow($result_db_all,true))
+			//{
+			//	
 				//cmp if select db ($wrm_db_name) in/on Server exist
-				if ($phpraid_config['db_name'] == $data_db_all['Database'])
-				{
-					$Database_Exist = TRUE;
-				}
-			}
+			//	if ($phpraid_config['db_name'] == $data_db_all['Database'])
+			//	{
+			//		$Database_Exist = TRUE;
+			//	}
+			//}
 			
 			if ($Database_Exist == TRUE)
 			{
