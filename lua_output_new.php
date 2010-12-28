@@ -49,62 +49,13 @@ else
 	require_once('./lua_output_data_phpRaidViewer.php');
 
 // Standard Display of Page
-if($_GET['mode'] == 'lua') {
-	
-	$lua_output_form = array();
+if($_GET['mode'] == 'lua') 
+{
 	$lua_output_data = array();
 	
 	isset($_GET['raid_id']) ? $raid_id = scrub_input($_GET['raid_id']) : $raid_id = '';
 	isset($_GET['raid_id']) ? $raid_id_set = 1 : $raid_id_set = 0;
 
-	/******************************
-	 * Setup Options Boxes.
-	 ******************************/
-	// Sort Signups Option Box.
-	$sort_signups_option = '<select name="lua_output_sort_signups" size=1>';
-	if ($phpraid_config['lua_output_sort_signups']==2)
-	{
-		$sort_signups_option .= '<option value="1">'.$phprlang['sort_name'].'</option>';
-		$sort_signups_option .= '<option SELECTED value="2">'.$phprlang['sort_date'].'</option>';
-	}
-	else
-	{
-		$sort_signups_option .= '<option SELECTED value="1">'.$phprlang['sort_name'].'</option>';
-		$sort_signups_option .= '<option value="2">'.$phprlang['sort_date'].'</option>';
-	}
-	$sort_signups_option .= '</select>';
-	
-	// Sort Queued Option Box.
-	$sort_queue_option = '<select name="lua_output_sort_queue" size=1>';
-	if ($phpraid_config['lua_output_sort_queue']==2)
-	{
-		$sort_queue_option .= '<option value="1">'.$phprlang['sort_name'].'</option>';
-		$sort_queue_option .= '<option SELECTED value="2">'.$phprlang['sort_date'].'</option>';
-	}
-	else
-	{
-		$sort_queue_option .= '<option SELECTED value="1">'.$phprlang['sort_name'].'</option>';
-		$sort_queue_option .= '<option value="2">'.$phprlang['sort_date'].'</option>';
-	}
-	$sort_queue_option .= '</select>';
-	
-	// Output Format Option Box.
-	$output_format_option = '<select name="lua_output_format" size=1>';
-	if ($phpraid_config['lua_output_format']==2)
-	{
-		$output_format_option .= '<option value="1">'.$phprlang['output_rim'].'</option>';
-		$output_format_option .= '<option SELECTED value="2">'.$phprlang['output_phprv'].'</option>';
-	}
-	else
-	{
-		$output_format_option .= '<option SELECTED value="1">'.$phprlang['output_rim'].'</option>';
-		$output_format_option .= '<option value="2">'.$phprlang['output_phprv'].'</option>';
-	}
-	$output_format_option .= '</select>';
-	
-	//Set the Form Action
-	$form_action = 'lua_output_new.php?mode=update_options';
-	
 	//Create the Download Header if Configured to do so.
 	if($phpraid_config['showphpraid_addon'] == 1)
 		if ($phpraid_config['lua_output_format'] == "1")
@@ -119,13 +70,6 @@ if($_GET['mode'] == 'lua') {
 		
 	$wrmsmarty->assign('lua_output_form',
 		array(
-			'sort_signups_text'=>$phprlang['sort_signups_text'],
-			'sort_signups'=>$sort_signups_option,
-			'sort_queue_text'=>$phprlang['sort_queue_text'],
-			'sort_queue'=>$sort_queue_option,
-			'output_format_text'=>$phprlang['output_format_text'],
-			'output_format'=>$output_format_option,
-			'form_action'=>$form_action,
 			'options_header'=>$phprlang['options_header'],
 			'raid_id_set'=>$raid_id_set,
 			'Buttons'=>$buttons,
@@ -192,31 +136,6 @@ if($_GET['mode'] == 'lua') {
 			)
 		);		
 	}
-}
-if($_GET['mode'] == 'update_options') {
-	$sort_signups = scrub_input($_POST['lua_output_sort_signups']);
-	$sort_queue = scrub_input($_POST['lua_output_sort_queue']);
-	$output_format = scrub_input($_POST['lua_output_format']);
-	
-	// Update Sort Signups
-	$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "config 
-					SET config_value=%s
-					WHERE config_name='lua_output_sort_signups'", quote_smart($sort_signups));
-	$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);				
-					
-	// Update Sort Queued
-	$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "config 
-					SET config_value=%s
-					WHERE config_name='lua_output_sort_queue'", quote_smart($sort_queue));
-	$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);				
-	
-	// Update Output Format
-	$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "config 
-					SET config_value=%s
-					WHERE config_name='lua_output_format'", quote_smart($output_format));
-	$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);				
-	
-	header("Location: lua_output_new.php?mode=lua");
 }
 
 //

@@ -54,8 +54,9 @@ $phprlang['admin_raid_settings'] = '&raquo; Raid Settings';
 $phprlang['admin_external_config'] = '&raquo; External Systems';
 $phprlang['admin_game_settings'] = '&raquo; Game Settings';
 $phprlang['admin_roletalent_config'] = '&raquo; Link Class/Role/Talent';
-$phprlang['admin_style_conf'] = 'Template Config';
-$phprlang['admin_menubar_mgt_link'] = 'Menu Bar Settings';
+$phprlang['admin_style_conf'] = '&raquo; Template Config';
+$phprlang['admin_menubar_mgt_link'] = '&raquo; Menu Bar Settings';
+$phprlang['admin_general_lua_output_cfg'] = '&raquo; LUA Output Settings';
 
 // Link from Main Site to Admin
 $phprlang['admin_section_link'] = 'Admin Section';

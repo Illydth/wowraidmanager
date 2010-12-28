@@ -82,6 +82,7 @@ $admin_general_email_cfg_link = '<a href="admin_general_email_cfg.php">' . $them
 $admin_general_game_settings_link = '<a href="admin_general_game_settings.php">' . $theme_admin_general_game_settings_link . '</a>';
 $admin_timecfg_link = '<a href="admin_timecfg.php">' . $theme_admin_timecfg_link . '</a>';
 $admin_raid_settings_link = '<a href="admin_raidsettings.php">' . $theme_admin_raid_settings_link . '</a>';
+$admin_general_lua_output_cfg = '<a href="admin_general_lua_output_cfg.php">' . $theme_admin_general_lua_output_cfg_link . '</a>';
 $admin_externcfg_link = '<a href="admin_externcfg.php">' . $theme_admin_externcfg_link . '</a>';
 $admin_permissions_link = '<a href="admin_permissions.php?mode=view">' . $theme_admin_permissions_link . '</a>';
 $admin_raid_signupgroups_link = '<a href="admin_raid_signupgroups.php?mode=view">' . $theme_admin_raid_signupgroups_link . '</a>';
@@ -156,6 +157,13 @@ if (preg_match("/(.*)admin_general_game_settings\.php(.*)/", $_SERVER['PHP_SELF'
 } else {
     $gen_conf_menu .= '<li class="">' . $admin_general_game_settings_link . '</li>';
 }
+// To DO
+if (preg_match("/(.*)admin_general_game_settings\.php(.*)/", $_SERVER['PHP_SELF'])) {
+    $gen_conf_menu .= '<li class="active">' . $admin_general_lua_output_cfg . '</li>';
+} else {
+    $gen_conf_menu .= '<li class="">' . $admin_general_lua_output_cfg . '</li>';
+}
+
 
 // *** Style Menu Items ***
 // To DO
@@ -276,4 +284,3 @@ if(isset($errorMsg))
 }
 $wrmadminsmarty->display('admin_header.html');
 ?>
-
