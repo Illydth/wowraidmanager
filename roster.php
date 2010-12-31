@@ -115,7 +115,7 @@ while($data = $db_raid->sql_fetchrow($result, true)) {
 			'Frost'=>$data['frost'],
 			'Nature'=>$data['nature'],
 			'Shadow'=>$data['shadow'],
-			'Profile'=>'<a href="users.php?mode=details&amp;user_id=' . $data['profile_id'] . '">' . $data_profdetail['username'] . '</a>'
+			'Profile'=>'<a href="admin/admin_usermgt.php?mode=details&amp;user_id=' . $data['profile_id'] . '">' . $data_profdetail['username'] . '</a>'
 		)
 	);
 }
