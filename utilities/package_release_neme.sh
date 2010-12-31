@@ -57,8 +57,11 @@ chmod 777 cache/smarty_cache
 chmod 777 cache/smarty_cache/admin
 chmod 777 cache/templates_c
 chmod 777 cache/templates_c/admin
+chmod 777 install/cache
+chmod 777 install/cache/smarty_cache
+chmod 777 install/cache/templates_c
 
-chmod 777 config.php
+chmod 666 config.php
 
 # recursive chmod
 chmod -R a-x *
