@@ -82,13 +82,8 @@ if(!$db_raid->db_connect_id)
 	die('<div align="center"><strong>There appears to be a problem with the database server.<br>We should be back up shortly.</strong></div>');
 }
 
-// UTF8 Oh how I hate you. - This code SHOULD force a UTF8 Connection between client and server.
-//   From this point on, everything sent from the client to the server or returned from
-//     the server to the client should now be multi-byte aware.
-$sql = "SET NAMES 'utf8'";
-$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-$sql = "SET CHARACTER SET 'utf8'";
-$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+// Set UTF8 if $phpraid_config['wrm_utf8_support'] == 1
+set_WRM_DB_utf8();
 
 // unset database password for security reasons
 // we won't use it after this point
