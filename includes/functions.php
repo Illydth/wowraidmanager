@@ -408,4 +408,53 @@ function set_WRM_DB_utf8()
 	}
 }
 
+/**
+ * get mysql version from phpinfo()
+ * this function is a copy from install/includes/function.php
+ * 
+ * @return boolean
+ */
+function get_mysql_version_from_phpinfo()
+{
+	ob_start();
+	phpinfo(INFO_MODULES);
+	$info = ob_get_contents();
+	ob_end_clean();
+	$info = stristr($info, 'Client API version');
+	preg_match('@[0-9]+\.[0-9]+\.[0-9]+@', $info, $match);
+	$gd = $match[0];
+
+	return $gd;
+}
+
+/*********************************************
+ * 		DATABASE STATISTICS SECTION
+ *********************************************/
+//that will do but i didn't have a version to test it (4.xx)
+function get_db_size()
+{
+	global $db_raid,$phpraid_config;
+	$gd = get_mysql_version_from_phpinfo();
+	
+	if ($gd >= "4.2.0")
+	{	
+		// MySQL Database Size
+		$dbsize = 0;
+		$sql = "SHOW TABLE STATUS WHERE name LIKE '". $phpraid_config['db_prefix'] . "%'";
+		$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+		while($data = $db_raid->sql_fetchrow($result, true)) 
+		{  
+			$dbsize += $data[ "Data_length" ] + $data[ "Index_length" ];
+		}
+		
+		$dbsize = round($dbsize / 1024, 2); //(Kilobytes)
+	}
+	else 
+	{
+		$dbsize = "N/A";
+	}
+	
+	return $dbsize; //(Kilobytes)
+}
+
 ?>

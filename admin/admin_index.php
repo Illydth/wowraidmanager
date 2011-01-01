@@ -201,15 +201,8 @@ else
 	/*********************************************
 	 * 		DATABASE STATISTICS SECTION
 	 *********************************************/
-	// MySQL Database Size
-	$dbsize = 0;
-	$sql = "SHOW TABLE STATUS WHERE name LIKE '". $phpraid_config['db_prefix'] . "%'";
-	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-	while($data = $db_raid->sql_fetchrow($result, true)) 
-	{  
-		$dbsize += $data[ "Data_length" ] + $data[ "Index_length" ];
-	}
-	$dbsize = round($dbsize / 1024, 2); //(Kilobytes)
+	
+	$dbsize = get_db_size();
 	
 	/*********************************************
 	 * 		RAID STATISTICS SECTION
