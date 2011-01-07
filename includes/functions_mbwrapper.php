@@ -27,9 +27,17 @@
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *
 ****************************************************************************/
+/*
+ * more infos here
+ * http://www.php.net/manual/en/book.mbstring.php
+ */
+
+//default
+$phpraid_config['mb_support'] = 'yes';
+
 function strtolower_wrap($str, $encoding)
 {
-	if (function_exists('mb_strtolower'))
+	if (function_exists('mb_strtolower') and ($phpraid_config['mb_support'] == 'yes'))
 		$retstr = mb_strtolower($str, $encoding);
 	else if (function_exists('strtolower'))
 		$retstr = strtolower($str);
@@ -40,7 +48,7 @@ function strtolower_wrap($str, $encoding)
 
 function strlen_wrap($str, $encoding)
 {
-	if (function_exists('mb_strlen'))
+	if (function_exists('mb_strlen') and ($phpraid_config['mb_support'] == 'yes'))
 		$retlen = mb_strlen($str, $encoding);
 	else if (function_exists('strlen'))
 		$retlen = strlen($str);
@@ -51,7 +59,7 @@ function strlen_wrap($str, $encoding)
 
 function substr_wrap($str, $start, $length, $encoding)
 {
-	if (function_exists('mb_substr'))
+	if (function_exists('mb_substr') and ($phpraid_config['mb_support'] == 'yes'))
 		$retstr = mb_substr($str, $start, $length, $encoding);
 	else if (function_exists('substr'))
 		$retstr = substr($str, $start, $length);
@@ -62,7 +70,7 @@ function substr_wrap($str, $start, $length, $encoding)
 
 function strtoupper_wrap($str, $encoding)
 {
-	if (function_exists('mb_strtoupper'))
+	if (function_exists('mb_strtoupper') and ($phpraid_config['mb_support'] == 'yes'))
 		$retstr = mb_strtoupper($str, $encoding);
 	else if (function_exists('strtoupper'))
 		$retstr = strtoupper($str);
@@ -73,7 +81,7 @@ function strtoupper_wrap($str, $encoding)
 
 function convertcase_wrap($str, $mode, $encoding)
 {
-	if (function_exists('mb_convert_case'))
+	if (function_exists('mb_convert_case')and ($phpraid_config['mb_support'] == 'yes'))
 		$retstr = mb_convert_case($str, $mode, $encoding);
 	else if (function_exists('strtoupper') && $mode==MB_CASE_UPPER)
 		$retstr = strtoupper($str);
@@ -83,4 +91,6 @@ function convertcase_wrap($str, $mode, $encoding)
 		$retstr = $str;
 	return $retstr;
 }
+
+
 ?>
