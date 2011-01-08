@@ -158,7 +158,7 @@ $phprlang['raids_new'] = '最新活動';
 $phprlang['raids_new_header'] = '新增活動';
 $phprlang['raids_start'] = '開始時間';
 $phprlang['raids_eventtype_text'] = 'Event Type';
-$phprlang['raids_mark_selected_raids_to_old'] = "mark selected raids to old";
+$phprlang['raids_mark_selected_raids_to_old'] = "all marked raids are closed and over";
 		
 // event types
 $phprlang['event_type_raid'] = 'Raid (10/25 man)';
