@@ -397,9 +397,12 @@ function unlinkRecursive($dir, $deleteRootToo=FALSE)
 // UTF8 Oh how I hate you. - This code SHOULD force a UTF8 Connection between client and server.
 //   From this point on, everything sent from the client to the server or returned from
 //     the server to the client should now be multi-byte aware.
-function set_WRM_DB_utf8($wrm_db_utf8_support_value)
+function set_WRM_DB_utf8()
 {
-	if ($wrm_db_utf8_support_value == "1")
+	global $phpraid_config,$db_raid;
+	
+	if (($phpraid_config['wrm_db_utf8_support'] == "yes") or 
+		!isset($phpraid_config['wrm_db_utf8_support']) )
 	{
 		$sql = "SET NAMES 'utf8'";
 		$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);

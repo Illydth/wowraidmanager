@@ -108,7 +108,7 @@ function write_wrm_configfile($wrm_db_name,$wrm_db_server_hostname = "localhost"
  	$output .= "*/\n\n";
 	$output .= "global ".'$phpraid_config'.";\n";
 	$output .= "\n";
-	$output .= "// WRM Settings";
+	$output .= "/* WRM Settings */";
 	$output .= "\n";
 	$output .= '$phpraid_config[\'db_name\']'." = '$wrm_db_name';\n";
 	$output .= '$phpraid_config[\'db_host\']'." = '$wrm_db_server_hostname';\n";
@@ -116,14 +116,14 @@ function write_wrm_configfile($wrm_db_name,$wrm_db_server_hostname = "localhost"
 	$output .= '$phpraid_config[\'db_pass\']'." = '$wrm_db_password';\n";
 	$output .= '$phpraid_config[\'db_prefix\']'." = '$wrm_db_tableprefix';\n";
 	$output .= "\n";
-	$output .= "// WRM Database Settings";
+	$output .= "/* WRM Database Settings */";
 	$output .= "\n";
 	$output .= '$phpraid_config[\'wrm_db_utf8_support\']'." = '$wrm_db_utf8_support';\n";
 	$output .= '$phpraid_config[\'wrm_mbstring_support\']'." = '$wrm_mbstring_support';\n";
 	$output .= '$phpraid_config[\'db_type\']'." = '$wrm_db_type';\n";
 	$output .= "\n";
 	$output .= "\n";
-	$output .= "// EQDKP Settings";
+	$output .= "/* EQDKP Settings */";
 	$output .= "\n";
 	$output .= '$phpraid_config[\'eqdkp_db_name\']'." = '$eqdkp_db_name';\n";
 	$output .= '$phpraid_config[\'eqdkp_db_host\']'." = '$eqdkp_db_host';\n";
