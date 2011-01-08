@@ -82,8 +82,11 @@ if(!$db_raid->db_connect_id)
 	die('<div align="center"><strong>There appears to be a problem with the database server.<br>We should be back up shortly.</strong></div>');
 }
 
-// Set UTF8 if $phpraid_config['wrm_utf8_support'] == 1
-set_WRM_DB_utf8();
+// Set UTF8
+if (($phpraid_config['wrm_db_utf8_support'] == "yes") or (!isset($phpraid_config['wrm_db_utf8_support'])) )
+	set_WRM_DB_utf8(1);
+else 
+	set_WRM_DB_utf8(0);
 
 // unset database password for security reasons
 // we won't use it after this point

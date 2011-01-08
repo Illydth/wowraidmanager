@@ -539,7 +539,7 @@ else if($step == 3)
 	
 	//add create db
 	$wrm_install->sql_close();
-
+	
 	include_once ("includes/page_header.php");
 	$smarty->assign(
 		array(
@@ -558,6 +558,7 @@ else if($step == 3)
 			"wrm_db_server_hostname" => $wrm_db_server_hostname,
 			"wrm_db_username" => $wrm_db_username,
 			"wrm_db_password" => $wrm_db_password,
+			"wrm_db_utf8_support_text" => $wrm_install_lang['wrm_db_utf8_support_text'],
 			"enable_wrm_db_create_name" => $enable_wrm_db_create_name,		
 			"error_msg" => $error_msg,
 			"only_if_create_new_tab_text" => $wrm_install_lang['only_if_create_new_tab'],
@@ -589,6 +590,16 @@ else if($step == 4)
 	$wrm_db_name = $_POST['wrm_db_create_name'];
 
 	$wrm_db_tableprefix = $_POST['wrm_db_tableprefix'];
+	
+	$wrm_db_utf8_support_value = $_POST['wrm_db_utf8_support_value'];
+	if ($wrm_db_utf8_support_value == "1")
+	{
+		$wrm_db_utf8_support_value = "yes";
+	}
+	else 
+	{
+		$wrm_db_utf8_support_value = "no";	
+	}
 	
 	$wrm_config_writeable = FALSE;
 	$FOUNDERROR_Database = FALSE;
@@ -625,7 +636,7 @@ else if($step == 4)
 		else
 		{
 			//write config file and then jump to upgrade.php
-			write_wrm_configfile($wrm_db_name, $wrm_db_server_hostname, $wrm_db_username, $wrm_db_password, $wrm_db_tableprefix);
+			write_wrm_configfile($wrm_db_name, $wrm_db_server_hostname, $wrm_db_username, $wrm_db_password, $wrm_db_tableprefix,"","","","","","",$wrm_db_utf8_support_value);
 			$wrm_install->sql_close();
 			header("Location: ".$filename_upgrade);
 		}
@@ -880,16 +891,19 @@ else if($step == 8)
 	//if db_type == mysql
 	if ( ($phpraid_config['db_type'] == "mysql") or (!isset($phpraid_config['db_type'])) )
 	{
-		$gd = get_mysql_version_from_phpinfo();
-		if ($gd >= "4.1.0")
+		if ($phpraid_config['wrm_db_utf8_support'] == "yes")
 		{
-			include_once("install_settings.php");
-	
-			for ($i=0; $i <count($wrm_tables); $i++)
+			$gd = get_mysql_version_from_phpinfo();
+			if ($gd >= "4.1.0")
 			{
-				$sql = 	sprintf("ALTER TABLE " .$phpraid_config['db_name'] . "." . $phpraid_config['db_prefix'].$wrm_tables[$i] .
-								" DEFAULT CHARACTER SET %s COLLATE=utf8_bin", quote_smart("UTF8") );
-				$wrm_install->sql_query($sql) or print_error($sql, $wrm_install->sql_error(), 1);
+				include_once("install_settings.php");
+		
+				for ($i=0; $i <count($wrm_tables); $i++)
+				{
+					$sql = 	sprintf("ALTER TABLE " .$phpraid_config['db_name'] . "." . $phpraid_config['db_prefix'].$wrm_tables[$i] .
+									" DEFAULT CHARACTER SET %s COLLATE=utf8_bin", quote_smart("UTF8") );
+					$wrm_install->sql_query($sql) or print_error($sql, $wrm_install->sql_error(), 1);
+				}
 			}
 		}
 	}

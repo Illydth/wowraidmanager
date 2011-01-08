@@ -114,8 +114,11 @@ if(!$db_raid->db_connect_id)
 unset($phpraid_config['db_user']);
 unset($phpraid_config['db_pass']);
 
-// Set UTF8 if $phpraid_config['wrm_utf8_support'] == 1
-set_WRM_DB_utf8();
+// Set UTF8
+if (($phpraid_config['wrm_db_utf8_support'] == "yes") or (!isset($phpraid_config['wrm_db_utf8_support'])) )
+	set_WRM_DB_utf8(1);
+else 
+	set_WRM_DB_utf8(0);
 
 //
 // Populate the $phpraid_config array
