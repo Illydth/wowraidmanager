@@ -67,6 +67,7 @@ $wrmsmarty->assign('page_header_data',
 		'rss_feed_string'=>$phprlang['rss_feed_text'],
 		'guild_time_string'=>$phprlang['guild_time_string'],
 		'header_link'=>$phpraid_config['header_link'],
+		'body_width' => $phpraid_config['template_body_width'],  
 	)
 );
 

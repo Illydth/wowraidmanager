@@ -146,6 +146,9 @@ $phprlang['configuration_rss_feed_amt'] = 'RSS: Antal raids som visas i feeden';
 // Text on the "Style Config" Page
 $phprlang['style_menu_header'] = 'Style Config';
 $phprlang['configuration_template_cfg_header'] = 'Template Config';
+$phprlang['configuration_template_width_text'] = "Template Width";
+$phprlang['configuration_width_normal'] = "normal";
+$phprlang['configuration_width_expanded'] = "expanded";
 $phprlang['configuration_logo'] = 'Sökväg till logo bild';
 $phprlang['configuration_sitelink'] = '"Hem" länken pekar till';
 $phprlang['configuration_template'] = 'Mall';

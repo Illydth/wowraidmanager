@@ -145,6 +145,9 @@ $phprlang['configuration_rss_feed_amt'] = 'RSS: numero di Raid da visualizzare';
 // Text on the "Style Config" Page
 $phprlang['style_menu_header'] = 'Style Config';
 $phprlang['configuration_template_cfg_header'] = 'Template Config';
+$phprlang['configuration_template_width_text'] = "Template Width";
+$phprlang['configuration_width_normal'] = "normal";
+$phprlang['configuration_width_expanded'] = "expanded";
 $phprlang['configuration_logo'] = 'Immagine di intestazione';
 $phprlang['configuration_sitelink'] = 'Il link "Homepage" punta a';
 $phprlang['configuration_template'] = 'Tema visuale';

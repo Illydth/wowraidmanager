@@ -10,7 +10,7 @@
 
 		      <tr>
 		        <td width="200" class="row1"><strong>{$config_data.header_logo_path_text}</strong></td>
-		        <td class="row2"><input name="header_link" size="60" type="text" class="post" value="{$config_data.header_logo_path_value}"></td>
+		        <td class="row2"><input name="header_logo" size="60" type="text" class="post" value="{$config_data.header_logo_path_value}"></td>
 		      </tr>
 		      <tr>
 		        <td class="row1"><strong>{$config_data.header_link_text}</strong></td>
@@ -33,6 +33,12 @@
 		        <td width="200" class="row1"><strong>{$config_data.template_text}</strong></td>
 		        <td class="row2">
 		        	{html_options name=template options=$config_data.array_template_type selected=$config_data.selected_template_type}
+				</td>
+		      </tr>
+		      <tr> 
+		        <td width="200" class="row1"><strong>{$config_data.template_width_text}</strong></td>
+		        <td class="row2">
+		        	{html_options name=template_width options=$config_data.array_template_width selected=$config_data.selected_template_width}
 				</td>
 		      </tr>
 			</table>

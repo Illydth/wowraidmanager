@@ -1,4 +1,17 @@
 <?php
+/* name
+ * eg.:
+ * in stylesheet.css
+ * body.width_normal div#container
+ * {
+ *   width: 1141px;
+ * }
+ */
+$template_width =  array();
+$template_width['width_normal'] = $phprlang['configuration_width_normal'];
+$template_width['width_expanded'] = $phprlang['configuration_width_expanded'];
+
+
 // this defines whether to use the test in language.php or images for all links
 // if set to 0, then it pulls information from lang_main.php
 // NOTE: DO NOT SET THIS TO 1, there ARE NO IMAGES.
@@ -56,4 +69,5 @@ if($use_images == 0) {
 	//no pics
 	$theme_raids_archive_link = $phprlang['raidsarchive_link'];
 }
+
 ?>

@@ -299,6 +299,14 @@ input.liteoption {
 	text-decoration:none;
 }
 
+body.width_expanded div#container {
+	width: 1400px;
+}
+
+body.width_normal div#container {
+	width: 1141px;
+}
+
 .menuHeader {
 	background-image:url('../images/leftMenuHeader_bg.gif');
 	color:#ffffff;
