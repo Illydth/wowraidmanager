@@ -86,7 +86,7 @@ function validate_wrm_configfile()
  * @param String $eqdkp_db_prefix
  * @return boolean 
  */
-function write_wrm_configfile($wrm_db_name,$wrm_db_server_hostname = "localhost",$wrm_db_username,$wrm_db_password,$wrm_db_tableprefix = "wrm_",$wrm_db_type="mysql",$eqdkp_db_name = "",$eqdkp_db_host = "",$eqdkp_db_user = "",$eqdkp_db_pass = "",$eqdkp_db_prefix = "",$wrm_db_utf8_support="yes")
+function write_wrm_configfile($wrm_db_name,$wrm_db_server_hostname = "localhost",$wrm_db_username,$wrm_db_password,$wrm_db_tableprefix = "wrm_",$wrm_db_type="mysql",$eqdkp_db_name = "",$eqdkp_db_host = "",$eqdkp_db_user = "",$eqdkp_db_pass = "",$eqdkp_db_prefix = "",$wrm_db_utf8_support="yes",$wrm_mbstring_support="yes")
 {
 	 
 	//global $wrm_config_file;
@@ -119,6 +119,7 @@ function write_wrm_configfile($wrm_db_name,$wrm_db_server_hostname = "localhost"
 	$output .= "// WRM Database Settings";
 	$output .= "\n";
 	$output .= '$phpraid_config[\'wrm_db_utf8_support\']'." = '$wrm_db_utf8_support';\n";
+	$output .= '$phpraid_config[\'wrm_mbstring_support\']'." = '$wrm_mbstring_support';\n";
 	$output .= '$phpraid_config[\'db_type\']'." = '$wrm_db_type';\n";
 	$output .= "\n";
 	$output .= "\n";

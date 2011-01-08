@@ -559,6 +559,7 @@ else if($step == 3)
 			"wrm_db_username" => $wrm_db_username,
 			"wrm_db_password" => $wrm_db_password,
 			"wrm_db_utf8_support_text" => $wrm_install_lang['wrm_db_utf8_support_text'],
+			"wrm_mbstring_support_text" => $wrm_install_lang['wrm_mbstring_support_text'],
 			"enable_wrm_db_create_name" => $enable_wrm_db_create_name,		
 			"error_msg" => $error_msg,
 			"only_if_create_new_tab_text" => $wrm_install_lang['only_if_create_new_tab'],
@@ -591,8 +592,8 @@ else if($step == 4)
 
 	$wrm_db_tableprefix = $_POST['wrm_db_tableprefix'];
 	
-	$wrm_db_utf8_support_value = $_POST['wrm_db_utf8_support_value'];
-	if ($wrm_db_utf8_support_value == "1")
+	// UTF8 Support
+	if ($_POST['wrm_db_utf8_support_value'] == "1")
 	{
 		$wrm_db_utf8_support_value = "yes";
 	}
@@ -601,6 +602,16 @@ else if($step == 4)
 		$wrm_db_utf8_support_value = "no";	
 	}
 	
+	// Multibyte String Support
+	if ($_POST['wrm_mbstring_support_value'] == "1")
+	{
+		$wrm_mbstring_support_value = "yes";
+	}
+	else 
+	{
+		$wrm_mbstring_support_value = "no";	
+	}
+		
 	$wrm_config_writeable = FALSE;
 	$FOUNDERROR_Database = FALSE;
 	
@@ -636,7 +647,7 @@ else if($step == 4)
 		else
 		{
 			//write config file and then jump to upgrade.php
-			write_wrm_configfile($wrm_db_name, $wrm_db_server_hostname, $wrm_db_username, $wrm_db_password, $wrm_db_tableprefix,"","","","","","",$wrm_db_utf8_support_value);
+			write_wrm_configfile($wrm_db_name, $wrm_db_server_hostname, $wrm_db_username, $wrm_db_password, $wrm_db_tableprefix,"","","","","","",$wrm_db_utf8_support_value,$wrm_mbstring_support_value);
 			$wrm_install->sql_close();
 			header("Location: ".$filename_upgrade);
 		}
