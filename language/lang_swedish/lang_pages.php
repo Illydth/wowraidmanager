@@ -158,7 +158,7 @@ $phprlang['raids_new'] = 'Kommande event';
 $phprlang['raids_new_header'] = 'Nytt Raid';
 $phprlang['raids_start'] = 'Start tid';
 $phprlang['raids_eventtype_text'] = 'Event Type';
-$phprlang['raids_mark_selected_raids_to_old'] = "all marked raids are closed and over";
+$phprlang['raids_mark_selected_raids_to_old'] = "all mark raids are closed and over";
 
 // event type
 $phprlang['event_type_raid'] = 'Raid (10/25 man)';
