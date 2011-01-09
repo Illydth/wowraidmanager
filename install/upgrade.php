@@ -258,7 +258,7 @@ if ($step === "0")
  * update from version ($wrm_update_array[ "current version"])
  * to the last version ($wrm_update_array[ "max" ]) from the array $wrm_update_array
  */
-if ($step == 1)
+if ($step == "1")
 {
 	//load update infos
 	include_once("database_schema/upgrade/update_files_conf.php");
@@ -323,7 +323,7 @@ if ($step == 1)
 /*
  * dynamic changes at bridge settings
  */
-if ($step == 2)
+if ($step == "2")
 {
 	//$wrm_install = &new sql_db($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass'],$phpraid_config['db_name']);
 	
@@ -352,7 +352,16 @@ if ($step == 2)
 	$data = $wrm_install->sql_fetchrow($result, true);
 	if ($wrm_install->sql_numrows() == 0 or $data['config_value'] == "")
 	{
-		//test for old table settings
+		/*
+		 * test for old table settings prefix
+		 * before <4.1.0
+		 * two much different name for this variablename 
+		 * e107_table_prefix,joomla_table_prefix,smf_table_prefix (v1),smf_table_prefix(v2),wbb_table_prefix,xoops_table_prefix,
+		 * phpbb_prefix(v2),phpbb_prefix (v3), db_prefix (iums)
+		 * 
+		 * over > 4.1.0
+		 * $bridge_name . _table_prefix
+		 */
 		$where_text = "`config_name` = ".quote_smart($bridge_name."_table_prefix");
 		
 		//only for the phpbb2/3 bridge
@@ -362,14 +371,22 @@ if ($step == 2)
 		}
 		$sql = 	sprintf("SELECT * "  .
 						" FROM " . 	$phpraid_config['db_name'] . "." . $phpraid_config['db_prefix'] . "config" .
-						" WHERE ".$where_text
+						" WHERE ". $where_text
 				);
 		$result = $wrm_install->sql_query($sql) or print_error($sql, $wrm_install->sql_error(), 1);
 		$data = $wrm_install->sql_fetchrow($result, true);
-		$tmp_prefix = explode('.', $data['config_value']);
 		
-		$bridge_db_name = $tmp_prefix[0];
-		$bridge_table_prefix = $tmp_prefix[1];
+		if (strpos($data['config_value'],".") == true)
+		{
+			$tmp_prefix = explode('.', $data['config_value']);
+			
+			$bridge_db_name = $tmp_prefix[0];
+			$bridge_table_prefix = $tmp_prefix[1];			
+		}
+		else 
+		{
+			$bridge_table_prefix = $data['config_value'];
+		}
 		
 		/*
 		 * $bridge_name . _table_prefix
@@ -492,7 +509,7 @@ if ($step == 2)
  * dynamic changes at wrm
  * wrm_updated_on and if not exist insert wrm_created_on (<wrm 4.1)
  */
-if ($step == 3)
+if ($step == "3")
 {
 	//$wrm_install = &new sql_db($phpraid_config['db_host'], $phpraid_config['db_user'], $phpraid_config['db_pass'], $phpraid_config['db_name']);
 	
@@ -532,7 +549,8 @@ if ($step == "update_done")
 	write_wrm_configfile($phpraid_config['db_name'], $phpraid_config['db_host'], $phpraid_config['db_user'],
 						 $phpraid_config['db_pass'], $phpraid_config['db_prefix'], $phpraid_config['db_type'],
 						 $phpraid_config['eqdkp_db_name'], $phpraid_config['eqdkp_db_host'] , $phpraid_config['eqdkp_db_user'] ,
-						 $phpraid_config['eqdkp_db_pass'] , $phpraid_config['eqdkp_db_prefix']
+						 $phpraid_config['eqdkp_db_pass'] , $phpraid_config['eqdkp_db_prefix'],
+						 $phpraid_config['wrm_db_utf8_support'],$phpraid_config['wrm_mbstring_support']
 	);
 	
 	include_once ("includes/page_header.php");
