@@ -567,6 +567,32 @@ function scan_dbserver()
 	return $found_bridge;
 }
 
+/*
+ * WRM return the current WRM Version Number
+ * 
+ * @return Array
+ */
+function get_WRM_Version_Number()
+{
+	$wrm_config_file = "../config.php";
+
+	global $wrm_config_file, $phpraid_config;
+	include_once($wrm_config_file);
+	
+	
+	//read version nr
+	$sql = 	sprintf("SELECT version_number "  .
+					" FROM " . 	$phpraid_config['db_name'] . "." . $phpraid_config['db_prefix'] . "version" .
+					"ORDER BY `version_number` DESC"
+			);
+	$result_version = $wrm_install->sql_query($sql) or print_error($sql, $wrm_install->sql_error(), 1);	
+			
+	$data_version = $wrm_install->sql_fetchrow($result_version,true);
+	
+	return (explode('.', $data_version) );
+	
+}
+
 /*------------------------- Get Last Online Version Nr --------------------------------------------------*/
 /*** check for new version
  * based on code from phpBB version checking
