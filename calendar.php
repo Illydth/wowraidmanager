@@ -207,16 +207,29 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true))
 	//		signed up for the raid.
 	if($db_raid->sql_numrows($resultz) > 0)
 	{
+		//while($signups = $db_raid->sql_fetchrow($resultz, true)) 
+		//{
+			//if (($signups['queue'] == '0') and ($signups['cancel'] == '0')) {
+			//	$issignedup = '<span class="draftedmark">&nbsp;*</span>';
+			//} elseif ($issignedup == '') {
+			//	$issignedup = '<span class="qcanmark">&nbsp;#</span>';
+			//}
+		//}
 		while($signups = $db_raid->sql_fetchrow($resultz, true)) 
 		{
-			if (($signups['queue'] == '0') and ($signups['cancel'] == '0')) {
-				$issignedup = '<span class="draftedmark">&nbsp;*</span>';
-			} elseif ($issignedup == '') {
-				$issignedup = '<span class="qcanmark">&nbsp;#</span>';
+			if (($signups['queue'] == '0') and ($signups['cancel'] == '0')) 
+				$issignedup = 'draftedmark';
+			elseif ($signups['queue'] == '1')
+				$issignedup = 'qcanmark';
+			elseif ($signups['cancel'] == '1')
+				$issignedup = 'cancelmark';
+			else
+				$issignedup = 'nomark';
 			}
-		}
 	}
-	
+	else
+		$issignedup = 'nomark';
+		
 	// Get the Raid Icon for the Raid Event
 	$sql = sprintf("SELECT icon_path FROM " . $phpraid_config['db_prefix'] . "events WHERE event_id=%s", quote_smart($raids['event_id']));
 	$event_results = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
@@ -243,8 +256,13 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true))
 
 	$href = '<a href="view.php?mode=view&amp;raid_id='.$raids['raid_id'].'">';
 	$href_close = '</a>';
-	$img = '<img src="templates/'.$phpraid_config['template'].'/'.$raid_icon.'" onMouseout="hideddrivetip();" onMouseover="ddrivetip('.$ddrivetiptext.');" alt="'.$raids['location'].'">';
-	$font = $issignedup;
+	// Commented to change the #/*/etc. Marks into borders.
+	//$img = '<img src="templates/'.$phpraid_config['template'].'/'.$raid_icon.'" onMouseout="hideddrivetip();" onMouseover="ddrivetip('.$ddrivetiptext.');" alt="'.$raids['location'].'">';
+	if ($issignedup == "nomark")
+		$img = '<img src="templates/'.$phpraid_config['template'].'/'.$raid_icon.'" onMouseout="hideddrivetip();" onMouseover="ddrivetip('.$ddrivetiptext.');" alt="'.$raids['location'].'" class="'.$issignedup.'">';
+	else
+		$img = '<img BORDER="3" src="templates/'.$phpraid_config['template'].'/'.$raid_icon.'" onMouseout="hideddrivetip();" onMouseover="ddrivetip('.$ddrivetiptext.');" alt="'.$raids['location'].'" class="'.$issignedup.'">';
+		//$font = $issignedup;
 	$location = $href . $img . $href_close . $font;
 	
 	// Start the "display" portion, get the "box" the raid link and information is supposed to go into

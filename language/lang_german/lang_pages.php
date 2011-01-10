@@ -38,7 +38,7 @@ $phprlang['announcements_title_text'] = 'Titel';
 // Calendar
 $phprlang['invites'] = 'Einladungen';
 $phprlang['start'] = 'Start';
-$phprlang['key'] = 'Legende:<br>(<span class="draftedmark">*</span>) = Angemeldet & vorgesehen<br>(<span class="qcanmark">#</span>) = Angemeldet, nicht vorgesehen (Warteliste oder abgebrochen)<br><span class="priorDay">TEXT</span>: Datum liegt in der Vergangenheit.<br><span class="currentDay">TEXT</span>: Datum ist heute.<br><span class="postDay">TEXT</span>: Datum liegt in der Zukunft.';
+$phprlang['key'] = 'Key:<br>White Border = Not Signed Up<br>Green Border = Signed Up & Drafted<br>Blue Border = Signed Up, Not Drafted (queued)<br>Red Border = Signup Cancelled<br><span class="priorDay">TEXT</span> dates are in the past.<br><span class="currentDay">TEXT</span> date is today.<br><span class="postDay">TEXT</span> dates are in the future.'; //New
 $phprlang['calendar_month_select_header'] = 'Wähle das anzuzeigende Jahr und Monat';
 
 // DKP
