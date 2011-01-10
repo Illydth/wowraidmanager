@@ -762,7 +762,7 @@ function test_bridge_connection($bridge_name, $bridge_database_name, $bridge_db_
 	
 	$found_db_table_name = array();
 	
-	$wrm_install = &new sql_db($phpraid_config['db_host'], $phpraid_config['db_user'], $phpraid_config['db_pass']);
+	$wrm_install = &new sql_db($phpraid_config['db_host'], $phpraid_config['db_user'], $phpraid_config['db_pass'], $phpraid_config['db_name']);
 	//if not connection available -> goto step epbrgstep1
 //	if( ($bridge_install->db_connect_id) == true)
 	if( ($wrm_install->db_connect_id) == false)
@@ -772,6 +772,7 @@ function test_bridge_connection($bridge_name, $bridge_database_name, $bridge_db_
 	
 	//pre check: is $bridge_database_name availabe in the database
 
+	/*
 	$sql_db_all = "SHOW DATABASES";
 	$result_db_all = $wrm_install->sql_query($sql_db_all) or print_error($sql_db_all, $wrm_install->sql_error(), 1);
 	while ($data_db_all = $wrm_install->sql_fetchrow($result_db_all, true))
@@ -785,6 +786,7 @@ function test_bridge_connection($bridge_name, $bridge_database_name, $bridge_db_
 	{
 		return (3);
 	}
+	*/
 	
 	//include bridge file
 	include_once("auth/install_".$bridge_name.".php");
