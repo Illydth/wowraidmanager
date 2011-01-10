@@ -123,7 +123,8 @@ $sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "config";
 $result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 while($data = $db_raid->sql_fetchrow($result, true))
 {
-	$phpraid_config["{$data['0']}"] = $data['1'];
+	//$phpraid_config["{$data['0']}"] = $data['1'];
+	$phpraid_config[$data['config_name']] = $data['config_value'];
 }
 
 
