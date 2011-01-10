@@ -74,7 +74,6 @@ require_once($phpraid_dir.'version.php');
 require_once($phpraid_dir.'config.php');
 require_once($phpraid_dir.'includes/functions.php');
 require_once($phpraid_dir.'includes/functions_mysql.php');
-require_once($phpraid_dir.'includes/functions_auth.php');
 require_once($phpraid_dir.'includes/functions_date.php');
 require_once($phpraid_dir.'includes/functions_logging.php');
 require_once($phpraid_dir.'includes/functions_tables.php');
@@ -194,7 +193,15 @@ else
  * Set Authentication Method and Load Auth Files
  ***************************************************/
 // get auth type
+
+// Illydth:  We've updated this to parse the "auth" file from the auth directory prior to the definition
+//   of wrm_login() within the functions_auth.php file.  This allows users to custom define a wrm_login()
+//   function that will work with specialtiy bridges.  The "function_exists" check calls a function that
+//   dymanically defines the "wrm_login()" function at runtime.
 require_once($phpraid_dir.'auth/auth_' . $phpraid_config['auth_type'] . '.php');
+require_once($phpraid_dir.'includes/functions_auth.php');
+if (!function_exists('wrm_login'))
+	DEFINE_wrm_login();
 
 // good ole authentication
 $lifetime = get_cfg_var("session.gc_maxlifetime"); 
