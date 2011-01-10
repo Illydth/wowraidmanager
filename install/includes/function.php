@@ -33,12 +33,32 @@
 *
 ****************************************************************************/
 
+/**
+ * Many Hosts Do not allow "SHOW DATABASES" and such, this is the check.
+ * 
+ * @return boolean TRUE=OK, FALSE=Error
+ */
+function check_sql_rights_SHOW_DATABASES()
+{
+	global $wrm_install;
+	
+	$sql_SHOW_DATABASES = "SHOW DATABASES";
+
+	$support_rights_SHOW_DATABASES = TRUE;
+	
+	$wrm_install->sql_query($sql_SHOW_DATABASES) or $support_rights_SHOW_DATABASES = FALSE;
+	
+	return ($support_rights_SHOW_DATABASES);
+}
+
 /*
  * validate wrm configfile
  * @return boolean TRUE=OK,FALSE=Error
  */
 function validate_wrm_configfile()
 {
+	global $phpraid_config;
+	
 	$validate_value = TRUE;
 	
 	$curr_dir = dirname(__FILE__);
@@ -567,7 +587,7 @@ function scan_dbserver()
 	return $found_bridge;
 }
 
-/*
+/**
  * WRM return the current WRM Version Number
  * 
  * @return Array
@@ -576,9 +596,8 @@ function get_WRM_Version_Number()
 {
 	$wrm_config_file = "../config.php";
 
-	global $wrm_config_file, $phpraid_config;
+	global $phpraid_config;
 	include_once($wrm_config_file);
-	
 	
 	//read version nr
 	$sql = 	sprintf("SELECT version_number "  .
@@ -594,7 +613,7 @@ function get_WRM_Version_Number()
 }
 
 /*------------------------- Get Last Online Version Nr --------------------------------------------------*/
-/*** check for new version
+/** check for new version
  * based on code from phpBB version checking
  * @return string
  */
@@ -709,12 +728,12 @@ function show_online_versionnr($versions_nr_install)
  */
 function test_bridge_connection($bridge_name, $bridge_database_name, $bridge_db_table_prefix)
 {
-/**
- * This is the path to the WRM Config File
- */
-$wrm_config_file = "../config.php";
+	/**
+	 * This is the path to the WRM Config File
+	 */
+	$wrm_config_file = "../config.php";
 
-	global $wrm_config_file,$phpraid_config;
+	global $phpraid_config;
 	include_once($wrm_config_file);
 	
 	$column_counter = 0;
@@ -831,15 +850,13 @@ $wrm_config_file = "../config.php";
  */
 function create_armory_directory_path($mode = "0777")
 {
-
 	mkdir("../cache/armory_cache/",$mode);
 	mkdir("../cache/armory_log/",$mode);
 	mkdir("../cache/raid_lua/",$mode);
 }
 
-/*
- * 
- * function profile_add
+/**
+ * WRM add Profile in WRM DB
  * only iUMS
  */
 function profile_add($user_admin_username,$user_admin_password,$user_admin_email)
@@ -924,4 +941,5 @@ function directory_perms($path)
 		
 	return $permissions;
 }
+
 ?>
