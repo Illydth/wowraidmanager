@@ -38,10 +38,8 @@
  * 
  * @return boolean TRUE=OK, FALSE=Error
  */
-function check_sql_rights_SHOW_DATABASES()
-{
-	global $wrm_install;
-	
+function check_sql_rights_SHOW_DATABASES($wrm_install)
+{	
 	$sql_SHOW_DATABASES = "SHOW DATABASES";
 
 	$support_rights_SHOW_DATABASES = TRUE;
@@ -363,6 +361,157 @@ function get_language_filename($Suffix = FALSE, $linkfilename = "install.php")
 	return ($array_lang_files);
 }
 
+/**
+ * scan a database
+ * @return array
+ */
+function scan_dbserver_database($wrm_install, $scan_Database, $bridge)
+{
+	//$scan_Database;$data_db_all['Database'];
+	$found_bridge = array();
+	$count_user = 0;
+	
+	//check line: with all bridges
+	/*
+	 * scan description
+	 * @ todo
+	 */
+	
+	for ($i=0; $i < count($bridge); $i++)
+	{
+		$found_db_table_user_name = false;
+		$found_db_table_group_name = false;
+		$found_db_table_allgroups = false;
+		
+		//iums fix
+		if ( ($i < count($bridge)) and ($bridge[$i]['auth_type_name'] == "iums"))
+		{
+			$i++;
+		}
+		
+		//show all TABLES, from the (selected) DATABASES
+		$sql_tables = "SHOW TABLES FROM ".$scan_Database;
+		$result_tables = $wrm_install->sql_query($sql_tables) or print_error($sql_tables, $wrm_install->sql_error(), 1);
+		while ($data_tables = $wrm_install->sql_fetchrow($result_tables, true))
+		{
+			//get current table name
+			$db_table_name = $data_tables["Tables_in_".$scan_Database];
+	
+	
+			$tmp_user_name = substr($db_table_name, strlen($db_table_name) - strlen($bridge[$i]['db_table_user_name']));
+			
+			//table user name				
+			if ( (strcmp( $tmp_user_name ,$bridge[$i]['db_table_user_name']) == 0) and ($bridge[$i]['db_table_user_name'] != ""))
+			{
+				//set table prefix
+				$db_temp_prefix = substr($db_table_name, 0 ,strlen($db_table_name) - strlen($bridge[$i]['db_table_user_name']));
+	
+				$sql_columns = "SHOW COLUMNS FROM ".$scan_Database.".".$db_temp_prefix.$bridge[$i]['db_table_user_name'];
+				$result_columns = $wrm_install->sql_query($sql_columns) or print_error($sql_columns, $wrm_install->sql_error(), 1);
+				
+				$counter_valid_column = 0;
+				
+				while ($data_columns = $wrm_install->sql_fetchrow($result_columns, true))
+				{
+					if (strcmp($data_columns['Field'],$bridge[$i]['db_user_id']) == 0 )
+					{
+						$counter_valid_column++;
+					}
+	
+					if (strcmp($data_columns['Field'],$bridge[$i]['db_user_name']) == 0 )
+					{
+						$counter_valid_column++;
+					}
+					if (strcmp($data_columns['Field'],$bridge[$i]['db_user_email']) == 0 )
+					{
+						$counter_valid_column++;
+					}
+					if (strcmp($data_columns['Field'],$bridge[$i]['db_user_password']) == 0 )
+					{
+						$counter_valid_column++;
+					}
+				}
+	
+				if (($counter_valid_column == 4)  )
+				{
+					//count: avilable user in the bridge system
+					$sql_count_user = 	"SELECT ".$bridge[$i]['db_user_id'].
+										" FROM ".$scan_Database.".".$db_temp_prefix.$bridge[$i]['db_table_user_name']. 
+										" " . $bridge[$i]['db_user_name_filter'];
+					$result_count_user = $wrm_install->sql_query($sql_count_user) or print_error($sql_count_user, $wrm_install->sql_error(), 1);
+					$count_user = $wrm_install->sql_numrows($result_count_user);
+					
+					$found_db_table_user_name = true;
+				}
+			}
+			
+			//table group name
+			$tmp_group_name = substr($db_table_name, strlen($db_table_name) - strlen($bridge[$i]['db_table_group_name']));
+			if ( (strcmp( $tmp_group_name ,$bridge[$i]['db_table_group_name']) == 0) and ($bridge[$i]['db_table_group_name'] != "") )
+			{
+				//set table prefix
+				$db_temp_prefix = substr($db_table_name, 0 ,strlen($db_table_name) - strlen($bridge[$i]['db_table_group_name']));
+					
+				$sql_columns = "SHOW COLUMNS FROM ".$scan_Database.".".$db_temp_prefix.$bridge[$i]['db_table_group_name'];
+				$result_columns = $wrm_install->sql_query($sql_columns) or print_error($sql_columns."<br>temp_prefix:".$db_temp_prefix."<br>bridge:".$bridge[$i]['auth_type_name'], $wrm_install->sql_error(), 1);
+				while ($data_columns = $wrm_install->sql_fetchrow($result_columns,true))
+				{
+					if (strcmp($data_columns['Field'],$bridge[$i]['db_group_id']) == 0 )
+					{
+						$found_db_table_group_name = true;
+					}
+				}
+			}
+			
+			//table group name
+			$tmp_allgroups = substr($db_table_name, strlen($db_table_name) - strlen($bridge[$i]['db_table_allgroups']));
+			if ( (strcmp( $tmp_allgroups ,$bridge[$i]['db_table_allgroups']) == 0) and ($bridge[$i]['db_table_allgroups'] != "") )
+			{
+				$counter_db_table_allgroups = 0;
+				//set table prefix
+				$db_temp_prefix = substr($db_table_name, 0 ,strlen($db_table_name) - strlen($bridge[$i]['db_table_allgroups']));
+				
+				$sql_columns = "SHOW COLUMNS FROM ".$scan_Database.".".$db_temp_prefix.$bridge[$i]['db_table_allgroups'];
+				$result_columns = $wrm_install->sql_query($sql_columns) or print_error($sql_columns, $wrm_install->sql_error(), 1);
+				while ($data_columns = $wrm_install->sql_fetchrow($result_columns,true))
+				{
+					if (strcmp($data_columns['Field'],$bridge[$i]['db_allgroups_id']) == 0 )
+					{
+						$counter_db_table_allgroups++;
+					}
+					if (strcmp($data_columns['Field'],$bridge[$i]['db_allgroups_name']) == 0 )
+					{
+						$counter_db_table_allgroups++;
+					}
+				}
+				if ($counter_db_table_allgroups == 2)
+				{
+					$found_db_table_allgroups = true;
+				}
+			}		
+		}
+		
+		/*
+		 * add bridge to array
+		 */			
+		if ( ($found_db_table_user_name == true) and ($found_db_table_group_name == true) and ($found_db_table_allgroups == true))
+		{
+			//append new bridge to array
+			$found_bridge =	$found_bridge + array(
+					'bridge_name' => $bridge[$i]['auth_type_name'],
+					'bridge_database' => $scan_Database,
+					'bridge_table_prefix' => $db_temp_prefix,
+					'bridge_founduser' => $count_user
+				);
+		}
+	}
+
+	if ( count ($found_bridge) >=1)
+		return $found_bridge;
+	else 
+		return false;
+}//end function scan_dbserver_database($wrm_install, $data_db_all, $bridge)
+
 /***
  * scan the server after Bridges
  * @return array
@@ -401,152 +550,24 @@ function scan_dbserver()
 
 	$wrm_install = &new sql_db($phpraid_config['db_host'], $phpraid_config['db_user'], $phpraid_config['db_pass'], $phpraid_config['db_name']);
 	
-	$sql_db_all = "SHOW DATABASES";
-
-	$result_db_all = $wrm_install->sql_query($sql_db_all) or print_error($sql_db_all, $wrm_install->sql_error(), 1);
-	while ($data_db_all = $wrm_install->sql_fetchrow($result_db_all, true))
+	$counter = 0;
+	if (check_sql_rights_SHOW_DATABASES($wrm_install)== true)
 	{
-		$count_user = 0;
-		
-		//check line: with all bridges
-		/*
-		 * scan description
-		 * @ todo
-		 */
-		
-		for ($i=0; $i < count($bridge); $i++)
+		$sql_db_all = "SHOW DATABASES";
+	
+		$result_db_all = $wrm_install->sql_query($sql_db_all) or print_error($sql_db_all, $wrm_install->sql_error(), 1);
+		while ($data_db_all = $wrm_install->sql_fetchrow($result_db_all, true))
 		{
-			$found_db_table_user_name = false;
-			$found_db_table_group_name = false;
-			$found_db_table_allgroups = false;
-			
-			//iums fix
-			if ( ($i < count($bridge)) and ($bridge[$i]['auth_type_name'] == "iums"))
-			{
-				$i++;
-			}
-			
-			//show all TABLES, from the (selected) DATABASES
-			$sql_tables = "SHOW TABLES FROM ".$data_db_all['Database'];
-			$result_tables = $wrm_install->sql_query($sql_tables) or print_error($sql_tables, $wrm_install->sql_error(), 1);
-			while ($data_tables = $wrm_install->sql_fetchrow($result_tables, true))
-			{
-				//get current table name
-				$db_table_name = $data_tables["Tables_in_".$data_db_all['Database']];
-
-
-				$tmp_user_name = substr($db_table_name, strlen($db_table_name) - strlen($bridge[$i]['db_table_user_name']));
-				
-				//table user name				
-				if ( (strcmp( $tmp_user_name ,$bridge[$i]['db_table_user_name']) == 0) and ($bridge[$i]['db_table_user_name'] != ""))
-				{
-					//set table prefix
-					$db_temp_prefix = substr($db_table_name, 0 ,strlen($db_table_name) - strlen($bridge[$i]['db_table_user_name']));
-
-					$sql_columns = "SHOW COLUMNS FROM ".$data_db_all['Database'].".".$db_temp_prefix.$bridge[$i]['db_table_user_name'];
-					$result_columns = $wrm_install->sql_query($sql_columns) or print_error($sql_columns, $wrm_install->sql_error(), 1);
-					
-					$counter_valid_column = 0;
-					
-					while ($data_columns = $wrm_install->sql_fetchrow($result_columns, true))
-					{
-						if (strcmp($data_columns['Field'],$bridge[$i]['db_user_id']) == 0 )
-						{
-							$counter_valid_column++;
-						}
-
-						if (strcmp($data_columns['Field'],$bridge[$i]['db_user_name']) == 0 )
-						{
-							$counter_valid_column++;
-						}
-						if (strcmp($data_columns['Field'],$bridge[$i]['db_user_email']) == 0 )
-						{
-							$counter_valid_column++;
-						}
-						if (strcmp($data_columns['Field'],$bridge[$i]['db_user_password']) == 0 )
-						{
-							$counter_valid_column++;
-						}
-					}
-
-					if (($counter_valid_column == 4)  )
-					{
-						//count: avilable user in the bridge system
-						$sql_count_user = 	"SELECT ".$bridge[$i]['db_user_id'].
-											" FROM ".$data_db_all['Database'].".".$db_temp_prefix.$bridge[$i]['db_table_user_name']. 
-											" " . $bridge[$i]['db_user_name_filter'];
-						$result_count_user = $wrm_install->sql_query($sql_count_user) or print_error($sql_count_user, $wrm_install->sql_error(), 1);
-						$count_user = $wrm_install->sql_numrows($result_count_user);
-						
-						$found_db_table_user_name = true;
-					}
-				}
-				
-				//table group name
-				$tmp_group_name = substr($db_table_name, strlen($db_table_name) - strlen($bridge[$i]['db_table_group_name']));
-				if ( (strcmp( $tmp_group_name ,$bridge[$i]['db_table_group_name']) == 0) and ($bridge[$i]['db_table_group_name'] != "") )
-				{
-					//set table prefix
-					$db_temp_prefix = substr($db_table_name, 0 ,strlen($db_table_name) - strlen($bridge[$i]['db_table_group_name']));
-						
-					$sql_columns = "SHOW COLUMNS FROM ".$data_db_all['Database'].".".$db_temp_prefix.$bridge[$i]['db_table_group_name'];
-					$result_columns = $wrm_install->sql_query($sql_columns) or print_error($sql_columns."<br>temp_prefix:".$db_temp_prefix."<br>bridge:".$bridge[$i]['auth_type_name'], $wrm_install->sql_error(), 1);
-					while ($data_columns = $wrm_install->sql_fetchrow($result_columns,true))
-					{
-						if (strcmp($data_columns['Field'],$bridge[$i]['db_group_id']) == 0 )
-						{
-							$found_db_table_group_name = true;
-						}
-					}
-				}
-				
-				//table group name
-				$tmp_allgroups = substr($db_table_name, strlen($db_table_name) - strlen($bridge[$i]['db_table_allgroups']));
-				if ( (strcmp( $tmp_allgroups ,$bridge[$i]['db_table_allgroups']) == 0) and ($bridge[$i]['db_table_allgroups'] != "") )
-				{
-					$counter_db_table_allgroups = 0;
-					//set table prefix
-					$db_temp_prefix = substr($db_table_name, 0 ,strlen($db_table_name) - strlen($bridge[$i]['db_table_allgroups']));
-					
-					$sql_columns = "SHOW COLUMNS FROM ".$data_db_all['Database'].".".$db_temp_prefix.$bridge[$i]['db_table_allgroups'];
-					$result_columns = $wrm_install->sql_query($sql_columns) or print_error($sql_columns, $wrm_install->sql_error(), 1);
-					while ($data_columns = $wrm_install->sql_fetchrow($result_columns,true))
-					{
-						if (strcmp($data_columns['Field'],$bridge[$i]['db_allgroups_id']) == 0 )
-						{
-							$counter_db_table_allgroups++;
-						}
-						if (strcmp($data_columns['Field'],$bridge[$i]['db_allgroups_name']) == 0 )
-						{
-							$counter_db_table_allgroups++;
-						}
-					}
-					if ($counter_db_table_allgroups == 2)
-					{
-						$found_db_table_allgroups = true;
-					}
-				}		
-			}
-			
-			//echo $bridge[$i]['auth_type_name'].":".$found_db_table_user_name.",".$found_db_table_group_name.",".$found_db_table_allgroups."userfound:".$count_user."<br>";
-			/*
-			 * add bridge to array
-			 */			
-			if ( ($found_db_table_user_name == true) and ($found_db_table_group_name == true) and ($found_db_table_allgroups == true))
-			{
-				//add new bridge to array
-				array_push($found_bridge,
-					array(
-						'bridge_name' => $bridge[$i]['auth_type_name'],
-						'bridge_database' => $data_db_all['Database'],
-						'bridge_table_prefix' => $db_temp_prefix,
-						'bridge_founduser' => $count_user,
-					)
-				);
-			}
+			$tmp_array = scan_dbserver_database($wrm_install, $data_db_all['Database'], $bridge);
+	
+			if ($tmp_array != false)
+				array_push($found_bridge,$tmp_array);
 		}
 	}
-	//print_r($found_bridge);	
+	else 
+	{
+		$found_bridge = scan_dbserver_database($wrm_install, $phpraid_config['db_name'], $bridge);
+	}
 	$wrm_install->sql_close();
 	
 	//-----------------------------------------------------------------------//
