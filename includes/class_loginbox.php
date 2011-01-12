@@ -116,7 +116,10 @@ class wrm_loginbox
 			}
 
 			if ( $priv_config )
-				$admin_config_link = '<a href="admin/admin_index.php?'.SID.'">'.$phprlang['admin_section_link'].'</a>';
+			{
+				$SIDURL = htmlspecialchars(SID);
+				$admin_config_link = '<a href="admin/admin_index.php?'.$SIDURL.'">'.$phprlang['admin_section_link'].'</a>';
+			}
 			$login_form_close = '</form>';
 		}
 		 
