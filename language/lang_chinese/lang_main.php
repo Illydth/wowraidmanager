@@ -133,6 +133,7 @@ $phprlang['scheduler_error_role_limits_missing'] = 'Role Limits could not be ret
 
 // roles    職責
 $phprlang['role_none'] = '無';
+$phprlang['role'] = 'Role'; //New
 
 // errors
 $phprlang['connect_socked_error'] = '試圖連接Socket時出現錯誤 %s';
