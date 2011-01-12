@@ -49,6 +49,22 @@ function check_sql_rights_SHOW_DATABASES($wrm_install)
 	return ($support_rights_SHOW_DATABASES);
 }
 
+/**
+ * Many Hosts Do not allow "SHOW TABLES" and such, this is the check.
+ * 
+ * @return boolean TRUE=OK, FALSE=Error
+ */
+function check_sql_rights_SHOW_TABLES($wrm_install, $database)
+{	
+	$sql_SHOW_TABLES = "SHOW TABLES FROM ".$database;
+
+	$support_rights_SHOW_TABLES = TRUE;
+	
+	$wrm_install->sql_query($sql_SHOW_DATABASES) or $support_rights_SHOW_TABLES = FALSE;
+	
+	return ($support_rights_SHOW_TABLES);
+}
+
 /*
  * validate wrm configfile
  * @return boolean TRUE=OK,FALSE=Error
@@ -790,8 +806,14 @@ function test_bridge_connection($bridge_name, $bridge_database_name, $bridge_db_
 	
 	//include bridge file
 	include_once("auth/install_".$bridge_name.".php");
+
+	//easy workaround
+	if (check_sql_rights_SHOW_TABLES($wrm_install, $bridge_database_name) == false)
+	{
+		return (0);
+	}
 	
-	//load all table, from the selected database, in a array
+	//load all table, from the selected database, in a array	
 	$sql_tables = "SHOW TABLES FROM ".$bridge_database_name;
 	$result_tables = $wrm_install->sql_query($sql_tables) or print_error($sql_tables, $wrm_install->sql_error(), 1);
 	while ($data_tables = $wrm_install->sql_fetchrow($result_tables, true))
