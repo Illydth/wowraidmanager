@@ -116,7 +116,15 @@ if(($_GET['mode'] == 'view') or isset($_GET['raids_del']) or isset($_GET['mark_r
 	//$new_raid_link = '<a href="raids.php?mode=new"><img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_new_raid.gif" border="0"  onMouseover="ddrivetip(\''.$phprlang['raids_new_header'].'\');" onMouseout="hideddrivetip();" alt="new raid icon"></a>';
 	$form_action = "raids.php?mode=new";
 	
-	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "raids";
+	//$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "raids";
+	// Select all raids that are marked current and only the top X raids marked old.
+	$sql = "(SELECT * from " . $phpraid_config['db_prefix'] . "raids " .
+		"WHERE `old` = 0) " .
+		"UNION ALL " .
+		"(SELECT * FROM " . $phpraid_config['db_prefix'] . "raids " . 
+		"WHERE `old` = 1 " .
+		"ORDER BY `raid_id` DESC " .
+		"LIMIT " . $phpraid_config['num_old_raids_index'] . ")";
 	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);	
 	while($data = $db_raid->sql_fetchrow($result, true)) 
 	{
