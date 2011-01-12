@@ -118,12 +118,12 @@ function CheckraidFull($raid_id, $char_id, $queue) {
         $sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "chars
                 WHERE char_id = '" . $char_id . "'";
         $result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-        $char_data = $db_raid->sql_fetchrow($result2, true);
+        $char_data = $db_raid->sql_fetchrow($result, true);
 
         $sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "raids
                 WHERE raid_id = '" . $raid_id . "'";
         $result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-        $raid_data = $db_raid->sql_fetchrow($result2, true);
+        $raid_data = $db_raid->sql_fetchrow($result, true);
 
         $sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "class_role
                 WHERE subclass = '" . $char_data['pri_spec'] . "' AND class_id ='" . $char_data['class'] . "'";
@@ -175,12 +175,25 @@ function CheckraidFull($raid_id, $char_id, $queue) {
                 $queue = 1;
             }
         }
-        if ($total_signed_up >= $raid_data['max']){
+        if ($total_signed_up >= $raid_data['max']) {
             $queue = 1;
         }
     } else {
         $queue = 1;
     }
     return $queue;
+}
+
+//Converts Guild id into Guild Faction
+function GetGuildFaction($guild_id) {
+    global $db_raid;
+    global $phpraid_config;
+    if (!$queue) {
+        $sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "guilds
+                WHERE guild_id = '" . $guild_id . "'";
+        $result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+        $guild_data = $db_raid->sql_fetchrow($result, true);
+    }
+    return $guild_data['guild_faction'];
 }
 ?>

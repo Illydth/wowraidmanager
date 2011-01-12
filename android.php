@@ -1,5 +1,4 @@
 <?php
-
 /* * *************************************************************************
  *                               index.php
  *                            -------------------
@@ -23,7 +22,7 @@ define("IN_PHPRAID", true);
 require_once('./common.php');
 require_once('./includes/functions_android.php');
 
-$version = "1";
+$version = "2";
 
 //Gets you Logged in 
 if ($_POST['action'] == "login") {
@@ -41,7 +40,7 @@ elseif ($_POST['action'] == "check_version") {
         echo "wrong";
 }
 
-//Gets Raids List that haven't expired or are frozen
+//Gets Raids List that haven't expired or are frozen and you anrn't signuped to
 elseif ($_POST['action'] == "getraidlist") {
     $username = scrub_input($_POST['var1']);
     $password = scrub_input($_POST['var2']);
@@ -118,7 +117,7 @@ elseif ($_POST['action'] == "getraidlist") {
     }
 }
 
-//Gets Raids List that haven't expired
+//Gets Raids List that haven't expired that you are signed up too
 elseif ($_POST['action'] == "getsignraidlist") {
     $username = scrub_input($_POST['var1']);
     $password = scrub_input($_POST['var2']);
@@ -238,12 +237,18 @@ elseif ($_POST['action'] == "getqueuetoonlist") {
 elseif ($_POST['action'] == "gettoonlist") {
     $username = scrub_input($_POST['var1']);
     $password = scrub_input($_POST['var2']);
+    $char_id = scrub_input($_POST['var3']);
     if (CheckLog($username, $password) == "logged") {
         // load configuration variables into configuration array
         $profile_id = GetUserID($username);
         $toon_array = array();
-        $sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "chars
+        if ($char_id == "") {
+            $sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "chars
         WHERE profile_id = '" . $profile_id . "'";
+        } else {
+            $sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "chars
+        WHERE char_id = '" . $char_id . "' AND profile_id = '" . $profile_id . "'";
+        }
         $result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
         array_push($toon_array, array('test' => $tes));
         while ($data = $db_raid->sql_fetchrow($result, true)) {
@@ -255,6 +260,7 @@ elseif ($_POST['action'] == "gettoonlist") {
                 'toon_lvl' => $data['lvl'],
                 'race_name' => $data['race'],
                 'guild_name' => $guild_name,
+                'guild_id' => $data['guild'],
                 'class_name' => $data['class'],
                 'gender_name' => $data['gender'],
                 'arcane' => $data['arcane'],
@@ -463,5 +469,150 @@ elseif ($_POST['action'] == "cancelsignup") {
     } else {
         echo "Hack Attempt";
     }
+}
+
+//Gets guild list
+elseif ($_POST['action'] == "getguildlist") {
+    $username = scrub_input($_POST['var1']);
+    $password = scrub_input($_POST['var2']);
+    if (CheckLog($username, $password) == "logged") {
+        $guild_array = array();
+        array_push($guild_array, array('test' => $tes));
+        $sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "guilds";
+        $result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+        while ($data = $db_raid->sql_fetchrow($result, true)) {
+            array_push($guild_array,
+                    array(
+                        'guild_id' => $data['guild_id'],
+                        'guild_name' => $data['guild_name'],
+                    )
+            );
+        }
+        $guild_array = parseArrayToObject($guild_array);
+        header('Content-type: application/json');
+        $guild = json_encode($guild_array);
+        echo $guild;
+    } else {
+        echo "Hack Attempt";
+    }
+}
+
+//Gets race list
+elseif ($_POST['action'] == "getracelist") {
+    $username = scrub_input($_POST['var1']);
+    $password = scrub_input($_POST['var2']);
+    $guild_id = scrub_input($_POST['var3']);
+    if (CheckLog($username, $password) == "logged") {
+        $faction = GetGuildFaction($guild_id);
+        $race_array = array();
+        array_push($race_array, array('test' => $tes));
+        $sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "races WHERE faction = '" . $faction . "'";
+        $result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+        while ($data = $db_raid->sql_fetchrow($result, true)) {
+            array_push($race_array,
+                    array(
+                        'race_id' => $data['race_id'],
+                    )
+            );
+        }
+        $race_array = parseArrayToObject($race_array);
+        header('Content-type: application/json');
+        $race = json_encode($race_array);
+        echo $race;
+    } else {
+        echo "Hack Attempt";
+    }
+}
+
+//Gets class list
+elseif ($_POST['action'] == "getclasslist") {
+    $username = scrub_input($_POST['var1']);
+    $password = scrub_input($_POST['var2']);
+    $race_id = scrub_input($_POST['var3']);
+    if (CheckLog($username, $password) == "logged") {
+        $class_array = array();
+        array_push($class_array, array('test' => $tes));
+        $sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "class_race WHERE race_id = '" . $race_id . "'";
+        $result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+        while ($data = $db_raid->sql_fetchrow($result, true)) {
+            array_push($class_array,
+                    array(
+                        'class_id' => $data['class_id'],
+                    )
+            );
+        }
+        $class_array = parseArrayToObject($class_array);
+        header('Content-type: application/json');
+        $class = json_encode($class_array);
+        echo $class;
+    } else {
+        echo "Hack Attempt";
+    }
+}
+
+//Gets role for class list
+elseif ($_POST['action'] == "getrolelist") {
+    $username = scrub_input($_POST['var1']);
+    $password = scrub_input($_POST['var2']);
+    $class_id = scrub_input($_POST['var3']);
+    if (CheckLog($username, $password) == "logged") {
+        $role_array = array();
+        array_push($role_array, array('test' => $tes));
+        $sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "class_role WHERE class_id = '" . $class_id . "'";
+        $result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+        while ($data = $db_raid->sql_fetchrow($result, true)) {
+            array_push($role_array,
+                    array(
+                        'role_id' => $data['subclass'],
+                    )
+            );
+        }
+        $role_array = parseArrayToObject($role_array);
+        header('Content-type: application/json');
+        $role = json_encode($role_array);
+        echo $role;
+    } else {
+        echo "Hack Attempt";
+    }
+}
+
+//updates or adds new toon
+elseif ($_POST['action'] == "new_edit_toon") {
+    $username = scrub_input($_POST['var1']);
+    $password = scrub_input($_POST['var2']);
+    $action = scrub_input(strtolower($_POST['var3']));
+    if (CheckLog($username, $password) == "logged") {
+        $profile_id = GetUserID($username);
+        $toon_name = scrub_input($_POST['var4']);
+        $toon_lvl = scrub_input($_POST['var5']);
+        $toon_guild = scrub_input($_POST['var6']);
+        $toon_race = scrub_input($_POST['var7']);
+        $toon_class = scrub_input($_POST['var8']);
+        $toon_gender = scrub_input($_POST['var9']);
+        $toon_arcane = scrub_input($_POST['var10']);
+        $toon_fire = scrub_input($_POST['var11']);
+        $toon_frost = scrub_input($_POST['var12']);
+        $toon_nature = scrub_input($_POST['var13']);
+        $toon_shadow = scrub_input($_POST['var14']);
+        $toon_role1 = scrub_input($_POST['var15']);
+        $toon_role2 = scrub_input($_POST['var16']);
+        $toon_id = scrub_input($_POST['var17']);
+
+        if ($action == "edit") {
+            char_edit($toon_name, $toon_lvl, $toon_race, $toon_class, $toon_gender, $toon_guild,
+                    $toon_arcane, $toon_nature, $toon_shadow, $toon_fire, $toon_frost, $toon_role1,
+                    $toon_role2, $toon_id);
+            echo $toon_name . " has been updated";
+        } else {
+            char_addnew($profile_id, $toon_name, $toon_class, $toon_gender, $toon_guild, $toon_lvl,
+                    $toon_race, $toon_arcane, $toon_fire, $toon_frost, $toon_nature,
+                    $toon_shadow, $toon_role1, $toon_role2);
+            echo $toon_name . " has been Added";
+        }
+    } else {
+        echo "Hack Attempt";
+    }
+}else{
+   echo "Hack Attempt";
 }
 ?>
