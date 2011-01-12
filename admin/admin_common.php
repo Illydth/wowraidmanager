@@ -155,7 +155,7 @@ require_once($phpraid_dir.'auth/auth_' . $phpraid_config['auth_type'] . '.php');
 
 // good ole authentication
 //$lifetime = get_cfg_var("session.gc_maxlifetime");
-$lifetime = 60*60*24*2; // session lifetime = 2 month 
+$lifetime = 60*60*24*30*2; // session lifetime = 2 month 
 session_name("WRM-" .  $phpraid_config['auth_type']);
 //$temp = session_set_cookie_params($lifetime, getCookiePath());
 /*
