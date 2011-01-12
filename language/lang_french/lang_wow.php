@@ -34,7 +34,7 @@ $phprlang['alliance'] = 'Alliance';
 $phprlang['horde'] = 'Horde';
 
 // classes
-$phprlang['deathknight'] = 'Death Knight';
+$phprlang['deathknight'] = 'Chevalier de la mort';
 $phprlang['druid'] = 'Druide';
 $phprlang['hunter'] = 'Chasseur';
 $phprlang['mage'] = 'Mage';
@@ -47,10 +47,10 @@ $phprlang['warrior'] = 'Guerrier';
 
 // races
 $phprlang['blood_elf'] = 'Elfe de Sang';
-$phprlang['draenei'] = 'Draenei';
+$phprlang['draenei'] = 'Draeneï';
 $phprlang['dwarf'] = 'Nain';
 $phprlang['gnome'] = 'Gnome';
-$phprlang['goblin'] = 'Goblin'; //New
+$phprlang['goblin'] = 'Gobelin'; //New
 $phprlang['human'] = 'Humain';
 $phprlang['night_elf'] = 'Elfe de la nuit';
 $phprlang['orc'] = 'Orc';
