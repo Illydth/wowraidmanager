@@ -234,7 +234,7 @@ function DEFINE_wrm_login()
 	 **/	
 	function wrm_login()
 	{
-		global $db_user_id, $db_group_id, $db_user_name, $db_user_email, $db_user_password, $db_table_user_name; 
+		global $db_user_id, $db_group_id, $db_add_group_ids, $db_user_name, $db_user_email, $db_user_password, $db_table_user_name; 
 		global $db_table_group_name, $auth_user_class, $auth_alt_user_class, $table_prefix;
 		global $db_raid, $phpraid_config;
 		global $Bridge2ColumGroup;
