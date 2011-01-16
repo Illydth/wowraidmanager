@@ -37,11 +37,16 @@ if (!isset($_GET['step']))
 	$step = "0";
 else
 	$step = $_GET['step'];
-
+	
 /*
  * include libs
  */
 include_once ("install_common.php");
+
+
+// force reporting - Turn on the First Error_Reporting for Development, The Second for Production. 
+//error_reporting(E_ALL ^ E_NOTICE);
+error_reporting(E_ERROR | E_WARNING | E_PARSE);
 
 /*
  * name of this file
