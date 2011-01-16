@@ -36,8 +36,9 @@ if ( !defined('IN_PHPRAID'))
 if(isset($_GET['phpraid_dir']) || isset($_POST['phpraid_dir']))
 	die("Hacking attempt detected!");
 
-// force reporting
-error_reporting(E_ALL ^ E_NOTICE);
+// force reporting - Turn on the First Error_Reporting for Development, The Second for Production. 
+//error_reporting(E_ALL ^ E_NOTICE);
+error_reporting(E_ERROR | E_WARNING | E_PARSE);
 
 // feel free to set this to absolute if necessary
 $phpraid_dir = '../';
