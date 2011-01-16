@@ -97,6 +97,24 @@ $language .= '</select>';
 unset($files);
 // END LANGUAGE CHECK
 
+// default group
+$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "permissions";
+$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+
+$default = '<select name="default_group" class="post"><option value="nil">'.$phprlang['none'].'</option>';
+
+while($data = $db_raid->sql_fetchrow($result, true))
+{
+if($phpraid_config['default_group'] == $data['permission_id'])
+$default .= '<option value="'.$data['permission_id'].'" selected>'.$data['name'].'</option>';
+else
+$default .= '<option value="'.$data['permission_id'].'">'.$data['name'].'</option>';
+}
+
+$default .= '</select>';
+
+
+
 $records_per_page = '<input name="records_per_page" size="5" type="text" class="post" value="' . $phpraid_config['records_per_page'] . '">';
 $num_old_raids_index = '<input name="num_old_raids_index" size="5" type="text" class="post" value="' . $phpraid_config['num_old_raids_index'] . '">';
 
@@ -104,6 +122,8 @@ $wrmadminsmarty->assign('config_data',
 	array(
 		'form_action'=> $page_url,
 		'general_header' => $phprlang['general_configuration_header'],
+		'default_group_text' => $phprlang['configuration_default'],
+		'default_group_value' => $default,
 		'language' => $language,
 		'language_text' => $phprlang['configuration_language'],
 		'disable_site' => $disable_site,
@@ -148,6 +168,11 @@ if(isset($_POST['submit']))
  		$enable_five_man = 1;
  	else
  		$enable_five_man = 0;
+ 		
+  	if(isset($_POST['default_group']))
+ 		$default_group = 1;
+ 	else
+ 		$default_group = 0;
 
  	if(isset($_POST['persistent_db']))
  		$persistent_db = 1;
@@ -174,6 +199,8 @@ if(isset($_POST['submit']))
 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'debug';", quote_smart($p_debug));
 	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'enable_five_man';", quote_smart($enable_five_man));
+	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'default_group';", quote_smart($default_group));
 	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'persistent_db';", quote_smart($persistent_db));
 	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);

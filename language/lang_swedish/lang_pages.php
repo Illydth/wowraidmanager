@@ -38,7 +38,7 @@ $phprlang['announcements_title_text'] = 'Titel';
 // Calendar
 $phprlang['invites'] = 'Inbjudan';
 $phprlang['start'] = 'Start';
-$phprlang['key'] = 'Key:<br>(<span class="draftedmark">*</span>) = Bokad & Uppflyttad <br>(<span class="qcanmark">#</span>) = Bokad, Inte uppflyttad (köad eller avbokad)<br><span class="priorDay">TEXT</span> datum är i det förflutna.<br><span class="currentDay">TEXT</span> datum är idag.<br><span class="postDay">TEXT</span> datum är i framtiden.';
+$phprlang['key'] = 'Key:<br>White Border = Not Signed Up<br>Green Border = Signed Up & Drafted<br>Blue Border = Signed Up, Not Drafted (queued)<br>Red Border = Signup Cancelled<br><span class="priorDay">TEXT</span> dates are in the past.<br><span class="currentDay">TEXT</span> date is today.<br><span class="postDay">TEXT</span> dates are in the future.'; //New
 $phprlang['calendar_month_select_header'] = 'Select Month and Year to View';
 
 // DKP View
@@ -158,7 +158,7 @@ $phprlang['raids_new'] = 'Kommande event';
 $phprlang['raids_new_header'] = 'Nytt Raid';
 $phprlang['raids_start'] = 'Start tid';
 $phprlang['raids_eventtype_text'] = 'Event Type';
-$phprlang['raids_mark_selected_raids_to_old'] = "mark selected raids to old";
+$phprlang['raids_mark_selected_raids_to_old'] = "all mark raids are closed and over";
 
 // event type
 $phprlang['event_type_raid'] = 'Raid (10/25 man)';

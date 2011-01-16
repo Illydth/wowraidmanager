@@ -258,7 +258,7 @@ if ($step === "0")
  * update from version ($wrm_update_array[ "current version"])
  * to the last version ($wrm_update_array[ "max" ]) from the array $wrm_update_array
  */
-if ($step == 1)
+if ($step == "1")
 {
 	//load update infos
 	include_once("database_schema/upgrade/update_files_conf.php");
@@ -323,11 +323,8 @@ if ($step == 1)
 /*
  * dynamic changes at bridge settings
  */
-if ($step == 2)
+if ($step == "2")
 {
-	//$wrm_install = &new sql_db($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass'],$phpraid_config['db_name']);
-	
-	// update bridge setting only if not exist
 	
 	// read auth_type from wrm db
 	$sql = 	sprintf("SELECT * "  .
@@ -343,113 +340,106 @@ if ($step == 2)
 	include_once("auth/install_".$bridge_name.".php");
 	$bridge_setting = $bridge_setting_value;
 	
+	$install_version_number = get_WRM_Version_Number();
 	
-	$sql = 	sprintf("SELECT * "  .
-					" FROM " . 	$phpraid_config['db_name'] . "." . $phpraid_config['db_prefix'] . "config" .
-					" WHERE  `%s` = %s", "config_name", quote_smart($bridge_name."_table_prefix")
-			);
-	$result = $wrm_install->sql_query($sql) or print_error($sql, $wrm_install->sql_error(), 1);
-	$data = $wrm_install->sql_fetchrow($result, true);
-	if ($wrm_install->sql_numrows() == 0 or $data['config_value'] == "")
+	// update_version_nr <= 4.0.0
+	if ( ($install_version_number[0] < "4") or (($install_version_number[0] == "4") and ($install_version_number[1] == "0")) )
 	{
-		//test for old table settings
-		$where_text = "`config_name` = ".quote_smart($bridge_name."_table_prefix");
+		/**
+		 * read old table_prefix value
+		 * (variables not exist before)
+		 * add $bridge_name . _db_name
+		 * add $bridge_name . _table_prefix
+		 * add $bridge_name . _utf8_support
+		 */
 		
-		//only for the phpbb2/3 bridge
-		if ($bridge_name == "phpbb" or $bridge_name == "phpbb3")
-		{
-			$where_text = "`config_name` = 'phpbb_prefix' OR `config_name` = 'phpbb3_prefix' ";//OR `config_name` = '".$bridge_name."_table_prefix' ";
-		}
-		$sql = 	sprintf("SELECT * "  .
-						" FROM " . 	$phpraid_config['db_name'] . "." . $phpraid_config['db_prefix'] . "config" .
-						" WHERE ".$where_text
-				);
-		$result = $wrm_install->sql_query($sql) or print_error($sql, $wrm_install->sql_error(), 1);
-		$data = $wrm_install->sql_fetchrow($result, true);
-		$tmp_prefix = explode('.', $data['config_value']);
-		
-		$bridge_db_name = $tmp_prefix[0];
-		$bridge_table_prefix = $tmp_prefix[1];
-		
-		/*
+		/**
+		 * test for old table settings prefix
+		 * before < 4.1.0
+		 * two much different name for this variablename 
+		 * (no problems) e107_table_prefix,joomla_table_prefix,smf_table_prefix (v1),wbb_table_prefix,xoops_table_prefix
+		 * 
+		 * (wrong bringname) smf_table_prefix(v2),
+		 * (wrong bringname + fail "_table_") phpbb_prefix(v2),phpbb_prefix (v3), 
+		 * (all wrong) db_prefix (iums)
+		 * 
+		 * over > 4.1.0
 		 * $bridge_name . _table_prefix
 		 */
-		$sql = 	sprintf("SELECT * "  .
-						" FROM " . 	$phpraid_config['db_name'] . "." . $phpraid_config['db_prefix'] . "config" .
-						" WHERE  `%s` = %s", "config_name", quote_smart($bridge_name . "_table_prefix")
-				);
-		$wrm_install->sql_query($sql) or print_error($sql, $wrm_install->sql_error(), 1);
-		if ($wrm_install->sql_numrows() != 0 and $data['config_value'] != "")
+		$auth_type = $phpraid_config['auth_type'];
+
+		// Auth/Bridge Type: iums		
+		if ($auth_type == "iums")
 		{
-			$sql = 	sprintf("UPDATE " . $phpraid_config['db_name'] . "." . $phpraid_config['db_prefix'] . "config" .
-							" SET `config_value` = %s WHERE %s = `config_name`", quote_smart($data['config_value']), quote_smart($bridge_name . "_table_prefix"));
-			$wrm_install->sql_query($sql) or print_error($sql, $wrm_install->sql_error(), 1);
+			$sql = 	sprintf("SELECT * "  .
+							" FROM " . 	$phpraid_config['db_name'] . "." . $phpraid_config['db_prefix'] . "config" .
+							" WHERE  `%s` = %s", "config_name", quote_smart("db_prefix")
+					);			
 		}
-		else if ($wrm_install->sql_numrows() != 0 and $data['config_value'] == "")
+		
+		// Auth/Bridge Type: phpbb, phpbb3
+		else if (($auth_type == "phpbb") or ($auth_type == "phpbb3"))
 		{
-			$sql = 	sprintf("UPDATE " . $phpraid_config['db_name'] . "." . $phpraid_config['db_prefix'] . "config" .
-							" SET `config_value` = %s WHERE %s = `config_name`", quote_smart($bridge_table_prefix), quote_smart($bridge_name . "_table_prefix"));
-			$wrm_install->sql_query($sql) or print_error($sql, $wrm_install->sql_error(), 1);
-		}		
+			$sql = 	sprintf("SELECT * "  .
+							" FROM " . 	$phpraid_config['db_name'] . "." . $phpraid_config['db_prefix'] . "config" .
+							" WHERE  `%s` = %s", "config_name", quote_smart("phpbb_prefix")
+					);			
+		}
+		
+		// Auth/Bridge Type: smf2
+		else if ($auth_type == "smf2")
+		{
+			$sql = 	sprintf("SELECT * "  .
+							" FROM " . 	$phpraid_config['db_name'] . "." . $phpraid_config['db_prefix'] . "config" .
+							" WHERE  `%s` = %s", "config_name", quote_smart("smf_table_prefix")
+					);			
+		}
 		else
-		{	
-			$sql = sprintf(	"INSERT INTO " . $phpraid_config['db_prefix'] . "config".
-							" VALUES(%s,%s)", quote_smart($bridge_name . "_table_prefix"), quote_smart($bridge_table_prefix)
-					);
-			$wrm_install->sql_query($sql) or print_error($sql, $wrm_install->sql_error(), 1);
+		{
+			echo "unknown Bridge";
+		}
+		
+		$result = $wrm_install->sql_query($sql) or print_error($sql, $wrm_install->sql_error(), 1);
+		$data = $wrm_install->sql_fetchrow($result, true);
+		//$data['config_value']) == old "table prefix" value
+		
+		//if format == databasename.database_table_prefix split
+		// => $bridge_db_name and $bridge_table_prefix
+		if (($tmp_prefix = explode('.', $data['config_value'])) != false)
+		{
+			$bridge_db_name = $tmp_prefix[0];
+			$bridge_table_prefix = $tmp_prefix[1];
+		}
+		else 
+		{
+			$bridge_db_name = "";
+			$bridge_table_prefix = $data['config_value'];			
 		}
 		
 		/*
 		 * $bridge_name . _db_name
 		 */
-		$sql = 	sprintf("SELECT * "  .
-						" FROM " . 	$phpraid_config['db_name'] . "." . $phpraid_config['db_prefix'] . "config" .
-						" WHERE  `%s` = %s", "config_name", quote_smart($bridge_name . "_db_name")
+		$sql = sprintf(	"INSERT INTO " . $phpraid_config['db_prefix'] . "config".
+						" VALUES(%s,%s)", quote_smart($bridge_name . "_db_name"), quote_smart($bridge_db_name)
 				);
 		$wrm_install->sql_query($sql) or print_error($sql, $wrm_install->sql_error(), 1);
-		$data = $wrm_install->sql_fetchrow($result, true);
-		if ($wrm_install->sql_numrows() != 0 and $data['config_value'] != "")
-		{
-			$sql = 	sprintf("UPDATE " . $phpraid_config['db_name'] . "." . $phpraid_config['db_prefix'] . "config" .
-							" SET `config_value` = %s WHERE %s = `config_name`", quote_smart($data['config_value']), quote_smart($bridge_name . "_db_name"));
-			$wrm_install->sql_query($sql) or print_error($sql, $wrm_install->sql_error(), 1);
-		}
-		else if ($wrm_install->sql_numrows() != 0 and $data['config_value'] == "")
-		{
-			$sql = 	sprintf("UPDATE " . $phpraid_config['db_name'] . "." . $phpraid_config['db_prefix'] . "config" .
-							" SET `config_value` = %s WHERE %s = `config_name`", quote_smart($bridge_db_name), quote_smart($bridge_name . "_db_name"));
-			$wrm_install->sql_query($sql) or print_error($sql, $wrm_install->sql_error(), 1);
-		}
-		else
-		{
-			$sql = sprintf(	"INSERT INTO " . $phpraid_config['db_prefix'] . "config".
-							" VALUES(%s,%s)", quote_smart($bridge_name . "_db_name"), quote_smart($bridge_db_name)
-					);
-			$wrm_install->sql_query($sql) or print_error($sql, $wrm_install->sql_error(), 1);	
-		}
 		
+		/*
+		 * $bridge_name . _table_prefix
+		 */	
+		$sql = sprintf(	"INSERT INTO " . $phpraid_config['db_prefix'] . "config".
+						" VALUES(%s,%s)", 
+						quote_smart($bridge_name . "_table_prefix"), quote_smart($bridge_table_prefix)
+				);
+		$wrm_install->sql_query($sql) or print_error($sql, $wrm_install->sql_error(), 1);
+			
 		/*
 		 * $bridge_name . _utf8_support
 		 */
-		$sql = 	sprintf("SELECT * "  .
-						" FROM " . 	$phpraid_config['db_name'] . "." . $phpraid_config['db_prefix'] . "config" .
-						" WHERE  `%s` = %s", "config_name", quote_smart($bridge_name . "_utf8_support")
+		$sql = sprintf(	"INSERT INTO " . $phpraid_config['db_prefix'] . "config".
+						" VALUES(%s,%s)", quote_smart($bridge_name . "_utf8_support"), quote_smart($bridge_setting['bridge_utf8_support'])
 				);
 		$wrm_install->sql_query($sql) or print_error($sql, $wrm_install->sql_error(), 1);
-		$data = $wrm_install->sql_fetchrow($result, true);
-		if ($wrm_install->sql_numrows() == 0)
-		{
-			$sql = sprintf(	"INSERT INTO " . $phpraid_config['db_prefix'] . "config".
-							" VALUES(%s,%s)", quote_smart($bridge_name . "_utf8_support"), quote_smart($bridge_setting['bridge_utf8_support'])
-					);
-			$wrm_install->sql_query($sql) or print_error($sql, $wrm_install->sql_error(), 1);
-		}
-		else
-		{
-			$sql = 	sprintf("UPDATE " . $phpraid_config['db_name'] . "." . $phpraid_config['db_prefix'] . "config" .
-							" SET `config_value` = %s WHERE %s = `config_name`", quote_smart($bridge_setting['bridge_utf8_support']), quote_smart($bridge_name . "_utf8_support"));
-			$wrm_install->sql_query($sql) or print_error($sql, $wrm_install->sql_error(), 1);
-		}	
 	}
 
 	//_auth_user_group
@@ -480,7 +470,6 @@ if ($step == 2)
 	$wrm_install->sql_query($sql) or print_error($sql, $wrm_install->sql_error(), 1);
 
 	}
-	//--------------------------------------------------------------------------------------------------------
 
 	//close wrm con.
 	$wrm_install->sql_close();
@@ -492,7 +481,7 @@ if ($step == 2)
  * dynamic changes at wrm
  * wrm_updated_on and if not exist insert wrm_created_on (<wrm 4.1)
  */
-if ($step == 3)
+if ($step == "3")
 {
 	//$wrm_install = &new sql_db($phpraid_config['db_host'], $phpraid_config['db_user'], $phpraid_config['db_pass'], $phpraid_config['db_name']);
 	
@@ -532,7 +521,8 @@ if ($step == "update_done")
 	write_wrm_configfile($phpraid_config['db_name'], $phpraid_config['db_host'], $phpraid_config['db_user'],
 						 $phpraid_config['db_pass'], $phpraid_config['db_prefix'], $phpraid_config['db_type'],
 						 $phpraid_config['eqdkp_db_name'], $phpraid_config['eqdkp_db_host'] , $phpraid_config['eqdkp_db_user'] ,
-						 $phpraid_config['eqdkp_db_pass'] , $phpraid_config['eqdkp_db_prefix']
+						 $phpraid_config['eqdkp_db_pass'] , $phpraid_config['eqdkp_db_prefix'],
+						 $phpraid_config['wrm_db_utf8_support'],$phpraid_config['wrm_mbstring_support']
 	);
 	
 	include_once ("includes/page_header.php");

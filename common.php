@@ -74,7 +74,6 @@ require_once($phpraid_dir.'version.php');
 require_once($phpraid_dir.'config.php');
 require_once($phpraid_dir.'includes/functions.php');
 require_once($phpraid_dir.'includes/functions_mysql.php');
-require_once($phpraid_dir.'includes/functions_auth.php');
 require_once($phpraid_dir.'includes/functions_date.php');
 require_once($phpraid_dir.'includes/functions_logging.php');
 require_once($phpraid_dir.'includes/functions_tables.php');
@@ -114,14 +113,8 @@ if(!$db_raid->db_connect_id)
 unset($phpraid_config['db_user']);
 unset($phpraid_config['db_pass']);
 
-// UTF8 Oh how I hate you. - This code SHOULD force a UTF8 Connection between client and server.
-//   From this point on, everything sent from the client to the server or returned from
-//     the server to the client should now be multi-byte aware.
-$sql = "SET NAMES 'utf8'";
-$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-$sql = "SET CHARACTER SET 'utf8'";
-$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-
+// Set UTF8
+set_WRM_DB_utf8();
 
 //
 // Populate the $phpraid_config array
@@ -130,7 +123,8 @@ $sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "config";
 $result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 while($data = $db_raid->sql_fetchrow($result, true))
 {
-	$phpraid_config["{$data['0']}"] = $data['1'];
+	//$phpraid_config["{$data['0']}"] = $data['1'];
+	$phpraid_config[$data['config_name']] = $data['config_value'];
 }
 
 
@@ -200,7 +194,15 @@ else
  * Set Authentication Method and Load Auth Files
  ***************************************************/
 // get auth type
+
+// Illydth:  We've updated this to parse the "auth" file from the auth directory prior to the definition
+//   of wrm_login() within the functions_auth.php file.  This allows users to custom define a wrm_login()
+//   function that will work with specialtiy bridges.  The "function_exists" check calls a function that
+//   dymanically defines the "wrm_login()" function at runtime.
 require_once($phpraid_dir.'auth/auth_' . $phpraid_config['auth_type'] . '.php');
+require_once($phpraid_dir.'includes/functions_auth.php');
+if (!function_exists('wrm_login'))
+	DEFINE_wrm_login();
 
 // good ole authentication
 $lifetime = get_cfg_var("session.gc_maxlifetime"); 

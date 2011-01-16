@@ -65,6 +65,17 @@ array_shift($files);
 $array_template_type = array();
 $selected_template_type = "";
 
+include_once ("../templates/".$phpraid_config['template']."/theme_cfg.php");
+$selected_template_width = $phpraid_config['template_body_width'];
+if (isset($template_width))
+{
+	$array_template_width = $template_width;
+}
+else 
+{
+	$array_template_width = array();
+	$array_template_width["n/a"] = "N/A";
+}
 
 foreach($files as $key=>$value)
 {
@@ -89,9 +100,12 @@ $wrmadminsmarty->assign('config_data',
 		'header_link_text' => $phprlang['configuration_sitelink'],
 	
 		'template_text' => $phprlang['configuration_template'],
-
 		'array_template_type' => $array_template_type,
 		'selected_template_type' => $selected_template_type,
+	
+		'template_width_text' => $phprlang['configuration_template_width_text'],
+		'array_template_width' => $array_template_width,
+		'selected_template_width' => $selected_template_width,	
 	
 		'button_submit' => $phprlang['submit'],
 		'button_reset' => $phprlang['reset']
@@ -101,13 +115,14 @@ $wrmadminsmarty->assign('config_data',
 if(isset($_POST['submit']))
 {
 
-
 	$h_logo = scrub_input($_POST['header_logo'], true);
 	$h_link = scrub_input($_POST['header_link'], true);
 
 	$t_type = scrub_input(DEUBB($_POST['template']));
+	$template_width = scrub_input(DEUBB($_POST['template_width']));
 
-
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'template_body_width';", quote_smart($template_width));
+	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'header_logo';", quote_smart($h_logo));
 	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'header_link';", quote_smart($h_link));

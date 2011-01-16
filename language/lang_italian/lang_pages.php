@@ -38,7 +38,7 @@ $phprlang['announcements_title_text'] = 'Titolo';
 // Calendar
 $phprlang['invites'] = 'Inviti';
 $phprlang['start'] = 'Inizio';
-$phprlang['key'] = 'Legenda:<br>(<span class="draftedmark">*</span>) = Iscritto e confermato<br>(<span class="qcanmark">#</span>) = Iscritto (in coda o annullato)<br>Giorni <span class="priorDay">TEXT</span> = eventi passati.<br>Giorno <span class="currentDay">TEXT</span> = eventi odierni.<br>Giorni <span class="postDay">TEXT</span> = eventi futuri.';
+$phprlang['key'] = 'Key:<br>White Border = Not Signed Up<br>Green Border = Signed Up & Drafted<br>Blue Border = Signed Up, Not Drafted (queued)<br>Red Border = Signup Cancelled<br><span class="priorDay">TEXT</span> dates are in the past.<br><span class="currentDay">TEXT</span> date is today.<br><span class="postDay">TEXT</span> dates are in the future.'; //New
 $phprlang['calendar_month_select_header'] = 'Seleziona mese ed anno da visualizzare';
 
 // DKP View
@@ -158,7 +158,7 @@ $phprlang['raids_new'] = 'Raid in programma';
 $phprlang['raids_new_header'] = 'Nuovo Raid';
 $phprlang['raids_start'] = 'Ora di inizio';
 $phprlang['raids_eventtype_text'] = 'Tipo di evento';
-$phprlang['raids_mark_selected_raids_to_old'] = "mark selected raids to old";
+$phprlang['raids_mark_selected_raids_to_old'] = "all mark raids are closed and over";
 
 // event type
 $phprlang['event_type_raid'] = 'Raid (10/25 persone)';

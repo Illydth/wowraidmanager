@@ -295,7 +295,7 @@ INSERT INTO `wrm_events` ( `zone_desc`, `max`, `exp_id`, `event_type_id`, `wow_n
 ('Lost City of Tolvir', 5, 4, 2, 'Lost City of Tolvir', 'images/instances/Cataclysm_Icons/dungeons/5-Lost-City-Of-Tolvir.jpg'), 
 ('Lost City of Tolvir - Heroic', 5, 4, 2, 'Lost City of Tolvir (Heroic)', 'images/instances/Cataclysm_Icons/dungeons/5-Lost-City-Of-Tolvir-Heroic.jpg'), 
 ('Stonecore', 5, 4, 2, 'Stonecore', 'images/instances/Cataclysm_Icons/dungeons/5-Stonecore.jpg'), 
-('Stonecore - Heroic', 5, 4, 2, 'Stonecore', 'images/instances/Cataclysm_Icons/dungeons/5-Stonecore-Heroic.jpg'), 
+('Stonecore - Heroic', 5, 4, 2, 'Stonecore (Heroic)', 'images/instances/Cataclysm_Icons/dungeons/5-Stonecore-Heroic.jpg'), 
 ('Throne of Tides', 5, 4, 2, 'Throne of Tides', 'images/instances/Cataclysm_Icons/dungeons/5-Throne-Of-Tides.jpg'), 
 ('Throne of Tides - Heroic', 5, 4, 2, 'Throne of Tides (Heroic)', 'images/instances/Cataclysm_Icons/dungeons/5-Throne-Of-Tides-Heroic.jpg'), 
 ('Vortex Pinnacle', 5, 4, 2, 'Vortex Pinnacle', 'images/instances/Cataclysm_Icons/dungeons/5-Vortex-Pinnacle.jpg'),
@@ -306,6 +306,12 @@ INSERT INTO `wrm_events` ( `zone_desc`, `max`, `exp_id`, `event_type_id`, `wow_n
 ('Bastion Of Twilight - 25 man', 10, 4, 1, 'Bastion Of Twilight (25)', 'images/instances/Cataclysm_Icons/raids/25-Bastion-Of-Twilight.jpg'),
 ('Blackwing Descent - 25 man', 10, 4, 1, 'Blackwing Descent (25)', 'images/instances/Cataclysm_Icons/raids/25-Blackwing-Descent.jpg'),
 ('Throne Of Four Winds - 25 man', 10, 4, 1, 'Throne Of Four Winds (25)', 'images/instances/Cataclysm_Icons/raids/25-Throne-Of-Four-Winds.jpg');
+
+INSERT INTO `wrm_events` ( `zone_desc`, `max`, `exp_id`, `event_type_id`, `wow_name`, `icon_path`) VALUES
+('Skywall', 5, 4, 2, 'Skywall', 'images/instances/Cataclysm_Icons/dungeons/5-Skywall.jpg'),
+('Skywall - Heroic', 5, 4, 2, 'Skywall (Heroic)', 'images/instances/Cataclysm_Icons/dungeons/5-Skywall-Heroic.jpg'),
+('Skywall - 10 Man', 10, 4, 1, 'Skywall (10)', 'images/instances/Cataclysm_Icons/raids/10-Skywall.jpg'),
+('Skywall - 25 Man', 10, 4, 1, 'Skywall (25)', 'images/instances/Cataclysm_Icons/raids/25-Skywall.jpg');
 
 -- Data for Faction Table
 INSERT INTO `wrm_faction` (`faction_name` , `lang_index`) VALUES 

@@ -38,7 +38,7 @@ $phprlang['announcements_title_text'] = '標題';
 // Calendar
 $phprlang['invites'] = '邀請';
 $phprlang['start'] = '開始';
-$phprlang['key'] = '代表符號: <br>(<div class="draftedmark">*</div>) = 已報名並列入團隊 <br>(<div class="qcanmark">#</div>) = 已報名，但未列入團隊 (已列入後補或已取消)<br><div class="priorDay">TEXT</div> 日期已過。<br><div class="currentDay">TEXT</div> 日期為今日。 <br><div class="postDay">TEXT</div> 日期於未來。';
+$phprlang['key'] = 'Key:<br>White Border = Not Signed Up<br>Green Border = Signed Up & Drafted<br>Blue Border = Signed Up, Not Drafted (queued)<br>Red Border = Signup Cancelled<br><span class="priorDay">TEXT</span> dates are in the past.<br><span class="currentDay">TEXT</span> date is today.<br><span class="postDay">TEXT</span> dates are in the future.'; //New
 $phprlang['calendar_month_select_header'] = 'Select Month and Year to View';
 
 // DKP View
@@ -158,7 +158,7 @@ $phprlang['raids_new'] = '最新活動';
 $phprlang['raids_new_header'] = '新增活動';
 $phprlang['raids_start'] = '開始時間';
 $phprlang['raids_eventtype_text'] = 'Event Type';
-$phprlang['raids_mark_selected_raids_to_old'] = "mark selected raids to old";
+$phprlang['raids_mark_selected_raids_to_old'] = "all mark raids are closed and over";
 		
 // event types
 $phprlang['event_type_raid'] = 'Raid (10/25 man)';

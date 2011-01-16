@@ -28,6 +28,10 @@
 		        <td class="row1"><strong>{$config_data.enable_five_man_text}</strong></td>
 		        <td class="row2">{$config_data.enable_five_man}</td>
 		      </tr>
+			  <tr>
+		        <td class="row1"><strong>{$config_data.default_group_text}</strong></td>
+		        <td class="row2">{$config_data.default_group_value}</td>
+		      </tr>
 		      <tr>
 		        <td class="row1"><strong>{$config_data.records_per_page_text}</strong></td>
 		        <td class="row2">{$config_data.records_per_page}</td>
@@ -50,15 +54,15 @@
            <table width="100%" border="0" cellspacing="1" cellpadding="3" class="dataOutline">
 		      <tr>
 		        <td width="200" class="row1"><strong>{$config_data.site_name_text}</strong></td>
-		        <td class="row2"><input name="header_link" size="60" type="text" class="post" value="{$config_data.site_name_value}"></td>
+		        <td class="row2"><input name="site_name" size="60" type="text" class="post" value="{$config_data.site_name_value}"></td>
 		      </tr>
 		      <tr>
 		        <td class="row1"><strong>{$config_data.site_description_text}</strong></td>
-		        <td class="row2"><input name="header_link" size="60" type="text" class="post" value="{$config_data.site_description_value}"></td>
+		        <td class="row2"><input name="site_desc" size="60" type="text" class="post" value="{$config_data.site_description_value}"></td>
 		      </tr>
 		      <tr>
 		        <td class="row1"><strong>{$config_data.site_server_text}</strong></td>
-		        <td class="row2"><input name="header_link" size="60" type="text" class="post" value="{$config_data.site_server_value}"></td>
+		        <td class="row2"><input name="site_server" size="60" type="text" class="post" value="{$config_data.site_server_value}"></td>
 		      </tr>
 			</table>
 		</td>

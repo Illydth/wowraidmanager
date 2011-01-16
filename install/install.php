@@ -37,11 +37,16 @@ if (!isset($_GET['step']))
 	$step = "0";
 else
 	$step = $_GET['step'];
-
+	
 /*
  * include libs
  */
 include_once ("install_common.php");
+
+
+// force reporting - Turn on the First Error_Reporting for Development, The Second for Production. 
+//error_reporting(E_ALL ^ E_NOTICE);
+error_reporting(E_ERROR | E_WARNING | E_PARSE);
 
 /*
  * name of this file
@@ -117,18 +122,26 @@ if ($step == "0")
 			
 			if ($Database_Exist == TRUE)
 			{
-				$sql_tables = "SHOW TABLES FROM ".$phpraid_config['db_name'];
-				$result_tables = $wrm_install->sql_query($sql_tables) or print_error($sql_tables, $wrm_install->sql_error(), 1);
-				while ($data_tables = $wrm_install->sql_fetchrow($result_tables,true))
-				{
-					//each version has this table
-					if ($data_tables['Tables_in_'.$phpraid_config['db_name']] == $phpraid_config['db_prefix']."raids")
-					{
-						$table_profile_available = TRUE;
-					}
-				}
+				// ILLYDTH: Code below uses "Show tables" to check if the tables exist in the DB.
+				//  This causes problems for some hosts (for some reason I don't know) so instead
+				//  we'll make the check a different way.
 				
-				if ($table_profile_available == TRUE)
+				//$sql_tables = "SHOW TABLES FROM ".$phpraid_config['db_name'];
+				//$result_tables = $wrm_install->sql_query($sql_tables) or print_error($sql_tables, $wrm_install->sql_error(), 1);
+				//while ($data_tables = $wrm_install->sql_fetchrow($result_tables,true))
+				//{
+					//each version has this table
+				//	if ($data_tables['Tables_in_'.$phpraid_config['db_name']] == $phpraid_config['db_prefix']."raids")
+				//	{
+				//		$table_profile_available = TRUE;
+				//	}
+				//}
+				
+				// Select * will return successful even if no profiles are in the table, if the table
+				//   exists, this returns true.
+				$sql = "SELECT * FROM " . $phpraid_config['db_prefix']."profile";
+				$result_table_exist = $wrm_install->sql_query($sql) or print_error($sql, $wrm_install->sql_error(), 1);
+				if ($result_table_exist)
 				{
 					header("Location: " . $filename_upgrade);
 					exit;
@@ -531,7 +544,7 @@ else if($step == 3)
 	
 	//add create db
 	$wrm_install->sql_close();
-
+	
 	include_once ("includes/page_header.php");
 	$smarty->assign(
 		array(
@@ -550,6 +563,8 @@ else if($step == 3)
 			"wrm_db_server_hostname" => $wrm_db_server_hostname,
 			"wrm_db_username" => $wrm_db_username,
 			"wrm_db_password" => $wrm_db_password,
+			"wrm_db_utf8_support_text" => $wrm_install_lang['wrm_db_utf8_support_text'],
+			"wrm_mbstring_support_text" => $wrm_install_lang['wrm_mbstring_support_text'],
 			"enable_wrm_db_create_name" => $enable_wrm_db_create_name,		
 			"error_msg" => $error_msg,
 			"only_if_create_new_tab_text" => $wrm_install_lang['only_if_create_new_tab'],
@@ -582,6 +597,26 @@ else if($step == 4)
 
 	$wrm_db_tableprefix = $_POST['wrm_db_tableprefix'];
 	
+	// UTF8 Support
+	if ($_POST['wrm_db_utf8_support_value'] == "1")
+	{
+		$wrm_db_utf8_support_value = "yes";
+	}
+	else 
+	{
+		$wrm_db_utf8_support_value = "no";	
+	}
+	
+	// Multibyte String Support
+	if ($_POST['wrm_mbstring_support_value'] == "1")
+	{
+		$wrm_mbstring_support_value = "yes";
+	}
+	else 
+	{
+		$wrm_mbstring_support_value = "no";	
+	}
+		
 	$wrm_config_writeable = FALSE;
 	$FOUNDERROR_Database = FALSE;
 	
@@ -617,7 +652,7 @@ else if($step == 4)
 		else
 		{
 			//write config file and then jump to upgrade.php
-			write_wrm_configfile($wrm_db_name, $wrm_db_server_hostname, $wrm_db_username, $wrm_db_password, $wrm_db_tableprefix);
+			write_wrm_configfile($wrm_db_name, $wrm_db_server_hostname, $wrm_db_username, $wrm_db_password, $wrm_db_tableprefix,"","","","","","",$wrm_db_utf8_support_value,$wrm_mbstring_support_value);
 			$wrm_install->sql_close();
 			header("Location: ".$filename_upgrade);
 		}
@@ -639,7 +674,9 @@ else if($step == 4)
 		if ($wrm_config_writeable == TRUE)
 		{
 			//go to next step
-			header("Location: ".$filename_install."step=".($step+1) );
+			// ILLYDTH: This has been updated to force into step 6, skipping step 5 completely.
+			//   see the notes at the beginning of step 5 for more information.
+			header("Location: ".$filename_install."step=".($step+2) );
 			exit;
 		}
 		//config FILE ist NOT writeable
@@ -663,6 +700,18 @@ else if($step == 4)
  * test: if selected db, are wrm table include/exist
  * ---------------------
  * */
+// Illydth: 
+// The entirety of Step 5 is Irrelivant.  We've gotten to this place because the "profile" table did not
+//  exist back in Step 1 when we checked for it.  If the profile table existed, we'd be at "upgrade"
+//  right now, not install.  If the profile table doesn't exist, it doesn't matter what we do to the
+//  user database, there are no users, thus there can't be any way to do anything IN the system...even
+//  initial configuration would require the admin user to be in the profile table, and it doesn't exist.
+//
+// The "install_schema.sql" we're about to run is setup to drop any tables that already exist, so
+//  there's very little reason to run a check to see if any of the tables exist.
+//
+// This step is now being "skipped" in step 4 above: The code will run step 4 and then "skip" to step
+//  6, bypassing this "else if" block entirely.
 else if($step == 5)
 {
 
@@ -675,7 +724,9 @@ else if($step == 5)
 	
 	//load all DATABASES name in a array ($sql_all_dbname)
 	$result_list_tables = array();
-	$sql_tables = "SHOW TABLES FROM ".$phpraid_config['db_name'];
+	// ILLYDTH: This line commented because Step 5 is now skipped, this keeps compiler errors from
+	//   crapping out the code.
+	//$sql_tables = "SHOW TABLES FROM ".$phpraid_config['db_name'];
 
 	$result_db_all = $wrm_install->sql_query($sql_tables) or print_error($sql_tables, $wrm_install->sql_error(), 1);
 	while ($db_table_name = $wrm_install->sql_fetchrow($result_db_all,true))
@@ -744,6 +795,8 @@ else if($step == 6)
 	
 
 	//DROP all TABLE (array from "install_settings.php")
+	// ILLYDTH: Technically this for loop is Irrelivant as well.  The SQL query we run automatically does
+	//   a drop if exists prior to executing the creation, so this is redundant.
 	for ($i=0; $i<count($wrm_tables);$i++)
 	{
 		$sql_del_tab = "DROP TABLE IF EXISTS ".$phpraid_config['db_prefix'].$wrm_tables[$i];
@@ -854,16 +907,19 @@ else if($step == 8)
 	//if db_type == mysql
 	if ( ($phpraid_config['db_type'] == "mysql") or (!isset($phpraid_config['db_type'])) )
 	{
-		$gd = get_mysql_version_from_phpinfo();
-		if ($gd >= "4.1.0")
+		if ($phpraid_config['wrm_db_utf8_support'] == "yes")
 		{
-			include_once("install_settings.php");
-	
-			for ($i=0; $i <count($wrm_tables); $i++)
+			$gd = get_mysql_version_from_phpinfo();
+			if ($gd >= "4.1.0")
 			{
-				$sql = 	sprintf("ALTER TABLE " .$phpraid_config['db_name'] . "." . $phpraid_config['db_prefix'].$wrm_tables[$i] .
-								" DEFAULT CHARACTER SET %s COLLATE=utf8_bin", quote_smart("UTF8") );
-				$wrm_install->sql_query($sql) or print_error($sql, $wrm_install->sql_error(), 1);
+				include_once("install_settings.php");
+		
+				for ($i=0; $i <count($wrm_tables); $i++)
+				{
+					$sql = 	sprintf("ALTER TABLE " .$phpraid_config['db_name'] . "." . $phpraid_config['db_prefix'].$wrm_tables[$i] .
+									" DEFAULT CHARACTER SET %s COLLATE=utf8_bin", quote_smart("UTF8") );
+					$wrm_install->sql_query($sql) or print_error($sql, $wrm_install->sql_error(), 1);
+				}
 			}
 		}
 	}

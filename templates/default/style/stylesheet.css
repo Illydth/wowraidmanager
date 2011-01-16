@@ -299,6 +299,14 @@ input.liteoption {
 	text-decoration:none;
 }
 
+body.width_expanded div#container {
+	width: 1400px;
+}
+
+body.width_normal div#container {
+	width: 1141px;
+}
+
 .menuHeader {
 	background-image:url('../images/leftMenuHeader_bg.gif');
 	color:#ffffff;
@@ -386,12 +394,18 @@ input.liteoption {
 	color:#FF0000;
 }
   /* "#" Signed Up - Not Drafted Mark */
-.qcanmark {
-	font-size:20px;
-	color:#0000FF;
+img.nomark {
+   border-color:#FFFFFF;
+}
+  /* "#" Signed Up - Not Drafted Mark */
+img.qcanmark {
+   border-color:#0000FF;
 }
   /* "*" Signed Up, Drafted Mark */
-.draftedmark {
-	font-size:20px;
-	color:#0000FF;
+img.draftedmark {
+   border-color:#008000;
+}
+  /* "*" Signed Up Cancled */
+img.cancelmark {
+   border-color:#FF0000;
 }

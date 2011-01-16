@@ -135,10 +135,15 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true)) {
 			$info = '<img src="templates/' . $phpraid_config['template'] . '/images/icons/cancel.gif" border="0" height="14" width="14" onMouseover="ddrivetip(\'' . $phprlang['cancel_msg'] . '\');" onMouseout="hideddrivetip();" alt="cancel icon">';
 		else if(is_char_signed($profile_id, $raids['raid_id']))
 			$info = '<img src="templates/' . $phpraid_config['template'] . '/images/icons/check_mark.gif" border="0" height="14" width="14" onMouseover="ddrivetip(\'' . $phprlang['signed_up'] . '\');" onMouseout="hideddrivetip();" alt="check mark">';
-		else if(check_frozen($raids['raid_id']) && $phpraid_config['disable_freeze'] == 0)
+		else if((check_frozen($raids['raid_id']) && $phpraid_config['disable_freeze'] == 0) or ($raids['old'] != 0))
 			$info = '<img src="templates/' . $phpraid_config['template'] . '/images/icons/frozen.gif" border="0" height="14" width="14" onMouseover="ddrivetip(\'' . $phprlang['frozen_msg'] . '\');" onMouseout="hideddrivetip();" alt="frozen">';
 		else
-			$info = '<a href="view.php?mode=view&amp;raid_id=' . $raids['raid_id'] . '#signup">'. $phprlang['signup'] .'</a>';
+		{
+			$info  = '<a href="view.php?mode=view&amp;raid_id=' . $raids['raid_id'] . '#signup">';
+			$info .= '<img src="templates/' . $phpraid_config['template'] . '/images/icons/signup.gif" border="0" height="14" width="14" onMouseover="ddrivetip(\'' . $phprlang['not_signed_up'] . '\');" onMouseout="hideddrivetip();" alt="'.$phprlang['signup'].'">';
+			//$info .=  $phprlang['signup'];
+			$info .= '</a>';
+		}
 	}
 
 	$desc = scrub_input($raids['description']);

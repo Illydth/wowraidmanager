@@ -147,6 +147,9 @@ $phprlang['configuration_rss_feed_amt'] = 'RSS:於RSS資料顯示之團隊數量
 // Text on the "Style Config" Page
 $phprlang['style_menu_header'] = 'Style Config';
 $phprlang['configuration_template_cfg_header'] = 'Template Config';
+$phprlang['configuration_template_width_text'] = "Template Width";
+$phprlang['configuration_width_normal'] = "normal";
+$phprlang['configuration_width_expanded'] = "expanded";
 $phprlang['configuration_logo'] = 'Logo鏈結位址';
 $phprlang['configuration_sitelink'] = '"頁首" 連結';
 $phprlang['configuration_template'] = '版面';

@@ -36,8 +36,9 @@ if ( !defined('IN_PHPRAID'))
 if(isset($_GET['phpraid_dir']) || isset($_POST['phpraid_dir']))
 	die("Hacking attempt detected!");
 
-// force reporting
-error_reporting(E_ALL ^ E_NOTICE);
+// force reporting - Turn on the First Error_Reporting for Development, The Second for Production. 
+//error_reporting(E_ALL ^ E_NOTICE);
+error_reporting(E_ERROR | E_WARNING | E_PARSE);
 
 // feel free to set this to absolute if necessary
 $phpraid_dir = '../';
@@ -82,14 +83,10 @@ if(!$db_raid->db_connect_id)
 	die('<div align="center"><strong>There appears to be a problem with the database server.<br>We should be back up shortly.</strong></div>');
 }
 
-// UTF8 Oh how I hate you. - This code SHOULD force a UTF8 Connection between client and server.
-//   From this point on, everything sent from the client to the server or returned from
-//     the server to the client should now be multi-byte aware.
-$sql = "SET NAMES 'utf8'";
-$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-$sql = "SET CHARACTER SET 'utf8'";
-$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+// Set UTF8
+set_WRM_DB_utf8();
 
+	
 // unset database password for security reasons
 // we won't use it after this point
 unset($phpraid_config['db_pass']);
@@ -156,38 +153,46 @@ else
  ***************************************************/
 // get auth type
 require_once($phpraid_dir.'auth/auth_' . $phpraid_config['auth_type'] . '.php');
+
 // good ole authentication
-$lifetime = get_cfg_var("session.gc_maxlifetime"); 
-$temp = session_name("WRM-" .  $phpraid_config['auth_type']);
-$temp = session_set_cookie_params($lifetime, getCookiePath());
+//$lifetime = get_cfg_var("session.gc_maxlifetime");
+$lifetime = 60*60*24*30*2; // session lifetime = 2 month 
+session_name("WRM-" .  $phpraid_config['auth_type']);
+//$temp = session_set_cookie_params($lifetime, getCookiePath());
+/*
+ * more infos here
+ * http://www.php.net/manual/en/function.session-set-cookie-params.php
+ */ 
+session_set_cookie_params($lifetime,"/");
 session_start();
-$_SESSION['name'] = "WRM-" . $phpraid_config['auth_type'];
+
+//$_SESSION['name'] = "WRM-" . $phpraid_config['auth_type'];
 
 // set session defaults
-if (!isset($_SESSION['initiated'])) 
-{
-	if(isset($_COOKIE['profile_id']) && isset($_COOKIE['password']))
-	{ 
-		$testval = wrm_login();
-		if (!$testval)
-		{
-			wrm_logout();
-			session_regenerate_id();
-			$_SESSION['initiated'] = true;
-			$_SESSION['username'] = 'Anonymous';
-			$_SESSION['session_logged_in'] = 0;
-			$_SESSION['profile_id'] = -1;
-		}
-	}
-	else 
-	{
-		session_regenerate_id();
-		$_SESSION['initiated'] = true;
-		$_SESSION['username'] = 'Anonymous';
-		$_SESSION['session_logged_in'] = 0;
-		$_SESSION['profile_id'] = -1;
-	}
-}
+//if (!isset($_SESSION['initiated'])) 
+//{
+//	if(isset($_COOKIE['profile_id']) && isset($_COOKIE['password']))
+//	{ 
+//		$testval = wrm_login();
+//		if (!$testval)
+//		{
+//			wrm_logout();
+//			session_regenerate_id();
+//			$_SESSION['initiated'] = true;
+//			$_SESSION['username'] = 'Anonymous';
+//			$_SESSION['session_logged_in'] = 0;
+//			$_SESSION['profile_id'] = -1;
+//		}
+//	}
+//	else 
+//	{
+//		session_regenerate_id();
+//		$_SESSION['initiated'] = true;
+//		$_SESSION['username'] = 'Anonymous';
+//		$_SESSION['session_logged_in'] = 0;
+//		$_SESSION['profile_id'] = -1;
+//	}
+//}
 
 get_permissions($_SESSION['profile_id']);
 

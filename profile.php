@@ -392,11 +392,16 @@ elseif(($_GET['mode'] == 'new' || $_GET['mode'] == 'edit'))
 		if ($phpraid_config['resop'] == 1)
 		{
 			//So resistance optional and values are empty, time to convert
-			$shadow = "0";
-			$fire = "0";
-			$frost = "0";
-			$nature = "0";
-			$arcane = "0";
+			if ($shadow == "")
+				$shadow = "0";
+			if ($fire == "")
+				$fire = "0";
+			if ($frost == "")
+				$frost = "0";
+			if ($nature == "")
+				$nature = "0";
+			if ($arcane == "")
+				$arcane = "0";
 		}
 		else
 		{

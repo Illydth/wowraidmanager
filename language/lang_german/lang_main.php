@@ -127,6 +127,7 @@ $phprlang['scheduler_unknown'] = 'The scheduler threw an Unknown error, please p
 
 // roles
 $phprlang['role_none'] = '-';
+$phprlang['role'] = 'Role'; //New
 
 // errors
 $phprlang['connect_socked_error'] = 'Fehler beim Aufbau der Socket-Verbindung:  %s';
