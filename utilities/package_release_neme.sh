@@ -64,7 +64,7 @@ chmod 777 install/cache/templates_c
 chmod 666 config.php
 
 # recursive chmod
-chmod -R a-x *
+#chmod -R a-x *
 
 cd ..
 
