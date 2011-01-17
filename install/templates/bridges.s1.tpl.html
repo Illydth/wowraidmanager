@@ -1,5 +1,5 @@
 <link href="style/stylesheet.css" rel="stylesheet" type="text/css">
-<form method="post" action="{$form_action}">
+<form method="post" action="{$bridge.form_action}">
 
  <table align="center" width="600">
   <tr>
@@ -9,7 +9,7 @@
     <td>&nbsp;</td>
   </tr>
   <tr>
-    <td><div align="center" class="row1">{$user_admin_01_text}</div></td>
+    <td><div align="center" class="row1">{$bridge.user_admin_01_text}</div></td>
   </tr>
   <tr>
     <td>&nbsp;</td>
@@ -17,10 +17,8 @@
   <tr>
     <td>
       <div align="center">
-        <select name="bridge_admin_id" class="post">
-		 {html_options values=$bridge_admin_id_values selected=$bridge_admin_id_selected output=$bridge_admin_id_output}
-        </select>
-        </div>
+	      {html_options name=bridge_admin_id options=$bridge.array_bridge_admin_id selected=$bridge.selected_bridge_admin_id class="post" id="name"}
+      </div>
 	</td>
   </tr>
   <tr>
@@ -35,11 +33,12 @@
   <tr>
     <td>
       <div align="center">
-		<input type="submit" name="submit" value="{$bd_submit}" class="bd_normal" />
-		<input type="hidden" name="bridge_name" value="{$bridge_name}" />
-		<input type="hidden" name="bridge_db_table_prefix" value="{$bridge_db_table_prefix}" />
-		<input type="hidden" name="bridge_database_name" value="{$bridge_database_name}" />
-      </div>    </td>
+		<input type="submit" name="submit" value="{$bridge.bd_submit}" class="bd_normal" />
+		<input type="hidden" name="bridge_name" value="{$bridge.bridge_name}" />
+		<input type="hidden" name="bridge_db_table_prefix" value="{$bridge.bridge_db_table_prefix}" />
+		<input type="hidden" name="bridge_database_name" value="{$bridge.bridge_database_name}" />
+      </div>
+    </td>
   </tr>
   <tr>
     <td>&nbsp;</td>

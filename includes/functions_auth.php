@@ -241,7 +241,10 @@ function DEFINE_wrm_login()
 	
 		$password = "";
 		$profile_id = "";
-			
+		
+		//if you select "No Restrictions" or "No Additional UserGroup" (bridge permission group) 
+		$default_bridge_value = "-1";
+
 		//first login
 		if(isset($_POST['username']))
 		{
