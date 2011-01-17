@@ -339,7 +339,7 @@ function DEFINE_wrm_login()
 		if ($user_auth == TRUE)
 		{
 			/**
-			 * user with aces to admin area
+			 * user with access to admin area
 			 * ignore base and alt base group Settings
 			 * 
 			 */
@@ -435,7 +435,7 @@ function DEFINE_wrm_login()
 			/**************************************************************
 			 * set user profile variables in SESSION
 			 **************************************************************/
-			set_WRM_SESSION($data[$db_user_id], 1, $data[$db_user_name], FALSE);
+			set_WRM_SESSION($data[$db_user_id], 1, $data[$db_user_name], TRUE);
 			if ($auth_user_class != "")
 			{
 				// User is all logged in and setup, the session is initialized properly.  Now we need to create the users
@@ -517,10 +517,10 @@ function wrm_profile_add($profile_id, $email, $wrmpass, $username)
 	global $db_raid, $phpraid_config;
 	
 	// get default group 
-	if($phpraid_config['default_group'] != 'nil')
+	if($phpraid_config['default_group'] != '' || $phpraid_config['default_group'] != 0)
 		$user_priv = $phpraid_config['default_group'];
 	else
-		$user_priv = '0';
+		$user_priv = '2';
 	
 	if ($profile_id != "")
 	{
