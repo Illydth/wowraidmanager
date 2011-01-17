@@ -50,6 +50,9 @@ $default_admin_Priv = 1;
 $filename_bridge = "install_bridges.php?lang=".$lang."&";
 $filename_install = "install.php?lang=".$lang."&";
 
+//if you select "No Restrictions" or "No Additional UserGroup" (bridge permission group) 
+$default_bridge_value = "-1";
+
 /**
  * This is the path to the WRM Config File
  */
@@ -365,11 +368,8 @@ if ($step == "2")
 		$bridge_db_table_prefix = substr($string, $pos, $pos_new - $pos);
 	}
 
-
 	include("auth/install_".$bridge_name.".php");
 
-	//$bridge_admin_id_output = array();
-	//$bridge_admin_id_values = array();
 	$array_bridge_admin_id = array();
 	$selected_bridge_admin_id = "0";
 	
@@ -419,8 +419,6 @@ if ($step == "2")
 //witch have full acces to wrm
 else if ($step == 3)
 {
-	$default_bridge_value = "-1";
-	
 	$bridge_name = $_POST['bridge_name'];
 	$bridge_db_table_prefix = $_POST['bridge_db_table_prefix'];
 	$bridge_database_name = $_POST['bridge_database_name'];
@@ -582,7 +580,7 @@ else if($step == 5)
 			}
 		}
 	}
-	if ($bridge_auth_user_group != 0)
+	if ($bridge_auth_user_group != $default_bridge_value)
 	{
 		$sql = 	"SELECT " . $bridge_setting['db_allgroups_name'] .
 				" FROM " . 	$bridge_database_name . "." . $bridge_db_table_prefix . $bridge_setting['db_table_allgroups'] .
@@ -598,7 +596,7 @@ else if($step == 5)
 		$bridge_auth_user_group_value = $wrm_install_lang['step5sub3norest'];
 	}
 
-	if ($bridge_auth_user_alt_group != 0)
+	if ($bridge_auth_user_alt_group != $default_bridge_value)
 	{
 		$sql = 	"SELECT " . $bridge_setting['db_allgroups_name'] .
 				" FROM " . 	$bridge_database_name . "." . $bridge_db_table_prefix . $bridge_setting['db_table_allgroups'] .
