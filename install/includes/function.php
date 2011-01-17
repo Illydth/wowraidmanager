@@ -78,7 +78,7 @@ function validate_wrm_configfile()
 	$curr_dir = dirname(__FILE__);
 	$wrm_dir = substr($curr_dir, 0, strpos($curr_dir, "install")-1); //Strip the "install" directory off the end.
 	
-	$wrm_config_file = $wrm_dir . "/config.php";
+	$wrm_config_file = $wrm_dir . "config.php";
 	
 	if(is_file($wrm_config_file))
 	{

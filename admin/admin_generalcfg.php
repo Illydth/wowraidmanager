@@ -101,19 +101,17 @@ unset($files);
 $sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "permissions";
 $result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 
-$default = '<select name="default_group" class="post"><option value="nil">'.$phprlang['none'].'</option>';
+$default_group = '<select name="default_group">';
 
 while($data = $db_raid->sql_fetchrow($result, true))
 {
-if($phpraid_config['default_group'] == $data['permission_id'])
-$default .= '<option value="'.$data['permission_id'].'" selected>'.$data['name'].'</option>';
-else
-$default .= '<option value="'.$data['permission_id'].'">'.$data['name'].'</option>';
+	if($phpraid_config['default_group'] == $data['permission_id'])
+		$default_group .= '<option value="'.$data['permission_id'].'" selected>'.$data['name'].'</option>';
+	else
+		$default_group .= '<option value="'.$data['permission_id'].'">'.$data['name'].'</option>';
 }
 
-$default .= '</select>';
-
-
+$default_group .= '</select>';
 
 $records_per_page = '<input name="records_per_page" size="5" type="text" class="post" value="' . $phpraid_config['records_per_page'] . '">';
 $num_old_raids_index = '<input name="num_old_raids_index" size="5" type="text" class="post" value="' . $phpraid_config['num_old_raids_index'] . '">';
@@ -123,7 +121,7 @@ $wrmadminsmarty->assign('config_data',
 		'form_action'=> $page_url,
 		'general_header' => $phprlang['general_configuration_header'],
 		'default_group_text' => $phprlang['configuration_default'],
-		'default_group_value' => $default,
+		'default_group_value' => $default_group,
 		'language' => $language,
 		'language_text' => $phprlang['configuration_language'],
 		'disable_site' => $disable_site,
@@ -182,6 +180,7 @@ if(isset($_POST['submit']))
 
 	$lang = scrub_input($_POST['language']);
 	
+	$default_group = scrub_input($_POST['default_group']);
 	
 	$records_per_page = scrub_input($_POST['records_per_page']);
 	
