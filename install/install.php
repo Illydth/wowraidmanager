@@ -916,8 +916,8 @@ else if($step == 8)
 		
 				for ($i=0; $i <count($wrm_tables); $i++)
 				{
-					$sql = 	sprintf("ALTER TABLE " .$phpraid_config['db_name'] . "." . $phpraid_config['db_prefix'].$wrm_tables[$i] .
-									" DEFAULT CHARACTER SET %s COLLATE=utf8_bin", quote_smart("UTF8") );
+					$sql = sprintf("ALTER TABLE `" .$phpraid_config['db_name'] . "`.`" . $phpraid_config['db_prefix'].$wrm_tables[$i] .
+                           "` DEFAULT CHARACTER SET UTF8 COLLATE='utf8_bin'");
 					$wrm_install->sql_query($sql) or print_error($sql, $wrm_install->sql_error(), 1);
 				}
 			}
