@@ -52,6 +52,7 @@ function scheduler() {
 	$error_array = array();
 	
 	$error_array = process_recurring_raids(); 
+	$error_array = automatic_raid_mark_old();
 	
 	return $error_array;
 }
@@ -307,9 +308,8 @@ function clean_scheduled_raids($raid_id_array)
 }
 
 /** 
- * Clean Scheduled Raids:  Upon a scheduling failure, clean the already created raids from 
- * 		the raid table.  This is the 'rollback' function.
- *
+ * get_next_time_stamp:  Calculate the timestamp of the next raid to be scheduled. 
+  *
  * @param TIME - time - The time to calculate from.
  * @param String - Interval - The Interval for scheduling (daily, weekly, monthly).
  * @param INT - Increment - The number of intervals forward to schedule.
@@ -336,6 +336,38 @@ function get_next_time_stamp($time, $interval, $increment)
 		break;
 	}
 	return $new_time_stamp;	
+}
+
+/** 
+ * automatic_raid_mark_old(): Parse list of current raids in database and mark any 
+ * 							of them that are past raid start by X amount of time as
+ * 							old. 
+ *
+ * @return boolean $success
+ * @access private
+ */
+function automatic_raid_mark_old()
+{
+	global $phpraid_config, $db_raid, $phprlang;
+	
+	return true;
+	
+	if (!$phpraid_config['auto_mark_raids_old'])
+		return true;
+	
+	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "raids WHERE recurrance = 0 and old = 0";
+	$raids_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+	while($raid_details = $db_raid->sql_fetchrow($raids_result, true)) 
+	{
+		 if ($raid_details['start_time'] < (mktime() - (3600*($phpraid_config['auto_mark_raids_old_limit']))))
+		 {
+		 	//Update Raid to "old" status.
+		 	$sql = sprintf("UPDATE ". $phpraid_config['db_prefix'] . "raids SET old='1' WHERE raid_id=%s", quote_smart($raid_details['raid_id']));
+		 	$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+		 }
+	}
+		
+	return true;
 }
 
 ?>
