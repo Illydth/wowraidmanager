@@ -70,6 +70,7 @@ function process_recurring_raids()
 	
 	$error_array = array();
 	$raid_id_array = array();
+	$RAID_SCHEDULED = FALSE;
 	
 	// Get "Current" Date/Time for all our Calculations.
 	$currTimeStamp = time();
@@ -107,11 +108,14 @@ function process_recurring_raids()
 			$check_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);	
 			if (!$db_raid->sql_numrows($check_result) || $db_raid->sql_numrows($check_result) < 1)
 				$errcode = schedule_raid($new_invite_time, $raid_check_time, $data['raid_id']);
-			
+			else
+				$errcode = -5;
+				
 			switch ($errcode)
 			{
 				case -1: //Raid ID Returned No Records
-					clean_scheduled_raids($raid_id_array);
+					if ($RAID_SCHEUDLED)
+						clean_scheduled_raids($raid_id_array);
 					$error_array['errval'] = 1;
 					$error_array['errorMsg'] = $phprlang['scheduler_error_no_raid_found'];
 					$error_array['errorDie'] = 1;
@@ -119,7 +123,8 @@ function process_recurring_raids()
 					return $error_array;
 				break;
 				case -2: //SQL Error
-					clean_scheduled_raids($raid_id_array);
+					if ($RAID_SCHEUDLED)
+						clean_scheduled_raids($raid_id_array);
 					$error_array['errval'] = 1;
 					$error_array['errorMsg'] = $phprlang['scheduler_error_sql_error'];
 					$error_array['errorDie'] = 1;
@@ -127,7 +132,8 @@ function process_recurring_raids()
 					return $error_array;
 				break;
 				case -3: //Class Limits Returned No Records
-					clean_scheduled_raids($raid_id_array);
+					if ($RAID_SCHEUDLED)
+						clean_scheduled_raids($raid_id_array);
 					$error_array['errval'] = 1;
 					$error_array['errorMsg'] = $phprlang['scheduler_error_class_limits_missing'];
 					$error_array['errorDie'] = 1;
@@ -135,12 +141,19 @@ function process_recurring_raids()
 					return $error_array;
 				break;
 				case -4: //Role Limits Returned No Records
-					clean_scheduled_raids($raid_id_array);
+					if ($RAID_SCHEUDLED)
+						clean_scheduled_raids($raid_id_array);
 					$error_array['errval'] = 1;
 					$error_array['errorMsg'] = $phprlang['scheduler_error_role_limits_missing'];
 					$error_array['errorDie'] = 1;
 					$error_array['errorTitle'] = $phprlang['scheduler_error_schedule_raid'];
 					return $error_array;
+				break;
+				case -5: //Record Exists, Scheduler wasn't called.
+					$error_array['errval'] = 0;
+					$error_array['errorMsg'] = '';
+					$error_array['errorDie'] = 0;
+					$error_array['errorTitle'] = '';
 				break;
 				default:
 					// This catches the 0 case, all is well, reset error data.
@@ -149,6 +162,7 @@ function process_recurring_raids()
 					$error_array['errorMsg'] = '';
 					$error_array['errorDie'] = 0;
 					$error_array['errorTitle'] = '';
+					$RAID_SCHEDULED = TRUE;
 				break;
 			}
 		}
@@ -288,9 +302,11 @@ function schedule_raid($invite_time, $start_time, $raid_id)
  */
 function clean_scheduled_raids($raid_id_array)
 {
+	global $phpraid_config, $db_raid;
+	
 	foreach ($raid_id_array as $raid_id)
 	{
-		echo "<br>Cleaning Raid Data from Raid ID: " . $raid_id;
+		//echo "<br>Cleaning Raid Data from Raid ID: " . $raid_id;
 		// Raids Table
 		$sql = sprintf("DELETE FROM " . $phpraid_config['db_prefix'] . "raids
 						WHERE raid_id = " . $raid_id);
