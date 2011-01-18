@@ -1256,13 +1256,13 @@ elseif($mode == 'queue')
 	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	$data = $db_raid->sql_fetchrow($result, true);
 
-	$profile_id = $data['profile_id'];
+	$prof_id = $data['profile_id'];
 
 	$priv_raids = scrub_input($_SESSION['priv_raids']);
 
 	// verify user is editing own data
 	if($priv_raids != 1 && $user_perm_group['RL'] != 1 &&
-		$S_profile_id != $profile_id)
+		$S_profile_id != $prof_id)
 		log_hack();
 /*
 	$sql = sprintf(	"SELECT * " .

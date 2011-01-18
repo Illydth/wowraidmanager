@@ -241,7 +241,10 @@ function DEFINE_wrm_login()
 	
 		$password = "";
 		$profile_id = "";
-			
+		
+		//if you select "No Restrictions" or "No Additional UserGroup" (bridge permission group) 
+		$default_bridge_value = "-1";
+
 		//first login
 		if(isset($_POST['username']))
 		{
@@ -355,7 +358,7 @@ function DEFINE_wrm_login()
 			// The user has a matching username and proper password in the BRIDGE database.
 			// We need to validate the users group.  If it does not contain the user group that has been set as
 			//	authorized to use WRM, we need to fail the login with a proper message.
-			if ((($auth_user_class != "") and ($auth_user_class != "0")) and ($data_permissions["configuration"] != 1))
+			if ((($auth_user_class != "") and ($auth_user_class != $default_bridge_value)) and ($data_permissions["configuration"] != 1))
 			{
 				$FoundUserInGroup = FALSE;
 				
@@ -436,7 +439,7 @@ function DEFINE_wrm_login()
 			 * set user profile variables in SESSION
 			 **************************************************************/
 			set_WRM_SESSION($data[$db_user_id], 1, $data[$db_user_name], TRUE);
-			if ($auth_user_class != "")
+			if ($auth_user_class != $default_bridge_value)
 			{
 				// User is all logged in and setup, the session is initialized properly.  Now we need to create the users
 				//    profile in the WRM database if it does not already exist.
