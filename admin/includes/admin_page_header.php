@@ -29,11 +29,115 @@
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *
 ****************************************************************************/
-// Set Page content type header:
+/**
+ * 
+ * return a html string with a list field
+ * @param integer $menu_type_id
+ */
+function get_htmlstring_menu_list($menu_type_id)
+{
+	global $phpraid_config, $db_raid, $phprlang;
+
+	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "menu_type WHERE `menu_type_id` = ".$menu_type_id;
+	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);			
+	while($table_data = $db_raid->sql_fetchrow($result, true))
+	{
+		$htmlstring = '<div class="menuHeader">';
+		
+		if ($table_data['show_menu_type_title_alt'] == 0) 
+			$htmlstring .= $phprlang[$table_data['lang_index']];
+		else 
+			$htmlstring .= $table_data['menu_type_title_alt'];
+		
+		$htmlstring .= '</div>';
+	}
+	
+	
+	$htmlstring .= '<div align="left" class="navContainer"><ul class="navList">';
+	
+	//SELECT * FROM `wrm_menu_value` WHERE `menu_type_id` = "1" ORDER BY `ordering` ASC
+	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "menu_value WHERE `menu_type_id` = ".$menu_type_id." ORDER BY `ordering` ASC";
+	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);			
+	while($table_data = $db_raid->sql_fetchrow($result, true))
+	{
+		if (($table_data['visible'] != 0) and (verify_user_listentry($table_data['permission_value_id']) == TRUE))
+		{
+			$link = '<a href="'.$table_data['link'].'">';
+			if ($table_data['show_menu_value_title_alt'] == 0) 
+				$link .= $phprlang[$table_data['lang_index']];
+			else 
+				$link .= $table_data['menu_value_title_alt'];
+			$link .= "</a>";
+		
+			if($table_data['filename_without_ext'] == "")
+			{
+				$htmlstring .= '<li class="">' . $link . '</li>';
+			}
+			
+			else if (preg_match("/(.*)".$table_data['filename_without_ext']."\.php(.*)/", $_SERVER['PHP_SELF']) )
+			{
+				$htmlstring .= '<li class="active">' . $link . '</li>';
+			}
+			else 
+			{
+				    $htmlstring .= '<li class="">' . $link . '</li>';
+			}
+		}	  
+	}
+
+	$htmlstring .= '</ul></div>';
+
+	return $htmlstring;
+}
+
+/*
+verify user if they have rights for show the selected list entry
+TRUE = correct privileges
+False =  not enough rights
+*/
+function verify_user_listentry($permission_value_id)
+{
+	if (($permission_value_id == 1) and (scrub_input($_SESSION['priv_announcements']) == 1))
+		return TRUE;
+	if (($permission_value_id == 2) and (scrub_input($_SESSION['priv_configuration']) == 1))
+		return TRUE;
+	if (($permission_value_id == 3) and (scrub_input($_SESSION['priv_guilds']) == 1))
+		return TRUE;
+	if (($permission_value_id == 4) and (scrub_input($_SESSION['priv_locations']) == 1))
+		return TRUE;
+	if (($permission_value_id == 5) and (scrub_input($_SESSION['priv_profile']) == 1))
+		return TRUE;
+	if (($permission_value_id == 6) and (scrub_input($_SESSION['priv_raids']) == 1))
+		return TRUE;
+
+	//error 
+	return FALSE;
+}
+
+function get_htmlstring_full_menu($usage)
+{
+	global $phpraid_config, $db_raid;
+
+	$htmlstring = "";
+
+	if ($usage!="")
+		$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "menu_type WHERE `show_area` = '".$usage."' ORDER BY `menu_type_id` ASC";
+	else //for testing
+		$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "menu_type";
+			
+	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);			
+	while($table_data = $db_raid->sql_fetchrow($result, true))
+	{
+		$htmlstring .= get_htmlstring_menu_list($table_data['menu_type_id'])."<br/>";
+	}
+
+	return $htmlstring;
+}
+
 header('Content-Type: text/html; charset=utf-8');
 
 $priv_config=scrub_input($_SESSION['priv_configuration']);
-$logged_in=scrub_input($_SESSION['session_logged_in']);
+//$logged_in=scrub_input($_SESSION['session_logged_in']);
 
 // time variables
 $guild_time = new_date($phpraid_config['time_format'],time(),$phpraid_config['timezone'] + $phpraid_config['dst']);
@@ -68,193 +172,7 @@ $wrmadminsmarty->assign('page_header_data',
 	)
 );
 
-// setup link permissions
-require_once($phpraid_dir.'templates/' . $phpraid_config['template'] . '/admin/admin_theme_cfg.php');
-
-/**********************************************
- *  Menu Section - Create the Left Side Menu
- **********************************************/
-$admin_site_link = '<a href="../index.php">' . $theme_admin_site_link . "</a>";
-$admin_main_link = '<a href="admin_index.php">' . $theme_admin_main_link . '</a>';
-$admin_generalcfg_link = '<a href="admin_generalcfg.php">' . $theme_admin_generalcfg_link . '</a>';
-$admin_general_rss_cfg_link = '<a href="admin_general_rss_cfg.php">' . $theme_admin_general_rss_cfg_link . '</a>';
-$admin_general_email_cfg_link = '<a href="admin_general_email_cfg.php">' . $theme_admin_general_email_cfg_link . '</a>';
-$admin_general_game_settings_link = '<a href="admin_general_game_settings.php">' . $theme_admin_general_game_settings_link . '</a>';
-$admin_timecfg_link = '<a href="admin_timecfg.php">' . $theme_admin_timecfg_link . '</a>';
-$admin_raid_settings_link = '<a href="admin_raidsettings.php">' . $theme_admin_raid_settings_link . '</a>';
-$admin_general_lua_output_cfg = '<a href="admin_general_lua_output_cfg.php">' . $theme_admin_general_lua_output_cfg_link . '</a>';
-$admin_externcfg_link = '<a href="admin_externcfg.php">' . $theme_admin_externcfg_link . '</a>';
-$admin_permissions_link = '<a href="admin_permissions.php?mode=view">' . $theme_admin_permissions_link . '</a>';
-$admin_raid_signupgroups_link = '<a href="admin_raid_signupgroups.php?mode=view">' . $theme_admin_raid_signupgroups_link . '</a>';
-$admin_signup_rights_link = '<a href="admin_signuprights.php">' . $theme_admin_signuprights_link . '</a>';
-$admin_user_settings_link = '<a href="admin_usersettings.php">' . $theme_admin_usersettings_link . '</a>';
-$admin_user_mgt_link = '<a href="admin_usermgt.php?mode=view">' . $theme_admin_usermgt_link . '</a>';
-$admin_datatablecfg_link = '<a href="admin_datatablecfg.php">' . $theme_admin_datatablecfg_link . '</a>';
-$admin_rolecfg_link = '<a href="admin_rolecfg.php?mode=view">' . $theme_admin_rolecfg_link . '</a>';
-$admin_logs_link = '<a href="admin_logs.php?mode=view">' . $theme_admin_logs_link . '</a>';
-$admin_roletalent_link = '<a href="admin_roletalent.php?mode=view">' . $theme_admin_roletalent_link . '</a>';
-$admin_style_conf_link = '<a href="admin_style_cfg.php?mode=view">' . $theme_admin_style_conf_link . '</a>';
-$admin_style_menubar_mgt_link = '<a href="admin_style_menubar_mgt.php?mode=view">' . $theme_admin_style_menubar_mgt_link . '</a>';
-
-// The various Admin Menus:
-$main_menu = '<div align="left" class="navContainer"><ul class="navList">';
-$gen_conf_menu = '<div align="left" class="navContainer"><ul class="navList">';
-$style_conf_menu = '<div align="left" class="navContainer"><ul class="navList">';
-$user_mgt_menu = '<div align="left" class="navContainer"><ul class="navList">';
-$table_conf_menu = '<div align="left" class="navContainer"><ul class="navList">';
-$logs_menu = '<div align="left" class="navContainer"><ul class="navList">';
-
-// *** MAIN MENU CONFIG ITEMS ***
-// Go Back to the Main Site
-$main_menu .= '<li class="">' . $admin_site_link . '</li>';
-
-if (preg_match("/(.*)admin_index\.php(.*)/", $_SERVER['PHP_SELF'])) {
-	$main_menu .= '<li class="active">' . $admin_main_link . '</li>';
-} else {
-    $main_menu .= '<li class="">' . $admin_main_link . '</li>';
-}
-
-// *** General Configuration Menu Items ***
-// To DO
-if (preg_match("/(.*)admin_generalcfg\.php(.*)/", $_SERVER['PHP_SELF'])) {
-    $gen_conf_menu .= '<li class="active">' . $admin_generalcfg_link . '</li>';
-} else {
-    $gen_conf_menu .= '<li class="">' . $admin_generalcfg_link . '</li>';
-}
-// To DO
-if (preg_match("/(.*)admin_general_rss_cfg\.php(.*)/", $_SERVER['PHP_SELF'])) {
-    $gen_conf_menu .= '<li class="active">' . $admin_general_rss_cfg_link . '</li>';
-} else {
-    $gen_conf_menu .= '<li class="">' . $admin_general_rss_cfg_link . '</li>';
-}
-// To DO
-if (preg_match("/(.*)admin_general_email_cfg\.php(.*)/", $_SERVER['PHP_SELF'])) {
-    $gen_conf_menu .= '<li class="active">' . $admin_general_email_cfg_link . '</li>';
-} else {
-    $gen_conf_menu .= '<li class="">' . $admin_general_email_cfg_link . '</li>';
-}
-// To DO
-if (preg_match("/(.*)admin_timecfg\.php(.*)/", $_SERVER['PHP_SELF'])) {
-    $gen_conf_menu .= '<li class="active">' . $admin_timecfg_link . '</li>';
-} else {
-    $gen_conf_menu .= '<li class="">' . $admin_timecfg_link . '</li>';
-}
-// To DO
-if (preg_match("/(.*)admin_raidsettings\.php(.*)/", $_SERVER['PHP_SELF'])) {
-    $gen_conf_menu .= '<li class="active">' . $admin_raid_settings_link . '</li>';
-} else {
-    $gen_conf_menu .= '<li class="">' . $admin_raid_settings_link . '</li>';
-}
-// To DO
-if (preg_match("/(.*)admin_externcfg\.php(.*)/", $_SERVER['PHP_SELF'])) {
-    $gen_conf_menu .= '<li class="active">' . $admin_externcfg_link . '</li>';
-} else {
-    $gen_conf_menu .= '<li class="">' . $admin_externcfg_link . '</li>';
-}
-// To DO
-if (preg_match("/(.*)admin_general_game_settings\.php(.*)/", $_SERVER['PHP_SELF'])) {
-    $gen_conf_menu .= '<li class="active">' . $admin_general_game_settings_link . '</li>';
-} else {
-    $gen_conf_menu .= '<li class="">' . $admin_general_game_settings_link . '</li>';
-}
-// To DO
-if (preg_match("/(.*)admin_general_game_settings\.php(.*)/", $_SERVER['PHP_SELF'])) {
-    $gen_conf_menu .= '<li class="active">' . $admin_general_lua_output_cfg . '</li>';
-} else {
-    $gen_conf_menu .= '<li class="">' . $admin_general_lua_output_cfg . '</li>';
-}
-
-
-// *** Style Menu Items ***
-// To DO
-if (preg_match("/(.*)admin_style_cfg\.php(.*)/", $_SERVER['PHP_SELF'])) {
-    $style_conf_menu .= '<li class="active">' . $admin_style_conf_link . '</li>';
-} else {
-    $style_conf_menu .= '<li class="">' . $admin_style_conf_link . '</li>';
-}
-
-if (preg_match("/(.*)admin_style_menubar_mgt\.php(.*)/", $_SERVER['PHP_SELF'])) {
-    $style_conf_menu .= '<li class="active">' . $admin_style_menubar_mgt_link . '</li>';
-} else {
-    $style_conf_menu .= '<li class="">' . $admin_style_menubar_mgt_link . '</li>';
-}
-
-// *** User Management Menu Items ***
-// To DO
-if (preg_match("/(.*)admin_usermgt\.php(.*)/", $_SERVER['PHP_SELF'])) {
-    $user_mgt_menu .= '<li class="active">' . $admin_user_mgt_link . '</li>';
-} else {
-    $user_mgt_menu .= '<li class="">' . $admin_user_mgt_link . '</li>';
-}
-// To DO
-if (preg_match("/(.*)admin_permissions\.php(.*)/", $_SERVER['PHP_SELF'])) {
-    $user_mgt_menu .= '<li class="active">' . $admin_permissions_link . '</li>';
-} else {
-    $user_mgt_menu .= '<li class="">' . $admin_permissions_link . '</li>';
-}
-// To DO
-if (preg_match("/(.*)admin_raid_signupgroups\.php(.*)/", $_SERVER['PHP_SELF'])) {
-    $user_mgt_menu .= '<li class="active">' . $admin_raid_signupgroups_link . '</li>';
-} else {
-    $user_mgt_menu .= '<li class="">' . $admin_raid_signupgroups_link . '</li>';
-}
-// To DO
-if (preg_match("/(.*)admin_usersettings\.php(.*)/", $_SERVER['PHP_SELF'])) {
-    $user_mgt_menu .= '<li class="active">' . $admin_user_settings_link . '</li>';
-} else {
-    $user_mgt_menu .= '<li class="">' . $admin_user_settings_link . '</li>';
-}
-
-
-// *** Table Configuration Menu Items ***
-// To DO
-if (preg_match("/(.*)admin_datatablecfg\.php(.*)/", $_SERVER['PHP_SELF'])) {
-	$table_conf_menu .= '<li class="active">' . $admin_datatablecfg_link . '</li>';
-} else {
-    $table_conf_menu .= '<li class="">' . $admin_datatablecfg_link . '</li>';
-}
-// To DO
-if (preg_match("/(.*)admin_rolecfg\.php(.*)/", $_SERVER['PHP_SELF'])) {
-	$table_conf_menu .= '<li class="active">' . $admin_rolecfg_link . '</li>';
-} else {
-    $table_conf_menu .= '<li class="">' . $admin_rolecfg_link . '</li>';
-}
-// To DO
-if (preg_match("/(.*)admin_roletalent\.php(.*)/", $_SERVER['PHP_SELF'])) {
-	$table_conf_menu .= '<li class="active">' . $admin_roletalent_link . '</li>';
-} else {
-    $table_conf_menu .= '<li class="">' . $admin_roletalent_link . '</li>';
-}
-
-// *** Log Menu Items ***
-if (preg_match("/(.*)logs\.php(.*)/", $_SERVER['PHP_SELF'])) {
-    $logs_menu .= '<li class="active">' . $admin_logs_link . '</li>';
-} else {
-    $logs_menu .= '<li class="">' . $admin_logs_link . '</li>';
-}
-
-$main_menu .= '</ul></div>';
-$gen_conf_menu .= '</ul></div>';
-$user_mgt_menu .= '</ul></div>';
-$table_conf_menu .= '</ul></div>';
-$logs_menu .= '</ul></div>';
-	
-$wrmadminsmarty->assign('menus', 
-	array(
-		'main_menu'=>$main_menu,
-		'main_menu_header'=>$phprlang['admin_menu_header'],
-		'style_menu'=>$style_conf_menu,
-		'style_menu_header'=>$phprlang['style_menu_header'],
-		'gen_conf_menu'=>$gen_conf_menu,
-		'gen_conf_menu_header'=>$phprlang['gen_conf_menu_header'],
-		'user_mgt_menu'=>$user_mgt_menu,
-		'user_mgt_menu_header'=>$phprlang['user_mgt_menu_header'],
-		'table_conf_menu'=>$table_conf_menu,
-		'table_conf_menu_header'=>$phprlang['table_conf_menu_header'],
-		'logs_menu'=>$logs_menu,
-		'logs_menu_header'=>$phprlang['logs_menu_header'],
-	)
-);
+$wrmadminsmarty->assign('admin_menu', get_htmlstring_full_menu("admin"));
 $wrmadminsmarty->assign('admin_index_header', $phprlang['admin_index_header']);
 
 // display any errors if they exist
@@ -283,4 +201,5 @@ if(isset($errorMsg))
 	}
 }
 $wrmadminsmarty->display('admin_header.html');
+
 ?>

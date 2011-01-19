@@ -2,39 +2,226 @@
 <a name="new"></a>
 <div class="contentHeader">{$header_text}</div><br>
 <div class="contentBody">
-<form action="{$perms_new.form_action}" method="post" name="new_announcement" id="new_announcement">
-  <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
-  <tr valign="top"> 
-    <td><table width="100%" border="0" cellpadding="3" cellspacing="1" class="dataOutline">
-		  <tr valign="top">
-            <td class="row1" colspan="1"><div align="left"><strong>{$perms_new.name_text}</strong></div></td>
-            <td class="row2" colspan="7"><div align="left">{$perms_new.name}</div></td>
-		  </tr>
-		  <tr valign="top">
-            <td class="row1" colspan="1"><div align="left"><strong>{$perms_new.description_text}</strong></div></td>
-            <td class="row2" colspan="7"><div align="left">{$perms_new.description}</div></td>
-		  </tr>
-	      <tr valign="top">
-            <td class="row2"><div align="center"><strong>{$perms_new.announcements_text}</strong></div></td>
-			<td class="row2"><div align="center"><strong>{$perms_new.configuration_text}</strong></div></td>
-            <td class="row2"><div align="center"><strong>{$perms_new.guilds_text}</strong></div></td>
-            <td class="row2"><div align="center"><strong>{$perms_new.locations_text}</strong></div></td>
-            <td class="row2"><div align="center"><strong>{$perms_new.profile_text}</strong></div></td>
-            <td class="row2"><div align="center"><strong>{$perms_new.raids_text}</strong></div></td>
-          </tr>
-          <tr valign="top"> 
-            <td class="row1"><div align="center">{$perms_new.announcements}</div></td>
-			<td class="row1"><div align="center">{$perms_new.configuration}</div></td>
-            <td class="row1"><div align="center">{$perms_new.guilds}</div></td>
-            <td class="row1"><div align="center">{$perms_new.locations}</div></td>
-            <td class="row1"><div align="center">{$perms_new.profile}</div></td>
-            <td class="row1"><div align="center">{$perms_new.raids}</div></td>
-          </tr>
-        </table></td>
-  </tr>
-  <tr> 
-    <td><br><div align="center" class="button">{$buttons}</div></td>
-  </tr>
+<form action="{$perms_new.form_action}" method="post" name="configure" id="configure">
+
+<table width="100%" border="0 cellpadding="3" cellspacing="1" class="dataOutline">
+	<tr valign="top">
+	  <td width="200" class="row1" ><div align="left">{$perms_new.permissions_name_text}</div></td>
+	  <td class="row2" >
+	    <div align="left">
+		  <input type="text" name="permissions_name" class="post" value="{$perms_new.permissions_name}"style="width:300px">
+	    </div>
+	  </td>
+	</tr>
+	<tr valign="top">
+	  <td width="200" class="row1" ><div align="left">{$perms_new.permissions_description_text}</div></td>
+	  <td class="row2" >
+	    <div align="left">
+		  <input type="text" name="permissions_description" class="post" value="{$perms_new.permissions_description}"style="width:300px">
+	    </div>
+	  </td>
+	</tr>
 </table>
+<br>
+<div class="contentHeader">{$header_text}</div>
+<br>
+<table width="100%" border="0 cellpadding="3" cellspacing="1" class="dataOutline">
+	<tr>
+      <td  width="200" class="row1"><div align="left">{$perms_new.announcements_text}</div></td>
+      <td class="row1">
+        <div align="left">
+         {html_options name=announcements options=$perms_new.array_yesno_config selected=$perms_new.announcements class="post"}
+        </div>
+      </td>	        
+	</tr>
+
+	<tr>
+      <td class="row1"><div align="left">{$perms_new.guilds_text}</div></td>
+      <td class="row1">
+        <div align="left">
+         {html_options name=guilds options=$perms_new.array_yesno_config selected=$perms_new.guilds class="post"}
+        </div>
+      </td>	        
+	</tr>
+	<tr>
+      <td class="row1"><div align="left">{$perms_new.locations_text}</div></td>
+      <td class="row1">
+        <div align="left">
+         {html_options name=locations options=$perms_new.array_yesno_config selected=$perms_new.locations class="post"}
+        </div>
+      </td>	        
+	</tr>
+	<tr>
+      <td class="row1"><div align="left">{$perms_new.profile_text}</div></td>
+      <td class="row1">
+        <div align="left">
+         {html_options name=profile options=$perms_new.array_yesno_config selected=$perms_new.profile class="post"}
+        </div>
+      </td>	        
+	</tr>
+	<tr>
+      <td class="row1"><div align="left">{$perms_new.raids_text}</div></td>
+      <td class="row1">
+        <div align="left">
+         {html_options name=raids options=$perms_new.array_yesno_config selected=$perms_new.raids class="post"}
+        </div>
+      </td>	        
+	</tr>
+	<tr>
+      <td class="row1"><div align="left">{$perms_new.configuration_text}</div></td>
+      <td class="row1">
+        <div align="left">
+         {html_options name=configuration options=$perms_new.array_yesno_config selected=$perms_new.configuration class="post"}
+        </div>
+      </td>	        
+	</tr>	
+</table>
+<br>
+<div class="contentHeader">{$perms_new.configuration_signup_rights_header}</div>
+<br>
+<table width="100%" border="0 cellpadding="3" cellspacing="1" class="dataOutline">
+	<tr valign="top">
+      <td colspan="3" class="row2">
+      	<div align="left"><strong>{$perms_new.configuration_queue_def}</strong></div>
+      </td>
+	</tr>
+	<tr valign="top">
+	  <td width="50" class="row1" ><div align="left"></div></td>
+      <td width="150" class="row1"><div align="left">{$perms_new.on_queue_draft_text}</div></td>
+      <td class="row1">
+        <div align="left">
+         {html_options name=on_queue_draft options=$perms_new.array_yesno selected=$perms_new.on_queue_draft class="post"}
+        </div>
+      </td>
+	</tr>
+	<tr>
+	  <td class="row1" ><div align="left"></div></td>
+      <td class="row1"><div align="left">{$perms_new.on_queue_comments_text}</div></td>
+      <td class="row1">
+        <div align="left">
+         {html_options name=on_queue_comments options=$perms_new.array_yesno selected=$perms_new.on_queue_comments class="post"}
+        </div>
+      </td>
+	</tr>
+	<tr>
+	  <td class="row1" ><div align="left"></div></td>
+      <td class="row1"><div align="left">{$perms_new.on_queue_cancel_text}</div></td>
+      <td class="row1">
+        <div align="left">
+         {html_options name=on_queue_cancel options=$perms_new.array_yesno selected=$perms_new.on_queue_cancel class="post"}
+        </div>
+      </td>
+	</tr>
+	<tr>
+	  <td class="row1" ><div align="left"></div></td>
+      <td class="row1"><div align="left">{$perms_new.on_queue_delete_text}</div></td>
+      <td class="row1">
+        <div align="left">
+         {html_options name=on_queue_delete options=$perms_new.array_yesno selected=$perms_new.on_queue_delete class="post"}
+        </div>
+      </td>
+	</tr>
+</table>
+<br>
+<table width="100%" border="0 cellpadding="3" cellspacing="1" class="dataOutline">
+	<tr valign="top">
+      <td colspan="3" class="row2">
+      	<div align="left"><strong>{$perms_new.configuration_cancel_def}</strong></div>
+      </td>
+	</tr>
+	<tr>
+	  <td width="50" class="row1" ><div align="left"></div></td>
+      <td width="150" class="row1"><div align="left">{$perms_new.cancelled_status_queue_text}</div></td>
+      <td class="row1">
+        <div align="left">
+         {html_options name=cancelled_status_queue options=$perms_new.array_yesno selected=$perms_new.cancelled_status_queue class="post"}
+        </div>
+      </td>
+	</tr>
+	<tr>
+	  <td class="row1" ><div align="left"></div></td>
+      <td class="row1"><div align="left">{$perms_new.cancelled_status_comments_text}</div></td>
+      <td class="row1">
+        <div align="left">
+        {html_options name=cancelled_status_comments options=$perms_new.array_yesno selected=$perms_new.cancelled_status_comments class="post"}
+        </div>
+      </td>
+	</tr>
+	<tr>
+	  <td class="row1" ><div align="left"></div></td>
+      <td class="row1"><div align="left">{$perms_new.cancelled_status_draft_text}</div></td>
+      <td class="row1">
+        <div align="left">
+        {html_options name=cancelled_status_draft options=$perms_new.array_yesno selected=$perms_new.cancelled_status_draft class="post"}
+        </div>
+      </td>
+	</tr>
+	<tr>
+	  <td class="row1" ><div align="left"></div></td>
+      <td class="row1"><div align="left">{$perms_new.cancelled_status_delete_text}</div></td>
+      <td class="row1">
+        <div align="left">
+        {html_options name=cancelled_status_delete options=$perms_new.array_yesno selected=$perms_new.cancelled_status_delete class="post"}
+        </div>
+      </td>
+	</tr>
+</table>
+<br>
+<table width="100%" border="0 cellpadding="3" cellspacing="1" class="dataOutline">
+	<tr valign="top">
+      <td colspan="3" class="row2">
+      	<div align="left"><strong>{$perms_new.configuration_draft_def}</strong></div>
+      </td>
+	</tr>
+	<tr>
+	  <td width="50" class="row1" ><div align="left"></div></td>
+      <td width="150" class="row1"><div align="left">{$perms_new.drafted_queue_text}</div></td>
+      <td class="row1">
+        <div align="left">
+         {html_options name=drafted_queue options=$perms_new.array_yesno selected=$perms_new.drafted_queue class="post"}
+        </div>
+      </td>
+	</tr>
+	<tr>
+	  <td class="row1" ><div align="left"></div></td>
+      <td class="row1"><div align="left">{$perms_new.drafted_comments_text}</div></td>
+      <td class="row1">
+        <div align="left">
+         {html_options name=drafted_comments options=$perms_new.array_yesno selected=$perms_new.drafted_comments class="post"}
+        </div>
+      </td>
+	</tr>
+	<tr>
+	  <td class="row1" ><div align="left"></div></td>
+      <td class="row1"><div align="left">{$perms_new.drafted_cancel_text}</div></td>
+      <td class="row1">
+        <div align="left">
+         {html_options name=drafted_cancel options=$perms_new.array_yesno selected=$perms_new.drafted_cancel class="post"}
+        </div>
+      </td>
+	</tr>
+	<tr>
+	  <td class="row1" ><div align="left"></div></td>
+      <td class="row1"><div align="left">{$perms_new.drafted_delete_text}</div></td>
+      <td class="row1">
+        <div align="left">
+         {html_options name=drafted_delete options=$perms_new.array_yesno selected=$perms_new.drafted_delete class="post"}
+        </div>
+      </td>
+	</tr>
+</table>
+<center>
+{$perms_new.cancel_def}<br>
+{$perms_new.comments_def}<br>
+{$perms_new.delete_def}<br>
+{$perms_new.draft_def}<br>
+{$perms_new.queue_def}<br>
+</center>
+<br>
+<div align="center" class="button">
+ <input type="submit" name="submit" value="{$buttons.button_01}" class="mainoption">
+ <input type="reset" name="reset" value="{$buttons.button_reset}" class="liteoption">
+</div>
+
 </form>
 </div>
