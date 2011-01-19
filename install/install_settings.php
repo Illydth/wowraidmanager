@@ -71,6 +71,14 @@ $wrm_tables = array (
 						"signups",
 						"teams",
 						"version",
+						"permission_type",
+						"permission_value",
+						"acl_permission",
+						"menu_type",
+						"menu_value",
+						"raid_permission_type",
+						"acl_raid_permission"
+
 					);
 		
 ?>

@@ -406,3 +406,75 @@ CREATE TABLE `wrm_acl_raid_signup_group` (
 `drafted_delete` TINYINT( 2 ) NOT NULL ,
  PRIMARY KEY  (`signup_group_id`)
 ) ;
+
+-- Permission Type Table Creation
+DROP TABLE IF EXISTS `wrm_permission_type`;
+CREATE TABLE  `wrm_permission_type` (
+  `permission_type_id` int(10) NOT NULL auto_increment,
+  `permission_type_name` varchar(100) NOT NULL,
+  `permission_type_description` varchar(100) NOT NULL,
+  PRIMARY KEY  (`permission_type_id`)
+) ;
+
+-- Permission Value Table Creation
+DROP TABLE IF EXISTS `wrm_permission_value`;
+CREATE TABLE  `wrm_permission_value` (
+  `permission_value_id` int(10) NOT NULL auto_increment,
+  `permission_value_name` varchar(100) NOT NULL,
+  `lang_index` varchar(100) NOT NULL,
+  PRIMARY KEY  (`permission_value_id`)
+) ;
+
+-- Acces Controll List Permission Table Creation
+DROP TABLE IF EXISTS `wrm_acl_permission`;
+CREATE TABLE `wrm_acl_permission` (
+  `permission_type_id` int(10) NOT NULL,
+  `permission_value_id` int(10) NOT NULL
+) ;
+
+-- Menu Type Table Creation
+DROP TABLE IF EXISTS `wrm_menu_type`;
+CREATE TABLE  `wrm_menu_type` (
+  `menu_type_id` int(10) NOT NULL auto_increment,
+  `menu_type_title` varchar(255) NOT NULL default '',
+  `menu_type_title_alt` varchar(255) NOT NULL default '',
+  `show_menu_type_title_alt` int(2) NOT NULL default '0',
+  `lang_index` varchar(100) NOT NULL,
+  `show_area` varchar(100) NOT NULL default 'normal',
+  PRIMARY KEY  (`menu_type_id`)
+) ;
+
+-- Menu Value Table Creation
+DROP TABLE IF EXISTS `wrm_menu_value`;
+CREATE TABLE  `wrm_menu_value` (
+  `menu_value_id` int(10) NOT NULL auto_increment,
+  `menu_type_id` int(10) NOT NULL,
+  `lang_index` varchar(100) NOT NULL,
+  `menu_value_title_alt` varchar(255) NOT NULL default '',
+  `show_menu_value_title_alt` int(2) NOT NULL default '0',
+  `ordering` int(10) NOT NULL,
+  `filename_without_ext` varchar(100) NOT NULL,
+  `link` varchar(100) NOT NULL,
+  `menu_image` varchar(100) NOT NULL default '',
+  `menu_image_show` varchar(2) NOT NULL default '0',
+  `permission_value_id` int(10) ,
+  `visible` int(2) NOT NULL default '0',
+  PRIMARY KEY  (`menu_value_id`)
+) ;
+
+-- Raid Permission Type Table Creation
+DROP TABLE IF EXISTS `wrm_raid_permission_type`;
+CREATE TABLE  `wrm_raid_permission_type` (
+  `raid_permission_type_id` int(10) NOT NULL auto_increment,
+  `raid_permission_type_name` varchar(100) NOT NULL,
+  `lang_index` varchar(100) NOT NULL default '',
+  PRIMARY KEY  (`raid_permission_type_id`)
+) ;
+
+-- Acces Controll List Permission Table Creation
+DROP TABLE IF EXISTS `wrm_acl_raid_permission`;
+CREATE TABLE `wrm_acl_raid_permission` (
+  `raid_permission_type_id` int(10) NOT NULL,
+  `permission_type_id` int(10) NOT NULL
+) ;
+
