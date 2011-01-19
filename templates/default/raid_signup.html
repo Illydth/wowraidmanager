@@ -1,0 +1,119 @@
+{* Smarty Template *}
+<div class="contentHeader">{$raid_signup.raid_description_header}</div>
+<br/>
+<div class="contentBody">{$raid_signup.raid_description_value}</div>
+<br/>
+<div class="contentHeader">{$raid_signup.information_header}</div>
+<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tr>
+    <td width="70%"><br/></td>
+    <td>&nbsp;<br/></td>
+  </tr>
+  <tr valign="top">
+    <td>
+      <div class="contentBody">
+      <table width="100%" border="0" cellspacing="1" cellpadding="3" class="dataOutline">
+        <tr valign="middle">
+          <td width="30%" class="row1"><strong>{$raid_signup.location_text}</strong></td>
+          <td width="70%" class="row2">{$raid_signup.location_value}</td>
+        </tr>
+        <tr valign="middle">
+          <td class="row1"><strong>{$raid_signup.date_text}</strong></td>
+          <td class="row2">{$raid_signup.date_value}</td>
+        </tr>
+        <tr valign="middle">
+          <td class="row1"><strong>{$raid_signup.invite_date_text}</strong></td>
+          <td class="row2">{$raid_signup.invite_date_value}</td>
+        </tr>
+        <tr valign="middle">
+          <td class="row1"><strong>{$raid_signup.start_date_text}</strong></td>
+          <td class="row2">{$raid_signup.start_date_value}</td>
+        </tr>
+        <tr valign="middle">
+          <td class="row1"><strong>{$raid_signup.max_member_text}</strong></td>
+          <td class="row2"><strong>{$raid_signup.max_member_value}</strong></td>
+        </tr>
+        <tr valign="middle">
+          <td class="row1"><strong>{$raid_signup.queued_members_text}</strong></td>
+          <td class="row2"><strong>{$raid_signup.queued_members_value}</strong></td>
+        </tr>
+        </table>
+        </div>
+    <td>&nbsp;<br/></td>
+  </tr>
+</table>
+<br/>
+<a name="signup"></a>
+<div class="contentHeader">{$raid_signup.signup_header}</div>
+<br/>
+<div class="contentBody">
+<br/>
+ <form action="{$raid_signup.form_action}" method="POST">
+<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tr>
+    <td width="70%"><br/></td>
+    <td>&nbsp;<br/></td>
+  </tr>
+  <tr valign="top">
+    	<td>
+	      <div class="contentBody">
+	      <table width="100%" border="0" cellspacing="1" cellpadding="3" class="dataOutline">
+		        <tr valign="middle">
+		          <td width="30%" class="row1"><strong>{$raid_signup.username_text}</strong></td>
+		          <td width="70%" class="row2">{$raid_signup.username_value}</td>
+		        </tr>
+		        <tr valign="middle">
+		          <td class="row1"><strong>{$raid_signup.character_text}</strong></td>
+		          <td class="row2">
+		          	{if $raid_signup.mode == "signup"}
+						{html_options name=character options=$raid_signup.array_character class="post"}
+					{else}
+						{$raid_signup.character_value}
+						<input type="hidden" name="character" value="{$raid_signup.character_value}">
+					{/if}		
+			  	  </td>
+			    </tr>
+	        	<tr valign="middle">
+		          <td class="row1"><strong>{$raid_signup.spec_text}</strong></td>
+		          <td class="row2">
+		          	{if $raid_signup.mode != "signup"}
+						{html_options name=char_spec options=$raid_signup.array_spec selected=$raid_signup.selected_spec class="post"}
+					{else}
+						{$raid_signup.character_value}
+						<input type="hidden" name="char_spec" value="{$raid_signup.character_value}">
+					{/if}		
+			  	  </td>
+			    </tr>
+			    <tr valign="middle">
+			    	<td class="row1"><strong>{$raid_signup.queue_text}</strong></td>
+			    	<td class="row2">
+						{html_options name=signup_status options=$raid_signup.array_signup_rights_type selected=$raid_signup.selected_signup_status class="post"}
+					</td>
+			    </tr>
+			    <tr valign="middle">
+			    	<td class="row1"><strong>{$raid_signup.comments_text}</strong></td>
+			    	<td class="row2">
+				    	{if $raid_signup.comments_changeable  == true or $raid_signup.comments_changeable  == "1"}
+							<textarea name="comments" cols="30" rows="7" class="post">{$raid_signup.comments_value}</textarea>
+						{else}
+							{$raid_signup.comments_value}
+							<input type="hidden" name="comments" value="{$raid_signup.comments_value}">
+						{/if}
+					</td>
+			  	</tr>
+	  		</table>
+			</div>
+    	<td>&nbsp;<br/></td>
+  </tr>
+</table>
+
+<br/>
+<br/>
+  <div align="center" class="button">
+	<input type="submit" value="{$raid_signup.button_submit}" name="submit" class="mainoption">
+	<input type="reset" value="{$raid_signup.button_reset}" name="reset" class="liteoption">
+  </div>
+ </form>
+
+<br/>
+</div>
