@@ -32,12 +32,6 @@
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *
 ****************************************************************************/
-$phprlang['admin_menubar_header'] = 'Configuration Menubar Entrys';
-$phprlang['admin_edit_menubar_entry_header'] = 'Edit Menubar';
-$phprlang['admin_new_menubar_entry_header'] = 'New Menubar Entry';
-$phprlang['Lang_index'] = "lang_index";
-$phprlang['link'] = "Link";
-
 
 // Set Page Filename
 $page_filename = "admin_style_menubar_mgt.php";
@@ -153,7 +147,7 @@ if($_GET['mode'] == 'view')
 			'sort_url_base' => $pageURL,
 			'sort_descending' => $sortDesc,
 			'sort_text' => $phprlang['sort_text'],
-			'datatable_header' => $phprlang['admin_menubar_header'],	
+			'datatable_header' => $phprlang['admin_menu_admin_menubar_header'],	
 		)
 	);
 
@@ -192,7 +186,7 @@ elseif($_GET['mode'] == 'delete')
 			$wrmadminsmarty->display('delete.html');
 			require_once('./includes/admin_page_footer.php');
 		} else {
-			log_delete('announcement',$delete_name);
+			log_delete('menubar',$delete_name);
 	
 			$sql = sprintf("DELETE FROM " . $phpraid_config['db_prefix'] . "menu_value WHERE menu_value_id=%s", quote_smart($menu_value_id));
 			$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
@@ -321,7 +315,7 @@ if(($_GET['mode'] != 'delete') and ($_GET['mode'] != 'view'))
 
 		$button_01 = $phprlang['update'];
 
-		$menubar_header = $phprlang['admin_edit_menubar_entry_header'];
+		$menubar_header = $phprlang['admin_menu_admin_edit_menubar_entry_header'];
 	}
 	elseif($_GET['mode'] == 'new')
 	{
@@ -344,37 +338,57 @@ if(($_GET['mode'] != 'delete') and ($_GET['mode'] != 'view'))
 		
 		$button_01 = $phprlang['submit'];
 
-		$menubar_header = $phprlang['admin_new_menubar_entry_header'];
+		$menubar_header = $phprlang['admin_menu_admin_new_menubar_entry_header'];
 	}
 
 	// set variables
-
+	
 	$wrmadminsmarty->assign('config_data',
 		array(
 			'form_action'=>$form_action,
 			'config_data_header' => $menubar_header,
 			'array_noyes' => $array_noyes,
+			'menu_value_id_text' => $phprlang['admin_menu_menu_value_id_text'],
 			'menu_value_id' => $menu_value_id,
+			'menu_type_id_text' => $phprlang['admin_menu_menu_type_id_text'],
 			'array_menu_type_id' => $array_menu_type_id,
 			'selected_menu_type_id' => $selected_menu_type_id,
 			'menu_type_id' => $menu_type_id,
+			'lang_index_text' => $phprlang['admin_menu_lang_index_text'],
 			'lang_index' => $lang_index,
+			'menu_value_title_alt_text' => $phprlang['admin_menu_menu_value_title_alt_text'],
 			'menu_value_title_alt' => $menu_value_title_alt,
 			'selected_show_menu_value_title_alt' =>$selected_show_menu_value_title_alt,
+			'show_menu_value_title_alt_text' => $phprlang['admin_menu_show_menu_value_title_alt_text'],
 			'array_show_menu_value_title_alt' => $array_noyes,
+			'ordering_text' => 	$phprlang['admin_menu_ordering_text'],
 			'ordering' => $ordering,
+			'filename_without_ext_text' => $phprlang['admin_menu_filename_without_ext_text'],
 			'filename_without_ext' => $filename_without_ext,
+			'link_text' => $phprlang['admin_menu_link_text'],
 			'link' => $link,
+			'menu_image_text' => $phprlang['admin_menu_menu_image_text'],
 			'menu_image' => $menu_image,
+			'menu_image_show_text' => $phprlang['admin_menu_menu_image_show_text'],
 			'selected_menu_image_show' => $menu_image_show,
-			'array_visible' => $array_noyes,
-			'selected_visible' => $selected_visible,
+			'permission_value_name_text' => $phprlang['admin_menu_permission_value_name_text'],
 			'array_permission_value_id' => $array_permission_value_id,
 			'selected_permission_value_id' => $selected_permission_value_id,
+			'visible_text' => $phprlang['admin_menu_visible_text'],
+			'array_visible' => $array_noyes,
+			'selected_visible' => $selected_visible,
+		
 			'button_01'=> $button_01,
 			'button_reset'=> $phprlang['reset'],
 		)
 	);
+
+
+
+
+
+ 
+
 
 	//
 	// Start output of page

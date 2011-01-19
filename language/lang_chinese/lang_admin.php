@@ -157,6 +157,22 @@ $phprlang['configuration_addon'] = '插件鏈結位址';
 $phprlang['configuration_show_addon'] = '顯示插件連結';
 $phprlang['configuration_register_text'] = '登寄網址';
 
+// Text on the "Menubar Config" Pag
+$phprlang['admin_menu_admin_menubar_header'] = 'Configuration Menubar Entrys';
+$phprlang['admin_menu_admin_edit_menubar_entry_header'] = 'Edit Menubar';
+$phprlang['admin_menu_admin_new_menubar_entry_header'] = 'New Menubar Entry';
+$phprlang['admin_menu_menu_value_id_text'] = "menu value id";
+$phprlang['admin_menu_menu_type_id_text'] = "menu type id";
+$phprlang['admin_menu_lang_index_text'] = "lang index";
+$phprlang['admin_menu_menu_value_title_alt_text'] = "alternativ menu title";
+$phprlang['admin_menu_show_menu_value_title_alt_text'] = "show alternativ menu title";
+$phprlang['admin_menu_ordering_text'] = "ordering";	
+$phprlang['admin_menu_filename_without_ext_text'] = "filename without extention";	
+$phprlang['admin_menu_link_text'] = "link";
+$phprlang['admin_menu_menu_image_text'] = "menu image";	
+$phprlang['admin_menu_menu_image_show_text'] = "show as image";
+$phprlang['admin_menu_permission_value_name_text'] = "permission value name";
+$phprlang['admin_menu_visible_text'] = "visible";
 
 // Text on the "Time Config" Page
 $phprlang['configuration_ampm'] = 'Schedule Raids in 12h/24h format';

@@ -85,9 +85,9 @@ DELETE FROM `wrmtest`.`wrm_column_headers` WHERE `wrm_column_headers`.`view_name
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
 VALUES (NULL , 'admin_menubar1', 'ID', '1', '1', NULL, 'id', NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'admin_menubar1', 'Lang_index', '1', '2', NULL, 'Lang_index', NULL);
+VALUES (NULL , 'admin_menubar1', 'Lang_index', '1', '2', NULL, 'admin_menu_lang_index_text', NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'admin_menubar1', 'Link', '1', '3', NULL, 'link', NULL);
+VALUES (NULL , 'admin_menubar1', 'Link', '1', '3', NULL, 'admin_menu_link_text', NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
 VALUES (NULL , 'admin_menubar1', 'Button', '1', '4', NULL, 'buttons', NULL);
 
