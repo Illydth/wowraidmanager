@@ -261,7 +261,7 @@ function get_htmlstring_menu_list($menu_type_id)
 	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);			
 	while($table_data = $db_raid->sql_fetchrow($result, true))
 	{
-		if (($table_data['visible'] != 0) and (verify_user_listentry($table_data['permission_value_id']) == TRUE))
+		if (($table_data['visible'] != 0) and ((verify_user_listentry($table_data['permission_value_id']) == TRUE) or ($table_data['permission_value_id'] == "")) )
 		{
 			$link = '<a href="'.$table_data['link'].'">';
 			if ($table_data['show_menu_value_title_alt'] == 0) 
@@ -325,7 +325,7 @@ function get_htmlstring_full_menu($usage)
 		$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "menu_type WHERE `show_area` = '".$usage."' ORDER BY `menu_type_id` ASC";
 	else //for testing
 		$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "menu_type";
-			
+
 	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);			
 	while($table_data = $db_raid->sql_fetchrow($result, true))
 	{

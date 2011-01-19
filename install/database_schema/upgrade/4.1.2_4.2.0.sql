@@ -112,9 +112,8 @@ INSERT INTO `wrm_menu_type` VALUES ('4', 'menu_admin_user_mgt','','0','user_mgt_
 INSERT INTO `wrm_menu_type` VALUES ('5', 'menu_admin_table_conf','','0','table_conf_menu_header','admin');
 INSERT INTO `wrm_menu_type` VALUES ('6', 'menu_admin_logs', '','0','logs_menu_header','admin');
 
-INSERT INTO `wrm_menu_type` VALUES ('7', 'menu_user', 'User Menu','0','user_menu_header','normal');
-INSERT INTO `wrm_menu_type` VALUES ('8', 'menu_main', 'Main Menu','0','main_menu_header','normal');
-
+INSERT INTO `wrm_menu_type` VALUES ('7', 'menu_main', '','0','main_menu_header','normal');
+INSERT INTO `wrm_menu_type` VALUES ('8', 'menu_user', '','0','user_menu_header','normal');
 
 -- Menu Value Data
 -- INSERT INTO `wrm_menu_value` ( `menu_type_id`, `lang_index`, `menu_value_title_alt`, `show_menu_value_title_alt`, `ordering`, `link`, `menu_image`, `menu_image_show`, `permission_value_id`, `visible` ) 
@@ -140,17 +139,19 @@ INSERT INTO `wrm_menu_value` VALUES ('18','5','admin_rolecfg_link','','0','2','a
 INSERT INTO `wrm_menu_value` VALUES ('19','5','admin_roletalent_config','','0','3','admin_roletalent','admin_roletalent.php?mode=view','','0','2' ,'1');
 INSERT INTO `wrm_menu_value` VALUES ('20','6','admin_logs_link','','0','1','admin_logs','admin_logs.php?mode=view"','','0', '2','1');
 -- normal data
-INSERT INTO `wrm_menu_value` VALUES ('30','7','profile_link','','0','1','profile','profile.php?mode=view','','0','5','1');
-INSERT INTO `wrm_menu_value` VALUES ('31','8','index_link','','0','1','index','index.php','','0',NULL,'1');
-INSERT INTO `wrm_menu_value` VALUES ('32','8','calendar_link','','0','2','calendar','calendar.php','','0',NULL,'1');
-INSERT INTO `wrm_menu_value` VALUES ('33','8','roster_link','','0','3','roster','roster.php','','0',NULL,'1');
-INSERT INTO `wrm_menu_value` VALUES ('34','8','dkp_link','EQ-DKP','1','4','dkp_view','dkp_view.php','','0',NULL,'0');
-INSERT INTO `wrm_menu_value` VALUES ('35','8','raidsarchive_link','','0','5','raidsarchive','raidsarchive.php?mode=view','','0',NULL,'1');
-INSERT INTO `wrm_menu_value` VALUES ('36','8','bosstrack_link','','0','6','bosstracking','bosstracking.php?mode=view','','0',NULL,'0');
-INSERT INTO `wrm_menu_value` VALUES ('37','8','announcements_link','','0','7','announcements','announcements.php?mode=view','','0','1','1');
-INSERT INTO `wrm_menu_value` VALUES ('38','8','guilds_link','','0','8','guilds','guilds.php?mode=view','','0','3','1');
-INSERT INTO `wrm_menu_value` VALUES ('39','8','locations_link','','0','9','locations','locations.php?mode=view','','0','4','1');
-INSERT INTO `wrm_menu_value` VALUES ('40','8','raids_link','','0','10','raids','raids.php?mode=view','','0','6','1');
-INSERT INTO `wrm_menu_value` VALUES ('41','8','lua_output_link','','0','11','lua_output_new','lua_output_new.php?mode=lua','','0','6','1');
+INSERT INTO `wrm_menu_value` VALUES ('31','7','index_link','','0','1','index','index.php','','0',NULL,'1');
+INSERT INTO `wrm_menu_value` VALUES ('32','7','calendar_link','','0','1','calendar','calendar.php','','0',NULL,'1');
+INSERT INTO `wrm_menu_value` VALUES ('33','7','roster_link','','0','2','roster','roster.php','','0',NULL,'1');
+INSERT INTO `wrm_menu_value` VALUES ('34','7','dkp_link','EQ-DKP','1','3','dkp_view','dkp_view.php','','0',NULL,'0');
+INSERT INTO `wrm_menu_value` VALUES ('35','7','raidsarchive_link','','0','4','raidsarchive','raidsarchive.php?mode=view','','0',NULL,'1');
+INSERT INTO `wrm_menu_value` VALUES ('36','7','bosstrack_link','','0','5','bosstracking','bosstracking.php?mode=view','','0',NULL,'0');
+
+INSERT INTO `wrm_menu_value` VALUES ('37','7','announcements_link','','0','6','announcements','announcements.php?mode=view','','0','1','1');
+INSERT INTO `wrm_menu_value` VALUES ('38','7','guilds_link','','0','7','guilds','guilds.php?mode=view','','0','3','1');
+INSERT INTO `wrm_menu_value` VALUES ('39','7','locations_link','','0','8','locations','locations.php?mode=view','','0','4','1');
+INSERT INTO `wrm_menu_value` VALUES ('40','7','raids_link','','0','9','raids','raids.php?mode=view','','0','6','1');
+INSERT INTO `wrm_menu_value` VALUES ('41','7','lua_output_link','','0','10','lua_output_new','lua_output_new.php?mode=lua','','0','6','1');
+
+INSERT INTO `wrm_menu_value` VALUES ('30','8','profile_link','','0','1','profile','profile.php?mode=view','','0','5','1');
 
 INSERT INTO `wrm_version` VALUES ('4.2.0','Version 4.2.0 of WoW Raid Manager');

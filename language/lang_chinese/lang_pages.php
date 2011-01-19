@@ -261,4 +261,9 @@ $phprlang['bosskill_header'] = 'Track Named (Boss) Accomplishments';
 
 //Raids Archive
 $phprlang['raidsarchive_header'] = 'Raids Archive';
+
+//Menubar 
+$phprlang['user_menu_header'] = 'User Menu';
+$phprlang['main_menu_header'] = 'Main Menu';
+
 ?>

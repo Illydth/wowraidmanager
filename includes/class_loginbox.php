@@ -103,7 +103,7 @@ class wrm_loginbox
 		else
 		{
 			$login_form_open = '<form action="login.php?logout=true" method="POST">';
-			$login_username = $login_username_name;
+			$login_username = $login_username_name ."&nbsp;";
 			$login_password = '';
 			$login_button = '<input type="submit" name="login" value="'.$phprlang['logout'].'" style="font-size:10px" class="mainoption">';
 			//$login_remember = '';

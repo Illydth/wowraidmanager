@@ -71,15 +71,18 @@ $wrmsmarty->assign('page_header_data',
 	)
 );
 
-$wrmsmarty->display('header.html');
-
 /**************************************************************
  * Show Menu
  **************************************************************/
-require_once('./includes/class_menu.php');
-$menubar = &new wrm_menu($db_raid, $phpraid_config, $phprlang, $wrmsmarty);
-$menubar->wrm_show_menu();
+require_once('class_menu.php');
+//$wrmsmarty->assign('normal_menu', get_htmlstring_full_menu());
+$wrmsmarty->assign('normal_menu', get_htmlstring_full_menu("normal"));
+//$wrmsmarty->assign('admin_index_header', $phprlang['admin_index_header']);
 
+//$menubar = &new wrm_menu($db_raid, $phpraid_config, $phprlang, $wrmsmarty);
+//$menubar->wrm_show_menu();
+
+$wrmsmarty->display('header.html');
 /**************************************************************
  * table stuff between menu and main output frame
  **************************************************************/
