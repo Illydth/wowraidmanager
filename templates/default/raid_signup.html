@@ -73,17 +73,14 @@
 					{/if}		
 			  	  </td>
 			    </tr>
+				{if $raid_signup.mode != "signup"}	    
 	        	<tr valign="middle">
 		          <td class="row1"><strong>{$raid_signup.spec_text}</strong></td>
 		          <td class="row2">
-		          	{if $raid_signup.mode != "signup"}
 						{html_options name=char_spec options=$raid_signup.array_spec selected=$raid_signup.selected_spec class="post"}
-					{else}
-						{$raid_signup.character_value}
-						<input type="hidden" name="char_spec" value="{$raid_signup.character_value}">
-					{/if}		
 			  	  </td>
 			    </tr>
+				{/if}
 			    <tr valign="middle">
 			    	<td class="row1"><strong>{$raid_signup.queue_text}</strong></td>
 			    	<td class="row2">
