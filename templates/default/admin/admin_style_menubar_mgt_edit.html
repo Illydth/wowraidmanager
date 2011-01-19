@@ -48,7 +48,9 @@
           </tr>
           <tr valign="top"> 
             <td width="200" class="row1"><strong>menu_image_show</strong></td>
-            <td class="row2"><input type="text" size="69" name="menu_image_show" value="{$config_data.menu_image_show}" class="post"></td>
+            <td class="row2">
+             {html_options name=menu_image_show options=$config_data.array_noyes selected=$config_data.selected_menu_image_show class="post"}
+            </td>
           </tr>
           <tr valign="top"> 
             <td width="200" class="row1"><strong>permission_value_name</strong></td>

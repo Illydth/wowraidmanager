@@ -265,13 +265,9 @@ elseif(($_GET['mode'] == 'new' || $_GET['mode'] = 'edit') && isset($_POST['submi
 // and the form
 if(($_GET['mode'] != 'delete') and ($_GET['mode'] != 'view'))
 {
-	$array_visible = array();
-	$array_visible['0'] = $phprlang['no'];
-	$array_visible['1'] = $phprlang['yes'];
-	
-	$array_show_menu_value_title_alt = array();
-	$array_show_menu_value_title_alt['0'] = $phprlang['no'];
-	$array_show_menu_value_title_alt['1'] = $phprlang['yes'];
+	$array_noyes = array();
+	$array_noyes['0'] = $phprlang['no'];
+	$array_noyes['1'] = $phprlang['yes'];
 	
 	$array_permission_value_id = array();
 	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "permission_value";
@@ -357,6 +353,7 @@ if(($_GET['mode'] != 'delete') and ($_GET['mode'] != 'view'))
 		array(
 			'form_action'=>$form_action,
 			'config_data_header' => $menubar_header,
+			'array_noyes' => $array_noyes,
 			'menu_value_id' => $menu_value_id,
 			'array_menu_type_id' => $array_menu_type_id,
 			'selected_menu_type_id' => $selected_menu_type_id,
@@ -364,13 +361,13 @@ if(($_GET['mode'] != 'delete') and ($_GET['mode'] != 'view'))
 			'lang_index' => $lang_index,
 			'menu_value_title_alt' => $menu_value_title_alt,
 			'selected_show_menu_value_title_alt' =>$selected_show_menu_value_title_alt,
-			'array_show_menu_value_title_alt' => $array_show_menu_value_title_alt,
+			'array_show_menu_value_title_alt' => $array_noyes,
 			'ordering' => $ordering,
 			'filename_without_ext' => $filename_without_ext,
 			'link' => $link,
 			'menu_image' => $menu_image,
-			'menu_image_show' => $menu_image_show,
-			'array_visible' => $array_visible,
+			'selected_menu_image_show' => $menu_image_show,
+			'array_visible' => $array_noyes,
 			'selected_visible' => $selected_visible,
 			'array_permission_value_id' => $array_permission_value_id,
 			'selected_permission_value_id' => $selected_permission_value_id,

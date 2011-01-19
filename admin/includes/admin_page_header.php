@@ -29,111 +29,7 @@
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *
 ****************************************************************************/
-/**
- * 
- * return a html string with a list field
- * @param integer $menu_type_id
- */
-function get_htmlstring_menu_list($menu_type_id)
-{
-	global $phpraid_config, $db_raid, $phprlang;
-
-	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "menu_type WHERE `menu_type_id` = ".$menu_type_id;
-	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);			
-	while($table_data = $db_raid->sql_fetchrow($result, true))
-	{
-		$htmlstring = '<div class="menuHeader">';
-		
-		if ($table_data['show_menu_type_title_alt'] == 0) 
-			$htmlstring .= $phprlang[$table_data['lang_index']];
-		else 
-			$htmlstring .= $table_data['menu_type_title_alt'];
-		
-		$htmlstring .= '</div>';
-	}
-	
-	
-	$htmlstring .= '<div align="left" class="navContainer"><ul class="navList">';
-	
-	//SELECT * FROM `wrm_menu_value` WHERE `menu_type_id` = "1" ORDER BY `ordering` ASC
-	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "menu_value WHERE `menu_type_id` = ".$menu_type_id." ORDER BY `ordering` ASC";
-	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);			
-	while($table_data = $db_raid->sql_fetchrow($result, true))
-	{
-		if (($table_data['visible'] != 0) and (verify_user_listentry($table_data['permission_value_id']) == TRUE))
-		{
-			$link = '<a href="'.$table_data['link'].'">';
-			if ($table_data['show_menu_value_title_alt'] == 0) 
-				$link .= $phprlang[$table_data['lang_index']];
-			else 
-				$link .= $table_data['menu_value_title_alt'];
-			$link .= "</a>";
-		
-			if($table_data['filename_without_ext'] == "")
-			{
-				$htmlstring .= '<li class="">' . $link . '</li>';
-			}
-			
-			else if (preg_match("/(.*)".$table_data['filename_without_ext']."\.php(.*)/", $_SERVER['PHP_SELF']) )
-			{
-				$htmlstring .= '<li class="active">' . $link . '</li>';
-			}
-			else 
-			{
-				    $htmlstring .= '<li class="">' . $link . '</li>';
-			}
-		}	  
-	}
-
-	$htmlstring .= '</ul></div>';
-
-	return $htmlstring;
-}
-
-/*
-verify user if they have rights for show the selected list entry
-TRUE = correct privileges
-False =  not enough rights
-*/
-function verify_user_listentry($permission_value_id)
-{
-	if (($permission_value_id == 1) and (scrub_input($_SESSION['priv_announcements']) == 1))
-		return TRUE;
-	if (($permission_value_id == 2) and (scrub_input($_SESSION['priv_configuration']) == 1))
-		return TRUE;
-	if (($permission_value_id == 3) and (scrub_input($_SESSION['priv_guilds']) == 1))
-		return TRUE;
-	if (($permission_value_id == 4) and (scrub_input($_SESSION['priv_locations']) == 1))
-		return TRUE;
-	if (($permission_value_id == 5) and (scrub_input($_SESSION['priv_profile']) == 1))
-		return TRUE;
-	if (($permission_value_id == 6) and (scrub_input($_SESSION['priv_raids']) == 1))
-		return TRUE;
-
-	//error 
-	return FALSE;
-}
-
-function get_htmlstring_full_menu($usage)
-{
-	global $phpraid_config, $db_raid;
-
-	$htmlstring = "";
-
-	if ($usage!="")
-		$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "menu_type WHERE `show_area` = '".$usage."' ORDER BY `menu_type_id` ASC";
-	else //for testing
-		$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "menu_type";
-			
-	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);			
-	while($table_data = $db_raid->sql_fetchrow($result, true))
-	{
-		$htmlstring .= get_htmlstring_menu_list($table_data['menu_type_id'])."<br/>";
-	}
-
-	return $htmlstring;
-}
-
+// Set Page content type header:
 header('Content-Type: text/html; charset=utf-8');
 
 $priv_config=scrub_input($_SESSION['priv_configuration']);
@@ -171,11 +67,18 @@ $wrmadminsmarty->assign('page_header_data',
 			'site_disabled_warning' => $site_disabled_warning,
 	)
 );
+/**************************************************************
+ * Show Menu
+ **************************************************************/
+require_once('../includes/class_menu.php');
 
 $wrmadminsmarty->assign('admin_menu', get_htmlstring_full_menu("admin"));
 $wrmadminsmarty->assign('admin_index_header', $phprlang['admin_index_header']);
 
-// display any errors if they exist
+
+/**************************************************************
+ * display any errors if they exist
+ **************************************************************/
 if(isset($errorMsg))
 {
 	$wrmadminsmarty->display('admin_header.html');
