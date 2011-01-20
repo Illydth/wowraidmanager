@@ -75,56 +75,64 @@ function clear_session_permissions()
 {
 	unset($_SESSION['priv_announcements']);
 	unset($_SESSION['priv_configuration']);
-	unset($_SESSION['priv_profile']);
 	unset($_SESSION['priv_guilds']);
 	unset($_SESSION['priv_locations']);
+	unset($_SESSION['priv_profile']);
 	unset($_SESSION['priv_raids']);	
 }
+
+//fill with value 0
+function set_session_permissions_default()
+{
+	$_SESSION['priv_announcements'] = 0;	
+	$_SESSION['priv_configuration'] = 0;
+	$_SESSION['priv_guilds'] = 0;
+	$_SESSION['priv_locations'] = 0;	
+	$_SESSION['priv_profile'] = 0;
+	$_SESSION['priv_raids'] = 0;	
+}
+
 // gets and sets user permissions
 function get_permissions($profile_id) 
 {
-	
 	global $db_raid, $phpraid_config;
 
 	//clear first
 	clear_session_permissions();
-		
-	$sql = sprintf(	"SELECT priv ".
-					"	FROM " . $phpraid_config['db_prefix'] . "profile" .
-					"	WHERE profile_id=%s", quote_smart($profile_id));
-	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(),1);
-	$data = $db_raid->sql_fetchrow($result, true);
+	
+	set_session_permissions_default();
+	
+	$permission_type_id = get_permission_id($profile_id);
 	
 	// check all permissions
 	$sql_priv = sprintf("SELECT * ".
-						"	FROM " . $phpraid_config['db_prefix'] . "permissions".
-						"	WHERE permission_id=%s", quote_smart($data['priv']));
-//	echo "sql:".$sql."<br>sql_priv:".$sql_priv;
+						"	FROM " . $phpraid_config['db_prefix'] . "acl_permission".
+						"	WHERE permission_type_id=%s", quote_smart($permission_type_id));
 	$result_priv = $db_raid->sql_query($sql_priv) or print_error($sql_priv, $db_raid->sql_error(),1);
-	$data_priv = $db_raid->sql_fetchrow($result_priv, true);
-	
-/*	$data_priv['announcements'] ? $_SESSION['priv_announcements'] = 1 : $_SESSION['priv_announcements'] = 0;	
-	$data_priv['configuration'] ? $_SESSION['priv_configuration'] = 1 :	$_SESSION['priv_configuration'] = 0;
-	$data_priv['profile'] ? $_SESSION['priv_profile'] = 1 : $_SESSION['priv_profile'] = 0;
-	$data_priv['guilds'] ? $_SESSION['priv_guilds'] = 1 : $_SESSION['priv_guilds'] = 0;
-	$data_priv['locations'] ? $_SESSION['priv_locations'] = 1 : $_SESSION['priv_locations'] = 0;
-	$data_priv['raids'] ? $_SESSION['priv_raids'] = 1 : $_SESSION['priv_raids'] = 0;
-*/	
-	if ($data_priv['announcements']==1)  $_SESSION['priv_announcements'] = 1; else $_SESSION['priv_announcements'] = 0;	
-	if ($data_priv['configuration']==1) $_SESSION['priv_configuration'] = 1; else	$_SESSION['priv_configuration'] = 0;
-	if ($data_priv['profile']==1) $_SESSION['priv_profile'] = 1; else $_SESSION['priv_profile'] = 0;
-	if ($data_priv['guilds']==1) $_SESSION['priv_guilds'] = 1; else $_SESSION['priv_guilds'] = 0;
-	if ($data_priv['locations']==1) $_SESSION['priv_locations'] = 1; else $_SESSION['priv_locations'] = 0;
-	if ($data_priv['raids']==1) $_SESSION['priv_raids'] = 1; else $_SESSION['priv_raids'] = 0;
+	while ($data_priv = $db_raid->sql_fetchrow($result_priv, true))
+	{
+		if ($data_priv['permission_value_id'] == "1")
+			$_SESSION['priv_announcements'] = 1;
+		if ($data_priv['permission_value_id'] == "2")
+			$_SESSION['priv_configuration'] = 1;
+		if ($data_priv['permission_value_id'] == "3")
+			$_SESSION['priv_guilds'] = 1;
+		if ($data_priv['permission_value_id'] == "4")
+			$_SESSION['priv_locations'] = 1;
+		if ($data_priv['permission_value_id'] == "5")
+			$_SESSION['priv_profile'] = 1;
+		if ($data_priv['permission_value_id'] == "6")
+			$_SESSION['priv_raids'] = 1;		
+	}
 }
 
 function check_permission($perm_type, $profile_id) {
 	global $db_raid, $phpraid_config;
 	
-	$sql = "SELECT ".$phpraid_config['db_prefix']."permissions." . $perm_type . " AS perm_val
-		FROM ".$phpraid_config['db_prefix']."permissions
+	$sql = "SELECT ".$phpraid_config['db_prefix']."permission_type." . $perm_type . " AS perm_val
+		FROM ".$phpraid_config['db_prefix']."permission_type
 		LEFT JOIN ".$phpraid_config['db_prefix']."profile ON
-			".$phpraid_config['db_prefix']."profile.priv = ".$phpraid_config['db_prefix']."permissions.permission_id
+			".$phpraid_config['db_prefix']."profile.priv = ".$phpraid_config['db_prefix']."permission_type.permission_type_id
 		WHERE ".$phpraid_config['db_prefix']."profile.profile_id = ".$profile_id;
 
 	$perm_data = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
@@ -346,7 +354,7 @@ function DEFINE_wrm_login()
 			 * ignore base and alt base group Settings
 			 * 
 			 */
-			$sql = sprintf(	"SELECT  configuration" .
+/*			$sql = sprintf(	"SELECT  configuration" .
 							" FROM    `" . $phpraid_config['db_prefix'] . "permissions`" .
 							"	inner JOIN `" . $phpraid_config['db_prefix'] . "profile`" .
 							"		ON `" . $phpraid_config['db_prefix'] . "permissions`.`permission_id` = `" . $phpraid_config['db_prefix'] . "profile`.`priv`" .
@@ -354,11 +362,13 @@ function DEFINE_wrm_login()
 				);
 			$result_permissions = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 			$data_permissions = $db_raid->sql_fetchrow($result_permissions, true);
-			
+			$_SESSION['priv_configuration']*/
 			// The user has a matching username and proper password in the BRIDGE database.
 			// We need to validate the users group.  If it does not contain the user group that has been set as
 			//	authorized to use WRM, we need to fail the login with a proper message.
-			if ((($auth_user_class != "") and ($auth_user_class != $default_bridge_value)) and ($data_permissions["configuration"] != 1))
+			if ((($auth_user_class != "") and ($auth_user_class != $default_bridge_value)) and ($_SESSION['priv_configuration'] != 1))
+			//if ((($auth_user_class != "") and ($auth_user_class != $default_bridge_value)) and ($data_permissions["configuration"] != 1))
+			
 			{
 				$FoundUserInGroup = FALSE;
 				

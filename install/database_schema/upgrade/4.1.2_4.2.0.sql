@@ -145,13 +145,62 @@ INSERT INTO `wrm_menu_value` VALUES ('33','7','roster_link','','0','2','roster',
 INSERT INTO `wrm_menu_value` VALUES ('34','7','dkp_link','EQ-DKP','1','3','dkp_view','dkp_view.php','','0',NULL,'0');
 INSERT INTO `wrm_menu_value` VALUES ('35','7','raidsarchive_link','','0','4','raidsarchive','raidsarchive.php?mode=view','','0',NULL,'1');
 INSERT INTO `wrm_menu_value` VALUES ('36','7','bosstrack_link','','0','5','bosstracking','bosstracking.php?mode=view','','0',NULL,'0');
-
 INSERT INTO `wrm_menu_value` VALUES ('37','7','announcements_link','','0','6','announcements','announcements.php?mode=view','','0','1','1');
 INSERT INTO `wrm_menu_value` VALUES ('38','7','guilds_link','','0','7','guilds','guilds.php?mode=view','','0','3','1');
 INSERT INTO `wrm_menu_value` VALUES ('39','7','locations_link','','0','8','locations','locations.php?mode=view','','0','4','1');
 INSERT INTO `wrm_menu_value` VALUES ('40','7','raids_link','','0','9','raids','raids.php?mode=view','','0','6','1');
 INSERT INTO `wrm_menu_value` VALUES ('41','7','lua_output_link','','0','10','lua_output_new','lua_output_new.php?mode=lua','','0','6','1');
-
 INSERT INTO `wrm_menu_value` VALUES ('30','8','profile_link','','0','1','profile','profile.php?mode=view','','0','5','1');
+
+-- Raid Permission Type Table Creation
+-- INSERT INTO `wrm_raid_permission_type` VALUES ( `raid_permission_type_id`, `raid_permission_type_name`,`lang_index`);
+INSERT INTO `wrm_raid_permission_type` VALUES ('1','on_queue_draft','configuration_draft');
+INSERT INTO `wrm_raid_permission_type` VALUES ('2','on_queue_comments','comments_row_header');
+INSERT INTO `wrm_raid_permission_type` VALUES ('3','on_queue_cancel','cancel_row_header');
+INSERT INTO `wrm_raid_permission_type` VALUES ('4','on_queue_delete','delete_row_header');
+INSERT INTO `wrm_raid_permission_type` VALUES ('5','cancelled_status_queue','queue_row_header');
+INSERT INTO `wrm_raid_permission_type` VALUES ('6','cancelled_status_draft','draft_row_header');
+INSERT INTO `wrm_raid_permission_type` VALUES ('7','cancelled_status_comments','comments_row_header');
+INSERT INTO `wrm_raid_permission_type` VALUES ('8','cancelled_status_delete','delete_row_header');
+INSERT INTO `wrm_raid_permission_type` VALUES ('9','drafted_queue','queue_row_header');
+INSERT INTO `wrm_raid_permission_type` VALUES ('10','drafted_comments','comments_row_header');
+INSERT INTO `wrm_raid_permission_type` VALUES ('11','drafted_cancel','cancel_row_header');
+INSERT INTO `wrm_raid_permission_type` VALUES ('12','drafted_delete','delete_row_header');
+
+-- Acces Controll List Permission Table Creation
+-- INSERT INTO `wrm_acl_raid_permission` VALUES ( `raid_permission_type_id`, `permission_type_id`);
+-- WRM - Superadmin
+INSERT INTO `wrm_acl_raid_permission` VALUES ('1','1');
+INSERT INTO `wrm_acl_raid_permission` VALUES ('2','1');
+INSERT INTO `wrm_acl_raid_permission` VALUES ('3','1');
+INSERT INTO `wrm_acl_raid_permission` VALUES ('4','1');
+INSERT INTO `wrm_acl_raid_permission` VALUES ('5','1');
+INSERT INTO `wrm_acl_raid_permission` VALUES ('6','1');
+INSERT INTO `wrm_acl_raid_permission` VALUES ('7','1');
+INSERT INTO `wrm_acl_raid_permission` VALUES ('8','1');
+INSERT INTO `wrm_acl_raid_permission` VALUES ('9','1');
+INSERT INTO `wrm_acl_raid_permission` VALUES ('10','1');
+INSERT INTO `wrm_acl_raid_permission` VALUES ('11','1');
+INSERT INTO `wrm_acl_raid_permission` VALUES ('12','1');
+-- WRM - Users
+INSERT INTO `wrm_acl_raid_permission` VALUES ('1','2');
+INSERT INTO `wrm_acl_raid_permission` VALUES ('2','2');
+INSERT INTO `wrm_acl_raid_permission` VALUES ('3','2');
+INSERT INTO `wrm_acl_raid_permission` VALUES ('4','2');
+INSERT INTO `wrm_acl_raid_permission` VALUES ('5','2');
+INSERT INTO `wrm_acl_raid_permission` VALUES ('6','2');
+INSERT INTO `wrm_acl_raid_permission` VALUES ('7','2');
+INSERT INTO `wrm_acl_raid_permission` VALUES ('8','2');
+INSERT INTO `wrm_acl_raid_permission` VALUES ('9','2');
+INSERT INTO `wrm_acl_raid_permission` VALUES ('10','2');
+INSERT INTO `wrm_acl_raid_permission` VALUES ('11','2');
+INSERT INTO `wrm_acl_raid_permission` VALUES ('12','2');
+-- WRM - Raid Manager
+INSERT INTO `wrm_acl_raid_permission` VALUES ('1','3');
+INSERT INTO `wrm_acl_raid_permission` VALUES ('2','3');
+INSERT INTO `wrm_acl_raid_permission` VALUES ('3','3');
+
+DROP TABLE IF EXISTS `wrm_permissions`;
+DROP TABLE IF EXISTS `wrm_acl_raid_signup_group`;
 
 INSERT INTO `wrm_version` VALUES ('4.2.0','Version 4.2.0 of WoW Raid Manager');

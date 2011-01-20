@@ -30,8 +30,6 @@
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *
 ****************************************************************************/
-$phprlang['signup_edit'] = "Edit your Signup Settings";
-$phprlang['character_spec'] = "Character Spec";
 
 // commons
 define("IN_PHPRAID", true);	
@@ -134,7 +132,7 @@ else if ($mode == "edit")
 	$raid_info_array = get_array_allInfo_from_RaidID($data_signups['raid_id']);
 	$array_character = get_array_userchars_from_RaidID($data_signups['raid_id'], $data_signups['profile_id']);
 	
-	$signup_header = $phprlang['signup_edit'];
+	$signup_header = $phprlang['signup_edit_header'];
 	$button_alt = $phprlang['submit'];
 
 	//liste erstellen,
@@ -429,7 +427,7 @@ $wrmsmarty->assign('raid_signup',
 		'character_text' => $phprlang['view_character'],
 		'character_value' => $raid_char_name,
 		'array_character' => $array_character,
-		'spec_text' => $phprlang['character_spec'],
+		'spec_text' => $phprlang['signup_character_spec'],
 		'array_spec' => $array_spec,
 		'selected_spec' => $selected_spec,
 		'queue_text' => $phprlang['view_queue'] ,

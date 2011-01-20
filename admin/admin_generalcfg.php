@@ -98,17 +98,17 @@ unset($files);
 // END LANGUAGE CHECK
 
 // default group
-$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "permissions";
+$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "permission_type";
 $result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 
 $default_group = '<select name="default_group">';
 
 while($data = $db_raid->sql_fetchrow($result, true))
 {
-	if($phpraid_config['default_group'] == $data['permission_id'])
-		$default_group .= '<option value="'.$data['permission_id'].'" selected>'.$data['name'].'</option>';
+	if($phpraid_config['default_group'] == $data['permission_type_id'])
+		$default_group .= '<option value="'.$data['permission_type_id'].'" selected>'.$data['permission_type_name'].'</option>';
 	else
-		$default_group .= '<option value="'.$data['permission_id'].'">'.$data['name'].'</option>';
+		$default_group .= '<option value="'.$data['permission_type_id'].'">'.$data['permission_type_name'].'</option>';
 }
 
 $default_group .= '</select>';

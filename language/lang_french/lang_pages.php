@@ -265,4 +265,9 @@ $phprlang['raidsarchive_header'] = 'Raids Archive';
 //Menubar 
 $phprlang['user_menu_header'] = 'User Menu';
 $phprlang['main_menu_header'] = 'Main Menu';
+
+//Signup Page
+$phprlang['signup_edit_header'] = "Edit your Signup Settings";
+$phprlang['signup_character_spec'] = "Character Spec";
+
 ?>

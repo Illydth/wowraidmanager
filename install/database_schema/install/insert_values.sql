@@ -442,10 +442,6 @@ INSERT INTO `wrm_event_type` (`event_type_id`, `event_type_name`, `event_type_la
 INSERT INTO `wrm_gender` VALUES ('Male', 'male');
 INSERT INTO `wrm_gender` VALUES ('Female', 'female');
 
--- Permissions Data
-INSERT INTO `wrm_permissions` (`permission_id`, `name`,`description`,`announcements`,`configuration`,`guilds`,`locations`,`profile`,`raids`) VALUES ('1','WRM Superadmin','Full Access','1','1','1','1','1','1');
-INSERT INTO `wrm_permissions` (`permission_id`, `name`,`description`,`announcements`,`configuration`,`guilds`,`locations`,`profile`,`raids`) VALUES ('2','WRM Users','Generic Access','0','0','0','0','1','0');
-
 -- Role Table Data
 INSERT INTO `wrm_roles` VALUES ('role1', 'Tank', 'configuration_role1_text','');
 INSERT INTO `wrm_roles` VALUES ('role2', 'Melee', 'configuration_role2_text','');
@@ -454,13 +450,7 @@ INSERT INTO `wrm_roles` VALUES ('role4', 'Ranged', 'configuration_role4_text',''
 INSERT INTO `wrm_roles` VALUES ('role5', 'misc1', 'configuration_role5_text','');
 INSERT INTO `wrm_roles` VALUES ('role6', 'misc2', 'configuration_role6_text','');
 
--- Raid signup Group Table Creation
-INSERT INTO `wrm_acl_raid_signup_group` VALUES (1,'User',0,1,1,1,1,0,1,0,1,1,1,0);
-INSERT INTO `wrm_acl_raid_signup_group` VALUES (2,'Raid Leader',1,1,0,0,0,0,1,1,1,1,0,0);
-INSERT INTO `wrm_acl_raid_signup_group` VALUES (3,'Administrator',1,1,0,0,0,0,1,1,1,1,0,0);
-
 -- Permission Type Data
-TRUNCATE `wrm_permission_type`;
 INSERT INTO `wrm_permission_type` (`permission_type_id`, `permission_type_name`,`permission_type_description`) VALUES ('1','WRM Superadmin','Full Access');
 INSERT INTO `wrm_permission_type` (`permission_type_id`, `permission_type_name`,`permission_type_description`) VALUES ('2','WRM Users','Generic Access');
 INSERT INTO `wrm_permission_type` (`permission_type_id`, `permission_type_name`,`permission_type_description`) VALUES ('3','WRM Raid Manager','Generic + Raid Manager Access  ');
@@ -485,7 +475,6 @@ INSERT INTO `wrm_acl_permission` (`permission_type_id`, `permission_value_id`) V
 INSERT INTO `wrm_acl_permission` (`permission_type_id`, `permission_value_id`) VALUES ('3','6');
 
 -- Add Column Header Data - Admin_Menubar1 View
-DELETE FROM `wrmtest`.`wrm_column_headers` WHERE `wrm_column_headers`.`view_name` = 'admin_menubar1';
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
 VALUES (NULL , 'admin_menubar1', 'ID', '1', '1', NULL, 'id', NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
@@ -496,8 +485,6 @@ INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible
 VALUES (NULL , 'admin_menubar1', 'Button', '1', '4', NULL, 'buttons', NULL);
 
 -- Modify Column Header Data - Admin_Permissions View
-DELETE FROM `wrmtest`.`wrm_column_headers` WHERE `wrm_column_headers`.`view_name` = 'permissions1';
-DELETE FROM `wrmtest`.`wrm_column_headers` WHERE `wrm_column_headers`.`view_name` = 'admin_permissions1';
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
 VALUES (NULL , 'admin_permissions1', 'ID', '1', '1', NULL, 'id', NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)

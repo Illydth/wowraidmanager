@@ -145,11 +145,11 @@ function get_priv_name($id)
 {
 	global $db_raid, $phpraid_config;
 
-	$sql = "SELECT `name` FROM " . $phpraid_config['db_prefix'] . "permissions WHERE permission_id='$id'";
+	$sql = "SELECT `permission_type_name` FROM " . $phpraid_config['db_prefix'] . "permission_type WHERE permission_type_id='$id'";
 	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	$data = $db_raid->sql_fetchrow($result, true);
 
-	return($data['name']);
+	return($data['permission_type_name']);
 }
 
 function get_queued($raid_id) {

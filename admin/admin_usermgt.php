@@ -75,13 +75,14 @@ if($mode == 'view')
 	 **************************************************************/
 	// Generate the Update Permissions form elements
 	$form_action = "admin_usermgt.php?mode=mod_perms";
-	$form_buttons = '<input type="submit" name="submit" value="'.$phprlang['submit'].'" class="mainoption"> <input type="reset" name="Reset" value="'.$phprlang['reset'].'" class="liteoption">';
+	$form_buttons  = '<input type="submit" name="submit" value="'.$phprlang['submit'].'" class="mainoption"> ';
+	$form_buttons .= '<input type="reset" name="Reset" value="'.$phprlang['reset'].'" class="liteoption">';
 	$priv_dropdown = '<select name="perm_id">';
-	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "permissions";
+	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "permission_type";
 	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);			
 	while($perm_data = $db_raid->sql_fetchrow($result, true))
 	{
-		$priv_dropdown .= "<option value=\"" . $perm_data['permission_id'] . "\">" . $perm_data['name']."</option>";
+		$priv_dropdown .= "<option value=\"" . $perm_data['permission_type_id'] . "\">" . $perm_data['permission_type_name']."</option>";
 	}
 	$priv_dropdown .= '</select>';
 		
@@ -95,7 +96,7 @@ if($mode == 'view')
 	{
 		$usersname = '<!-- ' . strtolower_wrap($data['username'], "UTF-8") . ' --><a href="admin_usermgt.php?mode=details&amp;user_id='.$data['profile_id'].'">'.$data['username'].'</a>';
 
-		$priv = '<a href="admin_permissions.php?mode=view">'.get_priv_name($data['priv']).'</a>';
+		$priv = '<a href="admin_permissions.php?mode=view">'. get_priv_name($data['priv']).'</a>';
 
 		$actions = '<a href="admin_usermgt.php?mode=remove_user&amp;n='.$data['username'].'&amp;user_id='.$data['profile_id'].'">
 					<img src="../templates/' . $phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0"

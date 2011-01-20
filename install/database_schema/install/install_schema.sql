@@ -247,21 +247,6 @@ CREATE TABLE `wrm_logs_raid` (
   PRIMARY KEY  (`log_id`)
 ) ;
 
--- Permissions Table Creation
-DROP TABLE IF EXISTS `wrm_permissions`;
-CREATE TABLE `wrm_permissions` (
-  `permission_id` int(10) NOT NULL auto_increment,
-  `name` varchar(255) NOT NULL,
-  `description` text NOT NULL,
-  `announcements` int(1) NOT NULL default '0',
-  `configuration` int(1) NOT NULL default '0',
-  `guilds` int(1) NOT NULL default '0',
-  `locations` int(1) NOT NULL default '0',
-  `profile` int(1) NOT NULL default '0',
-  `raids` int(1) NOT NULL default '0',
-  PRIMARY KEY  (`permission_id`)
-) ;
-
 -- Profile Table Creation
 DROP TABLE IF EXISTS `wrm_profile`;
 CREATE TABLE `wrm_profile` (
@@ -385,26 +370,6 @@ CREATE TABLE `wrm_version` (
 `version_number` VARCHAR( 20 ) NOT NULL ,
 `version_desc` VARCHAR( 255 ) NOT NULL ,
 PRIMARY KEY ( `version_number` )
-) ;
-
--- Raid signup Group Table Creation
-DROP TABLE IF EXISTS `wrm_acl_raid_signup_group`;
-CREATE TABLE `wrm_acl_raid_signup_group` (
-`signup_group_id` TINYINT( 2 ) NOT NULL AUTO_INCREMENT,
-`signup_group_name` VARCHAR( 50 ) NOT NULL ,
-`on_queue_draft` TINYINT( 2 ) NOT NULL ,
-`on_queue_comments` TINYINT( 2 ) NOT NULL ,
-`on_queue_cancel` TINYINT( 2 ) NOT NULL ,
-`on_queue_delete` TINYINT( 2 ) NOT NULL ,
-`cancelled_status_queue` TINYINT( 2 ) NOT NULL ,
-`cancelled_status_draft` TINYINT( 2 ) NOT NULL ,
-`cancelled_status_comments` TINYINT( 2 ) NOT NULL ,
-`cancelled_status_delete` TINYINT( 2 ) NOT NULL ,
-`drafted_queue` TINYINT( 2 ) NOT NULL ,
-`drafted_comments` TINYINT( 2 ) NOT NULL ,
-`drafted_cancel` TINYINT( 2 ) NOT NULL ,
-`drafted_delete` TINYINT( 2 ) NOT NULL ,
- PRIMARY KEY  (`signup_group_id`)
 ) ;
 
 -- Permission Type Table Creation
