@@ -31,8 +31,6 @@
 ****************************************************************************/
 global $phprlang;
 
-// � = �   � = � 
-
 // logging language file
 require_once('lang_log.php');
 
@@ -105,6 +103,10 @@ $phprlang['create_time'] = 'Create Time';
 $phprlang['pri_spec'] = 'Pri Talent';
 $phprlang['sec_spec'] = 'Sec Talent';
 $phprlang['signup_spec'] = 'Draft As';
+$phprlang['role_id'] = 'Role ID';
+$phprlang['role_name'] = 'Role Name';
+$phprlang['role_config'] = 'Role Config Text';
+$phprlang['role_image'] = 'Role Image';
 $phprlang['talent_tree'] = 'Talent Tree';
 $phprlang['display_text'] = 'Display Text';
 $phprlang['perm_mod'] = 'Update Permissions';
@@ -297,6 +299,7 @@ $phprlang['index_link'] = '&raquo; Forum AC';
 $phprlang['dkp_link'] = '&raquo; DKP';
 $phprlang['bosstrack_link'] = '&raquo; Boss Kill Tracking';
 $phprlang['raidsarchive_link'] = '&raquo; Raids Archive';
+$phprlang['profile_char_link'] = '&raquo; My Char';
 
 // sorting information
 $phprlang['sort_text'] = 'Cliquer ici pour trier par ';
@@ -304,56 +307,42 @@ $phprlang['sort_desc']='Click here to sort (in descending order) by ';
 $phprlang['sort_asc']='Click here to sort (in ascending order) by '; 
 
 // tooltips
+// more tooltips for race and resist in  lang_wow.php
 $phprlang['add'] = 'Ajouter';
 $phprlang['announcements'] = 'Messages D\'accueil';
-$phprlang['arcane'] = 'Arcanes';
 $phprlang['calendar'] = 'Calendrier';
 $phprlang['cancel'] = 'Annuler inscription';
 $phprlang['cancel_msg'] = 'Vouz avez annulé votre inscription pour ce raid';
 $phprlang['comments'] = 'Commentaires';
 $phprlang['configuration'] = 'Configuration';
-$phprlang['deathknight_icon'] = 'Cliquez pour voir les Death Knights';
 $phprlang['delete'] = 'Supprimer';
 $phprlang['description'] = 'Description';
-$phprlang['druid_icon'] = 'Cliquez pour voir les Druides';
 $phprlang['edit'] = 'Editer';
 $phprlang['edit_comment'] = 'Editer Commentaire';
-$phprlang['fire'] = 'Feu';
-$phprlang['frost'] = 'Givre';
 $phprlang['frozen_msg'] = 'Les inscriptions pour ce raid sont fermées.';
 $phprlang['group_name'] = 'Nom du groupe';
 $phprlang['group_description'] = 'Description du Groupe';
 $phprlang['guilds'] = 'Guildes';
 $phprlang['has_permission'] = 'Has Permission';
-$phprlang['hunter_icon'] = 'Cliquez pour voir les Chasseurs';
 $phprlang['in_queue'] = 'Placer le personnage en file d\'attente';
 $phprlang['last_login_date'] = 'Dernière connexion';
 $phprlang['last_login_time'] = 'Heure de la dernière connexion';
 $phprlang['locations'] = 'Lieux';
 $phprlang['logs'] = 'Journaux';
 $phprlang['lua'] = 'LUA and macro output';
-$phprlang['mage_icon'] = 'Cliquez pour voir les Mages';
 $phprlang['mark'] = 'Marquer en ancien raid';
-$phprlang['nature'] = 'Nature';
 $phprlang['new'] = 'Marquer en nouveau raid';
 $phprlang['not_signed_up'] = 'Cliquez ici pour vous inscrire au Raid';
 $phprlang['out_queue'] = 'Placer le joueur dans le raid';
-$phprlang['paladin_icon'] = 'Cliquez pour voir les Paladins';
 $phprlang['permissions'] = 'Droits';
-$phprlang['priest_icon'] = 'Cliquez pour voir les prètres';
 $phprlang['priv'] = 'Privilèges';
 $phprlang['profile'] = 'Personnages';
 $phprlang['raids'] = 'Raids';
 $phprlang['remove_group'] = 'Remove group from set';
 $phprlang['remove_user'] = 'Remove user from set';
-$phprlang['rogue_icon'] = 'Cliquez pour voir les Voleurs';
-$phprlang['shadow'] = 'Ombre';
-$phprlang['shaman_icon'] = 'Cliquez pour voir les Chamans';
 $phprlang['signed_up'] = 'You are signed up for this raid';
 $phprlang['signup_add'] = 'Add user to signups';
 $phprlang['signup_delete'] = 'Supprimer le joueur du raid (permanant)';
 $phprlang['users'] = 'Utilisateurs';
-$phprlang['warlock_icon'] = 'Cliquez pour voir les Démonistes';
-$phprlang['warrior_icon'] = 'Cliquez pour voir les Guerriers';
 
 ?>

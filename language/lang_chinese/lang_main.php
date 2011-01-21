@@ -103,6 +103,10 @@ $phprlang['create_time'] = 'Create Time';
 $phprlang['pri_spec'] = 'Pri Talent';
 $phprlang['sec_spec'] = 'Sec Talent';
 $phprlang['signup_spec'] = 'Draft As';
+$phprlang['role_id'] = 'Role ID';
+$phprlang['role_name'] = 'Role Name';
+$phprlang['role_config'] = 'Role Config Text';
+$phprlang['role_image'] = 'Role Image';
 $phprlang['talent_tree'] = 'Talent Tree';
 $phprlang['display_text'] = 'Display Text';
 $phprlang['perm_mod'] = 'Update Permissions';
@@ -295,6 +299,7 @@ $phprlang['index_link'] = '&raquo; 公會網站首頁';
 $phprlang['dkp_link'] = '&raquo; DKP';
 $phprlang['bosstrack_link'] = '&raquo; Boss Kill Tracking';
 $phprlang['raidsarchive_link'] = '&raquo; Raids Archive';
+$phprlang['profile_char_link'] = '&raquo; My Char';
 
 // sorting information
 $phprlang['sort_text'] = '排序依照';
@@ -302,56 +307,42 @@ $phprlang['sort_desc']='Click here to sort (in descending order) by ';
 $phprlang['sort_asc']='Click here to sort (in ascending order) by '; 
 
 // tooltips
+// more tooltips for race and resist in  lang_wow.php
 $phprlang['add'] = '新增';
 $phprlang['announcements'] = '活動公告';
-$phprlang['arcane'] = '祕法抗性';
 $phprlang['calendar'] = '日曆';
 $phprlang['cancel'] = '取消報名';
 $phprlang['cancel_msg'] = '您已經取消這次活動的報名';
 $phprlang['comments'] = '備註';
 $phprlang['configuration'] = '設定';
-$phprlang['deathknight_icon'] = 'Click to see Death Knights';
 $phprlang['delete'] = '刪除';
 $phprlang['description'] = '活動內容';
-$phprlang['druid_icon'] = '點擊這裡查看德魯伊';
 $phprlang['edit'] = '編輯';
 $phprlang['edit_comment'] = '編輯備註';
-$phprlang['fire'] = '火焰抗性';
-$phprlang['frost'] = '冰霜抗性';
 $phprlang['frozen_msg'] = '報名已經截止';
 $phprlang['group_name'] = '團隊名稱';
 $phprlang['group_description'] = '團隊描述';
 $phprlang['guilds'] = '公會';
 $phprlang['has_permission'] = '擁有權限';
-$phprlang['hunter_icon'] = '點擊這裡查看獵人';
 $phprlang['in_queue'] = '調整為候補隊員';
 $phprlang['last_login_date'] = '最近一次登入日期';
 $phprlang['last_login_time'] = '最近一次登入時間';
 $phprlang['locations'] = '活動地點';
 $phprlang['logs'] = '紀錄';
 $phprlang['lua'] = 'LUA/Macro匯出';
-$phprlang['mage_icon'] = '點擊這裡查看法師';
 $phprlang['mark'] = '標記為歷史活動';
-$phprlang['nature'] = '自然抗性';
 $phprlang['new'] = '標記為最新活動';
 $phprlang['not_signed_up'] = '點擊這裡進行報名';
 $phprlang['out_queue'] = '調整為正式隊員';
-$phprlang['paladin_icon'] = '點擊這裡查看聖騎士';
 $phprlang['permissions'] = '權限';
-$phprlang['priest_icon'] = '點擊這裡查看牧師';
 $phprlang['priv'] = '權限';
 $phprlang['profile'] = '個人資料';
 $phprlang['raids'] = '團隊';
 $phprlang['remove_group'] = '從群組中移除用戶群';
 $phprlang['remove_user'] = '從群組中移除用戶';
-$phprlang['rogue_icon'] = '點擊這裡查看盜賊';
-$phprlang['shadow'] = '暗影抗性';
-$phprlang['shaman_icon'] = '點擊這裡查看薩滿';
 $phprlang['signed_up'] = '您已經報名了';
 $phprlang['signup_add'] = '將會員加入報名清單';
 $phprlang['signup_delete'] = '將會員從報名清單移除 (無法恢復)';
 $phprlang['users'] = '會員';
-$phprlang['warlock_icon'] = '點擊這裡查看術士';
-$phprlang['warrior_icon'] = '點擊這裡查看戰士';
 
 ?>

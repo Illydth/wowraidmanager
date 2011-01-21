@@ -299,6 +299,7 @@ $phprlang['index_link'] = '&raquo; Home';
 $phprlang['dkp_link'] = '&raquo; DKP';
 $phprlang['bosstrack_link'] = '&raquo; Boss Kill Tracking';
 $phprlang['raidsarchive_link'] = '&raquo; Raids Archive';
+$phprlang['profile_char_link'] = '&raquo; My Char';
 
 // sorting information
 $phprlang['sort_text'] = 'Click here to sort by ';
@@ -306,56 +307,42 @@ $phprlang['sort_desc']='Click here to sort (in descending order) by ';
 $phprlang['sort_asc']='Click here to sort (in ascending order) by '; 
 
 // tooltips
+// more tooltips for race and resist in  lang_wow.php
 $phprlang['add'] = 'Add';
 $phprlang['announcements'] = 'Announcements';
-$phprlang['arcane'] = 'Arcane';
 $phprlang['calendar'] = 'Calendar';
 $phprlang['cancel'] = 'Cancel signup';
 $phprlang['cancel_msg'] = 'You have cancelled your signup for this raid';
 $phprlang['comments'] = 'Comments';
 $phprlang['configuration'] = 'Configuration';
-$phprlang['deathknight_icon'] = 'Click to see Death Knights';
 $phprlang['delete'] = 'Delete';
 $phprlang['description'] = 'Description';
-$phprlang['druid_icon'] = 'Click to see druids';
 $phprlang['edit'] = 'Edit';
 $phprlang['edit_comment'] = 'Edit Comment';
-$phprlang['fire'] = 'Fire';
-$phprlang['frost'] = 'Frost';
 $phprlang['frozen_msg'] = 'This raid is frozen. Signups are disabled.';
 $phprlang['group_name'] = 'Group Name';
 $phprlang['group_description'] = 'Group Description';
 $phprlang['guilds'] = 'Guilds';
 $phprlang['has_permission'] = 'Has Permission';
-$phprlang['hunter_icon'] = 'Click to see hunters';
 $phprlang['in_queue'] = 'Place user in queue';
 $phprlang['last_login_date'] = 'Last Login Date';
 $phprlang['last_login_time'] = 'Last Login Time';
 $phprlang['locations'] = 'Locations';
 $phprlang['logs'] = 'Logs';
 $phprlang['lua'] = 'LUA and macro output';
-$phprlang['mage_icon'] = 'Click to see mages';
 $phprlang['mark'] = 'Mark raid as old';
-$phprlang['nature'] = 'Nature';
 $phprlang['new'] = 'Mark raid as new';
 $phprlang['not_signed_up'] = 'Click here to signup for this raid';
 $phprlang['out_queue'] = 'Place user in signups';
-$phprlang['paladin_icon'] = 'Click to see paladins';
 $phprlang['permissions'] = 'Permissions';
-$phprlang['priest_icon'] = 'Click to see priests';
 $phprlang['priv'] = 'Privileges';
 $phprlang['profile'] = 'Profile';
 $phprlang['raids'] = 'Raids';
 $phprlang['remove_group'] = 'Remove group from set';
 $phprlang['remove_user'] = 'Remove user from set';
-$phprlang['rogue_icon'] = 'Click to see rogues';
-$phprlang['shadow'] = 'Shadow';
-$phprlang['shaman_icon'] = 'Click to see shamans';
 $phprlang['signed_up'] = 'You are signed up for this raid';
 $phprlang['signup_add'] = 'Add user to signups';
 $phprlang['signup_delete'] = 'Remove user from signups (permanent)';
 $phprlang['users'] = 'Users';
-$phprlang['warlock_icon'] = 'Click to see warlocks';
-$phprlang['warrior_icon'] = 'Click to see warriors';
 
 ?>

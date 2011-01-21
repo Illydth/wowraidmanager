@@ -93,4 +93,22 @@ $phprlang['unholy_tank'] = "Impie (Tank)";
 $phprlang['unholy_melee'] = "Impie (Mêlée)";
 $phprlang['notavailable'] = "Non Dispo.";
 
+// tooltips
+$phprlang['deathknight_icon'] = 'Cliquez pour voir les Death Knights';
+$phprlang['druid_icon'] = 'Cliquez pour voir les Druides';
+$phprlang['hunter_icon'] = 'Cliquez pour voir les Chasseurs';
+$phprlang['mage_icon'] = 'Cliquez pour voir les Mages';
+$phprlang['paladin_icon'] = 'Cliquez pour voir les Paladins';
+$phprlang['priest_icon'] = 'Cliquez pour voir les prètres';
+$phprlang['rogue_icon'] = 'Cliquez pour voir les Voleurs';
+$phprlang['shaman_icon'] = 'Cliquez pour voir les Chamans';
+$phprlang['warlock_icon'] = 'Cliquez pour voir les Démonistes';
+$phprlang['warrior_icon'] = 'Cliquez pour voir les Guerriers';
+
+$phprlang['arcane'] = 'Arcanes';
+$phprlang['fire'] = 'Feu';
+$phprlang['frost'] = 'Givre';
+$phprlang['nature'] = 'Nature';
+$phprlang['shadow'] = 'Ombre';
+
 ?>

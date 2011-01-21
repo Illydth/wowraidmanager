@@ -92,4 +92,23 @@ $phprlang['blood_melee'] = "Blood (Melee)";
 $phprlang['unholy_tank'] = "Unholy (Tank)";
 $phprlang['unholy_melee'] = "Unholy (Melee)";
 $phprlang['notavailable'] = "N/A";
+
+// tooltips
+$phprlang['deathknight_icon'] = 'Click to see Death Knights';
+$phprlang['druid_icon'] = '點擊這裡查看德魯伊';
+$phprlang['hunter_icon'] = '點擊這裡查看獵人';
+$phprlang['mage_icon'] = '點擊這裡查看法師';
+$phprlang['paladin_icon'] = '點擊這裡查看聖騎士';
+$phprlang['priest_icon'] = '點擊這裡查看牧師';
+$phprlang['rogue_icon'] = '點擊這裡查看盜賊';
+$phprlang['shaman_icon'] = '點擊這裡查看薩滿';
+$phprlang['warlock_icon'] = '點擊這裡查看術士';
+$phprlang['warrior_icon'] = '點擊這裡查看戰士';
+
+$phprlang['arcane'] = '祕法抗性';
+$phprlang['fire'] = '火焰抗性';
+$phprlang['frost'] = '冰霜抗性';
+$phprlang['nature'] = '自然抗性';
+$phprlang['shadow'] = '暗影抗性';
+
 ?>

@@ -103,6 +103,10 @@ $phprlang['create_time'] = 'Create Time';
 $phprlang['pri_spec'] = 'Pri Talent';
 $phprlang['sec_spec'] = 'Sec Talent';
 $phprlang['signup_spec'] = 'Draft As';
+$phprlang['role_id'] = 'Role ID';
+$phprlang['role_name'] = 'Role Name';
+$phprlang['role_config'] = 'Role Config Text';
+$phprlang['role_image'] = 'Role Image';
 $phprlang['talent_tree'] = 'Talent Tree';
 $phprlang['display_text'] = 'Display Text';
 $phprlang['perm_mod'] = 'Update Permissions';
@@ -147,7 +151,9 @@ $phprlang['print_error_critical'] = 'en seriøs feil!';
 $phprlang['print_error_details'] = 'Detaljer';
 $phprlang['print_error_minor'] = 'en mindre feil!';
 $phprlang['print_error_msg_begin'] = 'Beklager, WRM har funnet ';
-$phprlang['print_error_msg_end'] = 'Hvis dette fortsetter, ta kontakt med en admin!';
+$phprlang['print_error_msg_end'] = 'If this error persists, please make a post 
+									with this message <br>on the <a href="http://www.wowraidmanager.net/">wowraidmanager.net Forums</a> and
+									we will do our best to get it corrected. Thanks!';
 $phprlang['print_error_page'] = 'Side';
 $phprlang['print_error_query'] = 'Spørring';
 $phprlang['print_error_title'] = 'Uh oh! Noe feil skjedde';
@@ -214,7 +220,34 @@ $phprlang['welcome'] = 'Velkommen ';
 
 // Login Information
 $phprlang['login_fail_title'] = 'Login feilet';
-$phprlang['login_msg'] = 'Feil brukernavn og/eller passord, prøv igjen.';
+$phprlang['login_fail'] = 'You have specified an invalid username or password. Please try again.';
+$phprlang['login_forgot_password'] = 'Forgot Your Password?';
+$phprlang['login_pwdreset_fail_title'] = 'Failed to Send/Reset Password';
+$phprlang['login_pwdreset_title'] = 'Reset Password';
+$phprlang['login_password_reset_msg']= 'To Reset Your Password Please Enter the Following Information';
+$phprlang['login_username_email_incorrect'] = 'The Entered Username and/or Email Address is Incorrect.<br><br>Please Click the Back Button and Try Again.';
+$phprlang['login_password_sent'] = 'Your WRM password has been reset and the new password has been sent to:<br><br>';
+$phprlang['login_password_sent2'] = '<br><br>Please check the E-Mail address listed above for a message from this system. ' .
+									'If you do not see the message please check your spam folder and/or turn off ' .
+									'your spam filter and use the "Forgot My Password" link again.';
+$phprlang['login_password_email_msg'] = 'THIS MESSAGE IS NOT SPAM!<br><br>Someone (hopefully you) has clicked the ' .
+										'"Forgot My Password" link on a WRM installation and entered an account with ' .
+										'your e-mail address.  Your WRM Password has been reset by the WRM system.  The ' .
+										'new password is:<br><br>';
+$phprlang['login_password_email_msg2'] = '<br><br>Please login to the WRM system using the above supplied password and click the ' .
+										 '"Click to Change Password" link under the Log Out button to reset your password ' .
+										 'to something more memorable.<br><br>If you were NOT the one to click this link please ' .
+										 'contact your WRM administrator to inform them that the reset link is being abused.<br><br>' .
+										 'You will still need to use the new password supplied above to access your WRM account.';
+$phprlang['login_password_email_sub'] = 'WRM Password Reset Notification'.										 
+$phprlang['login_chpass_text'] = 'Change Password For User: ';
+$phprlang['login_chpwd'] = 'Click to Change Password';
+$phprlang['login_curr_password'] = 'Current Password';
+$phprlang['login_password_conf'] = 'Confirm Password';
+$phprlang['login_password_incorrect'] = 'Either the current password for the listed username is incorrect or the new password and ' .
+										'confirm password do not match.<br><br>Please Click the Back Button and Try Again.';
+$phprlang['login_password_new'] = 'New Password';
+$phprlang['login_pwdreset_success'] = 'Your password HAS BEEN correctly reset.<br><br>You will need to use the new password the next time you login.';
 
 // Days of the Week
 $phprlang['sunday'] = 'Søndag';
@@ -266,6 +299,7 @@ $phprlang['index_link'] = '&raquo; Hjem';
 $phprlang['dkp_link'] = '&raquo; DKP';
 $phprlang['bosstrack_link'] = '&raquo; Boss Kill Tracking';
 $phprlang['raidsarchive_link'] = '&raquo; Raids Archive';
+$phprlang['profile_char_link'] = '&raquo; My Char';
 
 // sorting information
 $phprlang['sort_text'] = 'Trykk her for å sortere etter ';
@@ -273,56 +307,42 @@ $phprlang['sort_desc']='Klikk her for å sortere (synkende) av ';
 $phprlang['sort_asc']='Klikk her for å sortere (stigende) av '; 
 
 // tooltips
+// more tooltips for race and resist in  lang_wow.php
 $phprlang['add'] = 'Legg til';
 $phprlang['announcements'] = 'Nyheter';
-$phprlang['arcane'] = 'Arcane';
 $phprlang['calendar'] = 'Kalender';
 $phprlang['cancel'] = 'Kanseller påmelding';
 $phprlang['cancel_msg'] = 'Du har kansellert påmeldingen til dette raidet';
 $phprlang['comments'] = 'Kommentarer';
 $phprlang['configuration'] = 'Konfigurer';
-$phprlang['deathknight_icon'] = 'Klikk for å se Death Knights';
 $phprlang['delete'] = 'Slett';
 $phprlang['description'] = 'Beskrivelse';
-$phprlang['druid_icon'] = 'Klikk for å se druider';
 $phprlang['edit'] = 'Endre';
 $phprlang['edit_comment'] = 'Endre kommentar';
-$phprlang['fire'] = 'Fire';
-$phprlang['frost'] = 'Frost';
 $phprlang['frozen_msg'] = 'Raidet er låst. Ikke mulig å melde seg på lenger.';
 $phprlang['group_name'] = 'Gruppe Navn';
 $phprlang['group_description'] = 'Gruppe Beskrivelse';
 $phprlang['guilds'] = 'Guilds';
 $phprlang['has_permission'] = 'Har Tilgang';
-$phprlang['hunter_icon'] = 'Trykk for å se hunters';
 $phprlang['in_queue'] = 'Sett bruker i kø';
 $phprlang['last_login_date'] = 'Siste innloggingsdato';
 $phprlang['last_login_time'] = 'Siste innloggingstid';
 $phprlang['locations'] = 'Steder';
 $phprlang['logs'] = 'Logger';
 $phprlang['lua'] = 'LUA og macro utmating';
-$phprlang['mage_icon'] = 'Trykk for å se mager';
 $phprlang['mark'] = 'Marker raid som gammelt';
-$phprlang['nature'] = 'Nature';
 $phprlang['new'] = 'Marker raid som nytt';
 $phprlang['not_signed_up'] = 'Trykk her for å signe opp til raid';
 $phprlang['out_queue'] = 'Sett bruker som p�meldt';
-$phprlang['paladin_icon'] = 'Trykk for å se  paladiner';
 $phprlang['permissions'] = 'Tilganger';
-$phprlang['priest_icon'] = 'Trykk for å se priests';
 $phprlang['priv'] = 'Tilganger';
 $phprlang['profile'] = 'Profil';
 $phprlang['raids'] = 'Raids';
 $phprlang['remove_group'] = 'Fjern gruppe fra sett';
 $phprlang['remove_user'] = 'Fjern bruker fra sett';
-$phprlang['rogue_icon'] = 'Trykk for å se roguer';
-$phprlang['shadow'] = 'Shadow';
-$phprlang['shaman_icon'] = 'Trykk for å se shamaner';
 $phprlang['signed_up'] = 'Du er p�meldt dette raidet';
 $phprlang['signup_add'] = 'Legg bruker til påmeldt';
 $phprlang['signup_delete'] = 'Fjern bruker fra påmelding (permanent)';
 $phprlang['users'] = 'Brukere';
-$phprlang['warlock_icon'] = 'Trykk for å se warlocker';
-$phprlang['warrior_icon'] = 'Trykk for å se warriorer';
 
 ?>

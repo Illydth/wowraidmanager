@@ -92,4 +92,23 @@ $phprlang['blood_melee'] = "Blood (Melee)";
 $phprlang['unholy_tank'] = "Unholy (Tank)";
 $phprlang['unholy_melee'] = "Unholy (Melee)";
 $phprlang['notavailable'] = "N/A";
+
+// tooltips
+$phprlang['deathknight_icon'] = 'Clicka per visualizzare i Death Knight';
+$phprlang['druid_icon'] = 'Clicka per visualizzare i Druidi';
+$phprlang['hunter_icon'] = 'Clicka per visualizzare i Cacciatori';
+$phprlang['mage_icon'] = 'Clicka per visualizzare i Maghi';
+$phprlang['paladin_icon'] = 'Clicka per visualizzare i Paladini';
+$phprlang['priest_icon'] = 'Clicka per visualizzare i Preti';
+$phprlang['rogue_icon'] = 'Clicka per visualizzare i Ladri';
+$phprlang['shaman_icon'] = 'Clicka per visualizzare gli Sciamani';
+$phprlang['warlock_icon'] = 'Clicka per visualizzare i Warlock';
+$phprlang['warrior_icon'] = 'Clicka per visualizzare i Guerrieri';
+
+$phprlang['arcane'] = 'Arcane';
+$phprlang['fire'] = 'Fire';
+$phprlang['frost'] = 'Frost';
+$phprlang['nature'] = 'Nature';
+$phprlang['shadow'] = 'Shadow';
+
 ?>

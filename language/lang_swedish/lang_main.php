@@ -103,6 +103,10 @@ $phprlang['create_time'] = 'Create Time';
 $phprlang['pri_spec'] = 'Pri Talent';
 $phprlang['sec_spec'] = 'Sec Talent';
 $phprlang['signup_spec'] = 'Draft As';
+$phprlang['role_id'] = 'Role ID';
+$phprlang['role_name'] = 'Role Name';
+$phprlang['role_config'] = 'Role Config Text';
+$phprlang['role_image'] = 'Role Image';
 $phprlang['talent_tree'] = 'Talent Tree';
 $phprlang['display_text'] = 'Display Text';
 $phprlang['perm_mod'] = 'Update Permissions';
@@ -295,6 +299,7 @@ $phprlang['index_link'] = '&raquo; Hem';
 $phprlang['dkp_link'] = '&raquo; DKP';
 $phprlang['bosstrack_link'] = '&raquo; Boss Kill Tracking';
 $phprlang['raidsarchive_link'] = '&raquo; Raids Archive';
+$phprlang['profile_char_link'] = '&raquo; My Char';
 
 // sorting information
 $phprlang['sort_text'] = 'Klicka här för att sortera efter ';
@@ -302,56 +307,42 @@ $phprlang['sort_desc']='Klicka här för att sortera (i fallande ordning) efter 
 $phprlang['sort_asc']='Klicka här för att sortera (i stigande ordning) efter '; 
 
 // tooltips
+// more tooltips for race and resist in  lang_wow.php
 $phprlang['add'] = 'Lägg till';
 $phprlang['announcements'] = 'Nyheter';
-$phprlang['arcane'] = 'Arcane';
 $phprlang['calendar'] = 'Kalender';
 $phprlang['cancel'] = 'Avboka';
 $phprlang['cancel_msg'] = 'Du har nu tagit bort din bokning för detta raid';
 $phprlang['comments'] = 'Kommentarer';
 $phprlang['configuration'] = 'Konfiguration';
-$phprlang['deathknight_icon'] = 'Klicka för att se Death Knights';
 $phprlang['delete'] = 'Radera';
 $phprlang['description'] = 'Beskrivning';
-$phprlang['druid_icon'] = 'Klicka för att se Druider';
 $phprlang['edit'] = 'Ändra';
 $phprlang['edit_comment'] = 'Ändra kommentar';
-$phprlang['fire'] = 'Fire';
-$phprlang['frost'] = 'Frost';
 $phprlang['frozen_msg'] = 'Detta raid är fryst. Det går inte att boka sig till det längre.';
 $phprlang['group_name'] = 'Grupp Namn';
 $phprlang['group_description'] = 'Grupp Beskrivning';
 $phprlang['guilds'] = 'Guilder';
 $phprlang['has_permission'] = 'Har Behörighet';
-$phprlang['hunter_icon'] = 'Klicka för att se Hunters';
 $phprlang['in_queue'] = 'Placera spelaren i kö';
 $phprlang['last_login_date'] = 'Senaste inloggningsdatum';
 $phprlang['last_login_time'] = 'SEnaste inloggningstid';
 $phprlang['locations'] = 'Instancer';
 $phprlang['logs'] = 'Loggar';
 $phprlang['lua'] = 'LUA och macro utmatning';
-$phprlang['mage_icon'] = 'Klicka för att se Mages';
 $phprlang['mark'] = 'Markera raiden som Gammal';
-$phprlang['nature'] = 'Nature';
 $phprlang['new'] = 'Markera raiden som Ny';
 $phprlang['not_signed_up'] = 'Klicka här för att boka dig till raiden';
 $phprlang['out_queue'] = 'Placera spelaren som Klar';
-$phprlang['paladin_icon'] = 'Klicka för att se Paladiner';
 $phprlang['permissions'] = 'Rättigheter';
-$phprlang['priest_icon'] = 'Klicka för att se Präster';
 $phprlang['priv'] = 'Rättigheter';
 $phprlang['profile'] = 'Profil';
 $phprlang['raids'] = 'Raider';
 $phprlang['remove_group'] = 'Ta bort gruppen från set';
 $phprlang['remove_user'] = 'Ta bort användare från set';
-$phprlang['rogue_icon'] = 'Klicka för att se Rogues';
-$phprlang['shadow'] = 'Shadow';
-$phprlang['shaman_icon'] = 'Klicka för att se Shamans';
 $phprlang['signed_up'] = 'Du är Bokad på denna raiden';
 $phprlang['signup_add'] = 'Lägg till spelare som Klar';
 $phprlang['signup_delete'] = 'Ta bort spelare från raidet (permanent)';
 $phprlang['users'] = 'Användare';
-$phprlang['warlock_icon'] = 'Klicka för att se Warlocks';
-$phprlang['warrior_icon'] = 'Klicka för att se Warriors';
 
 ?>
