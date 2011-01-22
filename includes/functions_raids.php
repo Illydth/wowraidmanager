@@ -237,20 +237,6 @@ function get_array_allpossible_chars_from_RaidID($raid_id)
 	return ($chars);
 }
 
-function get_array_spec_from_char($char_id)
-{
-	global $db_raid, $phpraid_config;	
-	
-	$sql = sprintf(	"SELECT `pri_spec`,`sec_spec` ".
-					" FROM `" . $phpraid_config['db_prefix'] . "chars`".
-					" WHERE char_id = %s", quote_smart($char_id)
-			);
-	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);	
-	$array_data = $db_raid->sql_fetchrow($result, true);
-
-	return ( array($array_data['pri_spec'],$array_data['sec_spec']) );
-}
-
 function has_user_rights_change_comments($signup_id, $profile_id)
 {
 	// permission grp, dann schauen was diese grp kann
@@ -300,24 +286,6 @@ function has_user_rights_change_comments($signup_id, $profile_id)
 	}
 	
 	return ($has_user_rights_change_comments);
-}
-
-/**
- * 
- * return, in which permission group the user (profile) are
- * @param integer $profile_id
- */
-function get_permission_id($profile_id)
-{
-	global $db_raid, $phpraid_config;
-	$sql = sprintf(	"SELECT `priv` ".
-					" FROM `" . $phpraid_config['db_prefix'] . "profile`".
-					" WHERE profile_id = %s", quote_smart($profile_id)
-			);
-	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-	$data = $db_raid->sql_fetchrow($result, true);
-	
-	return ($data['priv']);	
 }
 
 function get_array_signup_type($signup_id, $profile_id)
@@ -510,22 +478,5 @@ function get_raidid_from_signup($signup_id)
 	
 	return ($data['raid_id']);			
 }
-/**
- * 
- * Check if profil_id rights for config "raids"
- * @param unknown_type $profile_id
- */
-function has_user_rights_raids($profile_id)
-{
-	global $db_raid, $phpraid_config;
 
-	$sql = sprintf(	"SELECT `priv` ".
-					" FROM `" . $phpraid_config['db_prefix'] . "signup`".
-					" WHERE profile_id = %s", quote_smart($profile_id)
-			);
-	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-	$data = $db_raid->sql_fetchrow($result, true);
-	
-	return ($data['raid_id']);		
-}
 ?>
