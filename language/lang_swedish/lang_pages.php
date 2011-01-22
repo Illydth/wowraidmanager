@@ -125,22 +125,17 @@ $phprlang['permissions_users'] = 'Användare';
 $phprlang['permissions_users_header'] = 'Användare i setet';
 
 // profile
-$phprlang['profile_arcane'] = 'Arcane Resistance';
 $phprlang['profile_class'] = 'Klass';
 $phprlang['profile_create_header'] = 'Karaktärsskapande inte tillgängligt';
 $phprlang['profile_create_msg'] = 'Tills dess en administratör skapar ett guild, kommer inte karaktärsskapande vara tillgängligt';
-$phprlang['profile_fire'] = 'Fire Resistance';
-$phprlang['profile_frost'] = 'Frost Resistance';
 $phprlang['profile_gender'] = 'Kön';
 $phprlang['profile_guild'] = 'Guild tillhörighet';
 $phprlang['profile_role'] = 'Roll';
 $phprlang['profile_header'] = 'Karaktärer';
 $phprlang['profile_level'] = 'Level';
 $phprlang['profile_name'] = 'Namn';
-$phprlang['profile_nature'] = 'Nature Resistance';
 $phprlang['profile_raid'] = 'Raid Deltagande';
 $phprlang['profile_race'] = 'Ras';
-$phprlang['profile_shadow'] = 'Shadow Resistance';
 
 // raids
 $phprlang['raids_date'] = 'Datum';
@@ -166,12 +161,6 @@ $phprlang['event_type_dungeon'] = 'Dungeon (5 man Instance)';
 $phprlang['event_type_pvp'] = 'PvP Event';
 $phprlang['event_type_meeting'] = 'Meeting (online/offline)';
 $phprlang['event_type_other'] = 'Other';
-
-// expansions
-$phprlang['exp_generic_wow'] = 'Generic World of Warcraft';
-$phprlang['exp_burning_crusade'] = 'The Burning Crusade';
-$phprlang['exp_wrath_lich_king'] = 'Wrath of the Lich King';
-$phprlang['exp_cataclysm'] = 'Cataclysm';
 
 // roster
 $phprlang['roster_header'] = 'Guild Roster';

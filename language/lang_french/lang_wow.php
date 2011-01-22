@@ -111,4 +111,17 @@ $phprlang['frost'] = 'Givre';
 $phprlang['nature'] = 'Nature';
 $phprlang['shadow'] = 'Ombre';
 
+// profile
+$phprlang['resistance_arcane'] = 'Resistance aux Arcanes';
+$phprlang['resistance_fire'] = 'Resistance Feu';
+$phprlang['resistance_frost'] = 'Resistance au Givre';
+$phprlang['resistance_nature'] = 'Resistance Nature';
+$phprlang['resistance_shadow'] = 'Resistance Ombre';
+
+// expansions
+$phprlang['exp_generic_wow'] = 'Generic World of Warcraft';
+$phprlang['exp_burning_crusade'] = 'The Burning Crusade';
+$phprlang['exp_wrath_lich_king'] = 'Wrath of the Lich King';
+$phprlang['exp_cataclysm'] = 'Cataclysm';
+
 ?>

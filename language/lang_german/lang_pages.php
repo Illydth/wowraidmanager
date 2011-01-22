@@ -125,22 +125,17 @@ $phprlang['permissions_users'] = 'Benutzer';
 $phprlang['permissions_users_header'] = 'Benutzer in dieser Berechtigungsgruppe';
 
 // profile
-$phprlang['profile_arcane'] = 'Arkanwiderstand';
 $phprlang['profile_class'] = 'Klasse';
 $phprlang['profile_create_header'] = 'Charaktererstellung nicht verfügbar';
 $phprlang['profile_create_msg'] = 'Die Charaktererstellung bleibt gesperrt, bis ein Administrator eine Gilde erstellt hat.';
-$phprlang['profile_fire'] = 'Feuerwiderstand';
-$phprlang['profile_frost'] = 'Frostwiderstand';
 $phprlang['profile_gender'] = 'Geschlecht';
 $phprlang['profile_guild'] = 'Gildenzugehörigkeit';
 $phprlang['profile_role'] = 'Rolle';
 $phprlang['profile_header'] = 'Charaktere';
 $phprlang['profile_level'] = 'Stufe';
 $phprlang['profile_name'] = 'Name';
-$phprlang['profile_nature'] = 'Naturwiderstand';
 $phprlang['profile_raid'] = 'Raidteilnahme';
 $phprlang['profile_race'] = 'Rasse';
-$phprlang['profile_shadow'] = 'Schattenwiderstand';
 
 // raids
 $phprlang['raids_date'] = 'Datum';
@@ -166,12 +161,6 @@ $phprlang['event_type_dungeon'] = 'Dungeon (5er-Instanz)';
 $phprlang['event_type_pvp'] = 'PvP-Event';
 $phprlang['event_type_meeting'] = 'Treffen (online/offline)';
 $phprlang['event_type_other'] = 'Andere';
-
-// expansions
-$phprlang['exp_generic_wow'] = 'Generic World of Warcraft';
-$phprlang['exp_burning_crusade'] = 'The Burning Crusade';
-$phprlang['exp_wrath_lich_king'] = 'Wrath of the Lich King';
-$phprlang['exp_cataclysm'] = 'Cataclysm';
 
 // roster
 $phprlang['roster_header'] = 'Mitgliederliste';

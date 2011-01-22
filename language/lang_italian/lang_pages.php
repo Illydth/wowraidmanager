@@ -125,22 +125,17 @@ $phprlang['permissions_users'] = 'Utenti';
 $phprlang['permissions_users_header'] = 'Utenti che utilizzano questo Profilo';
 
 // profile
-$phprlang['profile_arcane'] = 'Resistenza Arcane';
 $phprlang['profile_class'] = 'Classe';
 $phprlang['profile_create_header'] = 'Non è possibile definire nuovi Personaggi';
 $phprlang['profile_create_msg'] = 'Non è possibile definire Personaggi fino a quando non viene inserita almeno una Gilda';
-$phprlang['profile_fire'] = 'Resistenza Fire';
-$phprlang['profile_frost'] = 'Resistenza Frost';
 $phprlang['profile_gender'] = 'Genere';
 $phprlang['profile_guild'] = 'Gilda';
 $phprlang['profile_role'] = 'Ruolo';
 $phprlang['profile_header'] = 'Personaggi';
 $phprlang['profile_level'] = 'Livello';
 $phprlang['profile_name'] = 'Nome';
-$phprlang['profile_nature'] = 'Resistenza Nature';
 $phprlang['profile_raid'] = 'Iscrizioni';
 $phprlang['profile_race'] = 'Razza';
-$phprlang['profile_shadow'] = 'Resistenza Shadow';
 
 // raids
 $phprlang['raids_date'] = 'Data';
@@ -166,12 +161,6 @@ $phprlang['event_type_dungeon'] = 'Dungeon (5 persone)';
 $phprlang['event_type_pvp'] = 'Evento PvP';
 $phprlang['event_type_meeting'] = 'Incontro (online/offline)';
 $phprlang['event_type_other'] = 'Altro';
-
-// expansions
-$phprlang['exp_generic_wow'] = 'Generic World of Warcraft';
-$phprlang['exp_burning_crusade'] = 'The Burning Crusade';
-$phprlang['exp_wrath_lich_king'] = 'Wrath of the Lich King';
-$phprlang['exp_cataclysm'] = 'Cataclysm';
 
 // roster
 $phprlang['roster_header'] = 'Roster di Gilda';

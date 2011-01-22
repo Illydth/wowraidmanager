@@ -125,22 +125,17 @@ $phprlang['permissions_users'] = '用戶';
 $phprlang['permissions_users_header'] = '群組中的用戶';
 
 // profile
-$phprlang['profile_arcane'] = '祕法抗性';
 $phprlang['profile_class'] = '職業';
 $phprlang['profile_create_header'] = '無法新增角色';
 $phprlang['profile_create_msg'] = '在管理者新增一個公會之前無法新增角色';
-$phprlang['profile_fire'] = '火焰抗性';
-$phprlang['profile_frost'] = '冰霜抗性';
 $phprlang['profile_gender'] = '性別';
 $phprlang['profile_guild'] = '加入公會';
 $phprlang['profile_role'] = '職責';
 $phprlang['profile_header'] = '角色';
 $phprlang['profile_level'] = '等級';
 $phprlang['profile_name'] = '名字';
-$phprlang['profile_nature'] = '自然抗性';
 $phprlang['profile_raid'] = '團隊參與';
 $phprlang['profile_race'] = '種族';
-$phprlang['profile_shadow'] = '暗影抗性';
 
 // raids
 $phprlang['raids_date'] = '日期';
@@ -166,12 +161,6 @@ $phprlang['event_type_dungeon'] = 'Dungeon (5 man Instance)';
 $phprlang['event_type_pvp'] = 'PvP Event';
 $phprlang['event_type_meeting'] = 'Meeting (online/offline)';
 $phprlang['event_type_other'] = 'Other';
-
-// expansions
-$phprlang['exp_generic_wow'] = 'Generic World of Warcraft';
-$phprlang['exp_burning_crusade'] = 'The Burning Crusade';
-$phprlang['exp_wrath_lich_king'] = 'Wrath of the Lich King';
-$phprlang['exp_cataclysm'] = 'Cataclysm';
 
 // roster
 $phprlang['roster_header'] = '公會名冊';
