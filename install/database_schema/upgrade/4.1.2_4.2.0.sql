@@ -54,12 +54,12 @@ CREATE TABLE  `wrm_menu_value` (
 ) ;
 
 
-
 -- Permission Type Data
 TRUNCATE `wrm_permission_type`;
-INSERT INTO `wrm_permission_type` (`permission_type_id`, `permission_type_name`,`permission_type_description`) VALUES ('1','WRM Superadmin','Full Access');
-INSERT INTO `wrm_permission_type` (`permission_type_id`, `permission_type_name`,`permission_type_description`) VALUES ('2','WRM Users','Generic Access');
-INSERT INTO `wrm_permission_type` (`permission_type_id`, `permission_type_name`,`permission_type_description`) VALUES ('3','WRM Raid Manager','Generic + Raid Manager Access  ');
+INSERT INTO `wrm_permission_type` (`permission_type_id`, `permission_type_name`,`permission_type_description`) VALUES ('1','WRM Users','Generic Access');
+INSERT INTO `wrm_permission_type` (`permission_type_id`, `permission_type_name`,`permission_type_description`) VALUES ('2','WRM Raid Leader','Generic + Raid Leader Access  ');
+INSERT INTO `wrm_permission_type` (`permission_type_id`, `permission_type_name`,`permission_type_description`) VALUES ('3','WRM Superadmin','Full Access');
+
 
 -- Permission Value Data
 INSERT INTO `wrm_permission_value` (`permission_value_id`, `permission_value_name`,`lang_index`) VALUES ('1','announcements','permissions_announcements');
@@ -116,7 +116,7 @@ INSERT INTO `wrm_menu_type` VALUES ('7', 'menu_main', '','0','main_menu_header',
 INSERT INTO `wrm_menu_type` VALUES ('8', 'menu_user', '','0','user_menu_header','normal');
 
 -- Menu Value Data
--- INSERT INTO `wrm_menu_value` ( `menu_type_id`, `lang_index`, `menu_value_title_alt`, `show_menu_value_title_alt`, `ordering`, `link`, `menu_image`, `menu_image_show`, `permission_value_id`, `visible` ) 
+-- INSERT INTO `wrm_menu_value` ( `menu_value_id`, `menu_type_id`, `lang_index`, `menu_value_title_alt`, `show_menu_value_title_alt`, `ordering`, `link`,`filename_without_ext` `menu_image`, `menu_image_show`, `permission_value_id`, `visible` )
 -- admin data
 INSERT INTO `wrm_menu_value` VALUES ('1','1','admin_site_link','','0','1','','../index.php','','0','2' ,'1');
 INSERT INTO `wrm_menu_value` VALUES ('2','1','admin_main_link','','0','2','admin_index','admin_index.php','','0','2','1');
@@ -139,18 +139,19 @@ INSERT INTO `wrm_menu_value` VALUES ('18','5','admin_rolecfg_link','','0','2','a
 INSERT INTO `wrm_menu_value` VALUES ('19','5','admin_roletalent_config','','0','3','admin_roletalent','admin_roletalent.php?mode=view','','0','2' ,'1');
 INSERT INTO `wrm_menu_value` VALUES ('20','6','admin_logs_link','','0','1','admin_logs','admin_logs.php?mode=view"','','0', '2','1');
 -- normal data
-INSERT INTO `wrm_menu_value` VALUES ('31','7','index_link','','0','1','index','index.php','','0',NULL,'1');
-INSERT INTO `wrm_menu_value` VALUES ('32','7','calendar_link','','0','1','calendar','calendar.php','','0',NULL,'1');
-INSERT INTO `wrm_menu_value` VALUES ('33','7','roster_link','','0','2','roster','roster.php','','0',NULL,'1');
-INSERT INTO `wrm_menu_value` VALUES ('34','7','dkp_link','EQ-DKP','1','3','dkp_view','dkp_view.php','','0',NULL,'0');
-INSERT INTO `wrm_menu_value` VALUES ('35','7','raidsarchive_link','','0','4','raidsarchive','raidsarchive.php?mode=view','','0',NULL,'1');
-INSERT INTO `wrm_menu_value` VALUES ('36','7','bosstrack_link','','0','5','bosstracking','bosstracking.php?mode=view','','0',NULL,'0');
-INSERT INTO `wrm_menu_value` VALUES ('37','7','announcements_link','','0','6','announcements','announcements.php?mode=view','','0','1','1');
-INSERT INTO `wrm_menu_value` VALUES ('38','7','guilds_link','','0','7','guilds','guilds.php?mode=view','','0','3','1');
-INSERT INTO `wrm_menu_value` VALUES ('39','7','locations_link','','0','8','locations','locations.php?mode=view','','0','4','1');
-INSERT INTO `wrm_menu_value` VALUES ('40','7','raids_link','','0','9','raids','raids.php?mode=view','','0','6','1');
-INSERT INTO `wrm_menu_value` VALUES ('41','7','lua_output_link','','0','10','lua_output_new','lua_output_new.php?mode=lua','','0','6','1');
-INSERT INTO `wrm_menu_value` VALUES ('30','8','profile_link','','0','1','profile','profile.php?mode=view','','0','5','1');
+INSERT INTO `wrm_menu_value` VALUES ('40','7','index_link','','0','1','index','index.php','','0',NULL,'1');
+INSERT INTO `wrm_menu_value` VALUES ('41','7','calendar_link','','0','1','calendar','calendar.php','','0',NULL,'1');
+INSERT INTO `wrm_menu_value` VALUES ('42','7','roster_link','','0','2','roster','roster.php','','0',NULL,'1');
+INSERT INTO `wrm_menu_value` VALUES ('43','7','dkp_link','EQ-DKP','1','3','dkp_view','dkp_view.php','','0',NULL,'0');
+INSERT INTO `wrm_menu_value` VALUES ('44','7','raidsarchive_link','','0','4','raidsarchive','raidsarchive.php?mode=view','','0',NULL,'1');
+INSERT INTO `wrm_menu_value` VALUES ('45','7','bosstrack_link','','0','5','bosstracking','bosstracking.php?mode=view','','0',NULL,'0');
+INSERT INTO `wrm_menu_value` VALUES ('46','7','announcements_link','','0','6','announcements','announcements.php?mode=view','','0','1','1');
+INSERT INTO `wrm_menu_value` VALUES ('47','7','guilds_link','','0','7','guilds','guilds.php?mode=view','','0','3','1');
+INSERT INTO `wrm_menu_value` VALUES ('48','7','locations_link','','0','8','locations','locations.php?mode=view','','0','4','1');
+INSERT INTO `wrm_menu_value` VALUES ('49','7','raids_link','','0','9','raids','raids.php?mode=view','','0','6','1');
+INSERT INTO `wrm_menu_value` VALUES ('50','7','lua_output_link','','0','10','lua_output_new','lua_output_new.php?mode=lua','','0','6','1');
+INSERT INTO `wrm_menu_value` VALUES ('70','8','profile_link','','0','1','profile','profile.php?mode=view','','0','5','1');
+INSERT INTO `wrm_menu_value` VALUES ('71','8','profile_char_link','','0','2','profile_char','profile_char.php?mode=view','','0','5','1');
 
 -- Raid Permission Type Table Creation
 -- INSERT INTO `wrm_raid_permission_type` VALUES ( `raid_permission_type_id`, `raid_permission_type_name`,`lang_index`);
@@ -170,19 +171,14 @@ INSERT INTO `wrm_raid_permission_type` VALUES ('12','drafted_delete','delete_row
 -- Acces Controll List Permission Table Creation
 -- INSERT INTO `wrm_acl_raid_permission` VALUES ( `raid_permission_type_id`, `permission_type_id`);
 -- WRM - Superadmin
-INSERT INTO `wrm_acl_raid_permission` VALUES ('1','1');
 INSERT INTO `wrm_acl_raid_permission` VALUES ('2','1');
 INSERT INTO `wrm_acl_raid_permission` VALUES ('3','1');
 INSERT INTO `wrm_acl_raid_permission` VALUES ('4','1');
-INSERT INTO `wrm_acl_raid_permission` VALUES ('5','1');
-INSERT INTO `wrm_acl_raid_permission` VALUES ('6','1');
 INSERT INTO `wrm_acl_raid_permission` VALUES ('7','1');
-INSERT INTO `wrm_acl_raid_permission` VALUES ('8','1');
-INSERT INTO `wrm_acl_raid_permission` VALUES ('9','1');
 INSERT INTO `wrm_acl_raid_permission` VALUES ('10','1');
 INSERT INTO `wrm_acl_raid_permission` VALUES ('11','1');
 INSERT INTO `wrm_acl_raid_permission` VALUES ('12','1');
--- WRM - Users
+-- WRM - Raid Leader 
 INSERT INTO `wrm_acl_raid_permission` VALUES ('1','2');
 INSERT INTO `wrm_acl_raid_permission` VALUES ('2','2');
 INSERT INTO `wrm_acl_raid_permission` VALUES ('3','2');
@@ -195,10 +191,19 @@ INSERT INTO `wrm_acl_raid_permission` VALUES ('9','2');
 INSERT INTO `wrm_acl_raid_permission` VALUES ('10','2');
 INSERT INTO `wrm_acl_raid_permission` VALUES ('11','2');
 INSERT INTO `wrm_acl_raid_permission` VALUES ('12','2');
--- WRM - Raid Manager
+-- WRM - Superadmin
 INSERT INTO `wrm_acl_raid_permission` VALUES ('1','3');
 INSERT INTO `wrm_acl_raid_permission` VALUES ('2','3');
 INSERT INTO `wrm_acl_raid_permission` VALUES ('3','3');
+INSERT INTO `wrm_acl_raid_permission` VALUES ('4','3');
+INSERT INTO `wrm_acl_raid_permission` VALUES ('5','3');
+INSERT INTO `wrm_acl_raid_permission` VALUES ('6','3');
+INSERT INTO `wrm_acl_raid_permission` VALUES ('7','3');
+INSERT INTO `wrm_acl_raid_permission` VALUES ('8','3');
+INSERT INTO `wrm_acl_raid_permission` VALUES ('9','3');
+INSERT INTO `wrm_acl_raid_permission` VALUES ('10','3');
+INSERT INTO `wrm_acl_raid_permission` VALUES ('11','3');
+INSERT INTO `wrm_acl_raid_permission` VALUES ('12','3');
 
 DROP TABLE IF EXISTS `wrm_permissions`;
 DROP TABLE IF EXISTS `wrm_acl_raid_signup_group`;

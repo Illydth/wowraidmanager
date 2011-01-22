@@ -299,7 +299,7 @@ $phprlang['index_link'] = '&raquo; Hem';
 $phprlang['dkp_link'] = '&raquo; DKP';
 $phprlang['bosstrack_link'] = '&raquo; Boss Kill Tracking';
 $phprlang['raidsarchive_link'] = '&raquo; Raids Archive';
-$phprlang['profile_char_link'] = '&raquo; My Char';
+$phprlang['profile_char_link'] = '&raquo; My Characters';
 
 // sorting information
 $phprlang['sort_text'] = 'Klicka här för att sortera efter ';
