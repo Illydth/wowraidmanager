@@ -239,7 +239,7 @@ if(($_GET['mode'] == 'view') or isset($_GET['raids_del']) or isset($_GET['mark_r
 		$raid_txt_info .= "<br>".$phprlang['totals'].": ".$total.'/'.$data['max']  . ' (+' . $total2. ')';
 //		$raid_txt_info .=
 		$ddrivetiptxt = $raid_txt_desc.'<br>'. $raid_txt_info."'";
-		$location = '<a href="view.php?mode=view&amp;raid_id='.$data['raid_id'].'" onMouseover="ddrivetip('.$ddrivetiptxt.');" onMouseout="hideddrivetip();">'.$data['location'].'</a>';
+		$location = '<a href="raid_view.php?mode=view&amp;raid_id='.$data['raid_id'].'" onMouseover="ddrivetip('.$ddrivetiptxt.');" onMouseout="hideddrivetip();">'.$data['location'].'</a>';
 			
 		// current raids
 		if($data['old'] == 0 && $data['recurrance']==0) {

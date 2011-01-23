@@ -52,7 +52,7 @@ header('Content-type: application/rss+xml; charset=utf-8');
 	{
 		$raid_id = $data['raid_id'];
 		$icon = $imgpath[$data['event_id']];
-		$raidloc = htmlentities($phpraid_url . '/view.php?mode=view&raid_id='.$data['raid_id']);
+		$raidloc = htmlentities($phpraid_url . '/raid_view.php?mode=view&raid_id='.$data['raid_id']);
 		$rssloc = htmlentities($data['location']);
 		$description = sprintf ("<img src=\"%s/templates/default/%s\"> %s", $site_url, $icon, $data['description']);
 		$rssdesc = htmlentities(nl2br($description));

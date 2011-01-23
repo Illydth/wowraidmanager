@@ -401,4 +401,17 @@ function has_user_rights_raids($profile_id)
 	
 	return ($data['raid_id']);		
 }
+
+function update_profile($profile_id, $profile_email)
+{
+	global $db_raid, $phpraid_config;
+	
+	$sql = sprintf(	"UPDATE `".$phpraid_config['db_prefix']."profile` " .
+					" SET `email` = %s " .
+					" WHERE `profile_id` = 'admin_email';", 
+					quote_smart($profile_email), quote_smart($profile_id)
+			);
+	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
+}
+
 ?>

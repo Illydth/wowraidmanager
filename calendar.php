@@ -254,7 +254,7 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true))
 	$pop_text .= "'";
 	$ddrivetiptext = $pop_text;
 
-	$href = '<a href="view.php?mode=view&amp;raid_id='.$raids['raid_id'].'">';
+	$href = '<a href="raid_view.php?mode=view&amp;raid_id='.$raids['raid_id'].'">';
 	$href_close = '</a>';
 	// Commented to change the #/*/etc. Marks into borders.
 	//$img = '<img src="templates/'.$phpraid_config['template'].'/'.$raid_icon.'" onMouseout="hideddrivetip();" onMouseover="ddrivetip('.$ddrivetiptext.');" alt="'.$raids['location'].'">';

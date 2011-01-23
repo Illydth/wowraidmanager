@@ -68,7 +68,7 @@ $pageURL = "profile_char.php";
 $pageURL_edit = $pageURL. '?mode=edit&';
 $pageURL_new = $pageURL. '?mode=new';
 $pageURL_remove = $pageURL. '?mode=remove&';
-$pageURL_view = $pageURL. '?mode=remove&';
+$pageURL_view = $pageURL. '?mode=view&';
 
 /**************************************************************
  * End Record Output Setup for Data Table

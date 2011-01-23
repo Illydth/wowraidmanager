@@ -51,8 +51,8 @@ if (isset($_GET['raid_id']))
 }
 else 
 {
-	$raid_id = '';
-//	log_hack();
+	if($raid_id == '' || !is_numeric($raid_id))
+		log_hack();
 }
 
 //Page URL
@@ -68,11 +68,14 @@ isset($_GET['mode']) ? $mode = scrub_input($_GET['mode']) : $mode = '';
    =====================================================*/
 if($mode == 'view')
 {
-	// check for invalid raid passed
-	isset($_GET['raid_id']) ? $raid_id = scrub_input($_GET['raid_id']) : $raid_id = '';
+	$profile_id = scrub_input($_SESSION['profile_id']);
+	$priv_raids = scrub_input($_SESSION['priv_raids']);	
 	
-	if($raid_id == '' || !is_numeric($raid_id))
-		log_hack();
+	/**
+	 *  Raid Mark Status
+	 *  raid status == old => $raid_mark_status = "1"
+	 */
+	$raid_mark_status = get_raid_mark_status($raid_id);
 	
 	/*************************************************************
 	 * Setup Record Output Information for Data Table
@@ -86,13 +89,13 @@ if($mode == 'view')
 	// Set Sort Field for Page
 	if(!isset($_GET['Sort'])||$_GET['Sort']=='')
 	{
-		$sortField="";
-		$initSort=FALSE;
+		$sortField = "";
+		$initSort = FALSE;
 	}
 	else
 	{
 		$sortField = scrub_input($_GET['Sort']);
-		$initSort=TRUE;
+		$initSort = TRUE;
 	}
 			
 	// Set Sort Descending Mark
@@ -100,110 +103,14 @@ if($mode == 'view')
 		$sortDesc = 0;
 	else
 		$sortDesc = scrub_input($_GET['SortDescending']);
-			
-	//$pageURL = 'view.php?mode=view&raid_id=' . $raid_id . '&';
+
 	/**************************************************************
 	 * End Record Output Setup for Data Table
 	 **************************************************************/
 	
-	$profile_id = scrub_input($_SESSION['profile_id']);
-	
 	// This require sets up the flow control surrounding queueing, cancelling and drafting of users.
-	require_once('includes/signup_flow.php');
-	
-	// Determine Advanced Profile Permisions to this Raid - Note: "user" doesn't need to be checked, it's
-	//	 a default permission that will be checked within the signup flow.
-	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id=%s", quote_smart($raid_id));
-	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-	$data = $db_raid->sql_fetchrow($result, true);
-	
-	$priv_raids = scrub_input($_SESSION['priv_raids']);
-	$profile_id = scrub_input($_SESSION['profile_id']);
-	
-	$wrm_db_user_name = "username";
-	$wrm_table_prefix = $phpraid_config['db_prefix'];
-	$wrm_db_table_user_name = "profile";
-			
-	//$username = scrub_input($_SESSION['username']);
-	//database
-	$sql = sprintf(	"SELECT ". $wrm_db_user_name .
-					" FROM " . $wrm_table_prefix . $wrm_db_table_user_name . 
-					" WHERE profile_id = %s", quote_smart($profile_id)
-				);
-	$result_tmp = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-	$data_tmp = $db_raid->sql_fetchrow($result_tmp, true);
-	$username = $data_tmp[$wrm_db_user_name];
-	
-	$user_perm_group = array();
-	
-	if ($priv_raids == 1)
-		$user_perm_group['admin'] = 1;
-	elseif ($username == $data['officer'])
-		$user_perm_group['RL'] = 1;
-	else
-	{
-		$user_perm_group['admin'] = 0;
-		$user_perm_group['RL'] = 0;
-	}
-/*
-	//
-	// Obtain data for the raid
-	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id=%s", quote_smart($raid_id));
-	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-	$data = $db_raid->sql_fetchrow($result, true);
+	require_once('includes/signup_flow.php');	
 
-	$raid_location = UBB2($data['location']);
-	$raid_officer = $data['officer'];
-	$raid_date = new_date($phpraid_config['date_format'],$data['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
-	$raid_invite_time = new_date($phpraid_config['time_format'],$data['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
-	$raid_start_time = new_date($phpraid_config['time_format'],$data['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
-	$raid_max = $data['max'];
-	$raid_min_lvl = $data['min_lvl'];
-	$raid_max_lvl = $data['max_lvl'];
-
-	$raid_description = scrub_input($data['description']);
-	$raid_description = UBB($raid_description);
-
-	// get signup information
-	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id=%s AND queue='0' AND cancel='0'", quote_smart($raid_id));
-	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-	$raid_count = $db_raid->sql_numrows($result);
-
-	// get cancel information
-	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id=%s AND queue='0' AND cancel='1'", quote_smart($raid_id));
-	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-	$raid_cancel_count = $db_raid->sql_numrows($result);
-
-	// get queue information
-	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id=%s AND queue='1'", quote_smart($raid_id));
-	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-	$raid_queue_count = $db_raid->sql_numrows($result);
-
-	// get totals
-	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id=%s", quote_smart($raid_id));
-	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-	$raid_total = $db_raid->sql_numrows($result);
-
-	// calculate percentages
-	if($raid_total != 0)
-	{
-		$raid_count_percentage = substr(($raid_count / $raid_total) * 100,0,5);
-		$raid_queue_count_percentage = substr(($raid_queue_count / $raid_total) * 100,0,5);
-		$raid_cancel_count_percentage = substr(($raid_cancel_count / $raid_total) * 100,0,5);
-	}
-	else
-	{
-		$raid_count_percentage = 0;
-		$raid_queue_count_percentage = 0;
-		$raid_cancel_count_percentage = 0;
-	}
-	if($raid_max != 0)
-		$raid_max_percentage = substr(($raid_total / $raid_max) * 100,0,5);
-	else
-		$raid_max_percentage = 0;
-
-	$raid_open = $raid_max - $raid_total;
-*/
 	// Initialize Class/Role Arrays and Counts.
 	$class_info = array();
 	$role_info = array();
@@ -218,17 +125,39 @@ if($mode == 'view')
 	$raid_queue = array();
 	$raid_cancel = array();
 
+	$sql = sprintf(	"SELECT * FROM " . $phpraid_config['db_prefix'] . "raids".
+					" WHERE raid_id = %s ", quote_smart($raid_id));
+	$raidinfo_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+	$raidinfo_data = $db_raid->sql_fetchrow($raidinfo_result, true);
+	
+	$raid_min_lvl = $raidinfo_data['min_lvl'];	
+	$raid_max_lvl = $raidinfo_data['max_lvl'];
+	
 	/*******************************************************************************
-	 * 	HANDLE DRAFTED RAIDERS
+	 * 	
 	 ******************************************************************************/
 	// parse the signup array and seperate to classes or roles
-	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id=%s AND queue='0' AND cancel='0'", quote_smart($raid_id));
+	$sql = sprintf(	"SELECT * FROM " . $phpraid_config['db_prefix'] . "signups".
+					" WHERE raid_id = %s ", quote_smart($raid_id));
 	$signups_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	while($signups = $db_raid->sql_fetchrow($signups_result, true))
 	{
+		$signup_signup_id = $signups['signup_id'];
+		$signup_char_id = $signups['char_id'];
+		$signup_profile_id = $signups['profile_id'];
+		$signup_raid_id = $signups['raid_id'];
+		$signup_comments = $signups['comments'];
+		$signup_signupstatus = get_signup_status($signup_signup_id);
+		$signup_timestamp = $signups['timestamp'];
+		
+		//Get Spec Information.
+		$signup_selected_spec = $signups['selected_spec'];		
+		
 		$race = '';
 		$name = '';
 		$team_name = '';
+		
+
 
 		// okay, push the value into the array after we
 		// get all the character information from the database
@@ -258,11 +187,12 @@ if($mode == 'view')
 		 * are available to each class of user ($user_perm_group) by commenting and uncommenting
 		 * the available buttons in signup_flow.php.
 		 **********************/
-		// allow queue swapping
-		$actions = '';
-		$actions = signedUpFlow($user_perm_group, $phpraid_config, $data, $raid_id, $phprlang, $sort_mode, $sort_descending, $signups);
+		if ($raid_mark_status == "0")
+		{
+			$actions = get_SignUp_Buttons($profile_id, $priv_raids, $signup_profile_id, $signup_signup_id, $signup_raid_id, $signup_signupstatus);
+		}
 
-		$time = new_date('Y/m/d H:i:s',$signups['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+		$time = get_date_wrmformat($signup_timestamp);
 		$date = $time;
 
 		// Get the proper race/gender image into the $race variable.
@@ -277,19 +207,17 @@ if($mode == 'view')
 						$race = '<img src="templates/' . $phpraid_config['template'] . $race_gender_data['image'] . '" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang[$global_race['lang_index']].'\');" onMouseout="hideddrivetip();" alt="'.$phprlang[$global_race['lang_index']].' '.$phprlang[$global_gender['lang_index']].'">';
 					}					
 
-		$comments = escapePOPUP(scrub_input($signups['comments']));
+		$comments = escapePOPUP(scrub_input($signup_comments));
 
-		if(strlen_wrap($signups['comments'], "UTF-8") > 25)
-			$comments = '<a href="#" onMouseover="fixedtooltip(\'<span class=tooltip_title>'.$phprlang['comments'].'</span><br>'.$comments.'\',this,event,\'150\')" onMouseout="delayhidetip();">' . substr_wrap($signups['comments'], 0, 22, "UTF-8") . '...</a>';
+		if(strlen_wrap($signup_comments, "UTF-8") > 25)
+			$comments = '<a href="#" onMouseover="fixedtooltip(\'<span class=tooltip_title>'.$phprlang['comments'].'</span><br>'.$comments.'\',this,event,\'150\')" onMouseout="delayhidetip();">' . substr_wrap($signup_comments, 0, 22, "UTF-8") . '...</a>';
 		else
-			$comments = UBB(scrub_input($signups['comments']));
+			$comments = UBB(scrub_input($signup_comments));
 
 		if(strlen_wrap($comments, "UTF-8") == 0)
 			$comments = '-';
 
-		//Get Spec Information.
-		$spec = $signups['selected_spec'];
-		
+
 		$sql = sprintf("SELECT role_id,lang_index FROM " . $phpraid_config['db_prefix'] . "class_role WHERE class_id = %s and subclass = %s", quote_smart($data['class']), quote_smart($data['pri_spec']));
 		$result_spec_lang = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		$spec_lang_data = $db_raid->sql_fetchrow($result_spec_lang, true);
@@ -310,11 +238,11 @@ if($mode == 'view')
 			if($sec_spec_role == $global_role['role_id'])
 				$sec_spec_role_name = $global_role['role_name'];
 			
-		if ($spec == $data['pri_spec'])
+		if ($signup_selected_spec == $data['pri_spec'])
 			$pri_spec = "<b>" . $pri_spec_role_name . ":" . $phprlang[$pri_spec_lang_index] . "</b>";
 		else
 			$pri_spec = $pri_spec_role_name . ":" . $phprlang[$pri_spec_lang_index];
-		if ($spec == $data['sec_spec'])
+		if ($signup_selected_spec == $data['sec_spec'])
 			$sec_spec = "<b>" . $sec_spec_role_name . ":" . $phprlang[$sec_spec_lang_index] . "</b>";
 		else
 			$sec_spec = $sec_spec_role_name . ":" . $phprlang[$sec_spec_lang_index];
@@ -332,328 +260,134 @@ if($mode == 'view')
 		
 		$guildname = '?';
 
-		if($priv_raids == 1 || $user_perm_group['RL'] == 1)
+		$name .= check_dupe($data['profile_id'], $raid_id);
+		
+		// Get the Guild Name to Display instead of Just the ID
+		$sql = sprintf("SELECT guild_name FROM " . $phpraid_config['db_prefix'] . "guilds WHERE guild_id=%s",quote_smart($data['guild']));
+		$guild_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+		$guild_data = $db_raid->sql_fetchrow($guild_result, true);
+		$guildname = $guild_data['guild_name'];
+
+		if ($signup_signupstatus == "00")
 		{
-			$name .= check_dupe($data['profile_id'], $raid_id);
-			// Get the Guild Name to Display instead of Just the ID
-			$sql = sprintf("SELECT guild_name FROM " . $phpraid_config['db_prefix'] . "guilds WHERE guild_id=%s",quote_smart($data['guild']));
-			$guild_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-			$guild_data = $db_raid->sql_fetchrow($guild_result, true);
-			$guildname = $guild_data['guild_name'];
-		}
-
-		// now that we have the row, figure out what class or role and push into corresponding array
-		if ($phpraid_config['raid_view_type'] == 'by_class')
-		{		
-			foreach ($wrm_global_classes as $global_class)
-			{
-				if ($data['class'] == $global_class['class_id'])
-				{
-					$class = ' <img src="templates/' . $phpraid_config['template'] . '/'. $global_class['image'] .'" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang[$global_class['lang_index']].'\');" onMouseout="hideddrivetip();" alt="'.$phprlang[$global_class['lang_index']].'">';
-					array_push($class_info[$global_class['class_id']],
-						array('ID'=>$data['char_id'],'Arcane'=>$arcane,'Fire'=>$fire,'Nature'=>$nature,'Frost'=>$frost,'Shadow'=>$shadow,'Pri_Spec'=>$pri_spec,
-							  'Sec_Spec'=>$sec_spec,'Race'=>$race,'Class'=>$class,'Name'=>$name,'Comments'=>$comments,'Level'=>$data['lvl'],'Buttons'=>$actions,
-							  'Date'=>$date,'Time'=>$time,'Team Name'=>$team_name,'Guild'=>$guildname));
-				}	
-			}
-		}
-		else
-		{
-			foreach ($wrm_global_classes as $global_class)
-				if ($data['class'] == $global_class['class_id'])
-					$class = ' <img src="templates/' . $phpraid_config['template'] . '/'. $global_class['image'] .'" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang[$global_class['lang_index']].'\');" onMouseout="hideddrivetip();" alt="'.$phprlang[$global_class['lang_index']].'">';
-					
-			// Get Role attached to primary spec by looking up in class/role table.
-			$sql = sprintf("SELECT role_id FROM " . $phpraid_config['db_prefix'] . "class_role WHERE class_id=%s and subclass=%s",quote_smart($data['class']),quote_smart($spec));
-			$role_name_data_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-			$role_name_data = $db_raid->sql_fetchrow($role_name_data_result, true);
-			$role_id = $role_name_data['role_id'];
-			foreach ($wrm_global_roles as $global_role)
-				if ($role_id == $global_role['role_id'])
-					array_push($role_info[$global_role['role_id']],
-						array('ID'=>$data['char_id'],'Arcane'=>$arcane,'Fire'=>$fire,'Nature'=>$nature,'Frost'=>$frost,'Shadow'=>$shadow,'Pri_Spec'=>$pri_spec,
-							  'Sec_Spec'=>$sec_spec,'Race'=>$race,'Class'=>$class,'Name'=>$name,'Comments'=>$comments,'Level'=>$data['lvl'],'Buttons'=>$actions,
-							  'Date'=>$date,'Time'=>$time,'Team Name'=>$team_name,'Guild'=>$guildname));
-		}
-	}
-
-	/*******************************************************************************
-	 * 	HANDLE QUEUED RAIDERS
-	 ******************************************************************************/
-	// parse the queue array and seperate to classes
-	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id=%s AND queue='1' AND cancel='0'",quote_smart($raid_id));
-	$signups_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-	while($signups = $db_raid->sql_fetchrow($signups_result, true))
-	{
-		// okay, push the value into the array after we
-		// get all the character information from the database
-		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id=%s",quote_smart($signups['char_id']));
-		$data_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-		$data = $db_raid->sql_fetchrow($data_result, true);
-
-		$comments = escapePOPUP(scrub_input($signups['comments']));
-
-		if(strlen_wrap($signups['comments'], "UTF-8") > 25)
-			$comments = '<a href="#" onMouseover="fixedtooltip(\'<span class=tooltip_title>'.$phprlang['comments'].'</span><br>'.$comments.'\',this,event,\'150\')" onMouseout="delayhidetip();">' . substr_wrap($signups['comments'], 0, 22, "UTF-8") . '...</a>';
-		else
-			$comments = UBB(scrub_input($signups['comments']));
-
-		if(strlen_wrap($comments, "UTF-8") == 0)
-			$comments = '-';
-
-		$name = $data['name'];
-
-		$time = new_date('Y/m/d H:i:s',$signups['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']);
-		$date = $time;
-
-		// Get the proper race/gender image into the $race variable.
-		foreach($wrm_global_races as $global_race)
-			if ($data['race'] == $global_race['race_id'])
-				foreach($wrm_global_gender as $global_gender)
-					if ($data['gender'] == $global_gender['gender_id'])
+				// now that we have the row, figure out what class or role and push into corresponding array
+				if ($phpraid_config['raid_view_type'] == 'by_class')
+				{		
+					foreach ($wrm_global_classes as $global_class)
 					{
-						$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "race_gender WHERE race_id = %s and gender_id = %s", quote_smart($global_race['race_id']),quote_smart($global_gender['gender_id']));
-						$result_race_gender = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-						$race_gender_data = $db_raid->sql_fetchrow($result_race_gender, true);
-						$race = '<img src="templates/' . $phpraid_config['template'] . $race_gender_data['image'] . '" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang[$global_race['lang_index']].'\');" onMouseout="hideddrivetip();" alt="'.$phprlang[$global_race['lang_index']].' '.$phprlang[$global_gender['lang_index']].'">';
+						if ($data['class'] == $global_class['class_id'])
+						{
+							$class = ' <img src="templates/' . $phpraid_config['template'] . '/'. $global_class['image'] .'" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang[$global_class['lang_index']].'\');" onMouseout="hideddrivetip();" alt="'.$phprlang[$global_class['lang_index']].'">';
+							array_push($class_info[$global_class['class_id']],
+								array(
+										'ID'=>$data['char_id'],
+										'Arcane'=>$arcane,
+										'Fire'=>$fire,
+										'Nature'=>$nature,
+										'Frost'=>$frost,
+										'Shadow'=>$shadow,
+										'Pri_Spec'=>$pri_spec,
+										'Sec_Spec'=>$sec_spec,
+										'Race'=>$race,
+										'Class'=>$class,
+										'Name'=>$name,
+										'Comments'=>$comments,
+										'Level'=>$data['lvl'],
+										'Buttons'=>$actions,
+										'Date'=>$date,
+										'Time'=>$time,
+										'Team Name'=>$team_name,
+										'Guild'=>$guildname
+								)
+							);
+						}	
 					}
-
-		foreach ($wrm_global_classes as $global_class)
-			if ($data['class'] == $global_class['class_id'])
-				$class = ' <img src="templates/' . $phpraid_config['template'] . '/'. $global_class['image'] .'" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang[$global_class['lang_index']].'\');" onMouseout="hideddrivetip();" alt="'.$phprlang[$global_class['lang_index']].'">';
-
-		/**********************
-		 * Buttons applicable to users who are Queued to be Drafted for a raid.  Buttons for Drafted Characters
-		 * are set above and buttons for Cancelled Character signups are below.
-		 *
-		 * This goes to Flow control, see signup_flow.php.
-		 *
-		 * The function below controls the logic of what users, admins and raid leaders can do
-		 * to a character that is queued to be drafted for a raid.  The default flow control for this
-		 * application is documented in the docs directory under "User_Signup_Flow.txt", if
-		 * you wish to change the Signup Flow, please read that document and modify what buttons
-		 * are available to each class of user ($user_perm_group) by commenting and uncommenting
-		 * the available buttons in signup_flow.php.
-		 **********************/
-		// allow queue swapping
-		$actions = '';
-		$actions=queuedFlow($user_perm_group, $phpraid_config, $data, $raid_id, $phprlang, $sort_mode, $sort_descending, $signups);
-
-		if ($phpraid_config['enable_armory'])
-			$name = get_armorychar($name, $data['guild']);
-
-		if($priv_raids == 1 || $user_perm_group['RL'] == 1)
+				}
+				else
+				{
+					foreach ($wrm_global_classes as $global_class)
+						if ($data['class'] == $global_class['class_id'])
+							$class = ' <img src="templates/' . $phpraid_config['template'] . '/'. $global_class['image'] .'" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang[$global_class['lang_index']].'\');" onMouseout="hideddrivetip();" alt="'.$phprlang[$global_class['lang_index']].'">';
+							
+					// Get Role attached to primary spec by looking up in class/role table.
+					$sql = sprintf("SELECT role_id FROM " . $phpraid_config['db_prefix'] . "class_role WHERE class_id=%s and subclass=%s",quote_smart($data['class']),quote_smart($signup_selected_spec));
+					$role_name_data_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+					$role_name_data = $db_raid->sql_fetchrow($role_name_data_result, true);
+					$role_id = $role_name_data['role_id'];
+					foreach ($wrm_global_roles as $global_role)
+						if ($role_id == $global_role['role_id'])
+							array_push($role_info[$global_role['role_id']],
+								array(
+										'ID'=>$data['char_id'],
+										'Arcane'=>$arcane,
+										'Fire'=>$fire,
+										'Nature'=>$nature,
+										'Frost'=>$frost,
+										'Shadow'=>$shadow,
+										'Pri_Spec'=>$pri_spec,
+										'Sec_Spec'=>$sec_spec,
+										'Race'=>$race,
+										'Class'=>$class,
+										'Name'=>$name,
+										'Comments'=>$comments,
+										'Level'=>$data['lvl'],
+										'Buttons'=>$actions,
+										'Date'=>$date,
+										'Time'=>$time,
+										'Team Name'=>$team_name,
+										'Guild'=>$guildname
+								)
+							);
+				}
+		}	
+		if ($signup_signupstatus == "01")
 		{
-			$name .= check_dupe($data['profile_id'], $raid_id);
-			// Get the Guild Name to Display instead of Just the ID
-			$sql = sprintf("SELECT guild_name FROM " . $phpraid_config['db_prefix'] . "guilds WHERE guild_id=%s",quote_smart($data['guild']));
-			$guild_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-			$guild_data = $db_raid->sql_fetchrow($guild_result, true);
-			$guildname = $guild_data['guild_name'];
+			array_push($raid_queue, 
+				array(
+					'ID'=>$data['char_id'],
+					'Race'=>$race,
+					'Class'=>$class,
+					'Name'=>$name,
+					'Level'=>$data['lvl'],
+					'Pri_Spec'=>$data['pri_spec'],
+					'Sec_Spec'=>$data['sec_spec'],
+					'Buttons'=>$actions,
+					'Date'=>$date,
+					'Time'=>$time,
+					'Comments'=>$comments,
+					'Guild'=>$guildname,
+					'Role'=>$role,
+					'Signup_Spec'=>$signup_spec_output,
+				)
+			);
 		}
-
-		//Create the Signup Spec Dropdown.
-		$sql = sprintf("SELECT role_id, lang_index FROM " . $phpraid_config['db_prefix'] . "class_role WHERE class_id = %s and subclass = %s", quote_smart($data['class']), quote_smart($data['pri_spec']));
-		$result_spec_lang = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-		$spec_lang_data = $db_raid->sql_fetchrow($result_spec_lang, true);
-		$pri_spec_lang = $spec_lang_data['lang_index'];
-		$pri_spec_role = $spec_lang_data['role_id'];
-		foreach ($wrm_global_roles as $global_role)
-			if($pri_spec_role == $global_role['role_id'])
-				$pri_spec_role_name = $global_role['role_name'];
-		
-		$sql = sprintf("SELECT role_id, lang_index FROM " . $phpraid_config['db_prefix'] . "class_role WHERE class_id = %s and subclass = %s", quote_smart($data['class']), quote_smart($data['sec_spec']));
-		$result_spec_lang = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-		$spec_lang_data = $db_raid->sql_fetchrow($result_spec_lang, true);
-		$sec_spec_lang = $spec_lang_data['lang_index'];
-		$sec_spec_role = $spec_lang_data['role_id'];
-		foreach ($wrm_global_roles as $global_role)
-			if($sec_spec_role == $global_role['role_id'])
-				$sec_spec_role_name = $global_role['role_name'];
-		
-		$form_use = "value=\"view.php?mode=switch_spec&amp;raid_id=" . $raid_id . "&amp;Sort=" . $sort_mode . "&amp;SortDescending=".$sort_descending."&amp;signup_id=" . $signups['signup_id'] . "&amp;spec=";
-
-		$signup_spec = "<option ";
-		if($signups['selected_spec'] == '' || $signups['selected_spec'] == $data['pri_spec'])
-			$signup_spec .= "SELECTED ";
-		$signup_spec .= $form_use.$data['pri_spec']."\">".$pri_spec_role_name.":".$phprlang[$pri_spec_lang]."</option>";
-		$role = $pri_spec_role_name;
-		if($data['sec_spec'] != '')
+		elseif ($signup_signupstatus == "10")
 		{
-			$signup_spec .= "<option ";
-			if($signups['selected_spec'] == $data['sec_spec'])
-			{
-				$signup_spec .= "SELECTED ";
-				$role = $sec_spec_role_name;
-			}
-			$signup_spec .= $form_use.$data['sec_spec']."\">".$sec_spec_role_name.":".$phprlang[$sec_spec_lang]."</option>";
+			array_push($raid_cancel, 
+				array(
+					'ID'=>$data['char_id'],
+					'Race'=>$race,
+					'Class'=>$class,
+					'Name'=>$name,
+					'Level'=>$data['lvl'],
+					'Pri_Spec'=>$data['pri_spec'],
+					'Sec_Spec'=>$data['sec_spec'],
+					'Buttons'=>$actions,
+					'Date'=>$date,
+					'Time'=>$time,
+					'Comments'=>$comments,
+					'Guild'=>$guildname,
+					'Role'=>$role,
+					'Signup_Spec'=>$signup_spec_output,
+				)
+			);
 		}
-		if(($user_perm_group['admin'])||($user_perm_group['RL'])||($_SESSION['profile_id'] == $data['profile_id']))		
-			$signup_spec_output = '<select name="signup_spec" onChange="MM_jumpMenu(\'self\',this,0)" class="form">'. $signup_spec . '</select>';		
-		else
-			$signup_spec_output = 'N/A';
-		
-		array_push($raid_queue, 
-			array(
-				'ID'=>$data['char_id'],
-				'Race'=>$race,
-				'Class'=>$class,
-				'Name'=>$name,
-				'Level'=>$data['lvl'],
-				'Pri_Spec'=>$data['pri_spec'],
-				'Sec_Spec'=>$data['sec_spec'],
-				'Buttons'=>$actions,
-				'Date'=>$date,
-				'Time'=>$time,
-				'Comments'=>$comments,
-				'Guild'=>$guildname,
-				'Role'=>$role,
-				'Signup_Spec'=>$signup_spec_output,
-			)
-		);
 	}
 
-	/*******************************************************************************
-	 * 	HANDLE CANCELLED RAIDERS
-	 ******************************************************************************/	
-	// parse the cancel array and seperate to classes
-	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id=%s AND queue='0' AND cancel='1'",quote_smart($raid_id));
-	$signups_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-	while($signups = $db_raid->sql_fetchrow($signups_result, true))
-	{
-		// okay, push the value into the array after we
-		// get all the character information from the database
-		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id=%s",quote_smart($signups['char_id']));
-		$data_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-		$data = $db_raid->sql_fetchrow($data_result, true);
-
-		$comments = escapePOPUP(scrub_input($signups['comments']));
-
-		if(strlen_wrap($signups['comments'], "UTF-8") > 25)
-			$comments = '<a href="#" onMouseover="fixedtooltip(\'<span class=tooltip_title>'.$phprlang['comments'].'</span><br>'.$comments.'\',this,event,\'150\')" onMouseout="delayhidetip();">' . substr_wrap($signups['comments'], 0, 22, "UTF-8") . '...</a>';
-		else
-			$comments = UBB(scrub_input($signups['comments']));
-
-		if(strlen_wrap($comments, "UTF-8") == 0)
-			$comments = '-';
-
-		$name = $data['name'];
-
-		$time = new_date('Y/m/d H:i:s',$signups['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']);
-		$date = $time;
-
-		// Get the proper race/gender image into the $race variable.
-		foreach($wrm_global_races as $global_race)
-			if ($data['race'] == $global_race['race_id'])
-				foreach($wrm_global_gender as $global_gender)
-					if ($data['gender'] == $global_gender['gender_id'])
-					{
-						$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "race_gender WHERE race_id = %s and gender_id = %s", quote_smart($global_race['race_id']),quote_smart($global_gender['gender_id']));
-						$result_race_gender = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-						$race_gender_data = $db_raid->sql_fetchrow($result_race_gender, true);
-						$race = '<img src="templates/' . $phpraid_config['template'] . $race_gender_data['image'] . '" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang[$global_race['lang_index']].'\');" onMouseout="hideddrivetip();" alt="'.$phprlang[$global_race['lang_index']].' '.$phprlang[$global_gender['lang_index']].'">';
-					}					
-		
-		foreach ($wrm_global_classes as $global_class)
-			if ($data['class'] == $global_class['class_id'])
-				$class = ' <img src="templates/' . $phpraid_config['template'] . '/'. $global_class['image'] .'" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang[$global_class['lang_index']].'\');" onMouseout="hideddrivetip();" alt="'.$phprlang[$global_class['lang_index']].'">';
-
-		/**********************
-		 * Buttons applicable to users who have canceled their signup for the Raid.  Buttons for Drafted
-		 * Characters and Queued Characters are above.
-		 *
-		 * This goes to Flow control, see signup_flow.php.
-		 *
-		 * The function below controls the logic of what users, admins and raid leaders can do
-		 * to a character who has cancelled their signup from a raid.  The default flow control for this
-		 * application is documented in the docs directory under "User_Signup_Flow.txt", if
-		 * you wish to change the Signup Flow, please read that document and modify what buttons
-		 * are available to each class of user ($user_perm_group) by commenting and uncommenting
-		 * the available buttons in signup_flow.php.
-		 **********************/
-		// allow queue swapping
-		$actions = '';
-		$actions=canceledFlow($user_perm_group, $phpraid_config, $data, $raid_id, $phprlang, $sort_mode, $sort_descending, $signups);
-
-		if ($phpraid_config['enable_armory'])
-			$name = get_armorychar($name, $data['guild']);
-		
-		if($priv_raids == 1 || $user_perm_group['RL'] == 1)
-		{
-			$name .= check_dupe($data['profile_id'], $raid_id);
-
-			// Get the Guild Name to Display instead of Just the ID
-			$sql = sprintf("SELECT guild_name FROM " . $phpraid_config['db_prefix'] . "guilds WHERE guild_id=%s",quote_smart($data['guild']));
-			$guild_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-			$guild_data = $db_raid->sql_fetchrow($guild_result, true);
-			$guildname = $guild_data['guild_name'];
-		}
-
-		//Create the Signup Spec Dropdown.
-		$sql = sprintf("SELECT role_id, lang_index FROM " . $phpraid_config['db_prefix'] . "class_role WHERE class_id = %s and subclass = %s", quote_smart($data['class']), quote_smart($data['pri_spec']));
-		$result_spec_lang = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-		$spec_lang_data = $db_raid->sql_fetchrow($result_spec_lang, true);
-		$pri_spec_lang = $spec_lang_data['lang_index'];
-		$pri_spec_role = $spec_lang_data['role_id'];
-		foreach ($wrm_global_roles as $global_role)
-			if($pri_spec_role == $global_role['role_id'])
-				$pri_spec_role_name = $global_role['role_name'];
-		
-		$sql = sprintf("SELECT role_id, lang_index FROM " . $phpraid_config['db_prefix'] . "class_role WHERE class_id = %s and subclass = %s", quote_smart($data['class']), quote_smart($data['sec_spec']));
-		$result_spec_lang = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-		$spec_lang_data = $db_raid->sql_fetchrow($result_spec_lang, true);
-		$sec_spec_lang = $spec_lang_data['lang_index'];
-		$sec_spec_role = $spec_lang_data['role_id'];
-		foreach ($wrm_global_roles as $global_role)
-			if($sec_spec_role == $global_role['role_id'])
-				$sec_spec_role_name = $global_role['role_name'];
-		
-		$form_use = "value=\"view.php?mode=switch_spec&amp;raid_id=" . $raid_id . "&amp;Sort=" . $sort_mode . "&amp;SortDescending=".$sort_descending."&amp;signup_id=" . $signups['signup_id'] . "&amp;spec=";
-
-		$signup_spec = "<option ";
-		if($signups['selected_spec'] == '' || $signups['selected_spec'] == $data['pri_spec'])
-			$signup_spec .= "SELECTED ";
-		$signup_spec .= $form_use.$data['pri_spec']."\">".$pri_spec_role_name.":".$phprlang[$pri_spec_lang]."</option>";
-		$role = $pri_spec_role_name;
-		if($data['sec_spec'] != '')
-		{
-			$signup_spec .= "<option ";
-			if($signups['selected_spec'] == $data['sec_spec'])
-			{
-				$signup_spec .= "SELECTED ";
-				$role = $sec_spec_role_name;
-			}
-			$signup_spec .= $form_use.$data['sec_spec']."\">".$sec_spec_role_name.":".$phprlang[$sec_spec_lang]."</option>";
-		}				
-		if(($user_perm_group['admin'])||($user_perm_group['RL'])||($_SESSION['profile_id'] == $data['profile_id']))		
-			$signup_spec_output = '<select name="signup_spec" onChange="MM_jumpMenu(\'self\',this,0)" class="form">'. $signup_spec . '</select>';		
-		else
-			$signup_spec_output = 'N/A';
-			
-		array_push($raid_cancel, 
-			array(
-				'ID'=>$data['char_id'],
-				'Race'=>$race,
-				'Class'=>$class,
-				'Name'=>$name,
-				'Level'=>$data['lvl'],
-				'Pri_Spec'=>$data['pri_spec'],
-				'Sec_Spec'=>$data['sec_spec'],
-				'Buttons'=>$actions,
-				'Date'=>$date,
-				'Time'=>$time,
-				'Comments'=>$comments,
-				'Guild'=>$guildname,
-				'Role'=>$role,
-				'Signup_Spec'=>$signup_spec_output,
-			)
-		);
-	}
-
-	if($priv_raids != 1 && $user_perm_group['RL'] != 1)
+	/*if($priv_raids != 1 && $user_perm_group['RL'] != 1)
 	{
 		hideCol('Guild');
-	}
+	}*/
 	
 	if ($phpraid_config['raid_view_type'] == 'by_class')
 	{
@@ -897,7 +631,8 @@ if($mode == 'view')
 
 	// check to see if they have permissions to signup
 	$show_signup = 1;
-	$raid_notice = "<a href=\"#signup\">" . $phprlang['view_ok'] . "</a>";
+	//raid_view.php?mode=view&raid_id=3#signup
+	$raid_notice = "<a href=\"raid_signup.php?mode=signup&raid_id=".$raid_id." #asignup\">" . $phprlang['view_ok'] . "</a>";
 
 	// check if raid is frozen
 	if($phpraid_config['disable_freeze'] == 0)
@@ -924,13 +659,12 @@ if($mode == 'view')
 	$sql = sprintf(	"SELECT * FROM " . $phpraid_config['db_prefix'] . "chars " .
 					"	WHERE profile_id=%s AND lvl<=%s AND lvl>=%s",
 					quote_smart($profile_id),quote_smart($raid_max_lvl),quote_smart($raid_min_lvl));
-	
 	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	$char_count = $db_raid->sql_numrows($result);
 	if($char_count <= 0)
 	{
 		$show_signup = 0;
-		$raid_notice = '<a href="profile.php?mode=view">' . $phprlang['view_create'] . '</a>';
+		$raid_notice = '<a href="profile_char.php?mode=view">' . $phprlang['view_create'] . '</a>';
 	}
 
 	// check if any of their characters belong to the guild that the raid force is specfiying.
@@ -952,7 +686,7 @@ if($mode == 'view')
 		if (!$char_in_guild_check)
 		{
 			$show_signup = 0;
-			$raid_notice = '<a href="profile.php?mode=view">' . $phprlang['view_create'] . '</a>';
+			$raid_notice = '<a href="profile_char.php?mode=view">' . $phprlang['view_create'] . '</a>';
 		}
 	}
 	
@@ -1045,6 +779,7 @@ if($mode == 'view')
 			'start_text' => $phprlang['view_start'] ,
 			'raid_start_time' => $raid_info_array['start_time'] ,
 			'signup_text' => $phprlang['view_signup'] ,
+			'raid_signup' => $raid_notice ,
 			'minlvl_text' => $phprlang['view_min_lvl'] ,
 			'raid_min_lvl' => $raid_info_array['min_lvl'] ,
 			'maxlvl_text' => $phprlang['view_max_lvl'] ,
@@ -1091,19 +826,19 @@ if($mode == 'view')
 	
 	
 	
-/**
- * 
- */
-require_once('./includes/page_header.php');
-
-// output
-if ($phpraid_config['raid_view_type'] == 'by_class')
-	$wrmsmarty->display('raid_view_class.html');
-else
-	$wrmsmarty->display('raid_view_role.html');	
-
-
-require_once('./includes/page_footer.php');	
+	/**
+	 * 
+	 */
+	require_once('./includes/page_header.php');
+	
+	// output
+	if ($phpraid_config['raid_view_type'] == 'by_class')
+		$wrmsmarty->display('raid_view_class.html');
+	else
+		$wrmsmarty->display('raid_view_role.html');	
+	
+	
+	require_once('./includes/page_footer.php');	
 }
 
 ?>

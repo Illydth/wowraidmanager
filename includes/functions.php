@@ -460,4 +460,9 @@ function get_db_size()
 	return $dbsize; //(Kilobytes)
 }
 
+function get_date_wrmformat($date)
+{
+	global $phpraid_config;
+	return (new_date('Y/m/d H:i:s', $date,$phpraid_config['timezone'] + $phpraid_config['dst']));
+}
 ?>

@@ -75,6 +75,18 @@ function raid_mark($raid_id)
 	}
 }
 
+function get_raid_mark_status($raid_id)
+{
+	global $phpraid_config, $db_raid;
+	
+	$sql = sprintf(	"SELECT `old` FROM " . $phpraid_config['db_prefix'] . "raids ".
+					" WHERE raid_id=%s", quote_smart($raid_id));
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+	$data = $db_raid->sql_fetchrow($result, true);
+
+	return $data['old'];
+}
+
 /**
  * Get all Information about the selected Raid
  * @param numeric $raid_id
@@ -470,13 +482,27 @@ function get_raidid_from_signup($signup_id)
 	global $db_raid, $phpraid_config;
 
 	$sql = sprintf(	"SELECT `priv` ".
-					" FROM `" . $phpraid_config['db_prefix'] . "signup`".
+					" FROM `" . $phpraid_config['db_prefix'] . "signups`".
 					" WHERE profile_id = %s", quote_smart($profile_id)
 			);
 	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	$data = $db_raid->sql_fetchrow($result, true);
 	
 	return ($data['raid_id']);			
+}
+
+function get_signup_status($signup_id)
+{
+	global $db_raid, $phpraid_config;
+
+	$sql = sprintf(	"SELECT `cancel`,`queue` ".
+					" FROM `" . $phpraid_config['db_prefix'] . "signups`".
+					" WHERE signup_id = %s", quote_smart($signup_id)
+			);
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+	$data = $db_raid->sql_fetchrow($result, true);
+	
+	return ($data['cancel'].$data['queue']);
 }
 
 ?>
