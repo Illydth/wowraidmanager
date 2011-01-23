@@ -300,6 +300,7 @@ $phprlang['dkp_link'] = '&raquo; DKP';
 $phprlang['bosstrack_link'] = '&raquo; Boss Kill Tracking';
 $phprlang['raidsarchive_link'] = '&raquo; Raids Archive';
 $phprlang['profile_char_link'] = '&raquo; My Characters';
+$phprlang['profile_raid_link'] = "&raquo; My Raids";
 
 // sorting information
 $phprlang['sort_text'] = 'Click here to sort by ';

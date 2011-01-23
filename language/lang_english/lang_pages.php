@@ -148,6 +148,12 @@ $phprlang['profile_level'] = 'Level';
 $phprlang['profile_name'] = 'Name';
 $phprlang['profile_raid'] = 'Raid Participation';
 $phprlang['profile_race'] = 'Race';
+$phprlang['profile_header_text'] = "my profile";
+$phprlang['profile_number_character'] = "Number of my Character";
+$phprlang['profile_number_signups_all'] = "Number of all signups";
+$phprlang['profile_number_signups_draft'] = "Number of signups draft";
+$phprlang['profile_number_signups_queue'] = "Number of signups queue";
+$phprlang['profile_number_signups_chancel'] = "Number of signups chancel";
 
 // raids
 $phprlang['raids_date'] = 'Date';

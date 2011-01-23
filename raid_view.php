@@ -840,5 +840,19 @@ if($mode == 'view')
 	
 	require_once('./includes/page_footer.php');	
 }
+elseif($mode == 'switch_spec')
+{
+	//Retrieve Values
+	$raid_id = scrub_input($_GET['raid_id']);
+	$signup_id = scrub_input($_GET['signup_id']);
+	$spec = scrub_input($_GET['spec']);
+	$sort_mode = scrub_input($_GET['Sort']);
+	$sort_descending = scrub_input($_GET['SortDescending']);
+	
+	// Update the Signups Table with the selected spec and forward back to the view page.
+	$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "signups set selected_spec=%s WHERE signup_id=%s", quote_smart($spec), quote_smart($signup_id));
+	$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 
+	header("Location: " . $pageURL . "?mode=view&raid_id=$raid_id&Sort=$sort_mode&SortDescending=$sort_descending");
+}
 ?>

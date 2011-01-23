@@ -132,7 +132,6 @@ INSERT INTO `wrm_menu_value` VALUES ('11','3','admin_style_conf','','0','1','adm
 INSERT INTO `wrm_menu_value` VALUES ('12','3','admin_menubar_mgt_link','','0','2','admin_style_menubar_mgt', 'admin_style_menubar_mgt.php?mode=view','','0','2','1');
 INSERT INTO `wrm_menu_value` VALUES ('13','4','admin_user_management','','0','1','admin_usermgt','admin_usermgt.php?mode=view','','0','2' ,'1');
 INSERT INTO `wrm_menu_value` VALUES ('14','4','admin_permissions','','0','2','admin_permissions','admin_permissions.php?mode=view','','0','2' ,'1');
-INSERT INTO `wrm_menu_value` VALUES ('15','4','admin_raid_signupgroups','','0','3','admin_raid_signupgroups','admin_raid_signupgroups.php?mode=view','','0','2' ,'1');
 INSERT INTO `wrm_menu_value` VALUES ('16','4','admin_user_settings','','0','4','admin_usersettings','admin_usersettings.php','','0','2' ,'1');
 INSERT INTO `wrm_menu_value` VALUES ('17','5','admin_datatablecfg_link','','0','1','admin_datatablecfg','admin_datatablecfg.php','','0','2' ,'1');
 INSERT INTO `wrm_menu_value` VALUES ('18','5','admin_rolecfg_link','','0','2','admin_rolecfg', 'admin_rolecfg.php?mode=view','','0','2' ,'1');
@@ -152,6 +151,7 @@ INSERT INTO `wrm_menu_value` VALUES ('49','7','raids_link','','0','9','raids','r
 INSERT INTO `wrm_menu_value` VALUES ('50','7','lua_output_link','','0','10','lua_output_new','lua_output_new.php?mode=lua','','0','6','1');
 INSERT INTO `wrm_menu_value` VALUES ('70','8','profile_link','','0','1','profile','profile.php?mode=view','','0','5','1');
 INSERT INTO `wrm_menu_value` VALUES ('71','8','profile_char_link','','0','2','profile_char','profile_char.php?mode=view','','0','5','1');
+INSERT INTO `wrm_menu_value` VALUES ('72','8','profile_raid_link','','0','3','profile_raid','profile_raid.php?mode=view','','0','5','1');
 
 -- Raid Permission Type Table Creation
 -- INSERT INTO `wrm_raid_permission_type` VALUES ( `raid_permission_type_id`, `raid_permission_type_name`,`lang_index`);

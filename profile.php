@@ -30,8 +30,6 @@
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *
 ****************************************************************************/
-$phprlang['profile_header_text'] = "my profile";
-$phprlang['profile_number_character'] = 'Number of Character';
 
 // commons
 define("IN_PHPRAID", true);	
@@ -59,6 +57,25 @@ $sql = sprintf(	"SELECT * FROM " . $phpraid_config['db_prefix'] . "chars " .
 $result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 $char_count = $db_raid->sql_numrows($result);
 
+$count_signups_draft = 0;
+$count_signups_queue = 0;
+$count_signups_chancel = 0;
+
+$sql = sprintf(	"SELECT * FROM " . $phpraid_config['db_prefix'] . "signups " .
+				" WHERE profile_id = %s", quote_smart($profile_id));
+$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+$count_signups_all = $db_raid->sql_numrows($result);
+while ($signups_data = $db_raid->sql_fetchrow($result, true))
+{
+	if ($signups_data['queue'] == "0" and $signups_data['cancel'] == "0")
+		$count_signups_draft++;
+
+	if ($signups_data['queue'] == "1" and $signups_data['cancel'] == "0")
+		$count_signups_queue++;
+		
+	if ($signups_data['queue'] == "0" and $signups_data['cancel'] == "1")
+		$count_signups_chancel++;				
+}
 
 $wrmsmarty->assign('profile_data',
 	array(
@@ -75,6 +92,15 @@ $wrmsmarty->assign('profile_data',
 		'statistics_header' => $phprlang['view_statistics_header'],
 		'profile_number_character_text' => $phprlang['profile_number_character'],
 		'profile_number_character_value' => $char_count,
+	
+		'count_signups_all_text' => $phprlang['profile_number_signups_all'],
+		'count_signups_all' => $count_signups_all,	
+		'count_signups_draft_text' => $phprlang['profile_number_signups_draft'],
+		'count_signups_draft' => $count_signups_draft,
+		'count_signups_queue_text' => $phprlang['profile_number_signups_queue'],
+		'count_signups_queue' => $count_signups_queue,
+		'count_signups_chancel_text' => $phprlang['profile_number_signups_chancel'],
+		'count_signups_chancel' => $count_signups_chancel,
 	
 		'button_submit' => $phprlang['submit'],
 		'button_reset' => $phprlang['reset']

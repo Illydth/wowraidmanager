@@ -1,0 +1,13 @@
+{* Smarty Template *}
+<div class="contentHeader">{$header_data.new_raids_header}</div>
+<br>
+<div class="contentBody">{include file='raids_table.html' raid_data=$new_data jump_menu=$current_jump_menu record_counts=$curr_record_counts}</div>
+<br>
+<div class="contentHeader">{$header_data.raid_header}</div>
+<br>
+
+{* Setup Raid Participation List *}
+<div class="contentBody">
+	{include file='raids_table.html' raid_data=$raid_data jump_menu=$raid_jump_menu record_counts=$raid_record_counts column_name=$raid_column_name}
+</div>
+<br>
