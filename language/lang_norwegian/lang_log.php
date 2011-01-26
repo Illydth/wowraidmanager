@@ -73,5 +73,5 @@ $phprlang['log_sort_header'] = 'Velg filter';
 $phprlang['log_create'] = '%s - %s: Bruker [<a href="users.php?mode=details&amp;user_id=%s">%s</a> (%s)] LAGET %s med ID [%s] og NAVN [%s]';
 $phprlang['log_delete'] = '%s - %s: Bruker [<a href="users.php?mode=details&amp;user_id=%s">%s</a> (%s)] SLETTET %s med NAVN [%s]';
 $phprlang['log_hack'] = '%s - %s: Bruker med IP [%s] FORSØKTE å hacke med [%s]';
-$phprlang['log_raid'] = '%s - %s: Bruker [<a href="users.php?mode=details&amp;user_id=%s">%s</a> (%s)] endret RAID <a href="view.php?mode=view&amp;raid_id=%s">%s %s</a> AV %s med CHARACTER %s - %s';
+$phprlang['log_raid'] = '%s - %s: Bruker [<a href="users.php?mode=details&amp;user_id=%s">%s</a> (%s)] endret RAID <a href="raid_view.php?mode=view&amp;raid_id=%s">%s %s</a> AV %s med CHARACTER %s - %s';
 ?>

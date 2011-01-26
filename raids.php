@@ -182,8 +182,8 @@ if(($_GET['mode'] == 'view') or isset($_GET['raids_del']) or isset($_GET['mark_r
 //		$location = '<a href="view.php?mode=view&amp;raid_id='.$data['raid_id'].'" onMouseover="ddrivetip('.$ddrivetiptxt.');" onMouseout="hideddrivetip();">'.$data['location'].'</a>';
 		
 		// convert unix timestamp to something readable
-		$start = new_date('Y/m/d H:i:s',$data['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
-		$invite = new_date('Y/m/d H:i:s',$data['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+		$invite = get_time_full($data['invite_time']);
+		$start = get_time_full($data['start_time']);
 		$date = $start;
 		
 		//Get Raid Total Counts
@@ -222,11 +222,11 @@ if(($_GET['mode'] == 'view') or isset($_GET['raids_del']) or isset($_GET['mark_r
 			$raid_role_array[$role_name['role_name']] = $raid_role_data['lmt'];
 			$role_color_count[$role_name['role_name']] = get_coloredcount($role_name['role_name'], $count[$raid_role_data['role_id']], $raid_role_array[$role_name['role_name']], $count2[$raid_role_data['role_id']]);
 		}
-					
-		$raid_date = new_date($phpraid_config['date_format'],$data['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
-		$raid_start_time = new_date($phpraid_config['time_format'],$data['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
-		$raid_invite_time = new_date($phpraid_config['time_format'],$data['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
-			
+
+		$raid_date = get_date($data['start_time']);
+		$raid_start_time = get_time_full($data['start_time']);
+		$raid_invite_time = get_time_full($data['invite_time']);
+		
 		$desc = scrub_input($data['description']);
 		$desc = str_replace("'", "\'", $desc);
 		$raid_txt_desc = "'<span class=tooltip_title>" . $phprlang['description'] ."</span><br>" . DEUBB2($desc);
@@ -1173,7 +1173,8 @@ elseif($_GET['mode'] == 'edit')
 			$min_lvl_value = $data['min_lvl'];
 			$max_lvl_value = $data['max_lvl'];
 			$location_value = UBB2($data['location']);
-			$date_value = new_date("m/d/Y",$data['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+			$date_value = get_date($data['start_time']);
+			//$date_value = new_date("m/d/Y",$data['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
 			if ($phpraid_config['ampm'] == '12')
 				$i_time_hour_value = new_date("h",$data['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
 			else

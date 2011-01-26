@@ -485,7 +485,7 @@ else
 }
 
 //Create Link back to the Raid View page.
-$raid_view_link = '<a href="view.php?mode=view&amp;raid_id=' . $raid_id . '">' . $phprlang['teams_raid_view_text'] . '</a>';
+$raid_view_link = '<a href="raid_view.php?mode=view&amp;raid_id=' . $raid_id . '">' . $phprlang['teams_raid_view_text'] . '</a>';
 
 require_once('./includes/page_header.php');
 $wrmsmarty->assign('header_data', 

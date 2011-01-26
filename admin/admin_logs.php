@@ -218,8 +218,8 @@ else
 	
 	while($data = $db_raid->sql_fetchrow($result, true))
 	{
-		$date = new_date($phpraid_config['date_format'],$data['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']);
-		$time = new_date($phpraid_config['time_format'],$data['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+		$date = get_date($data['timestamp']);
+		$time = get_time($data['timestamp']);
 
 		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "profile WHERE profile_id=%s", quote_smart($data['profile_id']));
 		$data_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
@@ -236,8 +236,8 @@ else
 	
 	while($data = $db_raid->sql_fetchrow($result, true))
 	{
-		$date = new_date($phpraid_config['date_format'],$data['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']);
-		$time = new_date($phpraid_config['time_format'],$data['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+		$date = get_date($data['timestamp']);
+		$time = get_time($data['timestamp']);
 
 		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "profile WHERE profile_id=%s", quote_smart($data['profile_id']));
 		$data_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
@@ -265,9 +265,9 @@ else
 	
 	while($data = $db_raid->sql_fetchrow($result, true))
 	{
-		$date = new_date($phpraid_config['date_format'],$data['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']);
-		$time = new_date($phpraid_config['time_format'],$data['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']);
-
+		$date = get_date($data['timestamp']);
+		$time = get_time($data['timestamp']);
+		
 		array_push($hack, sprintf($phprlang['log_hack'],$date,$time,$data['ip'],scrub_input($data['message'])));
 	}
 
@@ -279,8 +279,8 @@ else
 	
 	while($data = $db_raid->sql_fetchrow($result, true))
 	{
-		$date = new_date($phpraid_config['date_format'],$data['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']);
-		$time = new_date($phpraid_config['time_format'],$data['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+		$date = get_date($data['timestamp']);
+		$time = get_time($data['timestamp']);
 
 		//array_push($raid, sprintf($phprlang['log_create'],$date,$time,$data['profile_id'],$data['ip'],$data['raid_id'],$data['type'],$data['char_id']));
 		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id=%s",quote_smart($data['char_id']));
@@ -295,11 +295,24 @@ else
 		$data_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		$data_profdetail = $db_raid->sql_fetchrow($data_result);
 
-		$raiddatum = new_date($phpraid_config['date_format'],$data_raiddetail['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
-
-		array_push($raid, sprintf($phprlang['log_raid'],$date,$time,$data['profile_id'],$data_profdetail['username'],$data['ip'],$data['raid_id'],
-			$raiddatum,$data_raiddetail['location'],$data['type'],$data['char_id'],get_armorychar($data_userdetail['name'],$data_userdetail['guild'])));
-
+		$raiddatum = get_date($data_raiddetail['start_time']);
+		
+		array_push($raid, 
+						sprintf(
+								$phprlang['log_raid'],
+								$date,$time,
+								$data['profile_id'],
+								$data_profdetail['username'],
+								$data['ip'],
+								$data['raid_id'],
+								$raiddatum,
+								$data_raiddetail['location'],
+								$data['type'],
+								$data['char_id'],
+								get_armorychar($data_userdetail['name'],
+								$data_userdetail['guild'])
+							)
+					);
 	}
 
 	if($c_check == 'checked')

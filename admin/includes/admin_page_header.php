@@ -36,8 +36,8 @@ $priv_config=scrub_input($_SESSION['priv_configuration']);
 //$logged_in=scrub_input($_SESSION['session_logged_in']);
 
 // time variables
-$guild_time = new_date($phpraid_config['time_format'],time(),$phpraid_config['timezone'] + $phpraid_config['dst']);
-$guild_date = new_date($phpraid_config['date_format'],time(),$phpraid_config['timezone'] + $phpraid_config['dst']);
+$guild_date = get_date(time());
+$guild_time = get_time(time());
 
 if(($phpraid_config['disable'] == '1') AND ($priv_config == 1))
 {

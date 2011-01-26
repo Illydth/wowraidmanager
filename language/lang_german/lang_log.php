@@ -73,5 +73,5 @@ $phprlang['log_sort_header'] = 'Filteroptionen';
 $phprlang['log_create'] = '%s - %s: Benutzer [<a href="users.php?mode=details&amp;user_id=%s">%s</a> (%s)] ERZEUGTE %s mit ID [%s] und NAME [%s]';
 $phprlang['log_delete'] = '%s - %s: Benutzer [<a href="users.php?mode=details&amp;user_id=%s">%s</a> (%s)] LÖSCHTE %s mit NAME [%s]';
 $phprlang['log_hack'] = '%s - %s: Benutzer mit IP [%s] VERSUCHTE einen HACK mit[%s]';
-$phprlang['log_raid'] = '%s - %s: Benutzer [<a href="users.php?mode=details&amp;user_id=%s">%s</a> (%s)] änderte RAID <a href="view.php?mode=view&amp;raid_id=%s">%s %s</a> nach %s mit CHARAKTER %s - %s';
+$phprlang['log_raid'] = '%s - %s: Benutzer [<a href="users.php?mode=details&amp;user_id=%s">%s</a> (%s)] änderte RAID <a href="raid_view.php?mode=view&amp;raid_id=%s">%s %s</a> nach %s mit CHARAKTER %s - %s';
 ?>

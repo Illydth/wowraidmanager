@@ -192,7 +192,7 @@ if($mode == 'view')
 			$actions = get_SignUp_Buttons($profile_id, $priv_raids, $signup_profile_id, $signup_signup_id, $signup_raid_id, $signup_signupstatus);
 		}
 
-		$time = get_date_wrmformat($signup_timestamp);
+		$time = get_date($signup_timestamp);
 		$date = $time;
 
 		// Get the proper race/gender image into the $race variable.

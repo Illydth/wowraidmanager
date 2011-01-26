@@ -192,8 +192,8 @@ $raids_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_err
 while($raids = $db_raid->sql_fetchrow($raids_result, true)) 
 {
 	// Calculate the Invite and Start Time for the Raid.
-	$invitetime = new_date($phpraid_config['time_format'], $raids['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
-	$starttime = new_date($phpraid_config['time_format'], $raids['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+	$invitetime = get_time($raids['invite_time']);
+	$starttime = get_time($raids['start_time']);
 
 	$uid = scrub_input($_SESSION['profile_id']);
 	$issignedup = "";
@@ -368,8 +368,8 @@ if($db_raid->sql_numrows($result) > 0)
 	{
 		$db_raid->sql_rowseek($i, $result);
 		$data = $db_raid->sql_fetchrow($result, true);
-		$time = new_date($phpraid_config['time_format'], $data['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']);
-		$date = new_date($phpraid_config['date_format'], $data['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+		$time = get_time($data['timestamp']);
+		$date = get_date($data['timestamp']);
 
 		array_push($announcements,
 			array(

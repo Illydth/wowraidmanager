@@ -73,5 +73,5 @@ $phprlang['log_sort_header'] = 'Choose filter options';
 $phprlang['log_create'] = '%s - %s: User [<a href="users.php?mode=details&amp;user_id=%s">%s</a> (%s)] CREATED %s with ID [%s] and NAME [%s]';
 $phprlang['log_delete'] = '%s - %s: User [<a href="users.php?mode=details&amp;user_id=%s">%s</a> (%s)] DELETED %s with NAME [%s]';
 $phprlang['log_hack'] = '%s - %s: User with IP [%s] ATTEMPTED hack with [%s]';
-$phprlang['log_raid'] = '%s - %s: User [<a href="users.php?mode=details&amp;user_id=%s">%s</a> (%s)] altered RAID <a href="view.php?mode=view&amp;raid_id=%s">%s %s</a> BY %s with CHARACTER %s - %s';
+$phprlang['log_raid'] = '%s - %s: User [<a href="users.php?mode=details&amp;user_id=%s">%s</a> (%s)] altered RAID <a href="raid_view.php?mode=view&amp;raid_id=%s">%s %s</a> BY %s with CHARACTER %s - %s';
 ?>

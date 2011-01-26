@@ -54,4 +54,19 @@ function set_time($stamp)
 	global $phpraid_config;
 	return new_date($phpraid_config['time_format'],$stamp,$phpraid_config['timezone'] + $phpraid_config['dst']);
 }
+function get_date($stamp)
+{
+	global $phpraid_config;
+	return new_date($phpraid_config['date_format'],$stamp,$phpraid_config['timezone'] + $phpraid_config['dst']);
+}
+function get_time($stamp)
+{
+	global $phpraid_config;
+	return new_date($phpraid_config['time_format'],$stamp,$phpraid_config['timezone'] + $phpraid_config['dst']);
+}
+function get_time_full($stamp)
+{
+	global $phpraid_config;
+	return (new_date($phpraid_config['date_format'] . ' - ' . $phpraid_config['time_format'] , $stamp,$phpraid_config['timezone'] + $phpraid_config['dst']));
+}
 ?>

@@ -90,8 +90,8 @@ if($_GET['mode'] == 'view')
 			$message = substr_wrap($message, 0, 30, "UTF-8") . '...';
 
 		$posted_by = $data['posted_by'];
-		$date = new_date('Y/m/d H:i:s',$data['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']);
-		$time = new_date('Y/m/d H:i:s',$data['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+		$date = get_time_full($data['timestamp']);
+		$time = get_time_full($data['timestamp']);
 
 		$edit = '<a href="announcements.php?mode=edit&amp;id='.$id.'"><img src="templates/' . $phpraid_config['template'] .
 				'/images/icons/icon_edit.gif" border="0" onMouseover="ddrivetip(\'' . $phprlang['edit'] . '\');" onMouseout="hideddrivetip();" alt="edit icon"></a> ';

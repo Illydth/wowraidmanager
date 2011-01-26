@@ -30,7 +30,7 @@
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *
 ****************************************************************************/
-$phprlang['configuration_permission_new'] = "create new permission set";
+$phprlang['configuration_permission_new'] = "create new Permission Set";
 
 
 // commons

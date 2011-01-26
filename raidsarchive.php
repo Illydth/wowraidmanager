@@ -85,8 +85,8 @@ $sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "raids";
 $raids_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 
 while($raids = $db_raid->sql_fetchrow($raids_result, true)) {
-	$invite = new_date('Y/m/d H:i:s', $raids['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
-	$start = new_date('Y/m/d H:i:s', $raids['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+	$invite = get_time_full($raids['invite_time']);
+	$start = get_time_full($raids['start_time']);
 	$date = $start;
 	
 	// Initialize Count Array and Totals.

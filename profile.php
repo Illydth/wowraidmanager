@@ -86,7 +86,7 @@ $wrmsmarty->assign('profile_data',
 		'profile_username_text' => $phprlang['username'],
 		'profile_username_value' => $profile_data['username'],
 		'profile_last_login_time_text' => $phprlang['last_login_time'],
-		'profile_last_login_time_value' => get_date_wrmformat($profile_data['last_login_time']),
+		'profile_last_login_time_value' => get_date($profile_data['last_login_time']),
 		
 	
 		'statistics_header' => $phprlang['view_statistics_header'],
