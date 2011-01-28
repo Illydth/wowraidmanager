@@ -40,6 +40,8 @@ isset($_GET['mode']) ? $mode = scrub_input($_GET['mode']) : $mode = '';
 if($mode == '')
 	log_hack();
 
+$pageURL = 'admin_usermgt.php';
+$pageURL_details = 'admin_usermgt.php?mode=details&user_id=';	
 if($mode == 'view')
 {
 	/*************************************************************
@@ -226,9 +228,16 @@ else if($mode == 'details')
 
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE profile_id=%s",quote_smart($user_id));
 	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-	
 	while($data = $db_raid->sql_fetchrow($result, true))
 	{
+		$buttons_del  = '<a href="../profile_char.php?mode=remove&amp;n='.$data['name'].'&amp;char_id='.$data['char_id'].'&amp;user_id='.$data['profile_id'].'">';
+		$buttons_del .= '<img src="../templates/' . $phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''. $phprlang['delete'] .'\');" onMouseout="hideddrivetip();" alt="delete icon">';
+		$buttons_del .= '</a>';
+		
+		$buttons_edit  = '<a href="../profile_char.php?mode=edit&char_id='.$data['char_id'].'&guild='.$data['guild'].'&race='.$data['race'].'&class='.$data['class'].'">';
+		$buttons_edit .= '<img src="../templates/' . $phpraid_config['template'] . '/images/icons/icon_edit.gif" border="0" onMouseover="ddrivetip(\''. $phprlang['edit'] .'\');" onMouseout="hideddrivetip();" alt="edit icon">';
+		$buttons_edit .= '</a>';	
+			
 		array_push($chars,
 			array(
 				'ID'=>$data['char_id'],
@@ -245,7 +254,8 @@ else if($mode == 'details')
 				'Shadow'=>$data['shadow'],
 				'Pri_Spec'=>$data['pri_spec'],
 				'Sec_Spec'=>$data['sec_spec'],
-				'Buttons'=>'<a href="users.php?mode=remove_char&amp;n='.$data['name'].'&amp;char_id='.$data['char_id'].'&amp;user_id='.$data['profile_id'].'"><img src="../templates/' . $phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''. $phprlang['delete'] .'\');" onMouseout="hideddrivetip();" alt="delete icon"></a>')
+				'Buttons'=>$buttons_del . $buttons_edit
+				)
 			);
 	}
 

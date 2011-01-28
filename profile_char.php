@@ -690,5 +690,4 @@ if (($_GET['mode'] == 'new') or ($_GET['mode'] == 'edit'))
 	}
 }
 
-
 ?>
