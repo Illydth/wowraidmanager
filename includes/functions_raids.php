@@ -224,17 +224,11 @@ function get_array_allpossible_chars_from_RaidID($raid_id)
 			$char_check_resist = true;	
 		}
 		
-
-		//@ todo class
-		//not implement yet
 		//check: class
-		$char_check_class = true;
-		
-		//@ todo role
-		//not implement yet
-		//check: role
-		$char_check_role = true;
+		$char_check_class = char_raid_class_check($char_id, $raid_id);
 
+		//check: role
+		$char_check_role = char_raid_role_check($char_id, $raid_id);
 		
 		if ( ($char_check_lvl == true) and 
 			 ($char_check_resist == true) and
@@ -247,6 +241,61 @@ function get_array_allpossible_chars_from_RaidID($raid_id)
 	
 	}		
 	return ($chars);
+}
+
+//can selected char signup in selected raid
+//condition: if class limit (raid_class_lmt.lmt) > 0 
+function char_raid_class_check($char_id, $raid_id)
+{
+	global $db_raid, $phpraid_config;
+	
+	//what class is the selected char -> $data_char['class']
+	$sql = sprintf(	"SELECT `class` ".
+					" FROM `" . $phpraid_config['db_prefix'] . "chars`".
+					" WHERE char_id = %s", quote_smart($char_id)
+		);
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+	$data_char = $db_raid->sql_fetchrow($result, true);
+
+
+	$sql = sprintf(	"SELECT * ".
+					" FROM `" . $phpraid_config['db_prefix'] . "raid_class_lmt`".
+					" WHERE raid_id = %s, class_id = %s",quote_smart($raid_id), quote_smart($data_char['class'])
+		);
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+	$data_char = $db_raid->sql_fetchrow($result, true);
+	
+	if ($data_char['lmt'] > 0)
+		return true;
+	else 
+		return false;	
+}
+
+//can selected char signup in selected raid
+//condition: if role limit (raid_role_lmt.lmt) > 0
+function char_raid_role_check($char_id, $raid_id)
+{
+	global $db_raid, $phpraid_config;
+	
+	//what role is the selected char -> $data_char['role']	
+	$sql = sprintf(	"SELECT `role` ".
+					" FROM `" . $phpraid_config['db_prefix'] . "chars`".
+					" WHERE char_id = %s",quote_smart($char_id)
+		);
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+	$data_char = $db_raid->sql_fetchrow($result, true);
+
+	$sql = sprintf(	"SELECT * ".
+					" FROM `" . $phpraid_config['db_prefix'] . "raid_role_lmt`".
+					" WHERE raid_id = %s, role_id = %s", quote_smart($raid_id), quote_smart($data_char['role'])
+		);
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+	$data_role = $db_raid->sql_fetchrow($result, true);
+	
+	if ($data_role['lmt'] > 0)
+		return true;
+	else 
+		return false;	
 }
 
 function has_user_rights_change_comments($signup_id, $profile_id)
