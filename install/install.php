@@ -978,23 +978,23 @@ else if($step === "done")
 	$wrm_install = &new sql_db($phpraid_config['db_host'], $phpraid_config['db_user'], $phpraid_config['db_pass'], $phpraid_config['db_name']);
 	
 	$sql = 	sprintf("SELECT * "  .
-					" FROM " . 	$phpraid_config['db_name'] . "." . $phpraid_config['db_prefix'] . "config" .
+					" FROM `" . 	$phpraid_config['db_name'] . "`.`" . $phpraid_config['db_prefix'] . "config`" .
 					" WHERE  `config_name` = %s ", quote_smart("header_link")
 			);
 	$result = $wrm_install->sql_query($sql) or print_error($sql, $wrm_install->sql_error(), 1);
 
 	if($wrm_install->sql_numrows($result) == 0)
 	{
-		$sql = sprintf(	"INSERT INTO " . $phpraid_config['db_name'] . "." .$phpraid_config['db_prefix'] . "config".
+		$sql = sprintf(	"INSERT INTO `" . $phpraid_config['db_name'] . "`.`" .$phpraid_config['db_prefix'] . "config`".
 						" VALUES(%s,%s)", quote_smart("header_link"), quote_smart($wrmserver));
 		$wrm_install->sql_query($sql) or print_error($sql, $wrm_install->sql_error(), 1);
-		$sql = sprintf(	"INSERT INTO " . $phpraid_config['db_name'] . "." .$phpraid_config['db_prefix'] . "config".
+		$sql = sprintf(	"INSERT INTO `" . $phpraid_config['db_name'] . "`.`" .$phpraid_config['db_prefix'] . "config`".
 						" VALUES(%s,%s)", quote_smart("rss_site_url"), quote_smart($wrmserverfile));
 		$wrm_install->sql_query($sql) or print_error($sql, $wrm_install->sql_error(), 1);
-		$sql = sprintf(	"INSERT INTO " . $phpraid_config['db_name'] . "." .$phpraid_config['db_prefix'] . "config".
+		$sql = sprintf(	"INSERT INTO `" . $phpraid_config['db_name'] . "`.`" .$phpraid_config['db_prefix'] . "config`".
 						" VALUES(%s,%s)", quote_smart("rss_export_url"), quote_smart($wrmserverfile));
 		$wrm_install->sql_query($sql) or print_error($sql, $wrm_install->sql_error(), 1);
-		$sql = sprintf(	"INSERT INTO " . $phpraid_config['db_name'] . "." .$phpraid_config['db_prefix'] . "config".
+		$sql = sprintf(	"INSERT INTO `" . $phpraid_config['db_name'] . "`.`" .$phpraid_config['db_prefix'] . "config`".
 						" VALUES(%s,%s)", quote_smart("eqdkp_url"), quote_smart($eqdkp_url_link));
 		$wrm_install->sql_query($sql) or print_error($sql, $wrm_install->sql_error(), 1);
 //		$sql = sprintf(	"INSERT INTO " . $phpraid_config['db_name'] . "." .$phpraid_config['db_prefix'] . "config".
@@ -1003,10 +1003,10 @@ else if($step === "done")
 //		$sql = sprintf(	"INSERT INTO " . $phpraid_config['db_name'] . "." .$phpraid_config['db_prefix'] . "config".
 //						" VALUES(%s,%s)", quote_smart("armory_link"), quote_smart($default_armory_link_value));
 //		$wrm_install->sql_query($sql) or print_error($sql, $wrm_install->sql_error(), 1);
-		$sql = sprintf(	"INSERT INTO " . $phpraid_config['db_name'] . "." .$phpraid_config['db_prefix'] . "config".
+		$sql = sprintf(	"INSERT INTO `" . $phpraid_config['db_name'] . "`.`" .$phpraid_config['db_prefix'] . "config`".
 						" VALUES(%s,%s)", quote_smart("wrm_created_on"), quote_smart(time()));
 		$wrm_install->sql_query($sql) or print_error($sql, $wrm_install->sql_error(), 1);
-		$sql = sprintf(	"INSERT INTO " . $phpraid_config['db_name'] . "." .$phpraid_config['db_prefix'] . "config".
+		$sql = sprintf(	"INSERT INTO `" . $phpraid_config['db_name'] . "`.`" .$phpraid_config['db_prefix'] . "config`".
 						" VALUES(%s,%s)", quote_smart("wrm_updated_on"), quote_smart(time()));
 		$wrm_install->sql_query($sql) or print_error($sql, $wrm_install->sql_error(), 1);
 	}

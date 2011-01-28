@@ -328,7 +328,7 @@ if ($step == "2")
 	
 	// read auth_type from wrm db
 	$sql = 	sprintf("SELECT * "  .
-					" FROM " . 	$phpraid_config['db_name'] . "." . $phpraid_config['db_prefix'] . "config" .
+					" FROM `" . 	$phpraid_config['db_name'] . "`.`" . $phpraid_config['db_prefix'] . "config`" .
 					" WHERE  %s = `config_name`", quote_smart("auth_type")
 			);								
 	$result = $wrm_install->sql_query($sql) or print_error($sql, $wrm_install->sql_error(), 1);
@@ -372,7 +372,7 @@ if ($step == "2")
 		if ($auth_type == "iums")
 		{
 			$sql = 	sprintf("SELECT * "  .
-							" FROM " . 	$phpraid_config['db_name'] . "." . $phpraid_config['db_prefix'] . "config" .
+							" FROM `" . $phpraid_config['db_name'] . "`.`" . $phpraid_config['db_prefix'] . "config`" .
 							" WHERE  `%s` = %s", "config_name", quote_smart("db_prefix")
 					);			
 		}
@@ -381,7 +381,7 @@ if ($step == "2")
 		else if (($auth_type == "phpbb") or ($auth_type == "phpbb3"))
 		{
 			$sql = 	sprintf("SELECT * "  .
-							" FROM " . 	$phpraid_config['db_name'] . "." . $phpraid_config['db_prefix'] . "config" .
+							" FROM `" . $phpraid_config['db_name'] . "`.`" . $phpraid_config['db_prefix'] . "config`" .
 							" WHERE  `%s` = %s", "config_name", quote_smart("phpbb_prefix")
 					);			
 		}
@@ -390,7 +390,7 @@ if ($step == "2")
 		else if ($auth_type == "smf2")
 		{
 			$sql = 	sprintf("SELECT * "  .
-							" FROM " . 	$phpraid_config['db_name'] . "." . $phpraid_config['db_prefix'] . "config" .
+							" FROM `" . $phpraid_config['db_name'] . "`.`" . $phpraid_config['db_prefix'] . "config`" .
 							" WHERE  `%s` = %s", "config_name", quote_smart("smf_table_prefix")
 					);			
 		}
@@ -444,7 +444,7 @@ if ($step == "2")
 
 	//_auth_user_group
 	$sql = 	sprintf("SELECT * "  .
-					" FROM " . 	$phpraid_config['db_name'] . "." . $phpraid_config['db_prefix'] . "config" .
+					" FROM `" . $phpraid_config['db_name'] . "`.`" . $phpraid_config['db_prefix'] . "config`" .
 					" WHERE  `%s` = %s", ("config_name"), quote_smart($bridge_name."_auth_user_group")
 			);
 	$wrm_install->sql_query($sql) or print_error($sql, $wrm_install->sql_error(), 1);
@@ -458,7 +458,7 @@ if ($step == "2")
 	
 	//_alt_auth_user_class
 	$sql = 	sprintf("SELECT * "  .
-				" FROM " . 	$phpraid_config['db_name'] . "." . $phpraid_config['db_prefix'] . "config" .
+				" FROM `" . $phpraid_config['db_name'] . "`.`" . $phpraid_config['db_prefix'] . "config`" .
 				" WHERE  `%s` = %s", ("config_name"), quote_smart($bridge_name."_alt_auth_user_class")
 		);
 	$wrm_install->sql_query($sql) or print_error($sql, $wrm_install->sql_error(), 1);
@@ -486,7 +486,7 @@ if ($step == "3")
 	//$wrm_install = &new sql_db($phpraid_config['db_host'], $phpraid_config['db_user'], $phpraid_config['db_pass'], $phpraid_config['db_name']);
 	
 	$sql = 	sprintf("SELECT * "  .
-					" FROM " . 	$phpraid_config['db_name'] . "." . $phpraid_config['db_prefix'] . "config" .
+					" FROM `" . $phpraid_config['db_name'] . "`.`" . $phpraid_config['db_prefix'] . "config`" .
 					" WHERE  `%s` = %s", "config_name", quote_smart("wrm_created_on")
 			);
 	$wrm_install->sql_query($sql) or print_error($sql, $wrm_install->sql_error(), 1);
@@ -504,7 +504,7 @@ if ($step == "3")
 	}
 	else
 	{
-		$sql = 	sprintf("UPDATE " . $phpraid_config['db_name'] . "." . $phpraid_config['db_prefix'] . "config" .
+		$sql = 	sprintf("UPDATE `" . $phpraid_config['db_name'] . "`.`" . $phpraid_config['db_prefix'] . "config`" .
 						" SET `config_value` = %s WHERE %s = `config_name`", quote_smart(time()), quote_smart("wrm_updated_on"));
 		$wrm_install->sql_query($sql) or print_error($sql, $wrm_install->sql_error(), 1);
 	}
