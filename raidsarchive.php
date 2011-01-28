@@ -84,11 +84,8 @@ $raid_loop_prev = 0;
 $sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "raids";
 $raids_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 
-while($raids = $db_raid->sql_fetchrow($raids_result, true)) {
-	$invite = get_time_full($raids['invite_time']);
-	$start = get_time_full($raids['start_time']);
-	$date = $start;
-	
+while($raids = $db_raid->sql_fetchrow($raids_result, true)) 
+{
 	// Initialize Count Array and Totals.
 	foreach ($wrm_global_classes as $global_class)
 	{
@@ -115,23 +112,31 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true)) {
 	$priv_profile=scrub_input($_SESSION['priv_profile']);
 	$profile_id=scrub_input($_SESSION['profile_id']);
 
-	// check if signed up
-	// precendence -> cancelled signup, signed up, raid frozen, open for signup
-	if($logged_in == 1 && $priv_profile == 1) 
-	{
-	//	if(is_char_cancel($profile_id, $raids['raid_id']))
-	//		$info = '<img src="templates/' . $phpraid_config['template'] . '/images/icons/cancel.gif" border="0" height="14" width="14" onMouseover="ddrivetip(\'' . $phprlang['cancel_msg'] . '\');" onMouseout="hideddrivetip();" alt="cancel icon">';
-	//	else if(is_char_signed($profile_id, $raids['raid_id']))
-	//		$info = '<img src="templates/' . $phpraid_config['template'] . '/images/icons/check_mark.gif" border="0" height="14" width="14" onMouseover="ddrivetip(\'' . $phprlang['signed_up'] . '\');" onMouseout="hideddrivetip();" alt="check mark">';
-//		if(check_frozen($raids['raid_id']) && $phpraid_config['disable_freeze'] == 0)
-//			$info = '<img src="templates/' . $phpraid_config['template'] . '/images/icons/frozen.gif" border="0" height="14" width="14" onMouseover="ddrivetip(\'' . $phprlang['frozen_msg'] . '\');" onMouseout="hideddrivetip();" alt="frozen">';
-	//	else
-	//		$info = '<a href="view.php?mode=view&amp;raid_id=' . $raids['raid_id'] . '#signup">'. $phprlang['signup'] .'</a>';
-	}
+	$invite = get_time_full($raids['invite_time']);
+	$start = get_time_full($raids['start_time']);
+	$date = $start;
+	// convert unix timestamp to something readable
+	$raid_date = get_date($raids['start_time']);
+	$raid_start_time = get_time_full($raids['start_time']);
+	$raid_invite_time = get_time_full($raids['invite_time']);
 
 	$desc = scrub_input($raids['description']);
-	$ddrivetiptxt = "'<span class=tooltip_title>" . $phprlang['description'] ."</span><br>" . DEUBB2($desc) . "'";
-	$location = '<a href="raid_view.php?mode=view&amp;raid_id=' . $raids['raid_id'] . '" onMouseover="ddrivetip('.$ddrivetiptxt.');" onMouseout="hideddrivetip();">'.$raids['location'].'</a>';
+	$desc = str_replace("'", "\'", $desc);
+	$raid_txt_desc = "'<span class=tooltip_title>" . $phprlang['description'] ."</span><br>" . DEUBB2($desc);
+	$raid_txt_info = "------------------";
+	$raid_txt_info .= "<br>".$phprlang['location'].": ".$raids['location'];
+	$raid_txt_info .= "<br>".$phprlang['officer'].": ".$raids['officer'];
+	$raid_txt_info .= "<br>".$phprlang['date'].": ".$raid_date;
+	$raid_txt_info .= "<br>".$phprlang['start_time'].": ".$raid_start_time;
+	$raid_txt_info .= "<br>".$phprlang['invite_time'].": ".$raid_invite_time;
+	$raid_txt_info .= "<br>".$phprlang['totals'].": ".$total.'/'.$raids['max']  . ' (+' . $total2. ')';
+	$ddrivetiptxt = $raid_txt_desc.'<br>'. $raid_txt_info."'";
+	$ddrivetiptxt = get_raid_tooltip($raids['raid_id']);
+	$location = '<a href="raid_view.php?mode=view&amp;raid_id='.$raids['raid_id'].'" onMouseover="ddrivetip('.$ddrivetiptxt.');" onMouseout="hideddrivetip();">'.$raids['location'].'</a>';
+	
+	//$desc = scrub_input($raids['description']);
+	//$ddrivetiptxt = "'<span class=tooltip_title>" . $phprlang['description'] ."</span><br>" . DEUBB2($desc) . "'";
+	//$location = '<a href="raid_view.php?mode=view&amp;raid_id=' . $raids['raid_id'] . '" onMouseover="ddrivetip('.$ddrivetiptxt.');" onMouseout="hideddrivetip();">'.$raids['location'].'</a>';
 	//$location = $raids['location'];
 	
 	// Now that we have the raid data, we need to retrieve limit data based upon Raid ID.
@@ -169,11 +174,11 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true)) {
 			//	'ID'=>$raids['raid_id'],
 				//'Signup'=>$info,
 				'Force Name'=>$data['raid_force_name'],
-				'Date'=>$date,
+				'Date'=>$raid_date,
 				'Dungeon'=>$location,
 				//'Dungeon'=>$raids['location'],
-				'Invite Time'=>$invite,
-				'Start Time'=>$start,
+				'Invite Time'=>$raid_invite_time,
+				'Start Time'=>$raid_start_time,
 				'Creator'=>$raids['officer'],
 				'Totals'=>$total.'/'.$raids['max']  . '(+' . $total2. ')',
 			)

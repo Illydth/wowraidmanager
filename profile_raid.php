@@ -105,9 +105,9 @@ $raids_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_err
 
 while($raids = $db_raid->sql_fetchrow($raids_result, true))
 {
-	$invite = get_time_full($raids['invite_time']);
-	$start = get_time_full($raids['start_time']);
-	$date = $start;
+	$raid_date = get_date($raids['start_time']);
+	$raid_start_time = get_time_full($raids['start_time']);
+	$raid_invite_time = get_time_full($raids['invite_time']);
 	
 	// Initialize Count Array and Totals.
 	foreach ($wrm_global_classes as $global_class)
@@ -155,8 +155,7 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true))
 		}
 	}
 
-	$desc = scrub_input($raids['description']);
-	$ddrivetiptxt = "'<span class=tooltip_title>" . $phprlang['description'] ."</span><br>" . DEUBB2($desc) . "'";
+	$ddrivetiptxt = get_raid_tooltip($raids['raid_id']);
 	$location = '<a href="raid_view.php?mode=view&amp;raid_id=' . $raids['raid_id'] . '" onMouseover="ddrivetip('.$ddrivetiptxt.');" onMouseout="hideddrivetip();">'.$raids['location'].'</a>';
 	
 	// Now that we have the raid data, we need to retrieve limit data based upon Raid ID.
@@ -205,10 +204,10 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true))
 				'ID'=>$raids['raid_id'],
 				'Signup'=>$info,
 				'Force Name'=>$force_name,
-				'Date'=>$date,
+				'Date'=>$raid_date,
 				'Dungeon'=>$location,
-				'Invite Time'=>$invite,
-				'Start Time'=>$start,
+				'Invite Time'=>$raid_invite_time,
+				'Start Time'=>$raid_start_time,
 				'Creator'=>$raids['officer'],
 				'Totals'=>$total.'/'.$raids['max']  . '(+' . $total2. ')',
 			)
@@ -298,15 +297,16 @@ $wrmsmarty->assign('header_data',
 		
 		//$desc = strip_tags($data['description']);
 		//$desc = UBB($desc);
-		$desc = scrub_input($data['description']);
-		$ddrivetiptxt = "'<span class=tooltip_title>" . $phprlang['description'] ."</span><br>" . DEUBB2($desc) . "'";
+		//$desc = scrub_input($data['description']);
+		//$ddrivetiptxt = "'<span class=tooltip_title>" . $phprlang['description'] ."</span><br>" . DEUBB2($desc) . "'";
+		$ddrivetiptxt = get_raid_tooltip($data['raid_id']);
 		$location = '<a href="raid_view.php?mode=view&amp;raid_id='.$data['raid_id'].'"
 					 onMouseover="ddrivetip('.$ddrivetiptxt.');" onMouseout="hideddrivetip();">'.$data['location'].'</a>';
 
 		// convert unix timestamp to something readable
-		$invite = get_time_full($data['invite_time']);
-		$start = get_time_full($data['start_time']);
-		$date = $start;
+		$raid_date = get_date($data['start_time']);
+		$raid_start_time = get_time_full($data['start_time']);
+		$raid_invite_time = get_time_full($data['invite_time']);
 
 		//Get Raid Total Counts
 		$count = get_char_count($data['raid_id'], $type='');
@@ -356,10 +356,10 @@ $wrmsmarty->assign('header_data',
 			array_push($raid_list,
 				array(
 					'ID'=>$data['raid_id'],
-					'Date'=>$date,
+					'Date'=>$raid_date,
 					'Dungeon'=>$location,
-					'Invite Time'=>$invite,
-					'Start Time'=>$start,
+					'Invite Time'=>$raid_invite_time,
+					'Start Time'=>$raid_start_time,
 					'Creator'=>$data['officer'],
 					'Totals'=>$total.'/'.$data['max']  . '(+' . $total2. ')',
 					'Buttons'=>''

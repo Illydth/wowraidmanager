@@ -460,4 +460,35 @@ function get_db_size()
 	return $dbsize; //(Kilobytes)
 }
 
+/**
+ * Tooltip
+ */
+function get_raid_tooltip($raid_id)
+{
+	global $db_raid,$phpraid_config,$phprlang;
+	
+	//$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "raids";
+	$sql =	sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raids ".
+					" WHERE raid_id=%s",quote_smart($raid_id));
+	$raids_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+	$raids = $db_raid->sql_fetchrow($raids_result, true); 
+
+	$desc = scrub_input($raids['description']);
+	$desc = str_replace("'", "\'", $desc);
+	$raid_txt_desc = "'<span class=tooltip_title>" . $phprlang['description'] ."</span><br>" . DEUBB2($desc);
+	
+	$raid_txt_info = "------------------";
+	$raid_txt_info .= "<br>".$phprlang['location'].": ". $raids['location'];
+	$raid_txt_info .= "<br>".$phprlang['officer'].": ". $raids['officer'];
+	$raid_txt_info .= "<br>".$phprlang['date'].": ". get_date($raids['start_time']);
+	$raid_txt_info .= "<br>".$phprlang['start_time'].": " . get_time_full($raids['start_time']);
+	$raid_txt_info .= "<br>".$phprlang['invite_time'].": " . get_time_full($raids['invite_time']);
+	$raid_txt_info .= "<br>".$phprlang['raid_force_name'] . ": " . $raids['raid_force_name'];
+	$raid_txt_info .= "<br>".$phprlang['totals'].": ".$total.'/' . $raids['max']  . ' (+' . $total2. ')';
+	
+	$ddrivetiptxt = $raid_txt_desc.'<br>'. $raid_txt_info."'";
+
+	return ($ddrivetiptxt);
+}
+
 ?>
