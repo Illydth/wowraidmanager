@@ -81,7 +81,7 @@ INSERT INTO `wrm_acl_permission` (`permission_type_id`, `permission_value_id`) V
 INSERT INTO `wrm_acl_permission` (`permission_type_id`, `permission_value_id`) VALUES ('3','6');
 
 -- Add Column Header Data - Admin_Menubar1 View
-DELETE FROM `wrmtest`.`wrm_column_headers` WHERE `wrm_column_headers`.`view_name` = 'admin_menubar1';
+DELETE FROM `wrm_column_headers` WHERE `wrm_column_headers`.`view_name` = 'admin_menubar1';
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
 VALUES (NULL , 'admin_menubar1', 'ID', '1', '1', NULL, 'id', NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
@@ -92,8 +92,8 @@ INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible
 VALUES (NULL , 'admin_menubar1', 'Button', '1', '4', NULL, 'buttons', NULL);
 
 -- Modify Column Header Data - Admin_Permissions View
-DELETE FROM `wrmtest`.`wrm_column_headers` WHERE `wrm_column_headers`.`view_name` = 'permissions1';
-DELETE FROM `wrmtest`.`wrm_column_headers` WHERE `wrm_column_headers`.`view_name` = 'admin_permissions1';
+DELETE FROM `wrm_column_headers` WHERE `wrm_column_headers`.`view_name` = 'permissions1';
+DELETE FROM `wrm_column_headers` WHERE `wrm_column_headers`.`view_name` = 'admin_permissions1';
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
 VALUES (NULL , 'admin_permissions1', 'ID', '1', '1', NULL, 'id', NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
@@ -102,6 +102,25 @@ INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible
 VALUES (NULL , 'admin_permissions1', 'Description', '1', '3', NULL, 'description', NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
 VALUES (NULL , 'admin_permissions1', 'buttons', '1', '13', NULL, 'buttons', NULL);
+
+-- Modify/Add Column Header Data - Announcements View
+DELETE FROM `wrm_column_headers` WHERE `wrm_column_headers`.`view_name` = 'announcements1';
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
+VALUES (NULL , 'announcements1', 'ID', '1', '1', NULL, 'id', NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
+VALUES (NULL , 'announcements1', 'Title', '1', '2', NULL, 'title', NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
+VALUES (NULL , 'announcements1', 'Message', '1', '3', NULL, 'message', NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
+VALUES (NULL , 'announcements1', 'Posted By', '1', '4', NULL, 'posted_by', NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
+VALUES (NULL , 'announcements1', 'Create Date', '1', '5', NULL, 'create_date', 'wrmdate');
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
+VALUES (NULL , 'announcements1', 'Create Time', '1', '6', NULL, 'create_time', 'wrmtime');
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
+VALUES (NULL , 'announcements1', 'visible', '1', '7', NULL, 'visible', NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
+VALUES (NULL , 'announcements1', 'Buttons', '1', '8', NULL, 'buttons', NULL);
 
 -- Menu Type Data
 -- INSERT INTO `wrm_menu_type` ( `menu_type_id`, `menu_type_title`,`menu_type_title_alt`,`show_menu_type_title_alt`, `lang_index`,`show_area`) 
@@ -207,5 +226,8 @@ INSERT INTO `wrm_acl_raid_permission` VALUES ('12','3');
 
 DROP TABLE IF EXISTS `wrm_permissions`;
 DROP TABLE IF EXISTS `wrm_acl_raid_signup_group`;
+
+-- Add Colum in Table `announcements`
+ALTER TABLE `wrm_announcements` ADD `visible` INT( 2 ) NOT NULL default '1';
 
 INSERT INTO `wrm_version` VALUES ('4.2.0','Version 4.2.0 of WoW Raid Manager');

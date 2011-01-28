@@ -6,6 +6,7 @@ CREATE TABLE  `wrm_announcements` (
   `message` text NOT NULL,
   `timestamp` varchar(255) NOT NULL default '',
   `posted_by` varchar(255) NOT NULL default '',
+  `visible` INT( 2 ) NOT NULL default '1',
   PRIMARY KEY  (`announcements_id`)
 ) ;
 

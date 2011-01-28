@@ -120,17 +120,6 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true))
 	$raid_start_time = get_time_full($raids['start_time']);
 	$raid_invite_time = get_time_full($raids['invite_time']);
 
-	$desc = scrub_input($raids['description']);
-	$desc = str_replace("'", "\'", $desc);
-	$raid_txt_desc = "'<span class=tooltip_title>" . $phprlang['description'] ."</span><br>" . DEUBB2($desc);
-	$raid_txt_info = "------------------";
-	$raid_txt_info .= "<br>".$phprlang['location'].": ".$raids['location'];
-	$raid_txt_info .= "<br>".$phprlang['officer'].": ".$raids['officer'];
-	$raid_txt_info .= "<br>".$phprlang['date'].": ".$raid_date;
-	$raid_txt_info .= "<br>".$phprlang['start_time'].": ".$raid_start_time;
-	$raid_txt_info .= "<br>".$phprlang['invite_time'].": ".$raid_invite_time;
-	$raid_txt_info .= "<br>".$phprlang['totals'].": ".$total.'/'.$raids['max']  . ' (+' . $total2. ')';
-	$ddrivetiptxt = $raid_txt_desc.'<br>'. $raid_txt_info."'";
 	$ddrivetiptxt = get_raid_tooltip($raids['raid_id']);
 	$location = '<a href="raid_view.php?mode=view&amp;raid_id='.$raids['raid_id'].'" onMouseover="ddrivetip('.$ddrivetiptxt.');" onMouseout="hideddrivetip();">'.$raids['location'].'</a>';
 	

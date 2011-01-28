@@ -344,7 +344,7 @@ $wrmsmarty->assign('calendar_data',
 // get announcements
 $announcements = array();
 $announcement_header=$phprlang['announcements_header'];
-$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "announcements";
+$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "announcements " . " WHERE visible = '1'";
 $result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 if($db_raid->sql_numrows($result) > 0)
 {

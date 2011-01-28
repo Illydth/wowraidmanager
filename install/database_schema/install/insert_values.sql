@@ -64,7 +64,9 @@ VALUES (NULL , 'announcements1', 'Create Date', '1', '5', NULL, 'create_date', '
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
 VALUES (NULL , 'announcements1', 'Create Time', '1', '6', NULL, 'create_time', 'wrmtime');
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'announcements1', 'Buttons', '1', '7', NULL, 'buttons', NULL);
+VALUES (NULL , 'announcements1', 'visible', '1', '7', NULL, 'visible', NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
+VALUES (NULL , 'announcements1', 'Buttons', '1', '8', NULL, 'buttons', NULL);
 -- Column Header Data - DKP1 View
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
 VALUES (NULL , 'dkp1', 'ID', '1', '1', NULL, 'id', NULL);
