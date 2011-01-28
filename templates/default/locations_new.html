@@ -65,32 +65,6 @@
           	<input name="number_max_chars" type="text" value="{$locations_new.number_max_chars}"  class="post" style="width:20px" maxlength="2">
           </td>
         </tr>
-      </table>
-    </td>
-   </tr>
-</table>
-</div>
-<br>
-<div class="contentHeader">{$locations_new.limits_header}</div><br>
-<div class="contentBody">
-  <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
-  <tr>
-    <td> 
-     <table width="100%" border="0" cellspacing="1" cellpadding="3" class="dataOutline">
-        {section name=class_data_sec loop=$class_data}
-	        <tr> 
-	            <td width="200" class="row1"><span class="headmed"><strong>{$class_data[class_data_sec].lang_id}</strong></span></td>
-	            <td class="row2">{$class_data[class_data_sec].class}</td>
-	        </tr>
-        {/section}
-        {section name=role_data_sec loop=$role_data}
-		    {if $role_data[role_data_sec].lang_id != ""}
-		        <tr> 
-		            <td width="200" class="row1"><span class="headmed"><strong>{$role_data[role_data_sec].lang_id}</strong></span></td>
-		            <td class="row2">{$role_data[role_data_sec].role}</td>
-		        </tr>
-		    {/if}
-        {/section}
         <tr>
             <td width="200" class="row1"><span class="headmed"><strong>{$locations_new.locked_text}</strong></span></td>
             <td class="row2">
@@ -99,9 +73,46 @@
         </tr>
       </table>
     </td>
-  </tr>
+   </tr>
 </table>
 </div>
+<br>
+<div class="contentHeader">{$locations_new.limits_header}</div>
+<table width="100%" border="0" cellspacing="1" cellpadding="3" class="dataOutline">
+<tr>
+<td>
+	<div class="contentHeader">{$locations_new.class_header}</div>
+</td>
+<td>
+	<div class="contentHeader">{$locations_new.role_header}</div>
+</td>
+</tr>
+<tr>
+<td>
+		<table width="100%" border="0" cellspacing="1" cellpadding="3" class="dataOutline">
+	    {section name=class_data_sec loop=$class_data}
+	        <tr> 
+	            <td width="200" class="row1"><span class="headmed"><strong>{$class_data[class_data_sec].lang_id}</strong></span></td>
+	            <td class="row2">{$class_data[class_data_sec].class}</td>
+	        </tr>
+        {/section}
+        </table>
+</td>
+<td valign="top">
+		<table width="100%" border="0" cellspacing="1" cellpadding="3" class="dataOutline">
+        {section name=role_data_sec loop=$role_data}
+		    {if $role_data[role_data_sec].lang_id != ""}
+		        <tr> 
+		            <td width="200" class="row1"><span class="headmed"><strong>{$role_data[role_data_sec].lang_id}</strong></span></td>
+		            <td class="row2">{$role_data[role_data_sec].role}</td>
+		        </tr>
+		    {/if}
+        {/section}
+        </table>
+</td>
+</tr>
+</table>
+
 <br>
 <div class="contentBody">
 	<div align="center" class="button">

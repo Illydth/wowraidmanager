@@ -698,6 +698,8 @@ if($_GET['mode'] != 'delete')
 			'selected_expansion' => $selected_expansion,
 			'array_raid_force' => $array_raid_force,
 			'selected_raid_force' => $selected_raid_force,
+			'class_header'=>$phprlang['class'],
+			'role_header'=>$phprlang['role'],
 		
 		)
 	);

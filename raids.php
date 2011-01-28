@@ -181,10 +181,7 @@ if(($_GET['mode'] == 'view') or isset($_GET['raids_del']) or isset($_GET['mark_r
 //		$ddrivetiptxt = "'<span class=tooltip_title>" . $phprlang['description'] ."</span><br>" . DEUBB2($desc) . "'";
 //		$location = '<a href="view.php?mode=view&amp;raid_id='.$data['raid_id'].'" onMouseover="ddrivetip('.$ddrivetiptxt.');" onMouseout="hideddrivetip();">'.$data['location'].'</a>';
 		
-		// convert unix timestamp to something readable
-		$invite = get_time_full($data['invite_time']);
-		$start = get_time_full($data['start_time']);
-		$date = $start;
+
 		
 		//Get Raid Total Counts
 		$count = get_char_count($data['raid_id'], $type='');
@@ -223,6 +220,7 @@ if(($_GET['mode'] == 'view') or isset($_GET['raids_del']) or isset($_GET['mark_r
 			$role_color_count[$role_name['role_name']] = get_coloredcount($role_name['role_name'], $count[$raid_role_data['role_id']], $raid_role_array[$role_name['role_name']], $count2[$raid_role_data['role_id']]);
 		}
 
+		// convert unix timestamp to something readable
 		$raid_date = get_date($data['start_time']);
 		$raid_start_time = get_time_full($data['start_time']);
 		$raid_invite_time = get_time_full($data['invite_time']);
@@ -231,11 +229,11 @@ if(($_GET['mode'] == 'view') or isset($_GET['raids_del']) or isset($_GET['mark_r
 		$desc = str_replace("'", "\'", $desc);
 		$raid_txt_desc = "'<span class=tooltip_title>" . $phprlang['description'] ."</span><br>" . DEUBB2($desc);
 		$raid_txt_info = "------------------";
-		$raid_txt_info .= "<br>".$phprlang['location'].":".$data['location'];
-		$raid_txt_info .= "<br>".$phprlang['officer'].":".$data['officer'];
-		$raid_txt_info .= "<br>".$phprlang['date'].":".$raid_date;
-		$raid_txt_info .= "<br>".$phprlang['start_time'].":".$raid_start_time;
-		$raid_txt_info .= "<br>".$phprlang['invite_time'].":".$raid_invite_time;
+		$raid_txt_info .= "<br>".$phprlang['location'].": ".$data['location'];
+		$raid_txt_info .= "<br>".$phprlang['officer'].": ".$data['officer'];
+		$raid_txt_info .= "<br>".$phprlang['date'].": ".$raid_date;
+		$raid_txt_info .= "<br>".$phprlang['start_time'].": ".$raid_start_time;
+		$raid_txt_info .= "<br>".$phprlang['invite_time'].": ".$raid_invite_time;
 		$raid_txt_info .= "<br>".$phprlang['totals'].": ".$total.'/'.$data['max']  . ' (+' . $total2. ')';
 //		$raid_txt_info .=
 		$ddrivetiptxt = $raid_txt_desc.'<br>'. $raid_txt_info."'";
@@ -246,11 +244,11 @@ if(($_GET['mode'] == 'view') or isset($_GET['raids_del']) or isset($_GET['mark_r
 			array_push($current,
 				array(
 					'ID'=>$data['raid_id'],
-					'Date'=>$date,
+					'Date'=>$raid_date,
 					'Force Name'=>$data['raid_force_name'],
 					'Dungeon'=>$location,
-					'Invite Time'=>$invite,
-					'Start Time'=>$start,
+					'Invite Time'=>$raid_invite_time,
+					'Start Time'=>$raid_start_time,
 					'Creator'=>$data['officer'],
 					'Totals'=>$total.'/'.$data['max']  . '(+' . $total2. ')',
 					'Buttons'=>$bd_edit . $bd_delete.$check_box,
@@ -267,11 +265,11 @@ if(($_GET['mode'] == 'view') or isset($_GET['raids_del']) or isset($_GET['mark_r
 			array_push($previous,
 				array(
 					'ID'=>$data['raid_id'],
-					'Date'=>$date,
+					'Date'=>$raid_date,
 					'Force Name'=>$force_name,
 					'Dungeon'=>UBB2($location),
-					'Invite Time'=>$invite,
-					'Start Time'=>$start,
+					'Invite Time'=>$raid_invite_time,
+					'Start Time'=>$raid_start_time,
 					'Creator'=>$data['officer'],
 					'Totals'=>$total.'/'.$data['max']  . '(+' . $total2. ')',
 					'Buttons'=> $mark_new . $old_delete
@@ -288,11 +286,11 @@ if(($_GET['mode'] == 'view') or isset($_GET['raids_del']) or isset($_GET['mark_r
 			array_push($recurring,
 				array(
 					'ID'=>$data['raid_id'],
-					'Date'=>$date,
+					'Date'=>$raid_date,
 					'Force Name'=>$force_name,
 					'Dungeon'=>UBB2($location),
-					'Invite Time'=>$invite,
-					'Start Time'=>$start,
+					'Invite Time'=>$raid_invite_time,
+					'Start Time'=>$raid_start_time,
 					'Creator'=>$data['officer'],
 					'Totals'=>$total.'/'.$data['max']  . '(+' . $total2. ')',
 					'Buttons'=> $bd_delete,
@@ -867,6 +865,8 @@ elseif($_GET['mode'] == 'new')
 				'recur_interval_text'=>$phprlang['recur_interval'],
 				'recur_length'=>$recur_length,
 				'recur_length_text'=>$phprlang['recur_length'],
+				'class_header'=>$phprlang['class'],
+				'role_header'=>$phprlang['role'],
 				'button_submit' => $phprlang['submit'],
 				'button_reset' => $phprlang['reset']
 			)
@@ -1445,6 +1445,8 @@ elseif($_GET['mode'] == 'edit')
 				'maxlvl_text'=>$phprlang['raids_max_lvl'],
 				'raid_force'=>$raid_force_box,
 				'raid_force_text'=>$phprlang['raid_force_name'],
+				'class_header'=>$phprlang['class'],
+				'role_header'=>$phprlang['role'],
 				'button_submit' => $phprlang['submit'],
 				'button_reset' => $phprlang['reset']
 			)
