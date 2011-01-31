@@ -111,6 +111,7 @@ $phprlang['talent_tree'] = 'Talent Tree';
 $phprlang['display_text'] = 'Display Text';
 $phprlang['perm_mod'] = 'Update Permissions';
 $phprlang['all'] = 'All';
+$phprlang['resistance'] = "Resistance";
 
 // Reoccurance Text Items
 $phprlang['recur_header'] = 'Raid Recurrance Settings';
@@ -171,24 +172,19 @@ $phprlang['guild_name_missing'] = 'The Full Guild Name is missing.';
 $phprlang['guild_tag_missing'] = 'The Guild Tag is missing.';
 $phprlang['permissions_form_description'] = '您必須輸入描述';
 $phprlang['permissions_form_name'] = '您必須輸入名稱';
-$phprlang['profile_error_arcane'] = '祕法抗性只可能是數字';
 $phprlang['profile_error_class'] = '您必須選擇一個職業';
 $phprlang['profile_error_dupe'] = '這個名稱的角色已經存在';
-$phprlang['profile_error_fire'] = '火焰抗性只可能是數字';
-$phprlang['profile_error_frost'] = '冰霜抗性只可能是數字';
 $phprlang['profile_error_guild'] = '您必須選擇一個公會';
-$phprlang['profile_error_level'] = '等級必須是1-60之間的數字';
+$phprlang['profile_error_level'] = '等級必須是1-85之間的數字';
 $phprlang['profile_error_name'] = '您必須輸入一個名字';
-$phprlang['profile_error_nature'] = '自然抗性只可能是數字';
 $phprlang['profile_error_race'] = '您必須選擇一個種族';
 $phprlang['profile_error_role'] = '您必須輸入一個職責';
-$phprlang['profile_error_shadow'] = '暗影抗性只可能是抗性';
 $phprlang['raid_error_date'] = '您必須輸入一個正確的日期';
 $phprlang['raid_error_description'] = '必須輸入描述';
 $phprlang['raid_error_limits'] = '所有的團隊限制必須輸入且必須是數字';
 $phprlang['raid_error_location'] = '輸入一個團隊活動地點';
 $phprlang['view_error_signed_up'] = '這個角色報名過了';
-$phprlang['view_error_role_undef'] = '請確認該角色 <a href="profile.php?mode=view">Profile</a> 已設定職責。';
+$phprlang['view_error_role_undef'] = '請確認該角色 <a href="profile_char.php?mode=view">Profile</a> 已設定職責。';
 $phprlang['yes'] = '是';
 $phprlang['teams_error_no_team'] = 'No team is selected to add users to.';
 

@@ -111,6 +111,7 @@ $phprlang['talent_tree'] = 'Talent Tree';
 $phprlang['display_text'] = 'Display Text';
 $phprlang['perm_mod'] = 'Update Permissions';
 $phprlang['all'] = 'All';
+$phprlang['resistance'] = "Resistance";
 
 // Scheduler Texts
 $phprlang['scheduler_error_header'] = 'Scheduler Error';
@@ -165,24 +166,19 @@ $phprlang['guild_name_missing'] = 'Der Gildenname fehlt.';
 $phprlang['guild_tag_missing'] = 'Das Gildenkürzel fehlt.';
 $phprlang['permissions_form_description'] = 'Du musst eine Beschreibung eingeben';
 $phprlang['permissions_form_name'] = 'Du musst einen Namen eingeben';
-$phprlang['profile_error_arcane'] = 'Arkanwiderstand muss nummerisch sein';
 $phprlang['profile_error_class'] = 'Du musst eine Klasse auswählen';
 $phprlang['profile_error_dupe'] = 'Ein Charakter mit diesem Namen existiert bereits';
-$phprlang['profile_error_fire'] = 'Feuerwiderstand muss nummerisch sein';
-$phprlang['profile_error_frost'] = 'Frostwiderstand muss nummerisch sein';
 $phprlang['profile_error_guild'] = 'Du musst eine Gilde auswählen';
-$phprlang['profile_error_level'] = 'Stufe muss nummerisch und zwischen 1 und 80 sein';
+$phprlang['profile_error_level'] = 'Levelstufe muss nummerisch sein';
 $phprlang['profile_error_name'] = 'Du musst einen Namen eingeben';
-$phprlang['profile_error_nature'] = 'Naturwiderstand muss nummerisch sein';
 $phprlang['profile_error_race'] = 'Du musst eine Rasse auswählen';
 $phprlang['profile_error_role'] = 'Du musst eine Rolle auswählen';
-$phprlang['profile_error_shadow'] = 'Schattenwiderstand muss nummerisch sein';
 $phprlang['raid_error_date'] = 'Du musst ein gültiges Datum eingeben';
 $phprlang['raid_error_description'] = 'Du musst eine Beschreibung eingeben';
 $phprlang['raid_error_limits'] = 'Alle Raid-Begrenzungen müssen eingegeben werden und nummerisch sein';
 $phprlang['raid_error_location'] = 'Du musst eine Raidinstanz eingeben';
 $phprlang['view_error_signed_up'] = 'Du hast dich bereits mit diesem Charakter angemeldet';
-$phprlang['view_error_role_undef'] = 'Bitte weise deinem Charakter im <a href="profile.php?mode=view">Profil</a> erst eine Rolle zu';
+$phprlang['view_error_role_undef'] = 'Bitte weise deinem Charakter im <a href="profile_char.php?mode=view">Profil</a> erst eine Rolle zu';
 $phprlang['yes'] = 'Ja';
 $phprlang['teams_error_no_team'] = 'No team is selected to add users to.';
 

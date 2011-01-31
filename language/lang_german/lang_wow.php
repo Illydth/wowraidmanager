@@ -118,6 +118,13 @@ $phprlang['profile_frost'] = 'Frostwiderstand';
 $phprlang['profile_nature'] = 'Naturwiderstand';
 $phprlang['profile_shadow'] = 'Schattenwiderstand';
 
+//error message
+$phprlang['profile_error_arcane'] = 'Arkanwiderstand muss nummerisch sein';
+$phprlang['profile_error_fire'] = 'Feuerwiderstand muss nummerisch sein';
+$phprlang['profile_error_frost'] = 'Frostwiderstand muss nummerisch sein';
+$phprlang['profile_error_nature'] = 'Naturwiderstand muss nummerisch sein';
+$phprlang['profile_error_shadow'] = 'Schattenwiderstand muss nummerisch sein';
+
 // expansions
 $phprlang['exp_generic_wow'] = 'Generic World of Warcraft';
 $phprlang['exp_burning_crusade'] = 'The Burning Crusade';

@@ -157,22 +157,22 @@ function get_array_userchars_from_RaidID($raid_id, $profile_id)
 	global $db_raid, $phpraid_config; 
 	$array_char_all = array();
 	$array_char_ProfilID = array();
-	
+
 	$array_char_all =  get_array_allpossible_chars_from_RaidID($raid_id);
-
-	for ($i=1; $i < count($array_char_all)+1;$i++ )
+	
+	foreach ($array_char_all as $char_id => $char_name) 
 	{
-		$sql = sprintf(	"SELECT `char_id`,`profile_id`,`name` ".
+		$sql = sprintf(	"SELECT `profile_id` ".
 						" FROM `" . $phpraid_config['db_prefix'] . "chars`".
-						" WHERE name = %s", quote_smart($array_char_all[$i])
+						" WHERE `name` = %s", quote_smart($char_name)
 				);
-
 		$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		$array_data = $db_raid->sql_fetchrow($result, true);
 	
 		if ($profile_id == $array_data['profile_id'])
-			$array_char_ProfilID[$array_data['char_id']] = $array_data['name'];
-		 
+		{
+			$array_char_ProfilID[$char_id] = $char_name;
+		}
 	}
 	
 	if (count($array_char_ProfilID) != 0)
@@ -225,10 +225,10 @@ function get_array_allpossible_chars_from_RaidID($raid_id)
 		}
 		
 		//check: class
-		$char_check_class = char_raid_class_check($char_id, $raid_id);
+		$char_check_class = char_raid_class_check($array_char['char_id'], $raid_id);
 
 		//check: role
-		$char_check_role = char_raid_role_check($char_id, $raid_id);
+		$char_check_role = char_raid_role_check($array_char['char_id'], $raid_id);
 		
 		if ( ($char_check_lvl == true) and 
 			 ($char_check_resist == true) and
@@ -236,6 +236,7 @@ function get_array_allpossible_chars_from_RaidID($raid_id)
 			 ($char_check_role == true)
 			)
 		{
+			//echo $array_char['char_id'] . $array_char['name']."<br>";
 			$chars[$array_char['char_id']] = $array_char['name'];
 		}
 	
@@ -250,19 +251,19 @@ function char_raid_class_check($char_id, $raid_id)
 	global $db_raid, $phpraid_config;
 	
 	//what class is the selected char -> $data_char['class']
-	$sql = sprintf(	"SELECT `class` ".
+	$sql_1 = sprintf(	"SELECT `class` ".
 					" FROM `" . $phpraid_config['db_prefix'] . "chars`".
 					" WHERE char_id = %s", quote_smart($char_id)
 		);
-	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+	$result = $db_raid->sql_query($sql_1) or print_error($sql_1, $db_raid->sql_error(), 1);
 	$data_char = $db_raid->sql_fetchrow($result, true);
 
 
 	$sql = sprintf(	"SELECT * ".
 					" FROM `" . $phpraid_config['db_prefix'] . "raid_class_lmt`".
-					" WHERE raid_id = %s, class_id = %s",quote_smart($raid_id), quote_smart($data_char['class'])
+					" WHERE raid_id = %s AND class_id = %s",quote_smart($raid_id), quote_smart($data_char['class'])
 		);
-	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+	$result = $db_raid->sql_query($sql) or print_error($sql_1."<br>".$sql, $db_raid->sql_error(), 1);
 	$data_char = $db_raid->sql_fetchrow($result, true);
 	
 	if ($data_char['lmt'] > 0)
@@ -277,25 +278,54 @@ function char_raid_role_check($char_id, $raid_id)
 {
 	global $db_raid, $phpraid_config;
 	
-	//what role is the selected char -> $data_char['role']	
-	$sql = sprintf(	"SELECT `role` ".
+	//read Char Talents (the first, second Talents)	
+	$sql = sprintf(	"SELECT `pri_spec`,`sec_spec` ".
 					" FROM `" . $phpraid_config['db_prefix'] . "chars`".
 					" WHERE char_id = %s",quote_smart($char_id)
 		);
 	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	$data_char = $db_raid->sql_fetchrow($result, true);
-
+	
+	$char_talent_first = $data_char['pri_spec'];
+	$char_talent_second = $data_char['sec_spec'];
+	
 	$sql = sprintf(	"SELECT * ".
-					" FROM `" . $phpraid_config['db_prefix'] . "raid_role_lmt`".
-					" WHERE raid_id = %s, role_id = %s", quote_smart($raid_id), quote_smart($data_char['role'])
+					" FROM `" . $phpraid_config['db_prefix'] . "class_role`".
+					" WHERE subclass = %s", 
+					quote_smart($char_talent_first)
 		);
 	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-	$data_role = $db_raid->sql_fetchrow($result, true);
+	$data_class_role = $db_raid->sql_fetchrow($result, true);
 	
-	if ($data_role['lmt'] > 0)
+	$char_role_first = $data_class_role['role_id'];
+	$char_role_second = "";
+	
+	if ($char_talent_second != "")
+	{
+		$sql = sprintf(	"SELECT * ".
+						" FROM `" . $phpraid_config['db_prefix'] . "class_role`".
+						" WHERE subclass = %s", 
+						quote_smart($char_talent_second)
+			);
+		$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+		$data_class_role = $db_raid->sql_fetchrow($result, true);
+		
+		$char_role_second = $data_class_role['role_id'];		
+	}
+	
+	$sql = sprintf(	"SELECT * ".
+					" FROM `" . $phpraid_config['db_prefix'] . "raid_role_lmt`".
+					" WHERE (role_id = %s or role_id = %s) and raid_id = %s", 
+					quote_smart($char_role_first),quote_smart($char_role_second),quote_smart($raid_id)
+		);
+	//echo $sql."<br>";
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+	$data_class_role = $db_raid->sql_fetchrow($result, true);
+		
+	//if ($data_class_role['lmt'] > 0)
 		return true;
-	else 
-		return false;	
+	//else 
+	//	return false;	
 }
 
 function has_user_rights_change_comments($signup_id, $profile_id)
@@ -360,10 +390,11 @@ function get_array_signup_type($signup_id, $profile_id)
 	global $db_raid, $phpraid_config,$phprlang;
 	
 	$signup_type = array();
-	$permission_type_id = get_permission_id($profile_id);
 	
 	if ($signup_id != "")
 	{
+		$permission_type_id = get_permission_id($profile_id);
+		
 		$sql = sprintf(	"SELECT * ".
 						" FROM `" . $phpraid_config['db_prefix'] . "signups`".
 						" WHERE signup_id = %s", quote_smart($signup_id)

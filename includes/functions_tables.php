@@ -38,7 +38,8 @@
 */
 function getVisibleColumns($view_name) 
 {
-	global $phpraid_config, $db_raid, $phprlang, $col_mod, $wrm_global_classes, $wrm_global_roles;
+	global $phpraid_config, $db_raid, $phprlang, $col_mod;
+	global $wrm_global_resistance, $wrm_global_classes, $wrm_global_roles;
 	
 	$table_headers = array();
 	$position_counter = 0; // Position addend that will incriment for classes and roles.
@@ -100,6 +101,25 @@ function getVisibleColumns($view_name)
 							'position'=>$data['position']+$position_counter,
 							'img_url'=>$global_class['image'],
 							'col_text'=>$global_class['lang_index'],
+							'format_code'=>$data['format_code'],
+							'default_sort'=>$data['default_sort'],
+						)
+					);	
+					$position_counter++;		
+				}
+			}
+			elseif ($repstr == 'resistance')
+			{
+				foreach ($wrm_global_resistance as $global_resistance)
+				{
+					//echo $global_resistance['resistance_name'];
+					array_push($table_headers,
+						array(
+							'column_name'=>$global_resistance['resistance_name'],
+							'visible'=>$visibility,
+							'position'=>$data['position']+$position_counter,
+							'img_url'=>$global_resistance['image'],
+							'col_text'=>$global_resistance['lang_index'],
 							'format_code'=>$data['format_code'],
 							'default_sort'=>$data['default_sort'],
 						)

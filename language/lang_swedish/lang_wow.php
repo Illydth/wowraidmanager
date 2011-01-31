@@ -118,6 +118,13 @@ $phprlang['resistance_frost'] = 'Frost Resistance';
 $phprlang['resistance_nature'] = 'Nature Resistance';
 $phprlang['resistance_shadow'] = 'Shadow Resistance';
 
+//error message
+$phprlang['profile_error_arcane'] = 'Arcane måste vara en siffra';
+$phprlang['profile_error_fire'] = 'Fire måste vara en siffra';
+$phprlang['profile_error_frost'] = 'Frost måste vara en siffra';
+$phprlang['profile_error_nature'] = 'Nature måste vara en siffra';
+$phprlang['profile_error_shadow'] = 'Shadow måste vara en siffra';
+
 // expansions
 $phprlang['exp_generic_wow'] = 'Generic World of Warcraft';
 $phprlang['exp_burning_crusade'] = 'The Burning Crusade';

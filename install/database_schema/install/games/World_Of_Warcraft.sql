@@ -358,3 +358,10 @@ INSERT INTO `wrm_race_gender` VALUES ('Troll', 'Male', '/images/faces/tr_male.gi
 INSERT INTO `wrm_race_gender` VALUES ('Troll', 'Female', '/images/faces/tr_female.gif');
 INSERT INTO `wrm_race_gender` VALUES ('Undead', 'Male', '/images/faces/un_male.gif');
 INSERT INTO `wrm_race_gender` VALUES ('Undead', 'Female', '/images/faces/un_female.gif');
+
+-- Resistance Data
+INSERT INTO `wrm_resistance` ( `resistance_name`,`lang_index`,`font_color`,`image`) VALUES ('arcane','arcane','CCFFCC','images/resistances/arcane_resistance.gif');
+INSERT INTO `wrm_resistance` ( `resistance_name`,`lang_index`,`font_color`,`image`) VALUES ('fire','fire','FF0000','images/resistances/fire_resistance.gif');
+INSERT INTO `wrm_resistance` ( `resistance_name`,`lang_index`,`font_color`,`image`) VALUES ('frost','frost','0000FF','images/resistances/frost_resistance.gif');
+INSERT INTO `wrm_resistance` ( `resistance_name`,`lang_index`,`font_color`,`image`) VALUES ('nature','nature','009900','images/resistances/nature_resistance.gif');
+INSERT INTO `wrm_resistance` ( `resistance_name`,`lang_index`,`font_color`,`image`) VALUES ('shadow','shadow','663366','images/resistances/shadow_resistance.gif');

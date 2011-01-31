@@ -111,6 +111,7 @@ $phprlang['talent_tree'] = 'Talent Tree';
 $phprlang['display_text'] = 'Display Text';
 $phprlang['perm_mod'] = 'Update Permissions';
 $phprlang['all'] = 'All';
+$phprlang['resistance'] = "Resistance";
 
 // Recurrance Text Items
 $phprlang['recur_header'] = 'Raid Recurrance Settings';
@@ -171,24 +172,19 @@ $phprlang['guild_name_missing'] = 'Fullt guild navn mangler.';
 $phprlang['guild_tag_missing'] = 'Guild taggen mangler.';
 $phprlang['permissions_form_description'] = 'Du må legge til en beskrivelse';
 $phprlang['permissions_form_name'] = 'Du må legge til et navn';
-$phprlang['profile_error_arcane'] = 'Arcane må være et tall';
 $phprlang['profile_error_class'] = 'Du må velge en class';
 $phprlang['profile_error_dupe'] = 'Dette navnet er allerede tatt';
-$phprlang['profile_error_fire'] = 'Fire må være et tall';
-$phprlang['profile_error_frost'] = 'Frost må være et tall';
 $phprlang['profile_error_guild'] = 'Du må velge et guild';
-$phprlang['profile_error_level'] = 'Level må være et tall mellom 1-80';
+$phprlang['profile_error_level'] = 'Level must be numeric';
 $phprlang['profile_error_name'] = 'Du må velge et navn';
-$phprlang['profile_error_nature'] = 'Nature må være et tall';
 $phprlang['profile_error_race'] = 'Du må velge en rase';
 $phprlang['profile_error_role'] = 'Du må velge en rolle';
-$phprlang['profile_error_shadow'] = 'Shadow må være et tall';
 $phprlang['raid_error_date'] = 'Du må sette en skikkelig dato';
 $phprlang['raid_error_description'] = 'Du må ha en beskrivelse';
 $phprlang['raid_error_limits'] = 'Alle limits må være tall og fyllt ut';
 $phprlang['raid_error_location'] = 'Du må ha et raid sted';
 $phprlang['view_error_signed_up'] = 'Du har allerede siget opp med den characteren.';
-$phprlang['view_error_role_undef'] = 'Sørg for at characteren har en definert rolle i  <a href="profile.php?mode=view">Profilen</a>.';
+$phprlang['view_error_role_undef'] = 'Sørg for at characteren har en definert rolle i  <a href="profile_char.php?mode=view">Profilen</a>.';
 $phprlang['yes'] = 'Ja';
 $phprlang['teams_error_no_team'] = 'No team is selected to add users to.';
 

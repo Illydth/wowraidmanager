@@ -118,6 +118,13 @@ $phprlang['resistance_frost'] = 'Frost Resistance';
 $phprlang['resistance_nature'] = 'Nature Resistance';
 $phprlang['resistance_shadow'] = 'Shadow Resistance';
 
+//error message
+$phprlang['profile_error_arcane'] = 'Arcane må være et tall';
+$phprlang['profile_error_fire'] = 'Fire må være et tall';
+$phprlang['profile_error_frost'] = 'Frost må være et tall';
+$phprlang['profile_error_nature'] = 'Nature må være et tall';
+$phprlang['profile_error_shadow'] = 'Shadow må være et tall';
+
 // expansions
 $phprlang['exp_generic_wow'] = 'Generic World of Warcraft';
 $phprlang['exp_burning_crusade'] = 'The Burning Crusade';

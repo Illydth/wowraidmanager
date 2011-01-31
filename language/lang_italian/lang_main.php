@@ -111,6 +111,7 @@ $phprlang['talent_tree'] = 'Talent Tree';
 $phprlang['display_text'] = 'Display Text';
 $phprlang['perm_mod'] = 'Update Permissions';
 $phprlang['all'] = 'All';
+$phprlang['resistance'] = "Resistance";
 
 // Recurrance Text Items
 $phprlang['recur_header'] = 'Raid Recurrance Settings';
@@ -171,24 +172,19 @@ $phprlang['guild_name_missing'] = 'Nome della Gilda non specificato.';
 $phprlang['guild_tag_missing'] = 'Abbreviazione della Gilda non specificata.';
 $phprlang['permissions_form_description'] = 'E\' necessario specificare una descrizione';
 $phprlang['permissions_form_name'] = 'E\' necessario specificare un nome';
-$phprlang['profile_error_arcane'] = 'Il valore di resistenza Arcane deve essere numerico';
 $phprlang['profile_error_class'] = 'E\' necessario selezionare una classe';
 $phprlang['profile_error_dupe'] = 'Esiste già un Personaggio col come specificato';
-$phprlang['profile_error_fire'] = 'Il valore di resistenza Fire deve essere numerico';
-$phprlang['profile_error_frost'] = 'Il valore di resistenza Frost deve essere numerico';
 $phprlang['profile_error_guild'] = 'E\' necessario selezionare una Gilda';
-$phprlang['profile_error_level'] = 'Il livello deve essere un numero compreso fra 1 ed 80';
+$phprlang['profile_error_level'] = 'Il livello deve essere';
 $phprlang['profile_error_name'] = 'E\' necessario specificare un nome';
-$phprlang['profile_error_nature'] = 'Il valore di resistenza Nature deve essere numerico';
 $phprlang['profile_error_race'] = 'E\' necessario selezionare una razza';
 $phprlang['profile_error_role'] = 'E\' necessario selezionare un ruolo';
-$phprlang['profile_error_shadow'] = 'Il valore di resistenza Shadow deve essere numerico';
 $phprlang['raid_error_date'] = 'E\' necessario selezionare una data';
 $phprlang['raid_error_description'] = 'E\' necessario specificare una descrizione';
 $phprlang['raid_error_limits'] = 'Tutti i limiti del Raid devono essere specificati ed in formato numerico';
 $phprlang['raid_error_location'] = 'E\' necessario selezionare un\'Istanza';
 $phprlang['view_error_signed_up'] = 'Sei già iscritto con questo Personaggio';
-$phprlang['view_error_role_undef'] = 'Verifica che il Personaggio abbia associato un ruolo nella sezione <a href="profile.php?mode=view">Personaggi</a>.';
+$phprlang['view_error_role_undef'] = 'Verifica che il Personaggio abbia associato un ruolo nella sezione <a href="profile_char.php?mode=view">Personaggi</a>.';
 $phprlang['yes'] = 'Sì';
 $phprlang['teams_error_no_team'] = 'No team is selected to add users to.';
 

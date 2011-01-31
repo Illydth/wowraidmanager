@@ -236,9 +236,11 @@ else if($mode == 'details')
 		
 		$buttons_edit  = '<a href="../profile_char.php?mode=edit&char_id='.$data['char_id'].'&guild='.$data['guild'].'&race='.$data['race'].'&class='.$data['class'].'">';
 		$buttons_edit .= '<img src="../templates/' . $phpraid_config['template'] . '/images/icons/icon_edit.gif" border="0" onMouseover="ddrivetip(\''. $phprlang['edit'] .'\');" onMouseout="hideddrivetip();" alt="edit icon">';
-		$buttons_edit .= '</a>';	
+		$buttons_edit .= '</a>';
 			
-		array_push($chars,
+		//@todo buggy not show resistance img + values from the char
+		$array_resistance = get_array_char_resistance($data['char_id']);
+		$char_array = 
 			array(
 				'ID'=>$data['char_id'],
 				'Name'=>get_armorychar($data['name'], $data['guild']), // Buggy
@@ -247,16 +249,14 @@ else if($mode == 'details')
 				'Race'=>$data['race'],
 				'Role'=>$data['role'],
 				'Class'=>$data['class'],
-				'Arcane'=>$data['arcane'],
-				'Fire'=>$data['fire'],
-				'Frost'=>$data['frost'],
-				'Nature'=>$data['nature'],
-				'Shadow'=>$data['shadow'],
 				'Pri_Spec'=>$data['pri_spec'],
 				'Sec_Spec'=>$data['sec_spec'],
 				'Buttons'=>$buttons_del . $buttons_edit
-				)
 			);
+		
+		// add array	
+		$char_array = $char_array + $array_resistance;							
+		array_push($chars,$char_array);
 	}
 
 	/**************************************************************

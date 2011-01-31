@@ -38,40 +38,57 @@
                 <td class="row1"><strong>{$char_new.level_text}</strong></td>
                 <td class="row2">{$char_new.level}</td>
               </tr>
-              <tr>
-                <td class="row1"><strong><font color="#CCFFCC">{$char_new.arcane_text}</font></strong></td>
-                <td class="row2">{$char_new.arcane}</td>
-              </tr>
-              <tr>
-                <td class="row1"><strong><font color="#FF0000">{$char_new.fire_text}</font></strong></td>
-                <td class="row2">{$char_new.fire}</td>
-              </tr>
-              <tr>
-                <td class="row1"><strong><font color="#009900">{$char_new.nature_text}</font></strong></td>
-                <td class="row2">{$char_new.nature}</td>
-              </tr>
-              <tr>
-                <td class="row1"><strong><font color="#0000FF">{$char_new.frost_text}</font></strong></td>
-                <td class="row2">{$char_new.frost}</td>
-              </tr>
-              <tr>
-                <td class="row1"><strong><font color="#663366">{$char_new.shadow_text}</font></strong></td>
-                <td class="row2">{$char_new.shadow}</td>
-              </tr>
-              <tr>
-                <td width="200" class="row1"><strong>{$char_new.role_text}</strong></td>
-                <td class="row2">{$char_new.pri_spec}</td>
-              </tr>              
-              <tr>
-                <td width="200" class="row1"><strong>{$char_new.role_text}</strong></td>
-                <td class="row2">{$char_new.sec_spec}</td>
-              </tr>              
             </table></td>
         </tr>
       </table>
-      <br>
+	<table width="100%" border="0" cellspacing="1" cellpadding="3" class="dataOutline">
+		<tr>
+			<td>
+				<div class="contentHeader">{$char_new.resistance_header}</div>
+			</td>
+			<td>
+				<div class="contentHeader">{$char_new.role_header}</div>
+			</td>
+		</tr>
+		<tr>
+		<td>
+			<table width="100%" border="0" cellspacing="1" cellpadding="3" class="dataOutline">
+			   	{section name=index loop=$resistance}
+					<tr> 
+						<td width="200" class="row1" valign="middle">
+							<img src="{$resistance[index].resistance_image}" height="15" width="15" />
+							<strong><font color="#{$resistance[index].font_color}">{$resistance[index].resistance_text}</strong>
+						</td>
+						<td class="row2" valign="top">
+						{if $char_new.mode != "disable"}
+							<input name="{$resistance[index].resistance_name}" type="text" class="post" size="3" value="{$resistance[index].char_resistance_value}" maxlength="3">
+						{else}
+							{$resistance[index].char_resistance_value}
+						{/if}
+						</td>
+					</tr>
+			     {/section}
+			</table>
+		</td>
+		<td valign="top">
+		<table width="100%" border="0" cellspacing="1" cellpadding="3" class="dataOutline">
+          <tr>
+            <td width="200" class="row1"><strong>{$char_new.role_text}</strong></td>
+            <td class="row2">{$char_new.pri_spec}</td>
+          </tr>              
+          <tr>
+            <td width="200" class="row1"><strong>{$char_new.role_text}</strong></td>
+            <td class="row2">{$char_new.sec_spec}</td>
+          </tr>
+         </table> 
+		</td>
+		</tr>
+	</table>      
+    <br>
+    {if $char_new.mode != "disable"}
 		<div align="center" class="button">
 			<input type="submit" value="{$char_new.buttons_01}" name="submit" class="mainoption">
 		</div>
+	{/if}
 </form>
 </div>

@@ -118,6 +118,13 @@ $phprlang['resistance_frost'] = '冰霜抗性';
 $phprlang['resistance_nature'] = '自然抗性';
 $phprlang['resistance_shadow'] = '暗影抗性';
 
+//error message
+$phprlang['profile_error_arcane'] = '祕法抗性只可能是數字';
+$phprlang['profile_error_fire'] = '火焰抗性只可能是數字';
+$phprlang['profile_error_frost'] = '冰霜抗性只可能是數字';
+$phprlang['profile_error_nature'] = '自然抗性只可能是數字';
+$phprlang['profile_error_shadow'] = '暗影抗性只可能是抗性';
+
 // expansions
 $phprlang['exp_generic_wow'] = 'Generic World of Warcraft';
 $phprlang['exp_burning_crusade'] = 'The Burning Crusade';

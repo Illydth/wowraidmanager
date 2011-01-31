@@ -272,7 +272,7 @@ function has_char_multiple_signups($profile_id, $raid_id) {
 	return 0;
 }
 /**
- * add a new Character
+ * add a new Character to WRM DB
  * @param $profile
  * @param $name
  * @param $class
@@ -280,50 +280,73 @@ function has_char_multiple_signups($profile_id, $raid_id) {
  * @param $guild
  * @param $level
  * @param $race
- * @param $arcane
- * @param $fire
- * @param $frost
- * @param $nature
- * @param $shadow
+ * @param $array_resistance
  * @param $pri_spec
  * @param $sec_spec
  */
-function char_addnew($profile,$name,$class,$gender,$guild,$level,$race,$arcane="0",$fire="0",$frost="0",$nature="0",$shadow="0",$pri_spec,$sec_spec)
+function char_addnew($profile,$char_name,$class,$gender,$guild,$level,$race,$array_resistance,$pri_spec,$sec_spec)
 {
 	global $db_raid, $phpraid_config;
 
 	$sql = sprintf(	"INSERT INTO " . $phpraid_config['db_prefix'] . "chars" .
 					"	(`profile_id`,`name`,`class`, `gender`,`guild`,`lvl`,`race`," .
-					"	 `arcane`,`fire`,`frost`,`nature`,`shadow`,`pri_spec`,`sec_spec`)" .
-					" VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
-				quote_smart($profile), quote_smart($name), quote_smart($class),
+					"	 `pri_spec`,`sec_spec`)" .
+					" VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s)",
+				quote_smart($profile), quote_smart($char_name), quote_smart($class),
 				quote_smart($gender), quote_smart($guild), quote_smart($level), quote_smart($race),
-				quote_smart($arcane), quote_smart($fire), quote_smart($frost), quote_smart($nature),
-				quote_smart($shadow), quote_smart($pri_spec), quote_smart($sec_spec)
+				quote_smart($pri_spec), quote_smart($sec_spec)
 			);
 
 	$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+	
+	$sql = sprintf(	"SELECT `char_id` ".
+					" FROM `" . $phpraid_config['db_prefix'] . "chars`".
+					" WHERE name = %s", quote_smart($char_name)
+			);
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);	
+	$array_data = $db_raid->sql_fetchrow($result, true);
 
-	log_create('character',mysql_insert_id(),$name);
+	for ($i=0; $i< count($array_resistance);$i++)
+	{
+		$sql = sprintf(	"INSERT INTO " . $phpraid_config['db_prefix'] . "char_resistance" .
+						"	(`resistance_id`,`char_id`,`resistance_value`)".
+						" VALUES(%s,%s,%s)",
+					quote_smart($array_resistance[$i]['resistance_id']), 
+					quote_smart($array_data['char_id']),
+					quote_smart($array_resistance[$i]['char_resistance_value'])
+				);
+		$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);			
+	}
+	
+	log_create('character',mysql_insert_id(),$char_name);
 
 	return(0);
 }
 
-function char_edit($name,$level,$race,$class,$gender,$guild,$arcane="0",$nature="0",$shadow="0",$fire="0",$frost="0",$pri_spec,$sec_spec,$char_id)
+function char_edit($char_name,$level,$race,$class,$gender,$guild,$array_resistance,$pri_spec,$sec_spec,$char_id)
 {
 	global $db_raid, $phpraid_config;
 
 	$sql = sprintf(	"UPDATE " . $phpraid_config['db_prefix'] . "chars " .
 					"	SET name=%s,lvl=%s,race=%s, class=%s,gender=%s,guild=%s," .
-					"	arcane=%s,nature=%s,shadow=%s,fire=%s,frost=%s," .
 					"	pri_spec=%s,sec_spec=%s WHERE char_id=%s",
-					quote_smart($name),quote_smart($level),quote_smart($race),
+					quote_smart($char_name),quote_smart($level),quote_smart($race),
 					quote_smart($class), quote_smart($gender), quote_smart($guild),
-					quote_smart($arcane),quote_smart($nature),quote_smart($shadow),quote_smart($fire),
-					quote_smart($frost),quote_smart($pri_spec),quote_smart($sec_spec),quote_smart($char_id));
+					quote_smart($pri_spec),quote_smart($sec_spec),quote_smart($char_id));
 
 	$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 
+	for ($i=0; $i< count($array_resistance);$i++)
+	{
+		$sql = sprintf(	"UPDATE " . $phpraid_config['db_prefix'] . "char_resistance" .
+						"	SET resistance_value=%s ".
+						"	WHERE resistance_id=%s and char_id=%s",
+						quote_smart($array_resistance[$i]['char_resistance_value']),
+						quote_smart($array_resistance[$i]['resistance_id']),
+						quote_smart($char_id)
+				);
+		$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);			
+	}
 	return(1);
 }
 
@@ -339,6 +362,9 @@ function char_delete($char_id,$profile_id)
 	$sql = sprintf("DELETE FROM " . $phpraid_config['db_prefix'] . "signups WHERE char_id=%s AND profile_id=%s",quote_smart($char_id), quote_smart($profile_id));
 	$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 
+	$sql = sprintf("DELETE FROM " . $phpraid_config['db_prefix'] . "char_resistance WHERE char_id=%s ",quote_smart($char_id));
+	$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+		
 	return (1);
 }
 
@@ -346,7 +372,7 @@ function check_dupe($profile_id, $raid_id)
 {
 	if(has_char_multiple_signups($profile_id, $raid_id))
 	{
-		return '&nbsp;' . get_dupesignup_symbol() . '&nbsp;(@&nbsp;<a href="users.php?mode=details&amp;user_id=' . $profile_id . '">' . get_user_name($profile_id) . '</a>)';
+		return '&nbsp;' . get_dupesignup_symbol() . '&nbsp;(@&nbsp;<a href="profile_char.php?mode=details&amp;user_id=' . $profile_id . '">' . get_user_name($profile_id) . '</a>)';
 	}
 	return '';
 }
@@ -365,6 +391,24 @@ function get_array_spec_from_char($char_id)
 	return ( array($array_data['pri_spec'],$array_data['sec_spec']) );
 }
 
+function get_array_char_resistance($char_id)
+{
+	global $db_raid, $phpraid_config;
+	$array_resistance = array();
+	
+	$sql = sprintf("SELECT a.resistance_value, b.resistance_name".
+					" FROM "  . $phpraid_config['db_prefix'] . "char_resistance a, " .
+					"		". $phpraid_config['db_prefix'] . "resistance b ".
+					" WHERE a.resistance_id = b.resistance_id ".
+					" AND char_id = %s", quote_smart($char_id));
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+	while($data_resist = $db_raid->sql_fetchrow($result, true))
+	{
+		$array_resistance[$data_resist['resistance_name']] = $data_resist['resistance_value'];
+	}
+	
+	return $array_resistance;
+}
 /**
  * 
  * return, in which permission group the user (profile) are

@@ -111,6 +111,7 @@ $phprlang['talent_tree'] = 'Talent Tree';
 $phprlang['display_text'] = 'Display Text';
 $phprlang['perm_mod'] = 'Update Permissions';
 $phprlang['all'] = 'All';
+$phprlang['resistance'] = "Resistance";
 
 // Recurrance Text Items
 $phprlang['recur_header'] = 'Raid Recurrance Settings';
@@ -171,24 +172,19 @@ $phprlang['guild_name_missing'] = 'Komplett guild namn saknas.';
 $phprlang['guild_tag_missing'] = 'Guild märke saknas.';
 $phprlang['permissions_form_description'] = 'Du måste lägga till en beskrivning';
 $phprlang['permissions_form_name'] = 'Du måste skriva in ett namn';
-$phprlang['profile_error_arcane'] = 'Arcane måste vara en siffra';
 $phprlang['profile_error_class'] = 'Du måste välja en klass';
 $phprlang['profile_error_dupe'] = 'En karaktär med det namnet finns redan';
-$phprlang['profile_error_fire'] = 'Fire måste vara en siffra';
-$phprlang['profile_error_frost'] = 'Frost måste vara en siffra';
 $phprlang['profile_error_guild'] = 'Du måste välja ett guild';
-$phprlang['profile_error_level'] = 'Level måste vara ett tal mellan 1-80';
+$phprlang['profile_error_level'] = 'Level måste vara en siffra';
 $phprlang['profile_error_name'] = 'Du måste skriva ett namn';
-$phprlang['profile_error_nature'] = 'Nature måste vara en siffra';
 $phprlang['profile_error_race'] = 'Du måste välja en ras';
 $phprlang['profile_error_role'] = 'Du måste välja en roll';
-$phprlang['profile_error_shadow'] = 'Shadow måste vara en siffra';
 $phprlang['raid_error_date'] = 'Du måste skriva in en korrekt datum';
 $phprlang['raid_error_description'] = 'Beskrivningen måste fyllas i';
 $phprlang['raid_error_limits'] = 'Alla raidgränser måste fyllas i och vara siffror';
 $phprlang['raid_error_location'] = 'Fyll i en raid instans';
 $phprlang['view_error_signed_up'] = 'Du är redan bokad med denna karaktär';
-$phprlang['view_error_role_undef'] = 'Se till att Karaktären har en Roll vald i <a href="profile.php?mode=view">Profilen</a>.';
+$phprlang['view_error_role_undef'] = 'Se till att Karaktären har en Roll vald i <a href="profile_char.php?mode=view">Profilen</a>.';
 $phprlang['yes'] = 'Ja';
 $phprlang['teams_error_no_team'] = 'No team is selected to add users to.';
 

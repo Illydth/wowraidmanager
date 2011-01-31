@@ -111,6 +111,7 @@ $phprlang['talent_tree'] = 'Talent Tree';
 $phprlang['display_text'] = 'Display Text';
 $phprlang['perm_mod'] = 'Update Permissions';
 $phprlang['all'] = 'All';
+$phprlang['resistance'] = "Resistance";
 
 // Recurrance Text Items
 $phprlang['recur_header'] = 'Raid Recurrance Settings';
@@ -171,24 +172,19 @@ $phprlang['guild_name_missing'] = 'The Full Guild Name is missing.';
 $phprlang['guild_tag_missing'] = 'The Guild Tag is missing.';
 $phprlang['permissions_form_description'] = 'Vous devez ajouter une description';
 $phprlang['permissions_form_name'] = 'Vous devez renseigner un nom';
-$phprlang['profile_error_arcane'] = 'Arcanes doit etre un nombre';
 $phprlang['profile_error_class'] = 'Vous devez sèlectionner une classe';
 $phprlang['profile_error_dupe'] = 'Un personnage porte déja ce nom';
-$phprlang['profile_error_fire'] = 'Feu doit etre un nombre';
-$phprlang['profile_error_frost'] = 'Givre doit etre un nombre';
 $phprlang['profile_error_guild'] = 'Vous devez sèlectionner une guilde';
-$phprlang['profile_error_level'] = 'Le niveau doit etre un nombre entre 1 et 80';
+$phprlang['profile_error_level'] = 'Level must be numeric';
 $phprlang['profile_error_name'] = 'Vous devez renseigner un nom';
-$phprlang['profile_error_nature'] = 'Nature doit etre un nombre';
 $phprlang['profile_error_race'] = 'Vous devez sèlectionner une race';
 $phprlang['profile_error_role'] = 'Vous devez renseigner un role';
-$phprlang['profile_error_shadow'] = 'Ombre doit etre un nombre';
 $phprlang['raid_error_date'] = 'Vous devez entrer une date au format valide';
 $phprlang['raid_error_description'] = 'La description doit etre écrite';
 $phprlang['raid_error_limits'] = 'Toutes les limites de raid doivent etre numèriques';
 $phprlang['raid_error_location'] = 'Ajouter un lieu de raid';
 $phprlang['view_error_signed_up'] = 'Vous etes dèja inscrit avec ce personnage';
-$phprlang['view_error_role_undef'] = 'Make sure that the Character in <a href="profile.php?mode=view">Profile</a> has a defined Role.';
+$phprlang['view_error_role_undef'] = 'Make sure that the Character in <a href="profile_char.php?mode=view">Profile</a> has a defined Role.';
 $phprlang['yes'] = 'Oui';
 $phprlang['teams_error_no_team'] = 'No team is selected to add users to.';
 

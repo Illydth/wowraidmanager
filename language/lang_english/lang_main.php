@@ -111,6 +111,7 @@ $phprlang['talent_tree'] = 'Talent Tree';
 $phprlang['display_text'] = 'Display Text';
 $phprlang['perm_mod'] = 'Update Permissions';
 $phprlang['all'] = 'All';
+$phprlang['resistance'] = "Resistance";
 
 // Reoccurance Text Items
 $phprlang['recur_header'] = 'Raid Recurrance Settings';
@@ -171,24 +172,19 @@ $phprlang['guild_name_missing'] = 'The Full Guild Name is missing.';
 $phprlang['guild_tag_missing'] = 'The Guild Tag is missing.';
 $phprlang['permissions_form_description'] = 'You must input a description';
 $phprlang['permissions_form_name'] = 'You must input a name';
-$phprlang['profile_error_arcane'] = 'Arcane must be numeric';
 $phprlang['profile_error_class'] = 'You must selet a class';
 $phprlang['profile_error_dupe'] = 'A character with that name already exists';
-$phprlang['profile_error_fire'] = 'Fire must be numeric';
-$phprlang['profile_error_frost'] = 'Frost must be numeric';
 $phprlang['profile_error_guild'] = 'You must select a guild';
-$phprlang['profile_error_level'] = 'Level must be numeric from 1-80';
+$phprlang['profile_error_level'] = 'Level must be numeric';
 $phprlang['profile_error_name'] = 'You must enter a name';
-$phprlang['profile_error_nature'] = 'Nature must be numeric';
 $phprlang['profile_error_race'] = 'You must select a race';
 $phprlang['profile_error_role'] = 'You must enter a role';
-$phprlang['profile_error_shadow'] = 'Shadow must be numeric';
 $phprlang['raid_error_date'] = 'You must input a proper date';
 $phprlang['raid_error_description'] = 'Description must be entered';
 $phprlang['raid_error_limits'] = 'All raid limits must be entered and numeric';
 $phprlang['raid_error_location'] = 'Input a raid location';
 $phprlang['view_error_signed_up'] = 'You have already signed up with this character';
-$phprlang['view_error_role_undef'] = 'Make sure that the Character in <a href="profile.php?mode=view">Profile</a> has a defined Role.';
+$phprlang['view_error_role_undef'] = 'Make sure that the your Character in <a href="profile_char.php?mode=view">Profile</a> has a defined Role.';
 $phprlang['yes'] = 'Yes';
 $phprlang['teams_error_no_team'] = 'No team is selected to add users to.';
 

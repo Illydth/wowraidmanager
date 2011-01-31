@@ -118,6 +118,13 @@ $phprlang['resistance_frost'] = 'Resistance au Givre';
 $phprlang['resistance_nature'] = 'Resistance Nature';
 $phprlang['resistance_shadow'] = 'Resistance Ombre';
 
+//error message
+$phprlang['profile_error_arcane'] = 'Arcanes doit etre un nombre';
+$phprlang['profile_error_fire'] = 'Feu doit etre un nombre';
+$phprlang['profile_error_frost'] = 'Givre doit etre un nombre';
+$phprlang['profile_error_nature'] = 'Nature doit etre un nombre';
+$phprlang['profile_error_shadow'] = 'Ombre doit etre un nombre';
+
 // expansions
 $phprlang['exp_generic_wow'] = 'Generic World of Warcraft';
 $phprlang['exp_burning_crusade'] = 'The Burning Crusade';

@@ -29,6 +29,7 @@
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *
 ****************************************************************************/
+
 // commons
 define("IN_PHPRAID", true);
 require_once('./common.php');
@@ -81,50 +82,55 @@ if($_GET['mode'] == 'view') {
 	$profile_id = scrub_input($_SESSION['profile_id']);
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE profile_id=%s",quote_smart($profile_id));
 	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-	while($data = $db_raid->sql_fetchrow($result, true))
+	while($data_char = $db_raid->sql_fetchrow($result, true))
 	{
 		// Get Armory Data for Character
 		if ($phpraid_config['enable_armory'])
-			$charname = get_armorychar($data['name'], $data['guild']);
+			$charname = get_armorychar($data_char['name'], $data_char['guild']);
 		else
-			$charname = $data['name'];
+			$charname = $data_char['name'];
 			
 		// Get the Internationalized data to display from the database values:
 		foreach ($wrm_global_races as $global_race)
-			if ($data['race'] == $global_race['race_id'])
+			if ($data_char['race'] == $global_race['race_id'])
 				$race = $phprlang[$global_race['lang_index']];
 
 		foreach ($wrm_global_classes as $global_class)
-			if ($data['class'] == $global_class['class_id'])
+			if ($data_char['class'] == $global_class['class_id'])
 				$class = $phprlang[$global_class['lang_index']];
 				
 		// Get the Guild Name to Display instead of Just the ID
-		$sql = sprintf("SELECT guild_name FROM " . $phpraid_config['db_prefix'] . "guilds WHERE guild_id=%s",quote_smart($data['guild']));
+		$sql = sprintf("SELECT guild_name FROM " . $phpraid_config['db_prefix'] . "guilds WHERE guild_id=%s",quote_smart($data_char['guild']));
 		$guild_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		$guild_data = $db_raid->sql_fetchrow($guild_result, true);
 		$guild_name = $guild_data['guild_name'];
 		
-		$Buttons_tmp='<a href="'.$pageURL_remove.'char_name='.$data['name'].'&amp;char_id='.$data['char_id'].'"><img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''. $phprlang['delete'] .'\');" onMouseout="hideddrivetip();" alt="delete icon"></a>
-					 <a href="'.$pageURL_edit.'char_id='.$data['char_id'].'&amp;guild='.$data['guild'].'&amp;race='.$data['race'].'&amp;class='.$data['class'].'"><img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_edit.gif" border="0" onMouseover="ddrivetip(\'' . $phprlang['edit'] .'\');" onMouseout="hideddrivetip();" alt="edit icon"></a>';
-		array_push($chars,
+		$array_resistance = get_array_char_resistance($data_char['char_id']);
+	
+		$Buttons_tmp='<a href="'.$pageURL_remove.'char_name='.$data_char['name'].'&amp;char_id='.$data_char['char_id'].'"><img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''. $phprlang['delete'] .'\');" onMouseout="hideddrivetip();" alt="delete icon"></a>
+					 <a href="'.$pageURL_edit.'char_id='.$data_char['char_id'].'&amp;guild='.$data_char['guild'].'&amp;race='.$data_char['race'].'&amp;class='.$data_char['class'].'"><img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_edit.gif" border="0" onMouseover="ddrivetip(\'' . $phprlang['edit'] .'\');" onMouseout="hideddrivetip();" alt="edit icon"></a>';
+
+		$char_array = 
 			array(
-				'ID'=>$data['char_id'],
+				'ID'=>$data_char['char_id'],
 				'Name'=>$charname,
 				'Guild'=>$guild_name,
-				'Level'=>$data['lvl'],
+				'Level'=>$data_char['lvl'],
 				'Race'=>$race,
 				'Class'=>$class,
-				'Arcane'=>$data['arcane'],
-				'Fire'=>$data['fire'],
-				'Frost'=>$data['frost'],
-				'Nature'=>$data['nature'],
-				'Shadow'=>$data['shadow'],
-				'Pri_Spec'=>$data['pri_spec'],
-				'Sec_Spec'=>$data['sec_spec'],
+				'Pri_Spec'=>$data_char['pri_spec'],
+				'Sec_Spec'=>$data_char['sec_spec'],
 				'Buttons'=>$Buttons_tmp,
-			));
+			);
+		// add array	
+		$char_array = $char_array + $array_resistance;
+			
+		array_push($chars,$char_array);
+
 	}
 
+	$form_action = $pageURL_new;
+		
 	/**************************************************************
 	 * Code to setup for a Dynamic Table Create: guild1 View.
 	 **************************************************************/
@@ -216,19 +222,16 @@ elseif(($_GET['mode'] == 'new' || $_GET['mode'] == 'edit'))
 {
 	if(isset($_POST['submit']))
 	{
+		$array_resistance = array();
+		
 		$guild = scrub_input($_GET['guild']);
 		$race = scrub_input($_GET['race']);
 		$class = scrub_input($_GET['class']);
 		$gender = scrub_input($_POST['gender']);
-		$name = scrub_input(ucfirst(trim($_POST['name'])));
+		$charName = scrub_input(ucfirst(trim($_POST['name'])));
 		$level = scrub_input($_POST['level']);
 		$pri_spec = scrub_input($_POST['pri_spec']);
 		$sec_spec = scrub_input($_POST['sec_spec']);
-		$arcane = scrub_input($_POST['arcane']);
-		$fire = scrub_input($_POST['fire']);
-		$frost = scrub_input($_POST['frost']);
-		$nature = scrub_input($_POST['nature']);
-		$shadow = scrub_input($_POST['shadow']);
 		
 		$profile = scrub_input($_SESSION['profile_id']);
 
@@ -238,13 +241,13 @@ elseif(($_GET['mode'] == 'new' || $_GET['mode'] == 'edit'))
 						
 		if($guild == '')
 			$errorMsg .= '<li>'.$phprlang['profile_error_guild'].'</li>';
-		if($dupeChar)
+		if($dupeChar)//isCharExist($charName) != 0)
 			$errorMsg .= '<li>'.$phprlang['profile_error_dupe'].'</li>';
 		if($class == '')
 			$errorMsg .= '<li>'.$phprlang['profile_error_class'].'</li>';
 		if($race == $phprlang['form_select'])
 			$errorMsg .= '<li>'.$phprlang['profile_error_race'].'</li>';
-		if($name == '')
+		if($charName == '')
 			$errorMsg .= '<li>'.$phprlang['profile_error_name'].'</li>';
 		if(	($level == '' || !is_numeric($level)) and  
 			( $level < 1  || $level > ($phpraid_config['max_lvl']+1))
@@ -253,34 +256,23 @@ elseif(($_GET['mode'] == 'new' || $_GET['mode'] == 'edit'))
 		if($pri_spec == '' || $pri_spec == $phprlang['role_none'])
 			$errorMsg .= '<li>'.$phprlang['profile_error_role'].'</li>';
 
-		if ($phpraid_config['resop'] == 1)
+		for ($i=0; $i < count($wrm_global_resistance); $i++)
 		{
-			//So resistance optional and values are empty, time to convert
-			if ($shadow == "")
-				$shadow = "0";
-			if ($fire == "")
-				$fire = "0";
-			if ($frost == "")
-				$frost = "0";
-			if ($nature == "")
-				$nature = "0";
-			if ($arcane == "")
-				$arcane = "0";
+			if( isset($_POST[$wrm_global_resistance[$i]['resistance_name']]))
+				$char_resistance_value = scrub_input($_POST[$wrm_global_resistance[$i]['resistance_name']]);
+
+			if(!is_numeric($char_resistance_value))
+				$errorMsg .= '<li>'.$phprlang['profile_error_'.$wrm_global_resistance[$i]['resistance_name']].'</li>';
+			
+			array_push($array_resistance,
+				array(
+						'resistance_id' => $wrm_global_resistance[$i]['resistance_id'],
+						'char_id' => $char_id,
+						'char_resistance_value'	=> $char_resistance_value
+					)
+			);
 		}
-		else
-		{
-			if(!is_numeric($arcane))
-				$errorMsg .= '<li>'.$phprlang['profile_error_arcane'].'</li>';
-			if(!is_numeric($fire))
-				$errorMsg .= '<li>'.$phprlang['profile_error_fire'].'</li>';
-			if(!is_numeric($frost))
-				$errorMsg .= '<li>'.$phprlang['profile_error_frost'].'</li>';
-			if(!is_numeric($nature))
-				$errorMsg .= '<li>'.$phprlang['profile_error_nature'].'</li>';
-			if(!is_numeric($shadow))
-				$errorMsg .= '<li>'.$phprlang['profile_error_shadow'].'</li>';
-		}
-		
+
 		$errorDie = 0;
 		$errorMsg .= '</ul>';
 
@@ -296,12 +288,14 @@ elseif(($_GET['mode'] == 'new' || $_GET['mode'] == 'edit'))
 
 			if($_GET['mode'] == 'new')
 			{
-				char_addnew($profile,$name,$class,$gender,$guild,$level,$race,$arcane,$fire,$frost,$nature,$shadow,$pri_spec,$sec_spec);
+				//char_addnew($profile,$name,$class,$gender,$guild,$level,$race,$arcane,$fire,$frost,$nature,$shadow,$pri_spec,$sec_spec);
+				char_addnew($profile,$charName,$class,$gender,$guild,$level,$race,$array_resistance,$pri_spec,$sec_spec);
+				
 			} 
 			elseif($_GET['mode'] == 'edit') 
 			{
 				$char_id=scrub_input($_GET['char_id']);
-				char_edit($name,$level,$race,$class,$gender,$guild,$arcane,$nature,$shadow,$fire,$frost,$pri_spec,$sec_spec,$char_id);
+				char_edit($charName,$level,$race,$class,$gender,$guild,$array_resistance,$pri_spec,$sec_spec,$char_id);
 			}
 			
 			header("Location: " . $pageURL_view);			
@@ -312,6 +306,8 @@ elseif(($_GET['mode'] == 'new' || $_GET['mode'] == 'edit'))
 if (($_GET['mode'] == 'new') or ($_GET['mode'] == 'edit'))
 {
 	$mode_status = $_GET['mode'];
+	$array_char_resistance = array();
+	
 	// *if (($_GET['mode'] == 'edit') and ( !isset($_GET['guild']) or !isset($_GET['race']) or !isset($_GET['class'])))
 	//{
 	//	echo "HACK";
@@ -341,31 +337,6 @@ if (($_GET['mode'] == 'new') or ($_GET['mode'] == 'edit'))
 			$level = scrub_input($_POST['level']);
 		else
 			$level = 1;
-
-		if(isset($_POST['arcane']))
-			$arcane = scrub_input($_POST['arcane']);
-		else
-			$arcane = 0;
-
-		if(isset($_POST['fire']))
-			$fire = scrub_input($_POST['fire']);
-		else
-			$fire = 0;
-
-		if(isset($_POST['frost']))
-			$frost = scrub_input($_POST['frost']);
-		else
-			$frost = 0;
-
-		if(isset($_POST['nature']))
-			$nature = scrub_input($_POST['nature']);
-		else
-			$nature = 0;
-			
-		if(isset($_POST['shadow']))
-			$shadow = scrub_input($_POST['shadow']);
-		else
-			$shadow = 0;
 			
 		if(isset($_POST['pri_spec']))
 			$pri_spec = scrub_input($_POST['pri_spec']);
@@ -375,7 +346,27 @@ if (($_GET['mode'] == 'new') or ($_GET['mode'] == 'edit'))
 		if(isset($_POST['sec_spec']))
 			$sec_spec = scrub_input($_POST['sec_spec']);
 		else
-			$sec_spec = 0;		
+			$sec_spec = 0;
+
+		for ($i=0; $i < count($wrm_global_resistance); $i++)
+		{
+			if( isset($_POST[$wrm_global_resistance[$i]['resistance_name']]))
+				$char_resistance_value = scrub_input($_POST[$wrm_global_resistance[$i]['resistance_name']]);
+			else 
+				$char_resistance_value = '0';
+				
+			$resistance_image = "templates/".$phpraid_config['template']."/".$wrm_global_resistance[$i]['image'];
+			
+			array_push($array_char_resistance,
+				array(
+						'resistance_name' => $wrm_global_resistance[$i]['lang_index'],
+						'resistance_text' => $phprlang['resistance_'.$wrm_global_resistance[$i]['lang_index']],
+						'font_color' => $wrm_global_resistance[$i]['font_color'],
+						'resistance_image' => $resistance_image,
+						'char_resistance_value'	=> $char_resistance_value
+					)
+			);
+		}	
 	}
 	else 
 	{
@@ -391,10 +382,6 @@ if (($_GET['mode'] == 'new') or ($_GET['mode'] == 'edit'))
 		$guild = scrub_input($_GET['guild']);
 		$race = scrub_input($_GET['race']);
 		$class = scrub_input($_GET['class']);
-		
-		//$guild = $data['guild'];
-		//$race = $data['race'];
-		//$class = $data['class'];
 
 		$dupeChar = 0;
 
@@ -412,31 +399,6 @@ if (($_GET['mode'] == 'new') or ($_GET['mode'] == 'edit'))
 			$level = scrub_input($_POST['level']);
 		else
 			$level = $data['lvl'];
-
-		if(isset($_POST['arcane']))
-			$arcane = scrub_input($_POST['arcane']);
-		else
-			$arcane = $data['arcane'];
-
-		if(isset($_POST['fire']))
-			$fire = scrub_input($_POST['fire']);
-		else
-			$fire = $data['fire'];
-
-		if(isset($_POST['frost']))
-			$frost = scrub_input($_POST['frost']);
-		else
-			$frost = $data['frost'];
-
-		if(isset($_POST['nature']))
-			$nature = scrub_input($_POST['nature']);
-		else
-			$nature = $data['nature'];
-			
-		if(isset($_POST['shadow']))
-			$shadow = scrub_input($_POST['shadow']);
-		else
-			$shadow = $data['shadow'];
 			
 		if(isset($_POST['pri_spec']))
 			$pri_spec = scrub_input($_POST['pri_spec']);
@@ -446,7 +408,33 @@ if (($_GET['mode'] == 'new') or ($_GET['mode'] == 'edit'))
 		if(isset($_POST['sec_spec']))
 			$sec_spec = scrub_input($_POST['sec_spec']);
 		else
-			$sec_spec = $data['sec_spec'];	
+			$sec_spec = $data['sec_spec'];
+			
+		for ($i=0; $i < count($wrm_global_resistance); $i++)
+		{
+			if( isset($_POST[$wrm_global_resistance[$i]['resistance_name']]))
+				$char_resistance_value = scrub_input($_POST[$wrm_global_resistance[$i]['resistance_name']]);
+			else 
+			{				
+				$sql = sprintf(	"SELECT * FROM " . $phpraid_config['db_prefix'] . "char_resistance ".
+								" where char_id=%s and resistance_id = %s",
+								quote_smart($char_id),quote_smart($wrm_global_resistance[$i]['resistance_id']));
+				$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);			
+				$data = $db_raid->sql_fetchrow($result, true);
+				$char_resistance_value = $data['resistance_value'];
+			}
+
+			$resistance_image = "templates/".$phpraid_config['template']."/".$wrm_global_resistance[$i]['image'];
+			array_push($array_char_resistance,
+				array(
+						'resistance_name' => $wrm_global_resistance[$i]['lang_index'],
+						'resistance_text' => $phprlang['resistance_'.$wrm_global_resistance[$i]['lang_index']],
+						'font_color' => $wrm_global_resistance[$i]['font_color'],
+						'resistance_image' => $resistance_image,
+						'char_resistance_value'	=> $char_resistance_value,
+					)
+			);
+		}	
 	}
 	
 	// and the form
@@ -595,7 +583,8 @@ if (($_GET['mode'] == 'new') or ($_GET['mode'] == 'edit'))
 			$sec_options .= "<option value=\"\">".$phprlang['notavailable']."</option>";				
 		
 		
-		if(!isset($_GET['guild'])) {
+		if(!isset($_GET['guild']))
+		{
 			$race_output = '<select name="race" DISABLED><option></option></select>';
 			$class_output = '<select name="class" DISABLED><option></option></select>';
 			$name = '<select name="name" DISABLED><option></option></select>';
@@ -604,13 +593,10 @@ if (($_GET['mode'] == 'new') or ($_GET['mode'] == 'edit'))
 			$guild = '<select name="guild" DISABLED><option></option></select>';
 			$pri_spec = '<select name="pri_spec" DISABLED><option></option></select>';
 			$sec_spec = '<select name="sec_spec" DISABLED><option></option></select>';
-			$arcane = '<select name="arcane" DISABLED><option></option></select>';
-			$fire = '<select name="fire" DISABLED><option></option></select>';
-			$frost = '<select name="frost" DISABLED><option></option></select>';
-			$nature = '<select name="nature" DISABLED><option></option></select>';
-			$shadow = '<select name="shadow" DISABLED><option></option></select>';
+			$statusmode = "disable";
 		}
-		elseif (!isset($_GET['race'])) {
+		elseif (!isset($_GET['race']))
+		{
 			$class_output = '<select name="class" DISABLED><option></option></select>';
 			$name = '<select name="name" DISABLED><option></option></select>';
 			$level = '<select name="level" DISABLED><option></option></select>';
@@ -618,22 +604,24 @@ if (($_GET['mode'] == 'new') or ($_GET['mode'] == 'edit'))
 			$guild = '<select name="guild" DISABLED><option></option></select>';
 			$pri_spec = '<select name="pri_spec" DISABLED><option></option></select>';
 			$sec_spec = '<select name="sec_spec" DISABLED><option></option></select>';
-			$arcane = '<select name="arcane" DISABLED><option></option></select>';
-			$fire = '<select name="fire" DISABLED><option></option></select>';
-			$frost = '<select name="frost" DISABLED><option></option></select>';
-			$nature = '<select name="nature" DISABLED><option></option></select>';
-			$shadow = '<select name="shadow" DISABLED><option></option></select>';
+			$statusmode = "disable";
+		}
+		elseif (!isset($_GET['class']))
+		{
+			$name = '<select name="name" DISABLED><option></option></select>';
+			$level = '<select name="level" DISABLED><option></option></select>';
+			$gender = '<select name="gender" DISABLED><option></option></select>';
+			$guild = '<select name="guild" DISABLED><option></option></select>';
+			$pri_spec = '<select name="pri_spec" DISABLED><option></option></select>';
+			$sec_spec = '<select name="sec_spec" DISABLED><option></option></select>';
+			$statusmode = "disable";			
 		} else {
 			$name = '<input type="text" name="name" class="post" value="' . $name . '" style="width:100px">';
 			$level = '<input name="level" type="text" class="post" size="2" value="' . $level . '" maxlength="2">';
 			$gender = '<select name="gender" class="form" id="gender" style="width:100px">' .$gender_options. '</select>';
 			$pri_spec = '<select name="pri_spec" class="form" id="role" style="width:140px">' .$pri_options. '</select>';
 			$sec_spec = '<select name="sec_spec" class="form" id="role" style="width:140px">' .$sec_options. '</select>';			
-			$arcane = '<input name="arcane" type="text" class="post" size="3" value="' . $arcane . '" maxlength="3">';
-			$fire =  '<input name="fire" type="text" class="post" size="3" value="' . $fire . '" maxlength="3">';
-			$frost =  '<input name="frost" type="text" class="post" size="3" value="' . $frost . '" maxlength="3">';
-			$nature =  '<input name="nature" type="text" class="post" size="3" value="' . $nature . '" maxlength="3">';
-			$shadow =  '<input name="shadow" type="text" class="post" size="3" value="' . $shadow . '" maxlength="3">';
+			$statusmode = "normal";
 		}
 
 		if($_GET['mode'] == 'new')
@@ -660,16 +648,6 @@ if (($_GET['mode'] == 'new') or ($_GET['mode'] == 'edit'))
 				'array_class' => $array_class,
 				'selected_class' => $selected_class,
 				'gender'=>$gender,
-				'arcane_text'=>$phprlang['resistance_arcane'],
-				'fire_text'=>$phprlang['resistance_fire'],
-				'frost_text'=>$phprlang['resistance_frost'],
-				'nature_text'=>$phprlang['resistance_nature'],
-				'shadow_text'=>$phprlang['resistance_shadow'],
-				'arcane'=>$arcane,
-				'fire'=>$fire,
-				'frost'=>$frost,
-				'nature'=>$nature,
-				'shadow'=>$shadow,
 				'guild_text' => $phprlang['profile_guild'],
 				'role_text' => $phprlang['profile_role'],
 				'pri_spec' => $pri_spec,
@@ -679,10 +657,14 @@ if (($_GET['mode'] == 'new') or ($_GET['mode'] == 'edit'))
 				'class_text'=>$phprlang['profile_class'],
 				'gender_text'=>$phprlang['profile_gender'],
 				'name_text'=>$phprlang['profile_name'],
-				'level_text'=>$phprlang['profile_level']
-
+				'level_text'=>$phprlang['profile_level'],
+			
+				'resistance_header' => $phprlang['resistance'],
+				'role_header' =>  $phprlang['role'],
+				'mode' => $statusmode
 			)
 		);
+		$wrmsmarty->assign('resistance',$array_char_resistance);
 		
 		require_once('includes/page_header.php');
 		$wrmsmarty->display('profile_char_new.html');

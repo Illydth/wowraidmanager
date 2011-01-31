@@ -112,9 +112,6 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true))
 	$priv_profile=scrub_input($_SESSION['priv_profile']);
 	$profile_id=scrub_input($_SESSION['profile_id']);
 
-	$invite = get_time_full($raids['invite_time']);
-	$start = get_time_full($raids['start_time']);
-	$date = $start;
 	// convert unix timestamp to something readable
 	$raid_date = get_date($raids['start_time']);
 	$raid_start_time = get_time_full($raids['start_time']);
@@ -122,11 +119,6 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true))
 
 	$ddrivetiptxt = get_raid_tooltip($raids['raid_id']);
 	$location = '<a href="raid_view.php?mode=view&amp;raid_id='.$raids['raid_id'].'" onMouseover="ddrivetip('.$ddrivetiptxt.');" onMouseout="hideddrivetip();">'.$raids['location'].'</a>';
-	
-	//$desc = scrub_input($raids['description']);
-	//$ddrivetiptxt = "'<span class=tooltip_title>" . $phprlang['description'] ."</span><br>" . DEUBB2($desc) . "'";
-	//$location = '<a href="raid_view.php?mode=view&amp;raid_id=' . $raids['raid_id'] . '" onMouseover="ddrivetip('.$ddrivetiptxt.');" onMouseout="hideddrivetip();">'.$raids['location'].'</a>';
-	//$location = $raids['location'];
 	
 	// Now that we have the raid data, we need to retrieve limit data based upon Raid ID.
 	// Get Class Limits and set Colored Counts
@@ -160,12 +152,9 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true))
 	if($raids['old'] == 1) {
 		array_push($previous,
 			array(
-			//	'ID'=>$raids['raid_id'],
-				//'Signup'=>$info,
 				'Force Name'=>$data['raid_force_name'],
 				'Date'=>$raid_date,
 				'Dungeon'=>$location,
-				//'Dungeon'=>$raids['location'],
 				'Invite Time'=>$raid_invite_time,
 				'Start Time'=>$raid_start_time,
 				'Creator'=>$raids['officer'],
@@ -191,11 +180,9 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true))
 	$raid_headers = getVisibleColumns($viewName);
 
 	//Get Record Counts
-//	$curr_record_count_array = getRecordCounts($current, $raid_headers, $startRecord);
 	$prev_record_count_array = getRecordCounts($previous, $raid_headers, $startRecord);
 	
 	//Get the Jump Menu and pass it down
-//	$currJumpMenu = getPageNavigation($current, $startRecord, $pageURL, $sortField, $sortDesc);
 	$prevJumpMenu = getPageNavigation($previous, $startRecord, $pageURL, $sortField, $sortDesc);
 			
 	//Setup Default Data Sort from Headers Table
@@ -205,24 +192,19 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true))
 				$sortField = $column_rec['column_name'];
 	
 	//Setup Data
-//	$current = paginateSortAndFormat($current, $sortField, $sortDesc, $startRecord, $viewName);
 	$previous = paginateSortAndFormat($previous, $sortField, $sortDesc, $startRecord, $viewName);
 
 	/****************************************************************
 	 * Data Assign for Template.
 	 ****************************************************************/
-//	$wrmsmarty->assign('new_data', $current); 
 	$wrmsmarty->assign('old_data', $previous);
-//	$wrmsmarty->assign('current_jump_menu', $currJumpMenu);
 	$wrmsmarty->assign('previous_jump_menu', $prevJumpMenu);
 	$wrmsmarty->assign('column_name', $raid_headers);
-//	$wrmsmarty->assign('curr_record_counts', $curr_record_count_array);
 	$wrmsmarty->assign('prev_record_counts', $prev_record_count_array);
 	$wrmsmarty->assign('header_data',
 		array(
 			'template_name'=>$phpraid_config['template'],
 			'raidsarchive_header' => $phprlang['raidsarchive_header'],
-			//'new_raids_header' => $phprlang['raids_new'],
 			'sort_url_base' => $pageURL,
 			'sort_descending' => $sortDesc,
 			'sort_text' => $phprlang['sort_text'],

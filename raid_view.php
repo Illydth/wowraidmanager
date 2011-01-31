@@ -247,12 +247,15 @@ if($mode == 'view')
 		else
 			$sec_spec = $sec_spec_role_name . ":" . $phprlang[$sec_spec_lang_index];
 				
+		/*
 		$arcane = $data['arcane'];
 		$fire = $data['fire'];
 		$nature = $data['nature'];
 		$frost = $data['frost'];
 		$shadow = $data['shadow'];
-
+		*/
+		$array_resistance = get_array_char_resistance($data['char_id']);
+		
 		if ($phpraid_config['enable_armory'])
 			$name = get_armorychar($data['name'], $data['guild']);
 		else
@@ -278,14 +281,9 @@ if($mode == 'view')
 						if ($data['class'] == $global_class['class_id'])
 						{
 							$class = ' <img src="templates/' . $phpraid_config['template'] . '/'. $global_class['image'] .'" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang[$global_class['lang_index']].'\');" onMouseout="hideddrivetip();" alt="'.$phprlang[$global_class['lang_index']].'">';
-							array_push($class_info[$global_class['class_id']],
+							$char_array = 
 								array(
 										'ID'=>$data['char_id'],
-										'Arcane'=>$arcane,
-										'Fire'=>$fire,
-										'Nature'=>$nature,
-										'Frost'=>$frost,
-										'Shadow'=>$shadow,
 										'Pri_Spec'=>$pri_spec,
 										'Sec_Spec'=>$sec_spec,
 										'Race'=>$race,
@@ -298,8 +296,12 @@ if($mode == 'view')
 										'Time'=>$time,
 										'Team Name'=>$team_name,
 										'Guild'=>$guildname
-								)
-							);
+								);
+							
+							// add array	
+							$char_array = $char_array + $array_resistance;							
+							array_push($class_info[$global_class['class_id']],$char_array);
+
 						}	
 					}
 				}
@@ -316,7 +318,29 @@ if($mode == 'view')
 					$role_id = $role_name_data['role_id'];
 					foreach ($wrm_global_roles as $global_role)
 						if ($role_id == $global_role['role_id'])
-							array_push($role_info[$global_role['role_id']],
+						{
+							$char_array = 
+									array(
+											'ID'=>$data['char_id'],
+											'Pri_Spec'=>$pri_spec,
+											'Sec_Spec'=>$sec_spec,
+											'Race'=>$race,
+											'Class'=>$class,
+											'Name'=>$name,
+											'Comments'=>$comments,
+											'Level'=>$data['lvl'],
+											'Buttons'=>$actions,
+											'Date'=>$date,
+											'Time'=>$time,
+											'Team Name'=>$team_name,
+											'Guild'=>$guildname
+									);
+								
+								// add array	
+								$char_array = $char_array + $array_resistance;							
+								array_push($role_info[$global_role['role_id']],$char_array);
+						}						
+						/*	array_push($role_info[$global_role['role_id']],
 								array(
 										'ID'=>$data['char_id'],
 										'Arcane'=>$arcane,
@@ -338,6 +362,7 @@ if($mode == 'view')
 										'Guild'=>$guildname
 								)
 							);
+						*/
 				}
 		}	
 		if ($signup_signupstatus == "01")

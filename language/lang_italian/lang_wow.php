@@ -118,6 +118,13 @@ $phprlang['resistance_frost'] = 'Resistenza Frost';
 $phprlang['resistance_nature'] = 'Resistenza Nature';
 $phprlang['resistance_shadow'] = 'Resistenza Shadow';
 
+//error message
+$phprlang['profile_error_arcane'] = 'Il valore di resistenza Arcane deve essere numerico';
+$phprlang['profile_error_fire'] = 'Il valore di resistenza Fire deve essere numerico';
+$phprlang['profile_error_frost'] = 'Il valore di resistenza Frost deve essere numerico';
+$phprlang['profile_error_nature'] = 'Il valore di resistenza Nature deve essere numerico';
+$phprlang['profile_error_shadow'] = 'Il valore di resistenza Shadow deve essere numerico';
+
 // expansions
 $phprlang['exp_generic_wow'] = 'Generic World of Warcraft';
 $phprlang['exp_burning_crusade'] = 'The Burning Crusade';

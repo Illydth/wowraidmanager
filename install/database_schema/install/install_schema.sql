@@ -444,3 +444,21 @@ CREATE TABLE `wrm_acl_raid_permission` (
   `permission_type_id` int(10) NOT NULL
 ) ;
 
+-- Resistance Table Creation
+DROP TABLE IF EXISTS `wrm_resistance`;
+CREATE TABLE  `wrm_resistance` (
+  `resistance_id` int(10) NOT NULL auto_increment,
+  `resistance_name` varchar(10) NOT NULL,
+  `lang_index` varchar(100) NOT NULL,
+  `font_color` varchar(100) NOT NULL,
+  `image` varchar(100) NOT NULL,
+  PRIMARY KEY  (`resistance_id`)
+);
+
+-- Char Resistance Table Creation
+DROP TABLE IF EXISTS `wrm_char_resistance`;
+CREATE TABLE  `wrm_char_resistance` (
+  `resistance_id` int(10) NOT NULL,
+  `char_id` int(10) NOT NULL,
+  `resistance_value` int(10) default '0'
+);
