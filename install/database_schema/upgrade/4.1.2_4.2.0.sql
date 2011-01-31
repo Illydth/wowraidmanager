@@ -331,4 +331,10 @@ VALUES (NULL , 'raidview1', 'Time', '1', '17', NULL, 'time', 'wrmtime');
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
 VALUES (NULL , 'raidview1', 'Buttons', '1', '18', NULL, 'buttons', NULL);
 
+ALTER TABLE `wrm_chars`DROP `arcane`;
+ALTER TABLE `wrm_chars`DROP `fire`;
+ALTER TABLE `wrm_chars`DROP `frost`;
+ALTER TABLE `wrm_chars`DROP `nature`;
+ALTER TABLE `wrm_chars` DROP `shadow` 
+
 INSERT INTO `wrm_version` VALUES ('4.2.0','Version 4.2.0 of WoW Raid Manager');

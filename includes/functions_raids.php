@@ -204,25 +204,12 @@ function get_array_allpossible_chars_from_RaidID($raid_id)
 	while($array_char = $db_raid->sql_fetchrow($result, true))
 	{
 		$char_check_lvl = false;
-		$char_check_resist = false;
 		$char_check_class = false;
 		$char_check_role = false;
 				
 		//check: level
 		if ( ($array_raid['min_lvl'] <= $array_char['lvl']) and ($array_char['lvl'] <= $array_raid['max_lvl']))
 			$char_check_lvl = true;
-		
-		//check: resist
-		if ($phpraid_config['resop'] == "0")
-		{
-			//@ todo resist
-			//not implement yet
-			$char_check_resist = true;			
-		}
-		else 
-		{
-			$char_check_resist = true;	
-		}
 		
 		//check: class
 		$char_check_class = char_raid_class_check($array_char['char_id'], $raid_id);
@@ -231,12 +218,10 @@ function get_array_allpossible_chars_from_RaidID($raid_id)
 		$char_check_role = char_raid_role_check($array_char['char_id'], $raid_id);
 		
 		if ( ($char_check_lvl == true) and 
-			 ($char_check_resist == true) and
 			 ($char_check_class == true) and
 			 ($char_check_role == true)
 			)
 		{
-			//echo $array_char['char_id'] . $array_char['name']."<br>";
 			$chars[$array_char['char_id']] = $array_char['name'];
 		}
 	
@@ -318,14 +303,14 @@ function char_raid_role_check($char_id, $raid_id)
 					" WHERE (role_id = %s or role_id = %s) and raid_id = %s", 
 					quote_smart($char_role_first),quote_smart($char_role_second),quote_smart($raid_id)
 		);
-	//echo $sql."<br>";
+
 	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	$data_class_role = $db_raid->sql_fetchrow($result, true);
 		
-	//if ($data_class_role['lmt'] > 0)
+	if ($data_class_role['lmt'] > 0)
 		return true;
-	//else 
-	//	return false;	
+	else 
+		return false;	
 }
 
 function has_user_rights_change_comments($signup_id, $profile_id)

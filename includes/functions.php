@@ -484,6 +484,8 @@ function get_raid_tooltip($raid_id)
 	$raid_txt_info .= "<br>".$phprlang['start_time'].": " . get_time_full($raids['start_time']);
 	$raid_txt_info .= "<br>".$phprlang['invite_time'].": " . get_time_full($raids['invite_time']);
 	$raid_txt_info .= "<br>".$phprlang['raid_force_name'] . ": " . $raids['raid_force_name'];
+	$raid_txt_info .= "<br>".$phprlang['min_lvl'] . ": " . $raids['min_lvl'];
+	$raid_txt_info .= "<br>".$phprlang['max_lvl'] . ": " . $raids['max_lvl'];	
 	$raid_txt_info .= "<br>".$phprlang['totals'].": ".$total.'/' . $raids['max']  . ' (+' . $total2. ')';
 	
 	$ddrivetiptxt = $raid_txt_desc.'<br>'. $raid_txt_info."'";

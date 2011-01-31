@@ -33,11 +33,6 @@ CREATE TABLE  `wrm_chars` (
   `guild` varchar(255) NOT NULL default '',
   `lvl` int(3) NOT NULL default '0',
   `race` varchar(255) NOT NULL default '',
-  `arcane` int(5) NOT NULL default '0',
-  `fire` int(5) NOT NULL default '0',
-  `frost` int(5) NOT NULL default '0',
-  `nature` int(5) NOT NULL default '0',
-  `shadow` int(5) NOT NULL default '0',
   `pri_spec` varchar(255) NOT NULL default '',
   `sec_spec` varchar(255) default '',  
   PRIMARY KEY  (`char_id`)

@@ -112,7 +112,6 @@ function getVisibleColumns($view_name)
 			{
 				foreach ($wrm_global_resistance as $global_resistance)
 				{
-					//echo $global_resistance['resistance_name'];
 					array_push($table_headers,
 						array(
 							'column_name'=>$global_resistance['resistance_name'],

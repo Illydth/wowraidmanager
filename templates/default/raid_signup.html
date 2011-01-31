@@ -30,13 +30,21 @@
           <td class="row2">{$raid_signup.start_date_value}</td>
         </tr>
         <tr valign="middle">
+          <td class="row1"><strong>{$raid_signup.raid_lvl_min_text}</strong></td>
+          <td class="row2"><strong>{$raid_signup.raid_lvl_min_value}</strong></td>
+        </tr>
+        <tr valign="middle">
+          <td class="row1"><strong>{$raid_signup.raid_lvl_max_text}</strong></td>
+          <td class="row2"><strong>{$raid_signup.raid_lvl_max_value}</strong></td>
+        </tr>
+        <tr valign="middle">
           <td class="row1"><strong>{$raid_signup.max_member_text}</strong></td>
           <td class="row2"><strong>{$raid_signup.max_member_value}</strong></td>
         </tr>
         <tr valign="middle">
           <td class="row1"><strong>{$raid_signup.queued_members_text}</strong></td>
           <td class="row2"><strong>{$raid_signup.queued_members_value}</strong></td>
-        </tr>
+        </tr>        
         </table>
         </div>
     <td>&nbsp;<br/></td>
@@ -46,6 +54,7 @@
 <a name="signup"></a>
 <div class="contentHeader">{$raid_signup.signup_header}</div>
 <br/>
+{if $raid_signup.error_msg == ""}
 <div class="contentBody">
 <br/>
  <form action="{$raid_signup.form_action}" method="POST">
@@ -57,48 +66,48 @@
   <tr valign="top">
     	<td>
 	      <div class="contentBody">
-	      <table width="100%" border="0" cellspacing="1" cellpadding="3" class="dataOutline">
-		        <tr valign="middle">
-		          <td width="30%" class="row1"><strong>{$raid_signup.username_text}</strong></td>
-		          <td width="70%" class="row2">{$raid_signup.username_value}</td>
-		        </tr>
-		        <tr valign="middle">
-		          <td class="row1"><strong>{$raid_signup.character_text}</strong></td>
-		          <td class="row2">
-		          	{if $raid_signup.mode == "signup"}
-						{html_options name=character options=$raid_signup.array_character class="post"}
-					{else}
-						{$raid_signup.character_value}
-						<input type="hidden" name="character" value="{$raid_signup.character_value}">
-					{/if}		
-			  	  </td>
-			    </tr>
-				{if $raid_signup.mode != "signup"}	    
-	        	<tr valign="middle">
-		          <td class="row1"><strong>{$raid_signup.spec_text}</strong></td>
-		          <td class="row2">
-						{html_options name=char_spec options=$raid_signup.array_spec selected=$raid_signup.selected_spec class="post"}
-			  	  </td>
-			    </tr>
-				{/if}
-			    <tr valign="middle">
-			    	<td class="row1"><strong>{$raid_signup.queue_text}</strong></td>
-			    	<td class="row2">
-						{html_options name=signup_status options=$raid_signup.array_signup_rights_type selected=$raid_signup.selected_signup_status class="post"}
-					</td>
-			    </tr>
-			    <tr valign="middle">
-			    	<td class="row1"><strong>{$raid_signup.comments_text}</strong></td>
-			    	<td class="row2">
-				    	{if $raid_signup.comments_changeable  == true or $raid_signup.comments_changeable  == "1"}
-							<textarea name="comments" cols="30" rows="7" class="post">{$raid_signup.comments_value}</textarea>
+		      <table width="100%" border="0" cellspacing="1" cellpadding="3" class="dataOutline">
+			        <tr valign="middle">
+			          <td width="30%" class="row1"><strong>{$raid_signup.username_text}</strong></td>
+			          <td width="70%" class="row2">{$raid_signup.username_value}</td>
+			        </tr>
+			        <tr valign="middle">
+			          <td class="row1"><strong>{$raid_signup.character_text}</strong></td>
+			          <td class="row2">
+			          	{if $raid_signup.mode == "signup"}
+							{html_options name=character options=$raid_signup.array_character class="post"}
 						{else}
-							{$raid_signup.comments_value}
-							<input type="hidden" name="comments" value="{$raid_signup.comments_value}">
-						{/if}
-					</td>
-			  	</tr>
-	  		</table>
+							{$raid_signup.character_value}
+							<input type="hidden" name="character" value="{$raid_signup.character_value}">
+						{/if}		
+				  	  </td>
+				    </tr>
+					{if $raid_signup.mode != "signup"}	    
+		        	<tr valign="middle">
+			          <td class="row1"><strong>{$raid_signup.spec_text}</strong></td>
+			          <td class="row2">
+							{html_options name=char_spec options=$raid_signup.array_spec selected=$raid_signup.selected_spec class="post"}
+				  	  </td>
+				    </tr>
+					{/if}
+				    <tr valign="middle">
+				    	<td class="row1"><strong>{$raid_signup.queue_text}</strong></td>
+				    	<td class="row2">
+							{html_options name=signup_status options=$raid_signup.array_signup_rights_type selected=$raid_signup.selected_signup_status class="post"}
+						</td>
+				    </tr>
+				    <tr valign="middle">
+				    	<td class="row1"><strong>{$raid_signup.comments_text}</strong></td>
+				    	<td class="row2">
+					    	{if $raid_signup.comments_changeable  == true or $raid_signup.comments_changeable  == "1"}
+								<textarea name="comments" cols="30" rows="7" class="post">{$raid_signup.comments_value}</textarea>
+							{else}
+								{$raid_signup.comments_value}
+								<input type="hidden" name="comments" value="{$raid_signup.comments_value}">
+							{/if}
+						</td>
+				  	</tr>
+		  		</table>
 			</div>
     	<td>&nbsp;<br/></td>
   </tr>
@@ -111,6 +120,8 @@
 	<input type="reset" value="{$raid_signup.button_reset}" name="reset" class="liteoption">
   </div>
  </form>
-
+{else}
+	<center><strong>{$raid_signup.error_msg}</strong></center>
+{/if}
 <br/>
 </div>

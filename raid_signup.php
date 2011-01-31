@@ -30,6 +30,7 @@
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *
 ****************************************************************************/
+$phprlang['signup_error_no_chars_for_raid'] = "You have no Characters for Signup this Raid";
 
 // commons
 define("IN_PHPRAID", true);	
@@ -71,7 +72,8 @@ $profile_id = scrub_input($_SESSION['profile_id']);
 $wrm_db_user_name = "username";
 $wrm_table_prefix = $phpraid_config['db_prefix'];
 $wrm_db_table_user_name = "profile";
-
+$error_msg = "";
+	
 if ($mode == "signup")
 {
 	$raid_id =  scrub_input($_GET['raid_id']);
@@ -81,12 +83,14 @@ if ($mode == "signup")
 	$array_character = get_array_userchars_from_RaidID($raid_id, $profile_id);
 	
 	$comments_changeable = true;//has_user_rights_change_comments("", $profile_id);
-	$array_signup_rights_type = get_array_signup_type($signup_id, $profile_id);
+	$array_signup_rights_type = get_array_signup_type($signup_id,$profile_id+1);
 	$selected_signup_status = "01";
 	
 	$signup_header = $phprlang['view_new'];
 	$button_alt = $phprlang['signup'];
 
+	if ($array_character == False)
+		$error_msg = $phprlang['signup_error_no_chars_for_raid'];
 	$form_action = $pageURL_signup.$raid_id;
 }
 
@@ -420,6 +424,11 @@ $wrmsmarty->assign('raid_signup',
 		'queued_members_text' => $phprlang['view_queued'],
 		'queued_members_value' => $raid_info_array['queue_count'],
 
+		'raid_lvl_min_text' => $phprlang['min_lvl'],
+		'raid_lvl_min_value' => $raid_info_array['min_lvl'],
+		'raid_lvl_max_text' => $phprlang['max_lvl'],
+		'raid_lvl_max_value' => $raid_info_array['max_lvl'],
+		
 		'signup_header' => $signup_header,
 
 		'username_text' => $phprlang['view_username'],
@@ -436,6 +445,8 @@ $wrmsmarty->assign('raid_signup',
 		'comments_text' => $phprlang['view_comments'],
 		'comments_value' => $raid_comments,
 		'comments_changeable' => $comments_changeable,
+	
+		'error_msg' => $error_msg,
 
 		'button_submit'=>$button_alt,
 		'button_reset'=>$phprlang['reset']
