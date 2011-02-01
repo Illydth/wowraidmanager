@@ -50,14 +50,14 @@ $phprlang['blood_elf'] = 'Elfe de Sang';
 $phprlang['draenei'] = 'Draeneï';
 $phprlang['dwarf'] = 'Nain';
 $phprlang['gnome'] = 'Gnome';
-$phprlang['goblin'] = 'Gobelin'; //New
+$phprlang['goblin'] = 'Gobelin';
 $phprlang['human'] = 'Humain';
 $phprlang['night_elf'] = 'Elfe de la nuit';
 $phprlang['orc'] = 'Orc';
 $phprlang['tauren'] = 'Tauren';
 $phprlang['troll'] = 'Troll';
 $phprlang['undead'] = 'Mort Vivant';
-$phprlang['worgen'] = 'Worgen'; //New
+$phprlang['worgen'] = 'Worgen';
 
 // Talent Specs
 $phprlang['disc'] = "Discipline";
@@ -130,5 +130,3 @@ $phprlang['exp_generic_wow'] = 'Generic World of Warcraft';
 $phprlang['exp_burning_crusade'] = 'The Burning Crusade';
 $phprlang['exp_wrath_lich_king'] = 'Wrath of the Lich King';
 $phprlang['exp_cataclysm'] = 'Cataclysm';
-
-?>
