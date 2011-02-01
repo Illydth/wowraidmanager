@@ -129,49 +129,6 @@ function scrub_input($value = "", $html_allowed = false)
 	return $value;
 }
 
-//old
-function setup_output() {
-	global $report;
-
-	$report->setMainAttributes('width="100%" cellpadding="3" cellspacing="0" border="0" class="dataOutline"');
-	$report->setRowAttributes('class="row1"', 'class="row2"', 'rowHover');
-	$report->setFieldHeadingAttributes('class="listHeader"');
-}
-
-function get_armorychar($name, $guild)
-{
-	global $phpraid_config, $db_raid;
-
-	// Get Armory Data from Guild.
-	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "guilds WHERE guild_id=%s",quote_smart($guild));
-	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-	$data = $db_raid->sql_fetchrow($result, true);
-
-	//$realm = str_replace(" ", "+", ucfirst($server));
-	$realm = ucfirst($data['guild_server']);
-	$lang = strtolower($data['guild_armory_code']);
-	// Pre-Cataclysm Armory Links
-	//$javascript = '<a href="' . $data['guild_armory_link'] . '/character-sheet.xml?r=' . $realm . '&amp;n=' . ucfirst($name) . '" target="new" onmouseover=\'tooltip.show("includes/wowarmory/char.php?v=' . ucfirst($name) . '&amp;z=' . str_replace("'", "\"+String.fromCharCode(39)+\"", $realm) . '&amp;l=' . $lang . '&amp;u='. $data['guild_armory_link'] .'");\' onmouseout="tooltip.hide();"><strong>' . ucfirst($name) . '</strong></a>';
-	// Post-Cataclysm Armory Links.
-	$javascript = '<a href="' . $data['guild_armory_link'] . $realm . '/' . ucfirst($name) . '/advanced" target="new" onmouseover=\'tooltip.show("includes/wowarmory/char.php?v=' . ucfirst($name) . '&amp;z=' . str_replace("'", "\"+String.fromCharCode(39)+\"", $realm) . '&amp;l=' . $lang . '&amp;u='. $data['guild_armory_link'] .'");\' onmouseout="tooltip.hide();"><strong>' . ucfirst($name) . '</strong></a>';
-	
-	if(substr_wrap($name, 0, 1, "UTF-8") == '_')
-	{
-		$name = substr_wrap($name, 1, (strlen_wrap($name, "UTF-8")-1), "UTF-8");
-		$name = '<!-- ' . ucfirst($name) . ' -->' . $javascript;
-	}
-	else if(substr_wrap($name, 0, 1, "UTF-8") == '(' && substr_wrap($name, strlen_wrap($name) - 1, 1, "UTF-8") == ')')
-	{
-		$name = substr_wrap($name, 1, strlen_wrap($name, "UTF-8") - 2, "UTF-8");
-		$name = '<!-- ' . ucfirst($name) . ' -->' . $javascript;
-	}
-	else
-	{
-		$name = '<!-- ' . ucfirst($name) . ' -->' . $javascript;
-	}
-
-	return $name;
-}
 
 //Note: Reverse: reverses the color.  Normally the check is if count > count_max set to red, in the case where the 
 //			counts are used as MINIMUM values (config:class_as_min) if count < count_max set to red. 
@@ -201,72 +158,6 @@ function get_coloredcount($signedup, $count, $max_count, $onqueue, $reverse = fa
 {
 	return '<!-- ' . $signedup . ' -->' . get_color($count . "/" . $max_count . ($onqueue ? '(+' . $onqueue . ')' : ''), $count, $max_count, $reverse);
 }
-
-/* 
-function get_color2($text, $signedup, $onqueue, $wanted, $type, $extracount, $ddsignedup, $ddonqueue, $ddwanted, &$minustkmel)
-{
-        $color = '';
-
-        if($type == 2)
-        {
-                // melee + ranged
-                $count_available = $ddsignedup + $ddonqueue;
-                $count_onqueue = $ddonqueue;
-                $count_wanted = $ddwanted;
-        }
-        else
-        {
-                $count_available = $signedup + $onqueue;
-                $count_onqueue = $onqueue;
-                $count_wanted = $wanted;
-        }
-
-        if($type == 1)
-        {
-                // tank/melee
-                if($minustkmel <= $count_available)
-                {
-                        $count_available = $count_available - $minustkmel;
-                }
-                else
-                {
-                        $count_available = 0;
-                        $extracount = $extracount - $minustkmel;
-                }
-        }
-
-        if($count_available < $count_wanted)
-        {
-                if($count_available + $extracount < $count_wanted)
-                {
-                        if($type != 2 || $signedup + $onqueue < $wanted)
-                        {
-                                $color = '#cc0000';
-                        }
-                        $minustkmel = $minustkmel + $extracount;
-                }
-                else
-                {
-                        $minustkmel = $minustkmel + $count_wanted - $count_available;
-                }
-        }
-        else if($count_available - $count_onqueue > $count_wanted)
-        {
-                if($type != 2 || $signedup > $wanted)
-                {
-                        $color = '#ffff00';
-                }
-        }
-
-        return $color ? '<font color="' . $color . '">' . $text . '</font>' : $text;
-}
-
-
-function get_coloredcount2($signedup, $onqueue, $wanted, $type, $extracount, $ddsignedup, $ddonqueue, $ddwanted, &$minustkmel)
-{
-        return '<!-- ' . $signedup . ' -->' . get_color($signedup . "/" . $wanted . ($onqueue ? '(+' . $onqueue . ')' : ''), $signedup, $onqueue, $wanted, $type, $extracount, $ddsignedup, $ddonqueue, $ddwanted, $minustkmel);
-}
-*/
 
 function linebreak_to_br($str) {
   $str = preg_replace("/(\r\n?)|(\n\r?)/s", "<br />", $str);
@@ -458,39 +349,6 @@ function get_db_size()
 	}
 	
 	return $dbsize; //(Kilobytes)
-}
-
-/**
- * Tooltip
- */
-function get_raid_tooltip($raid_id)
-{
-	global $db_raid,$phpraid_config,$phprlang;
-	
-	//$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "raids";
-	$sql =	sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raids ".
-					" WHERE raid_id=%s",quote_smart($raid_id));
-	$raids_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-	$raids = $db_raid->sql_fetchrow($raids_result, true); 
-
-	$desc = scrub_input($raids['description']);
-	$desc = str_replace("'", "\'", $desc);
-	$raid_txt_desc = "'<span class=tooltip_title>" . $phprlang['description'] ."</span><br>" . DEUBB2($desc);
-	
-	$raid_txt_info = "------------------";
-	$raid_txt_info .= "<br>".$phprlang['location'].": ". $raids['location'];
-	$raid_txt_info .= "<br>".$phprlang['officer'].": ". $raids['officer'];
-	$raid_txt_info .= "<br>".$phprlang['date'].": ". get_date($raids['start_time']);
-	$raid_txt_info .= "<br>".$phprlang['start_time'].": " . get_time_full($raids['start_time']);
-	$raid_txt_info .= "<br>".$phprlang['invite_time'].": " . get_time_full($raids['invite_time']);
-	$raid_txt_info .= "<br>".$phprlang['raid_force_name'] . ": " . $raids['raid_force_name'];
-	$raid_txt_info .= "<br>".$phprlang['min_lvl'] . ": " . $raids['min_lvl'];
-	$raid_txt_info .= "<br>".$phprlang['max_lvl'] . ": " . $raids['max_lvl'];	
-	$raid_txt_info .= "<br>".$phprlang['totals'].": ".$total.'/' . $raids['max']  . ' (+' . $total2. ')';
-	
-	$ddrivetiptxt = $raid_txt_desc.'<br>'. $raid_txt_info."'";
-
-	return ($ddrivetiptxt);
 }
 
 ?>
