@@ -41,7 +41,81 @@ if($mode == '')
 	log_hack();
 
 $pageURL = 'admin_usermgt.php';
-$pageURL_details = 'admin_usermgt.php?mode=details&user_id=';	
+$pageURL_details = 'admin_usermgt.php?mode=details&user_id=';
+
+/***************************************************
+ * Load Game Specific Data to Global Variables
+ ***************************************************/
+$wrm_global_classes = array();
+$wrm_global_races = array();
+$wrm_global_roles = array();
+$wrm_global_gender = array();
+$wrm_global_resistance = array();
+
+// Load the Classes Array
+$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "classes";
+$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+$x = 0;
+while($data = $db_raid->sql_fetchrow($result, true))
+{
+	$wrm_global_classes[$x]['class_index'] = $data['class_index'];
+	$wrm_global_classes[$x]['class_id'] = $data['class_id'];
+	$wrm_global_classes[$x]['class_code'] = $data['class_code'];
+	$wrm_global_classes[$x]['lang_index'] = $data['lang_index'];
+	$wrm_global_classes[$x]['image'] = $data['image'];
+	$x++;
+}
+
+// Load the Races Array
+$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "races";
+$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+$x = 0;			
+while($data = $db_raid->sql_fetchrow($result, true))
+{
+	$wrm_global_races[$x]['race_id'] = $data['race_id'];
+	$wrm_global_races[$x]['faction'] = $data['faction'];
+	$wrm_global_races[$x]['lang_index'] = $data['lang_index'];
+	$x++;
+}
+
+// Load the Roles Array
+$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "roles";
+$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+$x = 0;			
+while($data = $db_raid->sql_fetchrow($result, true))
+{
+	$wrm_global_roles[$x]['role_id'] = $data['role_id'];
+	$wrm_global_roles[$x]['role_name'] = $data['role_name'];
+	$wrm_global_roles[$x]['lang_index'] = $data['lang_index'];
+	$wrm_global_roles[$x]['image'] = $data['image'];
+	$x++;
+}
+
+// Load the Gender Array
+$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "gender";
+$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+$x = 0;			
+while($data = $db_raid->sql_fetchrow($result, true))
+{
+	$wrm_global_gender[$x]['gender_id'] = $data['gender_id'];
+	$wrm_global_gender[$x]['lang_index'] = $data['lang_index'];
+	$x++;
+}
+
+// Load the Resistance Array
+$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "resistance";
+$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+$x = 0;
+while($data = $db_raid->sql_fetchrow($result, true))
+{
+	$wrm_global_resistance[$x]['resistance_id'] = $data['resistance_id'];
+	$wrm_global_resistance[$x]['resistance_name'] = $data['resistance_name'];
+	$wrm_global_resistance[$x]['lang_index'] = $data['lang_index'];
+	$wrm_global_resistance[$x]['font_color'] = $data['font_color'];
+	$wrm_global_resistance[$x]['image'] = $data['image'];	
+	$x++;
+}
+
 if($mode == 'view')
 {
 	/*************************************************************
@@ -131,7 +205,7 @@ if($mode == 'view')
 	//Setup Columns
 	$users_headers = array();
 	$record_count_array = array();
-	$users_headers = getVisibleColumns($viewName);
+	$users_headers = getVisibleColumns_admin($viewName);
 
 	//Get Record Counts
 	$users_record_count_array = getRecordCounts($users, $raid_headers, $startRecord);
@@ -237,8 +311,7 @@ else if($mode == 'details')
 		$buttons_edit  = '<a href="../profile_char.php?mode=edit&char_id='.$data['char_id'].'&guild='.$data['guild'].'&race='.$data['race'].'&class='.$data['class'].'">';
 		$buttons_edit .= '<img src="../templates/' . $phpraid_config['template'] . '/images/icons/icon_edit.gif" border="0" onMouseover="ddrivetip(\''. $phprlang['edit'] .'\');" onMouseout="hideddrivetip();" alt="edit icon">';
 		$buttons_edit .= '</a>';
-			
-		//@todo buggy not show resistance img + values from the char
+
 		$array_resistance = get_array_char_resistance($data['char_id']);
 		$char_array = 
 			array(
@@ -267,7 +340,7 @@ else if($mode == 'details')
 	//Setup Columns
 	$char_headers = array();
 	$record_count_array = array();
-	$char_headers = getVisibleColumns($viewName);
+	$char_headers = getVisibleColumns_admin($viewName);
 
 	//Get Record Counts
 	$char_record_count_array = getRecordCounts($chars, $char_headers, $startRecord);
