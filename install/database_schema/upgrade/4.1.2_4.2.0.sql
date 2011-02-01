@@ -160,7 +160,7 @@ INSERT INTO `wrm_menu_value` VALUES ('20','6','admin_logs_link','','0','1','admi
 INSERT INTO `wrm_menu_value` VALUES ('40','7','index_link','','0','1','index','index.php','','0',NULL,'1');
 INSERT INTO `wrm_menu_value` VALUES ('41','7','calendar_link','','0','1','calendar','calendar.php','','0',NULL,'1');
 INSERT INTO `wrm_menu_value` VALUES ('42','7','roster_link','','0','2','roster','roster.php','','0',NULL,'1');
-INSERT INTO `wrm_menu_value` VALUES ('43','7','dkp_link','EQ-DKP','1','3','dkp_view','dkp_view.php','','0',NULL,'0');
+INSERT INTO `wrm_menu_value` VALUES ('43','7','eqdkp_link','EQ-DKP','1','3','view_eqdkp','view_eqdkp.php','','0',NULL,'0');
 INSERT INTO `wrm_menu_value` VALUES ('44','7','raidsarchive_link','','0','4','raidsarchive','raidsarchive.php?mode=view','','0',NULL,'1');
 INSERT INTO `wrm_menu_value` VALUES ('45','7','bosstrack_link','','0','5','bosstracking','bosstracking.php?mode=view','','0',NULL,'0');
 INSERT INTO `wrm_menu_value` VALUES ('46','7','announcements_link','','0','6','announcements','announcements.php?mode=view','','0','1','1');
