@@ -157,6 +157,7 @@ $phprlang['raids_min_lvl'] = 'Niveau Minimum';
 $phprlang['raids_old'] = 'Anciens Raids';
 $phprlang['raids_new'] = 'Prochaines rencontres';
 $phprlang['raids_new_header'] = 'Nouveau Raid';
+$phprlang['raids_edit_header'] = 'Edit Raid'; //new
 $phprlang['raids_start'] = 'Départ';
 $phprlang['raids_eventtype_text'] = 'Event Type';
 $phprlang['raids_mark_selected_raids_to_old'] = "all mark raids are closed and over";
