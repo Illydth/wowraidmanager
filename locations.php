@@ -37,8 +37,8 @@ require_once('./common.php');
 define("PAGE_LVL","locations");
 require_once("includes/authentication.php");
 
-$page_url = "locations.php";
-$page_URL_view = $page_url.'?mode=view&';
+$page_filename = "locations.php";
+$pageURL = $page_filename.'?mode=view&';
 
 /*************************************************************
  * Setup Record Output Information for Data Table
@@ -153,7 +153,7 @@ if($_GET['mode'] == 'view')
 	$loc_record_count_array = getRecordCounts($loc, $loc_headers, $startRecord);
 	
 	//Get the Jump Menu and pass it down
-	$locJumpMenu = getPageNavigation($loc, $startRecord, $page_URL_view, $sortField, $sortDesc);
+	$locJumpMenu = getPageNavigation($loc, $startRecord, $pageURL, $sortField, $sortDesc);
 			
 	//Setup Default Data Sort from Headers Table
 	if (!$initSort)
@@ -175,7 +175,7 @@ if($_GET['mode'] == 'view')
 		array(
 			'template_name'=>$phpraid_config['template'],
 			'header' => $phprlang['locations_header'],
-			'sort_url_base' => $page_URL_view,
+			'sort_url_base' => $pageURL,
 			'sort_descending' => $sortDesc,
 			'sort_text' => $phprlang['sort_text'],
 		)
@@ -293,7 +293,7 @@ elseif($_GET['mode'] == 'new' || $_GET['mode'] == 'edit')
 		}
 	}
 
-	header("Location: ".$page_URL_view);
+	header("Location: ".$pageURL);
 }
 elseif($_GET['mode'] == 'delete')
 {
@@ -329,11 +329,11 @@ elseif($_GET['mode'] == 'delete')
 			$sql = sprintf("DELETE FROM " . $phpraid_config['db_prefix'] . "loc_role_lmt WHERE location_id=%s",quote_smart($id));
 			$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 			
-			header("Location: " . $page_URL_view);
+			header("Location: " . $pageURL);
 		}
 	} else {
 		if($_SESSION['priv_locations'] == 1)
-			header("Location: " . $page_URL_view);
+			header("Location: " . $pageURL);
 		else
 			header("Location: index.php");
 	}
@@ -518,7 +518,7 @@ if($_GET['mode'] != 'delete')
 			$number_max_chars = '';
 			$location_wow_name = "";
 			$icon = "";
-			$form_action = $page_URL_view;
+			$form_action = $pageURL;
 		}
 			
 		$buttons_01 = $phprlang['submit']; 
