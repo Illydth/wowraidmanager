@@ -81,8 +81,8 @@ $count2 = array();
 $raid_loop_cur = 0;
 $raid_loop_prev = 0;
 
-$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "raids";
-$raids_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "raids WHERE old = 1 ORDER BY start_time DESC";
+$raids_result = $db_raid->sql_query($sql) or $no_old = TRUE;
 
 while($raids = $db_raid->sql_fetchrow($raids_result, true)) {
 	$invite = new_date('Y/m/d H:i:s', $raids['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
@@ -129,10 +129,26 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true)) {
 	//		$info = '<a href="view.php?mode=view&amp;raid_id=' . $raids['raid_id'] . '#signup">'. $phprlang['signup'] .'</a>';
 	}
 
+//	$desc = scrub_input($raids['description']);
+//	$ddrivetiptxt = "'<span class=tooltip_title>" . $phprlang['description'] ."</span><br>" . DEUBB2($desc) . "'";
+	//$location = $raids['location'];
+
+	$raid_date = new_date($phpraid_config['date_format'],$raids['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+	$raid_start_time = new_date($phpraid_config['time_format'],$raids['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+	$raid_invite_time = new_date($phpraid_config['time_format'],$raids['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);		
+	
 	$desc = scrub_input($raids['description']);
-	$ddrivetiptxt = "'<span class=tooltip_title>" . $phprlang['description'] ."</span><br>" . DEUBB2($desc) . "'";
-	//$location = '<a href="view.php?mode=view&amp;raid_id=' . $raids['raid_id'] . '" onMouseover="ddrivetip('.$ddrivetiptxt.');" onMouseout="hideddrivetip();">'.$raids['location'].'</a>';
-	$location = $raids['location'];
+	$desc = str_replace("'", "\'", $desc);
+	$raid_txt_desc = "'<span class=tooltip_title>" . $phprlang['description'] ."</span><br>" . DEUBB2($desc);
+	$raid_txt_info = "------------------";
+	$raid_txt_info .= "<br>".$phprlang['location'].":".$raids['location'];
+	$raid_txt_info .= "<br>".$phprlang['officer'].":".$raids['officer'];
+	$raid_txt_info .= "<br>".$phprlang['date'].":".$raid_date;
+	$raid_txt_info .= "<br>".$phprlang['start_time'].":".$raid_start_time;
+	$raid_txt_info .= "<br>".$phprlang['invite_time'].":".$raid_invite_time;
+	$raid_txt_info .= "<br>".$phprlang['totals'].": ".$total.'/'.$raids['max']  . ' (+' . $total2. ')';
+	$ddrivetiptxt = $raid_txt_desc.'<br>'. $raid_txt_info."'";
+	$location = '<a href="view.php?mode=view&amp;raid_id='.$raids['raid_id'].'" onMouseover="ddrivetip('.$ddrivetiptxt.');" onMouseout="hideddrivetip();">'.$raids['location'].'</a>';	
 	
 	// Now that we have the raid data, we need to retrieve limit data based upon Raid ID.
 	// Get Class Limits and set Colored Counts
@@ -166,11 +182,11 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true)) {
 	if($raids['old'] == 1) {
 		array_push($previous,
 			array(
-			//	'ID'=>$raids['raid_id'],
+				'ID'=>$raids['raid_id'],
 				//'Signup'=>$info,
-				'Force Name'=>$data['raid_force_name'],
+				'Force Name'=>$raids['raid_force_name'],
 				'Date'=>$date,
-				'Dungeon'=>$location,
+				'Dungeon'=>UBB2($location),
 				//'Dungeon'=>$raids['location'],
 				'Invite Time'=>$invite,
 				'Start Time'=>$start,
@@ -189,7 +205,7 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true)) {
 	/**************************************************************
 	 * Code to setup for a Dynamic Table Create: raids1 View.
 	 **************************************************************/
-	$viewName = 'index1';
+	$viewName = 'raids1';
 	
 	//Setup Columns
 	$raid_headers = array();
