@@ -267,7 +267,7 @@ if(($_GET['mode'] == 'view') or isset($_GET['raids_del']) or isset($_GET['mark_r
 				array(
 					'ID'=>$data['raid_id'],
 					'Date'=>$date,
-					'Force Name'=>$force_name,
+					'Force Name'=>$data['raid_force_name'],
 					'Dungeon'=>UBB2($location),
 					'Invite Time'=>$invite,
 					'Start Time'=>$start,
