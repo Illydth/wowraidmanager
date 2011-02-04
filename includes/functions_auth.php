@@ -73,23 +73,29 @@ function clear_session()
 // clears only session variables from permissions
 function clear_session_permissions()
 {
-	unset($_SESSION['priv_announcements']);
-	unset($_SESSION['priv_configuration']);
-	unset($_SESSION['priv_guilds']);
-	unset($_SESSION['priv_locations']);
-	unset($_SESSION['priv_profile']);
-	unset($_SESSION['priv_raids']);	
+	global $db_raid, $phpraid_config;
+
+	$sql_priv = sprintf("SELECT * ".
+						"	FROM " . $phpraid_config['db_prefix'] . "permission_value");
+	$result_priv = $db_raid->sql_query($sql_priv) or print_error($sql_priv, $db_raid->sql_error(),1);
+	while ($data_priv = $db_raid->sql_fetchrow($result_priv, true))
+	{
+		unset($_SESSION['priv_'.$data_priv['permission_value_name']]);
+	}
 }
 
-//fill with value 0
+//fill with default value 0
 function set_session_permissions_default()
 {
-	$_SESSION['priv_announcements'] = 0;	
-	$_SESSION['priv_configuration'] = 0;
-	$_SESSION['priv_guilds'] = 0;
-	$_SESSION['priv_locations'] = 0;	
-	$_SESSION['priv_profile'] = 0;
-	$_SESSION['priv_raids'] = 0;	
+	global $db_raid, $phpraid_config;
+
+	$sql_priv = sprintf("SELECT * ".
+						"	FROM " . $phpraid_config['db_prefix'] . "permission_value");
+	$result_priv = $db_raid->sql_query($sql_priv) or print_error($sql_priv, $db_raid->sql_error(),1);
+	while ($data_priv = $db_raid->sql_fetchrow($result_priv, true))
+	{
+		$_SESSION['priv_'.$data_priv['permission_value_name']] = 0;
+	}	
 }
 
 // gets and sets user permissions
@@ -105,24 +111,18 @@ function get_permissions($profile_id)
 	$permission_type_id = get_permission_id($profile_id);
 	
 	// check all permissions
-	$sql_priv = sprintf("SELECT * ".
-						"	FROM " . $phpraid_config['db_prefix'] . "acl_permission".
-						"	WHERE permission_type_id=%s", quote_smart($permission_type_id));
-	$result_priv = $db_raid->sql_query($sql_priv) or print_error($sql_priv, $db_raid->sql_error(),1);
+	// read what permission the profile has and 
+	// return the correct permission name (permission_value_name) 
+	// from table permission_value
+	$sql = sprintf("SELECT a.permission_value_id, b.permission_value_name".
+					" FROM "  . $phpraid_config['db_prefix'] . "acl_permission a, " .
+					"		". $phpraid_config['db_prefix'] . "permission_value b ".
+					" WHERE a.permission_value_id = b.permission_value_id ".
+					" AND permission_type_id = %s", quote_smart($permission_type_id));
+	$result_priv = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(),1);
 	while ($data_priv = $db_raid->sql_fetchrow($result_priv, true))
 	{
-		if ($data_priv['permission_value_id'] == "1")
-			$_SESSION['priv_announcements'] = 1;
-		if ($data_priv['permission_value_id'] == "2")
-			$_SESSION['priv_configuration'] = 1;
-		if ($data_priv['permission_value_id'] == "3")
-			$_SESSION['priv_guilds'] = 1;
-		if ($data_priv['permission_value_id'] == "4")
-			$_SESSION['priv_locations'] = 1;
-		if ($data_priv['permission_value_id'] == "5")
-			$_SESSION['priv_profile'] = 1;
-		if ($data_priv['permission_value_id'] == "6")
-			$_SESSION['priv_raids'] = 1;		
+		$_SESSION['priv_'.$data_priv['permission_value_name']] = 1;
 	}
 }
 
@@ -154,18 +154,6 @@ function delete_permissions($perm_id) {
 	
 	$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "profile SET priv='0' WHERE priv=%s", quote_smart($id));
 	$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-}
-
-// not used
-function remove_user() {
-	global $db_raid, $phpraid_config;
-
-	$user_id = scrub_input($_GET['user_id']);
-	$perm_id = scrub_input($_GET['perm_id']);
-	
-	$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "profile SET priv='0' WHERE profile_id=%s", quote_smart($user_id));
-	$sql = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-	header("Location: permissions.php?mode=details&perm_id=". $perm_id);
 }
 
 /**
