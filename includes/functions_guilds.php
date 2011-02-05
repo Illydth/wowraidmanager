@@ -33,43 +33,46 @@ function guild_add_new($master,$name,$short,$description,$server,$faction,$link,
 {	
 	global $phpraid_config, $db_raid;
 	
-	$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "guilds 
-		(`guild_master`,`guild_name`,`guild_tag`,`guild_description`,`guild_server`,
-		`guild_faction`,`guild_armory_link`,`guild_armory_code`) 
-		VALUES (%s,%s,%s,%s,%s,%s,%s,%s)",quote_smart($master),quote_smart($name),
-		quote_smart($short),quote_smart($description),quote_smart($server),
-		quote_smart($faction),quote_smart($link),quote_smart($code));
+	$sql = sprintf("INSERT INTO `" . $phpraid_config['db_prefix'] . "guilds` ".
+					"(`guild_master`,`guild_name`,`guild_tag`,`guild_description`,`guild_server`, ".
+					"`guild_faction`,`guild_armory_link`,`guild_armory_code`) ".
+					"VALUES (%s,%s,%s,%s,%s,%s,%s,%s)",
+		quote_smart($master), quote_smart($name), quote_smart($short),
+		quote_smart($description), quote_smart($server),
+		quote_smart($faction), quote_smart($link), quote_smart($code));
 	
 	$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	
 	log_create('guild',mysql_insert_id(),$name);
 }
 
-function guild_edit($name,$short,$master,$description,$server,$faction,$link,$code,$id)
+function guild_edit($guild_name,$short,$master,$description,$server,$faction,$link,$code,$guild_id)
 {	
 	global $phpraid_config, $db_raid;
 
-	$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "guilds 
-		SET guild_name=%s,guild_tag=%s,guild_master=%s,guild_description=%s,
-		guild_server=%s,guild_faction=%s,guild_armory_link=%s,guild_armory_code=%s 
-		WHERE guild_id=%s",quote_smart($name),quote_smart($short),
-		quote_smart($master),quote_smart($description),quote_smart($server),
-		quote_smart($faction),quote_smart($link),quote_smart($code),
-		quote_smart($id));
+	$sql = sprintf("UPDATE `" . $phpraid_config['db_prefix'] . "guilds` ". 
+					"SET guild_name=%s,guild_tag=%s,guild_master=%s,guild_description=%s, ".
+					"guild_server=%s,guild_faction=%s,guild_armory_link=%s,guild_armory_code=%s". 
+					"WHERE guild_id=%s",
+		quote_smart($guild_name), quote_smart($short), quote_smart($master),
+		quote_smart($description),quote_smart($server),	quote_smart($faction),
+		quote_smart($link), quote_smart($code), quote_smart($guild_id));
 	$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 }
 
-function guild_remove($n, $id)
+function guild_remove($n, $guild_id)
 {	
 	global $phpraid_config, $db_raid;
 	
 	log_delete('guild',$n);
 	
-	$sql = sprintf("DELETE FROM " . $phpraid_config['db_prefix'] . "guilds WHERE guild_id=%s",quote_smart($id));
+	$sql = sprintf("DELETE FROM `" . $phpraid_config['db_prefix'] . "guilds` ".
+					" WHERE guild_id=%s",quote_smart($guild_id));
 	$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	
 	// Deleting the guild, set all characters to a guild ID of "0" to denote they are not attached to a guild.
-	$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "chars SET guild = '0' WHERE guild = %s",quote_smart($id));
+	$sql = sprintf("UPDATE `" . $phpraid_config['db_prefix'] . "chars` ".
+					" SET guild = '0' WHERE guild = %s",quote_smart($guild_id));
 	$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 }
 
@@ -106,30 +109,6 @@ function get_armory_link_from_code($code)
 			$link = '';
 			break;	
 	}
-	
-	
-	//if ($code == 'US')
-	//	$link = 'http://www.wowarmory.com';
-//
-	//elseif ($code == 'EU')
-	//	$link = 'http://eu.wowarmory.com';
-//
-	//elseif ($code == 'DE')
-	//	$link = 'http://eu.wowarmory.com';
-//
-	//elseif ($code == 'ES')
-	//	$link = 'http://eu.wowarmory.com';
-//
-	//elseif ($code == 'FR')
-	//	$link = 'http://eu.wowarmory.com';
-//
-	//elseif ($code == 'KR')
-	//	$link = 'http://kr.wowarmory.com';
-//
-	//elseif ($code == 'TW')
-	//	$link = 'http://tw.wowarmory.com';
-	//else
-	//	$link = '';
 			
 	return ($link);
 }
