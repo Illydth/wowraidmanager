@@ -81,8 +81,8 @@ $count2 = array();
 $raid_loop_cur = 0;
 $raid_loop_prev = 0;
 
-$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "raids";
-$raids_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "raids WHERE old = 1 ORDER BY start_time DESC";
+$raids_result = $db_raid->sql_query($sql) or $no_old = TRUE;
 
 while($raids = $db_raid->sql_fetchrow($raids_result, true)) 
 {
@@ -152,9 +152,12 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true))
 	if($raids['old'] == 1) {
 		array_push($previous,
 			array(
-				'Force Name'=>$data['raid_force_name'],
+				'ID'=>$raids['raid_id'],
+				//'Signup'=>$info,
+				'Force Name'=>$raids['raid_force_name'],
 				'Date'=>$raid_date,
-				'Dungeon'=>$location,
+				'Dungeon'=>UBB2($location),
+				//'Dungeon'=>$raids['location'],
 				'Invite Time'=>$raid_invite_time,
 				'Start Time'=>$raid_start_time,
 				'Creator'=>$raids['officer'],
@@ -172,7 +175,7 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true))
 	/**************************************************************
 	 * Code to setup for a Dynamic Table Create: raids1 View.
 	 **************************************************************/
-	$viewName = 'index1';
+	$viewName = 'raids1';
 	
 	//Setup Columns
 	$raid_headers = array();

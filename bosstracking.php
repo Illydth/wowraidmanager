@@ -67,7 +67,7 @@ if($_GET['mode'] == 'view')
 	// End Event Type Setup
 	
 	// Create the Instance List Dropdown
-	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "events WHERE event_type_id='" . $event_type_id . "' AND max LIKE '" . $max . "'";
+	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "events WHERE event_type_id=%s AND max LIKE %s", quote_smart($event_type_id), quote_smart($max));
 	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	while($data = $db_raid->sql_fetchrow($result, true))
 	{
