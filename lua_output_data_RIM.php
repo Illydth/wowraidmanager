@@ -85,7 +85,7 @@ function output_macro_queued($raid_id)
 	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	while($data = $db_raid->sql_fetchrow($result, true))
 	{
-		$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id='" . $data['char_id'] . "'";
+		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id=%s", quote_smart($data['char_id']));
 		$result2 = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		$data2 = $db_raid->sql_fetchrow($result2, true);
 		$data2['name'] = ucfirst(strtolower_wrap($data2['name'], "UTF-8"));
@@ -116,8 +116,7 @@ function output_lua_rim()
 	$total_raid_num = $db_raid->sql_numrows($raids_result);
 	// Get the total number of classes, this is max class_index from the classes table.
 	//  This will come in handy later when we're creating the LUA output.
-	$sql = "SELECT max(class_index) as max_class_index " .
-			"FROM ".$phpraid_config['db_prefix']."classes";
+	$sql = "SELECT max(class_index) as max_class_index FROM ".$phpraid_config['db_prefix']."classes";
 	$max_class_query = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	$max_class_records = $db_raid->sql_fetchrow($max_class_query, true);
 	$max_class_index = $max_class_records['max_class_index'];
@@ -138,8 +137,7 @@ function output_lua_rim()
 	{
 		/* Get Guild/Server/Raid Force */
 		// Select Distinct guild_server from wrm_guilds
-		$sql = "SELECT DISTINCT guild_server as guild_server " .
-				"FROM ".$phpraid_config['db_prefix']."guilds";
+		$sql = "SELECT DISTINCT guild_server as guild_server FROM ".$phpraid_config['db_prefix']."guilds";
 		$guild_server_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		while($guild_server_data = $db_raid->sql_fetchrow($guild_server_result, true))
 		{
@@ -148,11 +146,11 @@ function output_lua_rim()
 			
 			// Get the Raid Forces associated with that server. 
 			// Raids with RF Name of None are not processed...they have no server and thus RIM has no use for them.
-			$sql = "SELECT DISTINCT b.raid_force_name as raid_force_name " . 
+			$sql = sprintf("SELECT DISTINCT b.raid_force_name as raid_force_name " . 
 					"FROM ".$phpraid_config['db_prefix']."guilds a, ".$phpraid_config['db_prefix']."raid_force b " .
 					"WHERE a.guild_id = b.guild_id " .
-					"AND a.guild_server = '" . $server . "' " .
-					"ORDER BY b.raid_force_name";
+					"AND a.guild_server = %s " .
+					"ORDER BY b.raid_force_name", quote_smart($server));
 			$rf_list_query = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 			while($rf_list_records = $db_raid->sql_fetchrow($rf_list_query, true))
 			{
@@ -161,9 +159,11 @@ function output_lua_rim()
 				
 				// Get Raids for Each Raid Force and Process Them.
 				$count = 0;
-				$sql = "SELECT * FROM ".$phpraid_config['db_prefix']."raids 
-						WHERE raid_force_name = '" . $rf_list_records['raid_force_name'] . "' 
-						AND " . $raid_sql_where . " ORDER BY invite_time ASC"; // raid_sql_where from lua_output.php
+				$sql = sprintf("SELECT * FROM ".$phpraid_config['db_prefix']."raids 
+								WHERE raid_force_name = %s 
+								AND " . $raid_sql_where . " 
+								ORDER BY invite_time ASC", 
+									quote_smart($rf_list_records['raid_force_name'])); // raid_sql_where from lua_output.php
 				$raids_list_query = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 				while($raid_data = $db_raid->sql_fetchrow($raids_list_query, true))
 				{
@@ -178,7 +178,7 @@ function output_lua_rim()
 					$lua_output .= "\t\t\t\t\t[\"description\"] = \"$description_data\",\n";
 								
 					// sql string for signups
-					$sql = "SELECT ".$phpraid_config['db_prefix']."signups.comments AS comment,
+					$sql = sprintf("SELECT ".$phpraid_config['db_prefix']."signups.comments AS comment,
 								   ".$phpraid_config['db_prefix']."signups.timestamp AS timestamp,
 								   ".$phpraid_config['db_prefix']."signups.profile_id AS profile_id,
 								   ".$phpraid_config['db_prefix']."chars.char_id AS ID,
@@ -189,9 +189,9 @@ function output_lua_rim()
 							FROM ".$phpraid_config['db_prefix']."signups
 							LEFT JOIN ".$phpraid_config['db_prefix']."chars ON
 								".$phpraid_config['db_prefix']."chars.char_id = ".$phpraid_config['db_prefix']."signups.char_id
-							WHERE ".$phpraid_config['db_prefix']."signups.raid_id = ".$raid_data['raid_id']."
+							WHERE ".$phpraid_config['db_prefix']."signups.raid_id = %s
 								AND ".$phpraid_config['db_prefix']."signups.cancel = 0
-								AND ".$phpraid_config['db_prefix']."signups.queue = ";
+								AND ".$phpraid_config['db_prefix']."signups.queue = ", quote_smart($raid_data['raid_id']));
 
 					// get data signed up
 					$order_by = '';
@@ -204,9 +204,8 @@ function output_lua_rim()
 					$signup_result = $db_raid->sql_query($sql1) or print_error($sql1, $db_raid->sql_error(), 1);
 					while($signup = $db_raid->sql_fetchrow($signup_result, true))
 					{
-						$sql2 = "SELECT team_name " .
-								"FROM ".$phpraid_config['db_prefix']."teams " .
-								"WHERE raid_id=".$raid_data['raid_id']." and char_id=".$signup['ID'];
+						$sql2 = sprintf("SELECT team_name FROM ".$phpraid_config['db_prefix']."teams " .
+								"WHERE raid_id=%s and char_id=%s", quote_smart($raid_data['raid_id']), quote_smart($signup['ID']));
 						$team_result = $db_raid->sql_query($sql2) or print_error($sql2, $db_raid->sql_error(), 1);
 						$team = $db_raid->sql_fetchrow($team_result, true);
 			
@@ -214,9 +213,8 @@ function output_lua_rim()
 						$profile_id = $signup['profile_id'];
 						$raid_officer = $raid_data['officer'];
 							
-						$sql3 = "SELECT profile_id " .
-								"FROM ".$phpraid_config['db_prefix']."profile " .
-								"WHERE username='".$raid_officer."'";
+						$sql3 = sprintf("SELECT profile_id FROM ".$phpraid_config['db_prefix']."profile " .
+										"WHERE username=%s", quote_smart($raid_officer));
 						$officer_profile = $db_raid->sql_query($sql3) or print_error($sql3, $db_raid->sql_error(), 1);
 						$raid_officer_profile_id = $db_raid->sql_fetchrow($officer_profile, true);
 						
@@ -256,9 +254,8 @@ function output_lua_rim()
 					$signup_result = $db_raid->sql_query($sql1) or print_error($sql1, $db_raid->sql_error(), 1);
 					while($signup = $db_raid->sql_fetchrow($signup_result, true))
 					{
-						$sql2 = "SELECT team_name " .
-								"FROM ".$phpraid_config['db_prefix']."teams " .
-								"WHERE raid_id=".$raid_data['raid_id']." and char_id=".$signup['ID'];
+						$sql2 = sprintf("SELECT team_name FROM ".$phpraid_config['db_prefix']."teams " .
+								"WHERE raid_id=%s and char_id=%s", quote_smart($raid_data['raid_id']), quote_smart($signup['ID']));
 						$team_result = $db_raid->sql_query($sql2) or print_error($sql2, $db_raid->sql_error(), 1);
 						$team = $db_raid->sql_fetchrow($team_result, true);
 			
@@ -266,9 +263,8 @@ function output_lua_rim()
 						$profile_id = $signup['profile_id'];
 						$raid_officer = $raid_data['officer'];
 						
-						$sql3 = "SELECT profile_id " .
-								"FROM ".$phpraid_config['db_prefix']."profile " .
-								"WHERE username='".$raid_officer."'";
+						$sql3 = sprintf("SELECT profile_id FROM ".$phpraid_config['db_prefix']."profile " .
+										"WHERE username=%s", quote_smart($raid_officer));
 						$officer_profile = $db_raid->sql_query($sql3) or print_error($sql3, $db_raid->sql_error(), 1);
 						$raid_officer_profile_id = $db_raid->sql_fetchrow($officer_profile, true);
 			
@@ -358,20 +354,20 @@ function output_lua_rim()
 	else // raid_id is set
 	{
 		// Get Raids for Raid ID and Process It.
-		$sql = "SELECT * FROM ".$phpraid_config['db_prefix']."raids 
-				WHERE " . $raid_sql_where; // raid_sql_where from lua_output.php
+				// raid_sql_where from lua_output.php
+		$sql = "SELECT * FROM ".$phpraid_config['db_prefix']."raids WHERE " . $raid_sql_where; 
 		$raids_list_query = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		$raid_data = $db_raid->sql_fetchrow($raids_list_query, true);
 		
 		// Take the Raid ID and get the Raid Force
-		$sql = "SELECT * FROM ".$phpraid_config['db_prefix']."raid_force
-				WHERE raid_force_name = '" . $raid_data['raid_force_name'] . "'";
+		$sql = sprintf("SELECT * FROM ".$phpraid_config['db_prefix']."raid_force
+				WHERE raid_force_name = %s", quote_smart($raid_data['raid_force_name']));
 		$raid_force_name_query = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		$raid_force_name_data = $db_raid->sql_fetchrow($raid_force_name_query, true);
 	
 		// Take Raid Force Information and get Server.
-		$sql = "SELECT * FROM ".$phpraid_config['db_prefix']."guilds
-				WHERE guild_id = '" . $raid_force_name_data['guild_id'] . "'";
+		$sql = sprintf("SELECT * FROM ".$phpraid_config['db_prefix']."guilds
+				WHERE guild_id = %s", quote_smart($raid_force_name_data['guild_id']));
 		$guild_id_query = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		$guild_id_data = $db_raid->sql_fetchrow($guild_id_query, true);
 		
@@ -391,7 +387,7 @@ function output_lua_rim()
 		$lua_output .= "\t\t\t\t\t[\"description\"] = \"$description_data\",\n";
 					
 		// sql string for signups
-		$sql = "SELECT ".$phpraid_config['db_prefix']."signups.comments AS comment,
+		$sql = sprintf("SELECT ".$phpraid_config['db_prefix']."signups.comments AS comment,
 					   ".$phpraid_config['db_prefix']."signups.timestamp AS timestamp,
 					   ".$phpraid_config['db_prefix']."signups.profile_id AS profile_id,
 					   ".$phpraid_config['db_prefix']."chars.char_id AS ID,
@@ -402,9 +398,9 @@ function output_lua_rim()
 				FROM ".$phpraid_config['db_prefix']."signups
 				LEFT JOIN ".$phpraid_config['db_prefix']."chars ON
 					".$phpraid_config['db_prefix']."chars.char_id = ".$phpraid_config['db_prefix']."signups.char_id
-				WHERE ".$phpraid_config['db_prefix']."signups.raid_id = ".$raid_data['raid_id']."
+				WHERE ".$phpraid_config['db_prefix']."signups.raid_id = %s
 					AND ".$phpraid_config['db_prefix']."signups.cancel = 0
-					AND ".$phpraid_config['db_prefix']."signups.queue = ";
+					AND ".$phpraid_config['db_prefix']."signups.queue = ", quote_smart($raid_data['raid_id']));
 	
 		// get data signed up
 		$order_by = '';
@@ -417,9 +413,9 @@ function output_lua_rim()
 		$signup_result = $db_raid->sql_query($sql1) or print_error($sql1, $db_raid->sql_error(), 1);
 		while($signup = $db_raid->sql_fetchrow($signup_result, true))
 		{
-			$sql2 = "SELECT team_name " .
+			$sql2 = sprintf("SELECT team_name " .
 					"FROM ".$phpraid_config['db_prefix']."teams " .
-					"WHERE raid_id=".$raid_data['raid_id']." and char_id=".$signup['ID'];
+					"WHERE raid_id=%s and char_id=%s", quote_smart($raid_data['raid_id']), quote_smart($signup['ID']));
 			$team_result = $db_raid->sql_query($sql2) or print_error($sql2, $db_raid->sql_error(), 1);
 			$team = $db_raid->sql_fetchrow($team_result, true);
 	
@@ -427,9 +423,8 @@ function output_lua_rim()
 			$profile_id = $signup['profile_id'];
 			$raid_officer = $raid_data['officer'];
 				
-			$sql3 = "SELECT profile_id " .
-					"FROM ".$phpraid_config['db_prefix']."profile " .
-					"WHERE username='".$raid_officer."'";
+			$sql3 = sprintf("SELECT profile_id FROM ".$phpraid_config['db_prefix']."profile " .
+					"WHERE username=%s", quote_smart($raid_officer));
 			$officer_profile = $db_raid->sql_query($sql3) or print_error($sql3, $db_raid->sql_error(), 1);
 			$raid_officer_profile_id = $db_raid->sql_fetchrow($officer_profile, true);
 			
@@ -469,9 +464,9 @@ function output_lua_rim()
 		$signup_result = $db_raid->sql_query($sql1) or print_error($sql1, $db_raid->sql_error(), 1);
 		while($signup = $db_raid->sql_fetchrow($signup_result, true))
 		{
-			$sql2 = "SELECT team_name " .
+			$sql2 = sprintf("SELECT team_name " .
 					"FROM ".$phpraid_config['db_prefix']."teams " .
-					"WHERE raid_id=".$raid_data['raid_id']." and char_id=".$signup['ID'];
+					"WHERE raid_id=%s and char_id=%s", quote_smart($raid_data['raid_id']), quote_smart($signup['ID']));
 			$team_result = $db_raid->sql_query($sql2) or print_error($sql2, $db_raid->sql_error(), 1);
 			$team = $db_raid->sql_fetchrow($team_result, true);
 	
@@ -479,9 +474,8 @@ function output_lua_rim()
 			$profile_id = $signup['profile_id'];
 			$raid_officer = $raid_data['officer'];
 			
-			$sql3 = "SELECT profile_id " .
-					"FROM ".$phpraid_config['db_prefix']."profile " .
-					"WHERE username='".$raid_officer."'";
+			$sql3 = sprintf("SELECT profile_id FROM " . $phpraid_config['db_prefix'] . "profile 
+							WHERE username=%s", quote_smart($raid_officer));
 			$officer_profile = $db_raid->sql_query($sql3) or print_error($sql3, $db_raid->sql_error(), 1);
 			$raid_officer_profile_id = $db_raid->sql_fetchrow($officer_profile, true);
 	
@@ -587,8 +581,7 @@ function output_lua_prv()
 	
 	// Get the total number of classes, this is max class_index from the classes table.
 	//  This will come in handy later when we're creating the LUA output.
-	$sql = "SELECT max(class_index) as max_class_index " .
-			"FROM ".$phpraid_config['db_prefix']."classes";
+	$sql = "SELECT max(class_index) as max_class_index FROM ".$phpraid_config['db_prefix']."classes";
 	$max_class_query = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	$max_class_records = $db_raid->sql_fetchrow($max_class_query, true);
 	$max_class_index = $max_class_records['max_class_index'];
@@ -652,7 +645,7 @@ function output_lua_prv()
 		// sql string for signups
 		if ($format == "1")
 		{
-			$sql = "SELECT ".$phpraid_config['db_prefix']."signups.comments AS comment,
+			$sql = sprintf("SELECT ".$phpraid_config['db_prefix']."signups.comments AS comment,
 						   ".$phpraid_config['db_prefix']."signups.timestamp AS timestamp,
 						   ".$phpraid_config['db_prefix']."signups.profile_id AS profile_id,
 						   ".$phpraid_config['db_prefix']."chars.char_id AS ID,
@@ -663,13 +656,13 @@ function output_lua_prv()
 					FROM ".$phpraid_config['db_prefix']."signups
 					LEFT JOIN ".$phpraid_config['db_prefix']."chars ON
 						".$phpraid_config['db_prefix']."chars.char_id = ".$phpraid_config['db_prefix']."signups.char_id
-					WHERE ".$phpraid_config['db_prefix']."signups.raid_id = ".$raid_data['raid_id']."
+					WHERE ".$phpraid_config['db_prefix']."signups.raid_id = %s
 						AND ".$phpraid_config['db_prefix']."signups.cancel = 0
-						AND ".$phpraid_config['db_prefix']."signups.queue = ";
+						AND ".$phpraid_config['db_prefix']."signups.queue = ", quote_smart($raid_data['raid_id']));
 		}
 		else
 		{
-			$sql = "SELECT ".$phpraid_config['db_prefix']."signups.comments AS comment,
+			$sql = sprintf("SELECT ".$phpraid_config['db_prefix']."signups.comments AS comment,
 						   ".$phpraid_config['db_prefix']."signups.timestamp AS timestamp,
 						   ".$phpraid_config['db_prefix']."chars.name AS name,
 						   ".$phpraid_config['db_prefix']."chars.lvl AS lvl,
@@ -678,9 +671,9 @@ function output_lua_prv()
 					FROM ".$phpraid_config['db_prefix']."signups
 					LEFT JOIN ".$phpraid_config['db_prefix']."chars ON
 						".$phpraid_config['db_prefix']."chars.char_id = ".$phpraid_config['db_prefix']."signups.char_id
-					WHERE ".$phpraid_config['db_prefix']."signups.raid_id = ".$raid_data['raid_id']."
+					WHERE ".$phpraid_config['db_prefix']."signups.raid_id = %s
 						AND ".$phpraid_config['db_prefix']."signups.cancel = 0
-						AND ".$phpraid_config['db_prefix']."signups.queue = ";				
+						AND ".$phpraid_config['db_prefix']."signups.queue = ", quote_smart($raid_data['raid_id']));				
 		}
 		// get data signed up
 		$order_by = '';
@@ -695,9 +688,8 @@ function output_lua_prv()
 		{
 			if ($format=="1")
 			{
-				$sql2 = "SELECT team_name " .
-						"FROM ".$phpraid_config['db_prefix']."teams " .
-						"WHERE raid_id=".$raid_data['raid_id']." and char_id=".$signup['ID'];
+				$sql2 = sprintf("SELECT team_name FROM ".$phpraid_config['db_prefix']."teams " .
+						"WHERE raid_id=%s and char_id=%s", quote_smart($raid_data['raid_id']), quote_smart($signup['ID']));
 				$team_result = $db_raid->sql_query($sql2) or print_error($sql2, $db_raid->sql_error(), 1);
 				$team = $db_raid->sql_fetchrow($team_result, true);
 
@@ -705,9 +697,8 @@ function output_lua_prv()
 				$profile_id = $signup['profile_id'];
 				$raid_officer = $raid_data['officer'];
 				
-				$sql3 = "SELECT profile_id " .
-						"FROM ".$phpraid_config['db_prefix']."profile " .
-						"WHERE username='".$raid_officer."'";
+				$sql3 = sprintf("SELECT profile_id FROM ".$phpraid_config['db_prefix']."profile " .
+								"WHERE username=%s", quote_smart($raid_officer));
 				$officer_profile = $db_raid->sql_query($sql3) or print_error($sql3, $db_raid->sql_error(), 1);
 				$raid_officer_profile_id = $db_raid->sql_fetchrow($officer_profile, true);
 				
@@ -761,9 +752,8 @@ function output_lua_prv()
 		{
 			if ($format=="1")
 			{
-				$sql2 = "SELECT team_name " .
-						"FROM ".$phpraid_config['db_prefix']."teams " .
-						"WHERE raid_id=".$raid_data['raid_id']." and char_id=".$signup['ID'];
+				$sql2 = sprintf("SELECT team_name FROM ".$phpraid_config['db_prefix']."teams " .
+						"WHERE raid_id=%s and char_id=%s", quote_smart($raid_data['raid_id']), quote_smart($signup['ID']));
 				$team_result = $db_raid->sql_query($sql2) or print_error($sql2, $db_raid->sql_error(), 1);
 				$team = $db_raid->sql_fetchrow($team_result, true);
 
@@ -771,9 +761,8 @@ function output_lua_prv()
 				$profile_id = $signup['profile_id'];
 				$raid_officer = $raid_data['officer'];
 				
-				$sql3 = "SELECT profile_id " .
-						"FROM ".$phpraid_config['db_prefix']."profile " .
-						"WHERE username='".$raid_officer."'";
+				$sql3 = sprintf("SELECT profile_id FROM ".$phpraid_config['db_prefix']."profile " .
+								"WHERE username=%s", quote_smart($raid_officer));
 				$officer_profile = $db_raid->sql_query($sql3) or print_error($sql3, $db_raid->sql_error(), 1);
 				$raid_officer_profile_id = $db_raid->sql_fetchrow($officer_profile, true);
 

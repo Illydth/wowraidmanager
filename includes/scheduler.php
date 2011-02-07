@@ -101,10 +101,10 @@ function process_recurring_raids()
 				$new_invite_time = get_next_time_stamp($invite_time, $data['rec_interval'], $x);
 			}
 			// Verify if Start_Time raid has been scheduled
-			$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "raids 
+			$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raids 
 					WHERE recurrance = 0
 					AND start_time = " . $raid_check_time . "
-					AND location = '" . $data['location'] ."'";
+					AND location = %s",quote_smart($data['location']));
 			$check_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);	
 			if (!$db_raid->sql_numrows($check_result) || $db_raid->sql_numrows($check_result) < 1)
 				$errcode = schedule_raid($new_invite_time, $raid_check_time, $data['raid_id']);
@@ -209,7 +209,7 @@ function schedule_raid($invite_time, $start_time, $raid_id)
 	$role = array();
 	
 	// Pull the current record from the DB based upon Raid ID
-	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id = ". $raid_id;
+	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id = %s", quote_smart($raid_id));
 	if (!$result = $db_raid->sql_query($sql))
 	{
 		print_error($sql, $db_raid->sql_error(), 0);
@@ -246,7 +246,7 @@ function schedule_raid($invite_time, $start_time, $raid_id)
 	
 	// Insert Class Data to loc_class_lmt
 	// Get Class Limit Data
-	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "raid_class_lmt WHERE raid_id = ". $raid_id;
+	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raid_class_lmt WHERE raid_id = %s", quote_smart($raid_id));
 	if (!$class_result = $db_raid->sql_query($sql))
 	{
 		print_error($sql, $db_raid->sql_error(), 0);
@@ -268,7 +268,7 @@ function schedule_raid($invite_time, $start_time, $raid_id)
 	
 	// Insert Role Data to loc_role_lmt
 	// Get Role Limit Data
-	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "raid_role_lmt WHERE raid_id = ". $raid_id;
+	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raid_role_lmt WHERE raid_id = %s", quote_smart($raid_id));
 	if (!$role_result = $db_raid->sql_query($sql))
 	{
 		print_error($sql, $db_raid->sql_error(), 0);
@@ -309,15 +309,15 @@ function clean_scheduled_raids($raid_id_array)
 		//echo "<br>Cleaning Raid Data from Raid ID: " . $raid_id;
 		// Raids Table
 		$sql = sprintf("DELETE FROM " . $phpraid_config['db_prefix'] . "raids
-						WHERE raid_id = " . $raid_id);
+						WHERE raid_id = %s", quote_smart($raid_id));
 		$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
 		
 		$sql = sprintf("DELETE FROM " . $phpraid_config['db_prefix'] . "raid_role_lmt
-						WHERE raid_id = " . $raid_id);
+						WHERE raid_id = %s", quote_smart($raid_id));
 		$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
 		
 		$sql = sprintf("DELETE FROM " . $phpraid_config['db_prefix'] . "raid_class_lmt
-						WHERE raid_id = " . $raid_id);
+						WHERE raid_id = %s", quote_smart($raid_id));
 		$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
 	}	
 }

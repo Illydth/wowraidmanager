@@ -231,15 +231,16 @@ else
 	// Get Raids within week, determine signups (Queued + Drafted / Max)
 	$raid_max_count = 0;
 	$raid_attend_count = 0;
-	$sql = "SELECT raid_id, max FROM " . $phpraid_config['db_prefix'] . "raids
-			WHERE start_time >= " . $firstDayOfWeek . " AND start_time <= " . $lastDayOfWeek . "
-			AND event_type = '1'";
+	$sql = sprintf("SELECT raid_id, max FROM " . $phpraid_config['db_prefix'] . "raids
+			WHERE start_time >= %s AND start_time <= %s AND event_type = '1'"
+			, quote_smart($firstDayOfWeek), quote_smart($lastDayOfWeek));
+	
 	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	while($data = $db_raid->sql_fetchrow($result, true))
 	{ 
 		$raid_max_count += $data['max'];
-		$sql = "SELECT count(*) as count FROM " . $phpraid_config['db_prefix'] . "signups
-				WHERE raid_id = " . $data['raid_id'] . " AND cancel = '0'";
+		$sql = sprintf("SELECT count(*) as count FROM " . $phpraid_config['db_prefix'] . "signups
+				WHERE raid_id = %s AND cancel = '0'", quote_smart($data['raid_id']));
 		$result2 = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		$data2 = $db_raid->sql_fetchrow($result2, true);
 		$raid_attend_count += $data2['count'];
@@ -259,15 +260,15 @@ else
 	// Get Raids within last 30 days, determine signups (Queued + Drafted / Max)
 	$raid_max_count = 0;
 	$raid_attend_count = 0;
-	$sql = "SELECT raid_id, max FROM " . $phpraid_config['db_prefix'] . "raids
-			WHERE start_time >= " . $minus30d_time . " AND start_time <= " . $current_time . "
-			AND event_type = '1'";
+	$sql = sprintf("SELECT raid_id, max FROM " . $phpraid_config['db_prefix'] . "raids
+			WHERE start_time >= %s AND start_time <= %s AND event_type = '1'"
+			, quote_smart($minus30d_time), quote_smart($current_time));
 	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	while($data = $db_raid->sql_fetchrow($result, true))
 	{ 
 		$raid_max_count += $data['max'];
-		$sql = "SELECT count(*) as count FROM " . $phpraid_config['db_prefix'] . "signups
-				WHERE raid_id = " . $data['raid_id'] . " AND cancel = '0'";
+		$sql = sprintf("SELECT count(*) as count FROM " . $phpraid_config['db_prefix'] . "signups
+				WHERE raid_id = %s AND cancel = '0'", quote_smart($data['raid_id']));
 		$result2 = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		$data2 = $db_raid->sql_fetchrow($result2, true);
 		$raid_attend_count += $data2['count'];
@@ -287,15 +288,15 @@ else
 	// Get Raids within last 3 months, determine signups (Queued + Drafted / Max)
 	$raid_max_count = 0;
 	$raid_attend_count = 0;
-	$sql = "SELECT raid_id, max FROM " . $phpraid_config['db_prefix'] . "raids
-			WHERE start_time >= " . $minus3m_time . " AND start_time <= " . $current_time . "
-			AND event_type = '1'";
+	$sql = sprintf("SELECT raid_id, max FROM " . $phpraid_config['db_prefix'] . "raids
+			WHERE start_time >= %s AND start_time <= %s	AND event_type = '1'"
+			,quote_smart($minus3m_time), quote_smart($current_time));
 	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	while($data = $db_raid->sql_fetchrow($result, true))
 	{ 
 		$raid_max_count += $data['max'];
-		$sql = "SELECT count(*) as count FROM " . $phpraid_config['db_prefix'] . "signups
-				WHERE raid_id = " . $data['raid_id'] . " AND cancel = '0'";
+		$sql = sprintf("SELECT count(*) as count FROM " . $phpraid_config['db_prefix'] . "signups
+				WHERE raid_id = %s AND cancel = '0'",quote_smart($data['raid_id']));
 		$result2 = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		$data2 = $db_raid->sql_fetchrow($result2, true);
 		$raid_attend_count += $data2['count'];
@@ -315,15 +316,15 @@ else
 	// Get Raids within last 3 months, determine signups (Queued + Drafted / Max)
 	$raid_max_count = 0;
 	$raid_attend_count = 0;
-	$sql = "SELECT raid_id, max FROM " . $phpraid_config['db_prefix'] . "raids
-			WHERE start_time >= " . $minus6m_time . " AND start_time <= " . $current_time . "
-			AND event_type = '1'";
+	$sql = sprintf("SELECT raid_id, max FROM " . $phpraid_config['db_prefix'] . "raids
+			WHERE start_time >= %s AND start_time <= %s AND event_type = '1'"
+			, quote_smart($minus6m_time), quote_smart($current_time));
 	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	while($data = $db_raid->sql_fetchrow($result, true))
 	{ 
 		$raid_max_count += $data['max'];
-		$sql = "SELECT count(*) as count FROM " . $phpraid_config['db_prefix'] . "signups
-				WHERE raid_id = " . $data['raid_id'] . " AND cancel = '0'";
+		$sql = sprintf("SELECT count(*) as count FROM " . $phpraid_config['db_prefix'] . "signups
+				WHERE raid_id = %s AND cancel = '0'", quote_smart($data['raid_id']));
 		$result2 = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		$data2 = $db_raid->sql_fetchrow($result2, true);
 		$raid_attend_count += $data2['count'];
@@ -343,15 +344,15 @@ else
 	// Get Raids within last 3 months, determine signups (Queued + Drafted / Max)
 	$raid_max_count = 0;
 	$raid_attend_count = 0;
-	$sql = "SELECT raid_id, max FROM " . $phpraid_config['db_prefix'] . "raids
-			WHERE start_time >= " . $minus1y_time . " AND start_time <= " . $current_time . "
-			AND event_type = '1'";
+	$sql = sprintf("SELECT raid_id, max FROM " . $phpraid_config['db_prefix'] . "raids
+			WHERE start_time >= %s AND start_time <= %s AND event_type = '1'"
+			, quote_smart($minus1y_time), quote_smart($current_time));
 	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	while($data = $db_raid->sql_fetchrow($result, true))
 	{ 
 		$raid_max_count += $data['max'];
-		$sql = "SELECT count(*) as count FROM " . $phpraid_config['db_prefix'] . "signups
-				WHERE raid_id = " . $data['raid_id'] . " AND cancel = '0'";
+		$sql = sprintf("SELECT count(*) as count FROM " . $phpraid_config['db_prefix'] . "signups
+				WHERE raid_id = %s AND cancel = '0'", quote_smart($data['raid_id']));
 		$result2 = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		$data2 = $db_raid->sql_fetchrow($result2, true);
 		$raid_attend_count += $data2['count'];
@@ -374,8 +375,8 @@ else
 	while($data = $db_raid->sql_fetchrow($result, true))
 	{ 
 		$raid_max_count += $data['max'];
-		$sql = "SELECT count(*) as count FROM " . $phpraid_config['db_prefix'] . "signups
-				WHERE raid_id = " . $data['raid_id'] . " AND cancel = '0'";
+		$sql = sprintf("SELECT count(*) as count FROM " . $phpraid_config['db_prefix'] . "signups
+				WHERE raid_id = %s AND cancel = '0'", quote_smart($data['raid_id']));
 		$result2 = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		$data2 = $db_raid->sql_fetchrow($result2, true);
 		$raid_attend_count += $data2['count'];

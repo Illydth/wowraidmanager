@@ -76,7 +76,7 @@ $chars = array();
 // get all the chars and throw them in that nice array for 
 // output by the report class
 while($data = $db_raid->sql_fetchrow($result, true)) {
-	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "profile WHERE profile_id=" . $data['profile_id'];
+	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "profile WHERE profile_id=%s", quote_smart($data['profile_id']));
 	$data_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	$data_profdetail = $db_raid->sql_fetchrow($data_result);
 	

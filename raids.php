@@ -117,13 +117,13 @@ if(($_GET['mode'] == 'view') or isset($_GET['raids_del']) or isset($_GET['mark_r
 	
 	//$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "raids";
 	// Select all raids that are marked current and only the top X raids marked old.
-	$sql = "(SELECT * from " . $phpraid_config['db_prefix'] . "raids " .
+	$sql = sprintf("(SELECT * from " . $phpraid_config['db_prefix'] . "raids " .
 		"WHERE `old` = 0) " .
 		"UNION ALL " .
 		"(SELECT * FROM " . $phpraid_config['db_prefix'] . "raids " . 
 		"WHERE `old` = 1 " .
 		"ORDER BY `raid_id` DESC " .
-		"LIMIT " . $phpraid_config['num_old_raids_index'] . ")";
+		"LIMIT " . $phpraid_config['num_old_raids_index'] . ")");
 	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);	
 	while($data = $db_raid->sql_fetchrow($result, true)) 
 	{
@@ -1360,7 +1360,7 @@ elseif($_GET['mode'] == 'edit')
 		$array_raid_name = array();
 		$event_id_info = '<input type="hidden" name="event_id" class="post" value="' . $event_id . '">';
 					
-		$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "locations WHERE event_id=" . $event_id;
+		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "locations WHERE event_id=%s", quote_smart($event_id));
 		$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 
 		while($data = $db_raid->sql_fetchrow($result, true))

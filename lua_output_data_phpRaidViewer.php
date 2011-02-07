@@ -85,7 +85,7 @@ function output_macro_queued($raid_id)
 	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	while($data = $db_raid->sql_fetchrow($result, true))
 	{
-		$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id='" . $data['char_id'] . "'";
+		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id= %s", quote_smart($data['char_id']));
 		$result2 = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		$data2 = $db_raid->sql_fetchrow($result2, true);
 		$data2['name'] = ucfirst(strtolower_wrap($data2['name'], "UTF-8"));
@@ -108,8 +108,7 @@ function output_lua_prv()
 	
 	// Get the total number of classes, this is max class_index from the classes table.
 	//  This will come in handy later when we're creating the LUA output.
-	$sql = "SELECT max(class_index) as max_class_index " .
-			"FROM ".$phpraid_config['db_prefix']."classes";
+	$sql = "SELECT max(class_index) as max_class_index FROM ".$phpraid_config['db_prefix']."classes";
 	$max_class_query = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	$max_class_records = $db_raid->sql_fetchrow($max_class_query, true);
 	$max_class_index = $max_class_records['max_class_index'];
@@ -168,7 +167,7 @@ function output_lua_prv()
 					
 		// sql string for signups
 		
-			$sql = "SELECT ".$phpraid_config['db_prefix']."signups.comments AS comment,
+			$sql = sprintf("SELECT ".$phpraid_config['db_prefix']."signups.comments AS comment,
 						   ".$phpraid_config['db_prefix']."signups.selected_spec AS selected_spec,
 						   ".$phpraid_config['db_prefix']."signups.timestamp AS timestamp,
 						   ".$phpraid_config['db_prefix']."chars.name AS name,
@@ -178,9 +177,9 @@ function output_lua_prv()
 					FROM ".$phpraid_config['db_prefix']."signups
 					LEFT JOIN ".$phpraid_config['db_prefix']."chars ON
 						".$phpraid_config['db_prefix']."chars.char_id = ".$phpraid_config['db_prefix']."signups.char_id
-					WHERE ".$phpraid_config['db_prefix']."signups.raid_id = ".$raid_data['raid_id']."
+					WHERE ".$phpraid_config['db_prefix']."signups.raid_id = %s
 						AND ".$phpraid_config['db_prefix']."signups.cancel = 0
-						AND ".$phpraid_config['db_prefix']."signups.queue = ";				
+						AND ".$phpraid_config['db_prefix']."signups.queue = ", quote_smart($raid_data['raid_id']));				
 		// get data signed up
 		$order_by = '';
 		$signups = array();

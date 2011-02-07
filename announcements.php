@@ -219,7 +219,8 @@ elseif(($_GET['mode'] == 'new' || $_GET['mode'] = 'edit') && isset($_POST['submi
 	elseif($_GET['mode'] == 'edit')
 	{
 		$id = scrub_input($_GET['id']);
-		$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "announcements SET title=%s,message=%s WHERE announcements_id=%s",quote_smart($title),quote_smart($message),quote_smart($id));
+		$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "announcements SET title=%s,message=%s WHERE announcements_id=%s",
+						quote_smart($title),quote_smart($message),quote_smart($id));
 		$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	}
 	header("Location: announcements.php?mode=view");
@@ -234,7 +235,8 @@ if($_GET['mode'] != 'delete')
 		// grab from DB
 		$id = scrub_input($_GET['id']);
 	
-		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "announcements WHERE announcements_id=%s",quote_smart($id));
+		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "announcements WHERE announcements_id=%s",
+						quote_smart($id));
 		$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		$data = $db_raid->sql_fetchrow($result, true);
 	

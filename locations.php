@@ -86,7 +86,7 @@ if($_GET['mode'] == 'view')
 		$delete = '<a href="'.$page_url.'?mode=delete&amp;n='.$data['name'].'&amp;id='.$data['location_id'].'"><img src="templates/' .
 					$phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\'' . $phprlang['delete'] . '\');" onMouseout="hideddrivetip();" alt="delete icon"></a>';
 
-		$sql = "SELECT event_type_lang_id FROM " . $phpraid_config['db_prefix'] . "event_type WHERE event_type_id =" . $data['event_type'];
+		$sql = sprintf("SELECT event_type_lang_id FROM " . $phpraid_config['db_prefix'] . "event_type WHERE event_type_id=%s", quote_smart($data['event_type']));
 		$result2 = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		$event_type_data = $db_raid->sql_fetchrow($result2, true);
 		$event_type_id = $event_type_data['event_type'];
@@ -352,7 +352,7 @@ if($_GET['mode'] != 'delete')
 		isset($_GET['event_type']) ? $event_type_id = scrub_input($_GET['event_type']) : $event_type_id = $data['event_type'];
 		isset($_GET['event']) ? $event_id = scrub_input($_GET['event']) : $event_id = $data['event_id'];		
 		
-		$sql = "SELECT exp_id FROM " . $phpraid_config['db_prefix'] . "events WHERE event_id = " . $data['event_id'];
+		$sql = sprintf("SELECT exp_id FROM " . $phpraid_config['db_prefix'] . "events WHERE event_id = %s", quote_smart($data['event_id']));
 		$result2 = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		$event_data = $db_raid->sql_fetchrow($result2, true);		
 		
@@ -422,13 +422,13 @@ if($_GET['mode'] != 'delete')
 						<option value="'.$page_url.'?mode=view"></option>';
 			
 			if ($event_type_id == 1 || $event_type_id == 2) // If Dungeons or Raids pull exp_id = 0 also.
-				$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "events WHERE (exp_id =" .$expansion_id . " OR exp_id = 0) AND event_type_id =" .$event_type_id. " ORDER BY zone_desc";
+				$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "events WHERE (exp_id = %s OR exp_id = 0) AND event_type_id = %s ORDER BY zone_desc", quote_smart($expansion_id), quote_smart($event_type_id));
 			elseif ($event_type_id == 3 || $event_type_id == 4) // If Meeting Type, Pull Major Cities
-				$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "events WHERE event_type_id =" .$event_type_id. " ORDER BY zone_desc";
+				$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "events WHERE event_type_id = %s ORDER BY zone_desc", quote_smart($event_type_id));
 			elseif ($event_type_id == 5) // Other Type, Pull Everything
-				$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "events WHERE (exp_id =" .$expansion_id . " OR exp_id = 0) ORDER BY zone_desc";	
+				$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "events WHERE (exp_id = %s OR exp_id = 0) ORDER BY zone_desc", quote_smart($expansion_id));	
 			else // By default pull Raids and Dungeons
-				$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "events WHERE (exp_id =" .$expansion_id . " OR exp_id = 0) AND event_type_id =" .$event_type_id. " ORDER BY zone_desc";
+				$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "events WHERE (exp_id = %s OR exp_id = 0) AND event_type_id = %s ORDER BY zone_desc", quote_smart($expansion_id), quote_smart($event_type_id));
 			
 			$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 			while($data = $db_raid->sql_fetchrow($result, true))
@@ -563,7 +563,7 @@ if($_GET['mode'] != 'delete')
 		// End Event Type Setup
 		
 		// Setup Expansion Select Box.
-		$sql = "SELECT exp_id FROM " . $phpraid_config['db_prefix'] . "events WHERE event_id = " . $event_id;
+		$sql = sprintf("SELECT exp_id FROM " . $phpraid_config['db_prefix'] . "events WHERE event_id = %s", quote_smart($event_id));
 		$result2 = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		$event_data = $db_raid->sql_fetchrow($result2, true);
 
@@ -585,13 +585,13 @@ if($_GET['mode'] != 'delete')
 					<option value="'.$page_url.'?mode=update&amp;id=' . $id . '"></option>';
 
 		if ($event_type_id == 1 || $event_type_id == 2) // If Dungeons or Raids pull exp_id = 0 also.
-			$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "events WHERE (exp_id =" .$expansion_id . " OR exp_id = 0) AND event_type_id =" .$event_type_id. " ORDER BY zone_desc";
+			$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "events WHERE (exp_id = %s OR exp_id = 0) AND event_type_id = %s ORDER BY zone_desc", quote_smart($expansion_id), quote_smart($event_type_id));
 		elseif ($event_type_id == 3 || $event_type_id == 4) // If Meeting Type, Pull Major Cities
-			$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "events WHERE event_type_id =" .$event_type_id. " ORDER BY zone_desc";
+			$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "events WHERE event_type_id = %s ORDER BY zone_desc", quote_smart($event_type_id));
 		elseif ($event_type_id == 5) // Other Type, Pull Everything
-			$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "events WHERE (exp_id =" .$expansion_id . " OR exp_id = 0) ORDER BY zone_desc";	
+			$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "events WHERE (exp_id = %s OR exp_id = 0) ORDER BY zone_desc", quote_smart($expansion_id));	
 		else // By default pull Raids and Dungeons
-			$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "events WHERE (exp_id =" .$expansion_id . " OR exp_id = 0) AND event_type_id =" .$event_type_id. " ORDER BY zone_desc";
+			$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "events WHERE (exp_id = %s OR exp_id = 0) AND event_type_id = %s ORDER BY zone_desc", quote_smart($expansion_id), quote_smart($event_type_id));
 			
 		$result2 = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		while($event_data = $db_raid->sql_fetchrow($result2, true))
@@ -648,7 +648,7 @@ if($_GET['mode'] != 'delete')
 			$chbox_locked_loc_status = "checked";
 		}
 		$number_max_chars = $data['max'];
-		$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "events WHERE event_id =" . $event_id;
+		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "events WHERE event_id = %s", quote_smart($event_id));
 		$result2 = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		$event_data = $db_raid->sql_fetchrow($result2, true);
 		$zone_desc = $event_data['zone_desc'];

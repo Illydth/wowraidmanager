@@ -121,11 +121,11 @@ function get_permissions($profile_id)
 function check_permission($perm_type, $profile_id) {
 	global $db_raid, $phpraid_config;
 	
-	$sql = "SELECT ".$phpraid_config['db_prefix']."permissions." . $perm_type . " AS perm_val
+	$sql = sprintf("SELECT ".$phpraid_config['db_prefix']."permissions.%s AS perm_val
 		FROM ".$phpraid_config['db_prefix']."permissions
 		LEFT JOIN ".$phpraid_config['db_prefix']."profile ON
 			".$phpraid_config['db_prefix']."profile.priv = ".$phpraid_config['db_prefix']."permissions.permission_id
-		WHERE ".$phpraid_config['db_prefix']."profile.profile_id = ".$profile_id;
+		WHERE ".$phpraid_config['db_prefix']."profile.profile_id = %s", quote_smart($perm_type), quote_smart($profile_id));
 
 	$perm_data = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	$permission_val = $db_raid->sql_fetchrow($perm_data, true);
@@ -156,7 +156,7 @@ function remove_user() {
 	$perm_id = scrub_input($_GET['perm_id']);
 	
 	$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "profile SET priv='0' WHERE profile_id=%s", quote_smart($user_id));
-	$sql = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+	$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	header("Location: permissions.php?mode=details&perm_id=". $perm_id);
 }
 
@@ -173,9 +173,9 @@ function get_group_array()
 
 	$group = array();
 	
-	$sql =  "SELECT " . $db_allgroups_id . " , ". $db_allgroups_name .
+	$sql =  sprintf("SELECT " . $db_allgroups_id . " , ". $db_allgroups_name .
 			" FROM " . $table_prefix . $db_table_allgroups .
-			" ORDER BY ". $db_allgroups_id;
+			" ORDER BY ". $db_allgroups_id);
 	
 	$result_group = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	while ($data_wrm = $db_raid->sql_fetchrow($result_group,true))
@@ -284,8 +284,7 @@ function DEFINE_wrm_login()
 		{
 			$sql = sprintf(	"SELECT ". $db_user_id . "," . $db_user_name . "," . $db_user_email . "," . $db_user_password.
 						" FROM " . $table_prefix . $db_table_user_name . 
-						" WHERE ". $db_user_name . " = %s", quote_smart($username)
-						);
+						" WHERE ". $db_user_name . " = %s", quote_smart($username));
 			$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 			if ($db_raid->sql_numrows($result) > 0 )
 			{
@@ -308,8 +307,7 @@ function DEFINE_wrm_login()
 		{
 			$sql = sprintf( "SELECT ".$db_user_id.",". $db_user_name .",".$db_user_email.",".$db_user_password.
 							" FROM " . $table_prefix . $db_table_user_name.
-							" WHERE ".$db_user_name." = %s", quote_smart($username)
-	                        );
+							" WHERE ".$db_user_name." = %s", quote_smart($username));
 			$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 			if ($db_raid->sql_numrows($result) > 0 )
 			{
@@ -350,8 +348,7 @@ function DEFINE_wrm_login()
 							" FROM    `" . $phpraid_config['db_prefix'] . "permissions`" .
 							"	inner JOIN `" . $phpraid_config['db_prefix'] . "profile`" .
 							"		ON `" . $phpraid_config['db_prefix'] . "permissions`.`permission_id` = `" . $phpraid_config['db_prefix'] . "profile`.`priv`" .
-							" where `" . $phpraid_config['db_prefix'] . "profile`.`profile_id` = %s", quote_smart($data[$db_user_id])
-				);
+							" where `" . $phpraid_config['db_prefix'] . "profile`.`profile_id` = %s", quote_smart($data[$db_user_id]));
 			$result_permissions = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 			$data_permissions = $db_raid->sql_fetchrow($result_permissions, true);
 			
