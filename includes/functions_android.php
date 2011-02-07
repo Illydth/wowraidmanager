@@ -37,7 +37,7 @@ function parseArrayToObject($array) {
 function CheckLog($username, $password) {
     global $phpraid_config;
     global $db_raid;
-    $sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "profile WHERE username='" . $username . "'";
+    $sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "profile WHERE username=%s", quote_smart($username));
     $result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
     $data = $db_raid->sql_fetchrow($result, true);
 
@@ -51,7 +51,7 @@ function CheckLog($username, $password) {
 function GetUserID($username) {
     global $phpraid_config;
     global $db_raid;
-    $sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "profile WHERE username='" . $username . "'";
+    $sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "profile WHERE username=%s", quote_smart($username));
     $result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
     $data = $db_raid->sql_fetchrow($result, true);
     return $data['profile_id'];
@@ -61,8 +61,8 @@ function GetUserID($username) {
 function GetGuildName($guild_id) {
     global $phpraid_config;
     global $db_raid;
-    $sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "guilds
-        WHERE guild_id='" . $guild_id . "'";
+    $sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "guilds
+        WHERE guild_id=%s", quote_smart($guild_id));
     $result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
     $data = $db_raid->sql_fetchrow($result, true);
     return $data['guild_name'];
@@ -73,8 +73,8 @@ function CheckmultiSigns($raid_id, $profile_id) {
     global $db_raid;
     global $phpraid_config;
     if ($phpraid_config['multiple_signups'] == 0) {
-        $sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "signups
-                    WHERE raid_id='" . $raid_id . "' AND profile_id='" . $profile_id . "'";
+        $sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups
+            WHERE raid_id=%s AND profile_id=%s", quote_smart($raid_id), quote_smart($profile_id));
         $result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
         if ($db_raid->sql_numrows($result) > 0) {
             return 0;
@@ -90,8 +90,8 @@ function CheckraidForce($raid_force, $guild_id) {
     global $phpraid_config;
     if ($raid_force != 'All') {
 
-        $sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "raid_force
-                    WHERE raid_force_name='" . $raid_force . "'";
+        $sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raid_force
+                    WHERE raid_force_name=%s", quote_smart($raid_force));
         $raid_force_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
         while ($raid_force_data = $db_raid->sql_fetchrow($raid_force_result, true)) {
             if ($raid_force_data['guild_id'] != $guild_id) {
@@ -115,39 +115,42 @@ function CheckraidFull($raid_id, $char_id, $queue) {
     global $db_raid;
     global $phpraid_config;
     if (!$queue) {
-        $sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "chars
-                WHERE char_id = '" . $char_id . "'";
+        $sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "chars
+                WHERE char_id =%s", quote_smart($char_id));
         $result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-        $char_data = $db_raid->sql_fetchrow($result, true);
+        $char_data = $db_raid->sql_fetchrow($result2, true);
 
-        $sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "raids
-                WHERE raid_id = '" . $raid_id . "'";
+        $sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raids
+                WHERE raid_id =%s", quote_smart($raid_id));
         $result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-        $raid_data = $db_raid->sql_fetchrow($result, true);
+        $raid_data = $db_raid->sql_fetchrow($result2, true);
 
-        $sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "class_role
-                WHERE subclass = '" . $char_data['pri_spec'] . "' AND class_id ='" . $char_data['class'] . "'";
+        $sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "class_role
+                WHERE subclass =%s AND class_id =%s", quote_smart($char_data['pri_spec']),
+                        quote_smart($char_data['class']));
         $result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
         $role_data = $db_raid->sql_fetchrow($result, true);
         $role_id = $role_data['role_id'];
 
-        $sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "signups
-                WHERE raid_id = '" . $raid_id . "' AND selected_spec = '" . $char_data['pri_spec'] . "'";
+        $sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups
+                WHERE raid_id =%s AND selected_spec =%s", quote_smart($raid_id),
+                        quote_smart($char_data['pri_spec']));
         $result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
         $role_signed_up = $db_raid->sql_numrows($result);
 
-        $sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "signups
-                WHERE raid_id = '" . $raid_id . "' AND cancel = '0' AND queue = '0'";
+        $sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups
+                WHERE raid_id =%s AND cancel = '0' AND queue = '0'",
+                        quote_smart($raid_id));
         $result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
         $total_signed_up = $db_raid->sql_numrows($result);
 
-        $sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "signups
-                WHERE raid_id = '" . $raid_id . "'";
+        $sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups
+                WHERE raid_id =%s", quote_smart($raid_id));
         $result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
         $x = 0;
         while ($signup_result = $db_raid->sql_fetchrow($result, true)) {
-            $sql2 = "SELECT * FROM " . $phpraid_config['db_prefix'] . "chars
-                WHERE char_id = '" . $signup_result['char_id'] . "'";
+            $sql2 = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "chars
+                WHERE char_id =%s", quote_smart($signup_result['char_id']));
             $result2 = $db_raid->sql_query($sql2) or print_error($sql2, $db_raid->sql_error(), 1);
             $signedtoon = $db_raid->sql_fetchrow($result2, true);
             if ($signedtoon['class'] == $char_data['class']) {
@@ -155,13 +158,15 @@ function CheckraidFull($raid_id, $char_id, $queue) {
             }
         }
 
-        $sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "raid_role_lmt
-                WHERE raid_id = '" . $raid_id . "' AND role_id ='" . $role_id . "'";
+        $sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raid_role_lmt
+                WHERE raid_id =%s AND role_id =%s", quote_smart($raid_id),
+                        quote_smart($role_id));
         $result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
         $role_lmt_data = $db_raid->sql_fetchrow($result, true);
 
-        $sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "raid_class_lmt
-                WHERE raid_id = '" . $raid_id . "' AND class_id ='" . $char_data['class'] . "'";
+        $sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raid_class_lmt
+                WHERE raid_id = %s AND class_id =%s", quote_smart($raid_id),
+                        quote_smart($char_data['class']));
         $result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
         $class_lmt_data = $db_raid->sql_fetchrow($result, true);
 
@@ -188,12 +193,11 @@ function CheckraidFull($raid_id, $char_id, $queue) {
 function GetGuildFaction($guild_id) {
     global $db_raid;
     global $phpraid_config;
-    if (!$queue) {
-        $sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "guilds
-                WHERE guild_id = '" . $guild_id . "'";
-        $result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-        $guild_data = $db_raid->sql_fetchrow($result, true);
-    }
+    $sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "guilds
+                WHERE guild_id =%s", quote_smart($guild_id));
+    $result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+    $guild_data = $db_raid->sql_fetchrow($result, true);
     return $guild_data['guild_faction'];
 }
+
 ?>

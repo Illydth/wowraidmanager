@@ -1,4 +1,5 @@
 <?php
+
 /* * *************************************************************************
  *                               index.php
  *                            -------------------
@@ -24,7 +25,7 @@ require_once('./includes/functions_android.php');
 
 $version = "2";
 
-//Gets you Logged in 
+//Gets you Logged in
 if ($_POST['action'] == "login") {
     $username = scrub_input($_POST['var1']);
     $password = scrub_input($_POST['var2']);
@@ -52,8 +53,8 @@ elseif ($_POST['action'] == "getraidlist") {
         $profile_id = GetUserID($username);
         $raid_array = array();
         $time = time();
-        $sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "raids
-                WHERE invite_time > '" . $time . "' AND old = '0' LIMIT " . $limit . "";
+        $sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raids
+                WHERE invite_time > %s AND old = '0' LIMIT $limit", quote_smart($time));
         $result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
         array_push($raid_array, array('test' => $tes));
         while ($data = $db_raid->sql_fetchrow($result, true)) {
@@ -66,8 +67,8 @@ elseif ($_POST['action'] == "getraidlist") {
             }
 
             //Checks if you are already signed up
-            $sql2 = "SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id='" . $data['raid_id'] . "'
-                AND profile_id='" . $profile_id . "'";
+            $sql2 = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id=%s
+                AND profile_id=%s", quote_smart($data['raid_id']), quote_smart($profile_id));
             $result2 = $db_raid->sql_query($sql2) or print_error($sql2, $db_raid->sql_error(), 1);
             if ($db_raid->sql_numrows($result2) > 0) {
                 $show_signup = 0;
@@ -75,12 +76,13 @@ elseif ($_POST['action'] == "getraidlist") {
 
             //Checkes if Raid Force is enabled and if you have a toon in that guild
             if ($data['raid_force_name'] != 'All') {
-                $sql3 = "SELECT * FROM " . $phpraid_config['db_prefix'] . "raid_force WHERE raid_force_name='" . $data['raid_force_name'] . "'";
+                $sql3 = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raid_force WHERE raid_force_name=%s",
+                                quote_smart($data['raid_force_name']));
                 $raid_force_result = $db_raid->sql_query($sql3) or print_error($sql3, $db_raid->sql_error(), 1);
                 $char_in_guild_check = false;
                 while ($raid_force_data = $db_raid->sql_fetchrow($raid_force_result, true)) {
-                    $sql4 = "SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE
-								profile_id='" . $profile_id . "' AND guild='" . $raid_force_data['guild_id'] . "'";
+                    $sql4 = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE
+			profile_id=%s AND guild=%s", quote_smart($profile), quote_smart($raid_force_data['guild_id']));
                     $char_in_guild_result = $db_raid->sql_query($sql4) or print_error($sql4, $db_raid->sql_error(), 1);
                     $char_count = $db_raid->sql_numrows($char_in_guild_result);
                     if ($char_count <= 0)
@@ -88,9 +90,9 @@ elseif ($_POST['action'] == "getraidlist") {
                 }
             }
             //Checks if you have any Toons within the level
-            $sql5 = "SELECT * FROM " . $phpraid_config['db_prefix'] . "chars " .
-                    "	WHERE profile_id='" . $profile_id . "' AND lvl<='" . $data['max_lvl'] . "'
-                                AND lvl>='" . $data['max_lvl'] . "'";
+            $sql5 = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "chars " .
+                            "	WHERE profile_id=%s AND lvl<=%s AND lvl>=%s",
+                            quote_smart($profile_id), quote_smart($data['max_lvl']), quote_smart($data['max_lvl']));
             $result3 = $db_raid->sql_query($sql5) or print_error($sql5, $db_raid->sql_error(), 1);
             $char_count = $db_raid->sql_numrows($result3);
             if ($char_count <= 0) {
@@ -127,14 +129,14 @@ elseif ($_POST['action'] == "getsignraidlist") {
         $profile_id = GetUserID($username);
         $raid_array = array();
         $time = time();
-        $sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "raids
-                WHERE invite_time > '" . $time . "' AND old = '0'";
+        $sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raids
+                WHERE invite_time > %s AND old = '0'", quote_smart($time));
         $result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
         array_push($raid_array, array('test' => $tes));
 
         while ($data = $db_raid->sql_fetchrow($result, true)) {
-            $sql2 = "SELECT * FROM " . $phpraid_config['db_prefix'] . "signups
-                WHERE profile_id = '" . $profile_id . "' AND raid_id = '" . $data['raid_id'] . "' AND cancel ='0'";
+            $sql2 = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups
+                WHERE profile_id =%s AND raid_id = %s", quote_smart($profile_id), quote_smart($data['raid_id']));
             $result2 = $db_raid->sql_query($sql2) or print_error($sql2, $db_raid->sql_error(), 1);
             $char_count = $db_raid->sql_numrows($result2);
             // setup array for data output as long as you have someone that can sign up
@@ -167,14 +169,14 @@ elseif ($_POST['action'] == "getsigntoonlist") {
         $profile_id = GetUserID($username);
         $toon_array = array();
         $time = time();
-        $sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "signups
-                WHERE raid_id = '" . $raid_id . "' AND cancel = '0' AND queue = '0'";
+        $sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups
+                WHERE raid_id = %s AND cancel = '0' AND queue = '0'", quote_smart($raid_id));
         $result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
         array_push($toon_array, array('test' => $tes));
 
         while ($data = $db_raid->sql_fetchrow($result, true)) {
-            $sql2 = "SELECT * FROM " . $phpraid_config['db_prefix'] . "chars
-                WHERE char_id = '" . $data['char_id'] . "'";
+            $sql2 = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "chars
+                WHERE char_id =%s", quote_smart($data['char_id']));
             $result2 = $db_raid->sql_query($sql2) or print_error($sql2, $db_raid->sql_error(), 1);
             $char_data = $db_raid->sql_fetchrow($result2, true);
 
@@ -205,14 +207,14 @@ elseif ($_POST['action'] == "getqueuetoonlist") {
         $profile_id = GetUserID($username);
         $toon_array = array();
         $time = time();
-        $sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "signups
-                WHERE raid_id = '" . $raid_id . "' AND cancel = '0' AND queue = '1'";
+        $sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups
+                WHERE raid_id = %s AND cancel = '0' AND queue = '1'", quote_smart($raid_id));
         $result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
         array_push($toon_array, array('test' => $tes));
 
         while ($data = $db_raid->sql_fetchrow($result, true)) {
-            $sql2 = "SELECT * FROM " . $phpraid_config['db_prefix'] . "chars
-                WHERE char_id = '" . $data['char_id'] . "'";
+            $sql2 = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "chars
+                WHERE char_id = %s", quote_smart($data['char_id']));
             $result2 = $db_raid->sql_query($sql2) or print_error($sql2, $db_raid->sql_error(), 1);
             $char_data = $db_raid->sql_fetchrow($result2, true);
 
@@ -233,7 +235,7 @@ elseif ($_POST['action'] == "getqueuetoonlist") {
 }
 
 
-//Gets Toons 
+//Gets Toons
 elseif ($_POST['action'] == "gettoonlist") {
     $username = scrub_input($_POST['var1']);
     $password = scrub_input($_POST['var2']);
@@ -243,11 +245,11 @@ elseif ($_POST['action'] == "gettoonlist") {
         $profile_id = GetUserID($username);
         $toon_array = array();
         if ($char_id == "") {
-            $sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "chars
-        WHERE profile_id = '" . $profile_id . "'";
+            $sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "chars
+        WHERE profile_id =%s", quote_smart($profile_id));
         } else {
-            $sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "chars
-        WHERE char_id = '" . $char_id . "' AND profile_id = '" . $profile_id . "'";
+            $sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "chars
+        WHERE char_id=%s AND profile_id =%s", quote_smart($char_id) , quote_smart($profile_id));
         }
         $result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
         array_push($toon_array, array('test' => $tes));
@@ -290,7 +292,7 @@ elseif ($_POST['action'] == "getannouncement") {
     if (CheckLog($username, $password) == "logged") {
         $announcement_array = array();
         array_push($announcement_array, array('test' => $tes));
-        $sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "announcements ORDER BY timestamp DESC LIMIT " . $limit . "";
+        $sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "announcements ORDER BY timestamp DESC LIMIT $limit";
         $result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
         while ($data = $db_raid->sql_fetchrow($result, true)) {
             array_push($announcement_array,
@@ -322,20 +324,21 @@ elseif ($_POST['action'] == "getraidinfo") {
         // load configuration variables into configuration array
         $raid_array = array();
 
-        $sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "raids
-        WHERE raid_id = '" . $raid_id . "'";
+        $sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raids
+        WHERE raid_id = %s", quote_smart($raid_id));
         $result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
         $raid_data = $db_raid->sql_fetchrow($result, true);
 
         //Gets total Signed up
-        $sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "signups
-        WHERE raid_id ='" . $raid_id . "' AND queue = '0' AND cancel = '0'";
+        $sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups
+        WHERE raid_id =%s AND queue = '0' AND cancel = '0'", quote_smart($raid_id));
+        ;
         $result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
         $totalsigned = $db_raid->sql_numrows($result, true);
 
         //Gets total Signed up
-        $sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "signups
-        WHERE raid_id ='" . $raid_id . "' AND queue = '1' AND cancel = '0'";
+        $sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups
+        WHERE raid_id =%s AND queue = '1' AND cancel = '0'", quote_smart($raid_id));
         $result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
         $totalqueue = $db_raid->sql_numrows($result, true);
 
@@ -373,15 +376,16 @@ elseif ($_POST['action'] == "gettoonsforraid") {
         $profile_id = GetUserID($username);
         $time = time();
 
-        $sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "raids
-                WHERE raid_id = '" . $raid_id . "'";
+        $sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raids
+                WHERE raid_id = %s", quote_smart($raid_id));
         $result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
         $raid_data = $db_raid->sql_fetchrow($result, true);
         array_push($toon_array, array('test' => $tes));
 
-        $sql2 = "SELECT * FROM " . $phpraid_config['db_prefix'] . "chars
-                WHERE profile_id = '" . $profile_id . "' AND lvl >='" . $raid_data['min_lvl'] . "'
-                    AND lvl <='" . $raid_data['max_lvl'] . "'";
+        $sql2 = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "chars
+                WHERE profile_id = %s AND lvl >=%s AND lvl <=%s",
+                        quote_smart($profile_id), quote_smart($raid_data['min_lvl']),
+                        quote_smart($raid_data['max_lvl']));
         $result2 = $db_raid->sql_query($sql2) or print_error($sql2, $db_raid->sql_error(), 1);
 
         while ($char_data = $db_raid->sql_fetchrow($result2, true)) {
@@ -423,22 +427,25 @@ elseif ($_POST['action'] == "signupraid") {
         } elseif ($status_id == "Signup") {
             $queue = 0;
         }
-        $sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "raids
-                WHERE raid_id = '" . $raid_id . "'";
+        $sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raids
+                WHERE raid_id = %s", quote_smart($raid_id));
         $result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
         $raid_data = $db_raid->sql_fetchrow($result, true);
 
-        $sql2 = "SELECT * FROM " . $phpraid_config['db_prefix'] . "chars
-                WHERE char_id = '" . $char_id . "'";
+        $sql2 = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "chars
+                WHERE char_id = %s", quote_smart($char_id));
         $result2 = $db_raid->sql_query($sql2) or print_error($sql2, $db_raid->sql_error(), 1);
         $char_data = $db_raid->sql_fetchrow($result2, true);
         // check if already signed up
         if (CheckmultiSigns($raid_id, $profile_id)) {
             if (CheckraidForce($raid_data['raid_force_name'], $char_data['guild'])) {
                 $queue = CheckraidFull($raid_id, $char_id, $queue);
-                $sql = "INSERT INTO " . $phpraid_config['db_prefix'] . "signups
+                $sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "signups
                             	(`char_id`,`profile_id`,`raid_id`,`comments`,`queue`,`timestamp`,`cancel`,`selected_spec`)
-                              VALUES('" . $char_id . "','" . $profile_id . "','" . $raid_id . "','" . $comments . "', '" . $queue . "','" . $time . "','0','" . $char_data['pri_spec'] . "')";
+                              VALUES(%s,%s,%s,%s,%s,%s,'0',%s)",
+                                quote_smart($char_id), quote_smart($profile_id), quote_smart($raid_id),
+                                quote_smart($comments), quote_smart($queue), quote_smart($time),
+                                quote_smart($char_data['pri_spec']));
                 $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
                 echo "All signed up";
             } else {
@@ -461,8 +468,9 @@ elseif ($_POST['action'] == "cancelsignup") {
         // load configuration variables into configuration array
         $profile_id = GetUserID($username);
         $toon_array = array();
-        $sql = "UPDATE " . $phpraid_config['db_prefix'] . "signups set cancel='1'
-            WHERE profile_id='" . $profile_id . "' AND raid_id='" . $raid_id . "'";
+        $sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "signups set cancel='1'
+            WHERE profile_id=%s AND raid_id=%s", quote_smart($profile_id),
+                        quote_smart($raid_id));
         $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 
         echo "You canceled from this raid";
@@ -506,7 +514,8 @@ elseif ($_POST['action'] == "getracelist") {
         $faction = GetGuildFaction($guild_id);
         $race_array = array();
         array_push($race_array, array('test' => $tes));
-        $sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "races WHERE faction = '" . $faction . "'";
+        $sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "races WHERE faction =%s",
+                        quote_smart($faction));
         $result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
         while ($data = $db_raid->sql_fetchrow($result, true)) {
             array_push($race_array,
@@ -532,7 +541,8 @@ elseif ($_POST['action'] == "getclasslist") {
     if (CheckLog($username, $password) == "logged") {
         $class_array = array();
         array_push($class_array, array('test' => $tes));
-        $sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "class_race WHERE race_id = '" . $race_id . "'";
+        $sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "class_race WHERE race_id =%s",
+                        quote_smart($race_id));
         $result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
         while ($data = $db_raid->sql_fetchrow($result, true)) {
             array_push($class_array,
@@ -558,7 +568,8 @@ elseif ($_POST['action'] == "getrolelist") {
     if (CheckLog($username, $password) == "logged") {
         $role_array = array();
         array_push($role_array, array('test' => $tes));
-        $sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "class_role WHERE class_id = '" . $class_id . "'";
+        $sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "class_role WHERE class_id =%s",
+                        quote_smart($class_id));
         $result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
         while ($data = $db_raid->sql_fetchrow($result, true)) {
             array_push($role_array,
@@ -612,7 +623,7 @@ elseif ($_POST['action'] == "new_edit_toon") {
     } else {
         echo "Hack Attempt";
     }
-}else{
-   echo "Hack Attempt";
+} else {
+    echo "Hack Attempt";
 }
 ?>
