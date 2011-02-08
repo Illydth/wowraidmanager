@@ -427,7 +427,6 @@ INSERT INTO `wrm_config` VALUES ('lua_output_sort_signups', '1');
 INSERT INTO `wrm_config` VALUES ('lua_output_sort_queue', '2');
 INSERT INTO `wrm_config` VALUES ('lua_output_format', '2');
 INSERT INTO `wrm_config` VALUES ('num_old_raids_index', '20');
-INSERT INTO `wrm_config` VALUES ('wrm_utf8_support', '1');
 INSERT INTO `wrm_config` VALUES ('template_body_width', 'width_normal');
 
 -- Event Type Table Data
