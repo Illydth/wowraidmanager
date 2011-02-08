@@ -1,4 +1,3 @@
-INSERT INTO `wrm_config` VALUES ('wrm_utf8_support', '1');
 INSERT INTO `wrm_config` VALUES ('template_body_width', 'width_normal');
 
 INSERT INTO `wrm_events` ( `zone_desc`, `max`, `exp_id`, `event_type_id`, `wow_name`, `icon_path`) VALUES

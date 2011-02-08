@@ -79,8 +79,7 @@ function validate_wrm_configfile()
 	$curr_dir = dirname(__FILE__);
 	$wrm_dir = substr($curr_dir, 0, strpos($curr_dir, "install")-1); //Strip the "install" directory off the end.
 	
-	$wrm_config_file = $wrm_dir . "config.php";
-	
+	$wrm_config_file = $wrm_dir . "/config.php";
 	if(is_file($wrm_config_file))
 	{
 		include_once($wrm_config_file);
@@ -121,9 +120,23 @@ function validate_wrm_configfile()
  * @param String $eqdkp_db_prefix
  * @return boolean 
  */
-function write_wrm_configfile($wrm_db_name,$wrm_db_server_hostname = "localhost",$wrm_db_username,$wrm_db_password,$wrm_db_tableprefix = "wrm_",$wrm_db_type="mysql",$eqdkp_db_name = "",$eqdkp_db_host = "",$eqdkp_db_user = "",$eqdkp_db_pass = "",$eqdkp_db_prefix = "",$wrm_db_utf8_support="yes",$wrm_mbstring_support="yes")
+function write_wrm_configfile($wrm_db_name,$wrm_db_server_hostname = "localhost",$wrm_db_username,$wrm_db_password,$wrm_db_tableprefix = "wrm_",$wrm_db_type="mysql",$eqdkp_db_name = "",$eqdkp_db_host = "",$eqdkp_db_user = "",$eqdkp_db_pass = "",$eqdkp_db_prefix = "",$wrm_db_utf8_support = "",$wrm_mbstring_support = "")
 {
-	 
+	//Calculate UTF8 Support if not already passed:
+	if ($wrm_db_utf8_support == '')
+	{
+		// Check for UTF8 Support in Database
+		$gd = get_mysql_version_from_mysql();
+		$wrm_db_utf8_support = (strnatcmp($gd,'4.1.0') >= 0) ? "yes" : "no";
+	}
+	
+	//Calculate MBString Support if not already passed:
+	if ($wrm_mbstring_support == '')
+	{
+		// Check for MB String Enabled in PHP
+		$wrm_mbstring_support = (extension_loaded('mbstring')) ? "yes" : "no";
+	} 
+	
 	//global $wrm_config_file;
 	$wrm_config_file = "../config.php";
 	include("../version.php");
@@ -230,6 +243,16 @@ function quote_smart($value = "", $nullify = false, $conn = null)
 	return $value;
 }
 
+function scrub_input($value = "", $html_allowed = false)
+{
+	$value=strip_tags($value, '<br><a>');
+
+	if (!$html_allowed)
+		$value = htmlspecialchars($value);
+
+	return $value;
+}
+
 /***
  * print error
  * @param string $path
@@ -254,7 +277,9 @@ function print_error($type, $error, $die)
 				"print_error_query" => $wrm_install_lang['print_error_query'],
 				"type" => $type,
 				"print_error_details" => $wrm_install_lang['print_error_details'],
-				"error" => $error,
+				"error_line" => __LINE__,
+				"error_no" => $error['code'],
+				"error_text" => $error['message'],
 				"print_error_msg_begin" => $wrm_install_lang['print_error_msg_begin'],
 				"print_error_msg_end" => $wrm_install_lang['print_error_msg_end'],
 		)
@@ -316,7 +341,7 @@ function is__writable($path)
  *
  * @return boolean
  */
-function get_mysql_version_from_phpinfo()
+function get_mysql_client_version_from_phpinfo()
 {
 	ob_start();
 	phpinfo(INFO_MODULES);
@@ -327,6 +352,19 @@ function get_mysql_version_from_phpinfo()
 	$gd = $match[0];
 
 	return $gd;
+}
+
+/**
+ * get mysql version from mysql()
+ *
+ * @return boolean
+ */
+function get_mysql_version_from_mysql()
+{
+	$a = mysql_get_server_info();
+	$mysql_version = substr($a, 0, strpos($a, "-"));
+		
+	return $mysql_version;
 }
 
 /**
@@ -562,7 +600,7 @@ function scan_dbserver()
 		array_push($bridge, $bridge_setting_value);
 	}
 
-	$wrm_install = &new sql_db($phpraid_config['db_host'], $phpraid_config['db_user'], $phpraid_config['db_pass'], $phpraid_config['db_name']);
+	$wrm_install = create_db_connection($phpraid_config['db_host'], $phpraid_config['db_user'], $phpraid_config['db_pass'], $phpraid_config['db_name']);
 	$counter = 0;
 
 	if (check_sql_rights_SHOW_DATABASES($wrm_install)== true)
@@ -634,19 +672,20 @@ function get_WRM_Version_Number()
 {
 	$wrm_config_file = "../config.php";
 
-	global $phpraid_config;
+	global $phpraid_config, $wrm_install;
 	include_once($wrm_config_file);
 	
 	//read version nr
 	$sql = 	sprintf("SELECT version_number "  .
-					" FROM " . 	$phpraid_config['db_name'] . "." . $phpraid_config['db_prefix'] . "version" .
-					"ORDER BY `version_number` DESC"
+					"FROM " . $phpraid_config['db_prefix'] . "version " .
+					"ORDER BY version_number DESC"
 			);
 	$result_version = $wrm_install->sql_query($sql) or print_error($sql, $wrm_install->sql_error(), 1);	
 			
 	$data_version = $wrm_install->sql_fetchrow($result_version,true);
+	$version_number = $data_version['version_number'];
 	
-	return (explode('.', $data_version) );
+	return (explode('.', $version_number) );
 	
 }
 
@@ -706,7 +745,7 @@ function get_last_onlineversion_nr_short()
 /***
  * show the current 
  */
-function show_online_versionnr($versions_nr_install)
+function show_online_versionnr($file_version)
 {
 
 /*
@@ -721,7 +760,7 @@ function show_online_versionnr($versions_nr_install)
 	}
 	else
 	{
-		$installfiles_ver = explode('.', $versions_nr_install);
+		$installfiles_ver = @explode('.', $file_version);
 		//$latest_version_info = explode("\n", $latest_version_info);
 		//$latest_version_info = explode(" ", $latest_version_info);
 		$latest_version_info = explode(".", $latest_version_info);
@@ -779,7 +818,7 @@ function test_bridge_connection($bridge_name, $bridge_database_name, $bridge_db_
 	
 	$found_db_table_name = array();
 	
-	$wrm_install = &new sql_db($phpraid_config['db_host'], $phpraid_config['db_user'], $phpraid_config['db_pass'], $phpraid_config['db_name']);
+	$wrm_install = create_db_connection($phpraid_config['db_host'], $phpraid_config['db_user'], $phpraid_config['db_pass'], $phpraid_config['db_name']);
 	//if not connection available -> goto step epbrgstep1
 //	if( ($bridge_install->db_connect_id) == true)
 	if( ($wrm_install->db_connect_id) == false)
@@ -911,8 +950,8 @@ function profile_add($user_admin_username,$user_admin_password,$user_admin_email
 	$default_admin_Priv = "1";
 	
 	$sql = sprintf(	"SELECT username, profile_id " .
-					" FROM " . 	$phpraid_config['db_name'] . "." . $phpraid_config['db_prefix'] . "profile " . 
-					" WHERE `username` = %s", quote_smart($user_admin_username)
+					" FROM " . $phpraid_config['db_prefix'] . "profile " . 
+					" WHERE username = %s", quote_smart($user_admin_username)
 			);
 	$result = $wrm_install->sql_query($sql) or print_error($sql, $wrm_install->sql_error(), 1);
 	$data = $wrm_install->sql_fetchrow($result, true);

@@ -61,7 +61,7 @@ function print_error($type, $error, $die) {
 
 	$errorMsg .= '<br><br><b>'.$phprlang['print_error_page'].':</b> ' . $_SERVER['PHP_SELF'];
 	$errorMsg .= '<br><br><b>'.$phprlang['print_error_query'].':</b> ' . $type;
-	$errorMsg .= '<br><br><b>'.$phprlang['print_error_details'].':</b> ' . $error;
+	$errorMsg .= '<br><br><b>'.$phprlang['print_error_details'].':</b><br>' . $error['code'] . ": " . $error['message'];
 	$errorMsg .= '<br><br><b>'.$phprlang['print_error_msg_end'].'</b></div></body></html>';
 	$errorTitle = $phprlang['print_error_title'];
 
@@ -308,7 +308,7 @@ function set_WRM_DB_utf8()
  * 
  * @return boolean
  */
-function get_mysql_version_from_phpinfo()
+function get_mysql_client_version_from_phpinfo()
 {
 	ob_start();
 	phpinfo(INFO_MODULES);
@@ -321,6 +321,19 @@ function get_mysql_version_from_phpinfo()
 	return $gd;
 }
 
+/**
+ * get mysql version from mysql()
+ *
+ * @return boolean
+ */
+function get_mysql_version_from_mysql()
+{
+	$a = mysql_get_server_info();
+	$mysql_version = substr($a, 0, strpos($a, "-"));
+		
+	return $mysql_version;
+}
+
 /*********************************************
  * 		DATABASE STATISTICS SECTION
  *********************************************/
@@ -328,9 +341,9 @@ function get_mysql_version_from_phpinfo()
 function get_db_size()
 {
 	global $db_raid,$phpraid_config;
-	$gd = get_mysql_version_from_phpinfo();
+	$gd = get_mysql_version_from_mysql();
 	
-	if ($gd >= "4.2.0")
+	if (strnatcmp($gd,'4.2.0') >= 0)
 	{	
 		// MySQL Database Size
 		$dbsize = 0;

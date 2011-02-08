@@ -92,8 +92,10 @@ $wrm_install_lang['step3error_no_DB_found'] = "Open a Database Management Tool (
 $wrm_install_lang['step3error_bad_con_parms'] = "Error connecting to Server (Servername or Username or Password incorrect) <br/>";
 $wrm_install_lang['step3error_no_show_databases'] = "Your system does not support SHOW DATABASES, you must type the name of a valid, 
 													EXISTING database into the SQL Database box.";//new
-$wrm_install_lang['wrm_db_utf8_support_text'] = "DB UTF8 Support?";
-$wrm_install_lang['wrm_mbstring_support_text'] = "Multibyte String Support";
+$wrm_install_lang['wrm_db_utf8_support_text'] = "DB Supports UTF8?";
+$wrm_install_lang['wrm_mbstring_support_text'] = "PHP Supports Multibyte Strings?";
+$wrm_install_lang['utf8_warning'] = "Checkbox Calculated Automatically, DO NOT CHANGE Unless You Know What You're Doing!"; //new
+$wrm_install_lang['mbstring_warning'] = "Checkbox Calculated Automatically, DO NOT CHANGE Unless You Know What You're Doing!"; //new
 
 //step done
 $wrm_install_lang['stepdonefinished'] = 'Färdigt';
