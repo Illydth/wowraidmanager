@@ -30,6 +30,30 @@
 ****************************************************************************/
 //require_once($phpraid_dir.'includes/functions.php');
 
+/**
+ * This function creates a new connection to the database based upon what version of PHP you are running.  For 4 it will create a new
+ * 	database object based upon &new, for 5, it will use the standard "new" instead of &new.
+ * @param string $host - Database Server Host Name
+ * @param string $user - Database Server User Name (username to make the DB Connection as).
+ * @param string $password - Database Server User Password.
+ * @param string $dbname - Name of the Database to Connect To.
+ * @param bool $new_connection - Boolean value for whether to create a new connection or not (even if persistent connections enabled).
+ * @param bool $persistency - Whether to create a persistent connection to the database or not.
+ * @return object $connection - A connection object instanciated with a database connection.
+ * @access public
+ */
+function create_db_connection($host, $user, $password, $dbname, $new_connection = FALSE, $persistency = FALSE)
+{
+	global $phpraid_config;
+	
+	// If you are using PHP 4 and need to be instanciating objects by reference, uncomment the second "$connection" string below and
+	//  comment the first one.
+	$connection = new sql_db($host , $user, $password, $dbname, $new_connection, $persistency);		
+	//$connection = &new sql_db($host, $user, $password, $dbname, $new_connection, $persistency);		
+	
+	return $connection;
+}
+
 if(!defined("SQL_LAYER"))
 {
 
