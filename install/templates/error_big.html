@@ -4,9 +4,9 @@
 <div class="errorHeader" style="width:600px" >{$error_title}</div>
 <div class="errorBody" style="width:600px">
 {$print_error_msg_begin}{$print_error_msg_type}
-<br><br><b>{$print_error_page}:</b> {$PHP_SELF}
+<br><br><b>{$print_error_page}:</b> {$PHP_SELF} @ {$error_line}
 <br><br><b>{$print_error_query}:</b> {$type}
-<br><br><b>{$print_error_details}:</b>{$error}
+<br><br><b>{$print_error_details}:</b><br>{$error_no}: {$error_text}
 <br><br><b>{$print_error_msg_end}</b>
 </div>
 </div>
