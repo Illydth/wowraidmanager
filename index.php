@@ -143,8 +143,9 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true))
 		{
 			$info  = '<a href="raid_signup.php?mode=signup&amp;raid_id=' . $raids['raid_id'] . '">';
 //			$info  = '<a href="view.php?mode=view&amp;raid_id=' . $raids['raid_id'] . '#signup">';
-			$info .= '<img src="templates/' . $phpraid_config['template'] . '/images/icons/signup.gif" border="0" height="14" width="14" onMouseover="ddrivetip(\'' . $phprlang['not_signed_up'] . '\');" onMouseout="hideddrivetip();" alt="'.$phprlang['signup'].'">';
-			//$info .=  $phprlang['signup'];
+			//$info .= '<img src="templates/' . $phpraid_config['template'] . '/images/icons/signup.gif" border="0" height="14" width="14" onMouseover="ddrivetip(\'' . $phprlang['not_signed_up'] . '\');" onMouseout="hideddrivetip();" alt="'.$phprlang['signup'].'">';
+			$info .=  $phprlang['signup'];
+
 			$info .= '</a>';
 		}
 	}

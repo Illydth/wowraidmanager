@@ -498,9 +498,9 @@ else if ($mode == 'mod_perms')
 			{
 				if(strpos($key, 'modperm')!==FALSE)
 				{
-					$profile_id = $value;
+					$cht_profile_id = $value;
 					$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "profile
-								SET priv=%s WHERE profile_id = %s", quote_smart($perm_id),quote_smart($profile_id));
+								SET priv=%s WHERE profile_id = %s", quote_smart($perm_id),quote_smart($cht_profile_id));
 					$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 					
 					log_create('profile_update',mysql_insert_id(),$title);
@@ -516,9 +516,9 @@ else if ($mode == 'mod_perms')
 		{
 			if(strpos($key, 'modperm')!==FALSE)
 			{
-				$profile_id = $value;
+				$cht_profile_id = $value;
 				$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "profile
-							SET priv=%s WHERE profile_id = %s", quote_smart($perm_id),quote_smart($profile_id));
+							SET priv=%s WHERE profile_id = %s", quote_smart($perm_id),quote_smart($cht_profile_id));
 				$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 				
 				log_create('profile_update',mysql_insert_id(),$title);
