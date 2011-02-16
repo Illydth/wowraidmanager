@@ -252,8 +252,11 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true))
 	$location .= '</a>';
 
 	// Start the "display" portion, get the "box" the raid link and information is supposed to go into
-	//		then append the raid into the box.
-	$raidDayOfMonth = date("j", $raids['start_time']);
+	//		then append the raid into the box.	
+	// Identified Fix by Istari: The next calculation pushes Day+1 to WRM if Midnight GMT has passed (i.e. 4:00 PM for PST)
+	//   Start by Correcting the Database Start Time for current timezone and dst setting BEFORE doing the date addition/calculation.
+	$startTimeAdd = $raids['start_time'] + ((60 * 60) * (($phpraid_config['timezone'] + $phpraid_config['dst']) / 100));
+	$raidDayOfMonth = date("j", $startTimeAdd);
 	$boxNum = $raidDayOfMonth + $offset;
 	$varname = 'box'.$boxNum;
 	
