@@ -64,14 +64,14 @@
        <td>&nbsp;</td>
        <td>&nbsp;</td>
      </tr>       
-     <tr>
+	 <tr>
        <td class="row2"><div align="right">{$wrm_db_utf8_support_text}</div></td>
        <td>
          <div align="center">
-       	    <input type="checkbox" name="wrm_db_utf8_support_value" value="1" checked>
+       	    <input type="checkbox" name="wrm_db_utf8_support_value" value="1" {$utf8checked}>
        	 </div>
        </td>
-       <td>&nbsp;</td>
+       <td class="row1"><div align="left">{$wrm_db_utf8_warning}</div></td>
      </tr>
      <tr>
        <td>&nbsp;</td>
@@ -82,11 +82,11 @@
        <td class="row2"><div align="right">{$wrm_mbstring_support_text}</div></td>
        <td>
          <div align="center">
-       	    <input type="checkbox" name="wrm_mbstring_support_value" value="1" checked>
+       	    <input type="checkbox" name="wrm_mbstring_support_value" value="1" {$mbstringchecked}>
        	 </div>
        </td>
-       <td>&nbsp;</td>
-     </tr>     
+       <td class="row1"><div align="left">{$wrm_db_mbstring_warning}</div></td>
+     </tr>   
    </table>
   </tr>
   <tr>
