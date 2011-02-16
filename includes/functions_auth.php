@@ -121,11 +121,11 @@ function get_permissions($profile_id)
 function check_permission($perm_type, $profile_id) {
 	global $db_raid, $phpraid_config;
 	
-	$sql = sprintf("SELECT ".$phpraid_config['db_prefix']."permissions.%s AS perm_val
+	$sql = sprintf("SELECT ".$phpraid_config['db_prefix']."permissions.raids AS perm_val
 		FROM ".$phpraid_config['db_prefix']."permissions
 		LEFT JOIN ".$phpraid_config['db_prefix']."profile ON
 			".$phpraid_config['db_prefix']."profile.priv = ".$phpraid_config['db_prefix']."permissions.permission_id
-		WHERE ".$phpraid_config['db_prefix']."profile.profile_id = %s", quote_smart($perm_type), quote_smart($profile_id));
+		WHERE ".$phpraid_config['db_prefix']."profile.profile_id = %s", quote_smart($profile_id));
 
 	$perm_data = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	$permission_val = $db_raid->sql_fetchrow($perm_data, true);
