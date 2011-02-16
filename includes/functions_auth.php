@@ -259,7 +259,7 @@ function DEFINE_wrm_login()
 		{
 			// User is not logging in but processing cookie, set encryption flag to 1 to identify login with encrypted password.
 			$pwdencrypt = TRUE;
-			$username = $_COOKIE['username'];
+			$username = strtolower_wrap(scrub_input($_COOKIE['username']), "UTF-8");
 			$password = $_COOKIE['password'];
 			$profile_id = $_COOKIE['profile_id'];
 			$wrmpass = '';
@@ -463,6 +463,7 @@ function DEFINE_wrm_login()
 			get_permissions($profile_id);
 			
 			//security fix
+			unset($username);
 			unset($password);
 			unset($cmspass);
 			unset($wrmpass);
