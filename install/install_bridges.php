@@ -558,7 +558,7 @@ else if($step == 5)
 	if ($_POST['importUser'] == "yes")
 	{
 		$sql = 	"SELECT " . $bridge_setting['db_user_id'] . ", " . $bridge_setting['db_user_email'] . ", " . $bridge_setting['db_user_name'] . " , " . $bridge_setting['db_user_password'] .
-				"  FROM " . $bridge_db_table_prefix . $bridge_setting['db_table_user_name'] . " " . $bridge_setting['db_user_name_filter'];
+				"  FROM " . $bridge_database_name . "." . $bridge_db_table_prefix . $bridge_setting['db_table_user_name'] . " " . $bridge_setting['db_user_name_filter'];
 		$result = $wrm_install->sql_query($sql) or print_error($sql, $wrm_install->sql_error(), 1);
 	
 		if($wrm_install->sql_numrows($result) != 0)
