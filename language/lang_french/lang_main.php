@@ -58,12 +58,12 @@ $phprlang['email'] = 'E-mail';
 $phprlang['guild'] = 'Guilde';
 $phprlang['guild_name'] = 'Nom de la Guilde';
 $phprlang['guild_master'] = 'Maitre de Guilde';
-$phprlang['guild_tag'] = 'Tag Guilde';
-$phprlang['guild_description'] = 'Guild Description';
-$phprlang['guild_server'] = 'Guild Server';
-$phprlang['guild_faction'] = 'Guild Faction';
-$phprlang['guild_armory_link'] = 'Armory Link';
-$phprlang['guild_armory_code'] = 'Armory Code';
+$phprlang['guild_tag'] = 'Tag';
+$phprlang['guild_description'] = 'Description';
+$phprlang['guild_server'] = 'Serveur';
+$phprlang['guild_faction'] = 'Faction';
+$phprlang['guild_armory_link'] = 'Lien armurerie';
+$phprlang['guild_armory_code'] = 'URL Armurerie';
 $phprlang['guild_id'] = 'Guild ID';
 $phprlang['raid_force_id'] = 'Raid Force ID';
 $phprlang['raid_force_name'] = 'Raid Force';
@@ -248,8 +248,8 @@ $phprlang['login_password_new'] = 'New Password';
 $phprlang['login_pwdreset_success'] = 'Your password HAS BEEN correctly reset.<br><br>You will need to use the new password the next time you login.';
 
 // Days of the Week
-$phprlang['month'] = 'Month';
-$phprlang['year'] = 'Year';
+$phprlang['month'] = 'Mois';
+$phprlang['year'] = 'Ann&eacute;e';
 $phprlang['sunday'] = 'Dimanche';
 $phprlang['monday'] = 'Lundi';
 $phprlang['tuesday'] = 'Mardi';
@@ -266,18 +266,18 @@ $phprlang['2ltrfriday'] = 'Ven';
 $phprlang['2ltrsaturday'] = 'Sam';
 
 // Months
-$phprlang['month1'] = 'January';
-$phprlang['month2'] = 'February';
-$phprlang['month3'] = 'March';
-$phprlang['month4'] = 'April';
-$phprlang['month5'] = 'May';
-$phprlang['month6'] = 'June';
-$phprlang['month7'] = 'July';
-$phprlang['month8'] = 'August';
-$phprlang['month9'] = 'September';
-$phprlang['month10'] = 'October';
-$phprlang['month11'] = 'November';
-$phprlang['month12'] = 'December';
+$phprlang['month1'] = 'Janvier';
+$phprlang['month2'] = 'F&eacute;vrier';
+$phprlang['month3'] = 'Mars';
+$phprlang['month4'] = 'Avril';
+$phprlang['month5'] = 'Mai';
+$phprlang['month6'] = 'Juin';
+$phprlang['month7'] = 'Juillet';
+$phprlang['month8'] = 'Ao&ucirc;t';
+$phprlang['month9'] = 'Septembre';
+$phprlang['month10'] = 'Octobre';
+$phprlang['month11'] = 'Novembre';
+$phprlang['month12'] = 'D&eacute;cembre';
 							
 // links
 $phprlang['announcements_link'] = '&raquo; Messages D\'Accueil';

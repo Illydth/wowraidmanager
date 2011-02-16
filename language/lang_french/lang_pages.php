@@ -38,30 +38,30 @@ $phprlang['announcements_title_txt'] = 'Titre';
 // Calendar
 $phprlang['invites'] = 'Invites';
 $phprlang['start'] = 'Début';
-$phprlang['key'] = 'Key:<br>White Border = Not Signed Up<br>Green Border = Signed Up & Drafted<br>Blue Border = Signed Up, Not Drafted (queued)<br>Red Border = Signup Cancelled<br><span class="priorDay">TEXT</span> dates are in the past.<br><span class="currentDay">TEXT</span> date is today.<br><span class="postDay">TEXT</span> dates are in the future.'; //New
-$phprlang['calendar_month_select_header'] = 'Select Month and Year to View';
+$phprlang['key'] = 'L&eacute;gende:<br>Bord blanc = Non inscrit<br>Bord Vert = Inscrit & S&eacute;lectionn&eacute;<br>Bord Bleu = Inscrit, En file d\'attente<br>Bord Rouge = Inscription annul&eacute;e<br><span class="priorDay">CES DATES</span> sont dans le pass&eacute;.<br><span class="currentDay">DATE</span> d\'aujourd\'hui.<br><span class="postDay">CES DATES</span> sont dans le futur.';
+$phprlang['calendar_month_select_header'] = 'S&eacute;lectionnez un mois et une ann&eacute;e pour l\'afficher';
 
 // DKP View
 $phprlang['eqdkp_system_link'] = 'Direct link to Associated DKP System:';
 
 // guilds
 $phprlang['guilds_header'] = 'Liste des Guildes';
-$phprlang['guilds_new_header'] = 'New Guild';
+$phprlang['guilds_new_header'] = 'Nouvelle Guilde';
 $phprlang['guilds_master'] = 'Maitre de guilde';
-$phprlang['guilds_name'] = 'Nom complet de la Guilde';
-$phprlang['guilds_tag']	= 'Tag de Guilde';						
-$phprlang['guilds_description'] = 'Guild Description';
-$phprlang['guilds_server'] = 'Guild Server';
-$phprlang['guilds_faction'] = 'Guild Faction';
-$phprlang['guilds_armory_code'] = 'Armory Code for Guild';
-$phprlang['armory_lang_US'] = 'US : http://us.battle.net/wow/ : English'; //New
-$phprlang['armory_lang_EU'] = 'EU : http://eu.battle.net/wow/ : English'; //New
-$phprlang['armory_lang_DE'] = 'DE : http://eu.battle.net/wow/ : German'; //New
-$phprlang['armory_lang_ES'] = 'ES : http://eu.battle.net/wow/ : Spanish'; //New
-$phprlang['armory_lang_FR'] = 'FR : http://eu.battle.net/wow/ : French'; //New
-$phprlang['armory_lang_KR'] = 'KR : http://kr.battle.net/wow/ : Korean'; //New
-$phprlang['armory_lang_TW'] = 'TW : http://tw.battle.net/wow/ : Taiwainese'; //New
-$phprlang['armory_lang_none'] = 'No Armory or Not Applicable'; //New
+$phprlang['guilds_name'] = 'Nom complet';
+$phprlang['guilds_tag']   = 'Tag';
+$phprlang['guilds_description'] = 'Description ';
+$phprlang['guilds_server'] = 'Serveur';
+$phprlang['guilds_faction'] = 'Faction';
+$phprlang['guilds_armory_code'] = 'URL Armurerie Battle.Net';
+$phprlang['armory_lang_US'] = 'US : http://us.battle.net/wow/ : Anglais US';
+$phprlang['armory_lang_EU'] = 'EU : http://eu.battle.net/wow/ : Anglais GB';
+$phprlang['armory_lang_DE'] = 'DE : http://eu.battle.net/wow/ : Allemand';
+$phprlang['armory_lang_ES'] = 'ES : http://eu.battle.net/wow/ : Espagnol';
+$phprlang['armory_lang_FR'] = 'FR : http://eu.battle.net/wow/ : Fran&ccedil;ais';
+$phprlang['armory_lang_KR'] = 'KR : http://kr.battle.net/wow/ : Cor&eacute;en';
+$phprlang['armory_lang_TW'] = 'TW : http://tw.battle.net/wow/ : Ta&iuml;wainais';
+$phprlang['armory_lang_none'] = 'Inexistant ou non applicable';
 
 // locations
 $phprlang['locations_header'] = 'Lieux enregistrés';
