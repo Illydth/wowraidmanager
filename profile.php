@@ -94,6 +94,12 @@ if($_GET['mode'] == 'view') {
 		foreach ($wrm_global_classes as $global_class)
 			if ($data['class'] == $global_class['class_id'])
 				$class = $phprlang[$global_class['lang_index']];
+
+		foreach($wrm_global_specs as $global_spec)
+		{
+			if($data['pri_spec'] == $global_spec['spec']) $pri_spec = $phprlang[$global_spec['lang_index']];
+			if($data['sec_spec'] == $global_spec['spec']) $sec_spec = $phprlang[$global_spec['lang_index']];
+		}		
 				
 		// Get the Guild Name to Display instead of Just the ID
 		$sql = sprintf("SELECT guild_name FROM " . $phpraid_config['db_prefix'] . "guilds WHERE guild_id=%s",quote_smart($data['guild']));
@@ -116,8 +122,8 @@ if($_GET['mode'] == 'view') {
 				'Frost'=>$data['frost'],
 				'Nature'=>$data['nature'],
 				'Shadow'=>$data['shadow'],
-				'Pri_Spec'=>$data['pri_spec'],
-				'Sec_Spec'=>$data['sec_spec'],
+				'Pri_Spec'=>$pri_spec,
+				'Sec_Spec'=>$sec_spec,
 				'Buttons'=>$Buttons_tmp,
 			));
 	}
