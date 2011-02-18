@@ -1207,13 +1207,13 @@ elseif($mode == 'delete')
 {
 	$char_id = scrub_input($_GET['char_id']);
 	$raid_id = scrub_input($_GET['raid_id']);
-	$profile_id = scrub_input($_GET['profile_id']);
+	$cht_profile_id = scrub_input($_GET['profile_id']);
 	$S_profile_id = scrub_input($_SESSION['profile_id']);
 
-	if($user_perm_group['admin'] == 1 or $user_perm_group['RL'] == 1 or $S_profile_id == $profile_id) {
+	if($user_perm_group['admin'] == 1 or $user_perm_group['RL'] == 1 or $S_profile_id == $cht_profile_id) {
 		// they have permission to delete
 		if(!isset($_POST['submit'])) {
-			$form_action = 'view.php?mode=delete&profile_id=' . $profile_id . '&amp;raid_id=' . $raid_id . '&amp;char_id=' . $char_id;
+			$form_action = 'view.php?mode=delete&profile_id=' . $cht_profile_id . '&amp;raid_id=' . $raid_id . '&amp;char_id=' . $char_id;
 			$confirm_button = '<input type="submit" value="'.$phprlang['confirm'].'" name="submit" class="post">';
 
 			$wrmsmarty->assign('page',
@@ -1510,7 +1510,7 @@ elseif($mode == 'draft')
 elseif($mode == 'cancel')
 {
 	$S_profile_id = scrub_input($_SESSION['profile_id']);
-	$profile_id = scrub_input($_GET['profile_id']);
+	$cht_profile_id = scrub_input($_GET['profile_id']);
 
 	// check for hack attempt
 	if(!isset($_GET['char_id']) || !is_numeric($_GET['char_id']))
@@ -1522,7 +1522,7 @@ elseif($mode == 'cancel')
 	// verify user is editing own data
 	if($priv_raids != 1 && $user_perm_group['RL'] != 1)
 	{
-		if($S_profile_id != $profile_id)
+		if($S_profile_id != $cht_profile_id)
 			log_hack();
 	}
 
