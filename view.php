@@ -265,8 +265,9 @@ if($mode == 'view')
 
 		$comments = escapePOPUP(scrub_input($signups['comments']));
 
+		$ddrivetiptxt = "'<span class=tooltip_title>" . $phprlang['comments'] ."</span><br>".DEUBB2($comments)."'";
 		if(strlen_wrap($signups['comments'], "UTF-8") > 25)
-			$comments = '<a href="#" onMouseover="fixedtooltip(\'<span class=tooltip_title>'.$phprlang['comments'].'</span><br>'.$comments.'\',this,event,\'150\')" onMouseout="delayhidetip();">' . substr_wrap($signups['comments'], 0, 22, "UTF-8") . '...</a>';
+			$comments = '<a href="#" onMouseover="fixedtooltip('.$ddrivetiptxt.',this,event,\'auto\');" onMouseout="delayhidetip();">' . substr_wrap($signups['comments'], 0, 22, "UTF-8") . '...</a>';		
 		else
 			$comments = UBB(scrub_input($signups['comments']));
 
@@ -379,8 +380,9 @@ if($mode == 'view')
 
 		$comments = escapePOPUP(scrub_input($signups['comments']));
 
+		$ddrivetiptxt = "'<span class=tooltip_title>" . $phprlang['comments'] ."</span><br>".DEUBB2($comments)."'";
 		if(strlen_wrap($signups['comments'], "UTF-8") > 25)
-			$comments = '<a href="#" onMouseover="fixedtooltip(\'<span class=tooltip_title>'.$phprlang['comments'].'</span><br>'.$comments.'\',this,event,\'150\')" onMouseout="delayhidetip();">' . substr_wrap($signups['comments'], 0, 22, "UTF-8") . '...</a>';
+			$comments = '<a href="#" onMouseover="fixedtooltip('.$ddrivetiptxt.',this,event,\'auto\');" onMouseout="delayhidetip();">' . substr_wrap($signups['comments'], 0, 22, "UTF-8") . '...</a>';		
 		else
 			$comments = UBB(scrub_input($signups['comments']));
 
@@ -515,8 +517,9 @@ if($mode == 'view')
 
 		$comments = escapePOPUP(scrub_input($signups['comments']));
 
+		$ddrivetiptxt = "'<span class=tooltip_title>" . $phprlang['comments'] ."</span><br>".DEUBB2($comments)."'";
 		if(strlen_wrap($signups['comments'], "UTF-8") > 25)
-			$comments = '<a href="#" onMouseover="fixedtooltip(\'<span class=tooltip_title>'.$phprlang['comments'].'</span><br>'.$comments.'\',this,event,\'150\')" onMouseout="delayhidetip();">' . substr_wrap($signups['comments'], 0, 22, "UTF-8") . '...</a>';
+			$comments = '<a href="#" onMouseover="fixedtooltip('.$ddrivetiptxt.',this,event,\'auto\');" onMouseout="delayhidetip();">' . substr_wrap($signups['comments'], 0, 22, "UTF-8") . '...</a>';		
 		else
 			$comments = UBB(scrub_input($signups['comments']));
 
