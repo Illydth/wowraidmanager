@@ -253,6 +253,18 @@ $wrm_global_races = array();
 $wrm_global_roles = array();
 $wrm_global_gender = array();
 $wrm_global_resistance = array();
+$wrm_global_specs = array();
+
+// Load the Specs Array
+$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "class_role";
+$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+$x = 0;
+while($data = $db_raid->sql_fetchrow($result, true))
+{
+	$wrm_global_specs[$x]['spec'] = $data['subclass'];
+	$wrm_global_specs[$x]['lang_index'] = $data['lang_index'];
+	$x++;
+}
 
 // Load the Classes Array
 $sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "classes";

@@ -177,7 +177,8 @@ function strip_linebreaks($str) {
 
 // properly escapes HTML characters in Javascript popups so they don't break javascript
 function escapePOPUP($arg) {
-    $arg = str_replace("'", "\'", $arg);
+    $arg = str_replace("'", "\'", $arg); //IMPORTANT: it helps to increase SQL query safety.
+	$arg = str_replace("\\r\\n", "<br />", $arg);
     return $arg;
 } 
 

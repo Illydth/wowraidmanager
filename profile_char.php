@@ -99,6 +99,12 @@ if($_GET['mode'] == 'view') {
 			if ($data_char['class'] == $global_class['class_id'])
 				$class = $phprlang[$global_class['lang_index']];
 				
+		foreach ($wrm_global_specs as $global_spec)
+		{
+			if($data['pri_spec'] == $global_spec['spec']) $pri_spec = $phprlang[$global_spec['lang_index']];
+			if($data['sec_spec'] == $global_spec['spec']) $sec_spec = $phprlang[$global_spec['lang_index']];
+		}		
+				
 		// Get the Guild Name to Display instead of Just the ID
 		$sql = sprintf("SELECT guild_name FROM " . $phpraid_config['db_prefix'] . "guilds WHERE guild_id=%s",quote_smart($data_char['guild']));
 		$guild_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
@@ -118,8 +124,8 @@ if($_GET['mode'] == 'view') {
 				'Level'=>$data_char['lvl'],
 				'Race'=>$race,
 				'Class'=>$class,
-				'Pri_Spec'=>$data_char['pri_spec'],
-				'Sec_Spec'=>$data_char['sec_spec'],
+				'Pri_Spec'=>$pri_spec,
+				'Sec_Spec'=>$sec_spec,
 				'Buttons'=>$Buttons_tmp,
 			);
 		// add array	
