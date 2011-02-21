@@ -38,55 +38,15 @@ function check_frozen($raid_id)
 	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	$data = $db_raid->sql_fetchrow($result, true);
 
- 	$raid_date_month = new_date("m",$data['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
-	$raid_date_day = new_date("d",$data['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
-	$raid_date_year = new_date("Y",$data['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
-	$raid_time_hour = new_date("H",$data['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
-	$raid_time_minute = new_date("i",$data['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
-	$cur_date_month = new_date("m",time(),$phpraid_config['timezone'] + $phpraid_config['dst']);
-	$cur_date_day = new_date("d",time(),$phpraid_config['timezone'] + $phpraid_config['dst']);
-	$cur_date_year = new_date("Y",time(),$phpraid_config['timezone'] + $phpraid_config['dst']);
-	$cur_time_hour = new_date("H",time(),$phpraid_config['timezone'] + $phpraid_config['dst']);
-	$cur_time_minute = new_date("i",time(),$phpraid_config['timezone'] + $phpraid_config['dst']);
-	$freeze = $data['freeze'];
-
-	// check if raid is frozen
-	if($phpraid_config['disable_freeze'] == 0)
-	{
+	// We have $data['start_time'], which is a unix time equivalent.  We need to subtract
+	//  the raid freeze time from this start time and figure out if current Unix date 
+	//  stamp is larger.  If it is, raid is frozen.	
+	$format_string = "-" . $data['freeze'] . " hours"; 	// Produces something like "-4 hours".  Used in strtotime() to get the unix timestamp of the raid start.	
+	$raid_freeze = strtotime($format_string, $data['start_time']); // Subtracts $data['freeze'] hours from start_time to get freeze time.
+	if (time() < $raid_freeze) // Checks current time against freeze time and locks raid if frozen.
 		$frozen = 0;
-
-		if($raid_date_year < $cur_date_year)
-		{
-			$frozen = 1;
-		}
-		elseif($raid_date_year == $cur_date_year)
-		{
-			if($raid_date_month < $cur_date_month)
-			{
-				$frozen = 1;
-			}
-			elseif($raid_date_month == $cur_date_month)
-			{
-				if($raid_date_day < $cur_date_day)
-				{
-					$frozen = 1;
-				}
-				elseif($raid_date_day == $cur_date_day)
-				{
-					if($raid_time_hour < ($cur_time_hour + $freeze))
-					{
-						$frozen = 1;
-					}
-					elseif($raid_time_hour == ($cur_time_hour + $freeze))
-					{
-						if($raid_time_minute < $cur_time_minute)
-							$frozen = 1;
-					}
-				}
-			}
-		}
-	}
-
+	else
+		$frozen = 1;
 	return $frozen;
 }
 

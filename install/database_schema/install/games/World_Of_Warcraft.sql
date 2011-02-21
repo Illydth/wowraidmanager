@@ -282,6 +282,11 @@ INSERT INTO `wrm_events` ( `zone_desc`, `max`, `exp_id`, `event_type_id`, `wow_n
 ('Halls of Reflection - Heroic', 5, 3, 2, 'Halls of Reflection (Heroic)', 'images/instances/WotLK_Icons/5-Halls-Of-Reflection-Heroic.jpg'), 
 ('Icecrown Citadel - 10 man', 10, 3, 1, 'Icecrown Citadel (10)', 'images/instances/WotLK_Icons/10-Icecrown-Citadel.jpg'),
 ('Icecrown Citadel - 25 man', 25, 3, 1, 'Icecrown Citadel (25)', 'images/instances/WotLK_Icons/25-Icecrown-Citadel.jpg');
+
+-- Ruby Sanctum
+INSERT INTO `wrm`.`wrm_events` (`event_id`, `zone_desc`, `max`, `exp_id`, `event_type_id`, `wow_name`, `icon_path`) VALUES ('138', 'Ruby Sanctum - 10 man', '10', '3', '1', 'Ruby Sanctum (10)', 'images/instances/WotLK_Icons/10-Ruby-Sanctum.jpg');
+INSERT INTO `wrm`.`wrm_events` (`event_id`, `zone_desc`, `max`, `exp_id`, `event_type_id`, `wow_name`, `icon_path`) VALUES ('139', 'Ruby Sanctum - 25 man', '25', '3', '1', 'Ruby Sanctum (25)', 'images/instances/WotLK_Icons/25-Ruby-Sanctum.jpg');
+
 -- Cataclysm Events
 INSERT INTO `wrm_events` ( `zone_desc`, `max`, `exp_id`, `event_type_id`, `wow_name`, `icon_path`) VALUES
 ('Abyssal Maw', 5, 4, 2, 'Abyssal Maw', 'images/instances/Cataclysm_Icons/dungeons/5-Abyssal-Maw.jpg'), 
