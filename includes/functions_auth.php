@@ -152,7 +152,8 @@ function delete_permissions($perm_id) {
 	$sql = sprintf("DELETE FROM " . $phpraid_config['db_prefix'] . "permissions WHERE permission_id=%s", quote_smart($id));
 	$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	
-	$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "profile SET priv='0' WHERE priv=%s", quote_smart($id));
+	$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "profile ".
+					" SET priv=%s WHERE priv=%s",quote_smart($phpraid_config['default_group']), quote_smart($id));
 	$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 }
 
