@@ -447,7 +447,7 @@ function DEFINE_wrm_login()
 			 * set user profile variables in SESSION
 			 **************************************************************/
 			set_WRM_SESSION($data[$db_user_id], 1, $data[$db_user_name], TRUE);
-			if ($auth_user_class != $default_bridge_value)
+			if ($phpraid_config['auth_type'] != 'iums')
 			{
 				// User is all logged in and setup, the session is initialized properly.  Now we need to create the users
 				//    profile in the WRM database if it does not already exist.
