@@ -33,6 +33,7 @@
 header('Content-Type: text/html; charset=utf-8');
 
 $priv_config = scrub_input($_SESSION['priv_configuration']);
+$profile_id = scrub_input($_SESSION['profile_id']);
 
 // time variables
 $guild_date = get_date(time());
@@ -70,23 +71,20 @@ $wrmsmarty->assign('page_header_data',
 		'body_width' => $phpraid_config['template_body_width'],  
 	)
 );
+$wrmsmarty->display('header.html');
 
 /**************************************************************
  * Show Menu
  **************************************************************/
-require_once('class_menu.php');
-//$wrmsmarty->assign('normal_menu', get_htmlstring_full_menu());
-$wrmsmarty->assign('normal_menu', get_htmlstring_full_menu("normal"));
-//$wrmsmarty->assign('admin_index_header', $phprlang['admin_index_header']);
+require_once('./includes/class_menu.php');
+$menubar = new wrm_menu($db_raid, $phpraid_config, $phprlang, $profile_id);
+$menubar->set_menu_status("normal");
+$menubar->wrm_show_menu();
 
-//$menubar = &new wrm_menu($db_raid, $phpraid_config, $phprlang, $wrmsmarty);
-//$menubar->wrm_show_menu();
-
-$wrmsmarty->display('header.html');
 /**************************************************************
  * table stuff between menu and main output frame
  **************************************************************/
-$wrmsmarty->display('menu_mainfrm.html');
+$wrmsmarty->display('contentContainer.html');
 
 /**************************************************************
  * Show error_site_disable if they disable

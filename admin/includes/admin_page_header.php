@@ -33,7 +33,7 @@
 header('Content-Type: text/html; charset=utf-8');
 
 $priv_config=scrub_input($_SESSION['priv_configuration']);
-//$logged_in=scrub_input($_SESSION['session_logged_in']);
+$profile_id = scrub_input($_SESSION['profile_id']);
 
 // time variables
 $guild_date = get_date(time());
@@ -67,14 +67,21 @@ $wrmadminsmarty->assign('page_header_data',
 			'site_disabled_warning' => $site_disabled_warning,
 	)
 );
+$wrmadminsmarty->display('admin_header.html');
+
 /**************************************************************
  * Show Menu
  **************************************************************/
 require_once('../includes/class_menu.php');
+$menubar = new wrm_menu($db_raid, $phpraid_config, $phprlang, $profile_id);
+$menubar->set_menu_status("admin");
+$menubar->wrm_show_menu();
 
-$wrmadminsmarty->assign('admin_menu', get_htmlstring_full_menu("admin"));
+/**************************************************************
+ * table stuff between menu and main output frame
+ **************************************************************/
 $wrmadminsmarty->assign('admin_index_header', $phprlang['admin_index_header']);
-
+$wrmadminsmarty->display('admin_contentContainer.html');
 
 /**************************************************************
  * display any errors if they exist
@@ -103,6 +110,5 @@ if(isset($errorMsg))
 		exit;
 	}
 }
-$wrmadminsmarty->display('admin_header.html');
 
 ?>

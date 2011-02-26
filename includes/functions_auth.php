@@ -84,7 +84,7 @@ function clear_session_permissions()
 	}
 }
 
-//fill with default value 0
+//fill $_SESSION['priv_xxx'] with default value 0
 function set_session_permissions_default()
 {
 	global $db_raid, $phpraid_config;
@@ -126,19 +126,18 @@ function get_permissions($profile_id)
 	}
 }
 
-function check_permission($perm_type, $profile_id) {
+function check_permission($permission_value_id, $profile_id) 
+{
 	global $db_raid, $phpraid_config;
 	
-	$sql = sprintf("SELECT ".$phpraid_config['db_prefix']."permissions.raids AS perm_val
-		FROM ".$phpraid_config['db_prefix']."permissions
-		LEFT JOIN ".$phpraid_config['db_prefix']."profile ON
-			".$phpraid_config['db_prefix']."profile.priv = ".$phpraid_config['db_prefix']."permission_type.permission_type_id
-		WHERE ".$phpraid_config['db_prefix']."profile.profile_id = %s", quote_smart($profile_id));
-
-	$perm_data = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-	$permission_val = $db_raid->sql_fetchrow($perm_data, true);
+	$user_permission_id = get_permission_id($profile_id);
 	
-	if ($permission_val['perm_val'] == "1")
+	$sql_priv = sprintf("SELECT * ".
+						"  FROM " . $phpraid_config['db_prefix'] . "acl_permission".
+						"  WHERE `permission_type_id` = %s and `permission_value_id` = %s",
+						 quote_smart($user_permission_id), quote_smart($permission_value_id));		 
+	$result = $db_raid->sql_query($sql_priv) or print_error($sql_priv, $db_raid->sql_error(), 1);
+	if($db_raid->sql_numrows($result) > 0 )
 		return TRUE;
 	else
 		return FALSE;
