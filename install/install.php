@@ -34,7 +34,7 @@
 ****************************************************************************/
 
 if (!isset($_GET['step']))
-	$step = "0";
+	$step = "pre_check";
 else
 	$step = $_GET['step'];
 	
@@ -71,6 +71,29 @@ $default_file_sql_table_prefix = "wrm_";
 $file_sql_install_schema = "database_schema/install/install_schema.sql";
 $file_sql_insert_values = "database_schema/install/insert_values.sql";
 $file_sql_game_values = "database_schema/install/games/World_Of_Warcraft.sql";
+
+/**
+ * check: if directory wrm/install/cache is writeable
+ * if true jump to step 0
+ * if NOT show a error message 
+ */
+if ($step == "pre_check")
+{
+	if (is__writable("cache") == TRUE)
+		header("Location: ".$filename_install."step=0");
+	else 
+	{
+		echo '<div align="center">';
+		echo '<img src="templates/images/logo_WRM.jpg" border="0" alt="Site Logo">';
+		echo '<br>';
+		echo '<br>';	
+		echo 'directory "wrm/install/cache" is NOT writeable';
+		echo '<br>';
+		echo 'please make it writeable';
+		echo '</div>';
+	}
+	
+}
 
 /**
  * --------------------
@@ -251,7 +274,7 @@ if($step == "1")
 
 	//PHP Version Check
 	$phpversion = (int)(str_replace(".", "", phpversion()));
-	if($phpversion < 401)
+	if($phpversion < 500)
 	{
 		$phpversion_bgcolor = "red";
 		$show_next_bd = FALSE;
