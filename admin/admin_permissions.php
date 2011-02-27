@@ -79,6 +79,7 @@ $pageURL_view = $pageURL.'?mode=view';
 $pageURL_new = $pageURL.'?mode=new';
 $pageURL_edit = $pageURL.'?mode=edit&amp;';
 $pageURL_delete = $pageURL.'?mode=delete&amp;';
+
 /**************************************************************
  * End Record Output Setup for Data Table
  **************************************************************/
@@ -400,9 +401,9 @@ if(($_GET['mode'] != 'delete') and ($_GET['mode'] != 'view'))
 	$array_yesno['0'] = $phprlang['no'];
 	$array_yesno['1'] = $phprlang['yes'];
 	
-	// deny editing (config areas) of super account 
+	// deny editing (config areas) of superadmin 
 	$array_yesno_config = array();
-	if ($permission_type_id != 1)
+	if ($permission_type_id != "3")
 	{	$array_yesno_config['0'] = $phprlang['no'];}
 		
 	$array_yesno_config['1'] = $phprlang['yes'];
@@ -544,192 +545,6 @@ if(($_GET['mode'] != 'delete') and ($_GET['mode'] != 'view'))
 	require_once('./includes/admin_page_header.php');
 	$wrmadminsmarty->display('admin_permissions_new.html');
 	require_once('./includes/admin_page_footer.php');	
-}
-
-
-//update the selected permission_signup  set
-function update_permission_signup($permission_type_id,$raid_permission_type_id )
-{
-	global $db_raid, $phpraid_config;
-	
-	$sql = sprintf(	"SELECT * ".
-					" FROM " . $phpraid_config['db_prefix'] . "acl_raid_permission".
-					" WHERE raid_permission_type_id=%s and permission_type_id=%s",
-					quote_smart($raid_permission_type_id),quote_smart($permission_type_id));
-					
-	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-
-	if ($db_raid->sql_numrows($result) < 1)
-	{
-		$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "acl_raid_permission ".
-						" (`raid_permission_type_id`,`permission_type_id`) VALUES(%s,%s)",
-						quote_smart($raid_permission_type_id),quote_smart($permission_type_id));
-		$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);	
-	} 
-}
-
-//delete the selected permission_signup  set
-function delete_permissions_signup($permission_type_id, $raid_permission_type_id)
-{
-	global $db_raid, $phpraid_config;
-	
-	$sql = sprintf(	"SELECT * ".
-					" FROM " . $phpraid_config['db_prefix'] . "acl_raid_permission".
-					" WHERE raid_permission_type_id=%s and permission_type_id=%s",
-					quote_smart($raid_permission_type_id),quote_smart($permission_type_id));
-	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-					
-	if ($db_raid->sql_numrows($result) == 1)
-	{
-		$sql = sprintf(	"DELETE ".
-						" FROM " . $phpraid_config['db_prefix'] . "acl_raid_permission".
-						" WHERE raid_permission_type_id=%s and permission_type_id=%s",
-						quote_smart($raid_permission_type_id),quote_smart($permission_type_id));
-		$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-	}
-	
-}
-
-//update the selected permission_conf  set
-function update_permission_config($permission_type_id,$permission_value_id )
-{
-	global $db_raid, $phpraid_config;
-	
-	$sql = sprintf(	"SELECT * ".
-					" FROM " . $phpraid_config['db_prefix'] . "acl_permission".
-					" WHERE permission_value_id=%s and permission_type_id=%s",
-					quote_smart($permission_value_id),quote_smart($permission_type_id));
-					
-	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-
-	if ($db_raid->sql_numrows($result) < 1)
-	{
-		$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "acl_permission ".
-						" (`permission_value_id`,`permission_type_id`) VALUES(%s,%s)",
-						quote_smart($permission_value_id),quote_smart($permission_type_id));
-		$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);	
-	} 
-}
-//delete the selected permission_conf  set
-function delete_permissions_config($permission_type_id, $permission_value_id)
-{
-	global $db_raid, $phpraid_config;
-	
-	$sql = sprintf(	"SELECT * ".
-					" FROM " . $phpraid_config['db_prefix'] . "acl_permission".
-					" WHERE permission_value_id=%s and permission_type_id=%s",
-					quote_smart($permission_value_id),quote_smart($permission_type_id));
-	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-					
-	if ($db_raid->sql_numrows($result) == 1)
-	{
-		$sql = sprintf(	"DELETE ".
-						" FROM " . $phpraid_config['db_prefix'] . "acl_permission".
-						" WHERE permission_value_id=%s and permission_type_id=%s",
-						quote_smart($permission_value_id),quote_smart($permission_type_id));
-		$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-	}
-	
-}
-
-//read all information from the selected permission set
-function get_array_allInfo_from_PermissionID($permission_type_id)
-{
-	global  $db_raid,$phpraid_config;
-	$array_permissioninfo = array();
-		
-	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "permission_type WHERE permission_type_id=%s",quote_smart($permission_type_id));
-	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-	$data = $db_raid->sql_fetchrow($result, true);
-	$array_permissioninfo['permissions_name'] = $data['permission_type_name'];
-	$array_permissioninfo['permissions_description'] = $data['permission_type_description'];
-
-	$array_permissioninfo['announcements'] = '0';
-	$array_permissioninfo['guilds'] = '0';
-	$array_permissioninfo['locations'] = '0';
-	$array_permissioninfo['profile'] = '0';
-	$array_permissioninfo['raids'] = '0';
-	$array_permissioninfo['configuration'] = '0';
-
-	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "acl_permission WHERE permission_type_id=%s",quote_smart($permission_type_id));
-	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-	while($data = $db_raid->sql_fetchrow($result, true)) 
-	{
-		if ($data['permission_value_id'] == "1") 
-			$array_permissioninfo['announcements'] = '1';
-			
-		if ($data['permission_value_id'] == "2") 
-			$array_permissioninfo['configuration'] = '1';
-
-		if ($data['permission_value_id'] == "3") 
-			$array_permissioninfo['guilds'] = '1';
-			
-		if ($data['permission_value_id'] == "4") 
-			$array_permissioninfo['locations'] = '1';
-
-		if ($data['permission_value_id'] == "5") 
-			$array_permissioninfo['profile'] = '1';
-			
-		if ($data['permission_value_id'] == "6") 
-			$array_permissioninfo['configuration'] = '1';
-	}
-	
-	$array_permissioninfo['on_queue_draft_value'] = "0";
-	$array_permissioninfo['on_queue_comments_value'] = "0";
-	$array_permissioninfo['on_queue_cancel_value'] = "0";
-	$array_permissioninfo['on_queue_delete_value'] = "0";
-	$array_permissioninfo['cancelled_status_queue_value'] = "0";
-	$array_permissioninfo['cancelled_status_draft_value'] = "0";
-	$array_permissioninfo['cancelled_status_comments_value'] = "0";
-	$array_permissioninfo['cancelled_status_delete_value'] = "0";
-	$array_permissioninfo['drafted_queue_value'] = "0";
-	$array_permissioninfo['drafted_comments_value'] = "0";
-	$array_permissioninfo['drafted_cancel_value'] = "0";
-	$array_permissioninfo['drafted_delete_value'] = "0";
-			
-	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "acl_raid_permission WHERE permission_type_id=%s",quote_smart($permission_type_id));
-	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-	while($data = $db_raid->sql_fetchrow($result, true)) 
-	{
-
-		if ($data['raid_permission_type_id'] == "1")
-			$array_permissioninfo['on_queue_draft_value'] = "1";
-							
-		if ($data['raid_permission_type_id'] == "2")
-			$array_permissioninfo['on_queue_comments_value'] = "1";
-						
-		if ($data['raid_permission_type_id'] == "3")
-			$array_permissioninfo['on_queue_cancel_value'] = "1";
-			
-		if ($data['raid_permission_type_id'] == "4")
-			$array_permissioninfo['on_queue_delete_value'] = "1";
-			
-		if ($data['raid_permission_type_id'] == "5")
-			$array_permissioninfo['cancelled_status_queue_value'] = "1";
-			
-		if ($data['raid_permission_type_id'] == "6")
-			$array_permissioninfo['cancelled_status_draft_value'] = "1";
-							
-		if ($data['raid_permission_type_id'] == "7")
-			$array_permissioninfo['cancelled_status_comments_value'] = "1";
-			
-		if ($data['raid_permission_type_id'] == "8")
-			$array_permissioninfo['cancelled_status_delete_value'] = "1";
-			
-		if ($data['raid_permission_type_id'] == "9")
-			$array_permissioninfo['drafted_queue_value'] = "1";
-			
-		if ($data['raid_permission_type_id'] == "10")
-			$array_permissioninfo['drafted_comments_value'] = "1";
-
-		if ($data['raid_permission_type_id'] == "11")
-			$array_permissioninfo['drafted_cancel_value'] = "1";
-			
-		if ($data['raid_permission_type_id'] == "12")
-			$array_permissioninfo['drafted_delete_value'] = "1";	
-	}
-
-	return $array_permissioninfo;	
 }
 
 ?>

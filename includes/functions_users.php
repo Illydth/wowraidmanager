@@ -109,17 +109,6 @@ function get_char_count($raid_id, $type)
 	return $count;
 }
 
-function get_priv_name($permission_type_id)
-{
-	global $db_raid, $phpraid_config;
-	$sql = sprintf(	"SELECT permission_type_name FROM " . $phpraid_config['db_prefix'] . "permission_type " .
-					" WHERE permission_type_id = %s",quote_smart($permission_type_id));
-	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-	$data = $db_raid->sql_fetchrow($result, true);
-
-	return($data['permission_type_name']);
-}
-
 // old or unused
 function get_signups($raid_id) 
 {
@@ -382,23 +371,7 @@ function get_array_char_resistance($char_id)
 	return $array_resistance;
 }
 
-/**
- * 
- * return, in which permission group the user (profile) are
- * @param integer $profile_id
- */
-function get_permission_id($profile_id)
-{
-	global $db_raid, $phpraid_config;
 
-	$sql = sprintf(	"SELECT `priv` ".
-					" FROM `" . $phpraid_config['db_prefix'] . "profile` ".
-					" WHERE profile_id = %s", quote_smart($profile_id));
-	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-	$data = $db_raid->sql_fetchrow($result, true);
-	
-	return ($data['priv']);	
-}
 
 /**
  * 
@@ -433,6 +406,185 @@ function update_profile($profile_id, $profile_email)
 					quote_smart($profile_email), quote_smart($profile_id)
 			);
 	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
+}
+
+/****************************************************************
+ * Permission Section
+ ****************************************************************/
+
+//get permission_type_name
+function get_priv_name($permission_type_id)
+{
+	global $db_raid, $phpraid_config;
+	$sql = sprintf(	"SELECT permission_type_name FROM " . $phpraid_config['db_prefix'] . "permission_type " .
+					" WHERE permission_type_id = %s",quote_smart($permission_type_id));
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+	$data = $db_raid->sql_fetchrow($result, true);
+
+	return($data['permission_type_name']);
+}
+
+/**
+ * 
+ * return, in which permission group the user (profile) are
+ * @param integer $profile_id
+ */
+function get_permission_id($profile_id)
+{
+	global $db_raid, $phpraid_config;
+
+	$sql = sprintf(	"SELECT `priv` ".
+					" FROM `" . $phpraid_config['db_prefix'] . "profile` ".
+					" WHERE profile_id = %s", quote_smart($profile_id));
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+	$data = $db_raid->sql_fetchrow($result, true);
+	
+	return ($data['priv']);	
+}
+
+//update the selected permission_signup  set
+function update_permission_signup($permission_type_id,$raid_permission_type_id )
+{
+	global $db_raid, $phpraid_config;
+	
+	$sql = sprintf(	"SELECT * ".
+					" FROM " . $phpraid_config['db_prefix'] . "acl_raid_permission".
+					" WHERE raid_permission_type_id=%s and permission_type_id=%s",
+					quote_smart($raid_permission_type_id),quote_smart($permission_type_id));
+					
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+
+	if ($db_raid->sql_numrows($result) < 1)
+	{
+		$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "acl_raid_permission ".
+						" (`raid_permission_type_id`,`permission_type_id`) VALUES(%s,%s)",
+						quote_smart($raid_permission_type_id),quote_smart($permission_type_id));
+		$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);	
+	} 
+}
+
+//delete the selected permission_signup  set
+function delete_permissions_signup($permission_type_id, $raid_permission_type_id)
+{
+	global $db_raid, $phpraid_config;
+	
+	$sql = sprintf(	"SELECT * ".
+					" FROM " . $phpraid_config['db_prefix'] . "acl_raid_permission".
+					" WHERE raid_permission_type_id=%s and permission_type_id=%s",
+					quote_smart($raid_permission_type_id),quote_smart($permission_type_id));
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+					
+	if ($db_raid->sql_numrows($result) == 1)
+	{
+		$sql = sprintf(	"DELETE ".
+						" FROM " . $phpraid_config['db_prefix'] . "acl_raid_permission".
+						" WHERE raid_permission_type_id=%s and permission_type_id=%s",
+						quote_smart($raid_permission_type_id),quote_smart($permission_type_id));
+		$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+	}
+	
+}
+
+//update the selected permission_conf  set
+function update_permission_config($permission_type_id,$permission_value_id )
+{
+	global $db_raid, $phpraid_config;
+	
+	$sql = sprintf(	"SELECT * ".
+					" FROM " . $phpraid_config['db_prefix'] . "acl_permission".
+					" WHERE permission_value_id=%s and permission_type_id=%s",
+					quote_smart($permission_value_id),quote_smart($permission_type_id));
+					
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+
+	if ($db_raid->sql_numrows($result) < 1)
+	{
+		$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "acl_permission ".
+						" (`permission_value_id`,`permission_type_id`) VALUES(%s,%s)",
+						quote_smart($permission_value_id),quote_smart($permission_type_id));
+		$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);	
+	} 
+}
+//delete the selected permission_conf  set
+function delete_permissions_config($permission_type_id, $permission_value_id)
+{
+	global $db_raid, $phpraid_config;
+	
+	$sql = sprintf(	"SELECT * ".
+					" FROM " . $phpraid_config['db_prefix'] . "acl_permission".
+					" WHERE permission_value_id=%s and permission_type_id=%s",
+					quote_smart($permission_value_id),quote_smart($permission_type_id));
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+					
+	if ($db_raid->sql_numrows($result) == 1)
+	{
+		$sql = sprintf(	"DELETE ".
+						" FROM " . $phpraid_config['db_prefix'] . "acl_permission".
+						" WHERE permission_value_id=%s and permission_type_id=%s",
+						quote_smart($permission_value_id),quote_smart($permission_type_id));
+		$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+	}
+	
+}
+
+//read all information from the selected permission set
+function get_array_allInfo_from_PermissionID($permission_type_id)
+{
+	global  $db_raid,$phpraid_config;
+	$array_permissioninfo = array();
+		
+	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "permission_type ".
+					"  WHERE `permission_type_id` = %s", quote_smart($permission_type_id));
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+	$data = $db_raid->sql_fetchrow($result, true);
+	$array_permissioninfo['permissions_name'] = $data['permission_type_name'];
+	$array_permissioninfo['permissions_description'] = $data['permission_type_description'];
+	
+	/****************************************************************
+	 * Permission (Table: acl_permission)
+	 ****************************************************************/
+	// set all available values to 0
+	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "permission_value");
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+	while($data = $db_raid->sql_fetchrow($result, true))
+	{
+		$array_permissioninfo[$data['permission_value_name']] = '0';
+	}
+
+	$sql = sprintf("SELECT b.permission_value_name ".
+					"  FROM " . $phpraid_config['db_prefix'] . "acl_permission a,".
+					"  " . $phpraid_config['db_prefix'] . "permission_value b".
+					"  WHERE a.permission_value_id = b.permission_value_id".
+					"  AND `permission_type_id` = %s", quote_smart($permission_type_id));
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+	while($data = $db_raid->sql_fetchrow($result, true)) 
+	{
+		$array_permissioninfo[$data['permission_value_name']] = '1';	
+	}
+	
+	/****************************************************************
+	 * Raid Permission (Table: acl_raid_permission)
+	 ****************************************************************/
+	// set all available values to 0
+	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raid_permission_type");
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+	while($data = $db_raid->sql_fetchrow($result, true))
+	{
+		$array_permissioninfo[$data['raid_permission_type_name']] = '0';
+	}
+
+	$sql = sprintf("SELECT b.raid_permission_type_name ".
+					"  FROM " . $phpraid_config['db_prefix'] . "acl_raid_permission a,".
+					"  " . $phpraid_config['db_prefix'] . "raid_permission_type b".
+					"  WHERE a.raid_permission_type_id = b.raid_permission_type_id".
+					"  AND `permission_type_id` = %s", quote_smart($permission_type_id));
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+	while($data = $db_raid->sql_fetchrow($result, true)) 
+	{
+		$array_permissioninfo[$data['raid_permission_type_name']] = '1';	
+	}
+
+	return $array_permissioninfo;	
 }
 
 ?>

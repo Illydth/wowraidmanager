@@ -70,13 +70,16 @@ INSERT INTO `wrm_permission_value` (`permission_value_id`, `permission_value_nam
 INSERT INTO `wrm_permission_value` (`permission_value_id`, `permission_value_name`,`lang_index`) VALUES ('6','raids','permissions_raids');
 
 -- Acces Controll List Permission Data
-INSERT INTO `wrm_acl_permission` (`permission_type_id`, `permission_value_id`) VALUES ('1','1');
-INSERT INTO `wrm_acl_permission` (`permission_type_id`, `permission_value_id`) VALUES ('1','2');
-INSERT INTO `wrm_acl_permission` (`permission_type_id`, `permission_value_id`) VALUES ('1','3');
-INSERT INTO `wrm_acl_permission` (`permission_type_id`, `permission_value_id`) VALUES ('1','4');
 INSERT INTO `wrm_acl_permission` (`permission_type_id`, `permission_value_id`) VALUES ('1','5');
-INSERT INTO `wrm_acl_permission` (`permission_type_id`, `permission_value_id`) VALUES ('1','6');
+INSERT INTO `wrm_acl_permission` (`permission_type_id`, `permission_value_id`) VALUES ('2','1');
+INSERT INTO `wrm_acl_permission` (`permission_type_id`, `permission_value_id`) VALUES ('2','3');
+INSERT INTO `wrm_acl_permission` (`permission_type_id`, `permission_value_id`) VALUES ('2','4');
 INSERT INTO `wrm_acl_permission` (`permission_type_id`, `permission_value_id`) VALUES ('2','5');
+INSERT INTO `wrm_acl_permission` (`permission_type_id`, `permission_value_id`) VALUES ('2','6');
+INSERT INTO `wrm_acl_permission` (`permission_type_id`, `permission_value_id`) VALUES ('3','1');
+INSERT INTO `wrm_acl_permission` (`permission_type_id`, `permission_value_id`) VALUES ('3','2');
+INSERT INTO `wrm_acl_permission` (`permission_type_id`, `permission_value_id`) VALUES ('3','3');
+INSERT INTO `wrm_acl_permission` (`permission_type_id`, `permission_value_id`) VALUES ('3','4');
 INSERT INTO `wrm_acl_permission` (`permission_type_id`, `permission_value_id`) VALUES ('3','5');
 INSERT INTO `wrm_acl_permission` (`permission_type_id`, `permission_value_id`) VALUES ('3','6');
 
@@ -160,7 +163,7 @@ INSERT INTO `wrm_menu_value` VALUES ('20','6','admin_logs_link','','0','1','admi
 INSERT INTO `wrm_menu_value` VALUES ('40','7','index_link','','0','1','index','index.php','','0',NULL,'1');
 INSERT INTO `wrm_menu_value` VALUES ('41','7','calendar_link','','0','1','calendar','calendar.php','','0',NULL,'1');
 INSERT INTO `wrm_menu_value` VALUES ('42','7','roster_link','','0','2','roster','roster.php','','0',NULL,'1');
-INSERT INTO `wrm_menu_value` VALUES ('43','7','eqdkp_link','EQ-DKP','1','3','view_eqdkp','view_eqdkp.php','','0',NULL,'0');
+INSERT INTO `wrm_menu_value` VALUES ('43','7','eqdkp_link','EQ-DKP','0','3','view_eqdkp','view_eqdkp.php','','0',NULL,'0');
 INSERT INTO `wrm_menu_value` VALUES ('44','7','raidsarchive_link','','0','4','raidsarchive','raidsarchive.php?mode=view','','0',NULL,'1');
 INSERT INTO `wrm_menu_value` VALUES ('45','7','bosstrack_link','','0','5','bosstracking','bosstracking.php?mode=view','','0',NULL,'0');
 INSERT INTO `wrm_menu_value` VALUES ('46','7','announcements_link','','0','6','announcements','announcements.php?mode=view','','0','1','1');
@@ -189,11 +192,12 @@ INSERT INTO `wrm_raid_permission_type` VALUES ('12','drafted_delete','delete_row
 
 -- Acces Controll List Permission Table Creation
 -- INSERT INTO `wrm_acl_raid_permission` VALUES ( `raid_permission_type_id`, `permission_type_id`);
--- WRM - Superadmin
+-- WRM - Users
 INSERT INTO `wrm_acl_raid_permission` VALUES ('2','1');
 INSERT INTO `wrm_acl_raid_permission` VALUES ('3','1');
-INSERT INTO `wrm_acl_raid_permission` VALUES ('4','1');
+INSERT INTO `wrm_acl_raid_permission` VALUES ('6','1');
 INSERT INTO `wrm_acl_raid_permission` VALUES ('7','1');
+INSERT INTO `wrm_acl_raid_permission` VALUES ('8','1');
 INSERT INTO `wrm_acl_raid_permission` VALUES ('10','1');
 INSERT INTO `wrm_acl_raid_permission` VALUES ('11','1');
 INSERT INTO `wrm_acl_raid_permission` VALUES ('12','1');
@@ -223,6 +227,7 @@ INSERT INTO `wrm_acl_raid_permission` VALUES ('9','3');
 INSERT INTO `wrm_acl_raid_permission` VALUES ('10','3');
 INSERT INTO `wrm_acl_raid_permission` VALUES ('11','3');
 INSERT INTO `wrm_acl_raid_permission` VALUES ('12','3');
+
 
 DROP TABLE IF EXISTS `wrm_permissions`;
 DROP TABLE IF EXISTS `wrm_acl_raid_signup_group`;

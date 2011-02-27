@@ -127,7 +127,7 @@ function write_wrm_configfile($wrm_db_name,$wrm_db_server_hostname = "localhost"
 	{
 		// Check for UTF8 Support in Database
 		$gd = get_mysql_version_from_mysql();
-		$wrm_db_utf8_support = (strnatcmp($gd,'4.1.0') >= 0) ? "yes" : "no";
+		$wrm_db_utf8_support = (strnatcmp($gd,'5.0.0') >= 0) ? "yes" : "no";
 	}
 	
 	//Calculate MBString Support if not already passed:
