@@ -31,6 +31,8 @@
 // Menu Headers
 $phprlang['admin_menu_header'] = 'Admin Menu';
 $phprlang['gen_conf_menu_header'] = 'General Config';
+$phprlang['auth_mgt_menu_header'] = 'Auth Management';
+$phprlang['style_menu_header'] = 'Style Config';
 $phprlang['user_mgt_menu_header'] = 'User Management';
 $phprlang['table_conf_menu_header'] = 'Table Config';
 $phprlang['logs_menu_header'] = 'Logs';
@@ -143,8 +145,22 @@ $phprlang['configuration_rss_site'] = 'RSS: URL tilll WoW Raid Manager Installat
 $phprlang['configuration_rss_export'] = 'RSS: sida att exportera RSS feed till';
 $phprlang['configuration_rss_feed_amt'] = 'RSS: Antal raids som visas i feeden';
 
+// Text on the "Auth Management" Page
+$phprlang['configuration_auth_header'] = 'Authentication System';
+$phprlang['configuration_auth_info_header'] = 'Information about your Authentication System';
+$phprlang['configuration_auth_system_text'] = 'Your Authentication System';
+$phprlang['configuration_extsys_bridge_config_header'] = 'Bridge Config';
+$phprlang['configuration_extsys_norest'] = 'Inga Restriktioner';
+$phprlang['configuration_extsys_noaddus'] = 'Inga Ytterliggare AnvÃ€ndargrupper';
+$phprlang['configuration_extsys_group01'] = 'VÃ€lj grund gruppen/klassen som har tillgÃ¥ng attnyttja WRM';
+$phprlang['configuration_extsys_group02'] = 'Alla anvÃ€ndare utan denna grupp kommer inte atttillÃ¥tas logga in';
+$phprlang['configuration_extsys_group03'] = 'VÃ€nligen vÃ¶lj "Inga Restriktioner" hÃ€r om du vill att alla anvÃ€ndare oavsett grupp/klass skall kunna logga in och nyttja WRM';
+$phprlang['configuration_extsys_alt_group01'] = 'VÃ€lj en alternativ grupp/klass som kan nyttja WRM';
+$phprlang['configuration_extsys_alt_group02'] = 'Alla anvÃ€ndare i denna grupp kommer att tillÃ¥tas att logga in, oavsett om de Ã€r i ovanstÃ¥ende grupp/klass eller inte';
+$phprlang['configuration_extsys_group_text'] = 'Base User group';
+$phprlang['configuration_extsys_alt_group_text'] = 'Additional user group';
+
 // Text on the "Style Config" Page
-$phprlang['style_menu_header'] = 'Style Config';
 $phprlang['configuration_template_cfg_header'] = 'Template Config';
 $phprlang['configuration_template_width_text'] = "Template Width";
 $phprlang['configuration_width_normal'] = "normal";
@@ -245,16 +261,6 @@ $phprlang['configuration_armory_cache_files'] = 'Files on Disk';
 $phprlang['configuration_armory_cache_none'] = 'Do not Cache Armory Data';
 $phprlang['configuration_armory_link_text'] = 'Korrekt Armory länk för Server';
 $phprlang['configuration_armory_language_text'] = 'Språk kod för Armoryt';
-$phprlang['configuration_extsys_bridge_config_header'] = 'Bridge Config';
-$phprlang['configuration_extsys_norest'] = 'Inga Restriktioner';
-$phprlang['configuration_extsys_noaddus'] = 'Inga Ytterliggare AnvÃ€ndargrupper';
-$phprlang['configuration_extsys_group01'] = 'VÃ€lj grund gruppen/klassen som har tillgÃ¥ng attnyttja WRM';
-$phprlang['configuration_extsys_group02'] = 'Alla anvÃ€ndare utan denna grupp kommer inte atttillÃ¥tas logga in';
-$phprlang['configuration_extsys_group03'] = 'VÃ€nligen vÃ¶lj "Inga Restriktioner" hÃ€r om du vill att alla anvÃ€ndare oavsett grupp/klass skall kunna logga in och nyttja WRM';
-$phprlang['configuration_extsys_alt_group01'] = 'VÃ€lj en alternativ grupp/klass som kan nyttja WRM';
-$phprlang['configuration_extsys_alt_group02'] = 'Alla anvÃ€ndare i denna grupp kommer att tillÃ¥tas att logga in, oavsett om de Ã€r i ovanstÃ¥ende grupp/klass eller inte';
-$phprlang['configuration_extsys_group_text'] = 'Base User group';
-$phprlang['configuration_extsys_alt_group_text'] = 'Additional user group';
 
 // Text on the "User Settings" Page.
 $phprlang['configuration_multiple'] = 'Tillåt multipla bokningar från samma användare';

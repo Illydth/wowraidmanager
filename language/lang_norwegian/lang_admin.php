@@ -31,6 +31,8 @@
 // Menu Headers
 $phprlang['admin_menu_header'] = 'Admin Menu';
 $phprlang['gen_conf_menu_header'] = 'General Config';
+$phprlang['auth_mgt_menu_header'] = 'Auth Management';
+$phprlang['style_menu_header'] = 'Style Config';
 $phprlang['user_mgt_menu_header'] = 'User Management';
 $phprlang['table_conf_menu_header'] = 'Table Config';
 $phprlang['logs_menu_header'] = 'Logs';
@@ -142,8 +144,22 @@ $phprlang['configuration_rss_site'] = 'RSS: indirizzo di installazione di WowRai
 $phprlang['configuration_rss_export'] = 'RSS: indirizzo a cui esportare il feed RSS';
 $phprlang['configuration_rss_feed_amt'] = 'RSS: numero di Raid da visualizzare';
 
+// Text on the "Auth Management" Page
+$phprlang['configuration_auth_header'] = 'Authentication System';
+$phprlang['configuration_auth_info_header'] = 'Information about your Authentication System';
+$phprlang['configuration_auth_system_text'] = 'Your Authentication System';
+$phprlang['configuration_extsys_bridge_config_header'] = 'Bridge Config';
+$phprlang['configuration_extsys_norest'] = 'No Restrictions';
+$phprlang['configuration_extsys_noaddus'] = 'No Additional UserGroup';
+$phprlang['configuration_extsys_group01'] = 'Select the base user group that has access to use WRM';
+$phprlang['configuration_extsys_group02'] = 'Any user without this group set will not be allowed to log in';
+$phprlang['configuration_extsys_group03'] = 'Please select "No Restrictions" here if you want all users regardless of group to be able to login to WRM';
+$phprlang['configuration_extsys_alt_group01'] = 'Select an Additional user group/class that can access WRM';
+$phprlang['configuration_extsys_alt_group02'] = 'Any user tagged with this group will be allowed to log in regardless of whether they are in the above user group or not';
+$phprlang['configuration_extsys_group_text'] = 'Base User group';
+$phprlang['configuration_extsys_alt_group_text'] = 'Additional user group';
+
 // Text on the "Style Config" Page
-$phprlang['style_menu_header'] = 'Style Config';
 $phprlang['configuration_template_cfg_header'] = 'Template Config';
 $phprlang['configuration_template_width_text'] = "Template Width";
 $phprlang['configuration_width_normal'] = "normal";
@@ -244,16 +260,6 @@ $phprlang['configuration_armory_cache_files'] = 'Files on Disk';
 $phprlang['configuration_armory_cache_none'] = 'Do not Cache Armory Data';
 $phprlang['configuration_armory_link_text'] = 'Indirizzo dell\'Armory';
 $phprlang['configuration_armory_language_text'] = 'Codice linguaggio dell\'Armory';
-$phprlang['configuration_extsys_bridge_config_header'] = 'Bridge Config';
-$phprlang['configuration_extsys_norest'] = 'No Restrictions';
-$phprlang['configuration_extsys_noaddus'] = 'No Additional UserGroup';
-$phprlang['configuration_extsys_group01'] = 'Select the base user group that has access to use WRM';
-$phprlang['configuration_extsys_group02'] = 'Any user without this group set will not be allowed to log in';
-$phprlang['configuration_extsys_group03'] = 'Please select "No Restrictions" here if you want all users regardless of group to be able to login to WRM';
-$phprlang['configuration_extsys_alt_group01'] = 'Select an Additional user group/class that can access WRM';
-$phprlang['configuration_extsys_alt_group02'] = 'Any user tagged with this group will be allowed to log in regardless of whether they are in the above user group or not';
-$phprlang['configuration_extsys_group_text'] = 'Base User group';
-$phprlang['configuration_extsys_alt_group_text'] = 'Additional user group';
 
 // Text on the "User Settings" Page.
 $phprlang['configuration_multiple'] = 'Consenti iscrizioni multiple';
