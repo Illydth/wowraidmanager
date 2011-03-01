@@ -257,7 +257,7 @@ function char_addnew($profile,$char_name,$class,$gender,$guild,$level,$race,$arr
 	
 	$sql = sprintf(	"SELECT `char_id` ".
 					" FROM `" . $phpraid_config['db_prefix'] . "chars`".
-					" WHERE name = %s", quote_smart($char_name)
+					" WHERE `name` = %s", quote_smart($char_name)
 			);
 	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);	
 	$char_id = $db_raid->sql_fetchrow($result, true);
@@ -268,7 +268,7 @@ function char_addnew($profile,$char_name,$class,$gender,$guild,$level,$race,$arr
 						"	(`resistance_id`,`char_id`,`resistance_value`)".
 						" VALUES(%s,%s,%s)",
 					quote_smart($array_resistance[$i]['resistance_id']), 
-					quote_smart($char_id),
+					quote_smart($char_id['char_id']),
 					quote_smart($array_resistance[$i]['char_resistance_value'])
 				);
 		$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);			
@@ -284,8 +284,8 @@ function char_edit($char_name,$level,$race,$class,$gender,$guild,$array_resistan
 	global $db_raid, $phpraid_config;
 
 	$sql = sprintf(	"UPDATE `" . $phpraid_config['db_prefix'] . "chars` " .
-					"	SET name = %s, lvl = %s, race = %s, class = %s, gender = %s, guild = %s," .
-					"	pri_spec = %s, sec_spec = %s WHERE char_id = %s",
+					"	SET `name` = %s, `lvl` = %s, `race` = %s, `class` = %s, `gender` = %s, `guild` = %s," .
+					"	`pri_spec` = %s, `sec_spec` = %s WHERE `char_id` = %s",
 					quote_smart($char_name),quote_smart($level),quote_smart($race),
 					quote_smart($class), quote_smart($gender), quote_smart($guild),
 					quote_smart($pri_spec),quote_smart($sec_spec),quote_smart($char_id));
@@ -295,8 +295,8 @@ function char_edit($char_name,$level,$race,$class,$gender,$guild,$array_resistan
 	for ($i=0; $i< count($array_resistance);$i++)
 	{
 		$sql = sprintf(	"UPDATE `" . $phpraid_config['db_prefix'] . "char_resistance` " .
-						"	SET resistance_value = %s ".
-						"	WHERE resistance_id = %s AND char_id = %s",
+						"	SET `resistance_value` = %s ".
+						"	WHERE `resistance_id` = %s AND `char_id` = %s",
 						quote_smart($array_resistance[$i]['char_resistance_value']),
 						quote_smart($array_resistance[$i]['resistance_id']),
 						quote_smart($char_id)

@@ -75,7 +75,8 @@ $pageURL_view = $pageURL. '?mode=view&';
  * End Record Output Setup for Data Table
  **************************************************************/
 
-if($_GET['mode'] == 'view') {
+if($_GET['mode'] == 'view') 
+{
 	$chars = array();
 	
 	// now that we have their profile_id, let's get a list of all their characters
@@ -101,8 +102,11 @@ if($_GET['mode'] == 'view') {
 				
 		foreach ($wrm_global_specs as $global_spec)
 		{
-			if($data['pri_spec'] == $global_spec['spec']) $pri_spec = $phprlang[$global_spec['lang_index']];
-			if($data['sec_spec'] == $global_spec['spec']) $sec_spec = $phprlang[$global_spec['lang_index']];
+			if($data_char['pri_spec'] == $global_spec['spec']) 
+				$pri_spec = $phprlang[$global_spec['lang_index']];
+			
+			if($data_char['sec_spec'] == $global_spec['spec']) 
+				$sec_spec = $phprlang[$global_spec['lang_index']];
 		}		
 				
 		// Get the Guild Name to Display instead of Just the ID

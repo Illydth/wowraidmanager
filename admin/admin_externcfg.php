@@ -98,9 +98,19 @@ if(isset($_POST['submit']))
  		$enable_armory = 0;
 
  	if(isset($_POST['enable_eqdkp']))
+ 	{
  		$enable_eqdkp = 1;
+ 		//enable link visible
+ 		$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."menu_value` SET `visible` = %s WHERE `menu_value_id` = 43;", quote_smart("1"));
+		$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
+ 	}
  	else
+ 	{
  		$enable_eqdkp = 0;
+ 		//disable link (visible)
+ 		$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."menu_value` SET `visible` = %s WHERE `menu_value_id` = 43;", quote_smart("0"));
+		$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
+ 	}
  
  	$eqdkp_url = scrub_input($_POST['eqdkp_url'], true);
  	$armory_cache = scrub_input($_POST['armory_cache']);

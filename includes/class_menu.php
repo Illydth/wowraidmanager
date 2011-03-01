@@ -155,11 +155,11 @@ class wrm_menu
 		$result = $this->db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);			
 		while($table_data = $this->db_raid->sql_fetchrow($result, true))
 		{
-			if ( ($table_data['visible'] != 0) and 
+			if ( ($table_data['visible'] == '1') AND 
 				// user must have rights for reading this entry
-			   ((check_permission($table_data['permission_value_id'], $this->profile_id) == TRUE)) OR 
+			   ((check_permission($table_data['permission_value_id'], $this->profile_id) == TRUE) OR 
 			   //or view free for all 
-			   ($table_data['permission_value_id'] == NULL))
+			   ($table_data['permission_value_id'] == NULL)))
 			{
 				$link = '<a href="'.$table_data['link'].'">';
 				
@@ -181,7 +181,7 @@ class wrm_menu
 			}	  
 		}
 	
-		// if entry not empty then is return value a full list entry 
+		// if entry not empty then return a full list entry 
 		// otherwise return value == empty
 		if ($htmlstring_values != "")
 		{
