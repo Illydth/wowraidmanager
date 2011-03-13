@@ -263,17 +263,24 @@ if($mode == 'view')
 						$race = '<img src="templates/' . $phpraid_config['template'] . $race_gender_data['image'] . '" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang[$global_race['lang_index']].'\');" onMouseout="hideddrivetip();" alt="'.$phprlang[$global_race['lang_index']].' '.$phprlang[$global_gender['lang_index']].'">';
 					}					
 
-		$comments = escapePOPUP(scrub_input($signups['comments']));
-
-		$ddrivetiptxt = "'<span class=tooltip_title>" . $phprlang['comments'] ."</span><br>".DEUBB2($comments)."'";
-		if(strlen_wrap($signups['comments'], "UTF-8") > 25)
-			$comments = '<a href="#" onMouseover="fixedtooltip('.$ddrivetiptxt.',this,event,\'auto\');" onMouseout="delayhidetip();">' . substr_wrap($signups['comments'], 0, 22, "UTF-8") . '...</a>';		
-		else
-			$comments = UBB(scrub_input($signups['comments']));
-
-		if(strlen_wrap($comments, "UTF-8") == 0)
-			$comments = '-';
-
+		// Old Tooltip Code, Deprecated.
+		//$comments = escapePOPUP(scrub_input($signups['comments']));
+		//$comments = clean_value($signups['comments']);
+		//var_dump($comments);
+		//$ddrivetiptxt = "'<span class=tooltip_title>" . $phprlang['comments'] ."</span><br>".$comments."'";
+		//if(strlen_wrap($signups['comments'], "UTF-8") > 25)
+		//	$comments = '<a href="#" onMouseover="fixedtooltip('.$ddrivetiptxt.',this,event,\'auto\');" onMouseout="delayhidetip();">' . substr_wrap($comments, 0, 22, "UTF-8") . '...</a>';		
+		//else
+		//	$comments = UBB(scrub_input($signups['comments']));
+		//if(strlen_wrap($comments, "UTF-8") == 0)
+		//	$comments = '-';
+			
+		// New Tooltip Code.
+		//$comments = clean_value($signups['comments']);
+		//$sub_comments = substr_wrap($comments, 0, 22, "UTF-8");
+		//$comments = '<a class=tooltip href="#">' . $sub_comments . '...<span>' . $comments . '</span></a>';
+		$comments = create_comment_popup($phprlang['comments'], $signups['comments'], "#", $signups['comments'], TRUE);
+					
 		//Get Spec Information.
 		$spec = $signups['selected_spec'];
 		
@@ -378,17 +385,18 @@ if($mode == 'view')
 		$data_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		$data = $db_raid->sql_fetchrow($data_result, true);
 
-		$comments = escapePOPUP(scrub_input($signups['comments']));
+		//$comments = escapePOPUP(scrub_input($signups['comments']));
+		//$ddrivetiptxt = "'<span class=tooltip_title>" . $phprlang['comments'] ."</span><br>".DEUBB2($comments)."'";
+		//if(strlen_wrap($signups['comments'], "UTF-8") > 25)
+		//	$comments = '<a href="#" onMouseover="fixedtooltip('.$ddrivetiptxt.',this,event,\'auto\');" onMouseout="delayhidetip();">' . substr_wrap($signups['comments'], 0, 22, "UTF-8") . '...</a>';		
+		//else
+		//	$comments = UBB(scrub_input($signups['comments']));
+		//if(strlen_wrap($comments, "UTF-8") == 0)
+		//	$comments = '-';
 
-		$ddrivetiptxt = "'<span class=tooltip_title>" . $phprlang['comments'] ."</span><br>".DEUBB2($comments)."'";
-		if(strlen_wrap($signups['comments'], "UTF-8") > 25)
-			$comments = '<a href="#" onMouseover="fixedtooltip('.$ddrivetiptxt.',this,event,\'auto\');" onMouseout="delayhidetip();">' . substr_wrap($signups['comments'], 0, 22, "UTF-8") . '...</a>';		
-		else
-			$comments = UBB(scrub_input($signups['comments']));
-
-		if(strlen_wrap($comments, "UTF-8") == 0)
-			$comments = '-';
-
+		// New Popup Code
+		$comments = create_comment_popup($phprlang['comments'], $signups['comments'],"#", $signups['comments'], TRUE);
+			
 		$name = $data['name'];
 
 		$time = new_date('Y/m/d H:i:s',$signups['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']);
@@ -515,17 +523,18 @@ if($mode == 'view')
 		$data_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		$data = $db_raid->sql_fetchrow($data_result, true);
 
-		$comments = escapePOPUP(scrub_input($signups['comments']));
-
-		$ddrivetiptxt = "'<span class=tooltip_title>" . $phprlang['comments'] ."</span><br>".DEUBB2($comments)."'";
-		if(strlen_wrap($signups['comments'], "UTF-8") > 25)
-			$comments = '<a href="#" onMouseover="fixedtooltip('.$ddrivetiptxt.',this,event,\'auto\');" onMouseout="delayhidetip();">' . substr_wrap($signups['comments'], 0, 22, "UTF-8") . '...</a>';		
-		else
-			$comments = UBB(scrub_input($signups['comments']));
-
-		if(strlen_wrap($comments, "UTF-8") == 0)
-			$comments = '-';
-
+		//$comments = escapePOPUP(scrub_input($signups['comments']));
+		//$ddrivetiptxt = "'<span class=tooltip_title>" . $phprlang['comments'] ."</span><br>".DEUBB2($comments)."'";
+		//if(strlen_wrap($signups['comments'], "UTF-8") > 25)
+		//	$comments = '<a href="#" onMouseover="fixedtooltip('.$ddrivetiptxt.',this,event,\'auto\');" onMouseout="delayhidetip();">' . substr_wrap($signups['comments'], 0, 22, "UTF-8") . '...</a>';		
+		//else
+		//	$comments = UBB(scrub_input($signups['comments']));
+		//if(strlen_wrap($comments, "UTF-8") == 0)
+		//	$comments = '-';
+		
+		// New Popup Code
+		$comments = create_comment_popup($phprlang['comments'], $signups['comments'],"#", $signups['comments'], TRUE);
+		
 		$name = $data['name'];
 
 		$time = new_date('Y/m/d H:i:s',$signups['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']);

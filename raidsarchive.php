@@ -137,9 +137,9 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true)) {
 	$raid_start_time = new_date($phpraid_config['time_format'],$raids['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
 	$raid_invite_time = new_date($phpraid_config['time_format'],$raids['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);		
 	
-	$desc = scrub_input($raids['description']);
-	$desc = str_replace("'", "\'", $desc);
-	$raid_txt_desc = "'<span class=tooltip_title>" . $phprlang['description'] ."</span><br>" . DEUBB2($desc);
+	//$desc = scrub_input($raids['description']);
+	//$desc = str_replace("'", "\'", $desc);
+	//$raid_txt_desc = "'<span class=tooltip_title>" . $phprlang['description'] ."</span><br>" . DEUBB2($desc);
 	$raid_txt_info = "------------------";
 	$raid_txt_info .= "<br>".$phprlang['location'].":".$raids['location'];
 	$raid_txt_info .= "<br>".$phprlang['officer'].":".$raids['officer'];
@@ -147,9 +147,11 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true)) {
 	$raid_txt_info .= "<br>".$phprlang['start_time'].":".$raid_start_time;
 	$raid_txt_info .= "<br>".$phprlang['invite_time'].":".$raid_invite_time;
 	$raid_txt_info .= "<br>".$phprlang['totals'].": ".$total.'/'.$raids['max']  . ' (+' . $total2. ')';
-	$ddrivetiptxt = $raid_txt_desc.'<br>'. $raid_txt_info."'";
-	$location = '<a href="view.php?mode=view&amp;raid_id='.$raids['raid_id'].'" onMouseover="ddrivetip('.$ddrivetiptxt.');" onMouseout="hideddrivetip();">'.$raids['location'].'</a>';	
-	
+	$popupdesc = $raids['description'].'<br>'. $raid_txt_info."'";
+	//$location = '<a href="view.php?mode=view&amp;raid_id='.$raids['raid_id'].'" onMouseover="ddrivetip('.$ddrivetiptxt.');" onMouseout="hideddrivetip();">'.$raids['location'].'</a>';	
+	$url = 'view.php?mode=view&amp;raid_id=' . $raids['raid_id'];
+	$location=create_comment_popup($phprlang['description'], $popupdesc, $url, $raids['location']);
+
 	// Now that we have the raid data, we need to retrieve limit data based upon Raid ID.
 	// Get Class Limits and set Colored Counts
 	$raid_class_array = array();

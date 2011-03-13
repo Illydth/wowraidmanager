@@ -284,7 +284,49 @@ function strip_linebreaks($str) {
   return $str;
 }
 
+/**
+* This function cleans input strings and changes things into pure html, It also protects against
+* several forms of scripting attacks and protects popups from being broken by special characters
+* and anything else.
+* @param string $val - The string you want to clean of bad input.
+* @return string $val - The cleaned string.
+* @access public
+*/
+function clean_value($val)
+{
+	// Thanks for this function go to Istari from theamazonbasin.com
+	if ($val == "")
+	{
+		return $val;
+	}
+
+	$val = str_replace( "&#032;", " ", $val );
+	$val = str_replace( chr(0xCA), "", $val );  //Remove sneaky spaces
+	
+	$val = str_replace( "&"            , "&amp;"         , $val );
+	$val = str_replace( "<!--"         , "&#60;&#33;--"  , $val );
+	$val = str_replace( "-->"          , "--&#62;"       , $val );
+	$val = preg_replace( "/<script/i"  , "&#60;script"   , $val );
+	$val = str_replace( ">"            , "&gt;"          , $val );
+	$val = str_replace( "<"            , "&lt;"          , $val );
+	$val = str_replace( "\""           , "&quot;"        , $val );
+	$val = preg_replace( "/\n/"        , "<br />"        , $val ); // Convert literal newlines
+	$val = preg_replace( "/\\\$/"      , "&#036;"        , $val );
+	$val = preg_replace( "/\r/"        , ""              , $val ); // Remove literal carriage returns
+	$val = str_replace( "!"            , "&#33;"         , $val );
+	$val = str_replace( "'"            , "&#39;"         , $val ); // IMPORTANT: It helps to increase sql query safety.
+	
+	// Ensure unicode chars are OK
+	$val = preg_replace("/&amp;#([0-9]+);/s", "&#\\1;", $val );
+	
+	// Swap user inputted backslashes
+	$val = preg_replace( "/\\\(?!&amp;#|\?#)/", "&#092;", $val );
+	
+	return $val;
+}
+
 // properly escapes HTML characters in Javascript popups so they don't break javascript
+// DEPRECATED
 function escapePOPUP($arg) {
     $arg = str_replace("'", "\'", $arg); //IMPORTANT: it helps to increase SQL query safety.
 	$arg = str_replace("\\r\\n", "<br />", $arg);
@@ -472,6 +514,34 @@ function get_db_size()
 	}
 	
 	return $dbsize; //(Kilobytes)
+}
+
+/**
+* This function properly creates a popup string for use as a javascript popup.
+* @param string $title - The title you want displayed in the popup.
+* @param string $data - The data you want to appear within the popup.
+* @param string $url - The URL you want the link displaying the tooltip to take you to.
+* @param string $link_text - The text you want to display as the HREF link.
+* @param bool $shorten(OPTIONAL) - Whether you want to shorten the link text if it's over 25 characters or not.
+* 										(DEFAULT: FALSE).
+* @return string $data - A popup linked text.
+* @access public
+*/
+function create_comment_popup($title, $data, $url, $link_text, $shorten=FALSE)
+{
+	if(strlen_wrap($data, "UTF-8") == 0)
+		$data = '-';
+	else
+		$data = escapePOPUP(scrub_input($data));
+	
+	if ($shorten)
+		if (strlen_wrap($link_text, "UTF-8") > 25)
+			$link_text = substr_wrap($link_text, 0, 22, "UTF-8") . "...";
+	
+	$ddrivetiptxt = "'<span class=tooltip_title>" . $title ."</span><br>".DEUBB2($data)."'";
+	$popup = '<a href="'.$url.'" onMouseover="fixedtooltip('.$ddrivetiptxt.',this,event,\'auto\');" onMouseout="delayhidetip();">' . $link_text . '</a>';
+	
+	return $popup;
 }
 
 ?>

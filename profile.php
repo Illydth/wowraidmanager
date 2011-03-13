@@ -192,11 +192,14 @@ if($_GET['mode'] == 'view') {
 		
 		//$desc = strip_tags($data['description']);
 		//$desc = UBB($desc);
-		$desc = scrub_input($data['description']);
-		$ddrivetiptxt = "'<span class=tooltip_title>" . $phprlang['description'] ."</span><br>" . DEUBB2($desc) . "'";
-		$location = '<a href="view.php?mode=view&amp;raid_id='.$data['raid_id'].'"
-					 onMouseover="ddrivetip('.$ddrivetiptxt.');" onMouseout="hideddrivetip();">'.$data['location'].'</a>';
-
+		//$desc = scrub_input($data['description']);
+		//$ddrivetiptxt = "'<span class=tooltip_title>" . $phprlang['description'] ."</span><br>" . DEUBB2($desc) . "'";
+		//$location = '<a href="view.php?mode=view&amp;raid_id='.$data['raid_id'].'"
+		//			 onMouseover="ddrivetip('.$ddrivetiptxt.');" onMouseout="hideddrivetip();">'.$data['location'].'</a>';
+		$url = 'view.php?mode=view&amp;raid_id=' . $raids['raid_id'];
+		$location=create_comment_popup($phprlang['description'], $data['description'], $url, $data['location']);
+		
+		
 		// convert unix timestamp to something readable
 		$start = new_date('Y/m/d H:i:s',$data['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
 		$invite = new_date('Y/m/d H:i:s',$data['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);

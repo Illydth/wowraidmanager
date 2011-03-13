@@ -226,9 +226,9 @@ if(($_GET['mode'] == 'view') or isset($_GET['raids_del']) or isset($_GET['mark_r
 		$raid_start_time = new_date($phpraid_config['time_format'],$data['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
 		$raid_invite_time = new_date($phpraid_config['time_format'],$data['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
 			
-		$desc = scrub_input($data['description']);
-		$desc = str_replace("'", "\'", $desc);
-		$raid_txt_desc = "'<span class=tooltip_title>" . $phprlang['description'] ."</span><br>" . DEUBB2($desc);
+		//$desc = scrub_input($data['description']);
+		//$desc = str_replace("'", "\'", $desc);
+		//$raid_txt_desc = "'<span class=tooltip_title>" . $phprlang['description'] ."</span><br>" . DEUBB2($desc);
 		$raid_txt_info = "------------------";
 		$raid_txt_info .= "<br>".$phprlang['location'].":".$data['location'];
 		$raid_txt_info .= "<br>".$phprlang['officer'].":".$data['officer'];
@@ -237,9 +237,12 @@ if(($_GET['mode'] == 'view') or isset($_GET['raids_del']) or isset($_GET['mark_r
 		$raid_txt_info .= "<br>".$phprlang['invite_time'].":".$raid_invite_time;
 		$raid_txt_info .= "<br>".$phprlang['totals'].": ".$total.'/'.$data['max']  . ' (+' . $total2. ')';
 //		$raid_txt_info .=
-		$ddrivetiptxt = $raid_txt_desc.'<br>'. $raid_txt_info."'";
-		$location = '<a href="view.php?mode=view&amp;raid_id='.$data['raid_id'].'" onMouseover="ddrivetip('.$ddrivetiptxt.');" onMouseout="hideddrivetip();">'.$data['location'].'</a>';
-			
+		//$ddrivetiptxt = $raid_txt_desc.'<br>'. $raid_txt_info."'";
+		$popupdesc = $data['description'].'<br>'. $raid_txt_info."'";
+		//$location = '<a href="view.php?mode=view&amp;raid_id='.$data['raid_id'].'" onMouseover="ddrivetip('.$ddrivetiptxt.');" onMouseout="hideddrivetip();">'.$data['location'].'</a>';	
+		$url = 'view.php?mode=view&amp;raid_id=' . $data['raid_id'];
+		$location=create_comment_popup($phprlang['description'], $popupdesc, $url, $data['location']);
+		
 		// current raids
 		if($data['old'] == 0 && $data['recurrance']==0) {
 			array_push($current,
