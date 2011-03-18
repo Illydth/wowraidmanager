@@ -255,7 +255,8 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true))
 	//$ddrivetiptext = $pop_text;
 	
 	  $desc = DEUBB2($desc);
-	  // I'm 99.9% sure this method works for php < 5
+	  // I'm 100% sure this method works for php > 4  
+	  // ref: http://www.php.net/manual/en/language.types.string.php#language.types.string.syntax.heredoc
 	  $msg = <<< EOT
 {$phprlang['invites']}: {$invitetime}
 {$phprlang['start']}: {$starttime}
