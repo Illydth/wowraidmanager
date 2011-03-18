@@ -375,7 +375,7 @@ CREATE TABLE `wrm_signups` (
   `char_id` int(10) NOT NULL default '0',
   `profile_id` int(10) NOT NULL default '0',
   `raid_id` int(10) NOT NULL default '0',
-  `comments` varchar(255) NOT NULL default '',
+  `comments` varchar(5000) NOT NULL default '',
   `cancel` int(1) NOT NULL default '0',
   `queue` int(1) NOT NULL default '0',
   `timestamp` varchar(255) NOT NULL default '',
