@@ -9,6 +9,20 @@ CREATE TABLE  `wrm_announcements` (
   PRIMARY KEY  (`announcements_id`)
 ) ;
 
+
+-- WRM Armory Cache
+DROP TABLE IF EXISTS `wrm_armory`;
+CREATE TABLE wrm_armory (
+`name` varchar(255) DEFAULT NULL,
+spec varchar(255) DEFAULT NULL,
+avgilvl int(5) DEFAULT NULL,
+bestilvl int(5) DEFAULT NULL,
+health int(10) DEFAULT NULL,
+mana int(10) DEFAULT NULL,
+TTL varchar(255) NOT NULL,
+UNIQUE KEY `name` (`name`)
+) ;
+
 -- Boss Kill Type Table Creation
 DROP TABLE IF EXISTS `wrm_boss_kill_type`;
 CREATE TABLE `wrm_boss_kill_type` (

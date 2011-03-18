@@ -49,7 +49,8 @@ if (isset($ShowLoginForm) and ($ShowLoginForm == FALSE))
 }
 if ( ($BridgeSupportPWDChange == TRUE) and isset($BridgeSupportPWDChange) )
 {
-	$loginbox->set_BridgeSupportPWDChange_status(FALSE);
+	//$loginbox->set_BridgeSupportPWDChange_status(FALSE);
+	$loginbox->set_BridgeSupportPWDChange_status(TRUE);
 }
 $login_form = $loginbox->wrm_show_loginbox_gethtmlstring();
 

@@ -93,13 +93,19 @@ if($_GET['mode'] == 'view')
 		$date = new_date('Y/m/d H:i:s',$data['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']);
 		$time = new_date('Y/m/d H:i:s',$data['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']);
 
-		$edit = '<a href="announcements.php?mode=edit&amp;id='.$id.'"><img src="templates/' . $phpraid_config['template'] .
-				'/images/icons/icon_edit.gif" border="0" onMouseover="ddrivetip(\'' . $phprlang['edit'] . '\');" onMouseout="hideddrivetip();" alt="edit icon"></a> ';
+		//$edit = '<a href="announcements.php?mode=edit&amp;id='.$id.'"><img src="templates/' . $phpraid_config['template'] .
+		//		'/images/icons/icon_edit.gif" border="0" onMouseover="ddrivetip(\'' . $phprlang['edit'] . '\');" onMouseout="hideddrivetip();" alt="edit icon"></a> ';
+		$url = 'announcements.php?mode=edit&amp;id='.$id;
+		$img = '<img src="templates/'.$phpraid_config['template'].'/images/icons/icon_edit.gif" border="0" alt="edit icon" />';
+		$edit =cssToolTip($img, $phprlang['edit'], 'smallIconText', $url);
 
 		// Removed "Title" from being passed, no need for it.
-		$delete = '<a href="announcements.php?mode=delete&amp;id='.$id.'"><img src="templates/' .
-					$phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\'' . $phprlang['delete'] . '\');"
-					onMouseout="hideddrivetip();" alt="delete icon"></a>';
+		// $delete = '<a href="announcements.php?mode=delete&amp;id='.$id.'"><img src="templates/' .
+					// $phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\'' . $phprlang['delete'] . '\');"
+					// onMouseout="hideddrivetip();" alt="delete icon"></a>';
+		$url = 'announcements.php?mode=delete&amp;id='.$id;
+		$img = '<img src="templates/'.$phpraid_config['template'].'/images/icons/icon_delete.gif" border="0" alt="delete icon" />';
+		$delete =cssToolTip($img, $phprlang['delete'], 'smallIconText', $url);
 
 		array_push($announcements,
 			array(

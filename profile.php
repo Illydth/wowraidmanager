@@ -107,8 +107,18 @@ if($_GET['mode'] == 'view') {
 		$guild_data = $db_raid->sql_fetchrow($guild_result, true);
 		$guild_name = $guild_data['guild_name'];
 		
-		$Buttons_tmp='<a href="profile.php?mode=remove&amp;char_name='.$data['name'].'&amp;char_id='.$data['char_id'].'"><img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''. $phprlang['delete'] .'\');" onMouseout="hideddrivetip();" alt="delete icon"></a>
-					 <a href="profile.php?mode=edit&amp;char_id='.$data['char_id'].'&amp;guild='.$data['guild'].'&amp;race='.$data['race'].'&amp;class='.$data['class'].'"><img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_edit.gif" border="0" onMouseover="ddrivetip(\'' . $phprlang['edit'] .'\');" onMouseout="hideddrivetip();" alt="edit icon"></a>';
+		// $Buttons_tmp='<a href="profile.php?mode=remove&amp;char_name='.$data['name'].'&amp;char_id='.$data['char_id'].'">
+					// <img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''. $phprlang['delete'] .'\');" onMouseout="hideddrivetip();" alt="delete icon"></a>
+					
+					 // <a href="profile.php?mode=edit&amp;char_id='.$data['char_id'].'&amp;guild='.$data['guild'].'&amp;race='.$data['race'].'&amp;class='.$data['class'].'">
+					 // <img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_edit.gif" border="0" onMouseover="ddrivetip(\'' . $phprlang['edit'] .'\');" onMouseout="hideddrivetip();" alt="edit icon"></a>';
+		
+		$url1 = 'profile.php?mode=remove&amp;char_name='.$data['name'].'&amp;char_id='.$data['char_id'];
+		$url2 = 'profile.php?mode=edit&amp;char_id='.$data['char_id'].'&amp;guild='.$data['guild'].'&amp;race='.$data['race'].'&amp;class='.$data['class'];
+		$img1 = '<img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0"  alt="delete icon" />';
+		$img2 = '<img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_edit.gif" border="0" alt="edit icon" />';
+		$Buttons_tmp= cssToolTip($img1, $phprlang['edit'], 'smallIconText', $url1) . cssToolTip($img2, $phprlang['delete'], 'smallIconText', $url2);
+		
 		array_push($chars,
 			array(
 				'ID'=>$data['char_id'],
@@ -192,11 +202,14 @@ if($_GET['mode'] == 'view') {
 		
 		//$desc = strip_tags($data['description']);
 		//$desc = UBB($desc);
-		$desc = scrub_input($data['description']);
-		$ddrivetiptxt = "'<span class=tooltip_title>" . $phprlang['description'] ."</span><br>" . DEUBB2($desc) . "'";
-		$location = '<a href="view.php?mode=view&amp;raid_id='.$data['raid_id'].'"
-					 onMouseover="ddrivetip('.$ddrivetiptxt.');" onMouseout="hideddrivetip();">'.$data['location'].'</a>';
-
+		//$desc = scrub_input($data['description']);
+		//$ddrivetiptxt = "'<span class=tooltip_title>" . $phprlang['description'] ."</span><br>" . DEUBB2($desc) . "'";
+		//$location = '<a href="view.php?mode=view&amp;raid_id='.$data['raid_id'].'"
+		//			 onMouseover="ddrivetip('.$ddrivetiptxt.');" onMouseout="hideddrivetip();">'.$data['location'].'</a>';
+		$url = 'view.php?mode=view&amp;raid_id=' . $raids['raid_id'];
+		//$location=create_comment_popup($phprlang['description'], $data['description'], $url, $data['location']);
+		$location=cssToolTip($data['location'], $data['description'],'custom comment', $url, $phprlang['description']);
+		
 		// convert unix timestamp to something readable
 		$start = new_date('Y/m/d H:i:s',$data['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
 		$invite = new_date('Y/m/d H:i:s',$data['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);

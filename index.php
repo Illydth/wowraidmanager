@@ -97,6 +97,15 @@ $sql = "(SELECT * from " . $phpraid_config['db_prefix'] . "raids " .
 $raids_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 
 while($raids = $db_raid->sql_fetchrow($raids_result, true)) {
+
+        // Auto Mark Raids as old if raid start time 4 hours old or more. - Istari
+		// Should make this a config item in admin area, did not have time, sorry.
+        $raid_id = $raids['raid_id'];
+        if ($raids['start_time'] < (mktime() - (3600*4))) {
+                $sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "raids SET old='1' WHERE raid_id=%s", quote_smart($raid_id));
+                $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+        }
+		
 	$invite = new_date('Y/m/d H:i:s', $raids['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
 	$start = new_date('Y/m/d H:i:s', $raids['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
 	$date = $start;
@@ -131,24 +140,43 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true)) {
 	// precendence -> cancelled signup, signed up, raid frozen, open for signup
 	if($logged_in == 1 && $priv_profile == 1) 
 	{
-		if(is_char_cancel($profile_id, $raids['raid_id']))
-			$info = '<img src="templates/' . $phpraid_config['template'] . '/images/icons/cancel.gif" border="0" height="14" width="14" onMouseover="ddrivetip(\'' . $phprlang['cancel_msg'] . '\');" onMouseout="hideddrivetip();" alt="cancel icon">';
-		else if(is_char_signed($profile_id, $raids['raid_id']))
-			$info = '<img src="templates/' . $phpraid_config['template'] . '/images/icons/check_mark.gif" border="0" height="14" width="14" onMouseover="ddrivetip(\'' . $phprlang['signed_up'] . '\');" onMouseout="hideddrivetip();" alt="check mark">';
-		else if((check_frozen($raids['raid_id']) && $phpraid_config['disable_freeze'] == 0) or ($raids['old'] != 0))
-			$info = '<img src="templates/' . $phpraid_config['template'] . '/images/icons/frozen.gif" border="0" height="14" width="14" onMouseover="ddrivetip(\'' . $phprlang['frozen_msg'] . '\');" onMouseout="hideddrivetip();" alt="frozen">';
+		if(is_char_cancel($profile_id, $raids['raid_id'])){
+			//$info = '<img src="templates/' . $phpraid_config['template'] . '/images/icons/cancel.gif" border="0" height="14" width="14" onMouseover="ddrivetip(\'' . $phprlang['cancel_msg'] . '\');" onMouseout="hideddrivetip();" alt="cancel icon">';
+			$info = '<img src="templates/' . $phpraid_config['template'] . '/images/icons/cancel.gif" border="0" height="14" width="14" alt="cancel icon" />';
+			$msg = $phprlang['cancel_msg'];
+			$url = 'view.php?mode=view&amp;raid_id='.$raids['raid_id'];
+		}
+		else if(is_char_signed($profile_id, $raids['raid_id'])){
+			//$info = '<img src="templates/' . $phpraid_config['template'] . '/images/icons/check_mark.gif" border="0" height="14" width="14" onMouseover="ddrivetip(\'' . $phprlang['signed_up'] . '\');" onMouseout="hideddrivetip();" alt="check mark">';
+			$info = '<img src="templates/' . $phpraid_config['template'] . '/images/icons/check_mark.gif" border="0" height="14" width="14" alt="check mark" />';
+			$msg = $phprlang['signed_up'];
+			$url = 'view.php?mode=view&amp;raid_id='.$raids['raid_id'];
+		}
+		else if((check_frozen($raids['raid_id']) && $phpraid_config['disable_freeze'] == 0) or ($raids['old'] != 0)) {
+			//$info = '<img src="templates/' . $phpraid_config['template'] . '/images/icons/frozen.gif" border="0" height="14" width="14" onMouseover="ddrivetip(\'' . $phprlang['frozen_msg'] . '\');" onMouseout="hideddrivetip();" alt="frozen">';
+			$info = '<img src="templates/' . $phpraid_config['template'] . '/images/icons/frozen.gif" border="0" height="14" width="14" alt="frozen" />';
+			$msg = $phprlang['frozen_msg'];
+			$url = 'view.php?mode=view&amp;raid_id='.$raids['raid_id'];
+		}
 		else
 		{
-			$info  = '<a href="view.php?mode=view&amp;raid_id=' . $raids['raid_id'] . '#signup">';
+			//$info  = '<a href="view.php?mode=view&amp;raid_id=' . $raids['raid_id'] . '#signup">';
 			//$info .= '<img src="templates/' . $phpraid_config['template'] . '/images/icons/signup.gif" border="0" height="14" width="14" onMouseover="ddrivetip(\'' . $phprlang['not_signed_up'] . '\');" onMouseout="hideddrivetip();" alt="'.$phprlang['signup'].'">';
-			$info .=  $phprlang['signup'];
-			$info .= '</a>';
+			$info = '<img src="templates/' . $phpraid_config['template'] . '/images/icons/signup.gif" border="0" height="14" width="14"  alt="'.$phprlang['signup'].'" />';
+			$msg =  $phprlang['not_signed_up'];
+			$url = 'view.php?mode=view&amp;raid_id='.$raids['raid_id'].'#signup';
+			//$info .= '</a>';
 		}
+		//$img = '<img src="templates/'.$phpraid_config['template'].'/images/icons/icon_delete.gif" border="0" alt="delete icon" />';
+		$info = cssToolTip($info, $msg, 'mediumIconText', $url);
 	}
 
-	$desc = scrub_input($raids['description']);
-	$ddrivetiptxt = "'<span class=tooltip_title>" . $phprlang['description'] ."</span><br>" . DEUBB2($desc) . "'";
-	$location = '<a href="view.php?mode=view&amp;raid_id=' . $raids['raid_id'] . '" onMouseover="ddrivetip('.$ddrivetiptxt.');" onMouseout="hideddrivetip();">'.$raids['location'].'</a>';
+	//$desc = scrub_input($raids['description']);
+	//$ddrivetiptxt = "'<span class=tooltip_title>" . $phprlang['description'] ."</span><br>" . DEUBB2($desc) . "'";
+	//$location = '<a href="view.php?mode=view&amp;raid_id=' . $raids['raid_id'] . '" onMouseover="ddrivetip('.$ddrivetiptxt.');" onMouseout="hideddrivetip();">'.$raids['location'].'</a>';
+	$url = 'view.php?mode=view&amp;raid_id=' . $raids['raid_id'];
+	//$location=create_comment_popup($phprlang['description'], $raids['description'], $url, $raids['location']);
+	$location=cssToolTip($raids['location'], $raids['description'], 'custom comment', $url, $phprlang['description']);
 	
 	// Now that we have the raid data, we need to retrieve limit data based upon Raid ID.
 	// Get Class Limits and set Colored Counts
