@@ -177,27 +177,39 @@ function signedUpFlow($user_perm_group, $phpraid_config, $data, $raid_id, $phprl
 	//Create Buttons
 	if ($buttons['Queue']) {
 		#Demote from Drafted to Queue.
-		$actions .= '<a href="view.php?mode=queue&amp;raid_id=' . $raid_id . '&amp;char_id=' . $data['char_id'] . '&Sort=' . $sort_mode . '&SortDescending=' . $sort_descending . '">
-			<img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_demote.gif" border="0"
-			onMouseover="ddrivetip(\''.$phprlang['in_queue'].'\');" onMouseout="hideddrivetip();" alt="demote icon"></a>';
+		// $actions .= '<a href="view.php?mode=queue&amp;raid_id=' . $raid_id . '&amp;char_id=' . $data['char_id'] . '&Sort=' . $sort_mode . '&SortDescending=' . $sort_descending . '">
+			// <img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_demote.gif" border="0"
+			// onMouseover="ddrivetip(\''.$phprlang['in_queue'].'\');" onMouseout="hideddrivetip();" alt="demote icon"></a>';
+		$img = '<img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_demote.gif" border="0" alt="demote icon" />';
+		$url = 'view.php?mode=queue&amp;raid_id=' . $raid_id . '&amp;char_id=' . $data['char_id'] . '&Sort=' . $sort_mode . '&SortDescending=' . $sort_descending;
+		$actions .= cssToolTip($img, $phprlang['in_queue'], 'mediumIconText', $url);
 	}
 	if ($buttons['Comments']) {
 		#Edit Comments
-		$actions .= '<a href="view.php?mode=edit_comment&amp;raid_id='.$raid_id.'&signup_id='.$signups['signup_id'].'">
-			<img src="templates/'.$phpraid_config['template'].'/images/icons/icon_edit.gif" border="0"
-			onMouseover="ddrivetip(\''.$phprlang['edit_comment'].'\');" onMouseout="hideddrivetip();" alt="edit icon">';
+		// $actions .= '<a href="view.php?mode=edit_comment&amp;raid_id='.$raid_id.'&signup_id='.$signups['signup_id'].'">
+			// <img src="templates/'.$phpraid_config['template'].'/images/icons/icon_edit.gif" border="0"
+			// onMouseover="ddrivetip(\''.$phprlang['edit_comment'].'\');" onMouseout="hideddrivetip();" alt="edit icon">';
+		$img = '<img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_edit.gif" border="0" alt="edit icon" />';
+		$url = 'view.php?mode=edit_comment&amp;raid_id='.$raid_id.'&signup_id='.$signups['signup_id'];
+		$actions .= cssToolTip($img, $phprlang['edit_comment'], 'mediumIconText', $url);
 	}
 	if ($buttons['Cancel']) {
 		#Move to Cancelled Area
-		$actions .= '<a href="view.php?mode=cancel&profile_id='.$data['profile_id'].'&amp;raid_id=' . $raid_id . '&amp;char_id='.$data['char_id'].'">
-			<img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_cancel.gif" border="0"
-			onMouseover="ddrivetip(\''.$phprlang['cancel'].'\');" onMouseout="hideddrivetip();" alt="cancel icon"></a>';
+		// $actions .= '<a href="view.php?mode=cancel&profile_id='.$data['profile_id'].'&amp;raid_id=' . $raid_id . '&amp;char_id='.$data['char_id'].'">
+			// <img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_cancel.gif" border="0"
+			// onMouseover="ddrivetip(\''.$phprlang['cancel'].'\');" onMouseout="hideddrivetip();" alt="cancel icon"></a>';
+		$img = '<img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_cancel.gif" border="0" alt="cancel icon" />';
+		$url = 'view.php?mode=cancel&profile_id='.$data['profile_id'].'&amp;raid_id=' . $raid_id . '&amp;char_id='.$data['char_id'];
+		$actions .= cssToolTip($img, $phprlang['cancel'], 'mediumIconText', $url);
 	}
 	if ($buttons['Delete']) {
 		#Delete (Remove Signup Completely)
-		$actions .= '<a href="view.php?mode=delete&profile_id='.$data['profile_id'].'&amp;raid_id=' . $raid_id . '&amp;char_id='.$data['char_id'].'">
-			<img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0"
-			onMouseover="ddrivetip(\''.$phprlang['signup_delete'].'\');" onMouseout="hideddrivetip();" alt="delete icon"></a>';
+		// $actions .= '<a href="view.php?mode=delete&profile_id='.$data['profile_id'].'&amp;raid_id=' . $raid_id . '&amp;char_id='.$data['char_id'].'">
+			// <img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0"
+			// onMouseover="ddrivetip(\''.$phprlang['signup_delete'].'\');" onMouseout="hideddrivetip();" alt="delete icon"></a>';
+		$img = '<img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" alt="delete icon" />';
+		$url = 'view.php?mode=delete&profile_id='.$data['profile_id'].'&amp;raid_id=' . $raid_id . '&amp;char_id='.$data['char_id'];
+		$actions .= cssToolTip($img, $phprlang['delete'], 'mediumIconText', $url);
 	}
 
 	return $actions;
@@ -228,27 +240,51 @@ function queuedFlow($user_perm_group, $phpraid_config, $data, $raid_id, $phprlan
 	//Create Buttons
 	if ($buttons['Draft']) {
 		#Promote from Queue to Drafted.
-		$actions .= '<a href="view.php?mode=draft&amp;raid_id=' . $raid_id . '&amp;char_id=' . $data['char_id'] . '&Sort=' . $sort_mode . '&SortDescending=' . $sort_descending . '">
-			<img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_promote.gif" border="0"
-			onMouseover="ddrivetip(\''.$phprlang['out_queue'].'\');" onMouseout="hideddrivetip();" alt="promote icon"></a>';
+		// $actions .= '<a href="view.php?mode=draft&amp;raid_id=' . $raid_id . '&amp;char_id=' . $data['char_id'] . '&Sort=' . $sort_mode . '&SortDescending=' . $sort_descending . '">
+			// <img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_promote.gif" border="0"
+			// onMouseover="ddrivetip(\''.$phprlang['out_queue'].'\');" onMouseout="hideddrivetip();" alt="promote icon"></a>';
+		$img = '<img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_promote.gif" border="0" alt="promote icon" />';
+		$url = 'view.php?mode=draft&amp;raid_id=' . $raid_id . '&amp;char_id=' . $data['char_id'] . '&Sort=' . $sort_mode . '&SortDescending=' . $sort_descending ;
+		$actions .= cssToolTip($img, $phprlang['out_queue'], 'mediumIconText', $url);
 	}
 	if ($buttons['Comments']) {
 		#Edit Comments
-		$actions .= '<a href="view.php?mode=edit_comment&amp;raid_id='.$raid_id.'&signup_id='.$signups['signup_id'].'">
-			<img src="templates/'.$phpraid_config['template'].'/images/icons/icon_edit.gif" border="0"
-			onMouseover="ddrivetip(\''.$phprlang['edit_comment'].'\');" onMouseout="hideddrivetip();" alt="edit icon"></a>';
+		// $actions .= '<a href="view.php?mode=edit_comment&amp;raid_id='.$raid_id.'&signup_id='.$signups['signup_id'].'">
+			// <img src="templates/'.$phpraid_config['template'].'/images/icons/icon_edit.gif" border="0"
+			// onMouseover="ddrivetip(\''.$phprlang['edit_comment'].'\');" onMouseout="hideddrivetip();" alt="edit icon"></a>';
+		$img = '<img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_edit.gif" border="0" alt="edit icon" />';
+		$url = 'view.php?mode=edit_comment&amp;raid_id='.$raid_id.'&signup_id='.$signups['signup_id'];
+		$actions .= cssToolTip($img, $phprlang['edit_comment'], 'mediumIconText', $url);
 	}
+	// if ($buttons['Cancel']) {
+		// #Move to Cancelled Area
+		// $actions .= '<a href="view.php?mode=cancel&profile_id='.$data['profile_id'].'&amp;raid_id=' . $raid_id . '&amp;char_id='.$data['char_id'].'">
+			// <img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_cancel.gif" border="0"
+			// onMouseover="ddrivetip(\''.$phprlang['cancel'].'\');" onMouseout="hideddrivetip();" alt="cancel icon"></a>';
+	// }
+	// if ($buttons['Delete']) {
+		// #Delete (Remove Signup Completely)
+		// $actions .= '<a href="view.php?mode=delete&profile_id='.$data['profile_id'].'&amp;raid_id=' . $raid_id . '&amp;char_id='.$data['char_id'].'">
+			// <img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0"
+			// onMouseover="ddrivetip(\''.$phprlang['signup_delete'].'\');" onMouseout="hideddrivetip();" alt="delete icon"></a>';
+	// }
 	if ($buttons['Cancel']) {
 		#Move to Cancelled Area
-		$actions .= '<a href="view.php?mode=cancel&profile_id='.$data['profile_id'].'&amp;raid_id=' . $raid_id . '&amp;char_id='.$data['char_id'].'">
-			<img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_cancel.gif" border="0"
-			onMouseover="ddrivetip(\''.$phprlang['cancel'].'\');" onMouseout="hideddrivetip();" alt="cancel icon"></a>';
+		// $actions .= '<a href="view.php?mode=cancel&profile_id='.$data['profile_id'].'&amp;raid_id=' . $raid_id . '&amp;char_id='.$data['char_id'].'">
+			// <img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_cancel.gif" border="0"
+			// onMouseover="ddrivetip(\''.$phprlang['cancel'].'\');" onMouseout="hideddrivetip();" alt="cancel icon"></a>';
+		$img = '<img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_cancel.gif" border="0" alt="cancel icon" />';
+		$url = 'view.php?mode=cancel&profile_id='.$data['profile_id'].'&amp;raid_id=' . $raid_id . '&amp;char_id='.$data['char_id'];
+		$actions .= cssToolTip($img, $phprlang['cancel'], 'mediumIconText', $url);
 	}
 	if ($buttons['Delete']) {
 		#Delete (Remove Signup Completely)
-		$actions .= '<a href="view.php?mode=delete&profile_id='.$data['profile_id'].'&amp;raid_id=' . $raid_id . '&amp;char_id='.$data['char_id'].'">
-			<img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0"
-			onMouseover="ddrivetip(\''.$phprlang['signup_delete'].'\');" onMouseout="hideddrivetip();" alt="delete icon"></a>';
+		// $actions .= '<a href="view.php?mode=delete&profile_id='.$data['profile_id'].'&amp;raid_id=' . $raid_id . '&amp;char_id='.$data['char_id'].'">
+			// <img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0"
+			// onMouseover="ddrivetip(\''.$phprlang['signup_delete'].'\');" onMouseout="hideddrivetip();" alt="delete icon"></a>';
+		$img = '<img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" alt="delete icon" />';
+		$url = 'view.php?mode=delete&profile_id='.$data['profile_id'].'&amp;raid_id=' . $raid_id . '&amp;char_id='.$data['char_id'];
+		$actions .= cssToolTip($img, $phprlang['delete'], 'mediumIconText', $url);
 	}
 
 	return $actions;

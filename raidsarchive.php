@@ -150,7 +150,8 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true)) {
 	$popupdesc = $raids['description'].'<br>'. $raid_txt_info."'";
 	//$location = '<a href="view.php?mode=view&amp;raid_id='.$raids['raid_id'].'" onMouseover="ddrivetip('.$ddrivetiptxt.');" onMouseout="hideddrivetip();">'.$raids['location'].'</a>';	
 	$url = 'view.php?mode=view&amp;raid_id=' . $raids['raid_id'];
-	$location=create_comment_popup($phprlang['description'], $popupdesc, $url, $raids['location']);
+	//$location=create_comment_popup($phprlang['description'], $popupdesc, $url, $raids['location']);
+	$location=cssToolTip($raids['location'], $popupdesc,'custom comment', $url, $phprlang['description']);
 
 	// Now that we have the raid data, we need to retrieve limit data based upon Raid ID.
 	// Get Class Limits and set Colored Counts

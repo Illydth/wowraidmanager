@@ -284,8 +284,8 @@ INSERT INTO `wrm_events` ( `zone_desc`, `max`, `exp_id`, `event_type_id`, `wow_n
 ('Icecrown Citadel - 25 man', 25, 3, 1, 'Icecrown Citadel (25)', 'images/instances/WotLK_Icons/25-Icecrown-Citadel.jpg');
 
 -- Ruby Sanctum
-INSERT INTO `wrm`.`wrm_events` (`event_id`, `zone_desc`, `max`, `exp_id`, `event_type_id`, `wow_name`, `icon_path`) VALUES ('138', 'Ruby Sanctum - 10 man', '10', '3', '1', 'Ruby Sanctum (10)', 'images/instances/WotLK_Icons/10-Ruby-Sanctum.jpg');
-INSERT INTO `wrm`.`wrm_events` (`event_id`, `zone_desc`, `max`, `exp_id`, `event_type_id`, `wow_name`, `icon_path`) VALUES ('139', 'Ruby Sanctum - 25 man', '25', '3', '1', 'Ruby Sanctum (25)', 'images/instances/WotLK_Icons/25-Ruby-Sanctum.jpg');
+INSERT INTO `wrm_events` (`event_id`, `zone_desc`, `max`, `exp_id`, `event_type_id`, `wow_name`, `icon_path`) VALUES ('138', 'Ruby Sanctum - 10 man', '10', '3', '1', 'Ruby Sanctum (10)', 'images/instances/WotLK_Icons/10-Ruby-Sanctum.jpg');
+INSERT INTO `wrm_events` (`event_id`, `zone_desc`, `max`, `exp_id`, `event_type_id`, `wow_name`, `icon_path`) VALUES ('139', 'Ruby Sanctum - 25 man', '25', '3', '1', 'Ruby Sanctum (25)', 'images/instances/WotLK_Icons/25-Ruby-Sanctum.jpg');
 
 -- Cataclysm Events
 INSERT INTO `wrm_events` ( `zone_desc`, `max`, `exp_id`, `event_type_id`, `wow_name`, `icon_path`) VALUES

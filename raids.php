@@ -131,19 +131,33 @@ if(($_GET['mode'] == 'view') or isset($_GET['raids_del']) or isset($_GET['mark_r
 		{
 			if ($priv_raids || $username == $data['officer'])
 			{
-				$bd_edit = '<a href="raids.php?mode=edit&amp;id='.$data['raid_id'].'"><img src="templates/' . $phpraid_config['template'] .
-						'/images/icons/icon_edit.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['edit'].'\');" onMouseout="hideddrivetip();" alt="edit icon"></a>';
+				// $bd_edit = '<a href="raids.php?mode=edit&amp;id='.$data['raid_id'].'"><img src="templates/' . $phpraid_config['template'] .
+						// '/images/icons/icon_edit.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['edit'].'\');" onMouseout="hideddrivetip();" alt="edit icon"></a>';
+
+				$url = 'raids.php?mode=edit&amp;id='.$data['raid_id'];
+				$img = '<img src="templates/'. $phpraid_config['template'].'/images/icons/icon_edit.gif" border="0" alt="edit icon" />';
+				$bd_edit = cssToolTip($img, $phprlang['delete'], 'smallIconText', $url);
 	
-				$bd_delete = '<a href="raids.php?mode=delete&amp;n='.$data['location'].'&amp;id='.$data['raid_id'].'"><img src="templates/' .
-							$phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['delete'].'\');"
-							onMouseout="hideddrivetip();" alt="delete icon"></a><a href="lua_output_new.php?mode=lua&raid_id=' . $data['raid_id'] . '">
+				// $bd_delete = '<a href="raids.php?mode=delete&amp;n='.$data['location'].'&amp;id='.$data['raid_id'].'"><img src="templates/' .
+							// $phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['delete'].'\');"
+							// onMouseout="hideddrivetip();" alt="delete icon"></a>
+							
+							// <a href="lua_output_new.php?mode=lua&raid_id=' . $data['raid_id'] . '">
+							// <img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_minipost.gif" border="0"
+							// onMouseover="ddrivetip(\''.$phprlang['lua'].'\');" onMouseout="hideddrivetip();" alt="minipost icon"></a>
 	
-							<img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_minipost.gif" border="0"
-							onMouseover="ddrivetip(\''.$phprlang['lua'].'\');" onMouseout="hideddrivetip();" alt="minipost icon"></a>
-	
-							<a href="raids.php?mode=mark&amp;id='.$data['raid_id'].'"><img src="templates/' . $phpraid_config['template'] .
-							'/images/icons/icon_latest_reply.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['mark'].'\');"
-							onMouseout="hideddrivetip();" alt="latest reply icon"></a>';
+							// <a href="raids.php?mode=mark&amp;id='.$data['raid_id'].'"><img src="templates/' . $phpraid_config['template'] .
+							// '/images/icons/icon_latest_reply.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['mark'].'\');"
+							// onMouseout="hideddrivetip();" alt="latest reply icon"></a>';
+				$urlDelete = 'raids.php?mode=delete&amp;n='.$data['location'].'&amp;id='.$data['raid_id'];
+				$imgDelete = '<img src="templates/'.$phpraid_config['template'].'/images/icons/icon_delete.gif" border="0" alt="delete icon" />';
+					$urlLua = 'lua_output_new.php?mode=lua&raid_id=' . $data['raid_id'];
+					$imgLua = '<img src="templates/'. $phpraid_config['template'].'/images/icons/icon_minipost.gif" border="0" alt="minipost icon" />';
+						$urlRaid = 'raids.php?mode=mark&amp;id='.$data['raid_id'];
+						$imgRaid = '<img src="templates/'. $phpraid_config['template'].'/images/icons/icon_latest_reply.gif" border="0" alt="latest reply icon" />';
+				$bd_delete = cssToolTip($imgDelete, $phprlang['delete'], 'smallIconText', $urlDelete).
+							cssToolTip($imgLua, $phprlang['lua'], 'mediumIconText', $urlLua).
+							cssToolTip($imgRaid, $phprlang['mark'], 'mediumIconText', $urlRaid);				
 	
 				$old_delete = '<a href="raids.php?mode=delete&amp;id='.$data['raid_id'].'"><img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['delete'].'\');" onMouseout="hideddrivetip();" alt="delete icon"></a>';
 	
@@ -241,7 +255,8 @@ if(($_GET['mode'] == 'view') or isset($_GET['raids_del']) or isset($_GET['mark_r
 		$popupdesc = $data['description'].'<br>'. $raid_txt_info."'";
 		//$location = '<a href="view.php?mode=view&amp;raid_id='.$data['raid_id'].'" onMouseover="ddrivetip('.$ddrivetiptxt.');" onMouseout="hideddrivetip();">'.$data['location'].'</a>';	
 		$url = 'view.php?mode=view&amp;raid_id=' . $data['raid_id'];
-		$location=create_comment_popup($phprlang['description'], $popupdesc, $url, $data['location']);
+		//$location=create_comment_popup($phprlang['description'], $popupdesc, $url, $data['location']);
+		$location=cssToolTip($raids['location'], $popupdesc,'custom comment', $url, $phprlang['description']);
 		
 		// current raids
 		if($data['old'] == 0 && $data['recurrance']==0) {

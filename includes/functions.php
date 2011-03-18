@@ -138,6 +138,7 @@ function setup_output() {
 	$report->setFieldHeadingAttributes('class="listHeader"');
 }
 
+// I'm not going to update this to CSS since its broken anyway, and there's no way the CSS tooltip could handle this if it was working.
 function get_armorychar($name, $guild)
 {
 	global $phpraid_config, $db_raid;
@@ -527,21 +528,174 @@ function get_db_size()
 * @return string $data - A popup linked text.
 * @access public
 */
-function create_comment_popup($title, $data, $url, $link_text, $shorten=FALSE)
-{
-	if(strlen_wrap($data, "UTF-8") == 0)
-		$data = '-';
-	else
-		$data = escapePOPUP(scrub_input($data));
+
+//Ok, So I like where you were going with this, but I'm going to change things up a bit.
+// function create_comment_popup($title, $data, $url, $link_text, $shorten=FALSE)
+// {
+	// if(strlen_wrap($data, "UTF-8") == 0)
+		// $data = '-';
+	// else
+		// $data = escapePOPUP(scrub_input($data));
 	
-	if ($shorten)
-		if (strlen_wrap($link_text, "UTF-8") > 25)
-			$link_text = substr_wrap($link_text, 0, 22, "UTF-8") . "...";
+	// if ($shorten)
+		// if (strlen_wrap($link_text, "UTF-8") > 25)
+			// $link_text = substr_wrap($link_text, 0, 22, "UTF-8") . "...";
 	
-	$ddrivetiptxt = "'<span class=tooltip_title>" . $title ."</span><br>".DEUBB2($data)."'";
-	$popup = '<a href="'.$url.'" onMouseover="fixedtooltip('.$ddrivetiptxt.',this,event,\'auto\');" onMouseout="delayhidetip();">' . $link_text . '</a>';
+	// $ddrivetiptxt = "'<span class=tooltip_title>" . $title ."</span><br>".DEUBB2($data)."'";
+	// $popup = '<a href="'.$url.'" onMouseover="fixedtooltip('.$ddrivetiptxt.',this,event,\'auto\');" onMouseout="delayhidetip();">' . $link_text . '</a>';
 	
-	return $popup;
+	// return $popup;
+// }
+
+
+/**
+* This function properly creates a popup string for use as a CSS popup.
+* @param string $display - Whatever you want displayed on the page, text or <img /> code
+* @param string $hoverText - Whatever text you want to show up in the tooltip itself
+* @param string %spanClass - Properties applied to tooltips
+* @param string $link(OPTIONAL) - The URL you want the link displaying the tooltip to take you, DEFAULT=''
+* @param string %title(OPTIONAL) - The title you want displayed in the popup.
+* @access public
+*/
+function cssToolTip($display, $hoverText, $spanClass, $link='', $title='') {
+	$hoverText=clean_value($hoverText);
+	$popup = '<a class="tooltip" href="'.$link.'">'.$display.'<span class="'.$spanClass.'">';
+		if (strlen_wrap($title, "UTF-8") > 0){  // Check to see if there is a title or not
+		$popup .= '<em>'.$title.'</em>';
+	}
+	$popup .= $hoverText . '</span></a>';
+    return  $popup;
+} 
+
+/**
+
+	WARNING PHP5 ONLY!
+	To use this, you will need to edit common.php and change the folder name appropriately
+
+* This function properly creates a popup string for use with the new Battle.net armory, 
+* @param string $name
+* @param var $guild
+* @return string $data - A popup linked text.
+* @access public
+*/
+/*
+function get_armorychar($name, $guild) {
+
+	global $phpraid_config, $db_raid, $phprlang;
+	$name = ucfirst(CleanValue($name));
+	$guild = CleanValue($guild);
+	
+	// Get Armory Data from Guild.
+	$sql = sprintf("SELECT * FROM `" . $phpraid_config['db_prefix'] . "guilds` ".
+					" WHERE guild_id = %s", quote_smart($guild));
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+	$data = $db_raid->sql_fetchrow($result, true);
+	$lang = strtolower($data['guild_armory_code']);
+	$realm = ucfirst($data['guild_server']);
+	
+	// Get Cache data, whether we use it or not, we still need the TTL to compare.
+	$sql = sprintf("SELECT * FROM `" . $phpraid_config['db_prefix'] . "armory` ".
+					" WHERE `name` = %s", quote_smart($name));
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+	$cache = $db_raid->sql_fetchrow($result, true);
+
+$url = "http://".$lang.".battle.net/wow/en/character/".utf8_encode($realm)."/".utf8_encode($name)."/simple";
+
+if (version_compare(PHP_VERSION, '5.0.0', '<')){		// People really need to upgrade PHP
+	return '<a href="'.$url.'">'.ucfirst($name).'</a>';
 }
 
+if ($cache['TTL'] > mktime()) {	// We're going to compare the cache against 48 hours, hardcoded for now.
+
+		$data = "" . $cache['name'] . ", " . $cache['spec'] . "<br>" .
+			"" . $phprlang['iLvL'] . ": " . $cache['avgilvl'] . ", " . $cache['bestilvl'] . "<br>" .
+			"" . $phprlang['health'] . ": " . $cache['health'] . ", " . $phprlang['mana'] . ": " . $cache['mana'];
+			
+		//$data .= "<p>This is a cached armory lookup</p>";  // DEBUG ONLY
+}
+else {	// Our cache has expiried, so lets pull the data from the armory itself, update our cache, and set a new TTL
+		$scrapper = new Scrapper();
+		$scrapper->fetch($url);
+		$html = $scrapper->removeNewlines($scrapper->result);
+		$html = file_get_object($html);
+
+		if($html->find('div[id="server-error"] h2'))	// Armory is down for whatever reason if this passes
+		{
+			return '<a href="'.$url.'">'.ucfirst($name).'</a>';
+		}
+		else {
+			$return = array();		
+			
+			$return['name'] = $name;	
+			
+			$return['spec'] = trim($html->find('a[class="spec tip"]',0)->innertext);
+			
+			$return['avgilvl'] = trim($html->find('span[class="equipped"]',0)->innertext);
+				$return['avgilvl'] = preg_replace('/\D/', '', $return['avgilvl']);	// Strip out anything but numbers
+			
+			$return['bestilvl'] = trim($html->find('div[class="best tip"]',0)->innertext);
+				$return['bestilvl'] = preg_replace('/\D/', '', $return['bestilvl']);	// Strip out anything but numbers
+			
+			$return['health'] = trim($html->find('li[class="health"]',0)->innertext);
+				$return['health'] = preg_replace('/\D/', '', $return['health']);	// Strip out anything but numbers
+		
+			$return['mana'] = trim($html->find('li[class="resource-0"]',0)->innertext);
+				$return['mana'] = preg_replace('/\D/', '', $return['mana']);	// Strip out anything but numbers
+				if (!($return['mana'] > 0)) $return['mana'] = 0;				// Hack for now to deal with rage/focus/energy class's
+				
+			//OK, we have all the data, lets update the cache at this point, making sure we set a new Time to Live
+			
+			$TTL = (mktime()+(3600*48)); // 48 hour hard coded Time to Live at this point			
+			
+			if (!$cache){ // character has never been cached before, we need to insert them
+			$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "armory (
+					`name`,`spec`,`avgilvl`,`bestilvl`,`health`,`mana`,`TTL`
+					) VALUES (%s, %s, %s, %s, %s, %s, %s)", 
+							 quote_smart($return['name']),quote_smart($return['spec']),
+							  quote_smart($return['avgilvl']),quote_smart($return['bestilvl']),
+							  quote_smart($return['health']),quote_smart($return['mana']),quote_smart($TTL));
+			$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);			
+			}
+			else {	// Character has been preveiously cached, we just need to update to the new informaiton
+			$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "armory SET 
+				spec=%s, avgilvl=%s, bestilvl=%s, health=%s, mana=%s, TTL=%s 
+				WHERE name=%s", quote_smart($return['spec']),quote_smart($return['avgilvl']),
+							   quote_smart($return['bestilvl']),quote_smart($return['health']),
+							   quote_smart($return['mana']),quote_smart($TTL),quote_smart($return['name']));
+			$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+			}
+			
+			$data = "" . $return['name'] . ", " . $return['spec'] . "<br>" .
+				"" . $phprlang['iLvL'] . ": " . $return['avgilvl'] . ", " . $return['bestilvl'] . "<br>" .
+				"" . $phprlang['health'] . ": " . $return['health'] . ", " . $phprlang['mana'] . ": " . $return['mana'];
+				
+			//$data .= "<p>This is a live armory lookup</p>";  // DEBUG ONLY
+			
+		}
+	}
+			
+		if(substr_wrap($name, 0, 1, "UTF-8") == '_')
+		{
+			$name = substr_wrap($name, 1, (strlen_wrap($name, "UTF-8")-1), "UTF-8");
+			//cssToolTip($display, $hoverText, $spanClass, $link='', $title='')
+			//$name = '<a class="tooltip" href="'.$url.'">' . ucfirst($name) . '<span class="custom armory">' . $data . '</span></a>';
+			$name = cssToolTip(ucfirst($name), $data, 'custom armory', $url);
+		}
+		else if(substr_wrap($name, 0, 1, "UTF-8") == '(' && substr_wrap($name, strlen_wrap($name) - 1, 1, "UTF-8") == ')')
+		{
+			$name = substr_wrap($name, 1, strlen_wrap($name, "UTF-8") - 2, "UTF-8");
+			//$name = '<a class="tooltip" href="'.$url.'">' . ucfirst($name) . '<span class="custom armory">' . $data . '</span></a>';
+			$name = cssToolTip(ucfirst($name), $data, 'custom armory', $url);
+		}
+		else
+		{
+			//$name = '<a class="tooltip" href="'.$url.'">' . ucfirst($name) . '<span class="custom armory">' . $data . '</span></a>';
+			$name = cssToolTip(ucfirst($name), $data, 'custom armory', $url);
+		}
+
+
+	return $name;
+	
+}
+*/
 ?>
