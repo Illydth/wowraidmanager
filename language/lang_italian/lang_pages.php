@@ -54,6 +54,14 @@ $phprlang['guilds_description'] = 'Guild Description';
 $phprlang['guilds_server'] = 'Guild Server';
 $phprlang['guilds_faction'] = 'Guild Faction';
 $phprlang['guilds_armory_code'] = 'Armory Code for Guild';
+$phprlang['raid_force_header'] = 'Raid Force Listing'; //New
+$phprlang['raid_force_select_text'] = 'Select Raid Force: '; //New
+$phprlang['raid_force_name_box_text'] = 'Raid Force Name'; //New
+$phprlang['raid_force_guild_options_text'] = 'Guild'; //New
+$phprlang['raid_force_new_header'] = 'New Raid Force Link'; //New
+$phprlang['raid_force_name_missing'] = 'Raid Force Name must not be blank or NULL.'; //New
+$phprlang['raid_force_duplicate'] = 'Duplicate Raid Force Name/Guild Record.'; //New
+$phprlang['raid_force_guild_id_missing'] = 'Guild ID must not be blank or NULL'; //New
 $phprlang['armory_lang_US'] = 'US : http://us.battle.net/wow/ : English'; //New
 $phprlang['armory_lang_EU'] = 'EU : http://eu.battle.net/wow/ : English'; //New
 $phprlang['armory_lang_DE'] = 'DE : http://eu.battle.net/wow/ : German'; //New
@@ -103,6 +111,10 @@ $phprlang['lua_prv_write_success'] = '<b>LUA file created.</b><br>' .
 									'Download <a href="cache/raid_lua/phpRaid_Data.lua">phpRaid_Data.lua</a> and save 
 									it to [wow-dir]\interface\addons\phpraidviewer\<br>' .
 									'or use this for copy+paste:<br>';
+$phprlang['lua_drafted'] = 'Drafted Users'; //New
+$phprlang['lua_queued'] = 'Queued Users'; //New
+$phprlang['lua_macro_header'] = 'Macro output listing...'; //New
+$phprlang['lua_macro_footer'] = '<br>Macro output listing complete.<br>Copy and paste the above to a macro and run in-game.'; //New
 
 // permissions
 $phprlang['permissions_add'] = 'Aggiungi al Profilo Utente';
@@ -141,6 +153,9 @@ $phprlang['profile_nature'] = 'Resistenza Nature';
 $phprlang['profile_raid'] = 'Iscrizioni';
 $phprlang['profile_race'] = 'Razza';
 $phprlang['profile_shadow'] = 'Resistenza Shadow';
+$phprlang['iLvL'] = "iLvL (Equipped, Best)"; //New
+$phprlang['health'] = "Health"; //New
+$phprlang['mana'] = "Mana"; //New
 
 // raids
 $phprlang['raids_date'] = 'Data';

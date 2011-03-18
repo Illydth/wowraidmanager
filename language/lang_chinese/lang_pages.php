@@ -54,6 +54,14 @@ $phprlang['guilds_description'] = 'Guild Description';
 $phprlang['guilds_server'] = 'Guild Server';
 $phprlang['guilds_faction'] = 'Guild Faction';
 $phprlang['guilds_armory_code'] = 'Armory Code for Guild';
+$phprlang['raid_force_header'] = 'Raid Force Listing';
+$phprlang['raid_force_select_text'] = 'Select Raid Force: ';
+$phprlang['raid_force_name_box_text'] = 'Raid Force Name';
+$phprlang['raid_force_guild_options_text'] = 'Guild';
+$phprlang['raid_force_new_header'] = 'New Raid Force Link';
+$phprlang['raid_force_name_missing'] = 'Raid Force Name must not be blank or NULL.';
+$phprlang['raid_force_duplicate'] = 'Duplicate Raid Force Name/Guild Record.';
+$phprlang['raid_force_guild_id_missing'] = 'Guild ID must not be blank or NULL';
 $phprlang['armory_lang_US'] = 'US : http://us.battle.net/wow/ : English'; //New
 $phprlang['armory_lang_EU'] = 'EU : http://eu.battle.net/wow/ : English'; //New
 $phprlang['armory_lang_DE'] = 'DE : http://eu.battle.net/wow/ : German'; //New
@@ -103,6 +111,10 @@ $phprlang['lua_prv_write_success'] = '<b>LUA file created.</b><br>' .
 									'Download <a href="cache/raid_lua/phpRaid_Data.lua">phpRaid_Data.lua</a> and save 
 									it to [wow-dir]\interface\addons\phpraidviewer\<br>' .
 									'or use this for copy+paste:<br>';
+$phprlang['lua_drafted'] = 'Drafted Users';
+$phprlang['lua_queued'] = 'Queued Users';
+$phprlang['lua_macro_header'] = 'Macro output listing...';
+$phprlang['lua_macro_footer'] = '<br>Macro output listing complete.<br>Copy and paste the above to a macro and run in-game.';
 
 // permissions
 $phprlang['permissions_add'] = '加入群組';
@@ -141,6 +153,9 @@ $phprlang['profile_nature'] = '自然抗性';
 $phprlang['profile_raid'] = '團隊參與';
 $phprlang['profile_race'] = '種族';
 $phprlang['profile_shadow'] = '暗影抗性';
+$phprlang['iLvL'] = "iLvL (Equipped, Best)"; //New
+$phprlang['health'] = "Health"; //New
+$phprlang['mana'] = "Mana"; //New
 
 // raids
 $phprlang['raids_date'] = '日期';

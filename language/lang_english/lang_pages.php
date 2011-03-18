@@ -153,6 +153,9 @@ $phprlang['profile_nature'] = 'Nature Resistance';
 $phprlang['profile_raid'] = 'Raid Participation';
 $phprlang['profile_race'] = 'Race';
 $phprlang['profile_shadow'] = 'Shadow Resistance';
+$phprlang['iLvL'] = "iLvL (Equipped, Best)";
+$phprlang['health'] = "Health";
+$phprlang['mana'] = "Mana";
 
 // raids
 $phprlang['raids_date'] = 'Date';
