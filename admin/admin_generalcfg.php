@@ -115,6 +115,7 @@ $default_group .= '</select>';
 
 $records_per_page = '<input name="records_per_page" size="5" type="text" class="post" value="' . $phpraid_config['records_per_page'] . '">';
 $num_old_raids_index = '<input name="num_old_raids_index" size="5" type="text" class="post" value="' . $phpraid_config['num_old_raids_index'] . '">';
+$auto_mark_raids_old = '<input name="auto_mark_raids_old" size="5" type="text" class="post" value="' . $phpraid_config['auto_mark_raids_old'] . '">';
 
 $wrmadminsmarty->assign('config_data',
 	array(
@@ -136,6 +137,8 @@ $wrmadminsmarty->assign('config_data',
 		'records_per_page' => $records_per_page,
 		'old_raids_index_text' => $phprlang['configuration_old_raids_index'],
 		'num_old_raids_index' => $num_old_raids_index,
+		'auto_mark_raids_old_text' => $phprlang['auto_mark_raids_old'],
+		'auto_mark_raids_old' => $auto_mark_raids_old,
 	
 		'side_cfg_header' => $phprlang['general_side_cfg_header'],
 	
@@ -185,6 +188,7 @@ if(isset($_POST['submit']))
 	$records_per_page = scrub_input($_POST['records_per_page']);
 	
 	$num_old_raids_index = scrub_input($_POST['num_old_raids_index']);
+	$auto_mark_raids_old = scrub_input($_POST['auto_mark_raids_old']);
 	
 	$site_name = scrub_input($_POST['site_name']);
 	$site_description = scrub_input($_POST['site_desc']);
@@ -206,6 +210,8 @@ if(isset($_POST['submit']))
 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'records_per_page';", quote_smart($records_per_page));
 	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'num_old_raids_index';", quote_smart($num_old_raids_index));
+	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'auto_mark_raids_old';", quote_smart($auto_mark_raids_old));
 	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
 	
 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'site_name';", quote_smart($site_name));

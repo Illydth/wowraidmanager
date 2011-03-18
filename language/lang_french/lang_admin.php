@@ -128,6 +128,7 @@ $phprlang['configuration_records_per_page'] = 'Records Per Data Table Page';
 $phprlang['configuration_persistent_db'] = 'Create Persistant Database Connection?';
 $phprlang['general_configuration_header'] = 'General Settings';
 $phprlang['configuration_old_raids_index'] = 'Number of Old Raids to Show on the Index Page';
+$phprlang['auto_mark_raids_old'] = 'Auto Mark Raids Old (Hours)'; //New
 
 $phprlang['general_side_cfg_header'] = 'Side Config';
 $phprlang['configuration_site_name'] = 'Site Name';

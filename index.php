@@ -98,10 +98,10 @@ $raids_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_err
 
 while($raids = $db_raid->sql_fetchrow($raids_result, true)) {
 
-        // Auto Mark Raids as old if raid start time 4 hours old or more. - Istari
-		// Should make this a config item in admin area, did not have time, sorry.
+        // Auto Mark Raids as old if raid start time is X hours old or more. - Istari
+        // This now uses $phpraid_config['auto_mark_raids_old'] setting. - Istari
         $raid_id = $raids['raid_id'];
-        if ($raids['start_time'] < (mktime() - (3600*4))) {
+        if ($raids['start_time'] < (mktime() - (3600*$phpraid_config['auto_mark_raids_old']))) {
                 $sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "raids SET old='1' WHERE raid_id=%s", quote_smart($raid_id));
                 $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
         }

@@ -12,5 +12,6 @@ UNIQUE KEY `name` (`name`)
 );
 
 ALTER TABLE `wrm_signups` CHANGE `comments` `comments` VARCHAR( 5000 );
+INSERT INTO `wrm_config` VALUES ('auto_mark_raids_old', '4');
 
 INSERT INTO `wrm_version` VALUES ('4.1.4','Version 4.1.4 of WoW Raid Manager');
