@@ -139,7 +139,7 @@ function setup_output() {
 }
 
 // I'm not going to update this to CSS since its broken anyway, and there's no way the CSS tooltip could handle this if it was working.
-function get_armorychar($name, $guild)
+function get_armorychar_old($name, $guild)
 {
 	global $phpraid_config, $db_raid;
 
@@ -173,6 +173,130 @@ function get_armorychar($name, $guild)
 
 	return $name;
 }
+
+/**
+	WARNING PHP5 ONLY!
+
+* This function properly creates a popup string for use with the new Battle.net armory, 
+* @param string $name - Character Name
+* @param var $guild - The Character's Guild.
+* @return string $data - Returned "Link" with a Popup enabled for displaying armory data for input character.
+* @access public
+*/
+function get_armorychar($name, $guild) 
+{
+	global $phpraid_config, $db_raid, $phprlang;
+	$name = ucfirst(clean_value($name));
+	$guild = clean_value($guild);
+   
+	// Get Armory Data from Guild.
+	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "guilds
+					WHERE guild_id=%s",quote_smart($guild));
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+	$data = $db_raid->sql_fetchrow($result, true);
+	$lang = strtolower($data['guild_armory_code']);
+	$realm = ucfirst($data['guild_server']);
+   
+	// Get Cache data, whether we use it or not, we still need the TTL to compare.
+	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "armory ".
+					" WHERE `name` = %s", quote_smart($name));
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+	$cache = $db_raid->sql_fetchrow($result, true);
+	
+	$url = "http://".$lang.".battle.net/wow/en/character/".utf8_encode($realm)."/".utf8_encode($name)."/simple";
+	
+	if (version_compare(PHP_VERSION, '5.0.0', '<')){      // People really need to upgrade PHP
+		return '<a href="'.$url.'">'.ucfirst($name).'</a>';
+	}
+
+	if ($cache['TTL'] > mktime()) 
+	{   // We're going to compare the cache against 48 hours, hardcoded for now.
+
+     $data = <<< EOT
+{$cache['name']}, {$cache['spec']}
+{$phprlang['iLvL']}: {$cache['avgilvl']},{$cache['bestilvl']}
+{$phprlang['health']}: {$cache['health']}, {$phprlang['mana']}: {$cache['mana']}
+EOT;
+      
+	}
+	else 
+	{   // Our cache has expiried, so lets pull the data from the armory itself, update our cache, and set a new TTL
+		$scrapper = new Scrapper();
+		$scrapper->fetch($url);
+		$html = $scrapper->removeNewlines($scrapper->result);
+		$html = file_get_object($html);
+		
+		if($html->find('div[id="server-error"] h2'))   // Armory is down for whatever reason if this passes
+			return '<a href="'.$url.'">'.ucfirst($name).'</a>';
+		else 
+		{
+			$return = array();      
+			
+			$return['name'] = $name;   
+			$return['spec'] = trim($html->find('a[class="spec tip"]',0)->innertext);
+			$return['avgilvl'] = trim($html->find('span[class="equipped"]',0)->innertext);
+			$return['avgilvl'] = preg_replace('/\D/', '', $return['avgilvl']);   // Strip out anything but numbers
+			$return['bestilvl'] = trim($html->find('div[class="best tip"]',0)->innertext);
+			$return['bestilvl'] = preg_replace('/\D/', '', $return['bestilvl']);   // Strip out anything but numbers
+			$return['health'] = trim($html->find('li[class="health"]',0)->innertext);
+			$return['health'] = preg_replace('/\D/', '', $return['health']);   // Strip out anything but numbers
+			$return['mana'] = trim($html->find('li[class="resource-0"]',0)->innertext);
+			$return['mana'] = preg_replace('/\D/', '', $return['mana']);   // Strip out anything but numbers
+
+			if (!($return['mana'] > 0)) $return['mana'] = 0;            // Hack for now to deal with rage/focus/energy class's
+            //OK, we have all the data, lets update the cache at this point, making sure we set a new Time to Live
+         
+			$TTL = (mktime()+(3600*48)); // 48 hour hard coded Time to Live at this point         
+			
+			if (!$cache){ // character has never been cached before, we need to insert them
+				$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "armory 
+								(`name`,`spec`,`avgilvl`,`bestilvl`,`health`,`mana`,`TTL`)
+								VALUES 
+								(%s, %s, %s, %s, %s, %s, %s)",
+							quote_smart($return['name']),quote_smart($return['spec']),
+							quote_smart($return['avgilvl']),quote_smart($return['bestilvl']),
+							quote_smart($return['health']),quote_smart($return['mana']),quote_smart($TTL));
+				$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);         
+			}
+			else {   // Character has been preveiously cached, we just need to update to the new informaiton
+				$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "armory SET
+								spec=%s, avgilvl=%s, bestilvl=%s, health=%s, mana=%s, TTL=%s
+								WHERE name=%s", quote_smart($return['spec']),quote_smart($return['avgilvl']),
+							quote_smart($return['bestilvl']),quote_smart($return['health']),
+							quote_smart($return['mana']),quote_smart($TTL),quote_smart($return['name']));
+				$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+			}
+         
+      $data = <<< EOT
+{$return['name']}, {$return['spec']}
+{$phprlang['iLvL']}: {$return['avgilvl']},{$return['bestilvl']}
+{$phprlang['health']}: {$return['health']}, {$phprlang['mana']}: {$return['mana']}
+EOT;
+         
+		}
+	}
+         
+	if(substr_wrap($name, 0, 1, "UTF-8") == '_')
+	{
+		$name = substr_wrap($name, 1, (strlen_wrap($name, "UTF-8")-1), "UTF-8");
+		//cssToolTip($display, $hoverText, $spanClass, $link='', $title='')
+		//$name = '<a class="tooltip" href="'.$url.'">' . ucfirst($name) . '<span class="custom armory">' . $data . '</span></a>';
+		$name = cssToolTip(ucfirst($name), $data, 'custom armory', $url);
+	}
+	else if(substr_wrap($name, 0, 1, "UTF-8") == '(' && substr_wrap($name, strlen_wrap($name) - 1, 1, "UTF-8") == ')')
+	{
+		$name = substr_wrap($name, 1, strlen_wrap($name, "UTF-8") - 2, "UTF-8");
+		//$name = '<a class="tooltip" href="'.$url.'">' . ucfirst($name) . '<span class="custom armory">' . $data . '</span></a>';
+		$name = cssToolTip(ucfirst($name), $data, 'custom armory', $url);
+	}
+	else
+	{
+		//$name = '<a class="tooltip" href="'.$url.'">' . ucfirst($name) . '<span class="custom armory">' . $data . '</span></a>';
+		$name = cssToolTip(ucfirst($name), $data, 'custom armory', $url);
+	}
+	return $name;   
+}
+
 
 //Note: Reverse: reverses the color.  Normally the check is if count > count_max set to red, in the case where the 
 //			counts are used as MINIMUM values (config:class_as_min) if count < count_max set to red. 
@@ -567,135 +691,4 @@ function cssToolTip($display, $hoverText, $spanClass, $link='', $title='') {
     return  $popup;
 } 
 
-/**
-
-	WARNING PHP5 ONLY!
-	To use this, you will need to edit common.php and change the folder name appropriately
-
-* This function properly creates a popup string for use with the new Battle.net armory, 
-* @param string $name
-* @param var $guild
-* @return string $data - A popup linked text.
-* @access public
-*/
-/*
-function get_armorychar($name, $guild) {
-
-	global $phpraid_config, $db_raid, $phprlang;
-	$name = ucfirst(CleanValue($name));
-	$guild = CleanValue($guild);
-	
-	// Get Armory Data from Guild.
-	$sql = sprintf("SELECT * FROM `" . $phpraid_config['db_prefix'] . "guilds` ".
-					" WHERE guild_id = %s", quote_smart($guild));
-	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-	$data = $db_raid->sql_fetchrow($result, true);
-	$lang = strtolower($data['guild_armory_code']);
-	$realm = ucfirst($data['guild_server']);
-	
-	// Get Cache data, whether we use it or not, we still need the TTL to compare.
-	$sql = sprintf("SELECT * FROM `" . $phpraid_config['db_prefix'] . "armory` ".
-					" WHERE `name` = %s", quote_smart($name));
-	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-	$cache = $db_raid->sql_fetchrow($result, true);
-
-$url = "http://".$lang.".battle.net/wow/en/character/".utf8_encode($realm)."/".utf8_encode($name)."/simple";
-
-if (version_compare(PHP_VERSION, '5.0.0', '<')){		// People really need to upgrade PHP
-	return '<a href="'.$url.'">'.ucfirst($name).'</a>';
-}
-
-if ($cache['TTL'] > mktime()) {	// We're going to compare the cache against 48 hours, hardcoded for now.
-
-		$data = "" . $cache['name'] . ", " . $cache['spec'] . "<br>" .
-			"" . $phprlang['iLvL'] . ": " . $cache['avgilvl'] . ", " . $cache['bestilvl'] . "<br>" .
-			"" . $phprlang['health'] . ": " . $cache['health'] . ", " . $phprlang['mana'] . ": " . $cache['mana'];
-			
-		//$data .= "<p>This is a cached armory lookup</p>";  // DEBUG ONLY
-}
-else {	// Our cache has expiried, so lets pull the data from the armory itself, update our cache, and set a new TTL
-		$scrapper = new Scrapper();
-		$scrapper->fetch($url);
-		$html = $scrapper->removeNewlines($scrapper->result);
-		$html = file_get_object($html);
-
-		if($html->find('div[id="server-error"] h2'))	// Armory is down for whatever reason if this passes
-		{
-			return '<a href="'.$url.'">'.ucfirst($name).'</a>';
-		}
-		else {
-			$return = array();		
-			
-			$return['name'] = $name;	
-			
-			$return['spec'] = trim($html->find('a[class="spec tip"]',0)->innertext);
-			
-			$return['avgilvl'] = trim($html->find('span[class="equipped"]',0)->innertext);
-				$return['avgilvl'] = preg_replace('/\D/', '', $return['avgilvl']);	// Strip out anything but numbers
-			
-			$return['bestilvl'] = trim($html->find('div[class="best tip"]',0)->innertext);
-				$return['bestilvl'] = preg_replace('/\D/', '', $return['bestilvl']);	// Strip out anything but numbers
-			
-			$return['health'] = trim($html->find('li[class="health"]',0)->innertext);
-				$return['health'] = preg_replace('/\D/', '', $return['health']);	// Strip out anything but numbers
-		
-			$return['mana'] = trim($html->find('li[class="resource-0"]',0)->innertext);
-				$return['mana'] = preg_replace('/\D/', '', $return['mana']);	// Strip out anything but numbers
-				if (!($return['mana'] > 0)) $return['mana'] = 0;				// Hack for now to deal with rage/focus/energy class's
-				
-			//OK, we have all the data, lets update the cache at this point, making sure we set a new Time to Live
-			
-			$TTL = (mktime()+(3600*48)); // 48 hour hard coded Time to Live at this point			
-			
-			if (!$cache){ // character has never been cached before, we need to insert them
-			$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "armory (
-					`name`,`spec`,`avgilvl`,`bestilvl`,`health`,`mana`,`TTL`
-					) VALUES (%s, %s, %s, %s, %s, %s, %s)", 
-							 quote_smart($return['name']),quote_smart($return['spec']),
-							  quote_smart($return['avgilvl']),quote_smart($return['bestilvl']),
-							  quote_smart($return['health']),quote_smart($return['mana']),quote_smart($TTL));
-			$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);			
-			}
-			else {	// Character has been preveiously cached, we just need to update to the new informaiton
-			$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "armory SET 
-				spec=%s, avgilvl=%s, bestilvl=%s, health=%s, mana=%s, TTL=%s 
-				WHERE name=%s", quote_smart($return['spec']),quote_smart($return['avgilvl']),
-							   quote_smart($return['bestilvl']),quote_smart($return['health']),
-							   quote_smart($return['mana']),quote_smart($TTL),quote_smart($return['name']));
-			$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-			}
-			
-			$data = "" . $return['name'] . ", " . $return['spec'] . "<br>" .
-				"" . $phprlang['iLvL'] . ": " . $return['avgilvl'] . ", " . $return['bestilvl'] . "<br>" .
-				"" . $phprlang['health'] . ": " . $return['health'] . ", " . $phprlang['mana'] . ": " . $return['mana'];
-				
-			//$data .= "<p>This is a live armory lookup</p>";  // DEBUG ONLY
-			
-		}
-	}
-			
-		if(substr_wrap($name, 0, 1, "UTF-8") == '_')
-		{
-			$name = substr_wrap($name, 1, (strlen_wrap($name, "UTF-8")-1), "UTF-8");
-			//cssToolTip($display, $hoverText, $spanClass, $link='', $title='')
-			//$name = '<a class="tooltip" href="'.$url.'">' . ucfirst($name) . '<span class="custom armory">' . $data . '</span></a>';
-			$name = cssToolTip(ucfirst($name), $data, 'custom armory', $url);
-		}
-		else if(substr_wrap($name, 0, 1, "UTF-8") == '(' && substr_wrap($name, strlen_wrap($name) - 1, 1, "UTF-8") == ')')
-		{
-			$name = substr_wrap($name, 1, strlen_wrap($name, "UTF-8") - 2, "UTF-8");
-			//$name = '<a class="tooltip" href="'.$url.'">' . ucfirst($name) . '<span class="custom armory">' . $data . '</span></a>';
-			$name = cssToolTip(ucfirst($name), $data, 'custom armory', $url);
-		}
-		else
-		{
-			//$name = '<a class="tooltip" href="'.$url.'">' . ucfirst($name) . '<span class="custom armory">' . $data . '</span></a>';
-			$name = cssToolTip(ucfirst($name), $data, 'custom armory', $url);
-		}
-
-
-	return $name;
-	
-}
-*/
 ?>
