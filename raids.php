@@ -394,6 +394,7 @@ if(($_GET['mode'] == 'view') or isset($_GET['raids_del']) or isset($_GET['mark_r
 			'sort_url_base' => $pageURL,
 			'sort_descending' => $sortDesc,
 			'sort_text' => $phprlang['sort_text'],
+			'show_recurrance' => $phpraid_config['recurrance_enabled']
 		)
 	);
 
@@ -885,7 +886,8 @@ elseif($_GET['mode'] == 'new')
 				'recur_length'=>$recur_length,
 				'recur_length_text'=>$phprlang['recur_length'],
 				'button_submit' => $phprlang['submit'],
-				'button_reset' => $phprlang['reset']
+				'button_reset' => $phprlang['reset'],
+				'show_recurrance' => $phpraid_config['recurrance_enabled'],
 			)
 		);
 		

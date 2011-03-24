@@ -72,6 +72,12 @@ if($phpraid_config['disable_freeze'] == '0')
 else
 	$disable_freeze = '<input type="checkbox" name="disable_freeze" value="1" checked>';
 
+// Show "Recurring Raids" settings (Enable/Disable Recurring Raids).
+if($phpraid_config['recurrance_enabled'] == '0')
+	$recurrance_enabled = '<input type="checkbox" name="recurrance_enabled" value="1">';
+else
+	$recurrance_enabled = '<input type="checkbox" name="recurrance_enabled" value="1" checked>';
+	
 // Selection box for Raid View Type.
 $raid_view_type = '<select name="raid_view_type" class="post">';
 if ($phpraid_config['raid_view_type'] == 'by_class')
@@ -100,7 +106,9 @@ $wrmadminsmarty->assign('config_data',
 		'autoqueue_text' => $phprlang['configuration_autoqueue'],
 		'raid_settings_header'=>$phprlang['configuration_raid_settings_header'],
 		'raid_view_type' => $raid_view_type,
-		'raid_view_type_text' => $phprlang['configuration_raid_view_type_text'],	
+		'raid_view_type_text' => $phprlang['configuration_raid_view_type_text'],
+		'recurrance_enabled_text' => $phprlang['configuration_recurrance_enabled_text'],
+		'recurrance_enabled' => $recurrance_enabled,	
 		'buttons' => $buttons,
 	)
 );
@@ -132,6 +140,11 @@ if(isset($_POST['submit']))
 	else
 		$d_freeze = 0;
 
+	if(isset($_POST['recurrance_enabled']))
+		$recurrance_enabled = 1;
+	else
+		$recurrance_enabled = 0;		
+		
 	$raid_view_type = scrub_input($_POST['raid_view_type']);
 
 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'raid_view_type';", quote_smart($raid_view_type));
@@ -145,6 +158,8 @@ if(isset($_POST['submit']))
 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'enforce_class_limits';", quote_smart($enforce_class_limits));
 	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'class_as_min';", quote_smart($class_as_min));
+	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'recurrance_enabled';", quote_smart($recurrance_enabled));
 	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
 	
 	header("Location: admin_raidsettings.php");
