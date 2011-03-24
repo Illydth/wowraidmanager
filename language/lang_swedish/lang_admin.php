@@ -273,7 +273,7 @@ $phprlang['configuration_role_limit_text'] = 'Tvinga Roll begränsningar för Ra
 $phprlang['configuration_class_limit_text'] = 'Tvinga Klass begränsningar för Raids';
 $phprlang['configuration_class_as_min'] = 'Använd Klass begränsningar som minimum';
 $phprlang['configuration_freeze'] = 'Avaktivera frys kontroll';
-
+$phprlang['configuration_recurrance_enabled_text'] = 'Enable Recurring Raids System'; //New
 
 $phprlang['configuration_description'] = 'Beskrivning';
 $phprlang['configuration_default'] = 'Standard Grupp';

@@ -273,7 +273,7 @@ $phprlang['configuration_role_limit_text'] = 'Enforce Role Limits for Raid';
 $phprlang['configuration_class_limit_text'] = 'Enforce Class Limits for Raid';
 $phprlang['configuration_class_as_min'] = 'Use Class Limits as Minimums';
 $phprlang['configuration_freeze'] = 'Disable freeze checking';
-
+$phprlang['configuration_recurrance_enabled_text'] = 'Enable Recurring Raids System'; //New
 
 $phprlang['configuration_description'] = 'Description';
 $phprlang['configuration_default'] = 'Default Group';

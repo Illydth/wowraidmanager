@@ -275,7 +275,7 @@ $phprlang['configuration_role_limit_text'] = '強制團隊職責限制';
 $phprlang['configuration_class_limit_text'] = '強制團隊職業數量限制';
 $phprlang['configuration_class_as_min'] = '各職業限制最少數量';
 $phprlang['configuration_freeze'] = '關閉報名至檢查時間';
-
+$phprlang['configuration_recurrance_enabled_text'] = 'Enable Recurring Raids System'; //New
 
 $phprlang['configuration_description'] = '描述';
 $phprlang['configuration_default'] = '預設群組';

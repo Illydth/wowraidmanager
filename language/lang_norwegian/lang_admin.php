@@ -273,7 +273,7 @@ $phprlang['configuration_role_limit_text'] = 'Imponi i limiti sui ruoli';
 $phprlang['configuration_class_limit_text'] = 'Imponi i limiti sulle classi';
 $phprlang['configuration_class_as_min'] = 'Considera i limiti sulle classi come limiti minimi';
 $phprlang['configuration_freeze'] = 'Disabilita la chiusura delle iscrizioni';
-
+$phprlang['configuration_recurrance_enabled_text'] = 'Enable Recurring Raids System'; //New
 
 $phprlang['configuration_description'] = 'Descrizione';
 $phprlang['configuration_default'] = 'Profilo Utente predefinito';

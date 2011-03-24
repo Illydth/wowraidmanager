@@ -274,7 +274,7 @@ $phprlang['configuration_role_limit_text'] = 'Erzwinge Rollen-Limit für Raids';
 $phprlang['configuration_class_limit_text'] = 'Erzwinge Klassen-Limit für Raids';
 $phprlang['configuration_class_as_min'] = 'Benutze Klassen-Limit als Minimum';
 $phprlang['configuration_freeze'] = 'Prüfung auf eingefrorene Raids ausschalten';
-
+$phprlang['configuration_recurrance_enabled_text'] = 'Enable Recurring Raids System'; //New
 
 $phprlang['configuration_description'] = 'Beschreibung';
 $phprlang['configuration_default'] = 'Standardgruppe';
