@@ -169,7 +169,7 @@ function is_char_cancel($profile_id, $raid_id) {
 function is_char_signed($profile_id, $raid_id) {
 	global $db_raid, $phpraid_config;
 
-	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE profile_id=%s AND raid_id=%s AND cancel='0' AND queue='0'",
+	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE profile_id=%s AND raid_id=%s AND cancel='0'",
 						quote_smart($profile_id), quote_smart($raid_id));
 	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	if($db_raid->sql_numrows($result) > 0)
