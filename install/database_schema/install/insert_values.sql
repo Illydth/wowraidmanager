@@ -417,7 +417,7 @@ INSERT INTO `wrm_config` VALUES ('eqdkp_url', 'http://localhost/eqdkp');
 INSERT INTO `wrm_config` VALUES ('ampm', '12');
 INSERT INTO `wrm_config` VALUES ('raid_view_type','by_class');
 INSERT INTO `wrm_config` VALUES ('records_per_page','25');
-INSERT INTO `wrm_config` VALUES ('armory_cache_setting', 'none');
+INSERT INTO `wrm_config` VALUES ('armory_cache_setting', 'database');
 INSERT INTO `wrm_config` VALUES ('persistent_db', '1');
 INSERT INTO `wrm_config` VALUES ('wrm_created_on', '1');
 INSERT INTO `wrm_config` VALUES ('wrm_updated_on', '1');
@@ -430,6 +430,7 @@ INSERT INTO `wrm_config` VALUES ('num_old_raids_index', '20');
 INSERT INTO `wrm_config` VALUES ('template_body_width', 'width_normal');
 INSERT INTO `wrm_config` VALUES ('auto_mark_raids_old', '4');
 INSERT INTO `wrm_config` VALUES ('recurrance_enabled', '1');
+INSERT INTO `wrm_config` VALUES ('armory_cache_timeout', '48');
 
 -- Event Type Table Data
 INSERT INTO `wrm_event_type` (`event_type_id`, `event_type_name`, `event_type_lang_id`, `def`) VALUES

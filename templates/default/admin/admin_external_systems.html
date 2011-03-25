@@ -11,11 +11,26 @@
           <td class="row2">
           	<input type="checkbox" name="enable_armory" value="1" {$config_data.enable_armory}>
           </td>
+          <td class="row2">
+          	&nbsp;
+          </td>
         </tr>
         <tr>
           <td width="200" class="row1"><strong>{$config_data.armory_cache_text}</strong></td>
           <td class="row2">
            	{html_options name=armory_cache options=$config_data.array_armory_cache selected=$config_data.selected_armory_code class="post"}
+          </td>
+          <td class="row2">
+          	&nbsp;
+          </td>
+        </tr>
+        <tr>
+          <td width="200" class="row1"><strong>{$config_data.armory_cache_timeout_text}</strong></td>
+          <td class="row2">
+           	{html_options name=armory_cache_timeout options=$config_data.array_armory_cache_timeout selected=$config_data.selected_armory_cache_timeout class="post"}
+          </td>
+          <td class="row2">
+          	{$config_data.armory_cache_timeout_sup_text}
           </td>
         </tr>
         <tr>
@@ -23,11 +38,17 @@
           <td class="row2">
           	<input type="checkbox" name="enable_eqdkp" value="1" {$config_data.enable_eqdkp}>
           </td>
+          <td class="row2">
+          	&nbsp;
+          </td>
         </tr>
         <tr>
           <td width="200" class="row1"><strong>{$config_data.eqdkp_url_text}</strong></td>
           <td class="row2">
           	<input name="eqdkp_url" type="text" value="{$config_data.eqdkp_url}" size="60" class="post">
+          </td>
+          <td class="row2">
+          	&nbsp;
           </td>
         </tr>
    {*     <!--  <tr>

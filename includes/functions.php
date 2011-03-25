@@ -198,7 +198,7 @@ function get_armorychar($name, $guild)
 	$realm = ucfirst($data['guild_server']);
    
 	// Get Cache data, whether we use it or not, we still need the TTL to compare.
-	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "armory ".
+	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "armory_cache ".
 					" WHERE `name` = %s", quote_smart($name));
 	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	$cache = $db_raid->sql_fetchrow($result, true);
@@ -206,11 +206,11 @@ function get_armorychar($name, $guild)
 	$url = "http://".$lang.".battle.net/wow/en/character/".utf8_encode($realm)."/".utf8_encode($name)."/simple";
 	
 	if (version_compare(PHP_VERSION, '5.0.0', '<')){      // People really need to upgrade PHP
-		return '<a href="'.$url.'">'.ucfirst($name).'</a>';
+		return '<a href="'.$url.'" target="_blank">'.ucfirst($name).'</a>';
 	}
 
 	if ($cache['TTL'] > mktime()) 
-	{   // We're going to compare the cache against 48 hours, hardcoded for now.
+	{   // We're going to compare the cache against user selected value, no longer hard coded.
 
      $data = <<< EOT
 {$cache['name']}, {$cache['spec']}
@@ -227,7 +227,7 @@ EOT;
 		$html = file_get_object($html);
 		
 		if($html->find('div[id="server-error"] h2'))   // Armory is down for whatever reason if this passes
-			return '<a href="'.$url.'">'.ucfirst($name).'</a>';
+			return '<a href="'.$url.'" target="_blank">'.ucfirst($name).'</a>';
 		else 
 		{
 			$return = array();      
@@ -245,11 +245,10 @@ EOT;
 
 			if (!($return['mana'] > 0)) $return['mana'] = 0;            // Hack for now to deal with rage/focus/energy class's
             //OK, we have all the data, lets update the cache at this point, making sure we set a new Time to Live
-         
-			$TTL = (mktime()+(3600*48)); // 48 hour hard coded Time to Live at this point         
+			$TTL = (mktime()+(3600*$phpraid_config['armory_cache_timeout'])); // 48 hour default Time to Live but user selectable.         
 			
 			if (!$cache){ // character has never been cached before, we need to insert them
-				$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "armory 
+				$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "armory_cache 
 								(`name`,`spec`,`avgilvl`,`bestilvl`,`health`,`mana`,`TTL`)
 								VALUES 
 								(%s, %s, %s, %s, %s, %s, %s)",
@@ -259,7 +258,7 @@ EOT;
 				$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);         
 			}
 			else {   // Character has been preveiously cached, we just need to update to the new informaiton
-				$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "armory SET
+				$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "armory_cache SET
 								spec=%s, avgilvl=%s, bestilvl=%s, health=%s, mana=%s, TTL=%s
 								WHERE name=%s", quote_smart($return['spec']),quote_smart($return['avgilvl']),
 							quote_smart($return['bestilvl']),quote_smart($return['health']),
@@ -683,7 +682,7 @@ function get_db_size()
 */
 function cssToolTip($display, $hoverText, $spanClass, $link='', $title='') {
 	$hoverText=clean_value($hoverText);
-	$popup = '<a class="tooltip" href="'.$link.'">'.$display.'<span class="'.$spanClass.'">';
+	$popup = '<a class="tooltip" href="'.$link.'" target="_blank">'.$display.'<span class="'.$spanClass.'">';
 		if (strlen_wrap($title, "UTF-8") > 0){  // Check to see if there is a title or not
 		$popup .= '<em>'.$title.'</em>';
 	}
