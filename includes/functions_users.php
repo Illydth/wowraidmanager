@@ -41,7 +41,7 @@ function check_frozen($raid_id) {
 	//  the raid freeze time from this start time and figure out if current Unix date 
 	//  stamp is larger.  If it is, raid is frozen.	
 	$format_string = "-" . $data['freeze'] . " hours"; 	// Produces something like "-4 hours".  Used in strtotime() to get the unix timestamp of the raid start.	
-	$raid_freeze = strtotime($format_string, $data['start_time']); // Subtracts $data['freeze'] hours from start_time to get freeze time.
+	$raid_freeze = strtotime($format_string, $data['invite_time']); // Subtracts $data['freeze'] hours from invite_time to get freeze time.
 	if (time() < $raid_freeze) // Checks current time against freeze time and locks raid if frozen.
 		$frozen = 0;
 	else
