@@ -107,7 +107,7 @@ $phprlang['ip_header'] = 'IP Address';
 $phprlang['message_header'] = 'Message';
 $phprlang['timestamp_header'] = 'Date/Time';
 $phprlang['delete_board_cache_text'] = 'Delete cache files for the WRM Application.';
-$phprlang['delete_armory_cache_text'] = 'Delete cache files for the WOW Armory';
+$phprlang['delete_armory_cache_text'] = 'Delete WOW Armory Cache Information';
 $phprlang['delete_armory_log_text'] = 'Delete the WoW Armory Output Logs';
 $phprlang['delete_template_cache_text'] = 'Delete the WRM Application Template Cache Files.';
 $phprlang['actions_header'] = 'Board Cache/Log Actions:';
@@ -241,6 +241,11 @@ $phprlang['configuration_extsys_alt_group01'] = 'Select an Additional user group
 $phprlang['configuration_extsys_alt_group02'] = 'Any user tagged with this group will be allowed to log in regardless of whether they are in the above user group or not';
 $phprlang['configuration_extsys_group_text'] = 'Base User group';
 $phprlang['configuration_extsys_alt_group_text'] = 'Additional user group';
+$phprlang['configuration_armory_cache_timeout'] = 'Armory Cache Lifetime (In Hours)'; //New
+$phprlang['configuration_armory_cache_timeout_sup'] = 'After the Cache Lifetime expires, WRM will go back to the Armory to re-pull data.  The shorter the cache<br>' . 
+													' the "fresher" the data WRM will have in it\'s popup, but the slower WRM will run due to pulling data from<br>' . 
+													' the armory URL more often.  The longer the cache value, the less "fresh" Armory data but the faster<br>' . 
+													' WRM will run.'; //New
 
 // Text on the "User Settings" Page.
 $phprlang['configuration_multiple'] = '允許多重報名';
