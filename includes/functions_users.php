@@ -33,19 +33,25 @@
 function check_frozen($raid_id) {
 	global $db_raid, $phpraid_config;
 
-	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raids where raid_id=%s", quote_smart($raid_id));
-	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-	$data = $db_raid->sql_fetchrow($result, true);
-
-	// We have $data['start_time'], which is a unix time equivalent.  We need to subtract
-	//  the raid freeze time from this start time and figure out if current Unix date 
-	//  stamp is larger.  If it is, raid is frozen.	
-	$format_string = "-" . $data['freeze'] . " hours"; 	// Produces something like "-4 hours".  Used in strtotime() to get the unix timestamp of the raid start.	
-	$raid_freeze = strtotime($format_string, $data['invite_time']); // Subtracts $data['freeze'] hours from invite_time to get freeze time.
-	if (time() < $raid_freeze) // Checks current time against freeze time and locks raid if frozen.
+	if ($phpraid_config['disable_freeze']==1)	// Freeze checking is disabled, don't bother running the rest of the math.
 		$frozen = 0;
-	else
-		$frozen = 1;
+	else 
+	{	
+		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raids where raid_id=%s", quote_smart($raid_id));
+		$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+		$data = $db_raid->sql_fetchrow($result, true);
+		if (!isset($data['freeze'])) // Found at least one case where this was getting set to null
+			$data['freeze'] = 0;
+		// We have $data['start_time'], which is a unix time equivalent.  We need to subtract
+		//  the raid freeze time from this start time and figure out if current Unix date 
+		//  stamp is larger.  If it is, raid is frozen.	
+		$format_string = "-" . $data['freeze'] . " hours"; 	// Produces something like "-4 hours".  Used in strtotime() to get the unix timestamp of the raid start.	
+		$raid_freeze = strtotime($format_string, $data['invite_time']); // Subtracts $data['freeze'] hours from invite_time to get freeze time.
+		if (time() < $raid_freeze) // Checks current time against freeze time and locks raid if frozen.
+			$frozen = 0;
+		else
+			$frozen = 1;
+	}
 	return $frozen;
 }
 

@@ -279,7 +279,9 @@ $phprlang['configuration_class_limit_text'] = 'Imponi i limiti sulle classi';
 $phprlang['configuration_class_as_min'] = 'Considera i limiti sulle classi come limiti minimi';
 $phprlang['configuration_freeze'] = 'Disabilita la chiusura delle iscrizioni';
 $phprlang['configuration_recurrance_enabled_text'] = 'Enable Recurring Raids System'; //New
-
+$phprlang['configuration_freeze_status_draft'] = 'Stop changes to Drafted Raiders During Freeze';  //NEW
+$phprlang['configuration_freeze_status_queue'] = 'Stop changes to Queued Raiders During Freeze';  //NEW
+$phprlang['configuration_freeze_status_cancel'] = 'Stop changes to Cancelled Raiders During Freeze';  //NEW
 $phprlang['configuration_description'] = 'Descrizione';
 $phprlang['configuration_default'] = 'Profilo Utente predefinito';
 $phprlang['configuration_faction'] = 'Fazione';

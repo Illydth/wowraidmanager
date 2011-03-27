@@ -279,7 +279,9 @@ $phprlang['configuration_class_limit_text'] = 'Tvinga Klass begränsningar för 
 $phprlang['configuration_class_as_min'] = 'Använd Klass begränsningar som minimum';
 $phprlang['configuration_freeze'] = 'Avaktivera frys kontroll';
 $phprlang['configuration_recurrance_enabled_text'] = 'Enable Recurring Raids System'; //New
-
+$phprlang['configuration_freeze_status_draft'] = 'Stop changes to Drafted Raiders During Freeze';  //NEW
+$phprlang['configuration_freeze_status_queue'] = 'Stop changes to Queued Raiders During Freeze';  //NEW
+$phprlang['configuration_freeze_status_cancel'] = 'Stop changes to Cancelled Raiders During Freeze';  //NEW
 $phprlang['configuration_description'] = 'Beskrivning';
 $phprlang['configuration_default'] = 'Standard Grupp';
 $phprlang['configuration_faction'] = 'Faktion';

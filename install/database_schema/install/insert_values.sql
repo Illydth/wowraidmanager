@@ -431,6 +431,9 @@ INSERT INTO `wrm_config` VALUES ('template_body_width', 'width_normal');
 INSERT INTO `wrm_config` VALUES ('auto_mark_raids_old', '4');
 INSERT INTO `wrm_config` VALUES ('recurrance_enabled', '1');
 INSERT INTO `wrm_config` VALUES ('armory_cache_timeout', '48');
+INSERT INTO `wrm_config` VALUES ('freeze_status_draft', '0');
+INSERT INTO `wrm_config` VALUES ('freeze_status_queue', '0');
+INSERT INTO `wrm_config` VALUES ('freeze_status_cancel', '0');
 
 -- Event Type Table Data
 INSERT INTO `wrm_event_type` (`event_type_id`, `event_type_name`, `event_type_lang_id`, `def`) VALUES

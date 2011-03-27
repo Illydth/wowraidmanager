@@ -16,6 +16,10 @@ ALTER TABLE `wrm_signups` CHANGE `comments` `comments` VARCHAR( 5000 );
 INSERT INTO `wrm_config` VALUES ('auto_mark_raids_old', '4');
 INSERT INTO `wrm_config` VALUES ('recurrance_enabled', '1');
 INSERT INTO `wrm_config` VALUES ('armory_cache_timeout', '48');
+INSERT INTO `wrm_config` VALUES ('freeze_status_draft', '0');
+INSERT INTO `wrm_config` VALUES ('freeze_status_queue', '0');
+INSERT INTO `wrm_config` VALUES ('freeze_status_cancel', '0');
+
 UPDATE `wrm_config` SET config_value = 'database' WHERE config_name = 'armory_cache_setting';
 
 INSERT INTO `wrm_version` VALUES ('4.1.4','Version 4.1.4 of WoW Raid Manager');
