@@ -280,18 +280,18 @@ EOT;
 		$name = substr_wrap($name, 1, (strlen_wrap($name, "UTF-8")-1), "UTF-8");
 		//cssToolTip($display, $hoverText, $spanClass, $link='', $title='')
 		//$name = '<a class="tooltip" href="'.$url.'">' . ucfirst($name) . '<span class="custom armory">' . $data . '</span></a>';
-		$name = cssToolTip(ucfirst($name), $data, 'custom armory', $url);
+		$name = cssToolTip(ucfirst($name), $data, 'custom armory', $url, ucfirst($name) . '@' . $realm, TRUE);
 	}
 	else if(substr_wrap($name, 0, 1, "UTF-8") == '(' && substr_wrap($name, strlen_wrap($name) - 1, 1, "UTF-8") == ')')
 	{
 		$name = substr_wrap($name, 1, strlen_wrap($name, "UTF-8") - 2, "UTF-8");
 		//$name = '<a class="tooltip" href="'.$url.'">' . ucfirst($name) . '<span class="custom armory">' . $data . '</span></a>';
-		$name = cssToolTip(ucfirst($name), $data, 'custom armory', $url);
+		$name = cssToolTip(ucfirst($name), $data, 'custom armory', $url, ucfirst($name) . '@' . $realm, TRUE);
 	}
 	else
 	{
 		//$name = '<a class="tooltip" href="'.$url.'">' . ucfirst($name) . '<span class="custom armory">' . $data . '</span></a>';
-		$name = cssToolTip(ucfirst($name), $data, 'custom armory', $url);
+		$name = cssToolTip(ucfirst($name), $data, 'custom armory', $url, ucfirst($name) . '@' . $realm, TRUE);
 	}
 	return $name;   
 }
@@ -678,13 +678,24 @@ function get_db_size()
 * @param string %spanClass - Properties applied to tooltips
 * @param string $link(OPTIONAL) - The URL you want the link displaying the tooltip to take you, DEFAULT=''
 * @param string %title(OPTIONAL) - The title you want displayed in the popup.
+* @param string %newPage(OPTIONAL) - Whether to link to a new page with the URL or not.  Default is No.
+* @return string $url - The created URL with the popup text applied.
 * @access public
 */
-function cssToolTip($display, $hoverText, $spanClass, $link='', $title='') {
+function cssToolTip($display, $hoverText, $spanClass, $link='', $title='', $newPage = FALSE) 
+{
 	$hoverText=clean_value($hoverText);
-	$popup = '<a class="tooltip" href="'.$link.'" target="_blank">'.$display.'<span class="'.$spanClass.'">';
-		if (strlen_wrap($title, "UTF-8") > 0){  // Check to see if there is a title or not
-		$popup .= '<em>'.$title.'</em>';
+	if ($newPage)
+	{
+		$popup = '<a class="tooltip" href="'.$link.'" target="_blank">'.$display.'<span class="'.$spanClass.'">';
+		if (strlen_wrap($title, "UTF-8") > 0)  // Check to see if there is a title or not
+			$popup .= '<em>'.$title.'</em>';
+	}
+	else
+	{
+		$popup = '<a class="tooltip" href="'.$link.'">'.$display.'<span class="'.$spanClass.'">';
+		if (strlen_wrap($title, "UTF-8") > 0)  // Check to see if there is a title or not
+			$popup .= '<em>'.$title.'</em>';
 	}
 	$popup .= $hoverText . '</span></a>';
     return  $popup;
