@@ -158,6 +158,16 @@ function signedUpFlow($user_perm_group, $phpraid_config, $data, $raid_id, $phprl
 	$buttons=initializeButtons();
 	
 	//Signed Up Buttons
+	
+	// Users should only have options to work on themselves, they should not be able to modify other users.
+	if($_SESSION['profile_id'] == $data['profile_id'])
+	{
+		if ($phpraid_config['freeze_status_draft']==1 && check_frozen($raid_id)==1 && $phpraid_config['disable_freeze']==0 )
+			$buttons['Comments'] = TRUE;
+		else
+			$buttons = getarray_button(1, "drafted", $buttons);
+	}
+	
 	if($user_perm_group['admin'])
 	{
 		$buttons = getarray_button(3, "drafted", $buttons);
@@ -166,15 +176,6 @@ function signedUpFlow($user_perm_group, $phpraid_config, $data, $raid_id, $phprl
 	if($user_perm_group['RL'])
 	{
 		$buttons = getarray_button(2, "drafted", $buttons);
-	}
-
-	// Users should only have options to work on themselves, they should not be able to modify other users.
-	if($_SESSION['profile_id'] == $data['profile_id'])
-	{
-		if ($phpraid_config['freeze_status_draft']==1 && check_frozen($raid_id)==1 && $phpraid_config['disable_freeze']==0 )
-			$buttons['Comments'] = TRUE;
-		else
-			$buttons = getarray_button(1, "drafted", $buttons);
 	}
 
 	//Create Buttons
@@ -224,15 +225,6 @@ function queuedFlow($user_perm_group, $phpraid_config, $data, $raid_id, $phprlan
 	$buttons=initializeButtons();
 
 	//Signed Up Buttons
-	if($user_perm_group['admin'])
-	{
-		$buttons = getarray_button(3, "queue", $buttons);
-	}
-
-	if($user_perm_group['RL'])
-	{
-		$buttons = getarray_button(2, "queue", $buttons);
-	}
 
 	// Users should only have options to work on themselves, they should not be able to modify other users.
 	if($_SESSION['profile_id'] == $data['profile_id'])
@@ -241,6 +233,16 @@ function queuedFlow($user_perm_group, $phpraid_config, $data, $raid_id, $phprlan
 			$buttons['Comments'] = TRUE;
 		else
 			$buttons = getarray_button(1, "queue", $buttons);
+	}
+	
+	if($user_perm_group['admin'])
+	{
+		$buttons = getarray_button(3, "queue", $buttons);
+	}
+
+	if($user_perm_group['RL'])
+	{
+		$buttons = getarray_button(2, "queue", $buttons);
 	}
 
 	//Create Buttons
@@ -302,6 +304,16 @@ function canceledFlow($user_perm_group, $phpraid_config, $data, $raid_id, $phprl
 	$buttons=initializeButtons();
 
 	//Signed Up Buttons
+	
+	// Users should only have options to work on themselves, they should not be able to modify other users.
+	if($_SESSION['profile_id'] == $data['profile_id'])
+	{
+		if ($phpraid_config['freeze_status_cancel']==1 && check_frozen($raid_id)==1 && $phpraid_config['disable_freeze']==0 )
+			$buttons['Comments'] = TRUE;
+		else
+			$buttons = getarray_button(1, "cancel", $buttons);
+	}
+	
 	if($user_perm_group['admin'])
 	{
 		$buttons = getarray_button(3, "cancel", $buttons);
@@ -312,15 +324,6 @@ function canceledFlow($user_perm_group, $phpraid_config, $data, $raid_id, $phprl
 		$buttons = getarray_button(2, "cancel", $buttons);
 	}
 
-	// Users should only have options to work on themselves, they should not be able to modify other users.
-	if($_SESSION['profile_id'] == $data['profile_id'])
-	{
-		if ($phpraid_config['freeze_status_cancel']==1 && check_frozen($raid_id)==1 && $phpraid_config['disable_freeze']==0 )
-			$buttons['Comments'] = TRUE;
-		else
-			$buttons = getarray_button(1, "cancel", $buttons);
-	}
-	
 	//Create Buttons
 	if ($buttons['Queue'])
 	{
