@@ -267,7 +267,7 @@ function DEFINE_wrm_login()
 		else 
 		{
 			wrm_logout();
-			return -1;
+			return 0;
 		}
 		/*
 		if ( validate_Bridge_User($profile_id, $password, $pwdencrypt) == false)
@@ -300,7 +300,7 @@ function DEFINE_wrm_login()
 			else
 			{
 				wrm_logout();
-				return -1;
+				return 0;
 			}
 		}
 		else // We are using an external Auth System...non iUMS.  Validate the user within the auth database.
@@ -322,7 +322,7 @@ function DEFINE_wrm_login()
 			else
 			{
 				wrm_logout();
-				return -1;
+				return 0;
 			}	
 		}		
 	
