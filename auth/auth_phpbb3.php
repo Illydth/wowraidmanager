@@ -150,6 +150,14 @@ function password_check($oldpassword, $profile_id, $encryptflag)
 	
 	if ($encryptflag)
 	{ // Encrypted Password Sent in, Check directly against DB.
+		if (defined('DEBUG') && DEBUG)
+		{
+			fwrite($stdoutfptr, "  Encrypted Password Sent In.\n");
+			fwrite($stdoutfptr, "  Password If Check (Equals) :\n");
+			fwrite($stdoutfptr, "    -> Input Password: '" . $oldpassword . "'\n");
+			fwrite($stdoutfptr, "    -> Database Password: '" . $db_pass . "'\n");
+		}
+		
 		if ($oldpassword == $db_pass)
 			return $db_pass;
 		else
@@ -159,7 +167,14 @@ function password_check($oldpassword, $profile_id, $encryptflag)
 	{ // Non-encrypted password sent in, encrypt and check against DB.
 		$initString = '$H$';
 		$testVal = $pwd_hasher->CheckPassword($oldpassword, $db_pass, $initString);
-	
+
+		if (defined('DEBUG') && DEBUG)
+		{
+			fwrite($stdoutfptr, "  Encrypted Password NOT Sent In.\n");
+			fwrite($stdoutfptr, "  Password If Check (Return Code) :\n");
+			fwrite($stdoutfptr, "    -> Return Code from Password Check: " . var_dump($testVal) . "\n");
+		}
+		
 		if ($testVal)
 			return $db_pass;
 		else

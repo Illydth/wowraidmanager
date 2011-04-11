@@ -30,8 +30,11 @@
 *
 ****************************************************************************/
 
-// clsoe database connection
+// close database connection
 $db_raid->sql_close();
+
+// close debug file pointer
+fclose($stdoutfptr);
 
 //
 // Parse and show the overall footer.

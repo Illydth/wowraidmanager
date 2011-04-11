@@ -242,6 +242,14 @@ function password_check($oldpassword, $profile_id, $encryptflag)
 
 	if ($encryptflag)
 	{ // Encrypted Password Sent in, Check directly against DB.
+		if (defined('DEBUG') && DEBUG)
+		{
+			fwrite($stdoutfptr, "  Encrypted Password Sent In.\n");
+			fwrite($stdoutfptr, "  Password If Check (Equals) :\n");
+			fwrite($stdoutfptr, "    -> Input Password: '" . $oldpassword . "'\n");
+			fwrite($stdoutfptr, "    -> Database Password: '" . $db_pass . "'\n");
+		}
+		
 		if ($oldpassword == $db_pass)
 			return $db_pass;
 		else
@@ -261,7 +269,15 @@ function password_check($oldpassword, $profile_id, $encryptflag)
 		$salt = $data_salt[$db_user_salt];
 	
 		$dbusernewpassword = getDoubleSaltedHash($oldpassword, $salt);
-	
+		
+		if (defined('DEBUG') && DEBUG)
+		{
+			fwrite($stdoutfptr, "  Encrypted Password NOT Sent In.\n");
+			fwrite($stdoutfptr, "  Password If Check (Equals):\n");
+			fwrite($stdoutfptr, "    -> Input Password: '" . $dbusernewpassword . "'\n");
+			fwrite($stdoutfptr, "    -> Database Password: '" . $db_pass . "'\n");
+		}
+		
 		if ($dbusernewpassword == $db_pass)
 			return $db_pass;
 		else

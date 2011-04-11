@@ -74,9 +74,9 @@ require_once($phpraid_dir.'includes/ubb.php');
 // database connection
 global $db_raid, $errorTitle, $errorMsg, $errorDie;
 if ($phpraid_config['persistent_db'] == TRUE)
-	$db_raid = &new sql_db($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass'],$phpraid_config['db_name'],TRUE,TRUE);
+	$db_raid = new sql_db($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass'],$phpraid_config['db_name'],TRUE,TRUE);
 else
-	$db_raid = &new sql_db($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass'],$phpraid_config['db_name'],TRUE,FALSE);
+	$db_raid = new sql_db($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass'],$phpraid_config['db_name'],TRUE,FALSE);
 
 if(!$db_raid->db_connect_id)
 {

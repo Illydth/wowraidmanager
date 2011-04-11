@@ -434,6 +434,7 @@ INSERT INTO `wrm_config` VALUES ('armory_cache_timeout', '48');
 INSERT INTO `wrm_config` VALUES ('freeze_status_draft', '0');
 INSERT INTO `wrm_config` VALUES ('freeze_status_queue', '0');
 INSERT INTO `wrm_config` VALUES ('freeze_status_cancel', '0');
+INSERT INTO `wrm_config` VALUES ('debug', '0');
 
 -- Event Type Table Data
 INSERT INTO `wrm_event_type` (`event_type_id`, `event_type_name`, `event_type_lang_id`, `def`) VALUES

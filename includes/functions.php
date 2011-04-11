@@ -701,4 +701,19 @@ function cssToolTip($display, $hoverText, $spanClass, $link='', $title='', $newP
     return  $popup;
 } 
 
+/**
+* This function uses Var_Dump to dump variable output to a string instead of to page, this allows this output to be written
+* 	to a log file.
+* @param string $mixed - The variable you want to dump to string.
+* @return string $content - The input variable "dumped" to a string.
+* @access public
+*/
+function var_dump_string($mixed = null) {
+  ob_start();
+  var_dump($mixed);
+  $content = ob_get_contents();
+  ob_end_clean();
+  return $content;
+}
+
 ?>

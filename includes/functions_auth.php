@@ -236,9 +236,18 @@ function DEFINE_wrm_login()
 	{
 		global $db_user_id, $db_group_id, $db_add_group_ids, $db_user_name, $db_user_email, $db_user_password, $db_table_user_name; 
 		global $db_table_group_name, $auth_user_class, $auth_alt_user_class, $table_prefix;
-		global $db_raid, $phpraid_config;
+		global $db_raid, $phpraid_config, $stdoutfptr;
 		global $Bridge2ColumGroup;
-	
+
+		if (defined('DEBUG') && DEBUG)
+		{
+			fwrite($stdoutfptr, "==================================================\n");
+			fwrite($stdoutfptr, "Entering WRM_LOGIN() [includes/functions_auth.php]\n");
+			fwrite($stdoutfptr, __FILE__ . ":" . __LINE__ . "\n");
+			fwrite($stdoutfptr, "==================================================\n");
+			fwrite($stdoutfptr, "\n");
+		}
+		
 		$password = "";
 		$profile_id = "";
 		
@@ -254,6 +263,18 @@ function DEFINE_wrm_login()
 			$password = $_POST['password'];
 			//$password = md5($_POST['password']);//
 			$wrmpass = md5($_POST['password']);
+			if (defined('DEBUG') && DEBUG)
+			{
+				fwrite($stdoutfptr, "NORMAL LOGIN: Username Passed In on POST.\n");
+				fwrite($stdoutfptr, "INPUT USERNAME INFORMANTION:\n");
+				fwrite($stdoutfptr, "  Unmodified Username: " . $_POST['username'] . "\n");
+				fwrite($stdoutfptr, "  Username Scrubbed: " . scrub_input($_POST['username']) . "\n");
+				fwrite($stdoutfptr, "  Username Scrubbed and Lowered:" . strtolower_wrap(scrub_input($_POST['username']), "UTF-8") . "\n");
+				fwrite($stdoutfptr, "INPUT PASSWORD INFORMATION:\n");
+				fwrite($stdoutfptr, "  Input Password: '" . $password . "'\n");
+				fwrite($stdoutfptr, "  Password Hashed for WRM: '" . $wrmpass . "'\n");
+				fwrite($stdoutfptr, "  Encrypt Input Password? '" . var_dump_string($pwdencrypt) . "'\n");
+			}
 		}// get infos from the COOKIE
 		elseif(isset($_COOKIE['username']) && isset($_COOKIE['password']))
 		{
@@ -263,9 +284,27 @@ function DEFINE_wrm_login()
 			$password = $_COOKIE['password'];
 			$profile_id = $_COOKIE['profile_id'];
 			$wrmpass = '';
+			if (defined('DEBUG') && DEBUG)
+			{
+				fwrite($stdoutfptr, "COOKIE LOGIN: Username Passed In from Cookie.\n");
+				fwrite($stdoutfptr, "INPUT USERNAME INFORMANTION:\n");
+				fwrite($stdoutfptr, "  Unmodified Username: '" . $_COOKIE['username'] . "'\n");
+				fwrite($stdoutfptr, "  Username Scrubbed: '" . scrub_input($_COOKIE['username']) . "'\n");
+				fwrite($stdoutfptr, "  Username Scrubbed and Lowered: '" . strtolower_wrap(scrub_input($_COOKIE['username']), "UTF-8") . "'\n");
+				fwrite($stdoutfptr, "INPUT PASSWORD INFORMATION:\n");
+				fwrite($stdoutfptr, "  Input Password: '" . $password . "'\n");
+				fwrite($stdoutfptr, "  Password Hashed for WRM: '" . $wrmpass . "'\n");
+				fwrite($stdoutfptr, "  Encrypt Input Password? '" . var_dump_string($pwdencrypt) . "'\n");
+				fwrite($stdoutfptr, "INPUT PROFILE_ID INFORMATION:\n");
+				fwrite($stdoutfptr, "  Profile_ID from Cookie: " . $profile_id . "'\n");
+			}
 		} 
 		else 
 		{
+			if (defined('DEBUG') && DEBUG)
+			{
+				fwrite($stdoutfptr, "Neither POST nor COOKIE Username was Sent, Logout WRM.\n");
+			}
 			wrm_logout();
 			return 0;
 		}
@@ -282,6 +321,10 @@ function DEFINE_wrm_login()
 		//  to pass this requirement.
 		if ($phpraid_config['auth_type']=='iums')
 		{
+			if (defined('DEBUG') && DEBUG)
+			{
+				fwrite($stdoutfptr, "IUMS Auth Type Detected.\n");
+			}
 			$sql = sprintf(	"SELECT ". $db_user_id . "," . $db_user_name . "," . $db_user_email . "," . $db_user_password.
 						" FROM " . $table_prefix . $db_table_user_name . 
 						" WHERE ". $db_user_name . " = %s", quote_smart($username));
@@ -290,37 +333,79 @@ function DEFINE_wrm_login()
 			{
 				$data = $db_raid->sql_fetchrow($result, true);
 				$profile_id = $data[$db_user_id];
-	
-				
+
+				if (defined('DEBUG') && DEBUG)
+				{
+					fwrite($stdoutfptr, "  '" . $username . "' Exists in WRM_PROFILE Table.\n");
+					fwrite($stdoutfptr, "  Username If Check (Equals) :\n");
+					fwrite($stdoutfptr, "    -> Input Profile ID: '" . $profile_id . "'\n");
+					fwrite($stdoutfptr, "    -> WRM_PROFILE Profile ID: '" . $data[$db_user_id] . "'\n");
+				}					
+
 				if( ($profile_id == $data[$db_user_id]) && ($cmspass = password_check($password, $data[$db_user_id], $pwdencrypt)) )
 					$user_auth = TRUE;
 				else
 					$user_auth = FALSE;
+
+				if (defined('DEBUG') && DEBUG)
+				{
+					fwrite($stdoutfptr, "IUMS Final Result: " . var_dump_string($user_auth) . "\n");
+				}						
 			}
 			else
 			{
+				if (defined('DEBUG') && DEBUG)
+				{
+					fwrite($stdoutfptr, "  '" . $username . "' DOES NOT exist in WRM_PROFILE Table, Failing.\n");
+				}
 				wrm_logout();
 				return 0;
 			}
 		}
 		else // We are using an external Auth System...non iUMS.  Validate the user within the auth database.
 		{
+			if (defined('DEBUG') && DEBUG)
+			{
+				fwrite($stdoutfptr, "'" . $phpraid_config['auth_type'] . "' Auth Type Detected.\n");
+			}
+			
 			$sql = sprintf( "SELECT ".$db_user_id.",". $db_user_name .",".$db_user_email.",".$db_user_password.
 							" FROM " . $table_prefix . $db_table_user_name.
 							" WHERE ".$db_user_name." = %s", quote_smart($username));
 			$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+			
 			if ($db_raid->sql_numrows($result) > 0 )
 			{
 				$data = $db_raid->sql_fetchrow($result, true);
 				$profile_id = $data[$db_user_id];
+				
+				if (defined('DEBUG') && DEBUG)
+				{
+					fwrite($stdoutfptr, "  '" . $username . "' Exists in " . $table_prefix . $db_table_user_name . " Table.\n");
+					fwrite($stdoutfptr, "  Username If Check (Equals) :\n");
+					fwrite($stdoutfptr, "    -> Input User Name: '" . $username . "'\n");
+					fwrite($stdoutfptr, "    -> DB Username Pre-Lower: '" . $data[$db_user_name] . "'\n");
+					fwrite($stdoutfptr, "    -> Database User Name: '" . strtolower_wrap($data[$db_user_name], "UTF-8") . "'\n");
+				}
+				
 				if( ($username == strtolower_wrap($data[$db_user_name], "UTF-8")) && 
 						($cmspass = password_check($password, $data[$db_user_id], $pwdencrypt)) )
 					$user_auth = TRUE;
 				else
 					$user_auth = FALSE;
+
+				if (defined('DEBUG') && DEBUG)
+				{
+					fwrite($stdoutfptr, "Bridge Final Result: " . var_dump_string($user_auth) . "\n");
+				}						
 			}
 			else
 			{
+				if (defined('DEBUG') && DEBUG)
+				{
+					fwrite($stdoutfptr, "  '" . $username . "' DOES NOT Exist in " . $table_prefix . $db_table_user_name . " Table, Failing.\n");
+				}
+				
 				wrm_logout();
 				return 0;
 			}	
@@ -339,6 +424,11 @@ function DEFINE_wrm_login()
 		//if( ($profile_id == $data[$db_user_id]) && ($cmspass = password_check($password, $data[$db_user_id], $pwdencrypt)) ) 
 		if ($user_auth == TRUE)
 		{
+			if (defined('DEBUG') && DEBUG)
+			{
+				fwrite($stdoutfptr, "AUTHORIZED USER DETECTED (Username/Password check Succeeded.\n");
+			}
+			
 			/**
 			 * user with access to admin area
 			 * ignore base and alt base group Settings
@@ -355,8 +445,20 @@ function DEFINE_wrm_login()
 			// The user has a matching username and proper password in the BRIDGE database.
 			// We need to validate the users group.  If it does not contain the user group that has been set as
 			//	authorized to use WRM, we need to fail the login with a proper message.
+			if (defined('DEBUG') && DEBUG)
+			{
+				fwrite($stdoutfptr, "  Checking User for Admin Permissions (Short Circuit Group Check): \n");
+				fwrite($stdoutfptr, "  -> Auth_User_Class = '" . $auth_user_class . "'\n");
+				fwrite($stdoutfptr, "  -> Default_Bridge_Value = '" . $default_bridge_value . "'\n");
+				fwrite($stdoutfptr, "  -> Configuration Permission? "  . $data_permissions['configuration'] . "\n");
+			}
+						
 			if ((($auth_user_class != "") and ($auth_user_class != $default_bridge_value)) and ($data_permissions["configuration"] != 1))
 			{
+				if (defined('DEBUG') && DEBUG)
+				{
+					fwrite($stdoutfptr, "  User is NOT admin, continuing check for proper group.\n");
+				}			
 				$FoundUserInGroup = FALSE;
 				
 				/*e107, smf*/
@@ -365,6 +467,11 @@ function DEFINE_wrm_login()
 				//  section have their own code for finding group membership.
 				if ($Bridge2ColumGroup == TRUE)
 				{
+					if (defined('DEBUG') && DEBUG)
+					{
+						fwrite($stdoutfptr, "  e107 or SMF style group checking being performed.\n");
+					}			
+					
 					if ($db_add_group_ids != "")
 						$sql = sprintf( "SELECT  " .$db_group_id . "," . $db_add_group_ids . 
 										" FROM "  . $table_prefix . $db_table_group_name . 
@@ -383,7 +490,7 @@ function DEFINE_wrm_login()
 						$user_class = $datagroup[$db_group_id] . "," . $datagroup[$db_add_group_ids];
 					else
 						$user_class = $datagroup[$db_group_id];
-					
+						
 					// Group Access Check for Auth where Groups are stored in a list in a single field.
 					$pos = strpos($user_class, $auth_user_class);
 					$pos2 = strpos($user_class, $auth_alt_user_class);
@@ -396,21 +503,48 @@ function DEFINE_wrm_login()
 					}
 					else
 						$FoundUserInGroup = TRUE;
+						
+					if (defined('DEBUG') && DEBUG)
+					{
+						fwrite($stdoutfptr, "  -> User Class List: " . $user_class . "\n");
+						fwrite($stdoutfptr, "  -> Authorized User Class List: " . $auth_user_class . "\n");
+						fwrite($stdoutfptr, "  -> Alternate Authorized User Class List: " . $auth_alt_user_class . "\n");
+						fwrite($stdoutfptr, "  -> Position Found in User Class: " . var_dump_string($pos) . "\n");
+						fwrite($stdoutfptr, "  -> Position Found in Alternate User Class: " . var_dump_string($pos2) . "\n");
+						fwrite($stdoutfptr, "  Final User Found Result: " . var_dump_string($FoundUserInGroup) . "\n");
+					}				
 				}
 				/* phpbb,...*/
 				else
 				{
+					if (defined('DEBUG') && DEBUG)
+					{
+						fwrite($stdoutfptr, "  phpbb style group checking being performed.\n");
+						fwrite($stdoutfptr, "  -> Authorized User Class List: " . $auth_user_class . "\n");
+						fwrite($stdoutfptr, "  -> Alternate Authorized User Class List: " . $auth_alt_user_class . "\n");
+						fwrite($stdoutfptr, "  Data Group List: \n");
+					}			
+					
 					$sql = sprintf( "SELECT " . $db_group_id . 
 									" FROM "  . $table_prefix . $db_table_group_name . 
 									" WHERE " . $db_user_id . " = %s", quote_smart($data[$db_user_id])
 							);
 					$resultgroup = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+
 					while($datagroup = $db_raid->sql_fetchrow($resultgroup, true))
 					{
+						if (defined('DEBUG') && DEBUG)
+						{
+							fwrite ($stdoutfptr, "  * '" . $datagroup[$db_group_id] . "'\n");
+						}
 						if( ($datagroup[$db_group_id] == $auth_user_class) or 
 							($datagroup[$db_group_id] == $auth_alt_user_class)
 						  )
 						{	
+							if (defined('DEBUG') && DEBUG)
+							{
+								fwrite ($stdoutfptr, "  * -> ** Auth Group Found **\n");
+							}							
 							$FoundUserInGroup = TRUE;
 						}
 					}
@@ -418,11 +552,20 @@ function DEFINE_wrm_login()
 				
 				if ($FoundUserInGroup == FALSE)
 				{
+					if (defined('DEBUG') && DEBUG)
+					{
+						fwrite ($stdoutfptr, "  Auth Group Not Found, Failing with 'Not Authorized' Error Message.\n");
+					}							
 					wrm_logout();
 					return -1;
 				}
 			}
 	
+			if (defined('DEBUG') && DEBUG)
+			{
+				fwrite ($stdoutfptr, "USER AUTHORIZED AND GROUP VALIDATED, PROCESS PROFILE.\n");
+			}
+			
 			// User is properly logged in and is allowed to use WRM, go ahead and process his login.
 			$autologin = scrub_input($_POST['autologin']);
 			if(isset($autologin)) {
@@ -431,13 +574,31 @@ function DEFINE_wrm_login()
 				setcookie('username', $data[$db_user_name], time() + 2629743);
 				setcookie('profile_id', $data[$db_user_id], time() + 2629743);
 				setcookie('password', $cmspass, time() + 2629743);
+
+				if (defined('DEBUG') && DEBUG)
+				{
+					fwrite ($stdoutfptr, "  Setting Cookie Information:\n");
+					fwrite ($stdoutfptr, "  -> Cookie Username: '" . $data[$db_user_name] . "'\n");
+					fwrite ($stdoutfptr, "  -> Cookie Profile ID: '" . $data[$db_user_id] . "'\n");
+					fwrite ($stdoutfptr, "  -> Cookie Password: '" . $cmspass . "'\n");
+				}							
 			}
 			/**************************************************************
 			 * set user profile variables in SESSION
 			 **************************************************************/
 			set_WRM_SESSION($data[$db_user_id], 1, $data[$db_user_name], TRUE);
+			if (defined('DEBUG') && DEBUG)
+			{
+				fwrite ($stdoutfptr, "  Setting Session Information:\n");
+				fwrite ($stdoutfptr, "  -> Session Variable Dump:\n");
+				fwrite ($stdoutfptr, "  -> " . var_dump_string($_SESSION) . "\n");
+			}	
 			if ($phpraid_config['auth_type'] != 'iums')
 			{
+				if (defined('DEBUG') && DEBUG)
+				{
+					fwrite ($stdoutfptr, "  Non IUMS Auth Type: Adding or Updating Profile:\n");
+				}					
 				// User is all logged in and setup, the session is initialized properly.  Now we need to create the users
 				//    profile in the WRM database if it does not already exist.
 				$sql = sprintf(	"SELECT * " .
@@ -447,16 +608,40 @@ function DEFINE_wrm_login()
 				$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 				
 				if ($profdata = $db_raid->sql_fetchrow($result))
+				{
+					if (defined('DEBUG') && DEBUG)
+					{
+						fwrite ($stdoutfptr, "  UPDATING Profile:\n");
+						fwrite ($stdoutfptr, "  -> Profile_ID: '" . $_SESSION['profile_id'] . "'\n");
+						fwrite ($stdoutfptr, "  -> IUMS Password: '" . $wrmpass . "'\n");
+						fwrite ($stdoutfptr, "  -> E-Mail Address: '" . $data[$db_user_email] . "'\n");
+					}					
 					wrm_profile_update($_SESSION['profile_id'],$wrmpass,$data[$db_user_email]);
+				}
 				else
+				{
+					if (defined('DEBUG') && DEBUG)
+					{
+						fwrite ($stdoutfptr, "  INSERTING Profile:\n");
+						fwrite ($stdoutfptr, "  -> Profile_ID: '" . $data[$db_user_id] . "'\n");
+						fwrite ($stdoutfptr, "  -> IUMS Password: '" . $wrmpass . "'\n");
+						fwrite ($stdoutfptr, "  -> E-Mail Address: '" . $data[$db_user_email] . "'\n");
+						fwrite ($stdoutfptr, "  -> Username: '" . $data[$db_user_name] . "'\n");
+					}					
 					wrm_profile_add($data[$db_user_id],$data[$db_user_email],$wrmpass,$data[$db_user_name]);
+				}
 			}
 			else
 			{
 				// ********************
 				// * NOTE * IUMS Auth does not do profile checking like external bridges do.
 				// ********************
-				
+				if (defined('DEBUG') && DEBUG)
+				{
+					fwrite ($stdoutfptr, "  IUMS Auth, UPDATE Profile:\n");
+					fwrite ($stdoutfptr, "  -> Profile_ID: '" . $_SESSION['profile_id'] . "'\n");
+					fwrite ($stdoutfptr, "  -> E-Mail Address: '" . $data[$db_user_email] . "'\n");
+				}	
 				wrm_profile_update($_SESSION['profile_id'],"",$data[$db_user_email]);
 			}
 			
@@ -469,6 +654,11 @@ function DEFINE_wrm_login()
 			unset($wrmpass);
 	
 			return 1;
+		}
+		
+		if (defined('DEBUG') && DEBUG)
+		{
+			fwrite($stdoutfptr, "USER NOT AUTHORIZED TO USE WRM (Username/Password Check Failed).\n");
 		}
 		
 		return 0;
@@ -499,6 +689,7 @@ function validate_Bridge_User($profile_id, $password, $pwdencrypt)
 	//fail, error
 	return false;
 }
+
 /**************************************************************
  * set user profile variables in SESSION
  **************************************************************/
@@ -581,11 +772,28 @@ function wrm_profile_update($profile_id, $wrmpass, $email)
  **************************************************************/
 function wrm_logout()
 {
+	global $stdoutfptr;
+	
+	if (defined('DEBUG') && DEBUG)
+	{
+		echo "DEFINED";
+		fwrite($stdoutfptr, "Logout Called, Clear Session.\n");
+	}
 	// unset the session and remove all cookies
 	clear_session();
+
+	if (defined('DEBUG') && DEBUG)
+	{
+		fwrite($stdoutfptr, "Dump Session Data:\n");
+		fwrite($stdoutfptr, var_dump_string($_SESSION));
+	}
+	
 	setcookie('username', '', time() - 2629743);
 	setcookie('profile_id', '', time() - 2629743);
 	setcookie('password', '', time() - 2629743);
+	
+	clear_session_permissions();
+	clear_session();
 }
 
 ?>

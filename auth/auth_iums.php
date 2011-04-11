@@ -99,7 +99,7 @@ function db_password_change($profile_id, $dbusernewpassword)
 //return value -> $data['password'] (Password from CMS database) upon success, FALSE upon fail.
 function password_check($oldpassword, $profile_id, $encryptflag)
 {
-	global $db_raid, $phpraid_config;
+	global $db_raid, $phpraid_config, $stdoutfptr;
 	$sql = sprintf(	"SELECT password ".
 					" FROM " . $phpraid_config['db_prefix'] . "profile ".
 					" WHERE profile_id = %s", quote_smart($profile_id)
@@ -109,6 +109,13 @@ function password_check($oldpassword, $profile_id, $encryptflag)
 	
 	if ($encryptflag)
 	{ // Encrypted Password Sent In.
+		if (defined('DEBUG') && DEBUG)
+		{
+			fwrite($stdoutfptr, "  Encrypted Password Sent In.\n");
+			fwrite($stdoutfptr, "  Password If Check (Equals) :\n");
+			fwrite($stdoutfptr, "    -> Input Password: '" . $oldpassword . "'\n");
+			fwrite($stdoutfptr, "    -> Database Password: '" . $data['password'] . "'\n");
+		}
 		if ($oldpassword == $data['password'])
 			return $data['password'];
 		else
@@ -116,6 +123,14 @@ function password_check($oldpassword, $profile_id, $encryptflag)
 	}
 	else 
 	{ // Plain text password sent in.
+		if (defined('DEBUG') && DEBUG)
+		{
+			fwrite($stdoutfptr, "  Encrypted Password NOT Sent In.\n");
+			fwrite($stdoutfptr, "  Password If Check (Equals) :\n");
+			fwrite($stdoutfptr, "    -> Input Password: '" . md5($oldpassword) . "'\n");
+			fwrite($stdoutfptr, "    -> Database Password: '" . $data['password'] . "'\n");
+		}
+		
 		if (md5($oldpassword) == $data['password'])
 			return $data['password'];
 		else

@@ -83,6 +83,29 @@ require_once($phpraid_dir.'includes/scheduler.php');
 require_once($phpraid_dir.'includes/wowarmory/simple_html_dom.php');
 require_once($phpraid_dir.'includes/wowarmory/scrapper.class.php');
 
+/****************************************************
+ * Setup DEBUG Log File
+ ****************************************************/
+// Open an error log to write to for information.
+
+if (isset($phpraid_config['debug']) && $phpraid_config['debug']);
+{
+	define('DEBUG', TRUE);
+	
+	if (defined('DEBUG') && DEBUG)
+	{
+		$stdoutfptr = fopen($phpraid_dir."/cache/wrm_debug.log", "w");
+	}
+}
+
+if (defined('DEBUG') && DEBUG)
+{
+	fwrite($stdoutfptr, "==================================================\n");
+	fwrite($stdoutfptr, "Loading common.php [common.php]\n");
+	fwrite($stdoutfptr, __FILE__ . ":" . __LINE__ . "\n");
+	fwrite($stdoutfptr, "==================================================\n");
+	fwrite($stdoutfptr, "\n");
+}
 
 /****************************************************
  * Report Output Setup (Deprecated)
@@ -204,9 +227,20 @@ else
 //   dymanically defines the "wrm_login()" function at runtime.
 require_once($phpraid_dir.'auth/auth_' . $phpraid_config['auth_type'] . '.php');
 require_once($phpraid_dir.'includes/functions_auth.php');
+if (defined('DEBUG') && DEBUG)
+{
+	fwrite($stdoutfptr, "DETERMINING AUTH TYPE\n");
+	fwrite($stdoutfptr, "  Auth Type: " . $phpraid_config['auth_type'] . "\n");
+}
 if (!function_exists('wrm_login'))
+{
+	if (defined('DEBUG') && DEBUG)
+	{
+		fwrite($stdoutfptr, "  Calling DEFINE_wrm_login()\n");
+	}	
 	DEFINE_wrm_login();
-
+}
+	
 // good ole authentication
 $lifetime = get_cfg_var("session.gc_maxlifetime"); 
 $temp = session_name("WRM-" .  $phpraid_config['auth_type']);
@@ -214,14 +248,35 @@ $temp = session_set_cookie_params($lifetime, getCookiePath());
 session_start();
 $_SESSION['name'] = "WRM-" . $phpraid_config['auth_type'];
 
+if (defined('DEBUG') && DEBUG)
+{
+	fwrite($stdoutfptr, "  Setting Session Information:\n");
+	fwrite($stdoutfptr, "  -> Session Lifetime: " . $lifetime . "\n");
+	fwrite($stdoutfptr, "  -> Session Name: " . $_SESSION['name'] . "\n");
+	fwrite($stdoutfptr, "  -> Session Already Initiated? " . $_SESSION['initiated'] . "\n");
+	fwrite($stdoutfptr, var_dump_string($temp));
+}
+
 // set session defaults
 if (!isset($_SESSION['initiated'])) 
 {
+	if (defined('DEBUG') && DEBUG)
+	{
+		fwrite($stdoutfptr, "  Session Not Initiated, Starting new Session.\n");
+	}
 	if(isset($_COOKIE['profile_id']) && isset($_COOKIE['password']))
 	{ 
+		if (defined('DEBUG') && DEBUG)
+		{
+			fwrite($stdoutfptr, "  COOKIE Variables Set, Call WRM_LOGIN() for Cookie Auth.\n");
+		}		
 		$testval = wrm_login();
 		if (!$testval)
 		{
+			if (defined('DEBUG') && DEBUG)
+			{
+				fwrite($stdoutfptr, "  Login Returned Failure, logging out.\n");
+			}					
 			wrm_logout();
 			session_regenerate_id();
 			set_WRM_SESSION(-1, 0, 'Anonymous', true);
@@ -231,6 +286,12 @@ if (!isset($_SESSION['initiated']))
 	{
 		session_regenerate_id();
 		set_WRM_SESSION(-1, 0, 'Anonymous', true);
+		if (defined('DEBUG') && DEBUG)
+		{
+			fwrite($stdoutfptr, "  Cookie Info not Set.\n");
+			fwrite($stdoutfptr, "  Dumping Session Data:\n");
+			fwrite($stdoutfptr, var_dump_string($_SESSION));
+		}
 	}
 }
 

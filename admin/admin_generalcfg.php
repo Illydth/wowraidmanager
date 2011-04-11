@@ -50,9 +50,9 @@ else
 	$disable_site = '<input type="checkbox" name="disable" value="1" checked>';
 
 if($phpraid_config['debug'] == '0')
-	$debug_mode = '<input type="checkbox" name="debug" value="1" disabled> (disabled)';
+	$debug_mode = '<input type="checkbox" name="debug" value="1">';
 else
-	$debug_mode = '<input type="checkbox" name="debug" value="1" disabled checked> (disabled)';
+	$debug_mode = '<input type="checkbox" name="debug" value="1" checked>';
 
 if($phpraid_config['showphpraid_addon'] == '0')
 	$showphpraid_addon = '<input type="checkbox" name="showphpraid_addon" value="1">';
@@ -161,9 +161,9 @@ if(isset($_POST['submit']))
 		$disable = 0;
 
 	if(isset($_POST['debug']))
-		$p_debug = 1;
+		$debug = 1;
 	else
-		$p_debug = 0;
+		$debug = 0;
 
  	if(isset($_POST['enable_five_man']))
  		$enable_five_man = 1;
@@ -199,7 +199,7 @@ if(isset($_POST['submit']))
 	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'disable';", quote_smart($disable));
 	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
-	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'debug';", quote_smart($p_debug));
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'debug';", quote_smart($debug));
 	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'enable_five_man';", quote_smart($enable_five_man));
 	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
