@@ -34,7 +34,8 @@
 $db_raid->sql_close();
 
 // close debug file pointer
-fclose($stdoutfptr);
+if (isset($phpraid_config['debug']) && $phpraid_config['debug'])
+	fclose($stdoutfptr);
 
 //
 // Parse and show the overall footer.

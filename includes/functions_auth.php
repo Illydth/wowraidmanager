@@ -67,6 +67,7 @@ function clear_session()
 	unset($_SESSION['username']);
 	unset($_SESSION['session_logged_in']);
 	unset($_SESSION['profile_id']);
+	unset($_SESSION['initiated']);
 	clear_session_permissions();
 }
 
@@ -267,9 +268,9 @@ function DEFINE_wrm_login()
 			{
 				fwrite($stdoutfptr, "NORMAL LOGIN: Username Passed In on POST.\n");
 				fwrite($stdoutfptr, "INPUT USERNAME INFORMANTION:\n");
-				fwrite($stdoutfptr, "  Unmodified Username: " . $_POST['username'] . "\n");
-				fwrite($stdoutfptr, "  Username Scrubbed: " . scrub_input($_POST['username']) . "\n");
-				fwrite($stdoutfptr, "  Username Scrubbed and Lowered:" . strtolower_wrap(scrub_input($_POST['username']), "UTF-8") . "\n");
+				fwrite($stdoutfptr, "  Unmodified Username: '" . $_POST['username'] . "'\n");
+				fwrite($stdoutfptr, "  Username Scrubbed: '" . scrub_input($_POST['username']) . "'\n");
+				fwrite($stdoutfptr, "  Username Scrubbed and Lowered: '" . strtolower_wrap(scrub_input($_POST['username']), "UTF-8") . "'\n");
 				fwrite($stdoutfptr, "INPUT PASSWORD INFORMATION:\n");
 				fwrite($stdoutfptr, "  Input Password: '" . $password . "'\n");
 				fwrite($stdoutfptr, "  Password Hashed for WRM: '" . $wrmpass . "'\n");
@@ -776,7 +777,6 @@ function wrm_logout()
 	
 	if (defined('DEBUG') && DEBUG)
 	{
-		echo "DEFINED";
 		fwrite($stdoutfptr, "Logout Called, Clear Session.\n");
 	}
 	// unset the session and remove all cookies
@@ -792,8 +792,14 @@ function wrm_logout()
 	setcookie('profile_id', '', time() - 2629743);
 	setcookie('password', '', time() - 2629743);
 	
-	clear_session_permissions();
 	clear_session();
+	
+	if (defined('DEBUG') && DEBUG)
+	{
+		fwrite($stdoutfptr, "Session Cleared, Permissions Cleared.\n");
+		fwrite($stdoutfptr, "Session Information:.\n");
+		fwrite($stdoutfptr, var_dump_string($_SESSION) . "\n");
+	}
 }
 
 ?>

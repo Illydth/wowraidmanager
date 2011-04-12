@@ -84,30 +84,6 @@ require_once($phpraid_dir.'includes/wowarmory/simple_html_dom.php');
 require_once($phpraid_dir.'includes/wowarmory/scrapper.class.php');
 
 /****************************************************
- * Setup DEBUG Log File
- ****************************************************/
-// Open an error log to write to for information.
-
-if (isset($phpraid_config['debug']) && $phpraid_config['debug']);
-{
-	define('DEBUG', TRUE);
-	
-	if (defined('DEBUG') && DEBUG)
-	{
-		$stdoutfptr = fopen($phpraid_dir."/cache/wrm_debug.log", "w");
-	}
-}
-
-if (defined('DEBUG') && DEBUG)
-{
-	fwrite($stdoutfptr, "==================================================\n");
-	fwrite($stdoutfptr, "Loading common.php [common.php]\n");
-	fwrite($stdoutfptr, __FILE__ . ":" . __LINE__ . "\n");
-	fwrite($stdoutfptr, "==================================================\n");
-	fwrite($stdoutfptr, "\n");
-}
-
-/****************************************************
  * Report Output Setup (Deprecated)
  *      The information in this section is deprecated from 4.x on
  *      users should NOT uncomment these values unless otherwise told.
@@ -139,7 +115,7 @@ if(!$db_raid->db_connect_id)
 unset($phpraid_config['db_user']);
 unset($phpraid_config['db_pass']);
 
-// Set UTF8
+// Set Application to UTF8 Return
 set_WRM_DB_utf8();
 
 //
@@ -153,6 +129,29 @@ while($data = $db_raid->sql_fetchrow($result, true))
 	$phpraid_config[$data['config_name']] = $data['config_value'];
 }
 
+
+/****************************************************
+ * Setup DEBUG Log File
+ ****************************************************/
+// Open an error log to write to for information.
+if (isset($phpraid_config['debug']) && $phpraid_config['debug'])
+{
+	define('DEBUG', TRUE);
+	
+	if (defined('DEBUG') && DEBUG)
+	{
+		$stdoutfptr = fopen($phpraid_dir."/cache/wrm_debug.log", "w");
+	}
+}
+
+
+if (defined('DEBUG') && DEBUG)
+{
+	fwrite($stdoutfptr, "==================================================\n");
+	fwrite($stdoutfptr, "Loading common.php [common.php]\n");
+	fwrite($stdoutfptr, __FILE__ . ":" . __LINE__ . "\n");
+	fwrite($stdoutfptr, "==================================================\n");
+}
 
 /**********************************************************
  * Load Template System Here (Smarty)
