@@ -100,7 +100,7 @@ require_once($phpraid_dir.'includes/wowarmory/scrapper.class.php');
  ************************************************/
 // database connection
 global $db_raid, $errorTitle, $errorMsg, $errorDie;
-if ($phpraid_config['persistent_db'] == TRUE)
+if ($phpraid_config['persistent_db'])
 	$db_raid = create_db_connection($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass'],$phpraid_config['db_name'],TRUE,TRUE);
 else
 	$db_raid = create_db_connection($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass'],$phpraid_config['db_name'],TRUE,FALSE);

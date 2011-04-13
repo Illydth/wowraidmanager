@@ -48,8 +48,10 @@ function create_db_connection($host, $user, $password, $dbname, $new_connection 
 	
 	// If you are using PHP 4 and need to be instanciating objects by reference, uncomment the second "$connection" string below and
 	//  comment the first one.
-	$connection = new sql_db($host , $user, $password, $dbname, $new_connection, $persistency);		
-	//$connection = &new sql_db($host, $user, $password, $dbname, $new_connection, $persistency);		
+	//$connection = new sql_db($host , $user, $password, $dbname, $new_connection, $persistency);		
+	$connection = &new sql_db($host, $user, $password, $dbname, $new_connection, $persistency);		
+	
+	var_dump($connection);
 	
 	return $connection;
 }
