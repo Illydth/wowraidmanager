@@ -12,7 +12,7 @@ CREATE TABLE  `wrm_announcements` (
 
 -- WRM Armory Cache
 DROP TABLE IF EXISTS `wrm_armory_cache`;
-CREATE TABLE wrm_armory (
+CREATE TABLE wrm_armory_cache (
 `name` varchar(255) DEFAULT NULL,
 spec varchar(255) DEFAULT NULL,
 avgilvl int(5) DEFAULT NULL,
