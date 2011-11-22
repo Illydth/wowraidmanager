@@ -29,7 +29,12 @@
 ****************************************************************************/
 // commons
 define("IN_PHPRAID", true);
+$phpraid_dir = '../';
+require_once($phpraid_dir.'includes/wowarmory/simple_html_dom.php');
+require_once($phpraid_dir.'includes/wowarmory/scrapper.class.php');
+require_once($phpraid_dir.'includes/functions.php');
 require_once('./admin_common.php');
+
 
 // page authentication
 define("PAGE_LVL","configuration");
@@ -226,8 +231,10 @@ else if($mode == 'details')
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE profile_id=%s",quote_smart($user_id));
 	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	
+	
 	while($data = $db_raid->sql_fetchrow($result, true))
 	{
+		$data['name'] = utf8_encode ( $data['name'] );
 		array_push($chars,
 			array(
 				'ID'=>$data['char_id'],
