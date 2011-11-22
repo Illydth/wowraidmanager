@@ -187,10 +187,11 @@ function get_armorychar($name, $guild)
 {
 	global $phpraid_config, $db_raid, $phprlang;
 	
-	// Check for UTF8 of $name
-	if (preg_match('!\S!u', $name)) {
-		$name = utf8_decode($name);
-	}
+	//Check for UTF8 of $name e.g. Wòódy vs WÃ²Ã³dy 
+	//Also will make sure there is only one version of this name in cache.
+	 if (!(preg_match('!\S!u', $name))) {
+		$name = utf8_encode($name);
+	 }
 	
 	$name = ucfirst(clean_value($name));
 	$guild = clean_value($guild);

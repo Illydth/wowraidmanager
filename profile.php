@@ -80,7 +80,7 @@ if($_GET['mode'] == 'view') {
 	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	while($data = $db_raid->sql_fetchrow($result, true))
 	{
-	$data['name'] = utf8_encode ( $data['name'] );
+	//$data['name'] = utf8_encode ( $data['name'] );
 	//echo $data['name'] . "</br>";
 		// Get Armory Data for Character
 		if ($phpraid_config['enable_armory'])

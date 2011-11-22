@@ -97,7 +97,7 @@ require_once('includes/signup_flow.php');
 $sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id=%s", quote_smart($raid_id));
 $result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 $data = $db_raid->sql_fetchrow($result, true);
-$data['name'] = utf8_encode ( $data['name'] );
+//$data['name'] = utf8_encode ( $data['name'] );
 
 $priv_raids = scrub_input($_SESSION['priv_raids']);
 $profile_id = scrub_input($_SESSION['profile_id']);
@@ -138,7 +138,7 @@ if($mode == 'view')
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id=%s", quote_smart($raid_id));
 	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	$data = $db_raid->sql_fetchrow($result, true);
-	$data['name'] = utf8_encode ( $data['name'] );
+	//$data['name'] = utf8_encode ( $data['name'] );
 
 	$raid_location = UBB2($data['location']);
 	$raid_officer = $data['officer'];
@@ -223,7 +223,7 @@ if($mode == 'view')
 		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id=%s",quote_smart($signups['char_id']));
 		$data_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		$data = $db_raid->sql_fetchrow($data_result, true);
-		$data['name'] = utf8_encode ( $data['name'] );
+		//$data['name'] = utf8_encode ( $data['name'] );
 
 		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "teams WHERE char_id=%s and raid_id=%s",quote_smart($signups['char_id']),quote_smart($raid_id));
 		$teams_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
@@ -408,7 +408,7 @@ if($mode == 'view')
 		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id=%s",quote_smart($signups['char_id']));
 		$data_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		$data = $db_raid->sql_fetchrow($data_result, true);
-		$data['name'] = utf8_encode ( $data['name'] );
+		//$data['name'] = utf8_encode ( $data['name'] );
 
 		//$comments = escapePOPUP(scrub_input($signups['comments']));
 		//$ddrivetiptxt = "'<span class=tooltip_title>" . $phprlang['comments'] ."</span><br>".DEUBB2($comments)."'";
@@ -564,7 +564,7 @@ if($mode == 'view')
 		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id=%s",quote_smart($signups['char_id']));
 		$data_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		$data = $db_raid->sql_fetchrow($data_result, true);
-		$data['name'] = utf8_encode ( $data['name'] );
+		//$data['name'] = utf8_encode ( $data['name'] );
 
 		//$comments = escapePOPUP(scrub_input($signups['comments']));
 		//$ddrivetiptxt = "'<span class=tooltip_title>" . $phprlang['comments'] ."</span><br>".DEUBB2($comments)."'";
@@ -913,7 +913,7 @@ if($mode == 'view')
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id=%s",quote_smart($raid_id));
 	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	$data = $db_raid->sql_fetchrow($result, true);
-	$data['name'] = utf8_encode ( $data['name'] );
+	//$data['name'] = utf8_encode ( $data['name'] );
 
 	//Get Raid Total Counts
 	$count = get_char_count($raid_id, $type='');
@@ -1731,6 +1731,13 @@ if($show_signup == 1 && $priv_profile == 1)
 			$result_char = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 			while($data = $db_raid->sql_fetchrow($result_char, true))
 			{
+				//Check for encoding of $data['name'] e.g. Wòódy vs WÃ²Ã³dy 
+				//Also will make sure there is only one version of this name in cache.
+				echo $data['name'] . "</br>";
+				if ((preg_match('!\S!u', $data['name']))) {
+					$data['name'] = utf8_encode($data['name']);
+					//echo "TRUE </br>";										//DEBUG
+				}
 				$sql = sprintf("SELECT lvl FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id=%s", quote_smart($data['char_id']));
 				$result_lvl = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 				$lvl = $db_raid->sql_fetchrow($result_lvl, true);
@@ -1757,6 +1764,12 @@ if($show_signup == 1 && $priv_profile == 1)
 
 			if($lvl['lvl'] >= $limit['min_lvl'] && $lvl['lvl'] <= $limit['max_lvl'])
 			{
+				//Check for encoding of $data['name'] e.g. Wòódy vs WÃ²Ã³dy 
+				//Also will make sure there is only one version of this name in cache.
+				if (!(preg_match('!\S!u', $data['name']))) {
+					$data['name'] = utf8_encode($data['name']);
+					//echo "TRUE </br>";									//DEBUG
+				}
 				$array_character[$data['char_id']] = $data['name'];
 			}
 		}

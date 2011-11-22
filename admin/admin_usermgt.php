@@ -234,7 +234,7 @@ else if($mode == 'details')
 	
 	while($data = $db_raid->sql_fetchrow($result, true))
 	{
-		$data['name'] = utf8_encode ( $data['name'] );
+		//$data['name'] = utf8_encode ( $data['name'] );
 		array_push($chars,
 			array(
 				'ID'=>$data['char_id'],
