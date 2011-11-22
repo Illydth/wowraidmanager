@@ -186,6 +186,12 @@ function get_armorychar_old($name, $guild)
 function get_armorychar($name, $guild) 
 {
 	global $phpraid_config, $db_raid, $phprlang;
+	
+	// Check for UTF8 of $name
+	if (preg_match('!\S!u', $name)) {
+		$name = utf8_decode($name);
+	}
+	
 	$name = ucfirst(clean_value($name));
 	$guild = clean_value($guild);
    
@@ -205,12 +211,14 @@ function get_armorychar($name, $guild)
 	$cache = $db_raid->sql_fetchrow($result, true);
 	
 	//$url = "http://".$lang.".battle.net/wow/en/character/".utf8_encode($realm)."/".utf8_encode($name)."/simple";
-	$url = "{$armory}".utf8_encode($realm)."/".utf8_encode($name)."/simple";
+	$url = "{$armory}".utf8_encode($realm)."/".$name."/simple";
 	
 	if (version_compare(PHP_VERSION, '5.0.0', '<')){      // People really need to upgrade PHP
 		return '<a href="'.$url.'" target="_blank">'.ucfirst($name).'</a>';
 	}
 
+	//DEBUG
+	//$cache['TTL'] = '0';
 	if ($cache['TTL'] > mktime()) 
 	{   // We're going to compare the cache against user selected value, no longer hard coded.
 
@@ -686,6 +694,7 @@ function get_db_size()
 */
 function cssToolTip($display, $hoverText, $spanClass, $link='', $title='', $newPage = FALSE) 
 {
+
 	$hoverText=clean_value($hoverText);
 	if ($newPage)
 	{

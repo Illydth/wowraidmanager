@@ -81,7 +81,7 @@ if($_GET['mode'] == 'view') {
 	while($data = $db_raid->sql_fetchrow($result, true))
 	{
 	$data['name'] = utf8_encode ( $data['name'] );
-	echo $data['name'] . "</br>";
+	//echo $data['name'] . "</br>";
 		// Get Armory Data for Character
 		if ($phpraid_config['enable_armory'])
 			$charname = get_armorychar($data['name'], $data['guild']);
@@ -119,7 +119,7 @@ if($_GET['mode'] == 'view') {
 		$url2 = 'profile.php?mode=edit&amp;char_id='.$data['char_id'].'&amp;guild='.$data['guild'].'&amp;race='.$data['race'].'&amp;class='.$data['class'];
 		$img1 = '<img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0"  alt="delete icon" />';
 		$img2 = '<img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_edit.gif" border="0" alt="edit icon" />';
-		$Buttons_tmp= cssToolTip($img1, $phprlang['edit'], 'smallIconText', $url1) . cssToolTip($img2, $phprlang['delete'], 'smallIconText', $url2);
+		$Buttons_tmp= cssToolTip($img2, $phprlang['edit'], 'smallIconText', $url1) . cssToolTip($img1, $phprlang['delete'], 'mediumIconText', $url2);
 		
 		array_push($chars,
 			array(

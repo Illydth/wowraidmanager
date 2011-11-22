@@ -97,6 +97,7 @@ require_once('includes/signup_flow.php');
 $sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id=%s", quote_smart($raid_id));
 $result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 $data = $db_raid->sql_fetchrow($result, true);
+$data['name'] = utf8_encode ( $data['name'] );
 
 $priv_raids = scrub_input($_SESSION['priv_raids']);
 $profile_id = scrub_input($_SESSION['profile_id']);
@@ -137,6 +138,7 @@ if($mode == 'view')
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id=%s", quote_smart($raid_id));
 	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	$data = $db_raid->sql_fetchrow($result, true);
+	$data['name'] = utf8_encode ( $data['name'] );
 
 	$raid_location = UBB2($data['location']);
 	$raid_officer = $data['officer'];
@@ -221,6 +223,7 @@ if($mode == 'view')
 		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id=%s",quote_smart($signups['char_id']));
 		$data_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		$data = $db_raid->sql_fetchrow($data_result, true);
+		$data['name'] = utf8_encode ( $data['name'] );
 
 		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "teams WHERE char_id=%s and raid_id=%s",quote_smart($signups['char_id']),quote_smart($raid_id));
 		$teams_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
@@ -405,6 +408,7 @@ if($mode == 'view')
 		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id=%s",quote_smart($signups['char_id']));
 		$data_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		$data = $db_raid->sql_fetchrow($data_result, true);
+		$data['name'] = utf8_encode ( $data['name'] );
 
 		//$comments = escapePOPUP(scrub_input($signups['comments']));
 		//$ddrivetiptxt = "'<span class=tooltip_title>" . $phprlang['comments'] ."</span><br>".DEUBB2($comments)."'";
@@ -560,6 +564,7 @@ if($mode == 'view')
 		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id=%s",quote_smart($signups['char_id']));
 		$data_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		$data = $db_raid->sql_fetchrow($data_result, true);
+		$data['name'] = utf8_encode ( $data['name'] );
 
 		//$comments = escapePOPUP(scrub_input($signups['comments']));
 		//$ddrivetiptxt = "'<span class=tooltip_title>" . $phprlang['comments'] ."</span><br>".DEUBB2($comments)."'";
@@ -908,6 +913,7 @@ if($mode == 'view')
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id=%s",quote_smart($raid_id));
 	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	$data = $db_raid->sql_fetchrow($result, true);
+	$data['name'] = utf8_encode ( $data['name'] );
 
 	//Get Raid Total Counts
 	$count = get_char_count($raid_id, $type='');
