@@ -67,6 +67,8 @@ require_once($phpraid_dir.'includes/functions_logging.php');
 require_once($phpraid_dir.'includes/functions_tables.php');
 require_once($phpraid_dir.'includes/functions_users.php');
 require_once($phpraid_dir.'includes/ubb.php');
+require_once($phpraid_dir.'includes/wowarmory/simple_html_dom.php');
+require_once($phpraid_dir.'includes/wowarmory/scrapper.class.php');
 
 /************************************************
  * Database Connection and phpraid_config Load

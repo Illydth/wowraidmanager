@@ -1731,18 +1731,11 @@ if($show_signup == 1 && $priv_profile == 1)
 			$result_char = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 			while($data = $db_raid->sql_fetchrow($result_char, true))
 			{
-				//Check for encoding of $data['name'] e.g. Wòódy vs WÃ²Ã³dy 
-				//Also will make sure there is only one version of this name in cache.
-				echo $data['name'] . "</br>";
-				if ((preg_match('!\S!u', $data['name']))) {
-					$data['name'] = utf8_encode($data['name']);
-					//echo "TRUE </br>";										//DEBUG
-				}
 				$sql = sprintf("SELECT lvl FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id=%s", quote_smart($data['char_id']));
 				$result_lvl = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 				$lvl = $db_raid->sql_fetchrow($result_lvl, true);
 				if($lvl['lvl'] >= $limit['min_lvl'] && $lvl['lvl'] <= $limit['max_lvl'])
-					$array_character[$data['char_id']] = $data['name'];
+					$array_character[$data['char_id']] = utf8_check($data['name']);
 			}			
 		}
 	}
@@ -1764,13 +1757,7 @@ if($show_signup == 1 && $priv_profile == 1)
 
 			if($lvl['lvl'] >= $limit['min_lvl'] && $lvl['lvl'] <= $limit['max_lvl'])
 			{
-				//Check for encoding of $data['name'] e.g. Wòódy vs WÃ²Ã³dy 
-				//Also will make sure there is only one version of this name in cache.
-				if (!(preg_match('!\S!u', $data['name']))) {
-					$data['name'] = utf8_encode($data['name']);
-					//echo "TRUE </br>";									//DEBUG
-				}
-				$array_character[$data['char_id']] = $data['name'];
+				$array_character[$data['char_id']] = utf8_check($data['name']);
 			}
 		}
 	}

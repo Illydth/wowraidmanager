@@ -260,7 +260,9 @@ function DEFINE_wrm_login()
 		{
 			// User is logging in, set encryption flag to 0 to identify login with plain text password.
 			$pwdencrypt = FALSE;
-			$username = strtolower_wrap(scrub_input($_POST['username']), "UTF-8");
+			$username = utf8_check(strtolower_wrap(scrub_input($_POST['username']), "UTF-8"));
+			//echo $username . "</br>";
+			
 			$password = $_POST['password'];
 			//$password = md5($_POST['password']);//
 			$wrmpass = md5($_POST['password']);
@@ -281,7 +283,7 @@ function DEFINE_wrm_login()
 		{
 			// User is not logging in but processing cookie, set encryption flag to 1 to identify login with encrypted password.
 			$pwdencrypt = TRUE;
-			$username = strtolower_wrap(scrub_input($_COOKIE['username']), "UTF-8");
+			$username = utf8_check(strtolower_wrap(scrub_input($_COOKIE['username']), "UTF-8"));
 			$password = $_COOKIE['password'];
 			$profile_id = $_COOKIE['profile_id'];
 			$wrmpass = '';
@@ -329,6 +331,10 @@ function DEFINE_wrm_login()
 			$sql = sprintf(	"SELECT ". $db_user_id . "," . $db_user_name . "," . $db_user_email . "," . $db_user_password.
 						" FROM " . $table_prefix . $db_table_user_name . 
 						" WHERE ". $db_user_name . " = %s", quote_smart($username));
+			//echo $sql . "</br>";
+			// $sql = "SELECT ". $db_user_id . "," . $db_user_name . "," . $db_user_email . "," . $db_user_password.
+			// " FROM " . $table_prefix . $db_table_user_name . 
+			// " WHERE ". $db_user_name . " = '§ara2'";
 			$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 			if ($db_raid->sql_numrows($result) > 0 )
 			{
@@ -389,7 +395,7 @@ function DEFINE_wrm_login()
 					fwrite($stdoutfptr, "    -> Database User Name: '" . strtolower_wrap($data[$db_user_name], "UTF-8") . "'\n");
 				}
 				
-				if( ($username == strtolower_wrap($data[$db_user_name], "UTF-8")) && 
+				if( ($username == utf8_check(strtolower_wrap($data[$db_user_name], "UTF-8"))) && 
 						($cmspass = password_check($password, $data[$db_user_id], $pwdencrypt)) )
 					$user_auth = TRUE;
 				else

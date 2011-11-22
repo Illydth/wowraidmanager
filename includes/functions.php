@@ -35,6 +35,22 @@ if (!function_exists("htmlspecialchars_decode")) {
     }
 }
 
+/**
+* Check for UTF8-bin
+* @param string $name - Character Name
+* @param var $guild - The Character's Guild.
+* @return string $data - Returned "Link" with a Popup enabled for displaying armory data for input character.
+* @access public
+*/
+function utf8_check($string) {
+ if (!(preg_match('!\S!u', $string))) {
+	// string looks like this: § (UTF-8 non binary)
+	$string = utf8_encode($string);
+ }
+	// string looks like this: â§ (binary encoded) or S (ASCII)
+	return $string;
+}
+
 function email($to, $subject, $message) {
 	global $phpraid_config;
 
@@ -72,16 +88,104 @@ function print_error($type, $error, $die) {
 		exit;
 }
 
+if (!function_exists('mb_sprintf')) {
+  function mb_sprintf($format) {
+      $argv = func_get_args() ;
+      array_shift($argv) ;
+      return mb_vsprintf($format, $argv) ;
+  }
+}
+if (!function_exists('mb_vsprintf')) {
+  /**
+   * Works with all encodings in format and arguments.
+   * Supported: Sign, padding, alignment, width and precision.
+   * Not supported: Argument swapping.
+   */
+  function mb_vsprintf($format, $argv, $encoding=null) {
+      if (is_null($encoding))
+          $encoding = mb_internal_encoding();
+
+      // Use UTF-8 in the format so we can use the u flag in preg_split
+      $format = mb_convert_encoding($format, 'UTF-8', $encoding);
+
+      $newformat = ""; // build a new format in UTF-8
+      $newargv = array(); // unhandled args in unchanged encoding
+
+      while ($format !== "") {
+     
+        // Split the format in two parts: $pre and $post by the first %-directive
+        // We get also the matched groups
+        list ($pre, $sign, $filler, $align, $size, $precision, $type, $post) =
+            preg_split("!\%(\+?)('.|[0 ]|)(-?)([1-9][0-9]*|)(\.[1-9][0-9]*|)([%a-zA-Z])!u",
+                       $format, 2, PREG_SPLIT_DELIM_CAPTURE) ;
+
+        $newformat .= mb_convert_encoding($pre, $encoding, 'UTF-8');
+       
+        if ($type == '') {
+          // didn't match. do nothing. this is the last iteration.
+        }
+        elseif ($type == '%') {
+          // an escaped %
+          $newformat .= '%%';
+        }
+        elseif ($type == 's') {
+          $arg = array_shift($argv);
+          $arg = mb_convert_encoding($arg, 'UTF-8', $encoding);
+          $padding_pre = '';
+          $padding_post = '';
+         
+          // truncate $arg
+          if ($precision !== '') {
+            $precision = intval(substr($precision,1));
+            if ($precision > 0 && mb_strlen($arg,$encoding) > $precision)
+              $arg = mb_substr($precision,0,$precision,$encoding);
+          }
+         
+          // define padding
+          if ($size > 0) {
+            $arglen = mb_strlen($arg, $encoding);
+            if ($arglen < $size) {
+              if($filler==='')
+                  $filler = ' ';
+              if ($align == '-')
+                  $padding_post = str_repeat($filler, $size - $arglen);
+              else
+                  $padding_pre = str_repeat($filler, $size - $arglen);
+            }
+          }
+         
+          // escape % and pass it forward
+          $newformat .= $padding_pre . str_replace('%', '%%', $arg) . $padding_post;
+        }
+        else {
+          // another type, pass forward
+          $newformat .= "%$sign$filler$align$size$precision$type";
+          $newargv[] = array_shift($argv);
+        }
+        $format = strval($post);
+      }
+      // Convert new format back from UTF-8 to the original encoding
+      $newformat = mb_convert_encoding($newformat, $encoding, 'UTF-8');
+      return vsprintf($newformat, $newargv);
+  }
+}
+
+
+
 function quote_smart_old($value)
 {
-   // Stripslashes
+	
+	//echo "quote_smart_oldIN({$value}) </br>";
+   //Stripslashes
    if (get_magic_quotes_gpc()) {
        $value = stripslashes($value);
    }
-   // Quote if not a number or a numeric string
+   //Quote if not a number or a numeric string
    if (!is_numeric($value)) {
        $value = "'" . mysql_real_escape_string($value) . "'";
    }
+   //echo "quote_smart_oldOUT('{$value}') </br>";
+
    return $value;
 }
 
@@ -100,6 +204,7 @@ function quote_smart($value = "", $nullify = false, $conn = null)
 	{
 		if (is_string($value))
 		{
+			//echo "quote_smartIN({$value}) </br>";
 			//value is a string and should be quoted; determine best method based on available extensions
 			if (function_exists('mysql_real_escape_string'))
 			{
@@ -116,6 +221,7 @@ function quote_smart($value = "", $nullify = false, $conn = null)
 			$value = (is_numeric($value)) ? ($value) : ("'ERROR: unhandled datatype in quote_smart'");
 		}
 	}
+	//echo "quote_smartOUT({$value}) </br>";
 	return $value;
 }
 
@@ -138,42 +244,6 @@ function setup_output() {
 	$report->setFieldHeadingAttributes('class="listHeader"');
 }
 
-// I'm not going to update this to CSS since its broken anyway, and there's no way the CSS tooltip could handle this if it was working.
-function get_armorychar_old($name, $guild)
-{
-	global $phpraid_config, $db_raid;
-
-	// Get Armory Data from Guild.
-	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "guilds WHERE guild_id=%s",quote_smart($guild));
-	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-	$data = $db_raid->sql_fetchrow($result, true);
-
-	//$realm = str_replace(" ", "+", ucfirst($server));
-	$realm = ucfirst($data['guild_server']);
-	$lang = strtolower($data['guild_armory_code']);
-	// Pre-Cataclysm Armory Links
-	//$javascript = '<a href="' . $data['guild_armory_link'] . '/character-sheet.xml?r=' . $realm . '&amp;n=' . ucfirst($name) . '" target="new" onmouseover=\'tooltip.show("includes/wowarmory/char.php?v=' . ucfirst($name) . '&amp;z=' . str_replace("'", "\"+String.fromCharCode(39)+\"", $realm) . '&amp;l=' . $lang . '&amp;u='. $data['guild_armory_link'] .'");\' onmouseout="tooltip.hide();"><strong>' . ucfirst($name) . '</strong></a>';
-	// Post-Cataclysm Armory Links.
-	$javascript = '<a href="' . $data['guild_armory_link'] . $realm . '/' . ucfirst($name) . '/advanced" target="new" onmouseover=\'tooltip.show("includes/wowarmory/char.php?v=' . ucfirst($name) . '&amp;z=' . str_replace("'", "\"+String.fromCharCode(39)+\"", $realm) . '&amp;l=' . $lang . '&amp;u='. $data['guild_armory_link'] .'");\' onmouseout="tooltip.hide();"><strong>' . ucfirst($name) . '</strong></a>';
-	
-	if(substr_wrap($name, 0, 1, "UTF-8") == '_')
-	{
-		$name = substr_wrap($name, 1, (strlen_wrap($name, "UTF-8")-1), "UTF-8");
-		$name = '<!-- ' . ucfirst($name) . ' -->' . $javascript;
-	}
-	else if(substr_wrap($name, 0, 1, "UTF-8") == '(' && substr_wrap($name, strlen_wrap($name) - 1, 1, "UTF-8") == ')')
-	{
-		$name = substr_wrap($name, 1, strlen_wrap($name, "UTF-8") - 2, "UTF-8");
-		$name = '<!-- ' . ucfirst($name) . ' -->' . $javascript;
-	}
-	else
-	{
-		$name = '<!-- ' . ucfirst($name) . ' -->' . $javascript;
-	}
-
-	return $name;
-}
-
 /**
 	WARNING PHP5 ONLY!
 
@@ -187,12 +257,7 @@ function get_armorychar($name, $guild)
 {
 	global $phpraid_config, $db_raid, $phprlang;
 	
-	//Check for UTF8 of $name e.g. Wòódy vs WÃ²Ã³dy 
-	//Also will make sure there is only one version of this name in cache.
-	 if (!(preg_match('!\S!u', $name))) {
-		$name = utf8_encode($name);
-	 }
-	
+	$name = utf8_check($name);	
 	$name = ucfirst(clean_value($name));
 	$guild = clean_value($guild);
    
@@ -203,6 +268,7 @@ function get_armorychar($name, $guild)
 	$data = $db_raid->sql_fetchrow($result, true);
 	$lang = strtolower($data['guild_armory_code']);
 	$realm = ucfirst($data['guild_server']);
+		$realm = str_replace( " ", "%20", $realm );		// replace space " " with html equiv.
 	$armory = strtolower($data['guild_armory_link']);
    
 	// Get Cache data, whether we use it or not, we still need the TTL to compare.
@@ -212,7 +278,7 @@ function get_armorychar($name, $guild)
 	$cache = $db_raid->sql_fetchrow($result, true);
 	
 	//$url = "http://".$lang.".battle.net/wow/en/character/".utf8_encode($realm)."/".utf8_encode($name)."/simple";
-	$url = "{$armory}".utf8_encode($realm)."/".$name."/simple";
+	$url = "{$armory}".$realm."/".$name."/simple";
 	
 	if (version_compare(PHP_VERSION, '5.0.0', '<')){      // People really need to upgrade PHP
 		return '<a href="'.$url.'" target="_blank">'.ucfirst($name).'</a>';
@@ -695,8 +761,8 @@ function get_db_size()
 */
 function cssToolTip($display, $hoverText, $spanClass, $link='', $title='', $newPage = FALSE) 
 {
-
-	$hoverText=clean_value($hoverText);
+	
+	$hoverText=utf8_check(clean_value($hoverText));
 	if ($newPage)
 	{
 		$popup = '<a class="tooltip" href="'.$link.'" target="_blank">'.$display.'<span class="'.$spanClass.'">';

@@ -79,10 +79,11 @@ while($data = $db_raid->sql_fetchrow($result, true)) {
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "profile WHERE profile_id=%s", quote_smart($data['profile_id']));
 	$data_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	$data_profdetail = $db_raid->sql_fetchrow($data_result);
+	$data['name'] = utf8_check($data['name']);
 	
-	if ($phpraid_config['enable_armory'])
-		$charname = get_armorychar($data['name'], $data['guild']);
-	else
+	// if ($phpraid_config['enable_armory'])
+		// $charname = get_armorychar($data['name'], $data['guild']);
+	// else
 		$charname = $data['name'];
 
 	// Get the Internationalized data to display from the database values:

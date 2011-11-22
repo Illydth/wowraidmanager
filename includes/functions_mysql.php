@@ -141,6 +141,7 @@ class sql_db
 		$db_charset = mysql_query( "SHOW VARIABLES LIKE 'character_set_database'" );
 		$charset_row = mysql_fetch_assoc( $db_charset );
 		mysql_query( "SET NAMES '" . $charset_row['Value'] . "'" );
+		//mysql_query( "SET NAMES UTF8" );
 		unset( $db_charset, $charset_row );
 		
 		// Remove any pre-existing queries

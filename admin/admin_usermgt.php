@@ -30,9 +30,6 @@
 // commons
 define("IN_PHPRAID", true);
 $phpraid_dir = '../';
-require_once($phpraid_dir.'includes/wowarmory/simple_html_dom.php');
-require_once($phpraid_dir.'includes/wowarmory/scrapper.class.php');
-require_once($phpraid_dir.'includes/functions.php');
 require_once('./admin_common.php');
 
 
@@ -98,6 +95,7 @@ if($mode == 'view')
 	
 	while($data = $db_raid->sql_fetchrow($result, true))
 	{
+		$data['username'] = utf8_check($data['username']);
 		$usersname = '<!-- ' . strtolower_wrap($data['username'], "UTF-8") . ' --><a href="admin_usermgt.php?mode=details&amp;user_id='.$data['profile_id'].'">'.$data['username'].'</a>';
 
 		$priv = '<a href="admin_permissions.php?mode=view">'.get_priv_name($data['priv']).'</a>';
@@ -116,7 +114,7 @@ if($mode == 'view')
 				'ID'=>$data['profile_id'],
 				'Username'=>$usersname,
 				'Privileges'=>$priv,
-				'E-Mail'=>$data['email'],
+				'E-Mail'=>utf8_check($data['email']),
 				'Last Login Date'=>$date,
 				'Last Login Time'=>$time,
 				'Permission_Mod'=>$mod_perm,
