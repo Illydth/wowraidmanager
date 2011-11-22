@@ -159,9 +159,15 @@ if(($_GET['mode'] == 'view') or isset($_GET['raids_del']) or isset($_GET['mark_r
 							cssToolTip($imgLua, $phprlang['lua'], 'mediumIconText', $urlLua).
 							cssToolTip($imgRaid, $phprlang['mark'], 'mediumIconText', $urlRaid);				
 	
-				$old_delete = '<a href="raids.php?mode=delete&amp;id='.$data['raid_id'].'"><img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['delete'].'\');" onMouseout="hideddrivetip();" alt="delete icon"></a>';
-	
-				$mark_new = '<a href="raids.php?mode=mark&amp;id='.$data['raid_id'].'"><img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_latest_reply.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['new'].'\');" onMouseout="hideddrivetip();" alt="latest reply icon"></a>';
+				//$old_delete = '<a href="raids.php?mode=delete&amp;id='.$data['raid_id'].'"><img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['delete'].'\');" onMouseout="hideddrivetip();" alt="delete icon"></a>';
+				//$imgDelete = '<img src="templates/'.$phpraid_config['template'].'/images/icons/icon_delete.gif" border="0" alt="delete icon" />';
+				$urlDelete = 'raids.php?mode=delete&amp;id='.$data['raid_id'];
+				$old_delete = cssToolTip($imgDelete, $phprlang['delete'], 'smallIconText', $urlDelete);
+				//$mark_new = '<a href="raids.php?mode=mark&amp;id='.$data['raid_id'].'"><img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_latest_reply.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['new'].'\');" onMouseout="hideddrivetip();" alt="latest reply icon"></a>';
+				$imgNew = '<img src="templates/'.$phpraid_config['template'].'/images/icons/icon_latest_reply.gif" border="0" alt="latest reply icon" />';
+				$urlNew = 'raids.php?mode=mark&amp;id='.$data['raid_id'];
+				$mark_new = cssToolTip($imgNew, $phprlang['new'], 'mediumIconText', $urlNew);
+				
 				$check_box = '<input type="checkbox" name="raids[]" value="'.$data['raid_id'].'" >';				
 			}
 		}
@@ -169,9 +175,12 @@ if(($_GET['mode'] == 'view') or isset($_GET['raids_del']) or isset($_GET['mark_r
 		{
 			if ($priv_raids || $username == $data['officer'])
 			{
-				$bd_delete = '<a href="raids.php?mode=delete&amp;n='.$data['location'].'&amp;id='.$data['raid_id'].'"><img src="templates/' .
-							$phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['delete'].'\');"
-							onMouseout="hideddrivetip();" alt="delete icon"></a>';
+				//$bd_delete = '<a href="raids.php?mode=delete&amp;n='.$data['location'].'&amp;id='.$data['raid_id'].'"><img src="templates/' .
+							//$phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['delete'].'\');"
+							//onMouseout="hideddrivetip();" alt="delete icon"></a>';
+				$imgDelete = '<img src="templates/'.$phpraid_config['template'].'/images/icons/icon_delete.gif" border="0" alt="delete icon" />';
+				$urlDelete = 'raids.php?mode=delete&amp;n='.$data['location'].'&amp;id='.$data['raid_id'];
+				$bd_delete = cssToolTip($imgDelete, $phprlang['delete'], 'smallIconText', $urlDelete).
 				$check_box = '<input type="checkbox" name="raids[]" value="'.$data['raid_id'].'" class="post">';
 			}
 		}
