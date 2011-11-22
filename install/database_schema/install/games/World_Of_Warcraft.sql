@@ -284,8 +284,8 @@ INSERT INTO `wrm_events` ( `zone_desc`, `max`, `exp_id`, `event_type_id`, `wow_n
 ('Icecrown Citadel - 25 man', 25, 3, 1, 'Icecrown Citadel (25)', 'images/instances/WotLK_Icons/25-Icecrown-Citadel.jpg');
 
 -- Ruby Sanctum
-INSERT INTO `wrm`.`wrm_events` (`event_id`, `zone_desc`, `max`, `exp_id`, `event_type_id`, `wow_name`, `icon_path`) VALUES ('138', 'Ruby Sanctum - 10 man', '10', '3', '1', 'Ruby Sanctum (10)', 'images/instances/WotLK_Icons/10-Ruby-Sanctum.jpg');
-INSERT INTO `wrm`.`wrm_events` (`event_id`, `zone_desc`, `max`, `exp_id`, `event_type_id`, `wow_name`, `icon_path`) VALUES ('139', 'Ruby Sanctum - 25 man', '25', '3', '1', 'Ruby Sanctum (25)', 'images/instances/WotLK_Icons/25-Ruby-Sanctum.jpg');
+INSERT INTO `wrm_events` (`event_id`, `zone_desc`, `max`, `exp_id`, `event_type_id`, `wow_name`, `icon_path`) VALUES ('138', 'Ruby Sanctum - 10 man', '10', '3', '1', 'Ruby Sanctum (10)', 'images/instances/WotLK_Icons/10-Ruby-Sanctum.jpg');
+INSERT INTO `wrm_events` (`event_id`, `zone_desc`, `max`, `exp_id`, `event_type_id`, `wow_name`, `icon_path`) VALUES ('139', 'Ruby Sanctum - 25 man', '25', '3', '1', 'Ruby Sanctum (25)', 'images/instances/WotLK_Icons/25-Ruby-Sanctum.jpg');
 
 -- Cataclysm Events
 INSERT INTO `wrm_events` ( `zone_desc`, `max`, `exp_id`, `event_type_id`, `wow_name`, `icon_path`) VALUES
@@ -311,6 +311,14 @@ INSERT INTO `wrm_events` ( `zone_desc`, `max`, `exp_id`, `event_type_id`, `wow_n
 ('Bastion Of Twilight - 25 man', 10, 4, 1, 'Bastion Of Twilight (25)', 'images/instances/Cataclysm_Icons/raids/25-Bastion-Of-Twilight.jpg'),
 ('Blackwing Descent - 25 man', 10, 4, 1, 'Blackwing Descent (25)', 'images/instances/Cataclysm_Icons/raids/25-Blackwing-Descent.jpg'),
 ('Throne Of Four Winds - 25 man', 10, 4, 1, 'Throne Of Four Winds (25)', 'images/instances/Cataclysm_Icons/raids/25-Throne-Of-Four-Winds.jpg');
+
+-- Zul'Gurub Patch
+INSERT INTO `wrm_events` (`event_id`, `zone_desc`, `max`, `exp_id`, `event_type_id`, `wow_name`, `icon_path`) VALUES ('165', 'ZulGurub - 5 Man', '5', '4', '2', 'ZulGurub (5)', 'images/instances/Cataclysm_Icons/dungeons/5-ZulGurub.jpg');
+INSERT INTO `wrm_events` (`event_id`, `zone_desc`, `max`, `exp_id`, `event_type_id`, `wow_name`, `icon_path`) VALUES ('166', 'ZulGurub - 5 Man Heroic', '5', '4', '2', 'ZulGurub (5)', 'images/instances/Cataclysm_Icons/dungeons/5-ZulGurub-Heoric.jpg');
+
+-- Firelands Patch 4.2
+INSERT INTO `wrm_events` (`event_id`, `zone_desc`, `max`, `exp_id`, `event_type_id`, `wow_name`, `icon_path`) VALUES ('167', 'Firelands - 10 Man', '10', '4', '1', 'Firelands (10)', 'images/instances/Cataclysm_Icons/raids/10-Firelands.jpg');
+INSERT INTO `wrm_events` (`event_id`, `zone_desc`, `max`, `exp_id`, `event_type_id`, `wow_name`, `icon_path`) VALUES ('168', 'Firelands - 25 Man', '25', '4', '1', 'Firelands (25)', 'images/instances/Cataclysm_Icons/raids/25-Firelands.jpg');
 
 INSERT INTO `wrm_events` ( `zone_desc`, `max`, `exp_id`, `event_type_id`, `wow_name`, `icon_path`) VALUES
 ('Skywall', 5, 4, 2, 'Skywall', 'images/instances/Cataclysm_Icons/dungeons/5-Skywall.jpg'),
@@ -369,10 +377,3 @@ INSERT INTO `wrm_race_gender` VALUES ('Troll', 'Male', '/images/faces/tr_male.gi
 INSERT INTO `wrm_race_gender` VALUES ('Troll', 'Female', '/images/faces/tr_female.gif');
 INSERT INTO `wrm_race_gender` VALUES ('Undead', 'Male', '/images/faces/un_male.gif');
 INSERT INTO `wrm_race_gender` VALUES ('Undead', 'Female', '/images/faces/un_female.gif');
-
--- Resistance Data
-INSERT INTO `wrm_resistance` ( `resistance_name`,`lang_index`,`font_color`,`image`) VALUES ('arcane','arcane','CCFFCC','images/resistances/arcane_resistance.gif');
-INSERT INTO `wrm_resistance` ( `resistance_name`,`lang_index`,`font_color`,`image`) VALUES ('fire','fire','FF0000','images/resistances/fire_resistance.gif');
-INSERT INTO `wrm_resistance` ( `resistance_name`,`lang_index`,`font_color`,`image`) VALUES ('frost','frost','0000FF','images/resistances/frost_resistance.gif');
-INSERT INTO `wrm_resistance` ( `resistance_name`,`lang_index`,`font_color`,`image`) VALUES ('nature','nature','009900','images/resistances/nature_resistance.gif');
-INSERT INTO `wrm_resistance` ( `resistance_name`,`lang_index`,`font_color`,`image`) VALUES ('shadow','shadow','663366','images/resistances/shadow_resistance.gif');

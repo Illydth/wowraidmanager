@@ -103,15 +103,10 @@ $phprlang['create_time'] = 'Create Time';
 $phprlang['pri_spec'] = 'Pri Talent';
 $phprlang['sec_spec'] = 'Sec Talent';
 $phprlang['signup_spec'] = 'Draft As';
-$phprlang['role_id'] = 'Role ID';
-$phprlang['role_name'] = 'Role Name';
-$phprlang['role_config'] = 'Role Config Text';
-$phprlang['role_image'] = 'Role Image';
 $phprlang['talent_tree'] = 'Talent Tree';
 $phprlang['display_text'] = 'Display Text';
 $phprlang['perm_mod'] = 'Update Permissions';
 $phprlang['all'] = 'All';
-$phprlang['resistance'] = "Resistance";
 
 // Scheduler Texts
 $phprlang['scheduler_error_header'] = 'Scheduler Error';
@@ -166,19 +161,24 @@ $phprlang['guild_name_missing'] = 'Der Gildenname fehlt.';
 $phprlang['guild_tag_missing'] = 'Das Gildenkürzel fehlt.';
 $phprlang['permissions_form_description'] = 'Du musst eine Beschreibung eingeben';
 $phprlang['permissions_form_name'] = 'Du musst einen Namen eingeben';
+$phprlang['profile_error_arcane'] = 'Arkanwiderstand muss nummerisch sein';
 $phprlang['profile_error_class'] = 'Du musst eine Klasse auswählen';
 $phprlang['profile_error_dupe'] = 'Ein Charakter mit diesem Namen existiert bereits';
+$phprlang['profile_error_fire'] = 'Feuerwiderstand muss nummerisch sein';
+$phprlang['profile_error_frost'] = 'Frostwiderstand muss nummerisch sein';
 $phprlang['profile_error_guild'] = 'Du musst eine Gilde auswählen';
-$phprlang['profile_error_level'] = 'Levelstufe muss nummerisch sein';
+$phprlang['profile_error_level'] = 'Stufe muss nummerisch und zwischen 1 und 80 sein';
 $phprlang['profile_error_name'] = 'Du musst einen Namen eingeben';
+$phprlang['profile_error_nature'] = 'Naturwiderstand muss nummerisch sein';
 $phprlang['profile_error_race'] = 'Du musst eine Rasse auswählen';
 $phprlang['profile_error_role'] = 'Du musst eine Rolle auswählen';
+$phprlang['profile_error_shadow'] = 'Schattenwiderstand muss nummerisch sein';
 $phprlang['raid_error_date'] = 'Du musst ein gültiges Datum eingeben';
 $phprlang['raid_error_description'] = 'Du musst eine Beschreibung eingeben';
 $phprlang['raid_error_limits'] = 'Alle Raid-Begrenzungen müssen eingegeben werden und nummerisch sein';
 $phprlang['raid_error_location'] = 'Du musst eine Raidinstanz eingeben';
 $phprlang['view_error_signed_up'] = 'Du hast dich bereits mit diesem Charakter angemeldet';
-$phprlang['view_error_role_undef'] = 'Bitte weise deinem Charakter im <a href="profile_char.php?mode=view">Profil</a> erst eine Rolle zu';
+$phprlang['view_error_role_undef'] = 'Bitte weise deinem Charakter im <a href="profile.php?mode=view">Profil</a> erst eine Rolle zu';
 $phprlang['yes'] = 'Ja';
 $phprlang['teams_error_no_team'] = 'No team is selected to add users to.';
 
@@ -286,10 +286,9 @@ $phprlang['roster_link'] = '&raquo; Mitgliederliste';
 $phprlang['users_link'] = '&raquo; Benutzer';
 $phprlang['lua_output_link'] = '&raquo; LUA-Raidausgabe';
 $phprlang['index_link'] = '&raquo; Gildenseite';
-$phprlang['eqdkp_link'] = '&raquo; EQ-DKP';
+$phprlang['dkp_link'] = '&raquo; DKP';
 $phprlang['bosstrack_link'] = '&raquo; Boss Kill Tracking';
 $phprlang['raidsarchive_link'] = '&raquo; Raids Archiv';
-$phprlang['profile_char_link'] = '&raquo; Meine Charaktere';
 
 // sorting information
 $phprlang['sort_text'] = 'Sortieren nach ';
@@ -297,42 +296,56 @@ $phprlang['sort_desc']='Klicke hier, um die Reihenfolge absteigend zu sortieren 
 $phprlang['sort_asc']='Klicke hier, um die Reihenfolge aufsteigend zu sortieren nach: ';
 
 // tooltips
-// more tooltips for race and resist in  lang_wow.php
 $phprlang['add'] = 'Hinzufügen';
 $phprlang['announcements'] = 'Ankündigungen';
+$phprlang['arcane'] = 'Arkan';
 $phprlang['calendar'] = 'Kalender';
 $phprlang['cancel'] = 'Anmeldung abbrechen';
 $phprlang['cancel_msg'] = 'Du hast deine Anmeldung für diesen Raid abgebrochen';
 $phprlang['comments'] = 'Kommentar';
 $phprlang['configuration'] = 'Konfiguration';
+$phprlang['deathknight_icon'] = 'Klicke, um Todesritter zu sehen';
 $phprlang['delete'] = 'Löschen';
 $phprlang['description'] = 'Beschreibung';
+$phprlang['druid_icon'] = 'Klicke, um Druiden zu sehen';
 $phprlang['edit'] = 'Bearbeiten';
 $phprlang['edit_comment'] = 'Kommentar bearbeiten';
+$phprlang['fire'] = 'Feuer';
+$phprlang['frost'] = 'Frost';
 $phprlang['frozen_msg'] = 'Dieser Raid wurde eingefroren. Anmeldungen sind deaktiviert.';
 $phprlang['group_name'] = 'Gruppenname';
 $phprlang['group_description'] = 'Gruppenbeschreibung';
 $phprlang['guilds'] = 'Gilden';
 $phprlang['has_permission'] = 'Hat Berechtigung';
+$phprlang['hunter_icon'] = 'Klicke, um Jäger zu sehen';
 $phprlang['in_queue'] = 'Benutzer in die Warteschlange setzen';
 $phprlang['last_login_date'] = 'Letzter Login';
 $phprlang['last_login_time'] = 'Uhrzeit';
 $phprlang['locations'] = 'Instanzen';
 $phprlang['logs'] = 'Protokoll';
 $phprlang['lua'] = 'LUA- und Makroausgabe';
+$phprlang['mage_icon'] = 'Klicke, um Magier zu sehen';
 $phprlang['mark'] = 'Raid als veraltet markieren';
+$phprlang['nature'] = 'Natur';
 $phprlang['new'] = 'Raid als aktuell markieren';
 $phprlang['not_signed_up'] = 'Klicke hier, um dich für den Raid anzumelden';
 $phprlang['out_queue'] = 'Benutzer in die Anmeldeliste setzen';
+$phprlang['paladin_icon'] = 'Klicke, um Paladine zu sehen';
 $phprlang['permissions'] = 'Berechtigungen';
+$phprlang['priest_icon'] = 'Klicke, um Priester zu sehen';
 $phprlang['priv'] = 'Berechtigungsgruppe';
 $phprlang['profile'] = 'Profil';
 $phprlang['raids'] = 'Raids';
-$phprlang['remove_group'] = 'Entferne Gruppe aus dem Set';
+// unused: $phprlang['remove_group'] = 'Entferne Gruppe aus dem Set';
 $phprlang['remove_user'] = 'Benutzer aus Berechtigungsgruppe entfernen';
+$phprlang['rogue_icon'] = 'Klicke, um Schurken zu sehen';
+$phprlang['shadow'] = 'Schatten';
+$phprlang['shaman_icon'] = 'Klicke, um Schamanen zu sehen';
 $phprlang['signed_up'] = 'Du bist für diesen Raid angemeldet';
-$phprlang['signup_add'] = 'Benutzer der Anmeldung hinzufügen';
+$phprlang['signup_add'] = 'Benutzer der Anmeldung hinzufügen'; // wo wird das benutzt!?!?
 $phprlang['signup_delete'] = 'Benutzer von der Anmeldung entfernen (permanent)';
 $phprlang['users'] = 'Benutzer';
+$phprlang['warlock_icon'] = 'Klicke, um Hexenmeister zu sehen';
+$phprlang['warrior_icon'] = 'Klicke, um Krieger zu sehen';
 
 ?>

@@ -153,7 +153,7 @@ class sql_db
 		}
 		else
 		{
-			return ( $transaction == END_TRANSACTION ) ? true : false;
+			return ( $transaction == 'END_TRANSACTION' ) ? true : false;
 		}
 	}
 

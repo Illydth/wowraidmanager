@@ -84,8 +84,11 @@ $raid_loop_prev = 0;
 $sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "raids WHERE old = 1 ORDER BY start_time DESC";
 $raids_result = $db_raid->sql_query($sql) or $no_old = TRUE;
 
-while($raids = $db_raid->sql_fetchrow($raids_result, true)) 
-{
+while($raids = $db_raid->sql_fetchrow($raids_result, true)) {
+	$invite = new_date('Y/m/d H:i:s', $raids['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+	$start = new_date('Y/m/d H:i:s', $raids['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+	$date = $start;
+	
 	// Initialize Count Array and Totals.
 	foreach ($wrm_global_classes as $global_class)
 	{
@@ -112,14 +115,44 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true))
 	$priv_profile=scrub_input($_SESSION['priv_profile']);
 	$profile_id=scrub_input($_SESSION['profile_id']);
 
-	// convert unix timestamp to something readable
-	$raid_date = get_date($raids['start_time']);
-	$raid_start_time = get_time_full($raids['start_time']);
-	$raid_invite_time = get_time_full($raids['invite_time']);
+	// check if signed up
+	// precendence -> cancelled signup, signed up, raid frozen, open for signup
+	if($logged_in == 1 && $priv_profile == 1) 
+	{
+	//	if(is_char_cancel($profile_id, $raids['raid_id']))
+	//		$info = '<img src="templates/' . $phpraid_config['template'] . '/images/icons/cancel.gif" border="0" height="14" width="14" onMouseover="ddrivetip(\'' . $phprlang['cancel_msg'] . '\');" onMouseout="hideddrivetip();" alt="cancel icon">';
+	//	else if(is_char_signed($profile_id, $raids['raid_id']))
+	//		$info = '<img src="templates/' . $phpraid_config['template'] . '/images/icons/check_mark.gif" border="0" height="14" width="14" onMouseover="ddrivetip(\'' . $phprlang['signed_up'] . '\');" onMouseout="hideddrivetip();" alt="check mark">';
+//		if(check_frozen($raids['raid_id']) && $phpraid_config['disable_freeze'] == 0)
+//			$info = '<img src="templates/' . $phpraid_config['template'] . '/images/icons/frozen.gif" border="0" height="14" width="14" onMouseover="ddrivetip(\'' . $phprlang['frozen_msg'] . '\');" onMouseout="hideddrivetip();" alt="frozen">';
+	//	else
+	//		$info = '<a href="view.php?mode=view&amp;raid_id=' . $raids['raid_id'] . '#signup">'. $phprlang['signup'] .'</a>';
+	}
 
-	$ddrivetiptxt = get_raid_tooltip($raids['raid_id']);
-	$location = '<a href="raid_view.php?mode=view&amp;raid_id='.$raids['raid_id'].'" onMouseover="ddrivetip('.$ddrivetiptxt.');" onMouseout="hideddrivetip();">'.$raids['location'].'</a>';
+//	$desc = scrub_input($raids['description']);
+//	$ddrivetiptxt = "'<span class=tooltip_title>" . $phprlang['description'] ."</span><br>" . DEUBB2($desc) . "'";
+	//$location = $raids['location'];
+
+	$raid_date = new_date($phpraid_config['date_format'],$raids['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+	$raid_start_time = new_date($phpraid_config['time_format'],$raids['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+	$raid_invite_time = new_date($phpraid_config['time_format'],$raids['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);		
 	
+	//$desc = scrub_input($raids['description']);
+	//$desc = str_replace("'", "\'", $desc);
+	//$raid_txt_desc = "'<span class=tooltip_title>" . $phprlang['description'] ."</span><br>" . DEUBB2($desc);
+	$raid_txt_info = "------------------";
+	$raid_txt_info .= "<br>".$phprlang['location'].":".$raids['location'];
+	$raid_txt_info .= "<br>".$phprlang['officer'].":".$raids['officer'];
+	$raid_txt_info .= "<br>".$phprlang['date'].":".$raid_date;
+	$raid_txt_info .= "<br>".$phprlang['start_time'].":".$raid_start_time;
+	$raid_txt_info .= "<br>".$phprlang['invite_time'].":".$raid_invite_time;
+	$raid_txt_info .= "<br>".$phprlang['totals'].": ".$total.'/'.$raids['max']  . ' (+' . $total2. ')';
+	$popupdesc = $raids['description'].'<br>'. $raid_txt_info."'";
+	//$location = '<a href="view.php?mode=view&amp;raid_id='.$raids['raid_id'].'" onMouseover="ddrivetip('.$ddrivetiptxt.');" onMouseout="hideddrivetip();">'.$raids['location'].'</a>';	
+	$url = 'view.php?mode=view&amp;raid_id=' . $raids['raid_id'];
+	//$location=create_comment_popup($phprlang['description'], $popupdesc, $url, $raids['location']);
+	$location=cssToolTip($raids['location'], $popupdesc,'custom comment', $url, $phprlang['description']);
+
 	// Now that we have the raid data, we need to retrieve limit data based upon Raid ID.
 	// Get Class Limits and set Colored Counts
 	$raid_class_array = array();
@@ -155,11 +188,11 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true))
 				'ID'=>$raids['raid_id'],
 				//'Signup'=>$info,
 				'Force Name'=>$raids['raid_force_name'],
-				'Date'=>$raid_date,
+				'Date'=>$date,
 				'Dungeon'=>UBB2($location),
 				//'Dungeon'=>$raids['location'],
-				'Invite Time'=>$raid_invite_time,
-				'Start Time'=>$raid_start_time,
+				'Invite Time'=>$invite,
+				'Start Time'=>$start,
 				'Creator'=>$raids['officer'],
 				'Totals'=>$total.'/'.$raids['max']  . '(+' . $total2. ')',
 			)
@@ -183,9 +216,11 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true))
 	$raid_headers = getVisibleColumns($viewName);
 
 	//Get Record Counts
+//	$curr_record_count_array = getRecordCounts($current, $raid_headers, $startRecord);
 	$prev_record_count_array = getRecordCounts($previous, $raid_headers, $startRecord);
 	
 	//Get the Jump Menu and pass it down
+//	$currJumpMenu = getPageNavigation($current, $startRecord, $pageURL, $sortField, $sortDesc);
 	$prevJumpMenu = getPageNavigation($previous, $startRecord, $pageURL, $sortField, $sortDesc);
 			
 	//Setup Default Data Sort from Headers Table
@@ -195,19 +230,24 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true))
 				$sortField = $column_rec['column_name'];
 	
 	//Setup Data
+//	$current = paginateSortAndFormat($current, $sortField, $sortDesc, $startRecord, $viewName);
 	$previous = paginateSortAndFormat($previous, $sortField, $sortDesc, $startRecord, $viewName);
 
 	/****************************************************************
 	 * Data Assign for Template.
 	 ****************************************************************/
+//	$wrmsmarty->assign('new_data', $current); 
 	$wrmsmarty->assign('old_data', $previous);
+//	$wrmsmarty->assign('current_jump_menu', $currJumpMenu);
 	$wrmsmarty->assign('previous_jump_menu', $prevJumpMenu);
 	$wrmsmarty->assign('column_name', $raid_headers);
+//	$wrmsmarty->assign('curr_record_counts', $curr_record_count_array);
 	$wrmsmarty->assign('prev_record_counts', $prev_record_count_array);
 	$wrmsmarty->assign('header_data',
 		array(
 			'template_name'=>$phpraid_config['template'],
 			'raidsarchive_header' => $phprlang['raidsarchive_header'],
+			//'new_raids_header' => $phprlang['raids_new'],
 			'sort_url_base' => $pageURL,
 			'sort_descending' => $sortDesc,
 			'sort_text' => $phprlang['sort_text'],

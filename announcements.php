@@ -29,7 +29,7 @@
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *
 ****************************************************************************/
-$phprlang['visible'] = 'Visible';
+
 // commons
 define("IN_PHPRAID", true);
 require_once('./common.php');
@@ -90,29 +90,31 @@ if($_GET['mode'] == 'view')
 			$message = substr_wrap($message, 0, 30, "UTF-8") . '...';
 
 		$posted_by = $data['posted_by'];
+		$date = new_date('Y/m/d H:i:s',$data['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+		$time = new_date('Y/m/d H:i:s',$data['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']);
 
-		$edit = '<a href="announcements.php?mode=edit&amp;id='.$id.'"><img src="templates/' . $phpraid_config['template'] .
-				'/images/icons/icon_edit.gif" border="0" onMouseover="ddrivetip(\'' . $phprlang['edit'] . '\');" onMouseout="hideddrivetip();" alt="edit icon"></a> ';
+		//$edit = '<a href="announcements.php?mode=edit&amp;id='.$id.'"><img src="templates/' . $phpraid_config['template'] .
+		//		'/images/icons/icon_edit.gif" border="0" onMouseover="ddrivetip(\'' . $phprlang['edit'] . '\');" onMouseout="hideddrivetip();" alt="edit icon"></a> ';
+		$url = 'announcements.php?mode=edit&amp;id='.$id;
+		$img = '<img src="templates/'.$phpraid_config['template'].'/images/icons/icon_edit.gif" border="0" alt="edit icon" />';
+		$edit =cssToolTip($img, $phprlang['edit'], 'smallIconText', $url);
 
 		// Removed "Title" from being passed, no need for it.
-		$delete = '<a href="announcements.php?mode=delete&amp;id='.$id.'"><img src="templates/' .
-					$phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\'' . $phprlang['delete'] . '\');"
-					onMouseout="hideddrivetip();" alt="delete icon"></a>';
+		// $delete = '<a href="announcements.php?mode=delete&amp;id='.$id.'"><img src="templates/' .
+					// $phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\'' . $phprlang['delete'] . '\');"
+					// onMouseout="hideddrivetip();" alt="delete icon"></a>';
+		$url = 'announcements.php?mode=delete&amp;id='.$id;
+		$img = '<img src="templates/'.$phpraid_config['template'].'/images/icons/icon_delete.gif" border="0" alt="delete icon" />';
+		$delete =cssToolTip($img, $phprlang['delete'], 'smallIconText', $url);
 
-		if ($data['visible'] == "1")
-			$visible_status = $phprlang['yes'];
-		else
-			$visible_status = $phprlang['no'];
-$phprlang['configuration_datatable_visible'] = 'Visible';
 		array_push($announcements,
 			array(
 				'ID'=>$id,
 				'Title'=>$title,
 				'Message'=>$message,
 				'Posted By'=>$posted_by,
-				'Create Date'=>get_date($data['timestamp']),
-				'Create Time'=> get_time($data['timestamp']),
-				'visible' => $visible_status,
+				'Create Date'=>$date,
+				'Create Time'=>$time,
 				'Buttons'=>$edit . $delete,
 			)
 		);
@@ -211,15 +213,10 @@ elseif(($_GET['mode'] == 'new' || $_GET['mode'] = 'edit') && isset($_POST['submi
 	$message = scrub_input($_POST['message'], true);
 	$timestamp = time();
 	$posted_by = $_SESSION['username'];
-	$visible = scrub_input($_POST['visible'], true);
-	
 	if($_GET['mode'] == 'new')
 	{
-		$sql = sprintf(	"INSERT INTO " . $phpraid_config['db_prefix'] . "announcements". 
-						" (`title`,`message`,`timestamp`,`posted_by`,`visible`)".
-						" VALUES (%s,%s,%s,%s,%s)", 
-						quote_smart($title),quote_smart($message),
-						quote_smart($timestamp),quote_smart($posted_by),quote_smart($visible));
+		$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "announcements (`title`,`message`,`timestamp`,`posted_by`)
+		VALUES (%s,%s,%s,%s)", quote_smart($title),quote_smart($message),quote_smart($timestamp),quote_smart($posted_by));
 	
 		$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 
@@ -228,8 +225,8 @@ elseif(($_GET['mode'] == 'new' || $_GET['mode'] = 'edit') && isset($_POST['submi
 	elseif($_GET['mode'] == 'edit')
 	{
 		$id = scrub_input($_GET['id']);
-		$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "announcements SET visible=%s,title=%s,message=%s WHERE announcements_id=%s", 
-						quote_smart($visible),quote_smart($title),quote_smart($message),quote_smart($id));
+		$sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "announcements SET title=%s,message=%s WHERE announcements_id=%s",
+						quote_smart($title),quote_smart($message),quote_smart($id));
 		$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	}
 	header("Location: announcements.php?mode=view");
@@ -238,10 +235,6 @@ elseif(($_GET['mode'] == 'new' || $_GET['mode'] = 'edit') && isset($_POST['submi
 // and the form
 if($_GET['mode'] != 'delete')
 {
-	$array_noyes = array();
-	$array_noyes['0'] = $phprlang['no'];
-	$array_noyes['1'] = $phprlang['yes'];
-	
 	if($_GET['mode'] == 'edit')
 	{
 		$wrmsmarty->assign('display_data_table', FALSE);
@@ -256,7 +249,6 @@ if($_GET['mode'] != 'delete')
 		$form_action = 'announcements.php?mode=edit&amp;id=' . $id;
 		$title_data = $data['title'];
 		$message_data = $data['message'];
-		$selected_visible = $data['visible'];
 		$button_01 = $phprlang['update'];
 	}
 	else
@@ -264,7 +256,6 @@ if($_GET['mode'] != 'delete')
 		$form_action = 'announcements.php?mode=new';
 		$title_data = "";
 		$message_data = "";
-		$selected_visible = "1";
 		$button_01 = $phprlang['submit'];
 	}
 	
@@ -278,9 +269,6 @@ if($_GET['mode'] != 'delete')
 			'message_text'=>$phprlang['announcements_message_text'],
 			'header'=>$phprlang['announcements_new_header'],
 			'message_data'=>$message_data,
-			'visible_text' => $phprlang['visible'],
-			'array_visible' => $array_noyes,
-			'selected_visible' => $selected_visible,
 			'button_01'=> $button_01,
 			'button_reset'=> $phprlang['reset'],
 		)

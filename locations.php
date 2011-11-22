@@ -80,11 +80,17 @@ if($_GET['mode'] == 'view')
 	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	while($data = $db_raid->sql_fetchrow($result, true))
 	{
-		$edit = '<a href="'.$page_url.'?mode=update&amp;id='.$data['location_id'].'"><img src="templates/' . $phpraid_config['template'] .
-				'/images/icons/icon_edit.gif" border="0" onMouseover="ddrivetip(\'' . $phprlang['edit'] . '\');" onMouseout="hideddrivetip();" alt="edit icon"></a>';
+		//$edit = '<a href="'.$page_url.'?mode=update&amp;id='.$data['location_id'].'"><img src="templates/' . $phpraid_config['template'] .
+				//'/images/icons/icon_edit.gif" border="0" onMouseover="ddrivetip(\'' . $phprlang['edit'] . '\');" onMouseout="hideddrivetip();" alt="edit icon"></a>';
+		$url = $page_url.'?mode=update&amp;id='.$data['location_id'];
+		$img = '<img src="templates/'.$phpraid_config['template'].'/images/icons/icon_edit.gif" border="0" alt="edit icon" />';
+		$edit = cssToolTip($img, $phprlang['edit'], 'smallIconText', $url);
 
-		$delete = '<a href="'.$page_url.'?mode=delete&amp;n='.$data['name'].'&amp;id='.$data['location_id'].'"><img src="templates/' .
-					$phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\'' . $phprlang['delete'] . '\');" onMouseout="hideddrivetip();" alt="delete icon"></a>';
+		//$delete = '<a href="'.$page_url.'?mode=delete&amp;n='.$data['name'].'&amp;id='.$data['location_id'].'"><img src="templates/' .
+					//$phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\'' . $phprlang['delete'] . '\');" onMouseout="hideddrivetip();" alt="delete icon"></a>';
+		$url = $page_url.'?mode=delete&amp;n='.$data['name'].'&amp;id='.$data['location_id'];
+		$img = '<img src="templates/'.$phpraid_config['template'].'/images/icons/icon_delete.gif" border="0" alt="edit icon" />';
+		$edit = cssToolTip($img, $phprlang['delete'], 'smallIconText', $url);
 
 		$sql = sprintf("SELECT event_type_lang_id FROM " . $phpraid_config['db_prefix'] . "event_type WHERE event_type_id=%s", quote_smart($data['event_type']));
 		$result2 = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
@@ -698,8 +704,6 @@ if($_GET['mode'] != 'delete')
 			'selected_expansion' => $selected_expansion,
 			'array_raid_force' => $array_raid_force,
 			'selected_raid_force' => $selected_raid_force,
-			'class_header'=>$phprlang['class'],
-			'role_header'=>$phprlang['role'],
 		
 		)
 	);

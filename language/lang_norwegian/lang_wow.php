@@ -92,43 +92,4 @@ $phprlang['blood_melee'] = "Blood (Melee)";
 $phprlang['unholy_tank'] = "Unholy (Tank)";
 $phprlang['unholy_melee'] = "Unholy (Melee)";
 $phprlang['notavailable'] = "N/A";
-
-// tooltips
-$phprlang['deathknight_icon'] = 'Klikk for å se Death Knights';
-$phprlang['druid_icon'] = 'Klikk for å se druider';
-$phprlang['hunter_icon'] = 'Trykk for å se hunters';
-$phprlang['mage_icon'] = 'Trykk for å se mager';
-$phprlang['paladin_icon'] = 'Trykk for å se  paladiner';
-$phprlang['priest_icon'] = 'Trykk for å se priests';
-$phprlang['rogue_icon'] = 'Trykk for å se roguer';
-$phprlang['shaman_icon'] = 'Trykk for å se shamaner';
-$phprlang['warlock_icon'] = 'Trykk for å se warlocker';
-$phprlang['warrior_icon'] = 'Trykk for å se warriorer';
-
-$phprlang['arcane'] = 'Arcane';
-$phprlang['fire'] = 'Fire';
-$phprlang['frost'] = 'Frost';
-$phprlang['nature'] = 'Nature';
-$phprlang['shadow'] = 'Shadow';
-
-// profile
-$phprlang['resistance_arcane'] = 'Arcane Resistance';
-$phprlang['resistance_fire'] = 'Fire Resistance';
-$phprlang['resistance_frost'] = 'Frost Resistance';
-$phprlang['resistance_nature'] = 'Nature Resistance';
-$phprlang['resistance_shadow'] = 'Shadow Resistance';
-
-//error message
-$phprlang['profile_error_arcane'] = 'Arcane må være et tall';
-$phprlang['profile_error_fire'] = 'Fire må være et tall';
-$phprlang['profile_error_frost'] = 'Frost må være et tall';
-$phprlang['profile_error_nature'] = 'Nature må være et tall';
-$phprlang['profile_error_shadow'] = 'Shadow må være et tall';
-
-// expansions
-$phprlang['exp_generic_wow'] = 'Generic World of Warcraft';
-$phprlang['exp_burning_crusade'] = 'The Burning Crusade';
-$phprlang['exp_wrath_lich_king'] = 'Wrath of the Lich King';
-$phprlang['exp_cataclysm'] = 'Cataclysm';
-
 ?>

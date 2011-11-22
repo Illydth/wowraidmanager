@@ -89,7 +89,7 @@ foreach($files as $key=>$value)
 
 $wrmadminsmarty->assign('config_data',
 	array(
-		'form_action' => $page_url,
+		'form_action'=> $page_url,
 		'general_header' => $phprlang['general_configuration_header'],
 		'template_cfg_header' => $phprlang['configuration_template_cfg_header'],
 

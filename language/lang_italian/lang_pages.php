@@ -54,6 +54,14 @@ $phprlang['guilds_description'] = 'Guild Description';
 $phprlang['guilds_server'] = 'Guild Server';
 $phprlang['guilds_faction'] = 'Guild Faction';
 $phprlang['guilds_armory_code'] = 'Armory Code for Guild';
+$phprlang['raid_force_header'] = 'Raid Force Listing'; //New
+$phprlang['raid_force_select_text'] = 'Select Raid Force: '; //New
+$phprlang['raid_force_name_box_text'] = 'Raid Force Name'; //New
+$phprlang['raid_force_guild_options_text'] = 'Guild'; //New
+$phprlang['raid_force_new_header'] = 'New Raid Force Link'; //New
+$phprlang['raid_force_name_missing'] = 'Raid Force Name must not be blank or NULL.'; //New
+$phprlang['raid_force_duplicate'] = 'Duplicate Raid Force Name/Guild Record.'; //New
+$phprlang['raid_force_guild_id_missing'] = 'Guild ID must not be blank or NULL'; //New
 $phprlang['armory_lang_US'] = 'US : http://us.battle.net/wow/ : English'; //New
 $phprlang['armory_lang_EU'] = 'EU : http://eu.battle.net/wow/ : English'; //New
 $phprlang['armory_lang_DE'] = 'DE : http://eu.battle.net/wow/ : German'; //New
@@ -103,6 +111,10 @@ $phprlang['lua_prv_write_success'] = '<b>LUA file created.</b><br>' .
 									'Download <a href="cache/raid_lua/phpRaid_Data.lua">phpRaid_Data.lua</a> and save 
 									it to [wow-dir]\interface\addons\phpraidviewer\<br>' .
 									'or use this for copy+paste:<br>';
+$phprlang['lua_drafted'] = 'Drafted Users'; //New
+$phprlang['lua_queued'] = 'Queued Users'; //New
+$phprlang['lua_macro_header'] = 'Macro output listing...'; //New
+$phprlang['lua_macro_footer'] = '<br>Macro output listing complete.<br>Copy and paste the above to a macro and run in-game.'; //New
 
 // permissions
 $phprlang['permissions_add'] = 'Aggiungi al Profilo Utente';
@@ -123,25 +135,27 @@ $phprlang['permissions_raids'] = 'Raid';
 $phprlang['permissions_new'] = 'Crea un nuovo Profilo Utente';
 $phprlang['permissions_users'] = 'Utenti';
 $phprlang['permissions_users_header'] = 'Utenti che utilizzano questo Profilo';
-$phprlang['profile_header_text'] = "my Profile";
-$phprlang['profile_number_character'] = "Number of my Character";
-$phprlang['profile_number_signups_all'] = "Number of all my signups";
-$phprlang['profile_number_signups_draft'] = "Number of my signups in confirmation list";
-$phprlang['profile_number_signups_queue'] = "Number of my signups in queue list";
-$phprlang['profile_number_signups_chancel'] = "Number of my checkouts (chancel)";
 
 // profile
+$phprlang['profile_arcane'] = 'Resistenza Arcane';
 $phprlang['profile_class'] = 'Classe';
 $phprlang['profile_create_header'] = 'Non è possibile definire nuovi Personaggi';
 $phprlang['profile_create_msg'] = 'Non è possibile definire Personaggi fino a quando non viene inserita almeno una Gilda';
+$phprlang['profile_fire'] = 'Resistenza Fire';
+$phprlang['profile_frost'] = 'Resistenza Frost';
 $phprlang['profile_gender'] = 'Genere';
 $phprlang['profile_guild'] = 'Gilda';
 $phprlang['profile_role'] = 'Ruolo';
 $phprlang['profile_header'] = 'Personaggi';
 $phprlang['profile_level'] = 'Livello';
 $phprlang['profile_name'] = 'Nome';
+$phprlang['profile_nature'] = 'Resistenza Nature';
 $phprlang['profile_raid'] = 'Iscrizioni';
 $phprlang['profile_race'] = 'Razza';
+$phprlang['profile_shadow'] = 'Resistenza Shadow';
+$phprlang['iLvL'] = "iLvL (Equipped, Best)"; //New
+$phprlang['health'] = "Health"; //New
+$phprlang['mana'] = "Mana"; //New
 
 // raids
 $phprlang['raids_date'] = 'Data';
@@ -168,6 +182,12 @@ $phprlang['event_type_dungeon'] = 'Dungeon (5 persone)';
 $phprlang['event_type_pvp'] = 'Evento PvP';
 $phprlang['event_type_meeting'] = 'Incontro (online/offline)';
 $phprlang['event_type_other'] = 'Altro';
+
+// expansions
+$phprlang['exp_generic_wow'] = 'Generic World of Warcraft';
+$phprlang['exp_burning_crusade'] = 'The Burning Crusade';
+$phprlang['exp_wrath_lich_king'] = 'Wrath of the Lich King';
+$phprlang['exp_cataclysm'] = 'Cataclysm';
 
 // roster
 $phprlang['roster_header'] = 'Roster di Gilda';
@@ -257,13 +277,5 @@ $phprlang['bosskill_header'] = 'Track Named (Boss) Accomplishments';
 
 //Raids Archive
 $phprlang['raidsarchive_header'] = 'Raids Archive';
-
-//Menubar 
-$phprlang['user_menu_header'] = 'User Menu';
-$phprlang['main_menu_header'] = 'Main Menu';
-
-//Signup Page
-$phprlang['signup_edit_header'] = "Edit your Signup Settings";
-$phprlang['signup_character_spec'] = "Character Spec";
 
 ?>

@@ -92,43 +92,4 @@ $phprlang['blood_melee'] = "Blood (Melee)";
 $phprlang['unholy_tank'] = "Unholy (Tank)";
 $phprlang['unholy_melee'] = "Unholy (Melee)";
 $phprlang['notavailable'] = "N/A";
-
-// tooltips
-$phprlang['deathknight_icon'] = 'Click to see Death Knights';
-$phprlang['druid_icon'] = 'Click to see druids';
-$phprlang['hunter_icon'] = 'Click to see hunters';
-$phprlang['mage_icon'] = 'Click to see mages';
-$phprlang['paladin_icon'] = 'Click to see paladins';
-$phprlang['priest_icon'] = 'Click to see priests';
-$phprlang['rogue_icon'] = 'Click to see rogues';
-$phprlang['shaman_icon'] = 'Click to see shamans';
-$phprlang['warlock_icon'] = 'Click to see warlocks';
-$phprlang['warrior_icon'] = 'Click to see warriors';
-
-$phprlang['arcane'] = 'Arcane';
-$phprlang['fire'] = 'Fire';
-$phprlang['frost'] = 'Frost';
-$phprlang['nature'] = 'Nature';
-$phprlang['shadow'] = 'Shadow';
-
-// profile
-$phprlang['resistance_arcane'] = 'Arcane Resistance';
-$phprlang['resistance_fire'] = 'Fire Resistance';
-$phprlang['resistance_frost'] = 'Frost Resistance';
-$phprlang['resistance_nature'] = 'Nature Resistance';
-$phprlang['resistance_shadow'] = 'Shadow Resistance';
-
-//error message
-$phprlang['profile_error_arcane'] = 'Arcane must be numeric';
-$phprlang['profile_error_fire'] = 'Fire must be numeric';
-$phprlang['profile_error_frost'] = 'Frost must be numeric';
-$phprlang['profile_error_nature'] = 'Nature must be numeric';
-$phprlang['profile_error_shadow'] = 'Shadow must be numeric';
-
-// expansions
-$phprlang['exp_generic_wow'] = 'Generic World of Warcraft';
-$phprlang['exp_burning_crusade'] = 'The Burning Crusade';
-$phprlang['exp_wrath_lich_king'] = 'Wrath of the Lich King';
-$phprlang['exp_cataclysm'] = 'Cataclysm';
-
 ?>

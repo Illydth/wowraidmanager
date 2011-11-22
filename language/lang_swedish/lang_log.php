@@ -73,5 +73,5 @@ $phprlang['log_sort_header'] = 'Välj filter val';
 $phprlang['log_create'] = '%s - %s: Användare [<a href="users.php?mode=details&user_id=%s">%s</a> (%s)] SKAPAD %s med ID [%s] och NAME [%s]';
 $phprlang['log_delete'] = '%s - %s: Användare [<a href="users.php?mode=details&user_id=%s">%s</a> (%s)] RADERAD %s med NAME [%s]';
 $phprlang['log_hack'] = '%s - %s: Användare med IP [%s] FÖRSÖKTE göra intrång med [%s]';
-$phprlang['log_raid'] = '%s - %s: Användare [<a href="users.php?mode=details&user_id=%s">%s</a> (%s)] ändrade i RAID <a href="raid_view.php?mode=view&raid_id=%s">%s %s</a> AV %s med KARAKTÄR %s - %s';
+$phprlang['log_raid'] = '%s - %s: Användare [<a href="users.php?mode=details&user_id=%s">%s</a> (%s)] ändrade i RAID <a href="view.php?mode=view&raid_id=%s">%s %s</a> AV %s med KARAKTÄR %s - %s';
 ?>

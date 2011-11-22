@@ -105,28 +105,7 @@ while($data = $db_raid->sql_fetchrow($result, true)) {
 	$guild_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	$guild_data = $db_raid->sql_fetchrow($guild_result, true);
 	$guild_name = $guild_data['guild_name'];
-	
-	$array_resistance = array();
-	$char_array = array();
-	$array_resistance = get_array_char_resistance($data['char_id']);
-	
-	$char_array = 
-			array(
-				'ID'=>$data['char_id'],
-				'Name'=> $charname,
-				'Guild'=>$guild_name,
-				'Level'=>$data['lvl'],
-				'Race'=>$race,
-				'Class'=>$class,
-				'Pri_Spec'=>$data['pri_spec'],
-				'Sec_Spec'=>$data['sec_spec'],
-				'Profile'=>'<a href="admin/admin_usermgt.php?mode=details&amp;user_id=' . $data['profile_id'] . '">' . $data_profdetail['username'] . '</a>'
-			);
-		
-		// add array	
-		$char_array = $char_array + $array_resistance;							
-		array_push($chars,$char_array);
-	/*							
+						
 	array_push($chars,
 		array(
 			'ID'=>$data['char_id'],
@@ -144,7 +123,7 @@ while($data = $db_raid->sql_fetchrow($result, true)) {
 			'Shadow'=>$data['shadow'],
 			'Profile'=>'<a href="admin/admin_usermgt.php?mode=details&amp;user_id=' . $data['profile_id'] . '">' . $data_profdetail['username'] . '</a>'
 		)
-	);*/
+	);
 }
 
 if(scrub_input($_SESSION['priv_configuration'] != 1))

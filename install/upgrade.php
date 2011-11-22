@@ -316,7 +316,7 @@ if ($step == "2")
 	
 	// read auth_type from wrm db
 	$sql = 	sprintf("SELECT * "  .
-					"FROM " . 	$phpraid_config['db_name'] . "." . $phpraid_config['db_prefix'] . "config " .
+					"FROM `" . 	$phpraid_config['db_name'] . "`." . $phpraid_config['db_prefix'] . "config " .
 					"WHERE config_name = %s", quote_smart("auth_type"));								
 	$result = $wrm_install->sql_query($sql) or print_error($sql, $wrm_install->sql_error(), 1);
 	$data = $wrm_install->sql_fetchrow($result, true);
@@ -427,7 +427,7 @@ if ($step == "2")
 	//_auth_user_group
 	$sql = 	sprintf("SELECT * "  .
 					"FROM " . $phpraid_config['db_prefix'] . "config " .
-					"WHERE  config_name = %s", quote_smart($bridge_name."_auth_user_group"));
+					" WHERE  config_name = %s", quote_smart($bridge_name."_auth_user_group"));
 	$wrm_install->sql_query($sql) or print_error($sql, $wrm_install->sql_error(), 1);
 	if ($wrm_install->sql_numrows() == 0)
 	{
@@ -438,8 +438,8 @@ if ($step == "2")
 	
 	//_alt_auth_user_class
 	$sql = 	sprintf("SELECT * "  .
-					"FROM " . 	$phpraid_config['db_name'] . "." . $phpraid_config['db_prefix'] . "config " .
-					"WHERE config_name = %s", quote_smart($bridge_name."_alt_auth_user_class"));
+				"FROM `" . 	$phpraid_config['db_name'] . "`." . $phpraid_config['db_prefix'] . "config " .
+				"WHERE config_name = %s", quote_smart($bridge_name."_alt_auth_user_class"));
 	$wrm_install->sql_query($sql) or print_error($sql, $wrm_install->sql_error(), 1);
 	if ($wrm_install->sql_numrows() == 0)
 	{	
@@ -463,7 +463,7 @@ if ($step == "3")
 	//$wrm_install = &new sql_db($phpraid_config['db_host'], $phpraid_config['db_user'], $phpraid_config['db_pass'], $phpraid_config['db_name']);
 	
 	$sql = 	sprintf("SELECT * "  .
-					"FROM " . 	$phpraid_config['db_name'] . "." . $phpraid_config['db_prefix'] . "config " .
+					"FROM `" . 	$phpraid_config['db_name'] . "`." . $phpraid_config['db_prefix'] . "config " .
 					"WHERE config_name = %s", quote_smart("wrm_created_on"));
 	$wrm_install->sql_query($sql) or print_error($sql, $wrm_install->sql_error(), 1);
 	$data = $wrm_install->sql_fetchrow($result, true);

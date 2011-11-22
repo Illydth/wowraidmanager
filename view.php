@@ -260,20 +260,43 @@ if($mode == 'view')
 						$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "race_gender WHERE race_id = %s and gender_id = %s", quote_smart($global_race['race_id']),quote_smart($global_gender['gender_id']));
 						$result_race_gender = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 						$race_gender_data = $db_raid->sql_fetchrow($result_race_gender, true);
-						$race = '<img src="templates/' . $phpraid_config['template'] . $race_gender_data['image'] . '" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang[$global_race['lang_index']].'\');" onMouseout="hideddrivetip();" alt="'.$phprlang[$global_race['lang_index']].' '.$phprlang[$global_gender['lang_index']].'">';
+						//$race = '<img src="templates/' . $phpraid_config['template'] . $race_gender_data['image'] . '" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang[$global_race['lang_index']].'\');" onMouseout="hideddrivetip();" alt="'.$phprlang[$global_race['lang_index']].' '.$phprlang[$global_gender['lang_index']].'">';
+						$img = '<img src="templates/'.$phpraid_config['template'].$race_gender_data['image'].'" height="18" width="18" border="0" alt="'.$phprlang[$global_race['lang_index']].' '.$phprlang[$global_gender['lang_index']].'" />';
+						$msg = $phprlang[$global_race['lang_index']].' '.$phprlang[$global_gender['lang_index']];
+						$race =cssToolTip($img, $msg, 'raceIconText', $url);
 					}					
 
-		$comments = escapePOPUP(scrub_input($signups['comments']));
-
-		$ddrivetiptxt = "'<span class=tooltip_title>" . $phprlang['comments'] ."</span><br>".DEUBB2($comments)."'";
+		// Old Tooltip Code, Deprecated.
+		//$comments = escapePOPUP(scrub_input($signups['comments']));
+		//$comments = clean_value($signups['comments']);
+		//var_dump($comments);
+		//$ddrivetiptxt = "'<span class=tooltip_title>" . $phprlang['comments'] ."</span><br>".$comments."'";
+		//if(strlen_wrap($signups['comments'], "UTF-8") > 25)
+		//	$comments = '<a href="#" onMouseover="fixedtooltip('.$ddrivetiptxt.',this,event,\'auto\');" onMouseout="delayhidetip();">' . substr_wrap($comments, 0, 22, "UTF-8") . '...</a>';		
+		//else
+		//	$comments = UBB(scrub_input($signups['comments']));
+		//if(strlen_wrap($comments, "UTF-8") == 0)
+		//	$comments = '-';
+			
+		// New Tooltip Code.
+		//$comments = clean_value($signups['comments']);
+		//$sub_comments = substr_wrap($comments, 0, 22, "UTF-8");
+		//$comments = '<a class=tooltip href="#">' . $sub_comments . '...<span>' . $comments . '</span></a>';
+		//$comments = create_comment_popup($phprlang['comments'], $signups['comments'], "#", $signups['comments'], TRUE);
+		
+		//OK, so I wen't back to this method because this is a fairly unique thing to these particular tooltips, and I can't see a way incorporate this
+		//   while being able to turn ALL of the tooltips across the board into CSS based tooltips, removing javascript alltogether, including those for images.
+		//   I'm not going to clean $signups['comments'] here because my cssToolTip function cleans all input, and for whatever reason, cleaning twice breaks things.
+		$title = $phprlang['comments'];
 		if(strlen_wrap($signups['comments'], "UTF-8") > 25)
-			$comments = '<a href="#" onMouseover="fixedtooltip('.$ddrivetiptxt.',this,event,\'auto\');" onMouseout="delayhidetip();">' . substr_wrap($signups['comments'], 0, 22, "UTF-8") . '...</a>';		
+			$comments = cssToolTip(substr_wrap($signups['comments'], 0, 22, "UTF-8"), $signups['comments'], 'custom comment', '#', $title);
 		else
-			$comments = UBB(scrub_input($signups['comments']));
+			$comments = clean_value($signups['comments']);
 
 		if(strlen_wrap($comments, "UTF-8") == 0)
 			$comments = '-';
-
+		
+					
 		//Get Spec Information.
 		$spec = $signups['selected_spec'];
 		
@@ -336,7 +359,10 @@ if($mode == 'view')
 			{
 				if ($data['class'] == $global_class['class_id'])
 				{
-					$class = ' <img src="templates/' . $phpraid_config['template'] . '/'. $global_class['image'] .'" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang[$global_class['lang_index']].'\');" onMouseout="hideddrivetip();" alt="'.$phprlang[$global_class['lang_index']].'">';
+					//$class = ' <img src="templates/' . $phpraid_config['template'] . '/'. $global_class['image'] .'" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang[$global_class['lang_index']].'\');" onMouseout="hideddrivetip();" alt="'.$phprlang[$global_class['lang_index']].'">';
+					$img = '<img src="templates/' . $phpraid_config['template'] . '/'. $global_class['image'] .'" height="18" width="18" border="0" alt="'.$phprlang[$global_class['lang_index']].'" />';
+					$class = cssToolTip($img, $phprlang[$global_class['lang_index']], 'classIconText', $url);
+					
 					array_push($class_info[$global_class['class_id']],
 						array('ID'=>$data['char_id'],'Arcane'=>$arcane,'Fire'=>$fire,'Nature'=>$nature,'Frost'=>$frost,'Shadow'=>$shadow,'Pri_Spec'=>$pri_spec,
 							  'Sec_Spec'=>$sec_spec,'Race'=>$race,'Class'=>$class,'Name'=>$name,'Comments'=>$comments,'Level'=>$data['lvl'],'Buttons'=>$actions,
@@ -347,9 +373,11 @@ if($mode == 'view')
 		else
 		{
 			foreach ($wrm_global_classes as $global_class)
-				if ($data['class'] == $global_class['class_id'])
-					$class = ' <img src="templates/' . $phpraid_config['template'] . '/'. $global_class['image'] .'" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang[$global_class['lang_index']].'\');" onMouseout="hideddrivetip();" alt="'.$phprlang[$global_class['lang_index']].'">';
-					
+			if ($data['class'] == $global_class['class_id']){
+				//$class = ' <img src="templates/' . $phpraid_config['template'] . '/'. $global_class['image'] .'" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang[$global_class['lang_index']].'\');" onMouseout="hideddrivetip();" alt="'.$phprlang[$global_class['lang_index']].'">';
+				$img = '<img src="templates/' . $phpraid_config['template'] . '/'. $global_class['image'] .'" height="18" width="18" border="0" alt="'.$phprlang[$global_class['lang_index']].'" />';
+				$class =cssToolTip($img, $phprlang[$global_class['lang_index']], 'classIconText');
+				}
 			// Get Role attached to primary spec by looking up in class/role table.
 			$sql = sprintf("SELECT role_id FROM " . $phpraid_config['db_prefix'] . "class_role WHERE class_id=%s and subclass=%s",quote_smart($data['class']),quote_smart($spec));
 			$role_name_data_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
@@ -378,17 +406,30 @@ if($mode == 'view')
 		$data_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		$data = $db_raid->sql_fetchrow($data_result, true);
 
-		$comments = escapePOPUP(scrub_input($signups['comments']));
+		//$comments = escapePOPUP(scrub_input($signups['comments']));
+		//$ddrivetiptxt = "'<span class=tooltip_title>" . $phprlang['comments'] ."</span><br>".DEUBB2($comments)."'";
+		//if(strlen_wrap($signups['comments'], "UTF-8") > 25)
+		//	$comments = '<a href="#" onMouseover="fixedtooltip('.$ddrivetiptxt.',this,event,\'auto\');" onMouseout="delayhidetip();">' . substr_wrap($signups['comments'], 0, 22, "UTF-8") . '...</a>';		
+		//else
+		//	$comments = UBB(scrub_input($signups['comments']));
+		//if(strlen_wrap($comments, "UTF-8") == 0)
+		//	$comments = '-';
 
-		$ddrivetiptxt = "'<span class=tooltip_title>" . $phprlang['comments'] ."</span><br>".DEUBB2($comments)."'";
+		// New Popup Code
+		//$comments = create_comment_popup($phprlang['comments'], $signups['comments'], "#", $signups['comments'], TRUE);
+		
+		//OK, so I wen't back to this method because this is a fairly unique thing to these particular tooltips, and I can't see a way incorporate this
+		//   while being able to turn ALL of the tooltips across the board into CSS based tooltips, removing javascript alltogether, including those for images.
+		//   I'm not going to clean $signups['comments'] here because my cssToolTip function cleans all input, and for whatever reason, cleaning twice breaks things.
+		$title = $phprlang['comments'];
 		if(strlen_wrap($signups['comments'], "UTF-8") > 25)
-			$comments = '<a href="#" onMouseover="fixedtooltip('.$ddrivetiptxt.',this,event,\'auto\');" onMouseout="delayhidetip();">' . substr_wrap($signups['comments'], 0, 22, "UTF-8") . '...</a>';		
+			$comments = cssToolTip(substr_wrap($signups['comments'], 0, 22, "UTF-8"), $signups['comments'], 'custom comment', '#', $title);
 		else
-			$comments = UBB(scrub_input($signups['comments']));
+			$comments = clean_value($signups['comments']);
 
 		if(strlen_wrap($comments, "UTF-8") == 0)
 			$comments = '-';
-
+			
 		$name = $data['name'];
 
 		$time = new_date('Y/m/d H:i:s',$signups['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']);
@@ -403,13 +444,18 @@ if($mode == 'view')
 						$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "race_gender WHERE race_id = %s and gender_id = %s", quote_smart($global_race['race_id']),quote_smart($global_gender['gender_id']));
 						$result_race_gender = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 						$race_gender_data = $db_raid->sql_fetchrow($result_race_gender, true);
-						$race = '<img src="templates/' . $phpraid_config['template'] . $race_gender_data['image'] . '" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang[$global_race['lang_index']].'\');" onMouseout="hideddrivetip();" alt="'.$phprlang[$global_race['lang_index']].' '.$phprlang[$global_gender['lang_index']].'">';
+						//$race = '<img src="templates/' . $phpraid_config['template'] . $race_gender_data['image'] . '" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang[$global_race['lang_index']].'\');" onMouseout="hideddrivetip();" alt="'.$phprlang[$global_race['lang_index']].' '.$phprlang[$global_gender['lang_index']].'">';
+						$img = '<img src="templates/'.$phpraid_config['template'].$race_gender_data['image'].'" height="18" width="18" border="0" alt="'.$phprlang[$global_race['lang_index']].' '.$phprlang[$global_gender['lang_index']].'" />';
+						$msg = $phprlang[$global_race['lang_index']].' '.$phprlang[$global_gender['lang_index']];
+						$race =cssToolTip($img, $msg, 'raceIconText', $url);
 					}
 
 		foreach ($wrm_global_classes as $global_class)
-			if ($data['class'] == $global_class['class_id'])
-				$class = ' <img src="templates/' . $phpraid_config['template'] . '/'. $global_class['image'] .'" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang[$global_class['lang_index']].'\');" onMouseout="hideddrivetip();" alt="'.$phprlang[$global_class['lang_index']].'">';
-
+			if ($data['class'] == $global_class['class_id']){
+				//$class = ' <img src="templates/' . $phpraid_config['template'] . '/'. $global_class['image'] .'" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang[$global_class['lang_index']].'\');" onMouseout="hideddrivetip();" alt="'.$phprlang[$global_class['lang_index']].'">';
+				$img = '<img src="templates/' . $phpraid_config['template'] . '/'. $global_class['image'] .'" height="18" width="18" border="0" alt="'.$phprlang[$global_class['lang_index']].'" />';
+				$class =cssToolTip($img, $phprlang[$global_class['lang_index']], 'classIconText');
+				}
 		/**********************
 		 * Buttons applicable to users who are Queued to be Drafted for a raid.  Buttons for Drafted Characters
 		 * are set above and buttons for Cancelled Character signups are below.
@@ -515,17 +561,30 @@ if($mode == 'view')
 		$data_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		$data = $db_raid->sql_fetchrow($data_result, true);
 
-		$comments = escapePOPUP(scrub_input($signups['comments']));
-
-		$ddrivetiptxt = "'<span class=tooltip_title>" . $phprlang['comments'] ."</span><br>".DEUBB2($comments)."'";
+		//$comments = escapePOPUP(scrub_input($signups['comments']));
+		//$ddrivetiptxt = "'<span class=tooltip_title>" . $phprlang['comments'] ."</span><br>".DEUBB2($comments)."'";
+		//if(strlen_wrap($signups['comments'], "UTF-8") > 25)
+		//	$comments = '<a href="#" onMouseover="fixedtooltip('.$ddrivetiptxt.',this,event,\'auto\');" onMouseout="delayhidetip();">' . substr_wrap($signups['comments'], 0, 22, "UTF-8") . '...</a>';		
+		//else
+		//	$comments = UBB(scrub_input($signups['comments']));
+		//if(strlen_wrap($comments, "UTF-8") == 0)
+		//	$comments = '-';
+		
+		// New Popup Code
+		//$comments = create_comment_popup($phprlang['comments'], $signups['comments'], "#", $signups['comments'], TRUE);
+		
+		//OK, so I wen't back to this method because this is a fairly unique thing to these particular tooltips, and I can't see a way incorporate this
+		//   while being able to turn ALL of the tooltips across the board into CSS based tooltips, removing javascript alltogether, including those for images.
+		//   I'm not going to clean $signups['comments'] here because my cssToolTip function cleans all input, and for whatever reason, cleaning twice breaks things.
+		$title = $phprlang['comments'];
 		if(strlen_wrap($signups['comments'], "UTF-8") > 25)
-			$comments = '<a href="#" onMouseover="fixedtooltip('.$ddrivetiptxt.',this,event,\'auto\');" onMouseout="delayhidetip();">' . substr_wrap($signups['comments'], 0, 22, "UTF-8") . '...</a>';		
+			$comments = cssToolTip(substr_wrap($signups['comments'], 0, 22, "UTF-8"), $signups['comments'], 'custom comment', '#', $title);
 		else
-			$comments = UBB(scrub_input($signups['comments']));
+			$comments = clean_value($signups['comments']);
 
 		if(strlen_wrap($comments, "UTF-8") == 0)
 			$comments = '-';
-
+		
 		$name = $data['name'];
 
 		$time = new_date('Y/m/d H:i:s',$signups['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']);
@@ -540,13 +599,18 @@ if($mode == 'view')
 						$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "race_gender WHERE race_id = %s and gender_id = %s", quote_smart($global_race['race_id']),quote_smart($global_gender['gender_id']));
 						$result_race_gender = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 						$race_gender_data = $db_raid->sql_fetchrow($result_race_gender, true);
-						$race = '<img src="templates/' . $phpraid_config['template'] . $race_gender_data['image'] . '" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang[$global_race['lang_index']].'\');" onMouseout="hideddrivetip();" alt="'.$phprlang[$global_race['lang_index']].' '.$phprlang[$global_gender['lang_index']].'">';
+						//$race = '<img src="templates/' . $phpraid_config['template'] . $race_gender_data['image'] . '" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang[$global_race['lang_index']].'\');" onMouseout="hideddrivetip();" alt="'.$phprlang[$global_race['lang_index']].' '.$phprlang[$global_gender['lang_index']].'">';
+						$img = '<img src="templates/'.$phpraid_config['template'].$race_gender_data['image'].'" height="18" width="18" border="0" alt="'.$phprlang[$global_race['lang_index']].' '.$phprlang[$global_gender['lang_index']].'" />';
+						$msg = $phprlang[$global_race['lang_index']].' '.$phprlang[$global_gender['lang_index']];
+						$race =cssToolTip($img, $msg, 'raceIconText', $url);
 					}					
 		
 		foreach ($wrm_global_classes as $global_class)
-			if ($data['class'] == $global_class['class_id'])
-				$class = ' <img src="templates/' . $phpraid_config['template'] . '/'. $global_class['image'] .'" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang[$global_class['lang_index']].'\');" onMouseout="hideddrivetip();" alt="'.$phprlang[$global_class['lang_index']].'">';
-
+			if ($data['class'] == $global_class['class_id']){
+				//$class = ' <img src="templates/' . $phpraid_config['template'] . '/'. $global_class['image'] .'" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang[$global_class['lang_index']].'\');" onMouseout="hideddrivetip();" alt="'.$phprlang[$global_class['lang_index']].'">';
+				$img = '<img src="templates/' . $phpraid_config['template'] . '/'. $global_class['image'] .'" height="18" width="18" border="0" alt="'.$phprlang[$global_class['lang_index']].'" />';
+				$class =cssToolTip($img, $phprlang[$global_class['lang_index']], 'classIconText');
+				}
 		/**********************
 		 * Buttons applicable to users who have canceled their signup for the Raid.  Buttons for Drafted
 		 * Characters and Queued Characters are above.
@@ -953,9 +1017,13 @@ if($mode == 'view')
 	
 	// finally, icons
 	$class_icons = array();
-	foreach ($wrm_global_classes as $global_class)
-		$class_icons[$global_class['class_id']] = '<a href="#'.$global_class['lang_index'].'" onMouseover="ddrivetip(\''.$phprlang[$global_class['lang_index']].'\');" onMouseout="hideddrivetip();"><img src="templates/'.$phpraid_config['template'].'/'.$global_class['image'].'" width="24" height="24" border="0" alt="'.$global_class['class_id'].'"></a>'; 
-
+	foreach ($wrm_global_classes as $global_class){
+		//$class_icons[$global_class['class_id']] = '<a href="#'.$global_class['lang_index'].'" onMouseover="ddrivetip(\''.$phprlang[$global_class['lang_index']].'\');" onMouseout="hideddrivetip();"><img src="templates/'.$phpraid_config['template'].'/'.$global_class['image'].'" width="24" height="24" border="0" alt="'.$global_class['class_id'].'"></a>'; 
+		$img = '<img src="templates/'.$phpraid_config['template'].'/'.$global_class['image'].'" width="24" height="24" border="0" alt="'.$global_class['class_id'].'" />';
+		$class_icons[$global_class['class_id']] = cssToolTip($img, $phprlang[$global_class['lang_index']], 'classIconText', '#');
+	}
+		
+		
 	// And now create the link to the team assignment/creation form and view missing signups but only if RL or RA.
 	if ($user_perm_group['admin'] OR $user_perm_group['RL'])
 	{

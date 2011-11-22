@@ -165,6 +165,15 @@ function password_check($oldpassword, $profile_id, $encryptflag)
 	
 	if ($encryptflag)
 	{ // Encrypted Password Sent in, Check directly against DB.
+		
+		if (defined('DEBUG') && DEBUG)
+		{
+			fwrite($stdoutfptr, "  Encrypted Password Sent In.\n");
+			fwrite($stdoutfptr, "  Password If Check (Equals) :\n");
+			fwrite($stdoutfptr, "    -> Input Password: '" . $oldpassword . "'\n");
+			fwrite($stdoutfptr, "    -> Database Password: '" . $db_pass . "'\n");
+		}
+		
 		if ($oldpassword == $db_pass)
 			return $db_pass;
 		else
@@ -178,7 +187,7 @@ function password_check($oldpassword, $profile_id, $encryptflag)
 		 * end of the input to re-md5 and generate the correct password off of the input.  We then check.  If
 		 * the two passwords match we're good.
 		 */
-	
+		
 		if (!$saltpos = strpos($db_pass, ":"))
 		{
 			//Password in Wrong Format
@@ -186,6 +195,14 @@ function password_check($oldpassword, $profile_id, $encryptflag)
 		}
 		$salt = substr($db_pass, $saltpos+1, 32);
 		$dbusernewpassword = md5($oldpassword.$salt).":".$salt;
+		
+		if (defined('DEBUG') && DEBUG)
+		{
+			fwrite($stdoutfptr, "  Encrypted Password NOT Sent In.\n");
+			fwrite($stdoutfptr, "  Password If Check (Equals) :\n");
+			fwrite($stdoutfptr, "    -> Input Password: '" . $dbusernewpassword . "'\n");
+			fwrite($stdoutfptr, "    -> Database Password: '" . $db_pass . "'\n");
+		}
 		
 		if ($dbusernewpassword == $db_pass)
 			return $db_pass;

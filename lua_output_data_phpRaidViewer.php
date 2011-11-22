@@ -156,10 +156,9 @@ function output_lua_prv()
 		$description_data=linebreak_to_bslash_n(addslashes($raid_data['description']));
 		$lua_output .= "\t\t[{$count}] = {\n";
 		$lua_output .= "\t\t\t[\"location\"] = \"$location_data\",\n";
-		$lua_output .= "\t\t\t[\"date\"] = \"" . get_date($raid_data['invite_time']) . "\",\n";	
-//		$lua_output .= "\t\t\t[\"date\"] = \"" . new_date($phpraid_config['date_format'],$raid_data['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']) . "\",\n";
-		$lua_output .= "\t\t\t[\"invite_time\"] = \"" . get_time($raid_data['invite_time']) . "\",\n";
-		$lua_output .= "\t\t\t[\"start_time\"] = \"" . get_time($raid_data['start_time']) . "\",\n";
+		$lua_output .= "\t\t\t[\"date\"] = \"" . new_date($phpraid_config['date_format'],$raid_data['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']) . "\",\n";
+		$lua_output .= "\t\t\t[\"invite_time\"] = \"" . new_date("Hi",$raid_data['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']) . "\",\n";
+		$lua_output .= "\t\t\t[\"start_time\"] = \"" . new_date("Hi",$raid_data['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']) . "\",\n";
 		if ($format == "1")
 		{
 			$lua_output .= "\t\t\t[\"event_type\"] = \"" . $raid_data['event_type'] . "\",\n";
@@ -204,8 +203,8 @@ function output_lua_prv()
 					'race'		=> $signup['race'],
 					'class'		=> $signup['class'],
 					'comment'	=> strip_linebreaks(addslashes($signup['comment'])),
-         			'role'		=> $role_id,
-					'timestamp'	=> get_time_full($signup['timestamp']),
+         				'role'		=> $role_id,
+					'timestamp'	=> new_date($phpraid_config['date_format'],$signup['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']) . ' - ' . new_date($phpraid_config['time_format'],$signup['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']),
 				));
 		}
 		

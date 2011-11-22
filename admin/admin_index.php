@@ -149,7 +149,7 @@ else
 		$latest_sub_patch_version = (int) $version_info[6];
 		$latest_version = (int) $version_info[0] . '.' . (int) $version_info[1] . '.' . (int) $version_info[2] . ':' . (int) $version_info[4] . '.' . (int) $version_info[5] . '.' . (int) $version_info[6];
 	
-		if ($current_version == $latest_version)
+		if ($current_version >= $latest_version) 
 		{
 			$version_info = '<p style="color:green">' . $phprlang['configuration_version_current'] . '</p>';
 		}
@@ -421,9 +421,9 @@ else
 	$minus5_time = time() - (5 * 60); // Current Time - 5 minutes.
 	$logged_in = array();
 	
-	$sql = "SELECT a.username as username, a.email as email, a.last_login_time as last_login_time, b.permission_type_name as perm_name
-			FROM " . $phpraid_config['db_prefix'] . "profile a, " . $phpraid_config['db_prefix'] . "permission_type b
-			WHERE a.priv = b.permission_type_id"; 
+	$sql = "SELECT a.username as username, a.email as email, a.last_login_time as last_login_time, b.name as perm_name
+			FROM " . $phpraid_config['db_prefix'] . "profile a, " . $phpraid_config['db_prefix'] . "permissions b
+			WHERE a.priv = b.permission_id"; 
 	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	while($data = $db_raid->sql_fetchrow($result, true))
 	{
@@ -459,9 +459,10 @@ else
 	// Inactive Users (30 Days)
 	$minus30d_time = time() - (30 * 24 * 60 * 60); // Current Time - 30 days.
 	$logged_in = array();
-	$sql = "SELECT a.username as username, a.email as email, a.last_login_time as last_login_time, b.permission_type_name as perm_name
-			FROM " . $phpraid_config['db_prefix'] . "profile a, " . $phpraid_config['db_prefix'] . "permission_type b
-			WHERE a.priv = b.permission_type_id
+	
+	$sql = "SELECT a.username as username, a.email as email, a.last_login_time as last_login_time, b.name as perm_name
+			FROM " . $phpraid_config['db_prefix'] . "profile a, " . $phpraid_config['db_prefix'] . "permissions b
+			WHERE a.priv = b.permission_id
 			ORDER BY a.last_login_time DESC"; 
 	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	$usercount=0;

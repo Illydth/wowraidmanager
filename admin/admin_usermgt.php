@@ -40,82 +40,6 @@ isset($_GET['mode']) ? $mode = scrub_input($_GET['mode']) : $mode = '';
 if($mode == '')
 	log_hack();
 
-$pageURL = 'admin_usermgt.php';
-$pageURL_details = 'admin_usermgt.php?mode=details&user_id=';
-
-/***************************************************
- * Load Game Specific Data to Global Variables
- ***************************************************/
-$wrm_global_classes = array();
-$wrm_global_races = array();
-$wrm_global_roles = array();
-$wrm_global_gender = array();
-$wrm_global_resistance = array();
-
-// Load the Classes Array
-$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "classes";
-$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-$x = 0;
-while($data = $db_raid->sql_fetchrow($result, true))
-{
-	$wrm_global_classes[$x]['class_index'] = $data['class_index'];
-	$wrm_global_classes[$x]['class_id'] = $data['class_id'];
-	$wrm_global_classes[$x]['class_code'] = $data['class_code'];
-	$wrm_global_classes[$x]['lang_index'] = $data['lang_index'];
-	$wrm_global_classes[$x]['image'] = $data['image'];
-	$x++;
-}
-
-// Load the Races Array
-$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "races";
-$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-$x = 0;			
-while($data = $db_raid->sql_fetchrow($result, true))
-{
-	$wrm_global_races[$x]['race_id'] = $data['race_id'];
-	$wrm_global_races[$x]['faction'] = $data['faction'];
-	$wrm_global_races[$x]['lang_index'] = $data['lang_index'];
-	$x++;
-}
-
-// Load the Roles Array
-$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "roles";
-$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-$x = 0;			
-while($data = $db_raid->sql_fetchrow($result, true))
-{
-	$wrm_global_roles[$x]['role_id'] = $data['role_id'];
-	$wrm_global_roles[$x]['role_name'] = $data['role_name'];
-	$wrm_global_roles[$x]['lang_index'] = $data['lang_index'];
-	$wrm_global_roles[$x]['image'] = $data['image'];
-	$x++;
-}
-
-// Load the Gender Array
-$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "gender";
-$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-$x = 0;			
-while($data = $db_raid->sql_fetchrow($result, true))
-{
-	$wrm_global_gender[$x]['gender_id'] = $data['gender_id'];
-	$wrm_global_gender[$x]['lang_index'] = $data['lang_index'];
-	$x++;
-}
-
-// Load the Resistance Array
-$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "resistance";
-$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-$x = 0;
-while($data = $db_raid->sql_fetchrow($result, true))
-{
-	$wrm_global_resistance[$x]['resistance_id'] = $data['resistance_id'];
-	$wrm_global_resistance[$x]['resistance_name'] = $data['resistance_name'];
-	$wrm_global_resistance[$x]['lang_index'] = $data['lang_index'];
-	$wrm_global_resistance[$x]['font_color'] = $data['font_color'];
-	$wrm_global_resistance[$x]['image'] = $data['image'];	
-	$x++;
-}
-
 if($mode == 'view')
 {
 	/*************************************************************
@@ -151,14 +75,13 @@ if($mode == 'view')
 	 **************************************************************/
 	// Generate the Update Permissions form elements
 	$form_action = "admin_usermgt.php?mode=mod_perms";
-	$form_buttons  = '<input type="submit" name="submit" value="'.$phprlang['submit'].'" class="mainoption"> ';
-	$form_buttons .= '<input type="reset" name="Reset" value="'.$phprlang['reset'].'" class="liteoption">';
+	$form_buttons = '<input type="submit" name="submit" value="'.$phprlang['submit'].'" class="mainoption"> <input type="reset" name="Reset" value="'.$phprlang['reset'].'" class="liteoption">';
 	$priv_dropdown = '<select name="perm_id">';
-	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "permission_type";
+	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "permissions";
 	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);			
 	while($perm_data = $db_raid->sql_fetchrow($result, true))
 	{
-		$priv_dropdown .= "<option value=\"" . $perm_data['permission_type_id'] . "\">" . $perm_data['permission_type_name']."</option>";
+		$priv_dropdown .= "<option value=\"" . $perm_data['permission_id'] . "\">" . $perm_data['name']."</option>";
 	}
 	$priv_dropdown .= '</select>';
 		
@@ -172,7 +95,7 @@ if($mode == 'view')
 	{
 		$usersname = '<!-- ' . strtolower_wrap($data['username'], "UTF-8") . ' --><a href="admin_usermgt.php?mode=details&amp;user_id='.$data['profile_id'].'">'.$data['username'].'</a>';
 
-		$priv = '<a href="admin_permissions.php?mode=view">'. get_priv_name($data['priv']).'</a>';
+		$priv = '<a href="admin_permissions.php?mode=view">'.get_priv_name($data['priv']).'</a>';
 
 		$actions = '<a href="admin_usermgt.php?mode=remove_user&amp;n='.$data['username'].'&amp;user_id='.$data['profile_id'].'">
 					<img src="../templates/' . $phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0"
@@ -205,7 +128,7 @@ if($mode == 'view')
 	//Setup Columns
 	$users_headers = array();
 	$record_count_array = array();
-	$users_headers = getVisibleColumns_admin($viewName);
+	$users_headers = getVisibleColumns($viewName);
 
 	//Get Record Counts
 	$users_record_count_array = getRecordCounts($users, $raid_headers, $startRecord);
@@ -302,18 +225,10 @@ else if($mode == 'details')
 
 	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE profile_id=%s",quote_smart($user_id));
 	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+	
 	while($data = $db_raid->sql_fetchrow($result, true))
 	{
-		$buttons_del  = '<a href="../profile_char.php?mode=remove&amp;n='.$data['name'].'&amp;char_id='.$data['char_id'].'&amp;user_id='.$data['profile_id'].'">';
-		$buttons_del .= '<img src="../templates/' . $phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''. $phprlang['delete'] .'\');" onMouseout="hideddrivetip();" alt="delete icon">';
-		$buttons_del .= '</a>';
-		
-		$buttons_edit  = '<a href="../profile_char.php?mode=edit&char_id='.$data['char_id'].'&guild='.$data['guild'].'&race='.$data['race'].'&class='.$data['class'].'">';
-		$buttons_edit .= '<img src="../templates/' . $phpraid_config['template'] . '/images/icons/icon_edit.gif" border="0" onMouseover="ddrivetip(\''. $phprlang['edit'] .'\');" onMouseout="hideddrivetip();" alt="edit icon">';
-		$buttons_edit .= '</a>';
-
-		$array_resistance = get_array_char_resistance($data['char_id']);
-		$char_array = 
+		array_push($chars,
 			array(
 				'ID'=>$data['char_id'],
 				'Name'=>get_armorychar($data['name'], $data['guild']), // Buggy
@@ -322,14 +237,15 @@ else if($mode == 'details')
 				'Race'=>$data['race'],
 				'Role'=>$data['role'],
 				'Class'=>$data['class'],
+				'Arcane'=>$data['arcane'],
+				'Fire'=>$data['fire'],
+				'Frost'=>$data['frost'],
+				'Nature'=>$data['nature'],
+				'Shadow'=>$data['shadow'],
 				'Pri_Spec'=>$data['pri_spec'],
 				'Sec_Spec'=>$data['sec_spec'],
-				'Buttons'=>$buttons_del . $buttons_edit
+				'Buttons'=>'<a href="users.php?mode=remove_char&amp;n='.$data['name'].'&amp;char_id='.$data['char_id'].'&amp;user_id='.$data['profile_id'].'"><img src="../templates/' . $phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''. $phprlang['delete'] .'\');" onMouseout="hideddrivetip();" alt="delete icon"></a>')
 			);
-		
-		// add array	
-		$char_array = $char_array + $array_resistance;							
-		array_push($chars,$char_array);
 	}
 
 	/**************************************************************
@@ -340,7 +256,7 @@ else if($mode == 'details')
 	//Setup Columns
 	$char_headers = array();
 	$record_count_array = array();
-	$char_headers = getVisibleColumns_admin($viewName);
+	$char_headers = getVisibleColumns($viewName);
 
 	//Get Record Counts
 	$char_record_count_array = getRecordCounts($chars, $char_headers, $startRecord);

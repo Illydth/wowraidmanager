@@ -12,17 +12,30 @@
 						{if $column_name[create_columns].img_url != NULL}
 							{if $header_data.sort_descending}
 								<th>
+								<!--
 									<a href="{$header_data.sort_url_base}Sort={$column_name[create_columns].column_name}&SortDescending=0">
 										<img border="0" height="18" width="18" alt="{$column_name[create_columns].col_text}" onMouseout="hideddrivetip();" onMouseover="ddrivetip('{$header_data.sort_text} {$column_name[create_columns].col_text}');" src="templates/{$header_data.template_name}/{$column_name[create_columns].img_url}"></img>
 									</a>
+								-->
+								<a class="tooltip" href="{$header_data.sort_url_base}Sort={$column_name[create_columns].column_name}&SortDescending=0">
+									<img src="templates/{$header_data.template_name}/{$column_name[create_columns].img_url}" border="0" height="18" width="18" alt="{$column_name[create_columns].col_text}" />
+										<span class="mediumIconText">{$header_data.sort_text} {$column_name[create_columns].col_text}</span>
+								</a>
 								</th>
+
 							{else}
 								<th>
+								<!--
 									<a href="{$header_data.sort_url_base}Sort={$column_name[create_columns].column_name}&SortDescending=1">
 										<img border="0" height="18" width="18" alt="{$column_name[create_columns].col_text}" onMouseout="hideddrivetip();" onMouseover="ddrivetip('{$header_data.sort_text} {$column_name[create_columns].col_text}');" src="templates/{$header_data.template_name}/{$column_name[create_columns].img_url}"></img>
 									</a>
+								-->
+								<a class="tooltip" href="{$header_data.sort_url_base}Sort={$column_name[create_columns].column_name}&SortDescending=1">
+									<img src="templates/{$header_data.template_name}/{$column_name[create_columns].img_url}" border="0" height="18" width="18" alt="{$column_name[create_columns].col_text}" />
+										<span class="mediumIconText">{$header_data.sort_text} {$column_name[create_columns].col_text}</span>
+								</a>
 								</th>
-							{/if}							
+							{/if}								
 						{elseif $column_name[create_columns].column_name == "Buttons"}
 							<th>&nbsp;</th>
 						{else}

@@ -50,9 +50,9 @@ else
 	$disable_site = '<input type="checkbox" name="disable" value="1" checked>';
 
 if($phpraid_config['debug'] == '0')
-	$debug_mode = '<input type="checkbox" name="debug" value="1" disabled> (disabled)';
+	$debug_mode = '<input type="checkbox" name="debug" value="1">';
 else
-	$debug_mode = '<input type="checkbox" name="debug" value="1" disabled checked> (disabled)';
+	$debug_mode = '<input type="checkbox" name="debug" value="1" checked>';
 
 if($phpraid_config['showphpraid_addon'] == '0')
 	$showphpraid_addon = '<input type="checkbox" name="showphpraid_addon" value="1">';
@@ -98,23 +98,24 @@ unset($files);
 // END LANGUAGE CHECK
 
 // default group
-$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "permission_type";
+$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "permissions";
 $result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 
 $default_group = '<select name="default_group">';
 
 while($data = $db_raid->sql_fetchrow($result, true))
 {
-	if($phpraid_config['default_group'] == $data['permission_type_id'])
-		$default_group .= '<option value="'.$data['permission_type_id'].'" selected>'.$data['permission_type_name'].'</option>';
+	if($phpraid_config['default_group'] == $data['permission_id'])
+		$default_group .= '<option value="'.$data['permission_id'].'" selected>'.$data['name'].'</option>';
 	else
-		$default_group .= '<option value="'.$data['permission_type_id'].'">'.$data['permission_type_name'].'</option>';
+		$default_group .= '<option value="'.$data['permission_id'].'">'.$data['name'].'</option>';
 }
 
 $default_group .= '</select>';
 
 $records_per_page = '<input name="records_per_page" size="5" type="text" class="post" value="' . $phpraid_config['records_per_page'] . '">';
 $num_old_raids_index = '<input name="num_old_raids_index" size="5" type="text" class="post" value="' . $phpraid_config['num_old_raids_index'] . '">';
+$auto_mark_raids_old = '<input name="auto_mark_raids_old" size="5" type="text" class="post" value="' . $phpraid_config['auto_mark_raids_old'] . '">';
 
 $wrmadminsmarty->assign('config_data',
 	array(
@@ -136,6 +137,8 @@ $wrmadminsmarty->assign('config_data',
 		'records_per_page' => $records_per_page,
 		'old_raids_index_text' => $phprlang['configuration_old_raids_index'],
 		'num_old_raids_index' => $num_old_raids_index,
+		'auto_mark_raids_old_text' => $phprlang['auto_mark_raids_old'],
+		'auto_mark_raids_old' => $auto_mark_raids_old,
 	
 		'side_cfg_header' => $phprlang['general_side_cfg_header'],
 	
@@ -158,9 +161,9 @@ if(isset($_POST['submit']))
 		$disable = 0;
 
 	if(isset($_POST['debug']))
-		$p_debug = 1;
+		$debug = 1;
 	else
-		$p_debug = 0;
+		$debug = 0;
 
  	if(isset($_POST['enable_five_man']))
  		$enable_five_man = 1;
@@ -185,6 +188,7 @@ if(isset($_POST['submit']))
 	$records_per_page = scrub_input($_POST['records_per_page']);
 	
 	$num_old_raids_index = scrub_input($_POST['num_old_raids_index']);
+	$auto_mark_raids_old = scrub_input($_POST['auto_mark_raids_old']);
 	
 	$site_name = scrub_input($_POST['site_name']);
 	$site_description = scrub_input($_POST['site_desc']);
@@ -195,7 +199,7 @@ if(isset($_POST['submit']))
 	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'disable';", quote_smart($disable));
 	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
-	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'debug';", quote_smart($p_debug));
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'debug';", quote_smart($debug));
 	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'enable_five_man';", quote_smart($enable_five_man));
 	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
@@ -206,6 +210,8 @@ if(isset($_POST['submit']))
 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'records_per_page';", quote_smart($records_per_page));
 	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'num_old_raids_index';", quote_smart($num_old_raids_index));
+	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'auto_mark_raids_old';", quote_smart($auto_mark_raids_old));
 	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
 	
 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'site_name';", quote_smart($site_name));

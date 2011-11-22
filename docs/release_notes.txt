@@ -3,6 +3,24 @@ at:
 
 * http://www.wowraidmanager.net/wiki/index.php?title=Installation
 
+
+****************************************************
+****************************************************
+****             4.2.0 Release Notes             ***
+****************************************************
+****************************************************
+WRM has now moved from supporting PHP4 to a PHP5 solution.
+
+The armory is now back in working order, it is not quite as powerful as
+could have been found in previous versions of WRM, but with the change to
+the armory, it was decided that getting a working version back up took priority.
+
+Furthermore, the other major change is that we have removed virtually, if not all
+javascript from the application related to mouseover tooltips.  There have been long
+outstanding bugs related to these tooltips.  WRM has now moved to a pure CSS implementation
+of tooltips.
+
+
 ****************************************************
 ****************************************************
 ****             4.1.0 Release Notes             ***

@@ -52,13 +52,13 @@ header('Content-type: application/rss+xml; charset=utf-8');
 	{
 		$raid_id = $data['raid_id'];
 		$icon = $imgpath[$data['event_id']];
-		$raidloc = htmlentities($phpraid_url . '/raid_view.php?mode=view&raid_id='.$data['raid_id']);
+		$raidloc = htmlentities($phpraid_url . '/view.php?mode=view&raid_id='.$data['raid_id']);
 		$rssloc = htmlentities($data['location']);
 		$description = sprintf ("<img src=\"%s/templates/default/%s\"> %s", $site_url, $icon, $data['description']);
 		$rssdesc = htmlentities(nl2br($description));
 
-		$date = htmlentities(get_date($data['start_time']));
-		$invite = htmlentities(get_time($data['invite_time']));
+		$date = htmlentities(new_date($phpraid_config['date_format'],$data['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']));
+		$invite = htmlentities(new_date($phpraid_config['time_format'], $data['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']));
 
 		echo "<item>\r\n
 			\t<title>$rssloc - $date @ $invite</title>\r\n

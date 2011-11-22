@@ -33,11 +33,10 @@
 header('Content-Type: text/html; charset=utf-8');
 
 $priv_config = scrub_input($_SESSION['priv_configuration']);
-$profile_id = scrub_input($_SESSION['profile_id']);
 
 // time variables
-$guild_date = get_date(time());
-$guild_time = get_time(time());
+$guild_time = new_date($phpraid_config['time_format'],time(),$phpraid_config['timezone'] + $phpraid_config['dst']);
+$guild_date = new_date($phpraid_config['date_format'],time(),$phpraid_config['timezone'] + $phpraid_config['dst']);
 
 /**************************************************************
  * Show Login Box / Field
@@ -50,7 +49,8 @@ if (isset($ShowLoginForm) and ($ShowLoginForm == FALSE))
 }
 if ( ($BridgeSupportPWDChange == TRUE) and isset($BridgeSupportPWDChange) )
 {
-	$loginbox->set_BridgeSupportPWDChange_status(FALSE);
+	//$loginbox->set_BridgeSupportPWDChange_status(FALSE);
+	$loginbox->set_BridgeSupportPWDChange_status(TRUE);
 }
 $login_form = $loginbox->wrm_show_loginbox_gethtmlstring();
 
@@ -71,20 +71,20 @@ $wrmsmarty->assign('page_header_data',
 		'body_width' => $phpraid_config['template_body_width'],  
 	)
 );
+
 $wrmsmarty->display('header.html');
 
 /**************************************************************
  * Show Menu
  **************************************************************/
 require_once('./includes/class_menu.php');
-$menubar = new wrm_menu($db_raid, $phpraid_config, $phprlang, $profile_id);
-$menubar->set_menu_status("normal");
+$menubar = &new wrm_menu($db_raid, $phpraid_config, $phprlang, $wrmsmarty);
 $menubar->wrm_show_menu();
 
 /**************************************************************
  * table stuff between menu and main output frame
  **************************************************************/
-$wrmsmarty->display('contentContainer.html');
+$wrmsmarty->display('menu_mainfrm.html');
 
 /**************************************************************
  * Show error_site_disable if they disable

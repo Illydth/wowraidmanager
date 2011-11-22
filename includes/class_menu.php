@@ -33,167 +33,200 @@
  */
 class wrm_menu
 {
-	/* HTML MENUBAR construction:
-	 * 
-	 * <div class="menuHeader">MENU_LIST_MAIN_HEADER_NAME</div>
-	 * 
-	 * <div align="left" class="navContainer">
-	 *   <ul class="navList">
-	 *     ...
-	 *     <li class="active"> YYYYY_link </li>
-	 *     ...
-	 *   </ul>
-	 *   
-	 * </div>
-	 * 
-	 * YYYYY_link = menu_type_id with all values
-	 */
-
 	//gerneral stuff
-	var $db_raid ;
+	var $db_raid;
 	var $phpraid_config;
 	var $phprlang;
 	var $wrmsmarty;
-	var $profile_id;
-	var $menu_status;
-	var $connection;
+	
 
 	//
 	// Constructor
 	//
-	public function wrm_menu($db_raid, $phpraid_config, $phprlang, $profile_id)
+	function wrm_menu($db_raid, $phpraid_config, $phprlang, $wrmsmarty)
 	{
 		$this->db_raid = $db_raid;	
 		$this->phpraid_config = $phpraid_config;
 		$this->phprlang = $phprlang;
-		$this->profile_id = $profile_id;
+		$this->wrmsmarty = $wrmsmarty;
 	}
 	
-	public function wrm_show_menu()
+	function wrm_show_menu()
 	{
-		echo $this->create_menubar();
-	}
-	
+		$phpraid_dir = "./";
+		$phprlang = $this->phprlang;
+		
+		$priv_announcement=scrub_input($_SESSION['priv_announcements']);
+		$priv_guilds=scrub_input($_SESSION['priv_guilds']);
+		$priv_locations=scrub_input($_SESSION['priv_locations']);
+		$priv_profile=scrub_input($_SESSION['priv_profile']);
+		$priv_raids=scrub_input($_SESSION['priv_raids']);
+		$logged_in=scrub_input($_SESSION['session_logged_in']);
+		
+		/**************************************************************
+		 * setup link permissions
+		 **************************************************************/
+		require_once($phpraid_dir.'templates/' . $this->phpraid_config['template'] . '/theme_cfg.php');
 
-	public function create_menubar()
-	{
-		$htmlstring = '<td id="leftMenuBackground" width="150px" valign="top">';
+		/**************************************************************
+		 * links useable for everyone
+		 **************************************************************/
+		$index_link = '<a href="' . $this->phpraid_config['header_link'] . '">' . $theme_index_link . '</a>';
+		$home_link = '<a href="index.php">' . $theme_home_link . '</a>';
+		$calendar_link = '<a href="calendar.php">' . $theme_calendar_link . '</a>';
+		$roster_link = '<a href="roster.php">' . $theme_roster_link . '</a>';
+		$dkp_view_link = '<a href="dkp_view.php">' . $theme_dkp_link . '</a>';
+		$boss_tracking_link = '<a href="bosstracking.php?mode=view">' . $theme_bosstrack_link . '</a>';
+		$raids_archive_link = '<a href="raidsarchive.php?mode=view">' . $theme_raids_archive_link . '</a>';
 
-		$sql = sprintf("SELECT * FROM " . $this->phpraid_config['db_prefix'] . "menu_type ".
-						" WHERE `show_area` = %s ORDER BY `menu_type_id` ASC", 
-						quote_smart($this->menu_status));
-			
-		//for testing => show all menu entrys
-		//	$sql = "SELECT * FROM " . $this->phpraid_config['db_prefix'] . "menu_type";
-	
-		$result = $this->db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);			
-		while($table_data = $this->db_raid->sql_fetchrow($result, true))
+		/**************************************************************
+		 * these links need special permissions
+		 **************************************************************/
+		$priv_announcement ? $announce_link = '<a href="announcements.php?mode=view">' . $theme_announcement_link . '</a>' : $announce_link = '';
+		$priv_guilds ?	$guild_link = '<a href="guilds.php?mode=view">' . $theme_guild_link . '</a>' : $guild_link = '';
+		$priv_locations ? $locations_link = '<a href="locations.php?mode=view">' . $theme_locations_link . '</a>' : $locations_link = '';
+		$priv_profile ? $profile_link = '<a href="profile.php?mode=view">' . $theme_profile_link . '</a>' : $profile_link = '';
+		
+		$logged_in != '1' ? $register_link = '<a href="' . $this->phpraid_config['register_url'] . '">' . $theme_register_link . '</a>' : $register_link = '';
+		
+		if ( $priv_raids OR ($this->phpraid_config['enable_five_man'] AND $priv_profile) )
 		{
-			$menu_type_id = $table_data['menu_type_id'];
+			$raids_link = '<a href="raids.php?mode=view">' . $theme_raids_link . '</a>';
+			$lua_output_link = '<a href="lua_output_new.php?mode=lua">' . $theme_lua_output_link . '</a>';
+		}
+		else
+		{
+			$raids_link = '';
+			$lua_output_link = '';
+		}
 
-			
-			$menuHeader = $this->get_html_menuHeader_value($menu_type_id);
-			$navList = $this->get_html_navList_value($menu_type_id);
-			
-			if ($navList != "")
-			{
-				$htmlstring .= $menuHeader . $navList ."<br/>";
+		/**************************************************************
+		 * setup menu
+		 **************************************************************/		
+		$menu = '<div align="left" class="navContainer">';
+		$menu .= '<ul class="navList">';
+		
+		/**************************************************************
+		 * Ignore link to another site
+		 **************************************************************/
+		$menu .= '<li>' . $index_link . '</li>';
+		if (preg_match("/(.*)index\.php(.*)/", $_SERVER['PHP_SELF'])) {
+			$menu .= '<li class="active">' . $home_link . '</li>';
+		} else {
+		    $menu .= '<li class="">' . $home_link . '</li>';
+		}
+		
+		// Show Calendar Link
+		if (preg_match("/(.*)calendar\.php(.*)/", $_SERVER['PHP_SELF'])) {
+		    $menu .= '<li class="active">' . $calendar_link . '</li>';
+		} else {
+		    $menu .= '<li class="">' . $calendar_link . '</li>';
+		}
+		
+		// setup permission based links
+		if($_SESSION['priv_announcements'] == 1)
+		{
+			if (preg_match("/(.*)announcements\.php(.*)/", $_SERVER['PHP_SELF'])) {
+			    $menu .= '<li class="active">' . $announce_link . '</li>';
+			} else {
+			    $menu .= '<li class="">' . $announce_link . '</li>';
 			}
 		}
 		
-		$htmlstring .= "</td>";
-		return $htmlstring;
-	}
-	
-	// available menu_status: admin, normal
-	public function set_menu_status($menu_status)
-	{
-		$this->menu_status = $menu_status;
-	}
-	
-	
-	/****************************************************************************
-	 * HTML Section
-	****************************************************************************/
-	
-	/**
-	 * 
-	 * @param integer $menu_type_id
-	 */
-	private function get_html_menuHeader_value($menu_type_id)
-	{
-		$sql = sprintf("SELECT * FROM " . $this->phpraid_config['db_prefix'] . "menu_type ".
-						" WHERE `menu_type_id` = %s", quote_smart($menu_type_id));
-		$result = $this->db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);			
-		$table_data = $this->db_raid->sql_fetchrow($result, true);
-
-		$htmlstring = '<div class="menuHeader">';
+		// Show Guild Link		
+		if($_SESSION['priv_guilds'] == 1)
+		{
+			if (preg_match("/(.*)guilds\.php(.*)/", $_SERVER['PHP_SELF'])) {
+			    $menu .= '<li class="active">' . $guild_link . '</li>';
+			} else {
+			    $menu .= '<li class="">' . $guild_link . '</li>';
+			}
+		}
 		
-		if ($table_data['show_menu_type_title_alt'] == 0) 
-			$htmlstring .= $this->phprlang[$table_data['lang_index']];
-		else 
-			$htmlstring .= $table_data['menu_type_title_alt'];
+		// Show Locations Link		
+		if($_SESSION['priv_locations'] == 1)
+		{
+			if (preg_match("/(.*)locations\.php(.*)/", $_SERVER['PHP_SELF'])) {
+			    $menu .= '<li class="active">' . $locations_link . '</li>';
+			} else {
+			    $menu .= '<li class="">' . $locations_link . '</li>';
+			}
+		}
 		
-		$htmlstring .= '</div>';
+		// Show Profile Link
+		if($_SESSION['priv_profile'] == 1)
+		{
+			if (preg_match("/(.*)profile\.php(.*)/", $_SERVER['PHP_SELF'])) {
+			    $menu .= '<li class="active">' . $profile_link . '</li>';
+			} else {
+			    $menu .= '<li class="">' . $profile_link . '</li>';
+			}
+		}
+		
+		// Show Raids and lua_output Link		
+		if ( $_SESSION['priv_raids'] OR ($this->phpraid_config['enable_five_man'] AND $priv_profile) )
+		{
+			if (preg_match("/(.*)raids\.php(.*)/", $_SERVER['PHP_SELF'])) {
+			    $menu .= '<li class="active">' . $raids_link . '</li>';
+			} else {
+			    $menu .= '<li class="">' . $raids_link . '</li>';
+			}
+			if (preg_match("/(.*)lua_output_new\.php(.*)/", $_SERVER['PHP_SELF'])) {
+			    $menu .= '<li class="active">' . $lua_output_link . '</li>';
+			} else {
+			    $menu .= '<li class="">' . $lua_output_link . '</li>';
+			}
+		}
+		
+		// Show Register Link		
+		if(($logged_in == 0) and ($this->phpraid_config['auth_type']== "iums")) {
+			$menu .= '<li>' . $register_link . '</li>';
+			$this->wrmsmarty->assign('register_link',$register_link);
+		}
+		
+		if (preg_match("/(.*)roster\.php(.*)/", $_SERVER['PHP_SELF'])) {
+		    $menu .= '<li class="active">' . $roster_link . '</li>';
+		} else {
+		    $menu .= '<li class="">' . $roster_link . '</li>';
+		}
+		
+		// If integration with EQDKP is enabled, add a link here.
+		if ($this->phpraid_config['enable_eqdkp'])
+		{
+			if (preg_match("/(.*)dkp_view\.php(.*)/", $_SERVER['PHP_SELF'])) {
+				$menu .= '<li class="active">' . $dkp_view_link . '</li>';
+			} else {
+				$menu .= '<li class="">' . $dkp_view_link . '</li>';
+			}
+		}
+		
+		// Show Boss Kill Tracking Link
+		/*if (preg_match("/(.*)bosstracking\.php(.*)/", $_SERVER['PHP_SELF'])) {
+			$menu .= '<li class="active">' . $boss_tracking_link . '</li>';
+		} else {
+			$menu .= '<li class="">' . $boss_tracking_link . '</li>';
+		}*/
+		
+		// Show Raids Archives Link
+		if (preg_match("/(.*)raidsarchive\.php(.*)/", $_SERVER['PHP_SELF'])) {
+			$menu .= '<li class="active">' . $raids_archive_link . '</li>';
+		} else {
+			$menu .= '<li class="">' . $raids_archive_link . '</li>';
+		}
+		
+		$menu .= '</ul></div>';
 
-		return $htmlstring;
 
+		$this->wrmsmarty->assign('menu_data', 
+			array(
+				'menu_header_text' => $this->phprlang['menu_header_text'],
+				'menu'=> $menu
+			)
+		);
+		$this->wrmsmarty->display('menu.html');
+		
 	}
-	
-	/**
-	 * create to one entry menubar point, the navList
-	 * @param integer $menu_type_id
-	 */	
-	private function get_html_navList_value($menu_type_id)
-	{
-		$htmlstring_values = "";
-		$htmlstring_top = '<div align="left" class="navContainer"><ul class="navList">';
-		$htmlstring_down  = '</ul></div>';
 
-		$sql = sprintf("SELECT * FROM " . $this->phpraid_config['db_prefix'] . "menu_value ".
-						" WHERE `menu_type_id` = %s  ORDER BY `ordering` ASC", quote_smart($menu_type_id));		
-		$result = $this->db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);			
-		while($table_data = $this->db_raid->sql_fetchrow($result, true))
-		{
-			if ( ($table_data['visible'] == '1') AND 
-				// user must have rights for reading this entry
-			   ((check_permission($table_data['permission_value_id'], $this->profile_id) == TRUE) OR 
-			   //or view free for all 
-			   ($table_data['permission_value_id'] == NULL)))
-			{
-				$link = '<a href="'.$table_data['link'].'">';
-				
-				//show alternative menu titel ?
-				if ($table_data['show_menu_value_title_alt'] == 0) 
-					$link .= $this->phprlang[$table_data['lang_index']];
-				else 
-					$link .= $table_data['menu_value_title_alt'];
-				$link .= "</a>";
-
-				if ( ($table_data['filename_without_ext'] != "") AND (preg_match("/(.*)".$table_data['filename_without_ext']."\.php(.*)/", $_SERVER['PHP_SELF'])) )
-				{
-					$htmlstring_values .= '<li class="active">' . $link . '</li>';
-				}
-				else 
-				{
-					    $htmlstring_values .= '<li class="">' . $link . '</li>';
-				}
-			}	  
-		}
-	
-		// if entry not empty then return a full list entry 
-		// otherwise return value == empty
-		if ($htmlstring_values != "")
-		{
-			$htmlstring = $htmlstring_top . $htmlstring_values . $htmlstring_down;
-		}
-		else 
-		{
-			$htmlstring = "";
-		}
-	
-		return $htmlstring;
-	}
 	
 }  //end class wrm_menu
 

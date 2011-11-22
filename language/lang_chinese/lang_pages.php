@@ -54,6 +54,14 @@ $phprlang['guilds_description'] = 'Guild Description';
 $phprlang['guilds_server'] = 'Guild Server';
 $phprlang['guilds_faction'] = 'Guild Faction';
 $phprlang['guilds_armory_code'] = 'Armory Code for Guild';
+$phprlang['raid_force_header'] = 'Raid Force Listing';
+$phprlang['raid_force_select_text'] = 'Select Raid Force: ';
+$phprlang['raid_force_name_box_text'] = 'Raid Force Name';
+$phprlang['raid_force_guild_options_text'] = 'Guild';
+$phprlang['raid_force_new_header'] = 'New Raid Force Link';
+$phprlang['raid_force_name_missing'] = 'Raid Force Name must not be blank or NULL.';
+$phprlang['raid_force_duplicate'] = 'Duplicate Raid Force Name/Guild Record.';
+$phprlang['raid_force_guild_id_missing'] = 'Guild ID must not be blank or NULL';
 $phprlang['armory_lang_US'] = 'US : http://us.battle.net/wow/ : English'; //New
 $phprlang['armory_lang_EU'] = 'EU : http://eu.battle.net/wow/ : English'; //New
 $phprlang['armory_lang_DE'] = 'DE : http://eu.battle.net/wow/ : German'; //New
@@ -103,6 +111,10 @@ $phprlang['lua_prv_write_success'] = '<b>LUA file created.</b><br>' .
 									'Download <a href="cache/raid_lua/phpRaid_Data.lua">phpRaid_Data.lua</a> and save 
 									it to [wow-dir]\interface\addons\phpraidviewer\<br>' .
 									'or use this for copy+paste:<br>';
+$phprlang['lua_drafted'] = 'Drafted Users';
+$phprlang['lua_queued'] = 'Queued Users';
+$phprlang['lua_macro_header'] = 'Macro output listing...';
+$phprlang['lua_macro_footer'] = '<br>Macro output listing complete.<br>Copy and paste the above to a macro and run in-game.';
 
 // permissions
 $phprlang['permissions_add'] = '加入群組';
@@ -125,23 +137,25 @@ $phprlang['permissions_users'] = '用戶';
 $phprlang['permissions_users_header'] = '群組中的用戶';
 
 // profile
+$phprlang['profile_arcane'] = '祕法抗性';
 $phprlang['profile_class'] = '職業';
 $phprlang['profile_create_header'] = '無法新增角色';
 $phprlang['profile_create_msg'] = '在管理者新增一個公會之前無法新增角色';
+$phprlang['profile_fire'] = '火焰抗性';
+$phprlang['profile_frost'] = '冰霜抗性';
 $phprlang['profile_gender'] = '性別';
 $phprlang['profile_guild'] = '加入公會';
 $phprlang['profile_role'] = '職責';
 $phprlang['profile_header'] = '角色';
 $phprlang['profile_level'] = '等級';
 $phprlang['profile_name'] = '名字';
+$phprlang['profile_nature'] = '自然抗性';
 $phprlang['profile_raid'] = '團隊參與';
 $phprlang['profile_race'] = '種族';
-$phprlang['profile_header_text'] = "my Profile";
-$phprlang['profile_number_character'] = "Number of my Character";
-$phprlang['profile_number_signups_all'] = "Number of all my signups";
-$phprlang['profile_number_signups_draft'] = "Number of my signups in confirmation list";
-$phprlang['profile_number_signups_queue'] = "Number of my signups in queue list";
-$phprlang['profile_number_signups_chancel'] = "Number of my checkouts (chancel)";
+$phprlang['profile_shadow'] = '暗影抗性';
+$phprlang['iLvL'] = "iLvL (Equipped, Best)"; //New
+$phprlang['health'] = "Health"; //New
+$phprlang['mana'] = "Mana"; //New
 
 // raids
 $phprlang['raids_date'] = '日期';
@@ -168,6 +182,12 @@ $phprlang['event_type_dungeon'] = 'Dungeon (5 man Instance)';
 $phprlang['event_type_pvp'] = 'PvP Event';
 $phprlang['event_type_meeting'] = 'Meeting (online/offline)';
 $phprlang['event_type_other'] = 'Other';
+
+// expansions
+$phprlang['exp_generic_wow'] = 'Generic World of Warcraft';
+$phprlang['exp_burning_crusade'] = 'The Burning Crusade';
+$phprlang['exp_wrath_lich_king'] = 'Wrath of the Lich King';
+$phprlang['exp_cataclysm'] = 'Cataclysm';
 
 // roster
 $phprlang['roster_header'] = '公會名冊';
@@ -257,13 +277,4 @@ $phprlang['bosskill_header'] = 'Track Named (Boss) Accomplishments';
 
 //Raids Archive
 $phprlang['raidsarchive_header'] = 'Raids Archive';
-
-//Menubar 
-$phprlang['user_menu_header'] = 'User Menu';
-$phprlang['main_menu_header'] = 'Main Menu';
-
-//Signup Page
-$phprlang['signup_edit_header'] = "Edit your Signup Settings";
-$phprlang['signup_character_spec'] = "Character Spec";
-
 ?>

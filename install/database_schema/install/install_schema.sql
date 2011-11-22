@@ -6,8 +6,21 @@ CREATE TABLE  `wrm_announcements` (
   `message` text NOT NULL,
   `timestamp` varchar(255) NOT NULL default '',
   `posted_by` varchar(255) NOT NULL default '',
-  `visible` INT( 2 ) NOT NULL default '1',
   PRIMARY KEY  (`announcements_id`)
+) ;
+
+
+-- WRM Armory Cache
+DROP TABLE IF EXISTS `wrm_armory_cache`;
+CREATE TABLE wrm_armory_cache (
+`name` varchar(255) DEFAULT NULL,
+spec varchar(255) DEFAULT NULL,
+avgilvl int(5) DEFAULT NULL,
+bestilvl int(5) DEFAULT NULL,
+health int(10) DEFAULT NULL,
+mana int(10) DEFAULT NULL,
+TTL varchar(255) NOT NULL,
+UNIQUE KEY `name` (`name`)
 ) ;
 
 -- Boss Kill Type Table Creation
@@ -33,6 +46,11 @@ CREATE TABLE  `wrm_chars` (
   `guild` varchar(255) NOT NULL default '',
   `lvl` int(3) NOT NULL default '0',
   `race` varchar(255) NOT NULL default '',
+  `arcane` int(5) NOT NULL default '0',
+  `fire` int(5) NOT NULL default '0',
+  `frost` int(5) NOT NULL default '0',
+  `nature` int(5) NOT NULL default '0',
+  `shadow` int(5) NOT NULL default '0',
   `pri_spec` varchar(255) NOT NULL default '',
   `sec_spec` varchar(255) default '',  
   PRIMARY KEY  (`char_id`)
@@ -243,6 +261,21 @@ CREATE TABLE `wrm_logs_raid` (
   PRIMARY KEY  (`log_id`)
 ) ;
 
+-- Permissions Table Creation
+DROP TABLE IF EXISTS `wrm_permissions`;
+CREATE TABLE `wrm_permissions` (
+  `permission_id` int(10) NOT NULL auto_increment,
+  `name` varchar(255) NOT NULL,
+  `description` text NOT NULL,
+  `announcements` int(1) NOT NULL default '0',
+  `configuration` int(1) NOT NULL default '0',
+  `guilds` int(1) NOT NULL default '0',
+  `locations` int(1) NOT NULL default '0',
+  `profile` int(1) NOT NULL default '0',
+  `raids` int(1) NOT NULL default '0',
+  PRIMARY KEY  (`permission_id`)
+) ;
+
 -- Profile Table Creation
 DROP TABLE IF EXISTS `wrm_profile`;
 CREATE TABLE `wrm_profile` (
@@ -342,7 +375,7 @@ CREATE TABLE `wrm_signups` (
   `char_id` int(10) NOT NULL default '0',
   `profile_id` int(10) NOT NULL default '0',
   `raid_id` int(10) NOT NULL default '0',
-  `comments` varchar(255) NOT NULL default '',
+  `comments` varchar(5000) NOT NULL default '',
   `cancel` int(1) NOT NULL default '0',
   `queue` int(1) NOT NULL default '0',
   `timestamp` varchar(255) NOT NULL default '',
@@ -368,92 +401,22 @@ CREATE TABLE `wrm_version` (
 PRIMARY KEY ( `version_number` )
 ) ;
 
--- Permission Type Table Creation
-DROP TABLE IF EXISTS `wrm_permission_type`;
-CREATE TABLE  `wrm_permission_type` (
-  `permission_type_id` int(10) NOT NULL auto_increment,
-  `permission_type_name` varchar(100) NOT NULL,
-  `permission_type_description` varchar(100) NOT NULL,
-  PRIMARY KEY  (`permission_type_id`)
+-- Raid signup Group Table Creation
+DROP TABLE IF EXISTS `wrm_acl_raid_signup_group`;
+CREATE TABLE `wrm_acl_raid_signup_group` (
+`signup_group_id` TINYINT( 2 ) NOT NULL AUTO_INCREMENT,
+`signup_group_name` VARCHAR( 50 ) NOT NULL ,
+`on_queue_draft` TINYINT( 2 ) NOT NULL ,
+`on_queue_comments` TINYINT( 2 ) NOT NULL ,
+`on_queue_cancel` TINYINT( 2 ) NOT NULL ,
+`on_queue_delete` TINYINT( 2 ) NOT NULL ,
+`cancelled_status_queue` TINYINT( 2 ) NOT NULL ,
+`cancelled_status_draft` TINYINT( 2 ) NOT NULL ,
+`cancelled_status_comments` TINYINT( 2 ) NOT NULL ,
+`cancelled_status_delete` TINYINT( 2 ) NOT NULL ,
+`drafted_queue` TINYINT( 2 ) NOT NULL ,
+`drafted_comments` TINYINT( 2 ) NOT NULL ,
+`drafted_cancel` TINYINT( 2 ) NOT NULL ,
+`drafted_delete` TINYINT( 2 ) NOT NULL ,
+ PRIMARY KEY  (`signup_group_id`)
 ) ;
-
--- Permission Value Table Creation
-DROP TABLE IF EXISTS `wrm_permission_value`;
-CREATE TABLE  `wrm_permission_value` (
-  `permission_value_id` int(10) NOT NULL auto_increment,
-  `permission_value_name` varchar(100) NOT NULL,
-  `lang_index` varchar(100) NOT NULL,
-  PRIMARY KEY  (`permission_value_id`)
-) ;
-
--- Acces Controll List Permission Table Creation
-DROP TABLE IF EXISTS `wrm_acl_permission`;
-CREATE TABLE `wrm_acl_permission` (
-  `permission_type_id` int(10) NOT NULL,
-  `permission_value_id` int(10) NOT NULL
-) ;
-
--- Menu Type Table Creation
-DROP TABLE IF EXISTS `wrm_menu_type`;
-CREATE TABLE  `wrm_menu_type` (
-  `menu_type_id` int(10) NOT NULL auto_increment,
-  `menu_type_title` varchar(255) NOT NULL default '',
-  `menu_type_title_alt` varchar(255) NOT NULL default '',
-  `show_menu_type_title_alt` int(2) NOT NULL default '0',
-  `lang_index` varchar(100) NOT NULL,
-  `show_area` varchar(100) NOT NULL default 'normal',
-  PRIMARY KEY  (`menu_type_id`)
-) ;
-
--- Menu Value Table Creation
-DROP TABLE IF EXISTS `wrm_menu_value`;
-CREATE TABLE  `wrm_menu_value` (
-  `menu_value_id` int(10) NOT NULL auto_increment,
-  `menu_type_id` int(10) NOT NULL,
-  `lang_index` varchar(100) NOT NULL,
-  `menu_value_title_alt` varchar(255) NOT NULL default '',
-  `show_menu_value_title_alt` int(2) NOT NULL default '0',
-  `ordering` int(10) NOT NULL,
-  `filename_without_ext` varchar(100) NOT NULL,
-  `link` varchar(100) NOT NULL,
-  `menu_image` varchar(100) NOT NULL default '',
-  `menu_image_show` varchar(2) NOT NULL default '0',
-  `permission_value_id` int(10) ,
-  `visible` int(2) NOT NULL default '0',
-  PRIMARY KEY  (`menu_value_id`)
-) ;
-
--- Raid Permission Type Table Creation
-DROP TABLE IF EXISTS `wrm_raid_permission_type`;
-CREATE TABLE  `wrm_raid_permission_type` (
-  `raid_permission_type_id` int(10) NOT NULL auto_increment,
-  `raid_permission_type_name` varchar(100) NOT NULL,
-  `lang_index` varchar(100) NOT NULL default '',
-  PRIMARY KEY  (`raid_permission_type_id`)
-) ;
-
--- Acces Controll List Permission Table Creation
-DROP TABLE IF EXISTS `wrm_acl_raid_permission`;
-CREATE TABLE `wrm_acl_raid_permission` (
-  `raid_permission_type_id` int(10) NOT NULL,
-  `permission_type_id` int(10) NOT NULL
-) ;
-
--- Resistance Table Creation
-DROP TABLE IF EXISTS `wrm_resistance`;
-CREATE TABLE  `wrm_resistance` (
-  `resistance_id` int(10) NOT NULL auto_increment,
-  `resistance_name` varchar(10) NOT NULL,
-  `lang_index` varchar(100) NOT NULL,
-  `font_color` varchar(100) NOT NULL,
-  `image` varchar(100) NOT NULL,
-  PRIMARY KEY  (`resistance_id`)
-);
-
--- Char Resistance Table Creation
-DROP TABLE IF EXISTS `wrm_char_resistance`;
-CREATE TABLE  `wrm_char_resistance` (
-  `resistance_id` int(10) NOT NULL,
-  `char_id` int(10) NOT NULL,
-  `resistance_value` int(10) default '0'
-);

@@ -31,6 +31,8 @@
 ****************************************************************************/
 global $phprlang;
 
+// � = �   � = � 
+
 // logging language file
 require_once('lang_log.php');
 
@@ -103,15 +105,10 @@ $phprlang['create_time'] = 'Create Time';
 $phprlang['pri_spec'] = 'Pri Talent';
 $phprlang['sec_spec'] = 'Sec Talent';
 $phprlang['signup_spec'] = 'Draft As';
-$phprlang['role_id'] = 'Role ID';
-$phprlang['role_name'] = 'Role Name';
-$phprlang['role_config'] = 'Role Config Text';
-$phprlang['role_image'] = 'Role Image';
 $phprlang['talent_tree'] = 'Talent Tree';
 $phprlang['display_text'] = 'Display Text';
 $phprlang['perm_mod'] = 'Update Permissions';
 $phprlang['all'] = 'All';
-$phprlang['resistance'] = "Resistance";
 
 // Recurrance Text Items
 $phprlang['recur_header'] = 'Raid Recurrance Settings';
@@ -172,19 +169,24 @@ $phprlang['guild_name_missing'] = 'The Full Guild Name is missing.';
 $phprlang['guild_tag_missing'] = 'The Guild Tag is missing.';
 $phprlang['permissions_form_description'] = 'Vous devez ajouter une description';
 $phprlang['permissions_form_name'] = 'Vous devez renseigner un nom';
+$phprlang['profile_error_arcane'] = 'Arcanes doit etre un nombre';
 $phprlang['profile_error_class'] = 'Vous devez sèlectionner une classe';
 $phprlang['profile_error_dupe'] = 'Un personnage porte déja ce nom';
+$phprlang['profile_error_fire'] = 'Feu doit etre un nombre';
+$phprlang['profile_error_frost'] = 'Givre doit etre un nombre';
 $phprlang['profile_error_guild'] = 'Vous devez sèlectionner une guilde';
-$phprlang['profile_error_level'] = 'Level must be numeric';
+$phprlang['profile_error_level'] = 'Le niveau doit etre un nombre entre 1 et 80';
 $phprlang['profile_error_name'] = 'Vous devez renseigner un nom';
+$phprlang['profile_error_nature'] = 'Nature doit etre un nombre';
 $phprlang['profile_error_race'] = 'Vous devez sèlectionner une race';
 $phprlang['profile_error_role'] = 'Vous devez renseigner un role';
+$phprlang['profile_error_shadow'] = 'Ombre doit etre un nombre';
 $phprlang['raid_error_date'] = 'Vous devez entrer une date au format valide';
 $phprlang['raid_error_description'] = 'La description doit etre écrite';
 $phprlang['raid_error_limits'] = 'Toutes les limites de raid doivent etre numèriques';
 $phprlang['raid_error_location'] = 'Ajouter un lieu de raid';
 $phprlang['view_error_signed_up'] = 'Vous etes dèja inscrit avec ce personnage';
-$phprlang['view_error_role_undef'] = 'Make sure that the Character in <a href="profile_char.php?mode=view">Profile</a> has a defined Role.';
+$phprlang['view_error_role_undef'] = 'Make sure that the Character in <a href="profile.php?mode=view">Profile</a> has a defined Role.';
 $phprlang['yes'] = 'Oui';
 $phprlang['teams_error_no_team'] = 'No team is selected to add users to.';
 
@@ -292,10 +294,9 @@ $phprlang['roster_link'] = '&raquo; Roster';
 $phprlang['users_link'] = '&raquo; Utilisateurs';
 $phprlang['lua_output_link'] = '&raquo; Lua output raids';
 $phprlang['index_link'] = '&raquo; Forum AC';
-$phprlang['eqdkp_link'] = '&raquo; EQ-DKP';
+$phprlang['dkp_link'] = '&raquo; DKP';
 $phprlang['bosstrack_link'] = '&raquo; Boss Kill Tracking';
 $phprlang['raidsarchive_link'] = '&raquo; Raids Archive';
-$phprlang['profile_char_link'] = '&raquo; My Characters';
 
 // sorting information
 $phprlang['sort_text'] = 'Cliquer ici pour trier par ';
@@ -303,42 +304,56 @@ $phprlang['sort_desc']='Click here to sort (in descending order) by ';
 $phprlang['sort_asc']='Click here to sort (in ascending order) by '; 
 
 // tooltips
-// more tooltips for race and resist in  lang_wow.php
 $phprlang['add'] = 'Ajouter';
 $phprlang['announcements'] = 'Messages D\'accueil';
+$phprlang['arcane'] = 'Arcanes';
 $phprlang['calendar'] = 'Calendrier';
 $phprlang['cancel'] = 'Annuler inscription';
 $phprlang['cancel_msg'] = 'Vouz avez annulé votre inscription pour ce raid';
 $phprlang['comments'] = 'Commentaires';
 $phprlang['configuration'] = 'Configuration';
+$phprlang['deathknight_icon'] = 'Cliquez pour voir les Death Knights';
 $phprlang['delete'] = 'Supprimer';
 $phprlang['description'] = 'Description';
+$phprlang['druid_icon'] = 'Cliquez pour voir les Druides';
 $phprlang['edit'] = 'Editer';
 $phprlang['edit_comment'] = 'Editer Commentaire';
+$phprlang['fire'] = 'Feu';
+$phprlang['frost'] = 'Givre';
 $phprlang['frozen_msg'] = 'Les inscriptions pour ce raid sont fermées.';
 $phprlang['group_name'] = 'Nom du groupe';
 $phprlang['group_description'] = 'Description du Groupe';
 $phprlang['guilds'] = 'Guildes';
 $phprlang['has_permission'] = 'Has Permission';
+$phprlang['hunter_icon'] = 'Cliquez pour voir les Chasseurs';
 $phprlang['in_queue'] = 'Placer le personnage en file d\'attente';
 $phprlang['last_login_date'] = 'Dernière connexion';
 $phprlang['last_login_time'] = 'Heure de la dernière connexion';
 $phprlang['locations'] = 'Lieux';
 $phprlang['logs'] = 'Journaux';
 $phprlang['lua'] = 'LUA and macro output';
+$phprlang['mage_icon'] = 'Cliquez pour voir les Mages';
 $phprlang['mark'] = 'Marquer en ancien raid';
+$phprlang['nature'] = 'Nature';
 $phprlang['new'] = 'Marquer en nouveau raid';
 $phprlang['not_signed_up'] = 'Cliquez ici pour vous inscrire au Raid';
 $phprlang['out_queue'] = 'Placer le joueur dans le raid';
+$phprlang['paladin_icon'] = 'Cliquez pour voir les Paladins';
 $phprlang['permissions'] = 'Droits';
+$phprlang['priest_icon'] = 'Cliquez pour voir les prètres';
 $phprlang['priv'] = 'Privilèges';
 $phprlang['profile'] = 'Personnages';
 $phprlang['raids'] = 'Raids';
 $phprlang['remove_group'] = 'Remove group from set';
 $phprlang['remove_user'] = 'Remove user from set';
+$phprlang['rogue_icon'] = 'Cliquez pour voir les Voleurs';
+$phprlang['shadow'] = 'Ombre';
+$phprlang['shaman_icon'] = 'Cliquez pour voir les Chamans';
 $phprlang['signed_up'] = 'You are signed up for this raid';
 $phprlang['signup_add'] = 'Add user to signups';
 $phprlang['signup_delete'] = 'Supprimer le joueur du raid (permanant)';
 $phprlang['users'] = 'Utilisateurs';
+$phprlang['warlock_icon'] = 'Cliquez pour voir les Démonistes';
+$phprlang['warrior_icon'] = 'Cliquez pour voir les Guerriers';
 
 ?>

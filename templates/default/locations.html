@@ -1,8 +1,5 @@
 {* Smarty Template *}
-<div class="contentHeader">{$header_data.header}</div>
-<br>
-<div class="contentBody">
-	{include file='raids_table.html' raid_data=$loc_data jump_menu=$loc_jump_menu record_counts=$loc_record_counts}
-</div>
+<div class="contentHeader">{$header_data.header}</div><br>
+<div class="contentBody">{include file='raids_table.html' raid_data=$loc_data jump_menu=$loc_jump_menu record_counts=$loc_record_counts}</div>
 {* Allows for Adding a Guild *}
 {include file='locations_new.html'}

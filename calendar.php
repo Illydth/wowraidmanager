@@ -192,13 +192,9 @@ $raids_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_err
 while($raids = $db_raid->sql_fetchrow($raids_result, true)) 
 {
 	// Calculate the Invite and Start Time for the Raid.
-	$invitetime = get_time($raids['invite_time']);
-	$starttime = get_time($raids['start_time']);
-	// convert unix timestamp to something readable
-	$raid_date = get_date($data['start_time']);
-	$raid_start_time = get_time_full($data['start_time']);
-	$raid_invite_time = get_time_full($data['invite_time']);
-	
+	$invitetime = new_date($phpraid_config['time_format'], $raids['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+	$starttime = new_date($phpraid_config['time_format'], $raids['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+
 	$uid = scrub_input($_SESSION['profile_id']);
 	$issignedup = "";
 
@@ -241,16 +237,48 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true))
 	$raid_icon = $raid_icon_results['icon_path'];
 	
 	// Create the link to the raids view.
-	$ddrivetiptxt = get_raid_tooltip($raids['raid_id']);
-	$location = '<a href="raid_view.php?mode=view&amp;raid_id='.$raids['raid_id'].'" onMouseover="ddrivetip('.$ddrivetiptxt.');" onMouseout="hideddrivetip();">';
-
-	if ($issignedup == "nomark")
-		$location .= '<img src="templates/'.$phpraid_config['template'].'/'.$raid_icon.'" onMouseout="hideddrivetip();" onMouseover="ddrivetip('.$ddrivetiptext.');" alt="'.$raids['location'].'" class="'.$issignedup.'">';
-	else
-		$location .= '<img BORDER="3" src="templates/'.$phpraid_config['template'].'/'.$raid_icon.'" onMouseout="hideddrivetip();" onMouseover="ddrivetip('.$ddrivetiptext.');" alt="'.$raids['location'].'" class="'.$issignedup.'">';
+	// $desc = scrub_input($raids['description']);
+	// $desc = str_replace("'", "\'", $desc);
+	 $raid_name = scrub_input($raids['location']);
+	// $raid_name = str_replace("'", "\'", $raid_name);
+	// $pop_text = "'";
+	// $pop_text .= "<b>" . $raid_name . "</b>"; 
+	// $pop_text .= "<br>"; 
+	// $pop_text .= $phprlang['invites'] . ": " . $invitetime;
+	// $pop_text .= "<br>";
+	// $pop_text .= $phprlang['start'] . ": " . $starttime;
+	// $pop_text .= "<br>";
+	// $pop_text .= $phprlang['raid_force_name'] . ": " . $raids['raid_force_name'];
+	// $pop_text .= "<br>----------------------------<br>";
+	// $pop_text .= DEUBB2($desc);
+	// $pop_text .= "'";
+	//$ddrivetiptext = $pop_text;
 	
-	$location .= '</a>';
+	  $desc = DEUBB2($desc);
+	  // I'm 100% sure this method works for php > 4  
+	  // ref: http://www.php.net/manual/en/language.types.string.php#language.types.string.syntax.heredoc
+	  $msg = <<< EOT
+{$phprlang['invites']}: {$invitetime}
+{$phprlang['start']}: {$starttime}
+{$phprlang['raid_force_name']}: {$raids['raid_force_name']}
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+{$raids['description']}
+EOT;
 
+	//$href = '<a href="view.php?mode=view&amp;raid_id='.$raids['raid_id'].'">';
+	$url = 'view.php?mode=view&amp;raid_id='.$raids['raid_id'];
+	//$href_close = '</a>';
+	// Commented to change the #/*/etc. Marks into borders.
+	//$img = '<img src="templates/'.$phpraid_config['template'].'/'.$raid_icon.'" onMouseout="hideddrivetip();" onMouseover="ddrivetip('.$ddrivetiptext.');" alt="'.$raids['location'].'">';
+	if ($issignedup == "nomark")
+		//$img = '<img src="templates/'.$phpraid_config['template'].'/'.$raid_icon.'" onMouseout="hideddrivetip();" onMouseover="ddrivetip('.$ddrivetiptext.');" alt="'.$raids['location'].'" class="'.$issignedup.'">';
+		$img = '<img src="templates/'.$phpraid_config['template'].'/'.$raid_icon.'" alt="'.$raids['location'].'" class="'.$issignedup.'">';
+	else
+		//$img = '<img BORDER="3" src="templates/'.$phpraid_config['template'].'/'.$raid_icon.'" onMouseout="hideddrivetip();" onMouseover="ddrivetip('.$ddrivetiptext.');" alt="'.$raids['location'].'" class="'.$issignedup.'">';
+		$img = '<img BORDER="3" src="templates/'.$phpraid_config['template'].'/'.$raid_icon.'" alt="'.$raids['location'].'" class="'.$issignedup.'">';
+		//$font = $issignedup;
+	$location = cssToolTip($img, $msg, 'custom calendar', $url, $raid_name);
+	
 	// Start the "display" portion, get the "box" the raid link and information is supposed to go into
 	//		then append the raid into the box.	
 	// Identified Fix by Istari: The next calculation pushes Day+1 to WRM if Midnight GMT has passed (i.e. 4:00 PM for PST)
@@ -347,7 +375,7 @@ $wrmsmarty->assign('calendar_data',
 // get announcements
 $announcements = array();
 $announcement_header=$phprlang['announcements_header'];
-$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "announcements " . " WHERE visible = '1'";
+$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "announcements";
 $result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 if($db_raid->sql_numrows($result) > 0)
 {
@@ -357,8 +385,8 @@ if($db_raid->sql_numrows($result) > 0)
 	{
 		$db_raid->sql_rowseek($i, $result);
 		$data = $db_raid->sql_fetchrow($result, true);
-		$time = get_time($data['timestamp']);
-		$date = get_date($data['timestamp']);
+		$time = new_date($phpraid_config['time_format'], $data['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+		$date = new_date($phpraid_config['date_format'], $data['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']);
 
 		array_push($announcements,
 			array(

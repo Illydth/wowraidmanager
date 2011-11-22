@@ -31,8 +31,6 @@
 // Menu Headers
 $phprlang['admin_menu_header'] = 'Admin Menu';
 $phprlang['gen_conf_menu_header'] = 'General Config';
-$phprlang['auth_mgt_menu_header'] = 'Auth Management';
-$phprlang['style_menu_header'] = 'Style Config';
 $phprlang['user_mgt_menu_header'] = 'User Management';
 $phprlang['table_conf_menu_header'] = 'Table Config';
 $phprlang['logs_menu_header'] = 'Logs';
@@ -109,7 +107,7 @@ $phprlang['ip_header'] = 'IP Address';
 $phprlang['message_header'] = 'Message';
 $phprlang['timestamp_header'] = 'Date/Time';
 $phprlang['delete_board_cache_text'] = 'Delete cache files for the WRM Application.';
-$phprlang['delete_armory_cache_text'] = 'Delete cache files for the WOW Armory';
+$phprlang['delete_armory_cache_text'] = 'Delete WOW Armory Cache Information';
 $phprlang['delete_armory_log_text'] = 'Delete the WoW Armory Output Logs';
 $phprlang['delete_template_cache_text'] = 'Delete the WRM Application Template Cache Files.';
 $phprlang['actions_header'] = 'Board Cache/Log Actions:';
@@ -130,6 +128,7 @@ $phprlang['configuration_records_per_page'] = 'Records Per Data Table Page';
 $phprlang['configuration_persistent_db'] = 'Create Persistant Database Connection?';
 $phprlang['general_configuration_header'] = 'General Settings';
 $phprlang['configuration_old_raids_index'] = 'Number of Old Raids to Show on the Index Page';
+$phprlang['auto_mark_raids_old'] = 'Auto Mark Raids Old (Hours)'; //New
 
 $phprlang['general_side_cfg_header'] = 'Side Config';
 $phprlang['configuration_site_name'] = 'Site Name';
@@ -145,23 +144,9 @@ $phprlang['configuration_rss_site'] = 'RSS:WRM安裝網址 (網址尾端不得�
 $phprlang['configuration_rss_export'] = 'RSS:輸出RSS資料至網站';
 $phprlang['configuration_rss_feed_amt'] = 'RSS:於RSS資料顯示之團隊數量';
 
-// Text on the "Auth Management" Page
-$phprlang['configuration_auth_header'] = 'Authentication System';
-$phprlang['configuration_auth_info_header'] = 'Information about your Authentication System';
-$phprlang['configuration_auth_system_text'] = 'Your Authentication System';
-$phprlang['configuration_extsys_bridge_config_header'] = 'Bridge Config';
-$phprlang['configuration_extsys_bridge_config_header'] = 'Bridge Config';
-$phprlang['configuration_extsys_norest'] = 'No Restrictions';
-$phprlang['configuration_extsys_noaddus'] = 'No Additional UserGroup';
-$phprlang['configuration_extsys_group01'] = 'Select the base user group that has access to use WRM';
-$phprlang['configuration_extsys_group02'] = 'Any user without this group set will not be allowed to log in';
-$phprlang['configuration_extsys_group03'] = 'Please select "No Restrictions" here if you want all users regardless of group to be able to login to WRM';
-$phprlang['configuration_extsys_alt_group01'] = 'Select an Additional user group/class that can access WRM';
-$phprlang['configuration_extsys_alt_group02'] = 'Any user tagged with this group will be allowed to log in regardless of whether they are in the above user group or not';
-$phprlang['configuration_extsys_group_text'] = 'Base User group';
-$phprlang['configuration_extsys_alt_group_text'] = 'Additional user group';
 
 // Text on the "Style Config" Page
+$phprlang['style_menu_header'] = 'Style Config';
 $phprlang['configuration_template_cfg_header'] = 'Template Config';
 $phprlang['configuration_template_width_text'] = "Template Width";
 $phprlang['configuration_width_normal'] = "normal";
@@ -173,22 +158,6 @@ $phprlang['configuration_addon'] = '插件鏈結位址';
 $phprlang['configuration_show_addon'] = '顯示插件連結';
 $phprlang['configuration_register_text'] = '登寄網址';
 
-// Text on the "Menubar Config" Pag
-$phprlang['admin_menu_admin_menubar_header'] = 'Configuration Menubar Entrys';
-$phprlang['admin_menu_admin_edit_menubar_entry_header'] = 'Edit Menubar';
-$phprlang['admin_menu_admin_new_menubar_entry_header'] = 'New Menubar Entry';
-$phprlang['admin_menu_menu_value_id_text'] = "menu value id";
-$phprlang['admin_menu_menu_type_id_text'] = "menu type id";
-$phprlang['admin_menu_lang_index_text'] = "lang index";
-$phprlang['admin_menu_menu_value_title_alt_text'] = "alternativ menu title";
-$phprlang['admin_menu_show_menu_value_title_alt_text'] = "show alternativ menu title";
-$phprlang['admin_menu_ordering_text'] = "ordering";	
-$phprlang['admin_menu_filename_without_ext_text'] = "filename without extention";	
-$phprlang['admin_menu_link_text'] = "link";
-$phprlang['admin_menu_menu_image_text'] = "menu image";	
-$phprlang['admin_menu_menu_image_show_text'] = "show as image";
-$phprlang['admin_menu_permission_value_name_text'] = "permission value name";
-$phprlang['admin_menu_visible_text'] = "visible";
 
 // Text on the "Time Config" Page
 $phprlang['configuration_ampm'] = 'Schedule Raids in 12h/24h format';
@@ -262,6 +231,21 @@ $phprlang['configuration_armory_cache_files'] = 'Files on Disk';
 $phprlang['configuration_armory_cache_none'] = 'Do not Cache Armory Data';
 $phprlang['configuration_armory_link_text'] = '正確伺服器ARMORY連結';
 $phprlang['configuration_armory_language_text'] = 'Armory語言碼';
+$phprlang['configuration_extsys_bridge_config_header'] = 'Bridge Config';
+$phprlang['configuration_extsys_norest'] = 'No Restrictions';
+$phprlang['configuration_extsys_noaddus'] = 'No Additional UserGroup';
+$phprlang['configuration_extsys_group01'] = 'Select the base user group that has access to use WRM';
+$phprlang['configuration_extsys_group02'] = 'Any user without this group set will not be allowed to log in';
+$phprlang['configuration_extsys_group03'] = 'Please select "No Restrictions" here if you want all users regardless of group to be able to login to WRM';
+$phprlang['configuration_extsys_alt_group01'] = 'Select an Additional user group/class that can access WRM';
+$phprlang['configuration_extsys_alt_group02'] = 'Any user tagged with this group will be allowed to log in regardless of whether they are in the above user group or not';
+$phprlang['configuration_extsys_group_text'] = 'Base User group';
+$phprlang['configuration_extsys_alt_group_text'] = 'Additional user group';
+$phprlang['configuration_armory_cache_timeout'] = 'Armory Cache Lifetime (In Hours)'; //New
+$phprlang['configuration_armory_cache_timeout_sup'] = 'After the Cache Lifetime expires, WRM will go back to the Armory to re-pull data.  The shorter the cache<br>' . 
+													' the "fresher" the data WRM will have in it\'s popup, but the slower WRM will run due to pulling data from<br>' . 
+													' the armory URL more often.  The longer the cache value, the less "fresh" Armory data but the faster<br>' . 
+													' WRM will run.'; //New
 
 // Text on the "User Settings" Page.
 $phprlang['configuration_multiple'] = '允許多重報名';
@@ -296,8 +280,10 @@ $phprlang['configuration_role_limit_text'] = '強制團隊職責限制';
 $phprlang['configuration_class_limit_text'] = '強制團隊職業數量限制';
 $phprlang['configuration_class_as_min'] = '各職業限制最少數量';
 $phprlang['configuration_freeze'] = '關閉報名至檢查時間';
-
-
+$phprlang['configuration_recurrance_enabled_text'] = 'Enable Recurring Raids System'; //New
+$phprlang['configuration_freeze_status_draft'] = 'Stop changes to Drafted Raiders During Freeze';  //NEW
+$phprlang['configuration_freeze_status_queue'] = 'Stop changes to Queued Raiders During Freeze';  //NEW
+$phprlang['configuration_freeze_status_cancel'] = 'Stop changes to Cancelled Raiders During Freeze';  //NEW
 $phprlang['configuration_description'] = '描述';
 $phprlang['configuration_default'] = '預設群組';
 $phprlang['configuration_faction'] = '陣營';

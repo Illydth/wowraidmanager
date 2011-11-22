@@ -137,23 +137,25 @@ $phprlang['permissions_users'] = 'Users';
 $phprlang['permissions_users_header'] = 'Users in set';
 
 // profile
+$phprlang['profile_arcane'] = 'Arcane Resistance';
 $phprlang['profile_class'] = 'Class';
 $phprlang['profile_create_header'] = 'Character creation unavailable';
 $phprlang['profile_create_msg'] = 'Until an admin creates a guild character creation will be unavailable';
+$phprlang['profile_fire'] = 'Fire Resistance';
+$phprlang['profile_frost'] = 'Frost Resistance';
 $phprlang['profile_gender'] = 'Gender';
 $phprlang['profile_guild'] = 'Guild affiliation';
 $phprlang['profile_role'] = 'Role';
 $phprlang['profile_header'] = 'Characters';
 $phprlang['profile_level'] = 'Level';
 $phprlang['profile_name'] = 'Name';
+$phprlang['profile_nature'] = 'Nature Resistance';
 $phprlang['profile_raid'] = 'Raid Participation';
 $phprlang['profile_race'] = 'Race';
-$phprlang['profile_header_text'] = "my Profile";
-$phprlang['profile_number_character'] = "Number of my Character";
-$phprlang['profile_number_signups_all'] = "Number of all my signups";
-$phprlang['profile_number_signups_draft'] = "Number of my signups in confirmation list";
-$phprlang['profile_number_signups_queue'] = "Number of my signups in queue list";
-$phprlang['profile_number_signups_chancel'] = "Number of my checkouts (chancel)";
+$phprlang['profile_shadow'] = 'Shadow Resistance';
+$phprlang['iLvL'] = "iLvL (Equipped, Best)";
+$phprlang['health'] = "Health";
+$phprlang['mana'] = "Mana";
 
 // raids
 $phprlang['raids_date'] = 'Date';
@@ -180,6 +182,12 @@ $phprlang['event_type_dungeon'] = 'Dungeon (5 man Instance)';
 $phprlang['event_type_pvp'] = 'PvP Event';
 $phprlang['event_type_meeting'] = 'Meeting (online/offline)';
 $phprlang['event_type_other'] = 'Other';
+
+// expansions
+$phprlang['exp_generic_wow'] = 'Generic World of Warcraft';
+$phprlang['exp_burning_crusade'] = 'The Burning Crusade';
+$phprlang['exp_wrath_lich_king'] = 'Wrath of the Lich King';
+$phprlang['exp_cataclysm'] = 'Cataclysm';
 
 // roster
 $phprlang['roster_header'] = 'Guild Roster';
@@ -269,13 +277,5 @@ $phprlang['bosskill_header'] = 'Track Named (Boss) Accomplishments';
 
 //Raids Archive
 $phprlang['raidsarchive_header'] = 'Raids Archive';
-
-//Menubar 
-$phprlang['user_menu_header'] = 'User Menu';
-$phprlang['main_menu_header'] = 'Main Menu';
-
-//Signup Page
-$phprlang['signup_edit_header'] = "Edit your Signup Settings";
-$phprlang['signup_character_spec'] = "Character Spec";
 
 ?>

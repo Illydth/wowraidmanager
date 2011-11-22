@@ -78,10 +78,10 @@ require_once($phpraid_dir.'includes/functions_date.php');
 require_once($phpraid_dir.'includes/functions_logging.php');
 require_once($phpraid_dir.'includes/functions_tables.php');
 require_once($phpraid_dir.'includes/functions_users.php');
-require_once($phpraid_dir.'includes/functions_raids.php');
-require_once($phpraid_dir.'includes/functions_tooltip.php');
 require_once($phpraid_dir.'includes/ubb.php');
 require_once($phpraid_dir.'includes/scheduler.php');
+require_once($phpraid_dir.'includes/wowarmory/simple_html_dom.php');
+require_once($phpraid_dir.'includes/wowarmory/scrapper.class.php');
 
 /****************************************************
  * Report Output Setup (Deprecated)
@@ -100,7 +100,7 @@ require_once($phpraid_dir.'includes/scheduler.php');
  ************************************************/
 // database connection
 global $db_raid, $errorTitle, $errorMsg, $errorDie;
-if ($phpraid_config['persistent_db'] == TRUE)
+if ($phpraid_config['persistent_db'])
 	$db_raid = create_db_connection($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass'],$phpraid_config['db_name'],TRUE,TRUE);
 else
 	$db_raid = create_db_connection($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass'],$phpraid_config['db_name'],TRUE,FALSE);
@@ -115,7 +115,7 @@ if(!$db_raid->db_connect_id)
 unset($phpraid_config['db_user']);
 unset($phpraid_config['db_pass']);
 
-// Set UTF8
+// Set Application to UTF8 Return
 set_WRM_DB_utf8();
 
 //
@@ -129,6 +129,29 @@ while($data = $db_raid->sql_fetchrow($result, true))
 	$phpraid_config[$data['config_name']] = $data['config_value'];
 }
 
+
+/****************************************************
+ * Setup DEBUG Log File
+ ****************************************************/
+// Open an error log to write to for information.
+if (isset($phpraid_config['debug']) && $phpraid_config['debug'])
+{
+	define('DEBUG', TRUE);
+	
+	if (defined('DEBUG') && DEBUG)
+	{
+		$stdoutfptr = fopen($phpraid_dir."/cache/wrm_debug.log", "w");
+	}
+}
+
+
+if (defined('DEBUG') && DEBUG)
+{
+	fwrite($stdoutfptr, "==================================================\n");
+	fwrite($stdoutfptr, "Loading common.php [common.php]\n");
+	fwrite($stdoutfptr, __FILE__ . ":" . __LINE__ . "\n");
+	fwrite($stdoutfptr, "==================================================\n");
+}
 
 /**********************************************************
  * Load Template System Here (Smarty)
@@ -175,6 +198,7 @@ $wrmsmarty->debugging = false;
 $include_list = $phpraid_dir . "language/lang_" . $phpraid_config['language'] . "/";
 $include_list .= ":" . ini_get('include_path');
 ini_set('include_path', $include_list); 
+ini_set('safe_mode', 'off');
 
 // Include Language Files.
 if(!is_file($phpraid_dir."language/lang_{$phpraid_config['language']}/lang_main.php"))
@@ -203,9 +227,20 @@ else
 //   dymanically defines the "wrm_login()" function at runtime.
 require_once($phpraid_dir.'auth/auth_' . $phpraid_config['auth_type'] . '.php');
 require_once($phpraid_dir.'includes/functions_auth.php');
+if (defined('DEBUG') && DEBUG)
+{
+	fwrite($stdoutfptr, "DETERMINING AUTH TYPE\n");
+	fwrite($stdoutfptr, "  Auth Type: " . $phpraid_config['auth_type'] . "\n");
+}
 if (!function_exists('wrm_login'))
+{
+	if (defined('DEBUG') && DEBUG)
+	{
+		fwrite($stdoutfptr, "  Calling DEFINE_wrm_login()\n");
+	}	
 	DEFINE_wrm_login();
-
+}
+	
 // good ole authentication
 $lifetime = get_cfg_var("session.gc_maxlifetime"); 
 $temp = session_name("WRM-" .  $phpraid_config['auth_type']);
@@ -213,14 +248,35 @@ $temp = session_set_cookie_params($lifetime, getCookiePath());
 session_start();
 $_SESSION['name'] = "WRM-" . $phpraid_config['auth_type'];
 
+if (defined('DEBUG') && DEBUG)
+{
+	fwrite($stdoutfptr, "  Setting Session Information:\n");
+	fwrite($stdoutfptr, "  -> Session Lifetime: " . $lifetime . "\n");
+	fwrite($stdoutfptr, "  -> Session Name: " . $_SESSION['name'] . "\n");
+	fwrite($stdoutfptr, "  -> Session Already Initiated? " . $_SESSION['initiated'] . "\n");
+	fwrite($stdoutfptr, var_dump_string($temp));
+}
+
 // set session defaults
 if (!isset($_SESSION['initiated'])) 
 {
+	if (defined('DEBUG') && DEBUG)
+	{
+		fwrite($stdoutfptr, "  Session Not Initiated, Starting new Session.\n");
+	}
 	if(isset($_COOKIE['profile_id']) && isset($_COOKIE['password']))
 	{ 
+		if (defined('DEBUG') && DEBUG)
+		{
+			fwrite($stdoutfptr, "  COOKIE Variables Set, Call WRM_LOGIN() for Cookie Auth.\n");
+		}		
 		$testval = wrm_login();
 		if (!$testval)
 		{
+			if (defined('DEBUG') && DEBUG)
+			{
+				fwrite($stdoutfptr, "  Login Returned Failure, logging out.\n");
+			}					
 			wrm_logout();
 			session_regenerate_id();
 			set_WRM_SESSION(-1, 0, 'Anonymous', true);
@@ -230,6 +286,12 @@ if (!isset($_SESSION['initiated']))
 	{
 		session_regenerate_id();
 		set_WRM_SESSION(-1, 0, 'Anonymous', true);
+		if (defined('DEBUG') && DEBUG)
+		{
+			fwrite($stdoutfptr, "  Cookie Info not Set.\n");
+			fwrite($stdoutfptr, "  Dumping Session Data:\n");
+			fwrite($stdoutfptr, var_dump_string($_SESSION));
+		}
 	}
 }
 
@@ -252,7 +314,6 @@ $wrm_global_classes = array();
 $wrm_global_races = array();
 $wrm_global_roles = array();
 $wrm_global_gender = array();
-$wrm_global_resistance = array();
 $wrm_global_specs = array();
 
 // Load the Specs Array
@@ -313,20 +374,6 @@ while($data = $db_raid->sql_fetchrow($result, true))
 {
 	$wrm_global_gender[$x]['gender_id'] = $data['gender_id'];
 	$wrm_global_gender[$x]['lang_index'] = $data['lang_index'];
-	$x++;
-}
-
-// Load the Resistance Array
-$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "resistance";
-$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-$x = 0;
-while($data = $db_raid->sql_fetchrow($result, true))
-{
-	$wrm_global_resistance[$x]['resistance_id'] = $data['resistance_id'];
-	$wrm_global_resistance[$x]['resistance_name'] = $data['resistance_name'];
-	$wrm_global_resistance[$x]['lang_index'] = $data['lang_index'];
-	$wrm_global_resistance[$x]['font_color'] = $data['font_color'];
-	$wrm_global_resistance[$x]['image'] = $data['image'];	
 	$x++;
 }
 

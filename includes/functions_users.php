@@ -30,31 +30,35 @@
 *
 ****************************************************************************/
 
-function check_frozen($raid_id) 
-{
+function check_frozen($raid_id) {
 	global $db_raid, $phpraid_config;
 
-	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raids where raid_id=%s", quote_smart($raid_id));
-	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-	$data = $db_raid->sql_fetchrow($result, true);
-
-	// We have $data['start_time'], which is a unix time equivalent.  We need to subtract
-	//  the raid freeze time from this start time and figure out if current Unix date 
-	//  stamp is larger.  If it is, raid is frozen.	
-	$format_string = "-" . $data['freeze'] . " hours"; 	// Produces something like "-4 hours".  Used in strtotime() to get the unix timestamp of the raid start.	
-	$raid_freeze = strtotime($format_string, $data['start_time']); // Subtracts $data['freeze'] hours from start_time to get freeze time.
-	if (time() < $raid_freeze) // Checks current time against freeze time and locks raid if frozen.
+	if ($phpraid_config['disable_freeze']==1)	// Freeze checking is disabled, don't bother running the rest of the math.
 		$frozen = 0;
-	else
-		$frozen = 1;
+	else 
+	{	
+		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raids where raid_id=%s", quote_smart($raid_id));
+		$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+		$data = $db_raid->sql_fetchrow($result, true);
+		if (!isset($data['freeze'])) // Found at least one case where this was getting set to null
+			$data['freeze'] = 0;
+		// We have $data['start_time'], which is a unix time equivalent.  We need to subtract
+		//  the raid freeze time from this start time and figure out if current Unix date 
+		//  stamp is larger.  If it is, raid is frozen.	
+		$format_string = "-" . $data['freeze'] . " hours"; 	// Produces something like "-4 hours".  Used in strtotime() to get the unix timestamp of the raid start.	
+		$raid_freeze = strtotime($format_string, $data['invite_time']); // Subtracts $data['freeze'] hours from invite_time to get freeze time.
+		if (time() < $raid_freeze) // Checks current time against freeze time and locks raid if frozen.
+			$frozen = 0;
+		else
+			$frozen = 1;
+	}
 	return $frozen;
 }
 
-function get_char_count($raid_id, $type) 
-{
-	global $db_raid, $phpraid_config, $phprlang;
-	global $wrm_global_classes, $wrm_global_roles;
+function get_char_count($id, $type) {
+	global $db_raid, $phpraid_config, $phprlang, $wrm_global_classes, $wrm_global_roles;
 
+	//$count = array('dk'=>'0','dr'=>'0','hu'=>'0','ma'=>'0','pa'=>'0','pr'=>'0','ro'=>'0','sh'=>'0','wk'=>'0','wa'=>'0','role1'=>'0','role2'=>'0','role3'=>'0','role4'=>'0','role5'=>'0','role6'=>'0');
 	foreach ($wrm_global_classes as $global_class)
 		$count[$global_class['class_id']]='0';
 	foreach ($wrm_global_roles as $global_role)
@@ -62,26 +66,22 @@ function get_char_count($raid_id, $type)
 		
 	if($type == "queue") //Count Queued Signups
 	{
-		$sql = sprintf(	"SELECT * FROM " . $phpraid_config['db_prefix'] . "signups " .
-						" WHERE queue = '1' AND cancel = '0' AND raid_id = %s", quote_smart($raid_id));		
+		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id=%s AND queue='1' AND cancel='0'",quote_smart($id));
+		$result_signups = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	}
 	elseif($type == "cancel") //Count Cancelled Signups
 	{
-		$sql = sprintf(	"SELECT * FROM " . $phpraid_config['db_prefix'] . "signups " .
-						" WHERE queue = '0' AND cancel = '1' AND raid_id = %s", quote_smart($raid_id));			
+		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id=%s AND queue='0' AND cancel='1'",quote_smart($id));
+		$result_signups = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);		
 	}
 	else //Count Drafted Signups
 	{
-		$sql = sprintf(	"SELECT * FROM " . $phpraid_config['db_prefix'] . "signups " .
-						" WHERE queue = '0' AND cancel = '0' AND raid_id = %s", quote_smart($raid_id));			
+		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id=%s AND queue='0' AND cancel='0'",quote_smart($id));
+		$result_signups = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	}
-
-	$result_signups = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-	while($signups = $db_raid->sql_fetchrow($result_signups, true)) 
-	{
-		$sql = sprintf(	"SELECT * FROM " . $phpraid_config['db_prefix'] . "chars ".
-						" WHERE char_id = %s",quote_smart($signups['char_id']));
-
+	while($signups = $db_raid->sql_fetchrow($result_signups, true)) {
+		//$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id='{$signups['char_id']}'";
+		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id=%s", quote_smart($signups['char_id']));
 		$result_char = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		$char = $db_raid->sql_fetchrow($result_char, true);
 
@@ -95,8 +95,7 @@ function get_char_count($raid_id, $type)
 		}
 
 		// Get Role from Spec
-		$sql = sprintf(	"SELECT * FROM `" . $phpraid_config['db_prefix'] . "class_role` " .
-						" WHERE subclass = %s",quote_smart($signups['selected_spec']));
+		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "class_role WHERE subclass=%s", quote_smart($signups['selected_spec']));
 		$result_spec = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 		$role_id = $db_raid->sql_fetchrow($result_spec, true);
 		
@@ -109,25 +108,49 @@ function get_char_count($raid_id, $type)
 	return $count;
 }
 
-// old or unused
-function get_signups($raid_id) 
+function get_priv_name($id)
 {
 	global $db_raid, $phpraid_config;
 
-	$signups = array();
-	
-	$sql = sprintf(	"SELECT * FROM " . $phpraid_config['db_prefix'] . "signups " .
-					" WHERE raid_id = %s", quote_smart($raid_id));
+	$sql = sprintf("SELECT name FROM " . $phpraid_config['db_prefix'] . "permissions WHERE permission_id=%s", quote_smart($id));
 	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-	while($data = $db_raid->sql_fetchrow($result, true))
-	{
+	$data = $db_raid->sql_fetchrow($result, true);
+
+	return($data['name']);
+}
+
+function get_queued($raid_id) {
+	global $db_raid, $phpraid_config;
+
+	$queued = array();
+
+	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "queues";
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+	while($data = $db_raid->sql_fetchrow($result, true)) {
+		if($raid_id == $data['raid_id']) {
 			// match, push onto array
-			array_push($signups, 
-				array(
-						'pos'=>$data['pos'],
-						'char_id'=>$data['char_id']
-				)
-			);
+			array_push($queued, array('pos'=>$data['pos'],'char_id'=>$data['char_id']));
+		}
+	}
+
+	// sort by position so we make sure to output them in order
+	array_multisort($queued);
+
+	return $queued;
+}
+
+function get_signups($raid_id) {
+	global $db_raid, $phpraid_config;
+
+	$signups = array();
+
+	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "signups";
+	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+	while($data = $db_raid->sql_fetchrow($result, true)) 	{
+		if($raid_id == $data['raid_id']) {
+			// match, push onto array
+			array_push($signups, array('pos'=>$data['pos'],'char_id'=>$data['char_id']));
+		}
 	}
 
 	// sort by position so we make sure to output them in order
@@ -136,12 +159,11 @@ function get_signups($raid_id)
 	return $signups;
 }
 
-function is_char_cancel($profile_id, $raid_id)
-{
+function is_char_cancel($profile_id, $raid_id) {
 	global $db_raid, $phpraid_config;
-	$sql = sprintf(	"SELECT * FROM " . $phpraid_config['db_prefix'] . "signups " .
-					" WHERE cancel = '1' AND profile_id = %s AND raid_id = %s",
-					quote_smart($profile_id), quote_smart($raid_id));
+
+	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE profile_id=%s AND raid_id=%s AND cancel='1'",
+						quote_smart($profile_id), quote_smart($raid_id));
 	$result = $db_raid->sql_query($sql);
 
 	if($db_raid->sql_numrows($result) == 0)
@@ -150,12 +172,10 @@ function is_char_cancel($profile_id, $raid_id)
 		return 1;
 }
 
-function is_char_signed($profile_id, $raid_id)
-{
+function is_char_signed($profile_id, $raid_id) {
 	global $db_raid, $phpraid_config;
 
-	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups " .
-					" WHERE profile_id=%s AND raid_id=%s AND cancel='0' AND queue='0'",
+	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE profile_id=%s AND raid_id=%s AND cancel='0'",
 						quote_smart($profile_id), quote_smart($raid_id));
 	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	if($db_raid->sql_numrows($result) > 0)
@@ -164,47 +184,40 @@ function is_char_signed($profile_id, $raid_id)
 		return 0;
 }
 
-function isCharExist($charName) 
-{
+function isCharExist($charName) {
 	global $db_raid, $phpraid_config;
 
-	$sql = sprintf(	"SELECT * FROM " . $phpraid_config['db_prefix'] . "chars ".
-					" WHERE name = %s",quote_smart(ucfirst(trim($charName))));
+	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "chars WHERE name=%s", quote_smart(ucfirst(trim($charName))));
 	$result = $db_raid->sql_query($sql);
 	return $db_raid->sql_numrows($result);
 }
 
-//return profile name from the selected profile_id
 function get_user_name($profile_id)
 {
 	global $db_raid, $phpraid_config;
-	$sql = sprintf(	"SELECT username FROM " . $phpraid_config['db_prefix'] . "profile " .
-					" WHERE profile_id = %s",quote_smart($profile_id));
+
+	$sql = sprintf("SELECT username FROM " . $phpraid_config['db_prefix'] . "profile WHERE profile_id=%s", quote_smart($profile_id));
 	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	$data = $db_raid->sql_fetchrow($result);
 
 	return($data['username']);
 }
 
-//return name from the char
 function get_char_name($char_id)
 {
 	global $db_raid, $phpraid_config;
-	$sql = sprintf(	"SELECT name FROM " . $phpraid_config['db_prefix'] . "chars " .
-					" WHERE char_id = %s",quote_smart($char_id));
+
+	$sql = sprintf("SELECT name FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id=%s", quote_smart($char_id));
 	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	$data = $db_raid->sql_fetchrow($result);
 
 	return($data['name']);
 }
 
-function has_char_multiple_signups($profile_id, $raid_id) 
-{
+function has_char_multiple_signups($profile_id, $raid_id) {
 	global $db_raid, $phpraid_config;
 
-	$sql = sprintf(	"SELECT * FROM " . $phpraid_config['db_prefix'] . "signups " .
-					" WHERE cancel = '0' AND profile_id = %s AND raid_id = %s",
-					quote_smart($profile_id),quote_smart($raid_id));
+	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE profile_id=%s AND raid_id=%s AND cancel='0'", quote_smart($profile_id), quote_smart($raid_id));
 	$result = $db_raid->sql_query($sql);
 
 	if($db_raid->sql_numrows($result) > 1)
@@ -228,7 +241,7 @@ function has_char_multiple_signups($profile_id, $raid_id)
 	return 0;
 }
 /**
- * add a new Character to WRM DB
+ * add a new Character
  * @param $profile
  * @param $name
  * @param $class
@@ -236,73 +249,50 @@ function has_char_multiple_signups($profile_id, $raid_id)
  * @param $guild
  * @param $level
  * @param $race
- * @param $array_resistance
+ * @param $arcane
+ * @param $fire
+ * @param $frost
+ * @param $nature
+ * @param $shadow
  * @param $pri_spec
  * @param $sec_spec
  */
-function char_addnew($profile,$char_name,$class,$gender,$guild,$level,$race,$array_resistance,$pri_spec,$sec_spec)
+function char_addnew($profile,$name,$class,$gender,$guild,$level,$race,$arcane="0",$fire="0",$frost="0",$nature="0",$shadow="0",$pri_spec,$sec_spec)
 {
 	global $db_raid, $phpraid_config;
 
-	$sql = sprintf(	"INSERT INTO `" . $phpraid_config['db_prefix'] . "chars` " .
+	$sql = sprintf(	"INSERT INTO " . $phpraid_config['db_prefix'] . "chars" .
 					"	(`profile_id`,`name`,`class`, `gender`,`guild`,`lvl`,`race`," .
-					"	 `pri_spec`,`sec_spec`)" .
-					" VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s)",
-				quote_smart($profile), quote_smart($char_name), quote_smart($class),
+					"	 `arcane`,`fire`,`frost`,`nature`,`shadow`,`pri_spec`,`sec_spec`)" .
+					" VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
+				quote_smart($profile), quote_smart($name), quote_smart($class),
 				quote_smart($gender), quote_smart($guild), quote_smart($level), quote_smart($race),
-				quote_smart($pri_spec), quote_smart($sec_spec)
+				quote_smart($arcane), quote_smart($fire), quote_smart($frost), quote_smart($nature),
+				quote_smart($shadow), quote_smart($pri_spec), quote_smart($sec_spec)
 			);
 
 	$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-	
-	$sql = sprintf(	"SELECT `char_id` ".
-					" FROM `" . $phpraid_config['db_prefix'] . "chars`".
-					" WHERE `name` = %s", quote_smart($char_name)
-			);
-	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);	
-	$char_id = $db_raid->sql_fetchrow($result, true);
 
-	for ($i=0; $i< count($array_resistance);$i++)
-	{
-		$sql = sprintf(	"INSERT INTO `" . $phpraid_config['db_prefix'] . "char_resistance` " .
-						"	(`resistance_id`,`char_id`,`resistance_value`)".
-						" VALUES(%s,%s,%s)",
-					quote_smart($array_resistance[$i]['resistance_id']), 
-					quote_smart($char_id['char_id']),
-					quote_smart($array_resistance[$i]['char_resistance_value'])
-				);
-		$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);			
-	}
-	
-	log_create('character',mysql_insert_id(),$char_name);
+	log_create('character',mysql_insert_id(),$name);
 
 	return(0);
 }
 
-function char_edit($char_name,$level,$race,$class,$gender,$guild,$array_resistance,$pri_spec,$sec_spec,$char_id)
+function char_edit($name,$level,$race,$class,$gender,$guild,$arcane="0",$nature="0",$shadow="0",$fire="0",$frost="0",$pri_spec,$sec_spec,$char_id)
 {
 	global $db_raid, $phpraid_config;
 
-	$sql = sprintf(	"UPDATE `" . $phpraid_config['db_prefix'] . "chars` " .
-					"	SET `name` = %s, `lvl` = %s, `race` = %s, `class` = %s, `gender` = %s, `guild` = %s," .
-					"	`pri_spec` = %s, `sec_spec` = %s WHERE `char_id` = %s",
-					quote_smart($char_name),quote_smart($level),quote_smart($race),
+	$sql = sprintf(	"UPDATE " . $phpraid_config['db_prefix'] . "chars " .
+					"	SET name=%s,lvl=%s,race=%s, class=%s,gender=%s,guild=%s," .
+					"	arcane=%s,nature=%s,shadow=%s,fire=%s,frost=%s," .
+					"	pri_spec=%s,sec_spec=%s WHERE char_id=%s",
+					quote_smart($name),quote_smart($level),quote_smart($race),
 					quote_smart($class), quote_smart($gender), quote_smart($guild),
-					quote_smart($pri_spec),quote_smart($sec_spec),quote_smart($char_id));
+					quote_smart($arcane),quote_smart($nature),quote_smart($shadow),quote_smart($fire),
+					quote_smart($frost),quote_smart($pri_spec),quote_smart($sec_spec),quote_smart($char_id));
 
 	$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 
-	for ($i=0; $i< count($array_resistance);$i++)
-	{
-		$sql = sprintf(	"UPDATE `" . $phpraid_config['db_prefix'] . "char_resistance` " .
-						"	SET `resistance_value` = %s ".
-						"	WHERE `resistance_id` = %s AND `char_id` = %s",
-						quote_smart($array_resistance[$i]['char_resistance_value']),
-						quote_smart($array_resistance[$i]['resistance_id']),
-						quote_smart($char_id)
-				);
-		$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);			
-	}
 	return(1);
 }
 
@@ -310,22 +300,14 @@ function char_delete($char_id,$profile_id)
 {
 	global $db_raid, $phpraid_config;
 
-	log_delete('character',get_char_name($char_id));
+	//log_delete('character',$n);
 
-	$sql = sprintf("DELETE FROM `" . $phpraid_config['db_prefix'] . "chars` ".
-					" WHERE char_id = %s AND profile_id = %s",
-					quote_smart($char_id), quote_smart($profile_id));
+	$sql = sprintf("DELETE FROM " . $phpraid_config['db_prefix'] . "chars WHERE char_id=%s AND profile_id=%s",quote_smart($char_id), quote_smart($profile_id));
 	$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 
-	$sql = sprintf( "DELETE FROM `" . $phpraid_config['db_prefix'] . "signups` " .
-					" WHERE char_id = %s AND profile_id = %s",
-					quote_smart($char_id), quote_smart($profile_id));
+	$sql = sprintf("DELETE FROM " . $phpraid_config['db_prefix'] . "signups WHERE char_id=%s AND profile_id=%s",quote_smart($char_id), quote_smart($profile_id));
 	$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 
-	$sql = sprintf( "DELETE FROM `" . $phpraid_config['db_prefix'] . "char_resistance` ".
-					" WHERE char_id = %s ",quote_smart($char_id));
-	$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-		
 	return (1);
 }
 
@@ -333,258 +315,9 @@ function check_dupe($profile_id, $raid_id)
 {
 	if(has_char_multiple_signups($profile_id, $raid_id))
 	{
-		return '&nbsp;' . get_dupesignup_symbol() . '&nbsp;(@&nbsp;<a href="profile_char.php?mode=details&amp;user_id=' . $profile_id . '">' . get_user_name($profile_id) . '</a>)';
+		return '&nbsp;' . get_dupesignup_symbol() . '&nbsp;(@&nbsp;<a href="users.php?mode=details&amp;user_id=' . $profile_id . '">' . get_user_name($profile_id) . '</a>)';
 	}
 	return '';
-}
-
-function get_array_spec_from_char($char_id)
-{
-	global $db_raid, $phpraid_config;	
-	
-	$sql = sprintf(	"SELECT `pri_spec`,`sec_spec` ".
-					" FROM `" . $phpraid_config['db_prefix'] . "chars`".
-					" WHERE char_id = %s", quote_smart($char_id)
-			);
-	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);	
-	$array_data = $db_raid->sql_fetchrow($result, true);
-
-	return ( array($array_data['pri_spec'],$array_data['sec_spec']) );
-}
-
-function get_array_char_resistance($char_id)
-{
-	global $db_raid, $phpraid_config;
-	$array_resistance = array();
-	
-	$sql = sprintf("SELECT a.resistance_value, b.resistance_name".
-					" FROM `"  . $phpraid_config['db_prefix'] . "char_resistance` a, " .
-					"		`". $phpraid_config['db_prefix'] . "resistance` b ".
-					" WHERE a.resistance_id = b.resistance_id ".
-					" AND char_id = %s", quote_smart($char_id));
-	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-	while($data_resist = $db_raid->sql_fetchrow($result, true))
-	{
-		$array_resistance[$data_resist['resistance_name']] = $data_resist['resistance_value'];
-	}
-	
-	return $array_resistance;
-}
-
-
-
-/**
- * 
- * Check if profil_id rights for config "raids"
- * @param unknown_type $profile_id
- */
-function has_user_rights_raids($profile_id)
-{
-	global $db_raid, $phpraid_config;
-
-	$sql = sprintf(	"SELECT `raid_id` ".
-					" FROM `" . $phpraid_config['db_prefix'] . "signup` ".
-					" WHERE profile_id = %s", quote_smart($profile_id));
-	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-	$data = $db_raid->sql_fetchrow($result, true);
-	
-	return ($data['raid_id']);		
-}
-
-/**
- * UPDATE Profil Settings
- * @param Integer $profile_id
- * @param String $profile_email
- */
-function update_profile($profile_id, $profile_email)
-{
-	global $db_raid, $phpraid_config;
-	
-	$sql = sprintf(	"UPDATE `".$phpraid_config['db_prefix']."profile` " .
-					" SET `email` = %s " .
-					" WHERE `profile_id` = %s;", 
-					quote_smart($profile_email), quote_smart($profile_id)
-			);
-	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
-}
-
-/****************************************************************
- * Permission Section
- ****************************************************************/
-
-//get permission_type_name
-function get_priv_name($permission_type_id)
-{
-	global $db_raid, $phpraid_config;
-	$sql = sprintf(	"SELECT permission_type_name FROM " . $phpraid_config['db_prefix'] . "permission_type " .
-					" WHERE permission_type_id = %s",quote_smart($permission_type_id));
-	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-	$data = $db_raid->sql_fetchrow($result, true);
-
-	return($data['permission_type_name']);
-}
-
-/**
- * 
- * return, in which permission group the user (profile) are
- * @param integer $profile_id
- */
-function get_permission_id($profile_id)
-{
-	global $db_raid, $phpraid_config;
-
-	$sql = sprintf(	"SELECT `priv` ".
-					" FROM `" . $phpraid_config['db_prefix'] . "profile` ".
-					" WHERE profile_id = %s", quote_smart($profile_id));
-	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-	$data = $db_raid->sql_fetchrow($result, true);
-	
-	return ($data['priv']);	
-}
-
-//update the selected permission_signup  set
-function update_permission_signup($permission_type_id,$raid_permission_type_id )
-{
-	global $db_raid, $phpraid_config;
-	
-	$sql = sprintf(	"SELECT * ".
-					" FROM " . $phpraid_config['db_prefix'] . "acl_raid_permission".
-					" WHERE raid_permission_type_id=%s and permission_type_id=%s",
-					quote_smart($raid_permission_type_id),quote_smart($permission_type_id));
-					
-	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-
-	if ($db_raid->sql_numrows($result) < 1)
-	{
-		$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "acl_raid_permission ".
-						" (`raid_permission_type_id`,`permission_type_id`) VALUES(%s,%s)",
-						quote_smart($raid_permission_type_id),quote_smart($permission_type_id));
-		$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);	
-	} 
-}
-
-//delete the selected permission_signup  set
-function delete_permissions_signup($permission_type_id, $raid_permission_type_id)
-{
-	global $db_raid, $phpraid_config;
-	
-	$sql = sprintf(	"SELECT * ".
-					" FROM " . $phpraid_config['db_prefix'] . "acl_raid_permission".
-					" WHERE raid_permission_type_id=%s and permission_type_id=%s",
-					quote_smart($raid_permission_type_id),quote_smart($permission_type_id));
-	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-					
-	if ($db_raid->sql_numrows($result) == 1)
-	{
-		$sql = sprintf(	"DELETE ".
-						" FROM " . $phpraid_config['db_prefix'] . "acl_raid_permission".
-						" WHERE raid_permission_type_id=%s and permission_type_id=%s",
-						quote_smart($raid_permission_type_id),quote_smart($permission_type_id));
-		$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-	}
-	
-}
-
-//update the selected permission_conf  set
-function update_permission_config($permission_type_id,$permission_value_id )
-{
-	global $db_raid, $phpraid_config;
-	
-	$sql = sprintf(	"SELECT * ".
-					" FROM " . $phpraid_config['db_prefix'] . "acl_permission".
-					" WHERE permission_value_id=%s and permission_type_id=%s",
-					quote_smart($permission_value_id),quote_smart($permission_type_id));
-					
-	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-
-	if ($db_raid->sql_numrows($result) < 1)
-	{
-		$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "acl_permission ".
-						" (`permission_value_id`,`permission_type_id`) VALUES(%s,%s)",
-						quote_smart($permission_value_id),quote_smart($permission_type_id));
-		$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);	
-	} 
-}
-//delete the selected permission_conf  set
-function delete_permissions_config($permission_type_id, $permission_value_id)
-{
-	global $db_raid, $phpraid_config;
-	
-	$sql = sprintf(	"SELECT * ".
-					" FROM " . $phpraid_config['db_prefix'] . "acl_permission".
-					" WHERE permission_value_id=%s and permission_type_id=%s",
-					quote_smart($permission_value_id),quote_smart($permission_type_id));
-	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-					
-	if ($db_raid->sql_numrows($result) == 1)
-	{
-		$sql = sprintf(	"DELETE ".
-						" FROM " . $phpraid_config['db_prefix'] . "acl_permission".
-						" WHERE permission_value_id=%s and permission_type_id=%s",
-						quote_smart($permission_value_id),quote_smart($permission_type_id));
-		$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-	}
-	
-}
-
-//read all information from the selected permission set
-function get_array_allInfo_from_PermissionID($permission_type_id)
-{
-	global  $db_raid,$phpraid_config;
-	$array_permissioninfo = array();
-		
-	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "permission_type ".
-					"  WHERE `permission_type_id` = %s", quote_smart($permission_type_id));
-	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-	$data = $db_raid->sql_fetchrow($result, true);
-	$array_permissioninfo['permissions_name'] = $data['permission_type_name'];
-	$array_permissioninfo['permissions_description'] = $data['permission_type_description'];
-	
-	/****************************************************************
-	 * Permission (Table: acl_permission)
-	 ****************************************************************/
-	// set all available values to 0
-	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "permission_value");
-	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-	while($data = $db_raid->sql_fetchrow($result, true))
-	{
-		$array_permissioninfo[$data['permission_value_name']] = '0';
-	}
-
-	$sql = sprintf("SELECT b.permission_value_name ".
-					"  FROM " . $phpraid_config['db_prefix'] . "acl_permission a,".
-					"  " . $phpraid_config['db_prefix'] . "permission_value b".
-					"  WHERE a.permission_value_id = b.permission_value_id".
-					"  AND `permission_type_id` = %s", quote_smart($permission_type_id));
-	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-	while($data = $db_raid->sql_fetchrow($result, true)) 
-	{
-		$array_permissioninfo[$data['permission_value_name']] = '1';	
-	}
-	
-	/****************************************************************
-	 * Raid Permission (Table: acl_raid_permission)
-	 ****************************************************************/
-	// set all available values to 0
-	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raid_permission_type");
-	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-	while($data = $db_raid->sql_fetchrow($result, true))
-	{
-		$array_permissioninfo[$data['raid_permission_type_name']] = '0';
-	}
-
-	$sql = sprintf("SELECT b.raid_permission_type_name ".
-					"  FROM " . $phpraid_config['db_prefix'] . "acl_raid_permission a,".
-					"  " . $phpraid_config['db_prefix'] . "raid_permission_type b".
-					"  WHERE a.raid_permission_type_id = b.raid_permission_type_id".
-					"  AND `permission_type_id` = %s", quote_smart($permission_type_id));
-	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
-	while($data = $db_raid->sql_fetchrow($result, true)) 
-	{
-		$array_permissioninfo[$data['raid_permission_type_name']] = '1';	
-	}
-
-	return $array_permissioninfo;	
 }
 
 ?>

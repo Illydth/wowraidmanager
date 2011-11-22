@@ -27,16 +27,7 @@
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *
 ****************************************************************************/
-function getVisibleColumns_admin($view_name)
-{
-	global $phpraid_config;
-	return getVisibleColumns_normal($view_name,'../../../templates/' . $phpraid_config['template'] . '/');
-}
-function getVisibleColumns($view_name)
-{
-	global $phpraid_config;
-	return getVisibleColumns_normal($view_name,"");
-}
+
 /**
 * Gets a list of column names from the column_header table for the input report view name.
 *	The column name, visibility and image url for the column is returned in sorted order
@@ -45,10 +36,9 @@ function getVisibleColumns($view_name)
 * @return array $table_headers - The array of data including column name, visibility, and image URL
 * @access public
 */
-function getVisibleColumns_normal($view_name,$path) 
+function getVisibleColumns($view_name) 
 {
-	global $phpraid_config, $db_raid, $phprlang, $col_mod;
-	global $wrm_global_resistance, $wrm_global_classes, $wrm_global_roles;
+	global $phpraid_config, $db_raid, $phprlang, $col_mod, $wrm_global_classes, $wrm_global_roles;
 	
 	$table_headers = array();
 	$position_counter = 0; // Position addend that will incriment for classes and roles.
@@ -90,7 +80,7 @@ function getVisibleColumns_normal($view_name,$path)
 							'column_name'=>$global_role['role_name'],
 							'visible'=>$visibility,
 							'position'=>$data['position']+$position_counter,
-							'img_url'=>$path.$global_role['image'],
+							'img_url'=>$global_role['image'],
 							'col_text'=>$global_role['role_name'],
 							'format_code'=>$data['format_code'],
 							'default_sort'=>$data['default_sort'],
@@ -108,26 +98,8 @@ function getVisibleColumns_normal($view_name,$path)
 							'column_name'=>$global_class['class_id'],
 							'visible'=>$visibility,
 							'position'=>$data['position']+$position_counter,
-							'img_url'=>$path.$global_class['image'],
+							'img_url'=>$global_class['image'],
 							'col_text'=>$global_class['lang_index'],
-							'format_code'=>$data['format_code'],
-							'default_sort'=>$data['default_sort'],
-						)
-					);	
-					$position_counter++;		
-				}
-			}
-			elseif ($repstr == 'resistance')
-			{
-				foreach ($wrm_global_resistance as $global_resistance)
-				{
-					array_push($table_headers,
-						array(
-							'column_name'=>$global_resistance['resistance_name'],
-							'visible'=>$visibility,
-							'position'=>$data['position']+$position_counter,
-							'img_url'=>$path.$global_resistance['image'],
-							'col_text'=>$global_resistance['lang_index'],
 							'format_code'=>$data['format_code'],
 							'default_sort'=>$data['default_sort'],
 						)

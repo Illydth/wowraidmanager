@@ -64,9 +64,7 @@ VALUES (NULL , 'announcements1', 'Create Date', '1', '5', NULL, 'create_date', '
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
 VALUES (NULL , 'announcements1', 'Create Time', '1', '6', NULL, 'create_time', 'wrmtime');
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'announcements1', 'visible', '1', '7', NULL, 'visible', NULL);
-INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'announcements1', 'Buttons', '1', '8', NULL, 'buttons', NULL);
+VALUES (NULL , 'announcements1', 'Buttons', '1', '7', NULL, 'buttons', NULL);
 -- Column Header Data - DKP1 View
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
 VALUES (NULL , 'dkp1', 'ID', '1', '1', NULL, 'id', NULL);
@@ -170,7 +168,15 @@ VALUES (NULL , 'char1', 'Race', '1', '5', NULL, 'race', NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
 VALUES (NULL , 'char1', 'Class', '1', '6', NULL, 'class', NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'char1', '@resistance', '1', '7', NULL, NULL, NULL);
+VALUES (NULL , 'char1', 'Arcane', '1', '7', '/images/resistances/arcane_resistance.gif', 'arcane', NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
+VALUES (NULL , 'char1', 'Fire', '1', '8', '/images/resistances/fire_resistance.gif', 'fire', NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
+VALUES (NULL , 'char1', 'Frost', '1', '9', '/images/resistances/frost_resistance.gif', 'frost', NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
+VALUES (NULL , 'char1', 'Nature', '1', '10', '/images/resistances/nature_resistance.gif', 'nature', NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
+VALUES (NULL , 'char1', 'Shadow', '1', '11', '/images/resistances/shadow_resistance.gif', 'shadow', NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
 VALUES (NULL , 'char1', 'Pri_Spec', '1', '12', NULL, 'pri_spec', NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
@@ -208,7 +214,15 @@ VALUES (NULL , 'roster1', 'Race', '1', '5', NULL, 'race', NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
 VALUES (NULL , 'roster1', 'Class', '1', '6', NULL, 'class', NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'roster1', '@resistance', '1', '7', NULL, NULL, NULL);
+VALUES (NULL , 'roster1', 'Arcane', '1', '7', '/images/resistances/arcane_resistance.gif', 'arcane', NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
+VALUES (NULL , 'roster1', 'Fire', '1', '8', '/images/resistances/fire_resistance.gif', 'fire', NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
+VALUES (NULL , 'roster1', 'Frost', '1', '9', '/images/resistances/frost_resistance.gif', 'frost', NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
+VALUES (NULL , 'roster1', 'Nature', '1', '10', '/images/resistances/nature_resistance.gif', 'nature', NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
+VALUES (NULL , 'roster1', 'Shadow', '1', '11', '/images/resistances/shadow_resistance.gif', 'shadow', NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
 VALUES (NULL , 'roster1', 'Pri_Spec', '1', '12', NULL, 'pri_spec', NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
@@ -258,7 +272,15 @@ VALUES (NULL , 'raidview1', 'Pri_Spec', '1', '9', NULL, 'pri_spec', NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
 VALUES (NULL , 'raidview1', 'Sec_Spec', '1', '10', NULL, 'sec_spec', NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'raidview1', '@resistance', '1', '7', NULL, NULL, NULL);
+VALUES (NULL , 'raidview1', 'Arcane', '1', '11', '/images/resistances/arcane_resistance.gif', 'arcane', NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
+VALUES (NULL , 'raidview1', 'Fire', '1', '12', '/images/resistances/fire_resistance.gif', 'fire', NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
+VALUES (NULL , 'raidview1', 'Nature', '1', '13', '/images/resistances/nature_resistance.gif', 'nature', NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
+VALUES (NULL , 'raidview1', 'Frost', '1', '14', '/images/resistances/frost_resistance.gif', 'frost', NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
+VALUES (NULL , 'raidview1', 'Shadow', '1', '15', '/images/resistances/shadow_resistance.gif', 'shadow', NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
 VALUES (NULL , 'raidview1', 'Date', '1', '16', NULL, 'date', 'wrmdate');
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
@@ -395,7 +417,7 @@ INSERT INTO `wrm_config` VALUES ('eqdkp_url', 'http://localhost/eqdkp');
 INSERT INTO `wrm_config` VALUES ('ampm', '12');
 INSERT INTO `wrm_config` VALUES ('raid_view_type','by_class');
 INSERT INTO `wrm_config` VALUES ('records_per_page','25');
-INSERT INTO `wrm_config` VALUES ('armory_cache_setting', 'none');
+INSERT INTO `wrm_config` VALUES ('armory_cache_setting', 'database');
 INSERT INTO `wrm_config` VALUES ('persistent_db', '1');
 INSERT INTO `wrm_config` VALUES ('wrm_created_on', '1');
 INSERT INTO `wrm_config` VALUES ('wrm_updated_on', '1');
@@ -406,6 +428,13 @@ INSERT INTO `wrm_config` VALUES ('lua_output_sort_queue', '2');
 INSERT INTO `wrm_config` VALUES ('lua_output_format', '2');
 INSERT INTO `wrm_config` VALUES ('num_old_raids_index', '20');
 INSERT INTO `wrm_config` VALUES ('template_body_width', 'width_normal');
+INSERT INTO `wrm_config` VALUES ('auto_mark_raids_old', '4');
+INSERT INTO `wrm_config` VALUES ('recurrance_enabled', '1');
+INSERT INTO `wrm_config` VALUES ('armory_cache_timeout', '48');
+INSERT INTO `wrm_config` VALUES ('freeze_status_draft', '0');
+INSERT INTO `wrm_config` VALUES ('freeze_status_queue', '0');
+INSERT INTO `wrm_config` VALUES ('freeze_status_cancel', '0');
+INSERT INTO `wrm_config` VALUES ('debug', '0');
 
 -- Event Type Table Data
 INSERT INTO `wrm_event_type` (`event_type_id`, `event_type_name`, `event_type_lang_id`, `def`) VALUES
@@ -419,6 +448,10 @@ INSERT INTO `wrm_event_type` (`event_type_id`, `event_type_name`, `event_type_la
 INSERT INTO `wrm_gender` VALUES ('Male', 'male');
 INSERT INTO `wrm_gender` VALUES ('Female', 'female');
 
+-- Permissions Data
+INSERT INTO `wrm_permissions` (`permission_id`, `name`,`description`,`announcements`,`configuration`,`guilds`,`locations`,`profile`,`raids`) VALUES ('1','WRM Superadmin','Full Access','1','1','1','1','1','1');
+INSERT INTO `wrm_permissions` (`permission_id`, `name`,`description`,`announcements`,`configuration`,`guilds`,`locations`,`profile`,`raids`) VALUES ('2','WRM Users','Generic Access','0','0','0','0','1','0');
+
 -- Role Table Data
 INSERT INTO `wrm_roles` VALUES ('role1', 'Tank', 'configuration_role1_text','');
 INSERT INTO `wrm_roles` VALUES ('role2', 'Melee', 'configuration_role2_text','');
@@ -427,161 +460,10 @@ INSERT INTO `wrm_roles` VALUES ('role4', 'Ranged', 'configuration_role4_text',''
 INSERT INTO `wrm_roles` VALUES ('role5', 'misc1', 'configuration_role5_text','');
 INSERT INTO `wrm_roles` VALUES ('role6', 'misc2', 'configuration_role6_text','');
 
--- Permission Type Data
-INSERT INTO `wrm_permission_type` (`permission_type_id`, `permission_type_name`,`permission_type_description`) VALUES ('1','WRM Users','Generic Access');
-INSERT INTO `wrm_permission_type` (`permission_type_id`, `permission_type_name`,`permission_type_description`) VALUES ('2','WRM Raid Leader','Generic + Raid Leader Access  ');
-INSERT INTO `wrm_permission_type` (`permission_type_id`, `permission_type_name`,`permission_type_description`) VALUES ('3','WRM Superadmin','Full Access');
-
-
--- Permission Value Data
-INSERT INTO `wrm_permission_value` (`permission_value_id`, `permission_value_name`,`lang_index`) VALUES ('1','announcements','permissions_announcements');
-INSERT INTO `wrm_permission_value` (`permission_value_id`, `permission_value_name`,`lang_index`) VALUES ('2','configuration','permissions_configuration');
-INSERT INTO `wrm_permission_value` (`permission_value_id`, `permission_value_name`,`lang_index`) VALUES ('3','guilds','permissions_guilds');
-INSERT INTO `wrm_permission_value` (`permission_value_id`, `permission_value_name`,`lang_index`) VALUES ('4','locations','permissions_locations');
-INSERT INTO `wrm_permission_value` (`permission_value_id`, `permission_value_name`,`lang_index`) VALUES ('5','profile','permissions_profile');
-INSERT INTO `wrm_permission_value` (`permission_value_id`, `permission_value_name`,`lang_index`) VALUES ('6','raids','permissions_raids');
-
--- Acces Controll List Permission Data
-INSERT INTO `wrm_acl_permission` (`permission_type_id`, `permission_value_id`) VALUES ('1','5');
-INSERT INTO `wrm_acl_permission` (`permission_type_id`, `permission_value_id`) VALUES ('2','1');
-INSERT INTO `wrm_acl_permission` (`permission_type_id`, `permission_value_id`) VALUES ('2','3');
-INSERT INTO `wrm_acl_permission` (`permission_type_id`, `permission_value_id`) VALUES ('2','4');
-INSERT INTO `wrm_acl_permission` (`permission_type_id`, `permission_value_id`) VALUES ('2','5');
-INSERT INTO `wrm_acl_permission` (`permission_type_id`, `permission_value_id`) VALUES ('2','6');
-INSERT INTO `wrm_acl_permission` (`permission_type_id`, `permission_value_id`) VALUES ('3','1');
-INSERT INTO `wrm_acl_permission` (`permission_type_id`, `permission_value_id`) VALUES ('3','2');
-INSERT INTO `wrm_acl_permission` (`permission_type_id`, `permission_value_id`) VALUES ('3','3');
-INSERT INTO `wrm_acl_permission` (`permission_type_id`, `permission_value_id`) VALUES ('3','4');
-INSERT INTO `wrm_acl_permission` (`permission_type_id`, `permission_value_id`) VALUES ('3','5');
-INSERT INTO `wrm_acl_permission` (`permission_type_id`, `permission_value_id`) VALUES ('3','6');
-
-
--- Add Column Header Data - Admin_Menubar1 View
-INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'admin_menubar1', 'ID', '1', '1', NULL, 'id', NULL);
-INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'admin_menubar1', 'Lang_index', '1', '2', NULL, 'admin_menu_lang_index_text', NULL);
-INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'admin_menubar1', 'Link', '1', '3', NULL, 'admin_menu_link_text', NULL);
-INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'admin_menubar1', 'Button', '1', '4', NULL, 'buttons', NULL);
-
--- Modify Column Header Data - Admin_Permissions View
-INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'admin_permissions1', 'ID', '1', '1', NULL, 'id', NULL);
-INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'admin_permissions1', 'Name', '1', '2', NULL, 'name', NULL);
-INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'admin_permissions1', 'Description', '1', '3', NULL, 'description', NULL);
-INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'admin_permissions1', 'buttons', '1', '13', NULL, 'buttons', NULL);
-
--- Menu Type Data
--- INSERT INTO `wrm_menu_type` ( `menu_type_id`, `menu_type_title`,`menu_type_title_alt`,`show_menu_type_title_alt`, `lang_index`,`show_area`) 
-INSERT INTO `wrm_menu_type` VALUES ('1', 'menu_admin_main','','0','admin_menu_header','admin');
-INSERT INTO `wrm_menu_type` VALUES ('2', 'menu_admin_gen_conf','','0','gen_conf_menu_header','admin');
-INSERT INTO `wrm_menu_type` VALUES ('3', 'menu_admin_auth_mgt','','0','auth_mgt_menu_header','admin');
-INSERT INTO `wrm_menu_type` VALUES ('4', 'menu_admin_style_conf','','0','style_menu_header','admin');
-INSERT INTO `wrm_menu_type` VALUES ('5', 'menu_admin_user_mgt','','0','user_mgt_menu_header','admin');
-INSERT INTO `wrm_menu_type` VALUES ('6', 'menu_admin_table_conf','','0','table_conf_menu_header','admin');
-INSERT INTO `wrm_menu_type` VALUES ('7', 'menu_admin_logs', '','0','logs_menu_header','admin');
-
-INSERT INTO `wrm_menu_type` VALUES ('8', 'menu_main', '','0','main_menu_header','normal');
-INSERT INTO `wrm_menu_type` VALUES ('9', 'menu_user', '','0','user_menu_header','normal');
-
--- Menu Value Data
--- INSERT INTO `wrm_menu_value` ( `menu_value_id`, `menu_type_id`, `lang_index`, `menu_value_title_alt`, `show_menu_value_title_alt`, `ordering`, `link`,`filename_without_ext` `menu_image`, `menu_image_show`, `permission_value_id`, `visible` ) 
--- admin data
-INSERT INTO `wrm_menu_value` VALUES ('1','1','admin_site_link','','0','1','','../index.php','','0','2' ,'1');
-INSERT INTO `wrm_menu_value` VALUES ('2','1','admin_main_link','','0','2','admin_index','admin_index.php','','0','2','1');
-INSERT INTO `wrm_menu_value` VALUES ('3','2','admin_general_config','','0','1','admin_generalcfg','admin_generalcfg.php','','0','2' ,'1');
-INSERT INTO `wrm_menu_value` VALUES ('4','2','admin_general_rss_cfg','','0','2','admin_general_rss_cfg','admin_general_rss_cfg.php','','0','2' ,'1');
-INSERT INTO `wrm_menu_value` VALUES ('5','2','admin_general_email_cfg','','0','3','admin_general_email_cfg','admin_general_email_cfg.php','','0','2' ,'1');
-INSERT INTO `wrm_menu_value` VALUES ('6','2','admin_time_config','','0','4','admin_timecfg','admin_timecfg.php"','','0','2' ,'1');
-INSERT INTO `wrm_menu_value` VALUES ('7','2','admin_raid_settings','','0','5','admin_raidsettings','admin_raidsettings.php"','','0','2' ,'1');
-INSERT INTO `wrm_menu_value` VALUES ('8','2','admin_external_config','','0','6','admin_externcfg','admin_externcfg.php"','','0','2' ,'1');
-INSERT INTO `wrm_menu_value` VALUES ('9','2','admin_game_settings','','0','7','admin_general_game_settings','admin_general_game_settings.php"','','0','2' ,'1');
-INSERT INTO `wrm_menu_value` VALUES ('10','2','admin_general_lua_output_cfg','','0','11','admin_general_lua_output_cfg','admin_general_lua_output_cfg.php','','0','6','1');
-
-INSERT INTO `wrm_menu_value` VALUES ('11','3','admin_auth_cfg_link','','0','1','admin_auth_cfg','admin_auth_cfg.php?mode=view','','0','2' ,'1');
-INSERT INTO `wrm_menu_value` VALUES ('12','4','admin_style_conf','','0','1','admin_style_cfg','admin_style_cfg.php?mode=view','','0','2' ,'1');
-INSERT INTO `wrm_menu_value` VALUES ('13','4','admin_menubar_mgt_link','','0','2','admin_style_menubar_mgt', 'admin_style_menubar_mgt.php?mode=view','','0','2','1');
-INSERT INTO `wrm_menu_value` VALUES ('14','5','admin_user_management','','0','1','admin_usermgt','admin_usermgt.php?mode=view','','0','2' ,'1');
-INSERT INTO `wrm_menu_value` VALUES ('15','5','admin_permissions','','0','2','admin_permissions','admin_permissions.php?mode=view','','0','2' ,'1');
-INSERT INTO `wrm_menu_value` VALUES ('16','5','admin_user_settings','','0','4','admin_usersettings','admin_usersettings.php','','0','2' ,'1');
-INSERT INTO `wrm_menu_value` VALUES ('17','6','admin_datatablecfg_link','','0','1','admin_datatablecfg','admin_datatablecfg.php','','0','2' ,'1');
-INSERT INTO `wrm_menu_value` VALUES ('18','6','admin_rolecfg_link','','0','2','admin_rolecfg', 'admin_rolecfg.php?mode=view','','0','2' ,'1');
-INSERT INTO `wrm_menu_value` VALUES ('19','6','admin_roletalent_config','','0','3','admin_roletalent','admin_roletalent.php?mode=view','','0','2' ,'1');
-INSERT INTO `wrm_menu_value` VALUES ('20','7','admin_logs_link','','0','1','admin_logs','admin_logs.php?mode=view"','','0', '2','1');
--- normal data
-INSERT INTO `wrm_menu_value` VALUES ('40','8','index_link','','0','1','index','index.php','','0',NULL,'1');
-INSERT INTO `wrm_menu_value` VALUES ('41','8','calendar_link','','0','1','calendar','calendar.php','','0',NULL,'1');
-INSERT INTO `wrm_menu_value` VALUES ('42','8','roster_link','','0','2','roster','roster.php','','0',NULL,'1');
-INSERT INTO `wrm_menu_value` VALUES ('43','8','eqdkp_link','EQ-DKP','0','3','view_eqdkp','view_eqdkp.php','','0',NULL,'0');
-INSERT INTO `wrm_menu_value` VALUES ('44','8','raidsarchive_link','','0','4','raidsarchive','raidsarchive.php?mode=view','','0',NULL,'1');
-INSERT INTO `wrm_menu_value` VALUES ('45','8','bosstrack_link','','0','5','bosstracking','bosstracking.php?mode=view','','0',NULL,'0');
-INSERT INTO `wrm_menu_value` VALUES ('46','8','announcements_link','','0','6','announcements','announcements.php?mode=view','','0','1','1');
-INSERT INTO `wrm_menu_value` VALUES ('47','8','guilds_link','','0','7','guilds','guilds.php?mode=view','','0','3','1');
-INSERT INTO `wrm_menu_value` VALUES ('48','8','locations_link','','0','8','locations','locations.php?mode=view','','0','4','1');
-INSERT INTO `wrm_menu_value` VALUES ('49','8','raids_link','','0','9','raids','raids.php?mode=view','','0','6','1');
-INSERT INTO `wrm_menu_value` VALUES ('50','8','lua_output_link','','0','10','lua_output_new','lua_output_new.php?mode=lua','','0','6','1');
-INSERT INTO `wrm_menu_value` VALUES ('70','9','profile_link','','0','1','profile','profile.php?mode=view','','0','5','1');
-INSERT INTO `wrm_menu_value` VALUES ('71','9','profile_char_link','','0','2','profile_char','profile_char.php?mode=view','','0','5','1');
-INSERT INTO `wrm_menu_value` VALUES ('72','9','profile_raid_link','','0','3','profile_raid','profile_raid.php?mode=view','','0','5','1');
-
--- Raid Permission Type Table Creation
--- INSERT INTO `wrm_raid_permission_type` VALUES ( `raid_permission_type_id`, `raid_permission_type_name`,`lang_index`);
-INSERT INTO `wrm_raid_permission_type` VALUES ('1','on_queue_draft','configuration_draft');
-INSERT INTO `wrm_raid_permission_type` VALUES ('2','on_queue_comments','comments_row_header');
-INSERT INTO `wrm_raid_permission_type` VALUES ('3','on_queue_cancel','cancel_row_header');
-INSERT INTO `wrm_raid_permission_type` VALUES ('4','on_queue_delete','delete_row_header');
-INSERT INTO `wrm_raid_permission_type` VALUES ('5','cancelled_status_queue','queue_row_header');
-INSERT INTO `wrm_raid_permission_type` VALUES ('6','cancelled_status_draft','draft_row_header');
-INSERT INTO `wrm_raid_permission_type` VALUES ('7','cancelled_status_comments','comments_row_header');
-INSERT INTO `wrm_raid_permission_type` VALUES ('8','cancelled_status_delete','delete_row_header');
-INSERT INTO `wrm_raid_permission_type` VALUES ('9','drafted_queue','queue_row_header');
-INSERT INTO `wrm_raid_permission_type` VALUES ('10','drafted_comments','comments_row_header');
-INSERT INTO `wrm_raid_permission_type` VALUES ('11','drafted_cancel','cancel_row_header');
-INSERT INTO `wrm_raid_permission_type` VALUES ('12','drafted_delete','delete_row_header');
-
--- Acces Controll List Permission Table Creation
--- INSERT INTO `wrm_acl_raid_permission` VALUES ( `raid_permission_type_id`, `permission_type_id`);
--- WRM - Users
-INSERT INTO `wrm_acl_raid_permission` VALUES ('2','1');
-INSERT INTO `wrm_acl_raid_permission` VALUES ('3','1');
-INSERT INTO `wrm_acl_raid_permission` VALUES ('6','1');
-INSERT INTO `wrm_acl_raid_permission` VALUES ('7','1');
-INSERT INTO `wrm_acl_raid_permission` VALUES ('8','1');
-INSERT INTO `wrm_acl_raid_permission` VALUES ('10','1');
-INSERT INTO `wrm_acl_raid_permission` VALUES ('11','1');
-INSERT INTO `wrm_acl_raid_permission` VALUES ('12','1');
--- WRM - Raid Leader 
-INSERT INTO `wrm_acl_raid_permission` VALUES ('1','2');
-INSERT INTO `wrm_acl_raid_permission` VALUES ('2','2');
-INSERT INTO `wrm_acl_raid_permission` VALUES ('3','2');
-INSERT INTO `wrm_acl_raid_permission` VALUES ('4','2');
-INSERT INTO `wrm_acl_raid_permission` VALUES ('5','2');
-INSERT INTO `wrm_acl_raid_permission` VALUES ('6','2');
-INSERT INTO `wrm_acl_raid_permission` VALUES ('7','2');
-INSERT INTO `wrm_acl_raid_permission` VALUES ('8','2');
-INSERT INTO `wrm_acl_raid_permission` VALUES ('9','2');
-INSERT INTO `wrm_acl_raid_permission` VALUES ('10','2');
-INSERT INTO `wrm_acl_raid_permission` VALUES ('11','2');
-INSERT INTO `wrm_acl_raid_permission` VALUES ('12','2');
--- WRM - Superadmin
-INSERT INTO `wrm_acl_raid_permission` VALUES ('1','3');
-INSERT INTO `wrm_acl_raid_permission` VALUES ('2','3');
-INSERT INTO `wrm_acl_raid_permission` VALUES ('3','3');
-INSERT INTO `wrm_acl_raid_permission` VALUES ('4','3');
-INSERT INTO `wrm_acl_raid_permission` VALUES ('5','3');
-INSERT INTO `wrm_acl_raid_permission` VALUES ('6','3');
-INSERT INTO `wrm_acl_raid_permission` VALUES ('7','3');
-INSERT INTO `wrm_acl_raid_permission` VALUES ('8','3');
-INSERT INTO `wrm_acl_raid_permission` VALUES ('9','3');
-INSERT INTO `wrm_acl_raid_permission` VALUES ('10','3');
-INSERT INTO `wrm_acl_raid_permission` VALUES ('11','3');
-INSERT INTO `wrm_acl_raid_permission` VALUES ('12','3');
-
+-- Raid signup Group Table Creation
+INSERT INTO `wrm_acl_raid_signup_group` VALUES (1,'User',0,1,1,1,1,0,1,0,1,1,1,0);
+INSERT INTO `wrm_acl_raid_signup_group` VALUES (2,'Raid Leader',1,1,0,0,0,0,1,1,1,1,0,0);
+INSERT INTO `wrm_acl_raid_signup_group` VALUES (3,'Administrator',1,1,0,0,0,0,1,1,1,1,0,0);
 
 -- Version Data
 INSERT INTO `wrm_version` VALUES ('4.0.0','Version 4.0.0 of WoW Raid Manager');

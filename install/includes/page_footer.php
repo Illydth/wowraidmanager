@@ -33,12 +33,12 @@
 *
 ****************************************************************************/
 
-include_once("../version.php");
+//include_once("../version.php");
 
 //
 // Parse and show the overall footer.
 //
-$smarty->assign("wrm_version", $version);		
+//$smarty->assign("wrm_version", $version);		
 
 $smarty->display("footer.tpl.html");
 

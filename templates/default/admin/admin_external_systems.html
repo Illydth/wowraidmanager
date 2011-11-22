@@ -1,7 +1,6 @@
 {* Smarty Template *}
-<form action="{$config_data.form_action}" method="post" name="configure" id="configure">
-<div class="contentHeader">{$config_data.external_links_header}</div>
-<br>
+<form action="admin_externcfg.php" method="post" name="configure" id="configure">
+<div class="contentHeader">{$config_data.external_links_header}</div><br>
 <div class="contentBody">
   <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
   <tr> 
@@ -12,11 +11,26 @@
           <td class="row2">
           	<input type="checkbox" name="enable_armory" value="1" {$config_data.enable_armory}>
           </td>
+          <td class="row2">
+          	&nbsp;
+          </td>
         </tr>
         <tr>
           <td width="200" class="row1"><strong>{$config_data.armory_cache_text}</strong></td>
           <td class="row2">
            	{html_options name=armory_cache options=$config_data.array_armory_cache selected=$config_data.selected_armory_code class="post"}
+          </td>
+          <td class="row2">
+          	&nbsp;
+          </td>
+        </tr>
+        <tr>
+          <td width="200" class="row1"><strong>{$config_data.armory_cache_timeout_text}</strong></td>
+          <td class="row2">
+           	{html_options name=armory_cache_timeout options=$config_data.array_armory_cache_timeout selected=$config_data.selected_armory_cache_timeout class="post"}
+          </td>
+          <td class="row2">
+          	{$config_data.armory_cache_timeout_sup_text}
           </td>
         </tr>
         <tr>
@@ -24,11 +38,17 @@
           <td class="row2">
           	<input type="checkbox" name="enable_eqdkp" value="1" {$config_data.enable_eqdkp}>
           </td>
+          <td class="row2">
+          	&nbsp;
+          </td>
         </tr>
         <tr>
           <td width="200" class="row1"><strong>{$config_data.eqdkp_url_text}</strong></td>
           <td class="row2">
           	<input name="eqdkp_url" type="text" value="{$config_data.eqdkp_url}" size="60" class="post">
+          </td>
+          <td class="row2">
+          	&nbsp;
           </td>
         </tr>
    {*     <!--  <tr>
@@ -39,6 +59,38 @@
     </td></tr>
 </table>
 <br>
+{if ($config_data.show_bridge_config == TRUE)}
+<div class="contentHeader">{$config_data.configuration_extsys_bridge_config_header}</div><br>
+  <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tr> 
+    <td valign="top"> 
+      <table width="100%" border="0" cellspacing="1" cellpadding="3" class="dataOutline">
+        <tr>
+          <td width="200" class="row1"><strong>{$config_data.configuration_extsys_group_text}</strong></td>
+          <td class="row2">
+          			{html_options name=configuration_extsys_group options=$config_data.array_group selected=$config_data.selected_group_id class="post"}
+          			<br>
+          			{$config_data.configuration_extsys_group01}<br>
+          			{$config_data.configuration_extsys_group02}<br>
+          			{$config_data.configuration_extsys_group03}
+          </td>
+        </tr>
+        <tr>
+          <td width="200" class="row1"><strong>{$config_data.configuration_extsys_alt_group_text}</strong></td>
+          <td class="row2">
+          			{html_options name=configuration_extsys_alt_group options=$config_data.array_alt_group selected=$config_data.selected_alt_group_id class="post"}
+          			<br>
+          			{$config_data.configuration_extsys_alt_group01}<br>
+          			{$config_data.configuration_extsys_alt_group02}
+          </td>
+        </tr>
+
+      </table>
+    </td></tr>
+  </table>
+ 
+<br>
+{/if}
 
 <div align="center" class="button">
 	<input type="submit" name="submit" value="{$config_data.button_submit}" class="mainoption">

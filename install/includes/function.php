@@ -57,7 +57,7 @@ function check_sql_rights_SHOW_DATABASES($wrm_install)
 function check_sql_rights_SHOW_TABLES($wrm_install, $database)
 {	
 		
-	$sql_SHOW_TABLES = "SHOW TABLES FROM ".$database;
+	$sql_SHOW_TABLES = "SHOW TABLES FROM `".$database."`";
 
 	$support_rights_SHOW_TABLES = TRUE;
 	
@@ -127,7 +127,7 @@ function write_wrm_configfile($wrm_db_name,$wrm_db_server_hostname = "localhost"
 	{
 		// Check for UTF8 Support in Database
 		$gd = get_mysql_version_from_mysql();
-		$wrm_db_utf8_support = (strnatcmp($gd,'5.0.0') >= 0) ? "yes" : "no";
+		$wrm_db_utf8_support = (strnatcmp($gd,'4.1.0') >= 0) ? "yes" : "no";
 	}
 	
 	//Calculate MBString Support if not already passed:
@@ -443,7 +443,7 @@ function scan_dbserver_database($wrm_install, $scan_Database, $bridge)
 		{
 		//echo ":". $scan_Database.":". $bridge;
 			//show all TABLES, from the (selected) DATABASES
-			$sql_tables = "SHOW TABLES FROM ".$scan_Database ;
+			$sql_tables = "SHOW TABLES FROM `".$scan_Database."`" ;
 			$result_tables = $wrm_install->sql_query($sql_tables) or print_error($sql_tables . "<br>".$bridge[$i]['auth_type_name'], $wrm_install->sql_error(), 1);
 			while ($data_tables = $wrm_install->sql_fetchrow($result_tables, true))
 			{
@@ -458,7 +458,7 @@ function scan_dbserver_database($wrm_install, $scan_Database, $bridge)
 					//set table prefix
 					$db_temp_prefix = substr($db_table_name, 0 ,strlen($db_table_name) - strlen($bridge[$i]['db_table_user_name']));
 		
-					$sql_columns = "SHOW COLUMNS FROM ".$scan_Database.".".$db_temp_prefix.$bridge[$i]['db_table_user_name'];
+					$sql_columns = "SHOW COLUMNS FROM `".$scan_Database."`.".$db_temp_prefix.$bridge[$i]['db_table_user_name'];
 					$result_columns = $wrm_install->sql_query($sql_columns) or print_error($sql_columns, $wrm_install->sql_error(), 1);
 					
 					$counter_valid_column = 0;
@@ -488,7 +488,7 @@ function scan_dbserver_database($wrm_install, $scan_Database, $bridge)
 					{
 						//count: avilable user in the bridge system
 						$sql_count_user = 	"SELECT ".$bridge[$i]['db_user_id'].
-											" FROM ".$scan_Database.".".$db_temp_prefix.$bridge[$i]['db_table_user_name']. 
+											" FROM `".$scan_Database."`.".$db_temp_prefix.$bridge[$i]['db_table_user_name']. 
 											" " . $bridge[$i]['db_user_name_filter'];
 						$result_count_user = $wrm_install->sql_query($sql_count_user) or print_error($sql_count_user, $wrm_install->sql_error(), 1);
 						$count_user = $wrm_install->sql_numrows($result_count_user);
@@ -504,7 +504,7 @@ function scan_dbserver_database($wrm_install, $scan_Database, $bridge)
 					//set table prefix
 					$db_temp_prefix = substr($db_table_name, 0 ,strlen($db_table_name) - strlen($bridge[$i]['db_table_group_name']));
 						
-					$sql_columns = "SHOW COLUMNS FROM ".$scan_Database.".".$db_temp_prefix.$bridge[$i]['db_table_group_name'];
+					$sql_columns = "SHOW COLUMNS FROM `".$scan_Database."`.".$db_temp_prefix.$bridge[$i]['db_table_group_name'];
 					$result_columns = $wrm_install->sql_query($sql_columns) or print_error($sql_columns."<br>temp_prefix:".$db_temp_prefix."<br>bridge:".$bridge[$i]['auth_type_name'], $wrm_install->sql_error(), 1);
 					while ($data_columns = $wrm_install->sql_fetchrow($result_columns,true))
 					{
@@ -523,7 +523,7 @@ function scan_dbserver_database($wrm_install, $scan_Database, $bridge)
 					//set table prefix
 					$db_temp_prefix = substr($db_table_name, 0 ,strlen($db_table_name) - strlen($bridge[$i]['db_table_allgroups']));
 					
-					$sql_columns = "SHOW COLUMNS FROM ".$scan_Database.".".$db_temp_prefix.$bridge[$i]['db_table_allgroups'];
+					$sql_columns = "SHOW COLUMNS FROM `".$scan_Database."`.".$db_temp_prefix.$bridge[$i]['db_table_allgroups'];
 					$result_columns = $wrm_install->sql_query($sql_columns) or print_error($sql_columns, $wrm_install->sql_error(), 1);
 					while ($data_columns = $wrm_install->sql_fetchrow($result_columns,true))
 					{
@@ -765,6 +765,12 @@ function show_online_versionnr($file_version)
 		//$latest_version_info = explode(" ", $latest_version_info);
 		$latest_version_info = explode(".", $latest_version_info);
 		
+		if (!isset($installfiles_ver[0]))
+			$installfiles_ver[0]= (int) 0;		
+		if (!isset($installfiles_ver[1]))
+			$installfiles_ver[1]= (int) 0;
+		if (!isset($installfiles_ver[2]))
+			$installfiles_ver[2]= (int) 0;
 		if (!isset($installfiles_ver[3]))
 			$installfiles_ver[3]= (int) 0;
 		if (!isset($installfiles_ver[4]))
@@ -854,7 +860,7 @@ function test_bridge_connection($bridge_name, $bridge_database_name, $bridge_db_
 	}
 	
 	//load all table, from the selected database, in a array	
-	$sql_tables = "SHOW TABLES FROM ".$bridge_database_name;
+	$sql_tables = "SHOW TABLES FROM `".$bridge_database_name."`";
 	$result_tables = $wrm_install->sql_query($sql_tables) or print_error($sql_tables, $wrm_install->sql_error(), 1);
 	while ($data_tables = $wrm_install->sql_fetchrow($result_tables, true))
 	{
@@ -868,7 +874,7 @@ function test_bridge_connection($bridge_name, $bridge_database_name, $bridge_db_
 	{
 		if ($found_db_table_name[$y] == $bridge_db_table_prefix.$bridge_setting_value['db_table_user_name'])
 		{
-			$sql_columns = "SHOW COLUMNS FROM ".$bridge_database_name.".".$bridge_db_table_prefix.$bridge_setting_value['db_table_user_name'];
+			$sql_columns = "SHOW COLUMNS FROM `".$bridge_database_name."`.".$bridge_db_table_prefix.$bridge_setting_value['db_table_user_name'];
 			$result_columns = $wrm_install->sql_query($sql_columns) or print_error($sql_columns, $wrm_install->sql_error(), 1);
 			while ($data_columns = $wrm_install->sql_fetchrow($result_columns, true))
 			{
@@ -897,7 +903,7 @@ function test_bridge_connection($bridge_name, $bridge_database_name, $bridge_db_
 		}
 		if ($found_db_table_name[$y] == $bridge_db_table_prefix.$bridge_setting_value['db_table_allgroups'])
 		{
-			$sql_columns = "SHOW COLUMNS FROM ".$bridge_database_name.".".$bridge_db_table_prefix.$bridge_setting_value['db_table_allgroups'];
+			$sql_columns = "SHOW COLUMNS FROM `".$bridge_database_name."`.".$bridge_db_table_prefix.$bridge_setting_value['db_table_allgroups'];
 			$result_columns = $wrm_install->sql_query($sql_columns) or print_error($sql_columns, $wrm_install->sql_error(), 1);
 			while ($data_columns = $wrm_install->sql_fetchrow($result_columns,true))
 			{
@@ -969,7 +975,7 @@ function profile_add($user_admin_username,$user_admin_password,$user_admin_email
 	}
 	else
 	{
-		$sql = 	sprintf("UPDATE " . $phpraid_config['db_name'] . "." . $phpraid_config['db_prefix'] . "profile" .
+		$sql = 	sprintf("UPDATE `" . $phpraid_config['db_name'] . "`." . $phpraid_config['db_prefix'] . "profile" .
 						" SET `email` = %s, `priv` = %s, `password` = %s, `last_login_time` = %s, `username` = %s".
 						" WHERE " . $phpraid_config['db_name'] . "." . $phpraid_config['db_prefix'] . "profile.`profile_id` = %s",
 						 quote_smart($user_admin_email), quote_smart($default_admin_Priv), quote_smart(md5($user_admin_password)),

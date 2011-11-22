@@ -35,6 +35,8 @@
 
 function strtolower_wrap($str, $encoding)
 {
+	global $phpraid_config;
+	
 	if (function_exists('mb_strtolower') and ($phpraid_config['wrm_mbstring_support'] == 'yes'))
 		$retstr = mb_strtolower($str, $encoding);
 	else if (function_exists('strtolower'))
@@ -46,6 +48,8 @@ function strtolower_wrap($str, $encoding)
 
 function strlen_wrap($str, $encoding)
 {
+	global $phpraid_config;
+	
 	if (function_exists('mb_strlen') and ($phpraid_config['wrm_mbstring_support'] == 'yes'))
 		$retlen = mb_strlen($str, $encoding);
 	else if (function_exists('strlen'))
@@ -57,6 +61,8 @@ function strlen_wrap($str, $encoding)
 
 function substr_wrap($str, $start, $length, $encoding)
 {
+	global $phpraid_config;
+	
 	if (function_exists('mb_substr') and ($phpraid_config['wrm_mbstring_support'] == 'yes'))
 		$retstr = mb_substr($str, $start, $length, $encoding);
 	else if (function_exists('substr'))
@@ -68,6 +74,8 @@ function substr_wrap($str, $start, $length, $encoding)
 
 function strtoupper_wrap($str, $encoding)
 {
+	global $phpraid_config;
+	
 	if (function_exists('mb_strtoupper') and ($phpraid_config['wrm_mbstring_support'] == 'yes'))
 		$retstr = mb_strtoupper($str, $encoding);
 	else if (function_exists('strtoupper'))
@@ -79,6 +87,8 @@ function strtoupper_wrap($str, $encoding)
 
 function convertcase_wrap($str, $mode, $encoding)
 {
+	global $phpraid_config;
+	
 	if (function_exists('mb_convert_case')and ($phpraid_config['wrm_mbstring_support'] == 'yes'))
 		$retstr = mb_convert_case($str, $mode, $encoding);
 	else if (function_exists('strtoupper') && $mode==MB_CASE_UPPER)

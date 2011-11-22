@@ -3,7 +3,8 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		<title>WoW Raid Manager ADMIN SECTION :: {$page_header_data.title_guild_name} {$page_header_data.of_string} {$page_header_data.title_guild_server} :: {$page_header_data.title_guild_description}</title>
+<!-- 	<title>WoW Raid Manager ADMIN SECTION :: {$page_header_data.title_guild_name} {$page_header_data.of_string} {$page_header_data.title_guild_server} :: {$page_header_data.title_guild_description}</title>  -->
+		<title>WoW Raid Manager ADMIN SECTION :: {$page_header_data.title_guild_name} @ {$page_header_data.title_guild_server} :: {$page_header_data.title_guild_description}</title>
 <!-- 	<script src="/scripts/cal2.js" type="text/javascript"></script>  -->
 <!--	<script src="/scripts/cal2_conf.js" type="text/javascript"></script>	 -->
 		<script src="../scripts/phpRaid.js" type="text/javascript"></script>
@@ -40,3 +41,24 @@
 					</table>
 				</div>
 				<table width="100%" cellpadding="0" cellspacing="0" align="center">
+					<tr valign="top">
+						<td id="leftMenuBackground" width="150px">
+							<div class="menuHeader">{$menus.main_menu_header}</div>
+							{$menus.main_menu}<br>
+							<div class="menuHeader">{$menus.gen_conf_menu_header}</div>
+							{$menus.gen_conf_menu}<br>
+							<div class="menuHeader">{$menus.style_menu_header}</div>
+							{$menus.style_menu}<br>
+							<div class="menuHeader">{$menus.user_mgt_menu_header}</div>
+							{$menus.user_mgt_menu}<br>
+							<div class="menuHeader">{$menus.table_conf_menu_header}</div>
+							{$menus.table_conf_menu}<br>
+							<div class="menuHeader">{$menus.logs_menu_header}</div>
+							{$menus.logs_menu}
+						</td>
+						<td id="leftMenuBorder" width="5px">&nbsp;</td>
+						<td id="contentContainer">
+<!--  					{$page_header_data.site_disabled_warning}  -->
+							<center>
+								<h1>{$admin_index_header}</h1>
+							</center>

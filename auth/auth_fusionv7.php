@@ -148,6 +148,14 @@ function password_check($oldpassword, $profile_id, $encryptflag)
 	
 	if ($encryptflag)
 	{ // Encrypted Password Sent in, Check directly against DB.
+		if (defined('DEBUG') && DEBUG)
+		{
+			fwrite($stdoutfptr, "  Encrypted Password Sent In.\n");
+			fwrite($stdoutfptr, "  Password If Check (Equals) :\n");
+			fwrite($stdoutfptr, "    -> Input Password: '" . $oldpassword . "'\n");
+			fwrite($stdoutfptr, "    -> Database Password: '" . $db_pass . "'\n");
+		}
+		
 		if ($oldpassword == $db_pass)
 			return $db_pass;
 		else
@@ -159,6 +167,15 @@ function password_check($oldpassword, $profile_id, $encryptflag)
 		/* 
 		 * For fusionv7 we simply need to take the input password, run it through MD5 and check the output
 		 */
+
+		if (defined('DEBUG') && DEBUG)
+		{
+			fwrite($stdoutfptr, "  Encrypted Password NOT Sent In.\n");
+			fwrite($stdoutfptr, "  Password If Check (Equals) :\n");
+			fwrite($stdoutfptr, "    -> Input Password: '" . md5(md5($oldpassword)) . "'\n");
+			fwrite($stdoutfptr, "    -> Database Password: '" . $db_pass . "'\n");
+		}
+		
 		if (md5(md5($oldpassword)) == $db_pass)
 			return $db_pass;
 		else

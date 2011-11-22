@@ -54,6 +54,14 @@ $phprlang['guilds_description'] = 'Guild Description';
 $phprlang['guilds_server'] = 'Guild Server';
 $phprlang['guilds_faction'] = 'Guild Faction';
 $phprlang['guilds_armory_code'] = 'Armory Code for Guild';
+$phprlang['raid_force_header'] = 'Raid Force Listing'; //New
+$phprlang['raid_force_select_text'] = 'Select Raid Force: '; //New
+$phprlang['raid_force_name_box_text'] = 'Raid Force Name'; //New
+$phprlang['raid_force_guild_options_text'] = 'Guild'; //New
+$phprlang['raid_force_new_header'] = 'New Raid Force Link'; //New
+$phprlang['raid_force_name_missing'] = 'Raid Force Name must not be blank or NULL.'; //New
+$phprlang['raid_force_duplicate'] = 'Duplicate Raid Force Name/Guild Record.'; //New
+$phprlang['raid_force_guild_id_missing'] = 'Guild ID must not be blank or NULL'; //New
 $phprlang['armory_lang_US'] = 'US : http://us.battle.net/wow/ : English'; //New
 $phprlang['armory_lang_EU'] = 'EU : http://eu.battle.net/wow/ : English'; //New
 $phprlang['armory_lang_DE'] = 'DE : http://eu.battle.net/wow/ : German'; //New
@@ -103,6 +111,10 @@ $phprlang['lua_prv_write_success'] = '<b>LUA file created.</b><br>' .
 									'Download <a href="cache/raid_lua/phpRaid_Data.lua">phpRaid_Data.lua</a> and save 
 									it to [wow-dir]\interface\addons\phpraidviewer\<br>' .
 									'or use this for copy+paste:<br>';
+$phprlang['lua_drafted'] = 'Drafted Users'; //New
+$phprlang['lua_queued'] = 'Queued Users'; //New
+$phprlang['lua_macro_header'] = 'Macro output listing...'; //New
+$phprlang['lua_macro_footer'] = '<br>Macro output listing complete.<br>Copy and paste the above to a macro and run in-game.'; //New
 
 // permissions
 $phprlang['permissions_add'] = 'Legg til nytt sett';
@@ -125,23 +137,25 @@ $phprlang['permissions_users'] = 'Brukere';
 $phprlang['permissions_users_header'] = 'Brukere i sett';
 
 // profile
+$phprlang['profile_arcane'] = 'Arcane Resistance';
 $phprlang['profile_class'] = 'Klasse';
 $phprlang['profile_create_header'] = 'Character oppretting utilgjengelig';
 $phprlang['profile_create_msg'] = 'Det må opprettes et guild først';
+$phprlang['profile_fire'] = 'Fire Resistance';
+$phprlang['profile_frost'] = 'Frost Resistance';
 $phprlang['profile_gender'] = 'Kjønn';
 $phprlang['profile_guild'] = 'Guild tilknytning';
 $phprlang['profile_role'] = 'Rolle';
 $phprlang['profile_header'] = 'Characters';
 $phprlang['profile_level'] = 'Level';
 $phprlang['profile_name'] = 'Navn';
+$phprlang['profile_nature'] = 'Nature Resistance';
 $phprlang['profile_raid'] = 'Raid Participation';
 $phprlang['profile_race'] = 'Rase';
-$phprlang['profile_header_text'] = "my Profile";
-$phprlang['profile_number_character'] = "Number of my Character";
-$phprlang['profile_number_signups_all'] = "Number of all my signups";
-$phprlang['profile_number_signups_draft'] = "Number of my signups in confirmation list";
-$phprlang['profile_number_signups_queue'] = "Number of my signups in queue list";
-$phprlang['profile_number_signups_chancel'] = "Number of my checkouts (chancel)";
+$phprlang['profile_shadow'] = 'Shadow Resistance';
+$phprlang['iLvL'] = "iLvL (Equipped, Best)"; //New
+$phprlang['health'] = "Health"; //New
+$phprlang['mana'] = "Mana"; //New
 
 // raids
 $phprlang['raids_date'] = 'Dato';
@@ -168,6 +182,12 @@ $phprlang['event_type_dungeon'] = 'Dungeon (5 man Instance)';
 $phprlang['event_type_pvp'] = 'PvP Event';
 $phprlang['event_type_meeting'] = 'Meeting (online/offline)';
 $phprlang['event_type_other'] = 'Other';
+
+// expansions
+$phprlang['exp_generic_wow'] = 'Generic World of Warcraft';
+$phprlang['exp_burning_crusade'] = 'The Burning Crusade';
+$phprlang['exp_wrath_lich_king'] = 'Wrath of the Lich King';
+$phprlang['exp_cataclysm'] = 'Cataclysm';
 
 // roster
 $phprlang['roster_header'] = 'Guild Roster';
@@ -257,13 +277,5 @@ $phprlang['bosskill_header'] = 'Track Named (Boss) Accomplishments';
 
 //Raids Archive
 $phprlang['raidsarchive_header'] = 'Raids Archive';
-
-//Menubar 
-$phprlang['user_menu_header'] = 'User Menu';
-$phprlang['main_menu_header'] = 'Main Menu';
-
-//Signup Page
-$phprlang['signup_edit_header'] = "Edit your Signup Settings";
-$phprlang['signup_character_spec'] = "Character Spec";
 
 ?>

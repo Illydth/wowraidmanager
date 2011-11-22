@@ -131,19 +131,33 @@ if(($_GET['mode'] == 'view') or isset($_GET['raids_del']) or isset($_GET['mark_r
 		{
 			if ($priv_raids || $username == $data['officer'])
 			{
-				$bd_edit = '<a href="raids.php?mode=edit&amp;id='.$data['raid_id'].'"><img src="templates/' . $phpraid_config['template'] .
-						'/images/icons/icon_edit.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['edit'].'\');" onMouseout="hideddrivetip();" alt="edit icon"></a>';
+				// $bd_edit = '<a href="raids.php?mode=edit&amp;id='.$data['raid_id'].'"><img src="templates/' . $phpraid_config['template'] .
+						// '/images/icons/icon_edit.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['edit'].'\');" onMouseout="hideddrivetip();" alt="edit icon"></a>';
+
+				$url = 'raids.php?mode=edit&amp;id='.$data['raid_id'];
+				$img = '<img src="templates/'. $phpraid_config['template'].'/images/icons/icon_edit.gif" border="0" alt="edit icon" />';
+				$bd_edit = cssToolTip($img, $phprlang['edit'], 'smallIconText', $url);
 	
-				$bd_delete = '<a href="raids.php?mode=delete&amp;n='.$data['location'].'&amp;id='.$data['raid_id'].'"><img src="templates/' .
-							$phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['delete'].'\');"
-							onMouseout="hideddrivetip();" alt="delete icon"></a><a href="lua_output_new.php?mode=lua&raid_id=' . $data['raid_id'] . '">
+				// $bd_delete = '<a href="raids.php?mode=delete&amp;n='.$data['location'].'&amp;id='.$data['raid_id'].'"><img src="templates/' .
+							// $phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['delete'].'\');"
+							// onMouseout="hideddrivetip();" alt="delete icon"></a>
+							
+							// <a href="lua_output_new.php?mode=lua&raid_id=' . $data['raid_id'] . '">
+							// <img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_minipost.gif" border="0"
+							// onMouseover="ddrivetip(\''.$phprlang['lua'].'\');" onMouseout="hideddrivetip();" alt="minipost icon"></a>
 	
-							<img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_minipost.gif" border="0"
-							onMouseover="ddrivetip(\''.$phprlang['lua'].'\');" onMouseout="hideddrivetip();" alt="minipost icon"></a>
-	
-							<a href="raids.php?mode=mark&amp;id='.$data['raid_id'].'"><img src="templates/' . $phpraid_config['template'] .
-							'/images/icons/icon_latest_reply.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['mark'].'\');"
-							onMouseout="hideddrivetip();" alt="latest reply icon"></a>';
+							// <a href="raids.php?mode=mark&amp;id='.$data['raid_id'].'"><img src="templates/' . $phpraid_config['template'] .
+							// '/images/icons/icon_latest_reply.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['mark'].'\');"
+							// onMouseout="hideddrivetip();" alt="latest reply icon"></a>';
+				$urlDelete = 'raids.php?mode=delete&amp;n='.$data['location'].'&amp;id='.$data['raid_id'];
+				$imgDelete = '<img src="templates/'.$phpraid_config['template'].'/images/icons/icon_delete.gif" border="0" alt="delete icon" />';
+					$urlLua = 'lua_output_new.php?mode=lua&raid_id=' . $data['raid_id'];
+					$imgLua = '<img src="templates/'. $phpraid_config['template'].'/images/icons/icon_minipost.gif" border="0" alt="minipost icon" />';
+						$urlRaid = 'raids.php?mode=mark&amp;id='.$data['raid_id'];
+						$imgRaid = '<img src="templates/'. $phpraid_config['template'].'/images/icons/icon_latest_reply.gif" border="0" alt="latest reply icon" />';
+				$bd_delete = cssToolTip($imgDelete, $phprlang['delete'], 'smallIconText', $urlDelete).
+							cssToolTip($imgLua, $phprlang['lua'], 'mediumIconText', $urlLua).
+							cssToolTip($imgRaid, $phprlang['mark'], 'mediumIconText', $urlRaid);				
 	
 				$old_delete = '<a href="raids.php?mode=delete&amp;id='.$data['raid_id'].'"><img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['delete'].'\');" onMouseout="hideddrivetip();" alt="delete icon"></a>';
 	
@@ -180,7 +194,10 @@ if(($_GET['mode'] == 'view') or isset($_GET['raids_del']) or isset($_GET['mark_r
 //		$ddrivetiptxt = "'<span class=tooltip_title>" . $phprlang['description'] ."</span><br>" . DEUBB2($desc) . "'";
 //		$location = '<a href="view.php?mode=view&amp;raid_id='.$data['raid_id'].'" onMouseover="ddrivetip('.$ddrivetiptxt.');" onMouseout="hideddrivetip();">'.$data['location'].'</a>';
 		
-
+		// convert unix timestamp to something readable
+		$start = new_date('Y/m/d H:i:s',$data['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+		$invite = new_date('Y/m/d H:i:s',$data['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+		$date = $start;
 		
 		//Get Raid Total Counts
 		$count = get_char_count($data['raid_id'], $type='');
@@ -218,25 +235,39 @@ if(($_GET['mode'] == 'view') or isset($_GET['raids_del']) or isset($_GET['mark_r
 			$raid_role_array[$role_name['role_name']] = $raid_role_data['lmt'];
 			$role_color_count[$role_name['role_name']] = get_coloredcount($role_name['role_name'], $count[$raid_role_data['role_id']], $raid_role_array[$role_name['role_name']], $count2[$raid_role_data['role_id']]);
 		}
-
-		// convert unix timestamp to something readable
-		$raid_date = get_date($data['start_time']);
-		$raid_start_time = get_time_full($data['start_time']);
-		$raid_invite_time = get_time_full($data['invite_time']);
-
-		$ddrivetiptxt = get_raid_tooltip($data['raid_id']);
-		$location = '<a href="raid_view.php?mode=view&amp;raid_id='.$data['raid_id'].'" onMouseover="ddrivetip('.$ddrivetiptxt.');" onMouseout="hideddrivetip();">'.$data['location'].'</a>';
+					
+		$raid_date = new_date($phpraid_config['date_format'],$data['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+		$raid_start_time = new_date($phpraid_config['time_format'],$data['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+		$raid_invite_time = new_date($phpraid_config['time_format'],$data['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
 			
+		//$desc = scrub_input($data['description']);
+		//$desc = str_replace("'", "\'", $desc);
+		//$raid_txt_desc = "'<span class=tooltip_title>" . $phprlang['description'] ."</span><br>" . DEUBB2($desc);
+		$raid_txt_info = "------------------";
+		$raid_txt_info .= "<br>".$phprlang['location'].":".$data['location'];
+		$raid_txt_info .= "<br>".$phprlang['officer'].":".$data['officer'];
+		$raid_txt_info .= "<br>".$phprlang['date'].":".$raid_date;
+		$raid_txt_info .= "<br>".$phprlang['start_time'].":".$raid_start_time;
+		$raid_txt_info .= "<br>".$phprlang['invite_time'].":".$raid_invite_time;
+		$raid_txt_info .= "<br>".$phprlang['totals'].": ".$total.'/'.$data['max']  . ' (+' . $total2. ')';
+//		$raid_txt_info .=
+		//$ddrivetiptxt = $raid_txt_desc.'<br>'. $raid_txt_info."'";
+		$popupdesc = $data['description'].'<br>'. $raid_txt_info."'";
+		//$location = '<a href="view.php?mode=view&amp;raid_id='.$data['raid_id'].'" onMouseover="ddrivetip('.$ddrivetiptxt.');" onMouseout="hideddrivetip();">'.$data['location'].'</a>';	
+		$url = 'view.php?mode=view&amp;raid_id=' . $data['raid_id'];
+		//$location=create_comment_popup($phprlang['description'], $popupdesc, $url, $data['location']);
+		$location=cssToolTip($raids['location'], $popupdesc,'custom comment', $url, $phprlang['description']);
+		
 		// current raids
 		if($data['old'] == 0 && $data['recurrance']==0) {
 			array_push($current,
 				array(
 					'ID'=>$data['raid_id'],
-					'Date'=>$raid_date,
+					'Date'=>$date,
 					'Force Name'=>$data['raid_force_name'],
 					'Dungeon'=>$location,
-					'Invite Time'=>$raid_invite_time,
-					'Start Time'=>$raid_start_time,
+					'Invite Time'=>$invite,
+					'Start Time'=>$start,
 					'Creator'=>$data['officer'],
 					'Totals'=>$total.'/'.$data['max']  . '(+' . $total2. ')',
 					'Buttons'=>$bd_edit . $bd_delete.$check_box,
@@ -253,11 +284,11 @@ if(($_GET['mode'] == 'view') or isset($_GET['raids_del']) or isset($_GET['mark_r
 			array_push($previous,
 				array(
 					'ID'=>$data['raid_id'],
-					'Date'=>$raid_date,
+					'Date'=>$date,
 					'Force Name'=>$data['raid_force_name'],
 					'Dungeon'=>UBB2($location),
-					'Invite Time'=>$raid_invite_time,
-					'Start Time'=>$raid_start_time,
+					'Invite Time'=>$invite,
+					'Start Time'=>$start,
 					'Creator'=>$data['officer'],
 					'Totals'=>$total.'/'.$data['max']  . '(+' . $total2. ')',
 					'Buttons'=> $mark_new . $old_delete
@@ -274,11 +305,11 @@ if(($_GET['mode'] == 'view') or isset($_GET['raids_del']) or isset($_GET['mark_r
 			array_push($recurring,
 				array(
 					'ID'=>$data['raid_id'],
-					'Date'=>$raid_date,
+					'Date'=>$date,
 					'Force Name'=>$force_name,
 					'Dungeon'=>UBB2($location),
-					'Invite Time'=>$raid_invite_time,
-					'Start Time'=>$raid_start_time,
+					'Invite Time'=>$invite,
+					'Start Time'=>$start,
 					'Creator'=>$data['officer'],
 					'Totals'=>$total.'/'.$data['max']  . '(+' . $total2. ')',
 					'Buttons'=> $bd_delete,
@@ -363,6 +394,7 @@ if(($_GET['mode'] == 'view') or isset($_GET['raids_del']) or isset($_GET['mark_r
 			'sort_url_base' => $pageURL,
 			'sort_descending' => $sortDesc,
 			'sort_text' => $phprlang['sort_text'],
+			'show_recurrance' => $phpraid_config['recurrance_enabled']
 		)
 	);
 
@@ -853,10 +885,9 @@ elseif($_GET['mode'] == 'new')
 				'recur_interval_text'=>$phprlang['recur_interval'],
 				'recur_length'=>$recur_length,
 				'recur_length_text'=>$phprlang['recur_length'],
-				'class_header'=>$phprlang['class'],
-				'role_header'=>$phprlang['role'],
 				'button_submit' => $phprlang['submit'],
-				'button_reset' => $phprlang['reset']
+				'button_reset' => $phprlang['reset'],
+				'show_recurrance' => $phpraid_config['recurrance_enabled'],
 			)
 		);
 		
@@ -1161,8 +1192,7 @@ elseif($_GET['mode'] == 'edit')
 			$min_lvl_value = $data['min_lvl'];
 			$max_lvl_value = $data['max_lvl'];
 			$location_value = UBB2($data['location']);
-			$date_value = get_date($data['start_time']);
-			//$date_value = new_date("m/d/Y",$data['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+			$date_value = new_date("m/d/Y",$data['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
 			if ($phpraid_config['ampm'] == '12')
 				$i_time_hour_value = new_date("h",$data['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
 			else
@@ -1423,8 +1453,6 @@ elseif($_GET['mode'] == 'edit')
 				'maxlvl_text'=>$phprlang['raids_max_lvl'],
 				'raid_force'=>$raid_force_box,
 				'raid_force_text'=>$phprlang['raid_force_name'],
-				'class_header'=>$phprlang['class'],
-				'role_header'=>$phprlang['role'],
 				'button_submit' => $phprlang['submit'],
 				'button_reset' => $phprlang['reset']
 			)

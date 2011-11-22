@@ -96,13 +96,20 @@ $sql = "(SELECT * from " . $phpraid_config['db_prefix'] . "raids " .
 		"LIMIT " . $phpraid_config['num_old_raids_index'] . ")";
 $raids_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 
-while($raids = $db_raid->sql_fetchrow($raids_result, true)) 
-{
-	// convert unix timestamp to something readable
-	$raid_date = get_date($raids['start_time']);
-	$raid_start_time = get_time_full($raids['start_time']);
-	$raid_invite_time = get_time_full($raids['invite_time']);
+while($raids = $db_raid->sql_fetchrow($raids_result, true)) {
+
+        // Auto Mark Raids as old if raid start time is X hours old or more. - Istari
+        // This now uses $phpraid_config['auto_mark_raids_old'] setting. - Istari
+        $raid_id = $raids['raid_id'];
+        if ($raids['start_time'] < (mktime() - (3600*$phpraid_config['auto_mark_raids_old']))) {
+                $sql = sprintf("UPDATE " . $phpraid_config['db_prefix'] . "raids SET old='1' WHERE raid_id=%s", quote_smart($raid_id));
+                $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
+        }
 		
+	$invite = new_date('Y/m/d H:i:s', $raids['invite_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+	$start = new_date('Y/m/d H:i:s', $raids['start_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+	$date = $start;
+	
 	// Initialize Count Array and Totals.
 	foreach ($wrm_global_classes as $global_class)
 	{
@@ -133,27 +140,43 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true))
 	// precendence -> cancelled signup, signed up, raid frozen, open for signup
 	if($logged_in == 1 && $priv_profile == 1) 
 	{
-		if(is_char_cancel($profile_id, $raids['raid_id']))
-			$info = '<img src="templates/' . $phpraid_config['template'] . '/images/icons/cancel.gif" border="0" height="14" width="14" onMouseover="ddrivetip(\'' . $phprlang['cancel_msg'] . '\');" onMouseout="hideddrivetip();" alt="cancel icon">';
-		else if(is_char_signed($profile_id, $raids['raid_id']))
-			$info = '<img src="templates/' . $phpraid_config['template'] . '/images/icons/check_mark.gif" border="0" height="14" width="14" onMouseover="ddrivetip(\'' . $phprlang['signed_up'] . '\');" onMouseout="hideddrivetip();" alt="check mark">';
-		else if((check_frozen($raids['raid_id']) && $phpraid_config['disable_freeze'] == 0) or ($raids['old'] != 0))
-			$info = '<img src="templates/' . $phpraid_config['template'] . '/images/icons/frozen.gif" border="0" height="14" width="14" onMouseover="ddrivetip(\'' . $phprlang['frozen_msg'] . '\');" onMouseout="hideddrivetip();" alt="frozen">';
+		if(is_char_cancel($profile_id, $raids['raid_id'])){
+			//$info = '<img src="templates/' . $phpraid_config['template'] . '/images/icons/cancel.gif" border="0" height="14" width="14" onMouseover="ddrivetip(\'' . $phprlang['cancel_msg'] . '\');" onMouseout="hideddrivetip();" alt="cancel icon">';
+			$info = '<img src="templates/' . $phpraid_config['template'] . '/images/icons/cancel.gif" border="0" height="14" width="14" alt="cancel icon" />';
+			$msg = $phprlang['cancel_msg'];
+			$url = 'view.php?mode=view&amp;raid_id='.$raids['raid_id'];
+		}
+		else if(is_char_signed($profile_id, $raids['raid_id'])){
+			//$info = '<img src="templates/' . $phpraid_config['template'] . '/images/icons/check_mark.gif" border="0" height="14" width="14" onMouseover="ddrivetip(\'' . $phprlang['signed_up'] . '\');" onMouseout="hideddrivetip();" alt="check mark">';
+			$info = '<img src="templates/' . $phpraid_config['template'] . '/images/icons/check_mark.gif" border="0" height="14" width="14" alt="check mark" />';
+			$msg = $phprlang['signed_up'];
+			$url = 'view.php?mode=view&amp;raid_id='.$raids['raid_id'];
+		}
+		else if((check_frozen($raids['raid_id']) && $phpraid_config['disable_freeze'] == 0) or ($raids['old'] != 0)) {
+			//$info = '<img src="templates/' . $phpraid_config['template'] . '/images/icons/frozen.gif" border="0" height="14" width="14" onMouseover="ddrivetip(\'' . $phprlang['frozen_msg'] . '\');" onMouseout="hideddrivetip();" alt="frozen">';
+			$info = '<img src="templates/' . $phpraid_config['template'] . '/images/icons/frozen.gif" border="0" height="14" width="14" alt="frozen" />';
+			$msg = $phprlang['frozen_msg'];
+			$url = 'view.php?mode=view&amp;raid_id='.$raids['raid_id'];
+		}
 		else
 		{
-			$info  = '<a href="raid_signup.php?mode=signup&amp;raid_id=' . $raids['raid_id'] . '">';
-//			$info  = '<a href="view.php?mode=view&amp;raid_id=' . $raids['raid_id'] . '#signup">';
+			//$info  = '<a href="view.php?mode=view&amp;raid_id=' . $raids['raid_id'] . '#signup">';
 			//$info .= '<img src="templates/' . $phpraid_config['template'] . '/images/icons/signup.gif" border="0" height="14" width="14" onMouseover="ddrivetip(\'' . $phprlang['not_signed_up'] . '\');" onMouseout="hideddrivetip();" alt="'.$phprlang['signup'].'">';
-			$info .=  $phprlang['signup'];
-
-			$info .= '</a>';
+			$info = '<img src="templates/' . $phpraid_config['template'] . '/images/icons/signup.gif" border="0" height="14" width="14"  alt="'.$phprlang['signup'].'" />';
+			$msg =  $phprlang['not_signed_up'];
+			$url = 'view.php?mode=view&amp;raid_id='.$raids['raid_id'].'#signup';
+			//$info .= '</a>';
 		}
+		//$img = '<img src="templates/'.$phpraid_config['template'].'/images/icons/icon_delete.gif" border="0" alt="delete icon" />';
+		$info = cssToolTip($info, $msg, 'mediumIconText', $url);
 	}
 
-	$desc = scrub_input($raids['description']);
-	$ddrivetiptxt = "'<span class=tooltip_title>" . $phprlang['description'] ."</span><br>" . DEUBB2($desc) . "'";
-	$ddrivetiptxt = get_raid_tooltip($raids['raid_id']);
-	$location = '<a href="raid_view.php?mode=view&amp;raid_id=' . $raids['raid_id'] . '" onMouseover="ddrivetip('.$ddrivetiptxt.');" onMouseout="hideddrivetip();">'.$raids['location'].'</a>';
+	//$desc = scrub_input($raids['description']);
+	//$ddrivetiptxt = "'<span class=tooltip_title>" . $phprlang['description'] ."</span><br>" . DEUBB2($desc) . "'";
+	//$location = '<a href="view.php?mode=view&amp;raid_id=' . $raids['raid_id'] . '" onMouseover="ddrivetip('.$ddrivetiptxt.');" onMouseout="hideddrivetip();">'.$raids['location'].'</a>';
+	$url = 'view.php?mode=view&amp;raid_id=' . $raids['raid_id'];
+	//$location=create_comment_popup($phprlang['description'], $raids['description'], $url, $raids['location']);
+	$location=cssToolTip($raids['location'], $raids['description'], 'custom comment', $url, $phprlang['description']);
 	
 	// Now that we have the raid data, we need to retrieve limit data based upon Raid ID.
 	// Get Class Limits and set Colored Counts
@@ -201,10 +224,10 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true))
 				'ID'=>$raids['raid_id'],
 				'Signup'=>$info,
 				'Force Name'=>$force_name,
-				'Date'=>$raid_date,
+				'Date'=>$date,
 				'Dungeon'=>$location,
-				'Invite Time'=>$raid_invite_time,
-				'Start Time'=>$raid_start_time,
+				'Invite Time'=>$invite,
+				'Start Time'=>$start,
 				'Creator'=>$raids['officer'],
 				'Totals'=>$total.'/'.$raids['max']  . '(+' . $total2. ')',
 			)
@@ -220,10 +243,10 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true))
 				'ID'=>$raids['raid_id'],
 				'Signup'=>$info,
 				'Force Name'=>$force_name,
-				'Date'=>$raid_date,
+				'Date'=>$date,
 				'Dungeon'=>$raids['location'],
-				'Invite Time'=>$raid_invite_time,
-				'Start Time'=>$raid_start_time,
+				'Invite Time'=>$invite,
+				'Start Time'=>$start,
 				'Creator'=>$raids['officer'],
 				'Totals'=>$total.'/'.$raids['max']  . '(+' . $total2. ')',
 			)
@@ -289,7 +312,7 @@ $wrmsmarty->assign('header_data',
 // get announcements
 $announcements = array();
 $announcement_header=$phprlang['announcements_header'];
-$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "announcements " . " WHERE visible = '1'";
+$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "announcements";
 $result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 if($db_raid->sql_numrows($result) > 0)
 {
@@ -299,8 +322,8 @@ if($db_raid->sql_numrows($result) > 0)
 	{
 		$db_raid->sql_rowseek($i, $result);
 		$data = $db_raid->sql_fetchrow($result, true);
-		$time = get_time($data['timestamp']);
-		$date = get_date($data['timestamp']);
+		$time = new_date($phpraid_config['time_format'], $data['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']);
+		$date = new_date($phpraid_config['date_format'], $data['timestamp'],$phpraid_config['timezone'] + $phpraid_config['dst']);
 	
 		array_push($announcements,
 			array(

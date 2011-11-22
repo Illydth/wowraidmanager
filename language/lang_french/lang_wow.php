@@ -34,99 +34,62 @@ $phprlang['alliance'] = 'Alliance';
 $phprlang['horde'] = 'Horde';
 
 // classes
-$phprlang['deathknight'] = 'Chevalier de la mort';
+$phprlang['deathknight'] = 'Chevalier de la Mort';
 $phprlang['druid'] = 'Druide';
 $phprlang['hunter'] = 'Chasseur';
 $phprlang['mage'] = 'Mage';
 $phprlang['paladin'] = 'Paladin';
-$phprlang['priest'] = 'Pretre';
+$phprlang['priest'] = 'Pr&#234;tre';
 $phprlang['rogue'] = 'Voleur';
 $phprlang['shaman'] = 'Chaman';
-$phprlang['warlock'] = 'Demoniste';
+$phprlang['warlock'] = 'D&#233;moniste';
 $phprlang['warrior'] = 'Guerrier';
 
 // races
-$phprlang['blood_elf'] = 'Elfe de Sang';
-$phprlang['draenei'] = 'Draeneï';
+$phprlang['blood_elf'] = 'Elfe de sang';
+$phprlang['draenei'] = 'Draene&#239;';
 $phprlang['dwarf'] = 'Nain';
 $phprlang['gnome'] = 'Gnome';
-$phprlang['goblin'] = 'Gobelin';
 $phprlang['human'] = 'Humain';
 $phprlang['night_elf'] = 'Elfe de la nuit';
 $phprlang['orc'] = 'Orc';
 $phprlang['tauren'] = 'Tauren';
 $phprlang['troll'] = 'Troll';
-$phprlang['undead'] = 'Mort Vivant';
+$phprlang['undead'] = 'R&#233;prouv&#233;';
+$phprlang['goblin'] = 'Gobelin';
 $phprlang['worgen'] = 'Worgen';
 
 // Talent Specs
 $phprlang['disc'] = "Discipline";
-$phprlang['holy'] = "Sacré";
+$phprlang['holy'] = "Sacr&#233;";
 $phprlang['shadow'] = "Ombre";
 $phprlang['assassination'] = "Assassinat";
 $phprlang['combat'] = "Combat";
 $phprlang['subtlety'] = "Finesse";
 $phprlang['arms'] = "Armes";
-$phprlang['fury'] = "Furie";
+$phprlang['fury'] = "Fureur";
 $phprlang['prot'] = "Protection";
-$phprlang['arcane'] = "Arcane";
+$phprlang['arcane'] = "Arcanes";
 $phprlang['fire'] = "Feu";
 $phprlang['frost'] = "Givre";
 $phprlang['balance'] = "Equilibre";
-$phprlang['cat'] = "Feral (Chat)";
-$phprlang['bear'] = "Feral (Ours)";
-$phprlang['resto'] = "Restoration";
-$phprlang['bm'] = "Maîtrise des bêtes";
-$phprlang['marks'] = "Précision";
+$phprlang['cat'] = "F&#233;ral (Chat)";
+$phprlang['bear'] = "F&#233;ral (Ours)";
+$phprlang['resto'] = "Restauration";
+$phprlang['bm'] = "Ma&#238;trise des b&#234;tes";
+$phprlang['marks'] = "Pr&#233;cision";
 $phprlang['survival'] = "Survie";
 $phprlang['affliction'] = "Affliction";
-$phprlang['demon'] = "Demonologie";
+$phprlang['demon'] = "D&#233;monologie";
 $phprlang['destro'] = "Destruction";
-$phprlang['elemental'] = "Elementaire";
-$phprlang['enhance'] = "Amélioration";
+$phprlang['elemental'] = "El&#233;mentaire";
+$phprlang['enhance'] = "Am&#233;loration";
 $phprlang['ret'] = "Vindicte";
 $phprlang['frost_tank'] = "Givre (Tank)";
-$phprlang['frost_melee'] = "Givre (Mêlée)";
+$phprlang['frost_melee'] = "Givre (DPS)";
 $phprlang['blood_tank'] = "Sang (Tank)";
-$phprlang['blood_melee'] = "Sang (Mêlée)";
+$phprlang['blood_melee'] = "Sang (DPS)";
 $phprlang['unholy_tank'] = "Impie (Tank)";
-$phprlang['unholy_melee'] = "Impie (Mêlée)";
-$phprlang['notavailable'] = "Non Dispo.";
-
-// tooltips
-$phprlang['deathknight_icon'] = 'Cliquez pour voir les Death Knights';
-$phprlang['druid_icon'] = 'Cliquez pour voir les Druides';
-$phprlang['hunter_icon'] = 'Cliquez pour voir les Chasseurs';
-$phprlang['mage_icon'] = 'Cliquez pour voir les Mages';
-$phprlang['paladin_icon'] = 'Cliquez pour voir les Paladins';
-$phprlang['priest_icon'] = 'Cliquez pour voir les prètres';
-$phprlang['rogue_icon'] = 'Cliquez pour voir les Voleurs';
-$phprlang['shaman_icon'] = 'Cliquez pour voir les Chamans';
-$phprlang['warlock_icon'] = 'Cliquez pour voir les Démonistes';
-$phprlang['warrior_icon'] = 'Cliquez pour voir les Guerriers';
-
-$phprlang['arcane'] = 'Arcanes';
-$phprlang['fire'] = 'Feu';
-$phprlang['frost'] = 'Givre';
-$phprlang['nature'] = 'Nature';
-$phprlang['shadow'] = 'Ombre';
-
-// profile
-$phprlang['resistance_arcane'] = 'Resistance aux Arcanes';
-$phprlang['resistance_fire'] = 'Resistance Feu';
-$phprlang['resistance_frost'] = 'Resistance au Givre';
-$phprlang['resistance_nature'] = 'Resistance Nature';
-$phprlang['resistance_shadow'] = 'Resistance Ombre';
-
-//error message
-$phprlang['profile_error_arcane'] = 'Arcanes doit etre un nombre';
-$phprlang['profile_error_fire'] = 'Feu doit etre un nombre';
-$phprlang['profile_error_frost'] = 'Givre doit etre un nombre';
-$phprlang['profile_error_nature'] = 'Nature doit etre un nombre';
-$phprlang['profile_error_shadow'] = 'Ombre doit etre un nombre';
-
-// expansions
-$phprlang['exp_generic_wow'] = 'Generic World of Warcraft';
-$phprlang['exp_burning_crusade'] = 'The Burning Crusade';
-$phprlang['exp_wrath_lich_king'] = 'Wrath of the Lich King';
-$phprlang['exp_cataclysm'] = 'Cataclysm';
+$phprlang['unholy_melee'] = "Impie (DPS)";
+$phprlang['notavailable'] = "N/A";
+?>

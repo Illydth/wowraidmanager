@@ -103,15 +103,10 @@ $phprlang['create_time'] = 'Create Time';
 $phprlang['pri_spec'] = 'Pri Talent';
 $phprlang['sec_spec'] = 'Sec Talent';
 $phprlang['signup_spec'] = 'Draft As';
-$phprlang['role_id'] = 'Role ID';
-$phprlang['role_name'] = 'Role Name';
-$phprlang['role_config'] = 'Role Config Text';
-$phprlang['role_image'] = 'Role Image';
 $phprlang['talent_tree'] = 'Talent Tree';
 $phprlang['display_text'] = 'Display Text';
 $phprlang['perm_mod'] = 'Update Permissions';
 $phprlang['all'] = 'All';
-$phprlang['resistance'] = "Resistance";
 
 // Recurrance Text Items
 $phprlang['recur_header'] = 'Raid Recurrance Settings';
@@ -152,9 +147,7 @@ $phprlang['print_error_critical'] = 'un errore critico!';
 $phprlang['print_error_details'] = 'Dettagli';
 $phprlang['print_error_minor'] = 'un errore!';
 $phprlang['print_error_msg_begin'] = 'Spiacente, WowRaidManager ha riscontrato ';
-$phprlang['print_error_msg_end'] = 'Se l\'errore persiste, segnalalo ad un Amministratore, grazie!
-									If this error persists, please make a post 	with this message <br>on the <a href="http://www.wowraidmanager.net/">wowraidmanager.net Forums</a> and
-									we will do our best to get it corrected. Thanks!';
+$phprlang['print_error_msg_end'] = 'Se l\'errore persiste, segnalalo ad un Amministratore, grazie!';
 $phprlang['print_error_page'] = 'Pagina';
 $phprlang['print_error_query'] = 'Richiesta';
 $phprlang['print_error_title'] = 'Oh oh! Errore!';
@@ -172,19 +165,24 @@ $phprlang['guild_name_missing'] = 'Nome della Gilda non specificato.';
 $phprlang['guild_tag_missing'] = 'Abbreviazione della Gilda non specificata.';
 $phprlang['permissions_form_description'] = 'E\' necessario specificare una descrizione';
 $phprlang['permissions_form_name'] = 'E\' necessario specificare un nome';
+$phprlang['profile_error_arcane'] = 'Il valore di resistenza Arcane deve essere numerico';
 $phprlang['profile_error_class'] = 'E\' necessario selezionare una classe';
 $phprlang['profile_error_dupe'] = 'Esiste già un Personaggio col come specificato';
+$phprlang['profile_error_fire'] = 'Il valore di resistenza Fire deve essere numerico';
+$phprlang['profile_error_frost'] = 'Il valore di resistenza Frost deve essere numerico';
 $phprlang['profile_error_guild'] = 'E\' necessario selezionare una Gilda';
-$phprlang['profile_error_level'] = 'Il livello deve essere';
+$phprlang['profile_error_level'] = 'Il livello deve essere un numero compreso fra 1 ed 80';
 $phprlang['profile_error_name'] = 'E\' necessario specificare un nome';
+$phprlang['profile_error_nature'] = 'Il valore di resistenza Nature deve essere numerico';
 $phprlang['profile_error_race'] = 'E\' necessario selezionare una razza';
 $phprlang['profile_error_role'] = 'E\' necessario selezionare un ruolo';
+$phprlang['profile_error_shadow'] = 'Il valore di resistenza Shadow deve essere numerico';
 $phprlang['raid_error_date'] = 'E\' necessario selezionare una data';
 $phprlang['raid_error_description'] = 'E\' necessario specificare una descrizione';
 $phprlang['raid_error_limits'] = 'Tutti i limiti del Raid devono essere specificati ed in formato numerico';
 $phprlang['raid_error_location'] = 'E\' necessario selezionare un\'Istanza';
 $phprlang['view_error_signed_up'] = 'Sei già iscritto con questo Personaggio';
-$phprlang['view_error_role_undef'] = 'Verifica che il Personaggio abbia associato un ruolo nella sezione <a href="profile_char.php?mode=view">Personaggi</a>.';
+$phprlang['view_error_role_undef'] = 'Verifica che il Personaggio abbia associato un ruolo nella sezione <a href="profile.php?mode=view">Personaggi</a>.';
 $phprlang['yes'] = 'Sì';
 $phprlang['teams_error_no_team'] = 'No team is selected to add users to.';
 
@@ -292,10 +290,9 @@ $phprlang['roster_link'] = '&raquo;&nbsp;Roster';
 $phprlang['users_link'] = '&raquo;&nbsp;Utenti';
 $phprlang['lua_output_link'] = '&raquo;&nbsp;Export&nbsp;LUA';
 $phprlang['index_link'] = '&raquo;&nbsp;Forum';
-$phprlang['eqdkp_link'] = '&raquo;&nbsp;EQ-DKP';
+$phprlang['dkp_link'] = '&raquo;&nbsp;DKP';
 $phprlang['bosstrack_link'] = '&raquo; Boss Kill Tracking';
 $phprlang['raidsarchive_link'] = '&raquo; Raids Archive';
-$phprlang['profile_char_link'] = '&raquo; My Characters';
 
 // sorting information
 $phprlang['sort_text'] = 'Clicka qui per ordinare per ';
@@ -303,42 +300,55 @@ $phprlang['sort_desc']='Clicka qui per ordinare (in ordine discendente) per ';
 $phprlang['sort_asc']='Clicka qui per ordinare (in ordine ascendente) per '; 
 
 // tooltips
-// more tooltips for race and resist in  lang_wow.php
 $phprlang['add'] = 'Aggiungi';
 $phprlang['announcements'] = 'Annunci';
+$phprlang['arcane'] = 'Arcane';
 $phprlang['calendar'] = 'Calendario';
 $phprlang['cancel'] = 'Annulla iscrizione';
 $phprlang['cancel_msg'] = 'La tua iscrizione a questo Raid è stata annullata';
 $phprlang['comments'] = 'Commenti';
 $phprlang['configuration'] = 'Configurazione';
+$phprlang['deathknight_icon'] = 'Clicka per visualizzare i Death Knight';
 $phprlang['delete'] = 'Elimina';
 $phprlang['description'] = 'Descrizione';
+$phprlang['druid_icon'] = 'Clicka per visualizzare i Druidi';
 $phprlang['edit'] = 'Modifica';
 $phprlang['edit_comment'] = 'Modifica commento';
+$phprlang['fire'] = 'Fire';
+$phprlang['frost'] = 'Frost';
 $phprlang['frozen_msg'] = 'Le iscrizioni a questo Raid sono chiuse.';
 $phprlang['group_name'] = 'Nome del Team';
 $phprlang['group_description'] = 'Descrizione del Team';
 $phprlang['guilds'] = 'Gilde';
 $phprlang['has_permission'] = 'Ha il permesso';
+$phprlang['hunter_icon'] = 'Clicka per visualizzare i Cacciatori';
 $phprlang['in_queue'] = 'Inserisce il Personaggio fra le iscrizioni in coda';
 $phprlang['last_login_date'] = 'Data di ultimo accesso';
 $phprlang['last_login_time'] = 'Ora di ultimo accesso';
 $phprlang['locations'] = 'Istanze';
 $phprlang['logs'] = 'Log';
 $phprlang['lua'] = 'Export LUA';
+$phprlang['mage_icon'] = 'Clicka per visualizzare i Maghi';
 $phprlang['mark'] = 'Imposta il Raid come passato';
+$phprlang['nature'] = 'Nature';
 $phprlang['new'] = 'Imposta il Raid come in programma';
 $phprlang['not_signed_up'] = 'Clicka qui per iscriverti al Raid';
 $phprlang['out_queue'] = 'Inserisce il Personaggio fra le iscrizioni confermate';
+$phprlang['paladin_icon'] = 'Clicka per visualizzare i Paladini';
 $phprlang['permissions'] = 'Profili Utente';
+$phprlang['priest_icon'] = 'Clicka per visualizzare i Preti';
 $phprlang['priv'] = 'Profilo Utente';
 $phprlang['profile'] = 'Utente';
 $phprlang['raids'] = 'Raid';
 $phprlang['remove_group'] = 'Rimuovi il gruppo dal Profilo Utente';
 $phprlang['remove_user'] = 'Rimuovi l\'Utente dal Profilo Utente';
+$phprlang['rogue_icon'] = 'Clicka per visualizzare i Ladri';
+$phprlang['shadow'] = 'Shadow';
+$phprlang['shaman_icon'] = 'Clicka per visualizzare gli Sciamani';
 $phprlang['signed_up'] = 'Sei iscritto a questo Raid';
 $phprlang['signup_add'] = 'Aggiungi l\'Utente alle iscrizioni';
 $phprlang['signup_delete'] = 'Elimina l\'Utente dalle iscrizioni';
 $phprlang['users'] = 'Utenti';
-
+$phprlang['warlock_icon'] = 'Clicka per visualizzare i Warlock';
+$phprlang['warrior_icon'] = 'Clicka per visualizzare i Guerrieri';
 ?>

@@ -34,7 +34,7 @@
 ****************************************************************************/
 
 if (!isset($_GET['step']))
-	$step = "pre_check";
+	$step = "0";
 else
 	$step = $_GET['step'];
 	
@@ -71,29 +71,6 @@ $default_file_sql_table_prefix = "wrm_";
 $file_sql_install_schema = "database_schema/install/install_schema.sql";
 $file_sql_insert_values = "database_schema/install/insert_values.sql";
 $file_sql_game_values = "database_schema/install/games/World_Of_Warcraft.sql";
-
-/**
- * check: if directory wrm/install/cache is writeable
- * if true jump to step 0
- * if NOT show a error message 
- */
-if ($step == "pre_check")
-{
-	if (is__writable("cache") == TRUE)
-		header("Location: ".$filename_install."step=0");
-	else 
-	{
-		echo '<div align="center">';
-		echo '<img src="templates/images/logo_WRM.jpg" border="0" alt="Site Logo">';
-		echo '<br>';
-		echo '<br>';	
-		echo 'directory "wrm/install/cache" is NOT writeable';
-		echo '<br>';
-		echo 'please make it writeable';
-		echo '</div>';
-	}
-	
-}
 
 /**
  * --------------------
@@ -294,6 +271,21 @@ if($step == "1")
 	{
 		$mysqlversion_bgcolor = "green";
 	}
+	
+	// Check for PHP Safe Mode - Depreciated in 5.3.0 and Removed in 5.4.0
+	// "Safe" does not mean what it sounds like, and this interferes with armory lookups
+	// 
+	if( ini_get('safe_mode'))
+	{
+		$phpsafemode_bgcolor = "red";
+		$show_next_bd = FALSE;
+		$phpsafemode_status = "No";
+	}
+	else
+	{
+		$phpsafemode_bgcolor = "green";
+		$phpsafemode_status = "yes";
+	}
 
 	
 	// NOTE: BE CAREFUL WITH IS__WRITEABLE, that is NOT the built in is_writeable function. (See Double Underscore)
@@ -353,6 +345,9 @@ if($step == "1")
 				"mysqlversion_text" => $wrm_install_lang['step0_mysqlversion'],
 				"mysqlversion_value" => $gd,
 				"mysqlversion_bgcolor" => $mysqlversion_bgcolor,
+				"phpsafemode_text" => "Safe mode Disabled?",
+				"phpsafemode_status" => $phpsafemode_status,
+				"phpsafemode_bgcolor" => $phpsafemode_bgcolor,
 				"nonactive" => $wrm_install_lang['step0_nonactive'],
 				"permission_warning" => $wrm_install_lang['permission_warning'],
 				"writeable_config_text" => $wrm_install_lang['step0_writeable_config'],
@@ -993,7 +988,8 @@ else if($step === "done")
 	
 	$sql = 	sprintf("SELECT * "  .
 					"FROM " . $phpraid_config['db_prefix'] . "config " .
-					"WHERE config_name = %s", quote_smart("header_link"));
+					"WHERE config_name = %s", quote_smart("header_link")
+			);
 	$result = $wrm_install->sql_query($sql) or print_error($sql, $wrm_install->sql_error(), 1);
 
 	if($wrm_install->sql_numrows($result) == 0)

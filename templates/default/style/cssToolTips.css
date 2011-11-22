@@ -1,0 +1,60 @@
+/* USAGE INSTRUCTIONS
+
+Default Tooltip:
+<a class="tooltip" href="#">{Display Text}<span class="default">{Whatever you want inside}</span></a>
+
+Comment Tooltip:
+<a class="tooltip" href="#">{Display Text}<span class="custom comment"><em>{Title}</em>
+{Whatever you want inside}</span></a>
+
+*/
+
+
+.tooltip { 
+	color: #000000; 
+	outline: none;
+	cursor: help; 
+	text-decoration: none;
+	position: relative;
+}
+.tooltip span {
+	margin-left: -999em;  /* for accesability purposes rather than display:none */
+	position: absolute;
+}
+.tooltip:hover span {
+	border-radius: 5px 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px; 
+	box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.1);
+	-webkit-box-shadow: 5px 5px rgba(0, 0, 0, 0.1);
+	-moz-box-shadow: 5px 5px rgba(0, 0, 0, 0.1);
+	font-family: Calibri, Tahoma, Geneva, sans-serif;
+	font-size: 1.1em;
+	position: absolute;
+	left: 1em;
+	top: 2em;
+	z-index: 99;
+	margin-left: 0;
+}
+
+.tooltip:hover em {
+	font-family: Candara, Tahoma, Geneva, sans-serif;
+	font-size: 1.5em;
+	font-weight: bold;
+	display: block;
+	padding: 0.15em 0;
+}
+.default { padding: 0.8em 1em; width:250px;}
+.custom { padding: 0.5em 0.8em 0.8em 2em; }
+
+
+* html a:hover { background: transparent; } /* http://css-discuss.incutio.com/wiki/Star_Html_Hack */
+
+.default { background: #FFFFAA; border: 1px solid #FFAD33; }
+.comment { background: #9FDAEE; border: 1px solid #2BB0D7; width:250px;	}
+.calendar { background: #9FDAEE; border: 1px solid #2BB0D7; width:250px;	}
+.armory { background: #CBF6D6; border: 1px solid #32DC5D; width:150px; padding: 0.2em 0.2em;} 
+.smallIconText { background: #000000; border: 1px solid #111111; width:35px;  padding: 0 0; color:#FFFFFF;}
+.mediumIconText { background: #000000; border: 1px solid #111111; width:150px; padding: 0 0; color:#FFFFFF;} 
+.raceIconText { background: #000000; border: 1px solid #111111; width:60px; padding: 0 0; color:#FFFFFF;} 
+.classIconText { background: #000000; border: 1px solid #111111; width:60px; padding: 0 0; color:#FFFFFF;} 

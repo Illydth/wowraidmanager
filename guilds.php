@@ -78,12 +78,19 @@ if($_GET['mode'] == 'view' || $_GET['mode'] == 'update' || $_GET['mode'] == 'sel
 	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(),1);
 	while($data = $db_raid->sql_fetchrow($result, true)) {
 		
-	$edit = '<a href="guilds.php?mode=update&amp;id='.$data['guild_id'].'"><img src="templates/' . $phpraid_config['template'] . 
-			'/images/icons/icon_edit.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['edit'].'\');" onMouseout="hideddrivetip();" alt="edit icon"></a>';
-			
-	$delete = '<a href="guilds.php?mode=delete&amp;n='.$data['guild_name'].'&amp;id='.$data['guild_id'].'"><img src="templates/' . 
-				$phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['delete'].'\');" 
-				onMouseout="hideddrivetip();" alt="delete icon"></a>';
+	//$edit = '<a href="guilds.php?mode=update&amp;id='.$data['guild_id'].'"><img src="templates/' . $phpraid_config['template'] . 
+	//		'/images/icons/icon_edit.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['edit'].'\');" onMouseout="hideddrivetip();" alt="edit icon"></a>';
+	$url = 'guilds.php?mode=update&amp;id='.$data['guild_id'];
+	$img = '<img src="templates/'.$phpraid_config['template'].'/images/icons/icon_edit.gif" border="0" alt="edit icon" />';
+	$edit = cssToolTip($img, 'Edit', 'smallIconText', $url);
+	
+
+	//$delete = '<a href="guilds.php?mode=delete&amp;n='.$data['guild_name'].'&amp;id='.$data['guild_id'].'"><img src="templates/' . 
+				//$phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['delete'].'\');" 
+				//onMouseout="hideddrivetip();" alt="delete icon"></a>';
+	$url = 'guilds.php?mode=delete&amp;n='.$data['guild_name'].'&amp;id='.$data['guild_id'];
+	$img = '<img src="templates/'.$phpraid_config['template'].'/images/icons/icon_delete.gif" border="0" alt="delete icon" />';
+	$delete = cssToolTip($img, 'Delete', 'smallIconText', $url);
 		
 		array_push($guild, 
 			array(
@@ -401,12 +408,20 @@ if($_GET['mode'] == 'select' || $_GET['mode'] == 'force_edit') {
 	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(),1);
 	while($data = $db_raid->sql_fetchrow($result, true)) 
 	{	
-		$edit = '<a href="guilds.php?mode=force_edit&amp;rf_id='.$data['raid_force_id'].'&amp;raid_force_drop_name='.$raid_force_name.'"><img src="templates/' . $phpraid_config['template'] . 
-				'/images/icons/icon_edit.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['edit'].'\');" onMouseout="hideddrivetip();" alt="edit icon"></a>';
+		// $edit = '<a href="guilds.php?mode=force_edit&amp;rf_id='.$data['raid_force_id'].'&amp;raid_force_drop_name='.$raid_force_name.'"><img src="templates/' . $phpraid_config['template'] . 
+				// '/images/icons/icon_edit.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['edit'].'\');" onMouseout="hideddrivetip();" alt="edit icon"></a>';
 				
-		$delete = '<a href="guilds.php?mode=force_delete&amp;rf_id='.$data['raid_force_id'].'"><img src="templates/' . 
-					$phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['delete'].'\');" 
-					onMouseout="hideddrivetip();" alt="delete icon"></a>';
+		// $delete = '<a href="guilds.php?mode=force_delete&amp;rf_id='.$data['raid_force_id'].'"><img src="templates/' . 
+					// $phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['delete'].'\');" 
+					// onMouseout="hideddrivetip();" alt="delete icon"></a>';
+	
+	$url = 'guilds.php?mode=force_edit&amp;rf_id='.$data['raid_force_id'].'&amp;raid_force_drop_name='.$raid_force_name;
+	$img = '<img src="templates/'.$phpraid_config['template'].'/images/icons/icon_edit.gif" border="0" alt="edit icon" />';
+	$edit = cssToolTip($img, 'Edit', 'smallIconText', $url);
+	
+	$url = 'guilds.php?mode=force_delete&amp;rf_id='.$data['raid_force_id'];
+	$img = '<img src="templates/'.$phpraid_config['template'].'/images/icons/icon_delete.gif" border="0" alt="delete icon" />';
+	$delete = cssToolTip($img, 'Delete', 'smallIconText', $url);
 		
 		// Get the Guild Name to Display instead of Just the ID
 		$sql = sprintf("SELECT guild_name FROM " . $phpraid_config['db_prefix'] . "guilds WHERE guild_id=%s",quote_smart($data['guild_id']));

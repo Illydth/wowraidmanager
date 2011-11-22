@@ -30,6 +30,9 @@
 *
 ****************************************************************************/
 
+
+
+
 function log_create($type, $create_id, $create_name)
 {
 	global $db_raid, $phprlang, $phpraid_config;
@@ -45,11 +48,9 @@ function log_create($type, $create_id, $create_name)
 	
 	$timestamp = time();
 	
-	$sql = sprintf("INSERT INTO `" . $phpraid_config['db_prefix'] . "logs_create` ".
-					"(`create_id`,`create_name`,`profile_id`,`ip`,`timestamp`,`type`)".
-					"VALUES (%s,%s,%s,%s,%s,%s)",
-			quote_smart($create_id),quote_smart($create_name),quote_smart($profile_id),
-			quote_smart($ip),quote_smart($timestamp),quote_smart($type));
+	$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "logs_create (`create_id`,`create_name`,`profile_id`,`ip`,`timestamp`,`type`)
+	VALUES (%s,%s,%s,%s,%s,%s)",quote_smart($create_id),quote_smart($create_name),quote_smart($profile_id),quote_smart($ip),quote_smart($timestamp),quote_smart($type));	
+	
 	$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 }
 
@@ -68,11 +69,10 @@ function log_delete($type, $delete_name)
 	
 	$timestamp = time();
 	
-	$sql = sprintf("INSERT INTO `" . $phpraid_config['db_prefix'] . "logs_delete` ".
-					" (`profile_id`,`delete_name`,`ip`,`timestamp`,`type`)".
-					" VALUES (%s,%s,%s,%s,%s)",
-					quote_smart($profile_id),quote_smart($delete_name),
-					quote_smart($ip),quote_smart($timestamp),quote_smart($type));
+	$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "logs_delete
+				(`profile_id`,`delete_name`,`ip`,`timestamp`,`type`)
+			VALUES
+				(%s,%s,%s,%s,%s)",quote_smart($profile_id),quote_smart($delete_name),quote_smart($ip),quote_smart($timestamp),quote_smart($type));
 	$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 }
 
@@ -99,9 +99,8 @@ function log_hack()
 	$timestamp = time();
 	$time = new_date($phpraid_config['date_format'] . ' @ ' . $phpraid_config['time_format'], $timestamp, $phpraid_config['timezone'] + $phpraid_config['dst']);
 	
-	$sql = sprintf("INSERT INTO `" . $phpraid_config['db_prefix'] . "logs_hack` ".
-					" (`ip`, `message`, `timestamp`) VALUES (%s,%s,%s)",
-					quote_smart($ip),quote_smart($full_page),quote_smart($timestamp));
+	$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "logs_hack (`ip`, `message`, `timestamp`) 
+		VALUES	(%s,%s,%s)",quote_smart($ip),quote_smart($full_page),quote_smart($timestamp));
 	$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	
 	// print error out
@@ -128,12 +127,10 @@ function log_raid($char_id, $raid_id, $type)
 	
 	$timestamp = time();
 	
-	$sql = sprintf("INSERT INTO `" . $phpraid_config['db_prefix'] . "logs_raid` ".
-					" (`char_id`,`profile_id`,`raid_id`,`ip`,`timestamp`,`type`)".
-					" VALUES (%s,%s,%s,%s,%s,%s)", 
-					quote_smart($char_id), quote_smart($profile_id), quote_smart($raid_id), 
-					quote_smart($ip), quote_smart($timestamp), quote_smart($type));
+	$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "logs_raid
+				(`char_id`,`profile_id`,`raid_id`,`ip`,`timestamp`,`type`)
+			VALUES
+				(%s,%s,%s,%s,%s,%s)", quote_smart($char_id), quote_smart($profile_id), quote_smart($raid_id), quote_smart($ip), quote_smart($timestamp), quote_smart($type));
 	$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 }
-
 ?>
