@@ -364,6 +364,15 @@ function canceledFlow($user_perm_group, $phpraid_config, $data, $raid_id, $phprl
 			// <img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0"
 			// onMouseover="ddrivetip(\''.$phprlang['signup_delete'].'\');" onMouseout="hideddrivetip();" alt="delete icon"></a>';
 	// }
+	if ($buttons['Cancel']) {
+		#Move to Cancelled Area
+		// $actions .= '<a href="view.php?mode=cancel&profile_id='.$data['profile_id'].'&amp;raid_id=' . $raid_id . '&amp;char_id='.$data['char_id'].'">
+			// <img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_cancel.gif" border="0"
+			// onMouseover="ddrivetip(\''.$phprlang['cancel'].'\');" onMouseout="hideddrivetip();" alt="cancel icon"></a>';
+		$img = '<img src="templates/' . $phpraid_config['template'] . '/images/icons/icon_cancel.gif" border="0" alt="cancel icon" />';
+		$url = 'view.php?mode=cancel&profile_id='.$data['profile_id'].'&amp;raid_id=' . $raid_id . '&amp;char_id='.$data['char_id'];
+		$actions .= cssToolTip($img, $phprlang['cancel'], 'mediumIconText', $url);
+	}
 	if ($buttons['Delete']) {
 		#Delete (Remove Signup Completely)
 		// $actions .= '<a href="view.php?mode=delete&profile_id='.$data['profile_id'].'&amp;raid_id=' . $raid_id . '&amp;char_id='.$data['char_id'].'">

@@ -131,7 +131,7 @@ function password_check($oldpassword, $profile_id, $encryptflag)
 	global $db_user_id, $db_group_id, $db_user_name, $db_user_email, $db_user_password, $db_table_user_name; 
 	global $db_table_group_name, $auth_user_class, $auth_alt_user_class, $table_prefix, $db_raid, $phpraid_config;
 
-	$sql_passchk = sprintf(	"SELECT " . $db_user_password . 
+	$sql_passchk = sprintf( "SELECT " . $db_user_password . ", user_salt"  .
 							" FROM " . $table_prefix . $db_table_user_name . 
 							" WHERE " . $db_user_id . " = %s", quote_smart($profile_id)
 					);
@@ -145,6 +145,7 @@ function password_check($oldpassword, $profile_id, $encryptflag)
 
 	$data_passchk = $db_raid->sql_fetchrow($result_passchk, true);
 	$db_pass = $data_passchk[$db_user_password];
+	$db_salt = $data_passchk['user_salt'];
 	
 	if ($encryptflag)
 	{ // Encrypted Password Sent in, Check directly against DB.
@@ -176,7 +177,7 @@ function password_check($oldpassword, $profile_id, $encryptflag)
 			fwrite($stdoutfptr, "    -> Database Password: '" . $db_pass . "'\n");
 		}
 		
-		if (md5(md5($oldpassword)) == $db_pass)
+		if (hash_hmac("sha256",$oldpassword,$db_salt))
 			return $db_pass;
 		else
 			return FALSE;

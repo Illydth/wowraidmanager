@@ -201,15 +201,40 @@ ini_set('include_path', $include_list);
 ini_set('safe_mode', 'off');
 
 // Include Language Files.
-if(!is_file($phpraid_dir."language/lang_{$phpraid_config['language']}/lang_main.php"))
-{
-	die("The language file <i>" . $phpraid_config['language'] . "</i> could not be found!");
-	$db_raid->sql_close();
+// if(!is_file($phpraid_dir."language/lang_{$phpraid_config['language']}/lang_main.php"))
+// {
+	// die("The language file <i>" . $phpraid_config['language'] . "</i> could not be found!");
+	// $db_raid->sql_close();
+// }
+// else
+// {
+	// require_once($phpraid_dir."language/lang_{$phpraid_config['language']}/lang_main.php");
+// }
+
+//Load English, then load system setting
+if(!is_file($phpraid_dir."language/lang_english/lang_main.php"))
+{   
+   die("The language file <i>" . $phpraid_config['language'] . "</i> could not be found!");
+   $db_raid->sql_close();
 }
 else
 {
-	require_once($phpraid_dir."language/lang_{$phpraid_config['language']}/lang_main.php");
+   require_once($phpraid_dir."language/lang_english/lang_main.php");
+   if ($phpraid_config['language'] != 'enlgish')
+   {
+      if(!is_file($phpraid_dir."language/lang_{$phpraid_config['language']}/lang_main.php"))
+      {
+         die("The language file <i>" . $phpraid_config['language'] . "</i> could not be found!");
+         $db_raid->sql_close();
+      }
+      else
+      {
+         require_once($phpraid_dir."language/lang_{$phpraid_config['language']}/lang_main.php");
+      }
+   }
 }
+
+
 
 //foreach($phprlang as $key => $value)
 //{

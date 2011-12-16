@@ -29,67 +29,72 @@
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *
 ****************************************************************************/
+if (empty($phprlang) || !is_array($phprlang))
+	$phprlang = array();
+	
+$phprlang = array_merge($phprlang, array(
+
 // factions
-$phprlang['alliance'] = 'Alliance';
-$phprlang['horde'] = 'Horde';
+'alliance' =>  'Alliance',
+'horde' =>  'Horde',
 
 // classes
-$phprlang['deathknight'] = 'Death Knight';
-$phprlang['druid'] = 'Druid';
-$phprlang['hunter'] = 'Hunter';
-$phprlang['mage'] = 'Mage';
-$phprlang['paladin'] = 'Paladin';
-$phprlang['priest'] = 'Priest';
-$phprlang['rogue'] = 'Rogue';
-$phprlang['shaman'] = 'Shaman';
-$phprlang['warlock'] = 'Warlock';
-$phprlang['warrior'] = 'Warrior';
+'deathknight' =>  'Death Knight',
+'druid' =>  'Druid',
+'hunter' =>  'Hunter',
+'mage' =>  'Mage',
+'paladin' =>  'Paladin',
+'priest' =>  'Priest',
+'rogue' =>  'Rogue',
+'shaman' =>  'Shaman',
+'warlock' =>  'Warlock',
+'warrior' =>  'Warrior',
 
 // races
-$phprlang['blood_elf'] = 'Blood Elf';
-$phprlang['draenei'] = 'Draenei';
-$phprlang['dwarf'] = 'Dwarf';
-$phprlang['gnome'] = 'Gnome';
-$phprlang['goblin'] = 'Goblin'; //New
-$phprlang['human'] = 'Human';
-$phprlang['night_elf'] = 'Night Elf';
-$phprlang['orc'] = 'Orc';
-$phprlang['tauren'] = 'Tauren';
-$phprlang['troll'] = 'Troll';
-$phprlang['undead'] = 'Undead';
-$phprlang['worgen'] = 'Worgen'; //New
+'blood_elf' =>  'Blood Elf',
+'draenei' =>  'Draenei',
+'dwarf' =>  'Dwarf',
+'gnome' =>  'Gnome',
+'goblin' =>  'Goblin', //New
+'human' =>  'Human',
+'night_elf' =>  'Night Elf',
+'orc' =>  'Orc',
+'tauren' =>  'Tauren',
+'troll' =>  'Troll',
+'undead' =>  'Undead',
+'worgen' =>  'Worgen', //New
 
 // Talent Specs
-$phprlang['disc'] = "Discipline";
-$phprlang['holy'] = "Holy";
-$phprlang['shadow'] = "Shadow";
-$phprlang['assassination'] = "Assassination";
-$phprlang['combat'] = "Combat";
-$phprlang['subtlety'] = "Subtlety";
-$phprlang['arms'] = "Arms";
-$phprlang['fury'] = "Fury";
-$phprlang['prot'] = "Protection";
-$phprlang['arcane'] = "Arcane";
-$phprlang['fire'] = "Fire";
-$phprlang['frost'] = "Frost";
-$phprlang['balance'] = "Balance";
-$phprlang['cat'] = "Feral (Cat)";
-$phprlang['bear'] = "Feral (Bear)";
-$phprlang['resto'] = "Restoration";
-$phprlang['bm'] = "Beast Mastery";
-$phprlang['marks'] = "Marksmanship";
-$phprlang['survival'] = "Survival";
-$phprlang['affliction'] = "Affliction";
-$phprlang['demon'] = "Demonology";
-$phprlang['destro'] = "Destruction";
-$phprlang['elemental'] = "Elemental";
-$phprlang['enhance'] = "Enhancement";
-$phprlang['ret'] = "Retribution";
-$phprlang['frost_tank'] = "Frost (Tank)";
-$phprlang['frost_melee'] = "Frost (Melee)";
-$phprlang['blood_tank'] = "Blood (Tank)";
-$phprlang['blood_melee'] = "Blood (Melee)";
-$phprlang['unholy_tank'] = "Unholy (Tank)";
-$phprlang['unholy_melee'] = "Unholy (Melee)";
-$phprlang['notavailable'] = "N/A";
-?>
+'disc' =>  "Discipline",
+'holy' =>  "Holy",
+'shadow' =>  "Shadow",
+'assassination' =>  "Assassination",
+'combat' =>  "Combat",
+'subtlety' =>  "Subtlety",
+'arms' =>  "Arms",
+'fury' =>  "Fury",
+'prot' =>  "Protection",
+'arcane' =>  "Arcane",
+'fire' =>  "Fire",
+'frost' =>  "Frost",
+'balance' =>  "Balance",
+'cat' =>  "Feral (Cat)",
+'bear' =>  "Feral (Bear)",
+'resto' =>  "Restoration",
+'bm' =>  "Beast Mastery",
+'marks' =>  "Marksmanship",
+'survival' =>  "Survival",
+'affliction' =>  "Affliction",
+'demon' =>  "Demonology",
+'destro' =>  "Destruction",
+'elemental' =>  "Elemental",
+'enhance' =>  "Enhancement",
+'ret' =>  "Retribution",
+'frost_tank' =>  "Frost (Tank)",
+'frost_melee' =>  "Frost (Melee)",
+'blood_tank' =>  "Blood (Tank)",
+'blood_melee' =>  "Blood (Melee)",
+'unholy_tank' =>  "Unholy (Tank)",
+'unholy_melee' =>  "Unholy (Melee)",
+'notavailable' =>  "N/A",
+));  ?>

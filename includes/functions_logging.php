@@ -30,8 +30,28 @@
 *
 ****************************************************************************/
 
+// function WriteLog($type, $action, $comment=null, $ID=null )
+// {
+	// global $db_raid, $phprlang, $phpraid_config;
 
-
+   // $time = time();
+   // $type = CleanValue( $type );
+   // $action = CleanValue($action);
+   // $comment = CleanValue($comment);
+   // $ID = CleanValue($ID);
+   
+   // $IP = CleanValue( $_SESSION['Ip'] );
+   
+   // $Comment 	= empty($Comment)	  ? 'null' 		: "'{$Comment}'";
+   // $user      	= empty($user)    	  ? 'null' 		: "'{$user}'";
+	
+	// $sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "history SET
+	  // Type='{$Type}',TimeStamp={$Time},"
+      // ."Action='{$Action}',Ip='{$Ip}',User={$ID},"
+      // ."Comment='{$Comment}'";
+   
+   
+// }
 
 function log_create($type, $create_id, $create_name)
 {

@@ -31,47 +31,54 @@
 *
 ****************************************************************************/
 
-// form variables
-$phprlang['log_create_text'] = 'creations';
-$phprlang['log_date'] = 'date';
-$phprlang['log_delete_text'] = 'deletions';
-$phprlang['log_hack_text'] = 'hack attempts';
-$phprlang['log_id'] = 'id';
-$phprlang['log_in'] = ' in ';
-$phprlang['log_order'] = ' order and show';
-$phprlang['log_raid_text'] = 'raid activity';
-$phprlang['log_sort_by'] = 'Sort by ';
-$phprlang['log_type'] = 'type';
+if (empty($phprlang) || !is_array($phprlang))
+	$phprlang = array();
+	
+$phprlang = array_merge($phprlang, array(
 
-$phprlang['log_filter_show'] = 'Show';
-$phprlang['log_filter_all'] = 'All';
-$phprlang['log_filter_2_months'] = 'Two Months';
-$phprlang['log_filter_1_month'] = 'One Month';
-$phprlang['log_filter_1_week'] = 'One Week';
-$phprlang['log_filter_1_day'] = 'One Day';
+// form variables
+'log_create_text' =>  'creations',
+'log_date' =>  'date',
+'log_delete_text' =>  'deletions',
+'log_hack_text' =>  'hack attempts',
+'log_id' =>  'id',
+'log_in' =>  ' in ',
+'log_order' =>  ' order and show',
+'log_raid_text' =>  'raid activity',
+'log_sort_by' =>  'Sort by ',
+'log_type' =>  'type',
+
+'log_filter_show' =>  'Show',
+'log_filter_all' =>  'All',
+'log_filter_2_months' =>  'Two Months',
+'log_filter_1_month' =>  'One Month',
+'log_filter_1_week' =>  'One Week',
+'log_filter_1_day' =>  'One Day',
 
 // cancellation
-$phprlang['log_cancel_message'] = '[USER CANCEL]';
+'log_cancel_message' =>  '[USER CANCEL]',
 
 // hack
-$phprlang['log_hack_header'] = 'Hacking attempt detected';
-$phprlang['log_hack_message'] = 'A hacking attempt has been detected and is logged with the following details<br><br>
+'log_hack_header' =>  'Hacking attempt detected',
+'log_hack_message' =>  'A hacking attempt has been detected and is logged with the following details<br><br>
 							<strong>Attempted Hack:</strong> %s<br>
 							<strong>Date/Time:</strong> %s<br>
 							<strong>User IP:</strong> %s<br><br>
-							An administrator has been notified and may result in a ban.';
+							An administrator has been notified and may result in a ban.',
 							
 // headers
-$phprlang['log_header'] = 'Log Output';
-$phprlang['log_create_header'] = 'Creation Logs';
-$phprlang['log_delete_header'] = 'Deletion Logs';
-$phprlang['log_hack_header'] = 'Hack Logs';
-$phprlang['log_raid_header'] = 'Raid Activity Logs';
-$phprlang['log_sort_header'] = 'Choose filter options';
+'log_header' =>  'Log Output',
+'log_create_header' =>  'Creation Logs',
+'log_delete_header' =>  'Deletion Logs',
+'log_hack_header' =>  'Hack Logs',
+'log_raid_header' =>  'Raid Activity Logs',
+'log_sort_header' =>  'Choose filter options',
 							
 // output text
-$phprlang['log_create'] = '%s - %s: User [<a href="users.php?mode=details&amp;user_id=%s">%s</a> (%s)] CREATED %s with ID [%s] and NAME [%s]';
-$phprlang['log_delete'] = '%s - %s: User [<a href="users.php?mode=details&amp;user_id=%s">%s</a> (%s)] DELETED %s with NAME [%s]';
-$phprlang['log_hack'] = '%s - %s: User with IP [%s] ATTEMPTED hack with [%s]';
-$phprlang['log_raid'] = '%s - %s: User [<a href="users.php?mode=details&amp;user_id=%s">%s</a> (%s)] altered RAID <a href="view.php?mode=view&amp;raid_id=%s">%s %s</a> BY %s with CHARACTER %s - %s';
+'log_create' =>  "%s - %s: User [<a href='users.php?mode=details&amp;user_id=%s'>%s</a> (%s)] CREATED %s with ID [%s] and NAME [%s]",
+'log_delete' =>  "%s - %s: User [<a href='users.php?mode=details&amp;user_id=%s'>%s</a> (%s)] DELETED %s with NAME [%s]",
+'log_hack' =>  "%s - %s: User with IP [%s] ATTEMPTED hack with [%s]",
+'log_raid' =>  "%s - %s: User [<a href='users.php?mode=details&amp;user_id=%s'>%s</a> (%s)] altered RAID <a href='view.php?mode=view&amp;raid_id=%s'>%s %s</a> BY %s with CHARACTER %s - %s",
+
+));
 ?>

@@ -31,47 +31,52 @@
 *
 ****************************************************************************/
 
-// form variables
-$phprlang['log_create_text'] = 'creations';
-$phprlang['log_date'] = 'date';
-$phprlang['log_delete_text'] = 'deletions';
-$phprlang['log_hack_text'] = 'hack forsøk';
-$phprlang['log_id'] = 'id';
-$phprlang['log_in'] = ' i ';
-$phprlang['log_order'] = ' sorter og vis';
-$phprlang['log_raid_text'] = 'raid aktivitet';
-$phprlang['log_sort_by'] = 'Sorter etter ';
-$phprlang['log_type'] = 'type';
+if (empty($phprlang) || !is_array($phprlang))
+	$phprlang = array();
+	
+$phprlang = array_merge($phprlang, array(
 
-$phprlang['log_filter_show'] = 'Vis';
-$phprlang['log_filter_all'] = 'Alle';
-$phprlang['log_filter_2_months'] = 'To måneder';
-$phprlang['log_filter_1_month'] = 'En måned';
-$phprlang['log_filter_1_week'] = 'En uke';
-$phprlang['log_filter_1_day'] = 'En dag';
+// form variables
+'log_create_text' =>  'creations',
+'log_date' =>  'date',
+'log_delete_text' =>  'deletions',
+'log_hack_text' =>  'hack forsøk',
+'log_id' =>  'id',
+'log_in' =>  ' i ',
+'log_order' =>  ' sorter og vis',
+'log_raid_text' =>  'raid aktivitet',
+'log_sort_by' =>  'Sorter etter ',
+'log_type' =>  'type',
+
+'log_filter_show' =>  'Vis',
+'log_filter_all' =>  'Alle',
+'log_filter_2_months' =>  'To måneder',
+'log_filter_1_month' =>  'En måned',
+'log_filter_1_week' =>  'En uke',
+'log_filter_1_day' =>  'En dag',
 
 // cancellation
-$phprlang['log_cancel_message'] = '[BRUKER KANSELLERT]';
+'log_cancel_message' =>  '[BRUKER KANSELLERT]',
 
 // hack
-$phprlang['log_hack_header'] = 'Hacking forsøk funnet';
-$phprlang['log_hack_message'] = 'Hacking forsøk funnet med følgende detaljer<br><br>
+'log_hack_header' =>  'Hacking forsøk funnet',
+'log_hack_message' =>  'Hacking forsøk funnet med følgende detaljer<br><br>
 							<strong>Forsøkt hacket:</strong> %s<br>
 							<strong>Dato/Tid:</strong> %s<br>
 							<strong>Bruker IP:</strong> %s<br><br>
-							En Administrator har blitt informert, og dette kan resulteres i en ban';
+							En Administrator har blitt informert, og dette kan resulteres i en ban',
 							
 // headers
-$phprlang['log_header'] = 'Logg utmating';
-$phprlang['log_create_header'] = 'Opprettelseslogg';
-$phprlang['log_delete_header'] = 'Slettingslogg';
-$phprlang['log_hack_header'] = 'Hack Logg';
-$phprlang['log_raid_header'] = 'Raid Aktivitetslogg';
-$phprlang['log_sort_header'] = 'Velg filter';
+'log_header' =>  'Logg utmating',
+'log_create_header' =>  'Opprettelseslogg',
+'log_delete_header' =>  'Slettingslogg',
+'log_hack_header' =>  'Hack Logg',
+'log_raid_header' =>  'Raid Aktivitetslogg',
+'log_sort_header' =>  'Velg filter',
 							
 // output text
-$phprlang['log_create'] = '%s - %s: Bruker [<a href="users.php?mode=details&amp;user_id=%s">%s</a> (%s)] LAGET %s med ID [%s] og NAVN [%s]';
-$phprlang['log_delete'] = '%s - %s: Bruker [<a href="users.php?mode=details&amp;user_id=%s">%s</a> (%s)] SLETTET %s med NAVN [%s]';
-$phprlang['log_hack'] = '%s - %s: Bruker med IP [%s] FORSØKTE å hacke med [%s]';
-$phprlang['log_raid'] = '%s - %s: Bruker [<a href="users.php?mode=details&amp;user_id=%s">%s</a> (%s)] endret RAID <a href="view.php?mode=view&amp;raid_id=%s">%s %s</a> AV %s med CHARACTER %s - %s';
-?>
+'log_create' =>  '%s - %s: Bruker [<a href="users.php?mode=details&amp;user_id=%s">%s</a> (%s)] LAGET %s med ID [%s] og NAVN [%s]',
+'log_delete' =>  '%s - %s: Bruker [<a href="users.php?mode=details&amp;user_id=%s">%s</a> (%s)] SLETTET %s med NAVN [%s]',
+'log_hack' =>  '%s - %s: Bruker med IP [%s] FORSØKTE å hacke med [%s]',
+'log_raid' =>  '%s - %s: Bruker [<a href="users.php?mode=details&amp;user_id=%s">%s</a> (%s)] endret RAID <a href="view.php?mode=view&amp;raid_id=%s">%s %s</a> AV %s med CHARACTER %s - %s',
+));  ?>

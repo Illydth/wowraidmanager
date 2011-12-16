@@ -29,253 +29,258 @@
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *
 ****************************************************************************/
+if (empty($phprlang) || !is_array($phprlang))
+	$phprlang = array();
+	
+$phprlang = array_merge($phprlang, array(
+
 // announcements
-$phprlang['announcements_header'] = 'Nyheter';
-$phprlang['announcements_new_header'] = 'Skapa ny Nyhet';
-$phprlang['announcements_message_text'] = 'Meddelande';
-$phprlang['announcements_title_text'] = 'Titel';
+'announcements_header' =>  'Meddelanden',
+'announcements_new_header' =>  'Skapa nytt Meddelande',
+'announcements_message_text' =>  'Meddelande',
+'announcements_title_text' =>  'Titel',
 
 // Calendar
-$phprlang['invites'] = 'Inbjudan';
-$phprlang['start'] = 'Start';
-$phprlang['key'] = 'Key:<br>White Border = Not Signed Up<br>Green Border = Signed Up & Drafted<br>Blue Border = Signed Up, Not Drafted (queued)<br>Red Border = Signup Cancelled<br><span class="priorDay">TEXT</span> dates are in the past.<br><span class="currentDay">TEXT</span> date is today.<br><span class="postDay">TEXT</span> dates are in the future.'; //New
-$phprlang['calendar_month_select_header'] = 'Select Month and Year to View';
+'invites' =>  'Inbjudan',
+'start' =>  'Start',
+'key' =>  'Nyckel:<br>Vit kant = Ej uppskriven<br>Grön kant = Uppskriven med status Uttagen<br>Blå kant = Uppskriven med status Tillgänglig<br>Röd kant = Uppskriven med status Ej tillgänglig<br><span class="priorDay">TEXT</span> datum har passerat.<br><span class="currentDay">TEXT</span> dagens datum.<br><span class="postDay">TEXT</span> framtida datum.', //New
+'calendar_month_select_header' =>  'Välj månad och år att visa',
 
 // DKP View
-$phprlang['eqdkp_system_link'] = 'Direkt länk till anslutet DKP System:';
+'eqdkp_system_link' =>  'Direkt länk till anslutet DKP System:',
 
 // guilds
-$phprlang['guilds_header'] = 'Guild Listning';
-$phprlang['guilds_new_header'] = 'Nytt Guild';
-$phprlang['guilds_master'] = 'Guildmaster';
-$phprlang['guilds_name'] = 'Komplett Guild namn';
-$phprlang['guilds_tag']	= 'Guild märke';						
-$phprlang['guilds_description'] = 'Guild Description';
-$phprlang['guilds_server'] = 'Guild Server';
-$phprlang['guilds_faction'] = 'Guild Faction';
-$phprlang['guilds_armory_code'] = 'Armory Code for Guild';
-$phprlang['raid_force_header'] = 'Raid Force Listing'; //New
-$phprlang['raid_force_select_text'] = 'Select Raid Force: '; //New
-$phprlang['raid_force_name_box_text'] = 'Raid Force Name'; //New
-$phprlang['raid_force_guild_options_text'] = 'Guild'; //New
-$phprlang['raid_force_new_header'] = 'New Raid Force Link'; //New
-$phprlang['raid_force_name_missing'] = 'Raid Force Name must not be blank or NULL.'; //New
-$phprlang['raid_force_duplicate'] = 'Duplicate Raid Force Name/Guild Record.'; //New
-$phprlang['raid_force_guild_id_missing'] = 'Guild ID must not be blank or NULL'; //New
-$phprlang['armory_lang_US'] = 'US : http://us.battle.net/wow/ : English'; //New
-$phprlang['armory_lang_EU'] = 'EU : http://eu.battle.net/wow/ : English'; //New
-$phprlang['armory_lang_DE'] = 'DE : http://eu.battle.net/wow/ : German'; //New
-$phprlang['armory_lang_ES'] = 'ES : http://eu.battle.net/wow/ : Spanish'; //New
-$phprlang['armory_lang_FR'] = 'FR : http://eu.battle.net/wow/ : French'; //New
-$phprlang['armory_lang_KR'] = 'KR : http://kr.battle.net/wow/ : Korean'; //New
-$phprlang['armory_lang_TW'] = 'TW : http://tw.battle.net/wow/ : Taiwainese'; //New
-$phprlang['armory_lang_none'] = 'No Armory or Not Applicable'; //New
+'guilds_header' =>  'Guild Listning',
+'guilds_new_header' =>  'Nytt Guild',
+'guilds_master' =>  'Guildmaster',
+'guilds_name' =>  'Komplett Guild namn',
+'guilds_tag'	=> 'Guild märke',						
+'guilds_description' =>  'Guild Beskrivning',
+'guilds_server' =>  'Guild Server',
+'guilds_faction' =>  'Guild Faktion',
+'guilds_armory_code' =>  'Armory kod för Guild',
+'raid_force_header' =>  'Raidgrupp listning', //New
+'raid_force_select_text' =>  'Välj Raidgrupp: ', //New
+'raid_force_name_box_text' =>  'Raidgruppnamn', //New
+'raid_force_guild_options_text' =>  'Guild', //New
+'raid_force_new_header' =>  'Ny Raidgrupp länk', //New
+'raid_force_name_missing' =>  'Raidgruppnamn kan ej vara tom eller ett nollvärde.', //New
+'raid_force_duplicate' =>  'Raidgrupp eller Guild existerar', //New
+'raid_force_guild_id_missing' =>  'Guild ID kan ej vara tom eller ett nollvärde.', //New
+'armory_lang_US' =>  'US : http://us.battle.net/wow/ : English', //New
+'armory_lang_EU' =>  'EU : http://eu.battle.net/wow/ : English', //New
+'armory_lang_DE' =>  'DE : http://eu.battle.net/wow/ : German', //New
+'armory_lang_ES' =>  'ES : http://eu.battle.net/wow/ : Spanish', //New
+'armory_lang_FR' =>  'FR : http://eu.battle.net/wow/ : French', //New
+'armory_lang_KR' =>  'KR : http://kr.battle.net/wow/ : Korean', //New
+'armory_lang_TW' =>  'TW : http://tw.battle.net/wow/ : Taiwainese', //New
+'armory_lang_none' =>  'Inget Armory eller ej applicerbart', //New
 
 // locations
-$phprlang['locations_header'] = 'Sparade Instanser';
-$phprlang['locations_max_lvl'] = 'Högsta Level';
-$phprlang['locations_min_lvl'] = 'Lägsta Level';
-$phprlang['locations_limits_header'] = 'Raid begränsningar';
-$phprlang['locations_long'] = 'Raid Instans';
-$phprlang['locations_new'] = 'Skapa ny instans';
-$phprlang['locations_raid_max'] = 'Raid Max';
-$phprlang['locations_short'] = 'Förkortning';
-$phprlang['lock_template'] = 'Låst raid mall?';
-$phprlang['locations_ro_text'] = 'Read Only: Populated With WoW Official Name for Instance';
-$phprlang['locations_expansion_text'] = 'Expansion';
-$phprlang['locations_events_text'] = 'Event Name';
+'locations_header' =>  'Sparade Instanser',
+'locations_max_lvl' =>  'Högsta Level',
+'locations_min_lvl' =>  'Lägsta Level',
+'locations_limits_header' =>  'Raid begränsningar',
+'locations_long' =>  'Raid Instans',
+'locations_new' =>  'Skapa ny instans',
+'locations_raid_max' =>  'Raid Max',
+'locations_short' =>  'Förkortning',
+'lock_template' =>  'Låst raid mall?',
+'locations_ro_text' =>  'Skrivskyddad: Fylls i med officiellt namn från WoW.',
+'locations_expansion_text' =>  'Expansion',
+'locations_events_text' =>  'Event Namn',
 
 // lua_output
-$phprlang['rim_download'] = 'Ladda ner RIM (Raid Information Manager)';
-$phprlang['phprv_download'] = 'Ladda ner phpRaidViewer';
-$phprlang['lua_header'] = 'LUA/Macro utskrift';
-$phprlang['sort_name'] = 'Name';
-$phprlang['sort_date'] = 'Date';
-$phprlang['output_rim'] = 'RIM (Raid Invite Manager)';
-$phprlang['output_phprv'] = 'PHP Raid Viewer';
-$phprlang['sort_signups_text'] = 'Sort Signups By:';
-$phprlang['sort_queue_text'] = 'Sort Queue By:';
-$phprlang['output_format_text'] = 'Output Format:';
-$phprlang['options_header'] = 'Options';
-$phprlang['lua_output_header'] = 'Beginning LUA Output';
-$phprlang['lua_show_all_raids'] = 'Output all Open Raids';
-$phprlang['lua_failed_to_write'] = 'LUA file could not be created due to failure to write.</b><br/>' .
-									'Please set logging level to display warnings (E_WARNING or better) ' .
-									'to see the issue.<br>' .
-									'Use this for copy+paste:<br>';
-$phprlang['lua_rim_write_success'] = '<b>LUA file created.</b><br>' . 
-									'Download <a href="cache/raid_lua/phpRaid_Data.lua">phpRaid_Data.lua</a> and save 
-									it to [wow-dir]\interface\addons\RIM\<br>' .
-									'or use this for copy+paste:<br>';
-$phprlang['lua_prv_write_success'] = '<b>LUA file created.</b><br>' . 
-									'Download <a href="cache/raid_lua/phpRaid_Data.lua">phpRaid_Data.lua</a> and save 
-									it to [wow-dir]\interface\addons\phpraidviewer\<br>' .
-									'or use this for copy+paste:<br>';
-$phprlang['lua_drafted'] = 'Drafted Users'; //New
-$phprlang['lua_queued'] = 'Queued Users'; //New
-$phprlang['lua_macro_header'] = 'Macro output listing...'; //New
-$phprlang['lua_macro_footer'] = '<br>Macro output listing complete.<br>Copy and paste the above to a macro and run in-game.'; //New
+'rim_download' =>  'Ladda ner RIM (Raid Information Manager)',
+'phprv_download' =>  'Ladda ner phpRaidViewer',
+'lua_header' =>  'LUA/Macro utskrift',
+'sort_name' =>  'Namn',
+'sort_date' =>  'Datum',
+'output_rim' =>  'RIM (Raid Invite Manager)',
+'output_phprv' =>  'PHP Raid Viewer',
+'sort_signups_text' =>  'Sortera Uppskrivningar efter:',
+'sort_queue_text' =>  'Sortera tillgängliga efter:',
+'output_format_text' =>  'Output Format:',
+'options_header' =>  'Inställningar',
+'lua_output_header' =>  'Påbörjar LUA Utdata',
+'lua_show_all_raids' =>  'Utdata alla Aktiva Raider',
+'lua_failed_to_write' =>  'LUA filen kunde inte skapas på grund av skrivfel.</b><br/>' .
+									'Vänligen sätt sätt loggnings nivån till att visa varningar (E_WARNING eller bättre) ' .
+									'för att se felet.<br>' .
+									'Använd detta för copy+paste:<br>',
+'lua_rim_write_success' =>  '<b>LUA filen skapades.</b><br>' . 
+									'Ladda ned <a href="cache/raid_lua/phpRaid_Data.lua">phpRaid_Data.lua</a> och spara 
+									den till [wow-dir]\interface\addons\RIM\<br>' .
+									'eller använd nedan för copy+paste:<br>',
+'lua_prv_write_success' =>  '<b>LUA filen skapades.</b><br>' . 
+									'Ladda ned <a href="cache/raid_lua/phpRaid_Data.lua">phpRaid_Data.lua</a> och spara
+									den till [wow-dir]\interface\addons\phpraidviewer\<br>' .
+									'eller använd nedan för copy+paste:<br>',
+'lua_drafted' =>  'Uttagna Användare', //New
+'lua_queued' =>  'Tillgängliga Användare', //New
+'lua_macro_header' =>  'Macro utsignalslistan...', //New
+'lua_macro_footer' =>  '<br>Macro utsignalslistan färdig.<br>Kopiera och klista in ovan i ett macro och kör i spelet.', //New
 
 // permissions
-$phprlang['permissions_add'] = 'Lägg till i set';
-$phprlang['permissions_announcements'] = 'Nyheter';
-$phprlang['permissions_configuration'] = 'Konfiguration';
-$phprlang['permissions_details_users_header'] = 'Detaljerade Rättigheter';
-$phprlang['permissions_edit_header'] = 'Editera set';
-$phprlang['permissions_description'] = 'Beskrivning';
-$phprlang['permissions_details_header'] = 'Rättighetsdetaljer';
-$phprlang['permissions_guilds'] = 'Guilder';
-$phprlang['permissions_header'] = 'Rättighets Sets';
-$phprlang['permissions_locations'] = 'Instanser';
-$phprlang['permissions_logs'] = 'Loggar';
-$phprlang['permissions_name'] = 'Namn';
-$phprlang['permissions_permissions'] = 'Rättigheter';
-$phprlang['permissions_profile'] = 'Profil';
-$phprlang['permissions_raids'] = 'Raider';
-$phprlang['permissions_new'] = 'Skapa nytt set';
-$phprlang['permissions_users'] = 'Användare';
-$phprlang['permissions_users_header'] = 'Användare i setet';
+'permissions_add' =>  'Lägg till i set',
+'permissions_announcements' =>  'Nyheter',
+'permissions_configuration' =>  'Konfiguration',
+'permissions_details_users_header' =>  'Detaljerade Rättigheter',
+'permissions_edit_header' =>  'Editera set',
+'permissions_description' =>  'Beskrivning',
+'permissions_details_header' =>  'Rättighetsdetaljer',
+'permissions_guilds' =>  'Guilder',
+'permissions_header' =>  'Rättighets Sets',
+'permissions_locations' =>  'Instanser',
+'permissions_logs' =>  'Loggar',
+'permissions_name' =>  'Namn',
+'permissions_permissions' =>  'Rättigheter',
+'permissions_profile' =>  'Profil',
+'permissions_raids' =>  'Raider',
+'permissions_new' =>  'Skapa nytt set',
+'permissions_users' =>  'Användare',
+'permissions_users_header' =>  'Användare i setet',
 
 // profile
-$phprlang['profile_arcane'] = 'Arcane Resistance';
-$phprlang['profile_class'] = 'Klass';
-$phprlang['profile_create_header'] = 'Karaktärsskapande inte tillgängligt';
-$phprlang['profile_create_msg'] = 'Tills dess en administratör skapar ett guild, kommer inte karaktärsskapande vara tillgängligt';
-$phprlang['profile_fire'] = 'Fire Resistance';
-$phprlang['profile_frost'] = 'Frost Resistance';
-$phprlang['profile_gender'] = 'Kön';
-$phprlang['profile_guild'] = 'Guild tillhörighet';
-$phprlang['profile_role'] = 'Roll';
-$phprlang['profile_header'] = 'Karaktärer';
-$phprlang['profile_level'] = 'Level';
-$phprlang['profile_name'] = 'Namn';
-$phprlang['profile_nature'] = 'Nature Resistance';
-$phprlang['profile_raid'] = 'Raid Deltagande';
-$phprlang['profile_race'] = 'Ras';
-$phprlang['profile_shadow'] = 'Shadow Resistance';
-$phprlang['iLvL'] = "iLvL (Equipped, Best)"; //New
-$phprlang['health'] = "Health"; //New
-$phprlang['mana'] = "Mana"; //New
+'profile_arcane' =>  'Arcane Resistance',
+'profile_class' =>  'Klass',
+'profile_create_header' =>  'Karaktärsskapande inte tillgängligt',
+'profile_create_msg' =>  'Tills dess en administratör skapar ett guild, kommer inte karaktärsskapande vara tillgängligt',
+'profile_fire' =>  'Fire Resistance',
+'profile_frost' =>  'Frost Resistance',
+'profile_gender' =>  'Kön',
+'profile_guild' =>  'Guild tillhörighet',
+'profile_role' =>  'Roll',
+'profile_header' =>  'Karaktärer',
+'profile_level' =>  'Level',
+'profile_name' =>  'Namn',
+'profile_nature' =>  'Nature Resistance',
+'profile_raid' =>  'Raid Deltagande',
+'profile_race' =>  'Ras',
+'profile_shadow' =>  'Shadow Resistance',
+'iLvL' =>  "iLvL (Utrustad, Bästa)", //New
+'health' =>  "Hälsa", //New
+'mana' =>  "Mana", //New
 
 // raids
-$phprlang['raids_date'] = 'Datum';
-$phprlang['raids_description'] = 'Beskrivning';
-$phprlang['raids_dungeon'] = 'Instans';
-$phprlang['raids_freeze'] = 'Frys begränsning (i timmar)';
-$phprlang['raids_invite'] = 'Inbjudnings tid';
-$phprlang['raids_limits'] = 'Raid begränsning';
-$phprlang['raids_location'] = 'Sparad Instans';
-$phprlang['raids_max'] = 'Raid maximum';
-$phprlang['raids_max_lvl'] = 'Högsta level';
-$phprlang['raids_min_lvl'] = 'Lägsta level';
-$phprlang['raids_old'] = 'Föregående event';
-$phprlang['raids_new'] = 'Kommande event';
-$phprlang['raids_new_header'] = 'Nytt Raid';
-$phprlang['raids_edit_header'] = 'Edit Raid'; //new
-$phprlang['raids_start'] = 'Start tid';
-$phprlang['raids_eventtype_text'] = 'Event Type';
-$phprlang['raids_mark_selected_raids_to_old'] = "all mark raids are closed and over";
+'raids_date' =>  'Datum',
+'raids_description' =>  'Beskrivning',
+'raids_dungeon' =>  'Instans',
+'raids_freeze' =>  'Frys begränsning (i timmar)',
+'raids_invite' =>  'Inbjudningstid',
+'raids_limits' =>  'Raid begränsning',
+'raids_location' =>  'Sparad Instans',
+'raids_max' =>  'Raid maximum',
+'raids_max_lvl' =>  'Högsta level',
+'raids_min_lvl' =>  'Lägsta level',
+'raids_old' =>  'Gamla Raids',
+'raids_new' =>  'Kommande Raids',
+'raids_new_header' =>  'Skapa Ny Raid',
+'raids_edit_header' =>  'Redigera Raid', //new
+'raids_start' =>  'Starttid',
+'raids_eventtype_text' =>  'Raid Typ',
+'raids_mark_selected_raids_to_old' =>  "Sätt alla markerade raider som stängda och över",
 
 // event type
-$phprlang['event_type_raid'] = 'Raid (10/25 man)';
-$phprlang['event_type_dungeon'] = 'Dungeon (5 man Instance)';
-$phprlang['event_type_pvp'] = 'PvP Event';
-$phprlang['event_type_meeting'] = 'Meeting (online/offline)';
-$phprlang['event_type_other'] = 'Other';
+'event_type_raid' =>  'Raid (10/25 man)',
+'event_type_dungeon' =>  'Dungeon (5 man Instans)',
+'event_type_pvp' =>  'PvP Event',
+'event_type_meeting' =>  'Möte (online/offline)',
+'event_type_other' =>  'Annat',
 
 // expansions
-$phprlang['exp_generic_wow'] = 'Generic World of Warcraft';
-$phprlang['exp_burning_crusade'] = 'The Burning Crusade';
-$phprlang['exp_wrath_lich_king'] = 'Wrath of the Lich King';
-$phprlang['exp_cataclysm'] = 'Cataclysm';
+'exp_generic_wow' =>  'Generic World of Warcraft',
+'exp_burning_crusade' =>  'The Burning Crusade',
+'exp_wrath_lich_king' =>  'Wrath of the Lich King',
+'exp_cataclysm' =>  'Cataclysm',
 
 // roster
-$phprlang['roster_header'] = 'Guild Roster';
+'roster_header' =>  'Guild Roster',
 
 // registration
-$phprlang['register_complete_header'] = 'Registreringen lyckades';
-$phprlang['register_complete_msg'] = 'Du är nu registrerad för användning av WRM. På vissa websidor kan du nu skapa din profil och användare, på andra måste du vänta tills en administratör godkänt din registrering innan du kan göra det.';
-$phprlang['register_confirm'] = 'Dina lösenord matchar inte.';
-$phprlang['register_confirm_text'] = 'Fyll i lösenord igen';
-$phprlang['register_email_header'] = 'Registrering hos';
-$phprlang['register_email_empty'] = 'Du måste fylla i en e-post adress';
-$phprlang['register_email_exists'] = 'Den E-post adressen nyttjas redan';
-$phprlang['register_email_greeting'] = 'Välkommen';
-$phprlang['register_email_subject'] = 'Detta e-post är till för att bekräfta din registrering. Svara inte, då ingen kommer att mottaga ditt svar.';
-$phprlang['register_email_text'] = 'E-post adress';
-$phprlang['register_error'] = 'Registrerings error';
-$phprlang['register_header'] = 'Användar Registrering';
-$phprlang['register_pass_empty'] = 'Du måste fylla i ett lösenord';
-$phprlang['register_password_text'] = 'Lösenord';
-$phprlang['register_user_empty'] = 'Du måste fylla i ett användarnamn';
-$phprlang['register_user_exists'] = 'Det användarnamnet är redan upptaget';
-$phprlang['register_username_text'] = 'Användarnamn';
+'register_complete_header' =>  'Registreringen lyckades',
+'register_complete_msg' =>  'Du är nu registrerad för användning av WRM. På vissa websidor kan du nu skapa din profil och användare, på andra måste du vänta tills en administratör godkänt din registrering innan du kan göra det.',
+'register_confirm' =>  'Dina lösenord matchar inte.',
+'register_confirm_text' =>  'Fyll i lösenord igen',
+'register_email_header' =>  'Registrering hos',
+'register_email_empty' =>  'Du måste fylla i en e-post adress',
+'register_email_exists' =>  'Den E-post adressen nyttjas redan',
+'register_email_greeting' =>  'Välkommen',
+'register_email_subject' =>  'Detta e-post är till för att bekräfta din registrering. Svara inte, då ingen kommer att mottaga ditt svar.',
+'register_email_text' =>  'E-post adress',
+'register_error' =>  'Registrerings error',
+'register_header' =>  'Användar Registrering',
+'register_pass_empty' =>  'Du måste fylla i ett lösenord',
+'register_password_text' =>  'Lösenord',
+'register_user_empty' =>  'Du måste fylla i ett användarnamn',
+'register_user_exists' =>  'Det användarnamnet är redan upptaget',
+'register_username_text' =>  'Användarnamn',
 
 // users
-$phprlang['users_assign'] = 'Tilldela';
-$phprlang['users_char_header'] = 'Användarkaraktärer';
-$phprlang['users_header'] = 'Användare';
+'users_assign' =>  'Tilldela',
+'users_char_header' =>  'Användarkaraktärer',
+'users_header' =>  'Användare',
 
 // view
-$phprlang['view_approved'] = 'Klara Spelare';
-$phprlang['view_cancel_header'] = 'Ångrade Bokningar';
-$phprlang['view_character'] = 'Karaktär';
-$phprlang['view_comments'] = 'Kommentar';
-$phprlang['view_create'] = 'Skapa en karaktär för att boka dig';
-$phprlang['view_date'] = 'Datum';
-$phprlang['view_description_header'] = 'Raid beskrivning';
-$phprlang['view_frozen'] = 'Bokningar har frusets';
-$phprlang['view_information_header'] = 'Information';
-$phprlang['view_invite'] = 'Inbjudnings Tid';
-$phprlang['view_location'] = 'Instanse';
-$phprlang['view_login'] = 'Logga in för att boka dig';
-$phprlang['view_new'] = 'Boka dig till raiden';
-$phprlang['view_max'] = 'Raid max';
-$phprlang['view_max_lvl'] = 'Högsta level';
-$phprlang['view_min_lvl'] = 'Lägsta level';
-$phprlang['view_missing_signups_link_text'] = 'Visa Profiler som INTE har bokat sig för detta raid.';
-$phprlang['view_officer'] = 'Skapare';
-$phprlang['view_ok'] = 'Öppet för bokning';
-$phprlang['view_queue'] = 'Hur vill du boka dig??';
-$phprlang['view_queue_header'] = 'Köade bokningar';
-$phprlang['view_queued'] = 'Köade spelare';
-$phprlang['view_raid_cancel_text'] = 'Ångrade bokningar';
-$phprlang['view_signed'] = 'Redan Bokad';
-$phprlang['view_signup'] = 'Bokningsinformation';
-$phprlang['view_signup_queue'] = 'Boka som köad bokning';
-$phprlang['view_signup_cancel'] = 'Boka som ångrad bokning';
-$phprlang['view_signup_draft'] = 'Boka som uppflyttad i Raidet';
-$phprlang['view_start'] = 'Start tid';
-$phprlang['view_statistics_header'] = 'Statestik';
-$phprlang['view_teams_link_text'] = 'Skapa och tilldela lag för detta raid';
-$phprlang['view_total'] = 'Totala bokningar';
-$phprlang['view_username'] = 'Användarnamn';
-$phprlang['view_missing_signups_return_to_view']= 'Back to Raid View'; //New
+'view_approved' =>  'Uttagna spelare',
+'view_cancel_header' =>  'Ej tillgängliga spelare',
+'view_character' =>  'Karaktär',
+'view_comments' =>  'Kommentar',
+'view_create' =>  'Skapa en karaktär för att skriva upp dig',
+'view_date' =>  'Datum',
+'view_description_header' =>  'Raid beskrivning',
+'view_frozen' =>  'Uppskrivningar har frusits',
+'view_information_header' =>  'Information',
+'view_invite' =>  'Inbjudningstid',
+'view_location' =>  'Instans',
+'view_login' =>  'Logga in för att skriva upp dig',
+'view_new' =>  'Skriv upp dig till raiden',
+'view_max' =>  'Raid max',
+'view_max_lvl' =>  'Högsta level',
+'view_min_lvl' =>  'Lägsta level',
+'view_missing_signups_link_text' =>  'Visa Profiler som INTE har skrivit upp sig för denna raid.',
+'view_officer' =>  'Skapare',
+'view_ok' =>  'Öppet för Uppskrivning',
+'view_queue' =>  'Hur vill du skriva upp dig??',
+'view_queue_header' =>  'Tillgängliga spelare',
+'view_queued' =>  'Tillgängliga spelare',
+'view_raid_cancel_text' =>  'Ej tilgängliga registeringar',
+'view_signed' =>  'Redan uppskriven',
+'view_signup' =>  'Uppskrivnings Information',
+'view_signup_queue' =>  'Skriv upp dig som Tillgänglig',
+'view_signup_cancel' =>  'Skriv upp dig som Ej Tillgänglig',
+'view_signup_draft' =>  'Skriv upp dig som Uttagen',
+'view_start' =>  'Starttid',
+'view_statistics_header' =>  'Statistik',
+'view_teams_link_text' =>  'Skapa och tilldela ett lag för denna raid',
+'view_total' =>  'Totala Uppskrivningar',
+'view_username' =>  'Användarnamn',
+'view_missing_signups_return_to_view' =>  'Tillbaka till Raid-Vy', //New
 
 // main page
-$phprlang['main_previous_raids'] = 'Föregående event';
-$phprlang['main_upcoming_raids'] = 'Kommande event';
-$phprlang['signup'] = 'Boka dig';
-$phprlang['rss_feed_text'] = 'Raidboknings RSS Feed';
-$phprlang['guild_time_string'] = 'Guild Tid';
-$phprlang['menu_header_text'] = 'WRM Meny';
+'main_previous_raids' =>  'Gamla Raids',
+'main_upcoming_raids' =>  'Kommande Raids',
+'signup' =>  'Skriv upp dig',
+'rss_feed_text' =>  'Raid Feed',
+'guild_time_string' =>  'Guild tid',
+'menu_header_text' =>  'WRM Meny',
 
 // teams
-$phprlang['team_new_header'] = 'Skapa nytt lag';
-$phprlang['team_add_header'] = 'Lägg till medlemmar i laget';
-$phprlang['team_remove_header'] = 'Ta bort medlemmar från laget';
-$phprlang['teams_raid_view_text'] = 'Återgå till Raid sidan';
-$phprlang['team_cur_teams_header'] = 'Skapade Lag';
-$phprlang['team_page_header'] = 'Lag';
+'team_new_header' =>  'Skapa nytt lag',
+'team_add_header' =>  'Lägg till medlemmar i laget',
+'team_remove_header' =>  'Ta bort medlemmar från laget',
+'teams_raid_view_text' =>  'Återgå till Raid sidan',
+'team_cur_teams_header' =>  'Skapade Lag',
+'team_page_header' =>  'Lag',
 
 // Boss Kill Tracking
-$phprlang['boss_kill_type_dungeon'] = 'Dungeon (5/10 Man)';
-$phprlang['boss_kill_type_25_man'] = '25 Man Raid';
-$phprlang['boss_kill_type_10_man'] = '10 Man Raid';
-$phprlang['boss_kill_type_40_man'] = '40 Man Raid';
-$phprlang['bosskill_header'] = 'Track Named (Boss) Accomplishments';
+'boss_kill_type_dungeon' =>  'Dungeon (5/10 Man)',
+'boss_kill_type_25_man' =>  '25 Man Raid',
+'boss_kill_type_10_man' =>  '10 Man Raid',
+'boss_kill_type_40_man' =>  '40 Man Raid',
+'bosskill_header' =>  'Spåra Namngivna (Boss) Prestationer',
 
 //Raids Archive
-$phprlang['raidsarchive_header'] = 'Raids Archive';
+'raidsarchive_header' =>  'Raid Arkiv',
 
-?>
+));  ?>

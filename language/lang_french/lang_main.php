@@ -45,315 +45,321 @@ require_once('lang_wow.php');
 // admin section language file
 require_once('lang_admin.php');
 
+if (empty($phprlang) || !is_array($phprlang))
+	$phprlang = array();
+	
+$phprlang = array_merge($phprlang, array(
+
+
 // data output headers (Reports.php)
-$phprlang['add_team']='Cochez pour ajouter à l\'équipe';
-$phprlang['add_team_dropdown_text']='Sèlectionnez une équipe pour y ajouter des membres';
-$phprlang['team_global']='Sélection des groupes disponibles pour tous les Raids';
-$phprlang['male'] = 'Male';
-$phprlang['female'] = 'Femelle';
-$phprlang['class'] = 'Classe';
-$phprlang['date'] = 'Date';
-$phprlang['description'] = 'Description';
-$phprlang['email'] = 'E-mail';
-$phprlang['guild'] = 'Guilde';
-$phprlang['guild_name'] = 'Nom de la Guilde';
-$phprlang['guild_master'] = 'Maitre de Guilde';
-$phprlang['guild_tag'] = 'Tag';
-$phprlang['guild_description'] = 'Description';
-$phprlang['guild_server'] = 'Serveur';
-$phprlang['guild_faction'] = 'Faction';
-$phprlang['guild_armory_link'] = 'Lien armurerie';
-$phprlang['guild_armory_code'] = 'URL Armurerie';
-$phprlang['guild_id'] = 'Guild ID';
-$phprlang['raid_force_id'] = 'Raid Force ID';
-$phprlang['raid_force_name'] = 'Raid Force';
-$phprlang['id'] = 'ID';
-$phprlang['invite_time'] = 'Groupage';
-$phprlang['level'] = 'Niveau';
-$phprlang['location'] = 'Donjon';
-$phprlang['max_lvl'] = 'Niv Max';
-$phprlang['max_raiders'] = 'Limite de joueurs';
-$phprlang['locked_header'] = 'Locked?';
-$phprlang['message'] = 'Message';
-$phprlang['min_lvl'] = 'Niv Min';
-$phprlang['name'] = 'Nom';
-$phprlang['officer'] = 'Créateur';
-$phprlang['no_data'] = 'Vide';
-$phprlang['posted_by'] = 'Posté par';
-$phprlang['race'] = 'Race';
-$phprlang['start_time'] = 'Heure de Début';
-$phprlang['team_name'] = 'Nom de l\'équipe';
-$phprlang['time'] = 'Heure';
-$phprlang['title'] = 'Titre';
-$phprlang['totals'] = 'Total';
-$phprlang['username'] = 'Nom du Joueur';
-$phprlang['records'] = 'Enregistrement(s)';
-$phprlang['to'] = 'to';
-$phprlang['of'] = 'of';
-$phprlang['total'] = 'total';
-$phprlang['section'] = 'Section';
-$phprlang['prev'] = 'Préc';
-$phprlang['next'] = 'Suiv';
-$phprlang['earned'] = 'Gagné';
-$phprlang['spent'] = 'Passé';
-$phprlang['adjustment'] = 'Ajustement';
-$phprlang['dkp'] = 'DKP';
-$phprlang['buttons'] = 'Buttons';
-$phprlang['add_to_team'] = 'Add To Team';
-$phprlang['create_date'] = 'Create Date';
-$phprlang['create_time'] = 'Create Time';
-$phprlang['pri_spec'] = 'Pri Talent';
-$phprlang['sec_spec'] = 'Sec Talent';
-$phprlang['signup_spec'] = 'Draft As';
-$phprlang['talent_tree'] = 'Talent Tree';
-$phprlang['display_text'] = 'Display Text';
-$phprlang['perm_mod'] = 'Update Permissions';
-$phprlang['all'] = 'All';
+'add_team' => 'Cochez pour ajouter à l\'équipe',
+'add_team_dropdown_text' => 'Sèlectionnez une équipe pour y ajouter des membres',
+'team_global' => 'Sélection des groupes disponibles pour tous les Raids',
+'male' =>  'Male',
+'female' =>  'Femelle',
+'class' =>  'Classe',
+'date' =>  'Date',
+'description' =>  'Description',
+'email' =>  'E-mail',
+'guild' =>  'Guilde',
+'guild_name' =>  'Nom de la Guilde',
+'guild_master' =>  'Maitre de Guilde',
+'guild_tag' =>  'Tag',
+'guild_description' =>  'Description',
+'guild_server' =>  'Serveur',
+'guild_faction' =>  'Faction',
+'guild_armory_link' =>  'Lien armurerie',
+'guild_armory_code' =>  'URL Armurerie',
+'guild_id' =>  'Guild ID',
+'raid_force_id' =>  'Raid Force ID',
+'raid_force_name' =>  'Raid Force',
+'id' =>  'ID',
+'invite_time' =>  'Groupage',
+'level' =>  'Niveau',
+'location' =>  'Donjon',
+'max_lvl' =>  'Niv Max',
+'max_raiders' =>  'Limite de joueurs',
+'locked_header' =>  'Locked?',
+'message' =>  'Message',
+'min_lvl' =>  'Niv Min',
+'name' =>  'Nom',
+'officer' =>  'Créateur',
+'no_data' =>  'Vide',
+'posted_by' =>  'Posté par',
+'race' =>  'Race',
+'start_time' =>  'Heure de Début',
+'team_name' =>  'Nom de l\'équipe',
+'time' =>  'Heure',
+'title' =>  'Titre',
+'totals' =>  'Total',
+'username' =>  'Nom du Joueur',
+'records' =>  'Enregistrement(s)',
+'to' =>  'to',
+'of' =>  'of',
+'total' =>  'total',
+'section' =>  'Section',
+'prev' =>  'Préc',
+'next' =>  'Suiv',
+'earned' =>  'Gagné',
+'spent' =>  'Passé',
+'adjustment' =>  'Ajustement',
+'dkp' =>  'DKP',
+'buttons' =>  'Buttons',
+'add_to_team' =>  'Add To Team',
+'create_date' =>  'Create Date',
+'create_time' =>  'Create Time',
+'pri_spec' =>  'Pri Talent',
+'sec_spec' =>  'Sec Talent',
+'signup_spec' =>  'Draft As',
+'talent_tree' =>  'Talent Tree',
+'display_text' =>  'Display Text',
+'perm_mod' =>  'Update Permissions',
+'all' =>  'All',
 
 // Recurrance Text Items
-$phprlang['recur_header'] = 'Raid Recurrance Settings';
-$phprlang['raids_recur'] = 'Recurring Raids';
-$phprlang['daily'] = 'Daily (Every Day At This Time)';
-$phprlang['weekly'] = 'Weekly (On This Day of the Week)';
-$phprlang['monthly'] = 'Monthly (On This Day of the Month)';
-$phprlang['recurrance'] = 'Recurring Raid?<br><a href="../docs/recurring_raids.html" target="_blank">help?</a>';
-$phprlang['recur_interval'] = 'Recurrance Interval';
-$phprlang['recur_length'] = 'Number of Intervals to Show';
+'recur_header' =>  'Raid Recurrance Settings',
+'raids_recur' =>  'Recurring Raids',
+'daily' =>  'Daily (Every Day At This Time)',
+'weekly' =>  'Weekly (On This Day of the Week)',
+'monthly' =>  'Monthly (On This Day of the Month)',
+'recurrance' =>  'Recurring Raid?<br><a href="../docs/recurring_raids.html" target="_blank">help?</a>',
+'recur_interval' =>  'Recurrance Interval',
+'recur_length' =>  'Number of Intervals to Show',
 
 // Scheduler Texts
-$phprlang['scheduler_error_header'] = 'Scheduler Error';
-$phprlang['scheduler_unknown'] = 'The scheduler threw an Unknown error, please post the error message to WRM support.';
-$phprlang['scheduler_error_no_raid_found'] = 'No raid found when attempting to select the current recurring raid from the raids table.
-												Recurring Raid was likely deleted, please reload the page.';
-$phprlang['scheduler_error_schedule_raid'] = 'Error Scheduling New Raids from Recurring Raids.';
-$phprlang['scheduler_error_sql_error'] = 'Generic SQL Error Occured, See Above Printed Information.';
-$phprlang['scheduler_error_update_recurring'] = 'Failed to Update Timestamp on Recurring Raid.';
-$phprlang['scheduler_error_class_limits_missing'] = 'Class Limits could not be retrieved for Recurring Raid.  
-													Delete Recurring Raid and Try again.';
-$phprlang['scheduler_error_role_limits_missing'] = 'Role Limits could not be retrieved for Recurring Raid.  
-													Delete Recurring Raid and Try again.';
+'scheduler_error_header' =>  'Scheduler Error',
+'scheduler_unknown' =>  'The scheduler threw an Unknown error, please post the error message to WRM support.',
+'scheduler_error_no_raid_found' =>  'No raid found when attempting to select the current recurring raid from the raids table.
+												Recurring Raid was likely deleted, please reload the page.',
+'scheduler_error_schedule_raid' =>  'Error Scheduling New Raids from Recurring Raids.',
+'scheduler_error_sql_error' =>  'Generic SQL Error Occured, See Above Printed Information.',
+'scheduler_error_update_recurring' =>  'Failed to Update Timestamp on Recurring Raid.',
+'scheduler_error_class_limits_missing' =>  'Class Limits could not be retrieved for Recurring Raid.  
+													Delete Recurring Raid and Try again.',
+'scheduler_error_role_limits_missing' =>  'Role Limits could not be retrieved for Recurring Raid.  
+													Delete Recurring Raid and Try again.',
 
 // roles
-$phprlang['role_none'] = '-';
-$phprlang['role'] = 'Role'; //New
+'role_none' =>  '-',
+'role' =>  'Role', //New
 
 // errors
-$phprlang['connect_socked_error'] = 'Erreur de connection au socket, erreur : %s';
-$phprlang['invalid_group_title'] = 'Le groupe existe déja';
-$phprlang['invalid_group_message'] = 'The group selected is already part of this set. Press your browsers BACK button to try again.';
-$phprlang['invalid_option_title'] = 'Entrée invalide pour cette page';
-$phprlang['invalid_option_msg'] = 'Vous avez essayé d\'entrer dans cette page avec une entrée invalide.';
-$phprlang['no_user_msg'] = 'Cet utilisateur n\'existe pas ou a été éffacé.';
-$phprlang['no_user_title'] = 'Utilisateur non existant';
-$phprlang['print_error_critical'] = 'erreur critique!';
-$phprlang['print_error_details'] = 'Détails';
-$phprlang['print_error_minor'] = 'erreur mineure!';
-$phprlang['print_error_msg_begin'] = 'Sorry, WRM has encountered ';
-$phprlang['print_error_msg_end'] = 'If this error persists, please make a post 
+'connect_socked_error' =>  'Erreur de connection au socket, erreur : %s',
+'invalid_group_title' =>  'Le groupe existe déja',
+'invalid_group_message' =>  'The group selected is already part of this set. Press your browsers BACK button to try again.',
+'invalid_option_title' =>  'Entrée invalide pour cette page',
+'invalid_option_msg' =>  'Vous avez essayé d\'entrer dans cette page avec une entrée invalide.',
+'no_user_msg' =>  'Cet utilisateur n\'existe pas ou a été éffacé.',
+'no_user_title' =>  'Utilisateur non existant',
+'print_error_critical' =>  'erreur critique!',
+'print_error_details' =>  'Détails',
+'print_error_minor' =>  'erreur mineure!',
+'print_error_msg_begin' =>  'Sorry, WRM has encountered ',
+'print_error_msg_end' =>  'If this error persists, please make a post 
 									with this message <br>on the <a href="http://www.wowraidmanager.net/">wowraidmanager.net Forums</a> and
-									we will do our best to get it corrected. Thanks!';
-$phprlang['print_error_page'] = 'Page';
-$phprlang['print_error_query'] = 'Requète';
-$phprlang['print_error_title'] = 'Uh oh! You hit a boo boo';
-$phprlang['socket_functions_disabled'] = 'Update checked failed to connect to server.';
+									we will do our best to get it corrected. Thanks!',
+'print_error_page' =>  'Page',
+'print_error_query' =>  'Requète',
+'print_error_title' =>  'Uh oh! You hit a boo boo',
+'socket_functions_disabled' =>  'Update checked failed to connect to server.',
 
 // forms
-$phprlang['asc'] = 'ascendant';
-$phprlang['auth_phpbb_no_groups'] = 'Auncun groupe disponible';
-$phprlang['desc'] = 'descendant';
-$phprlang['form_error'] = 'Error with your form submission';
-$phprlang['form_select'] = 'Sèlectionnez';
-$phprlang['no'] = 'Non';
-$phprlang['none'] = 'Aucun';
-$phprlang['guild_name_missing'] = 'The Full Guild Name is missing.';
-$phprlang['guild_tag_missing'] = 'The Guild Tag is missing.';
-$phprlang['permissions_form_description'] = 'Vous devez ajouter une description';
-$phprlang['permissions_form_name'] = 'Vous devez renseigner un nom';
-$phprlang['profile_error_arcane'] = 'Arcanes doit etre un nombre';
-$phprlang['profile_error_class'] = 'Vous devez sèlectionner une classe';
-$phprlang['profile_error_dupe'] = 'Un personnage porte déja ce nom';
-$phprlang['profile_error_fire'] = 'Feu doit etre un nombre';
-$phprlang['profile_error_frost'] = 'Givre doit etre un nombre';
-$phprlang['profile_error_guild'] = 'Vous devez sèlectionner une guilde';
-$phprlang['profile_error_level'] = 'Le niveau doit etre un nombre entre 1 et 80';
-$phprlang['profile_error_name'] = 'Vous devez renseigner un nom';
-$phprlang['profile_error_nature'] = 'Nature doit etre un nombre';
-$phprlang['profile_error_race'] = 'Vous devez sèlectionner une race';
-$phprlang['profile_error_role'] = 'Vous devez renseigner un role';
-$phprlang['profile_error_shadow'] = 'Ombre doit etre un nombre';
-$phprlang['raid_error_date'] = 'Vous devez entrer une date au format valide';
-$phprlang['raid_error_description'] = 'La description doit etre écrite';
-$phprlang['raid_error_limits'] = 'Toutes les limites de raid doivent etre numèriques';
-$phprlang['raid_error_location'] = 'Ajouter un lieu de raid';
-$phprlang['view_error_signed_up'] = 'Vous etes dèja inscrit avec ce personnage';
-$phprlang['view_error_role_undef'] = 'Make sure that the Character in <a href="profile.php?mode=view">Profile</a> has a defined Role.';
-$phprlang['yes'] = 'Oui';
-$phprlang['teams_error_no_team'] = 'No team is selected to add users to.';
+'asc' =>  'ascendant',
+'auth_phpbb_no_groups' =>  'Auncun groupe disponible',
+'desc' =>  'descendant',
+'form_error' =>  'Error with your form submission',
+'form_select' =>  'Sèlectionnez',
+'no' =>  'Non',
+'none' =>  'Aucun',
+'guild_name_missing' =>  'The Full Guild Name is missing.',
+'guild_tag_missing' =>  'The Guild Tag is missing.',
+'permissions_form_description' =>  'Vous devez ajouter une description',
+'permissions_form_name' =>  'Vous devez renseigner un nom',
+'profile_error_arcane' =>  'Arcanes doit etre un nombre',
+'profile_error_class' =>  'Vous devez sèlectionner une classe',
+'profile_error_dupe' =>  'Un personnage porte déja ce nom',
+'profile_error_fire' =>  'Feu doit etre un nombre',
+'profile_error_frost' =>  'Givre doit etre un nombre',
+'profile_error_guild' =>  'Vous devez sèlectionner une guilde',
+'profile_error_level' =>  'Le niveau doit etre un nombre entre 1 et 80',
+'profile_error_name' =>  'Vous devez renseigner un nom',
+'profile_error_nature' =>  'Nature doit etre un nombre',
+'profile_error_race' =>  'Vous devez sèlectionner une race',
+'profile_error_role' =>  'Vous devez renseigner un role',
+'profile_error_shadow' =>  'Ombre doit etre un nombre',
+'raid_error_date' =>  'Vous devez entrer une date au format valide',
+'raid_error_description' =>  'La description doit etre écrite',
+'raid_error_limits' =>  'Toutes les limites de raid doivent etre numèriques',
+'raid_error_location' =>  'Ajouter un lieu de raid',
+'view_error_signed_up' =>  'Vous etes dèja inscrit avec ce personnage',
+'view_error_role_undef' =>  'Make sure that the Character in <a href="profile.php?mode=view">Profile</a> has a defined Role.',
+'yes' =>  'Oui',
+'teams_error_no_team' =>  'No team is selected to add users to.',
 
 // Buttons
-$phprlang['submit'] = 'Valider';
-$phprlang['reset'] = 'Réinitialiser';
-$phprlang['confirm'] = 'Confirmer';
-$phprlang['update'] = 'Modifier';
-$phprlang['confirm_deletion'] = 'Confirmer Suppression';
-$phprlang['filter'] = 'Filtrer';
-$phprlang['addchar'] = 'Ajouter un Personnage';
-$phprlang['updatechar'] = 'Modifier un Personnage';
-$phprlang['login'] = 'S\'identifier';
-$phprlang['logout'] = 'Déconnexion';
-$phprlang['signup'] = 'S\'inscrire';
-$phprlang['apply'] = 'Apply Options';
+'submit' =>  'Valider',
+'reset' =>  'Réinitialiser',
+'confirm' =>  'Confirmer',
+'update' =>  'Modifier',
+'confirm_deletion' =>  'Confirmer Suppression',
+'filter' =>  'Filtrer',
+'addchar' =>  'Ajouter un Personnage',
+'updatechar' =>  'Modifier un Personnage',
+'login' =>  'S\'identifier',
+'logout' =>  'Déconnexion',
+'signup' =>  'S\'inscrire',
+'apply' =>  'Apply Options',
 
 // generic information
-$phprlang['delete_msg'] = 'NOTICE: La suppression est IRREVERSIBLE. <br>Cliquez sur le bouton pour confirmer.';
-$phprlang['maintenance_header'] = 'Site en maintenance, contactez l\'administrateur si besoin.';
-$phprlang['maintenance_message'] = 'WoW Raid Manager est actuellement en maintenance. Réessayez plus tard.';
-$phprlang['disabled_header'] = 'Site Disabled Notice!';
-$phprlang['disabled_message'] = 'Please note, your site is disabled. Visitors can\'t use the system right now!<br>Go to <u>Configuration</u> and then uncheck <u>Disable WRM</u>';
-$phprlang['userclass_msg'] = 'Your user is not authorized to use WoW Raid Manager, please contact the system administrator.';
-$phprlang['priv_title'] = 'Privilèges insuffisants';
-$phprlang['priv_msg'] = 'Vosu n\'avez pas les privilèges pour accèder a cette page. Contactez l\'administrateur si vous pensez que c une erreur';
-$phprlang['remember'] = 'Garder mon identifiant en mémoire';
-$phprlang['welcome'] = 'Bienvenue ';
+'delete_msg' =>  'NOTICE: La suppression est IRREVERSIBLE. <br>Cliquez sur le bouton pour confirmer.',
+'maintenance_header' =>  'Site en maintenance, contactez l\'administrateur si besoin.',
+'maintenance_message' =>  'WoW Raid Manager est actuellement en maintenance. Réessayez plus tard.',
+'disabled_header' =>  'Site Disabled Notice!',
+'disabled_message' =>  'Please note, your site is disabled. Visitors can\'t use the system right now!<br>Go to <u>Configuration</u> and then uncheck <u>Disable WRM</u>',
+'userclass_msg' =>  'Your user is not authorized to use WoW Raid Manager, please contact the system administrator.',
+'priv_title' =>  'Privilèges insuffisants',
+'priv_msg' =>  'Vosu n\'avez pas les privilèges pour accèder a cette page. Contactez l\'administrateur si vous pensez que c une erreur',
+'remember' =>  'Garder mon identifiant en mémoire',
+'welcome' =>  'Bienvenue ',
 
 // Login Information
-$phprlang['login_fail_title'] = 'Erreur d\'identification';
-$phprlang['login_fail'] = 'Mauvais mot de passe ou mauvais Identifiant. Veuillez réessayer.';
-$phprlang['login_forgot_password'] = 'Forgot Your Password?';
-$phprlang['login_pwdreset_fail_title'] = 'Failed to Send/Reset Password';
-$phprlang['login_pwdreset_title'] = 'Reset Password';
-$phprlang['login_password_reset_msg']= 'To Reset Your Password Please Enter the Following Information';
-$phprlang['login_username_email_incorrect'] = 'The Entered Username and/or Email Address is Incorrect.<br><br>Please Click the Back Button and Try Again.';
-$phprlang['login_password_sent'] = 'Your WRM password has been reset and the new password has been sent to:<br><br>';
-$phprlang['login_password_sent2'] = '<br><br>Please check the E-Mail address listed above for a message from this system. ' .
+'login_fail_title' =>  'Erreur d\'identification',
+'login_fail' =>  'Mauvais mot de passe ou mauvais Identifiant. Veuillez réessayer.',
+'login_forgot_password' =>  'Forgot Your Password?',
+'login_pwdreset_fail_title' =>  'Failed to Send/Reset Password',
+'login_pwdreset_title' =>  'Reset Password',
+'login_password_reset_msg' =>  'To Reset Your Password Please Enter the Following Information',
+'login_username_email_incorrect' =>  'The Entered Username and/or Email Address is Incorrect.<br><br>Please Click the Back Button and Try Again.',
+'login_password_sent' =>  'Your WRM password has been reset and the new password has been sent to:<br><br>',
+'login_password_sent2' =>  '<br><br>Please check the E-Mail address listed above for a message from this system. ' .
 									'If you do not see the message please check your spam folder and/or turn off ' .
-									'your spam filter and use the "Forgot My Password" link again.';
-$phprlang['login_password_email_msg'] = 'THIS MESSAGE IS NOT SPAM!<br><br>Someone (hopefully you) has clicked the ' .
+									'your spam filter and use the "Forgot My Password" link again.',
+'login_password_email_msg' =>  'THIS MESSAGE IS NOT SPAM!<br><br>Someone (hopefully you) has clicked the ' .
 										'"Forgot My Password" link on a WRM installation and entered an account with ' .
 										'your e-mail address.  Your WRM Password has been reset by the WRM system.  The ' .
-										'new password is:<br><br>';
-$phprlang['login_password_email_msg2'] = '<br><br>Please login to the WRM system using the above supplied password and click the ' .
+										'new password is:<br><br>',
+'login_password_email_msg2' =>  '<br><br>Please login to the WRM system using the above supplied password and click the ' .
 										 '"Click to Change Password" link under the Log Out button to reset your password ' .
 										 'to something more memorable.<br><br>If you were NOT the one to click this link please ' .
 										 'contact your WRM administrator to inform them that the reset link is being abused.<br><br>' .
-										 'You will still need to use the new password supplied above to access your WRM account.';
-$phprlang['login_password_email_sub'] = 'WRM Password Reset Notification'.										 
-$phprlang['login_chpass_text'] = 'Change Password For User: ';
-$phprlang['login_chpwd'] = 'Click to Change Password';
-$phprlang['login_curr_password'] = 'Current Password';
-$phprlang['login_password_conf'] = 'Confirm Password';
-$phprlang['login_password_incorrect'] = 'Either the current password for the listed username is incorrect or the new password and ' .
-										'confirm password do not match.<br><br>Please Click the Back Button and Try Again.';
-$phprlang['login_password_new'] = 'New Password';
-$phprlang['login_pwdreset_success'] = 'Your password HAS BEEN correctly reset.<br><br>You will need to use the new password the next time you login.';
+										 'You will still need to use the new password supplied above to access your WRM account.',
+'login_password_email_sub' =>  'WRM Password Reset Notification',										 
+'login_chpass_text' =>  'Change Password For User: ',
+'login_chpwd' =>  'Click to Change Password',
+'login_curr_password' =>  'Current Password',
+'login_password_conf' =>  'Confirm Password',
+'login_password_incorrect' =>  'Either the current password for the listed username is incorrect or the new password and ' .
+										'confirm password do not match.<br><br>Please Click the Back Button and Try Again.',
+'login_password_new' =>  'New Password',
+'login_pwdreset_success' =>  'Your password HAS BEEN correctly reset.<br><br>You will need to use the new password the next time you login.',
 
 // Days of the Week
-$phprlang['month'] = 'Mois';
-$phprlang['year'] = 'Ann&eacute;e';
-$phprlang['sunday'] = 'Dimanche';
-$phprlang['monday'] = 'Lundi';
-$phprlang['tuesday'] = 'Mardi';
-$phprlang['wednesday'] = 'Mercredi';
-$phprlang['thursday'] = 'Jeudi';
-$phprlang['friday'] = 'Vendredi';
-$phprlang['saturday'] = 'Samedi';
-$phprlang['2ltrsunday'] = 'Dim';
-$phprlang['2ltrmonday'] = 'Lun';
-$phprlang['2ltrtuesday'] = 'Mar';
-$phprlang['2ltrwednesday'] = 'Mer';
-$phprlang['2ltrthursday'] = 'Jeu';
-$phprlang['2ltrfriday'] = 'Ven';
-$phprlang['2ltrsaturday'] = 'Sam';
+'month' =>  'Mois',
+'year' =>  'Ann&eacute;e',
+'sunday' =>  'Dimanche',
+'monday' =>  'Lundi',
+'tuesday' =>  'Mardi',
+'wednesday' =>  'Mercredi',
+'thursday' =>  'Jeudi',
+'friday' =>  'Vendredi',
+'saturday' =>  'Samedi',
+'2ltrsunday' =>  'Dim',
+'2ltrmonday' =>  'Lun',
+'2ltrtuesday' =>  'Mar',
+'2ltrwednesday' =>  'Mer',
+'2ltrthursday' =>  'Jeu',
+'2ltrfriday' =>  'Ven',
+'2ltrsaturday' =>  'Sam',
 
 // Months
-$phprlang['month1'] = 'Janvier';
-$phprlang['month2'] = 'F&eacute;vrier';
-$phprlang['month3'] = 'Mars';
-$phprlang['month4'] = 'Avril';
-$phprlang['month5'] = 'Mai';
-$phprlang['month6'] = 'Juin';
-$phprlang['month7'] = 'Juillet';
-$phprlang['month8'] = 'Ao&ucirc;t';
-$phprlang['month9'] = 'Septembre';
-$phprlang['month10'] = 'Octobre';
-$phprlang['month11'] = 'Novembre';
-$phprlang['month12'] = 'D&eacute;cembre';
+'month1' =>  'Janvier',
+'month2' =>  'F&eacute;vrier',
+'month3' =>  'Mars',
+'month4' =>  'Avril',
+'month5' =>  'Mai',
+'month6' =>  'Juin',
+'month7' =>  'Juillet',
+'month8' =>  'Ao&ucirc;t',
+'month9' =>  'Septembre',
+'month10' =>  'Octobre',
+'month11' =>  'Novembre',
+'month12' =>  'D&eacute;cembre',
 							
 // links
-$phprlang['announcements_link'] = '&raquo; Messages D\'Accueil';
-$phprlang['configuration_link'] = '&raquo; Configuration';
-$phprlang['guilds_link'] = '&raquo; Guildes';
-$phprlang['home_link'] = '&raquo; Page D\'Accueil';
-$phprlang['calendar_link'] = '&raquo; Calendrier Graphique';
-$phprlang['locations_link'] = '&raquo; Lieux De Raid';
-$phprlang['permissions_link'] = '&raquo; Droits';
-$phprlang['profile_link'] = '&raquo; Mes Persos';
-$phprlang['raids_link'] = '&raquo; Raids';
-$phprlang['register_link'] = '&raquo; Enregistrement';
-$phprlang['roster_link'] = '&raquo; Roster';
-$phprlang['users_link'] = '&raquo; Utilisateurs';
-$phprlang['lua_output_link'] = '&raquo; Lua output raids';
-$phprlang['index_link'] = '&raquo; Forum AC';
-$phprlang['dkp_link'] = '&raquo; DKP';
-$phprlang['bosstrack_link'] = '&raquo; Boss Kill Tracking';
-$phprlang['raidsarchive_link'] = '&raquo; Raids Archive';
+'announcements_link' =>  '&raquo; Messages D\'Accueil',
+'configuration_link' =>  '&raquo; Configuration',
+'guilds_link' =>  '&raquo; Guildes',
+'home_link' =>  '&raquo; Page D\'Accueil',
+'calendar_link' =>  '&raquo; Calendrier Graphique',
+'locations_link' =>  '&raquo; Lieux De Raid',
+'permissions_link' =>  '&raquo; Droits',
+'profile_link' =>  '&raquo; Mes Persos',
+'raids_link' =>  '&raquo; Raids',
+'register_link' =>  '&raquo; Enregistrement',
+'roster_link' =>  '&raquo; Roster',
+'users_link' =>  '&raquo; Utilisateurs',
+'lua_output_link' =>  '&raquo; Lua output raids',
+'index_link' =>  '&raquo; Forum AC',
+'dkp_link' =>  '&raquo; DKP',
+'bosstrack_link' =>  '&raquo; Boss Kill Tracking',
+'raidsarchive_link' =>  '&raquo; Raids Archive',
 
 // sorting information
-$phprlang['sort_text'] = 'Cliquer ici pour trier par ';
-$phprlang['sort_desc']='Click here to sort (in descending order) by ';
-$phprlang['sort_asc']='Click here to sort (in ascending order) by '; 
+'sort_text' =>  'Cliquer ici pour trier par ',
+'sort_desc' => 'Click here to sort (in descending order) by ',
+'sort_asc' => 'Click here to sort (in ascending order) by ', 
 
 // tooltips
-$phprlang['add'] = 'Ajouter';
-$phprlang['announcements'] = 'Messages D\'accueil';
-$phprlang['arcane'] = 'Arcanes';
-$phprlang['calendar'] = 'Calendrier';
-$phprlang['cancel'] = 'Annuler inscription';
-$phprlang['cancel_msg'] = 'Vouz avez annulé votre inscription pour ce raid';
-$phprlang['comments'] = 'Commentaires';
-$phprlang['configuration'] = 'Configuration';
-$phprlang['deathknight_icon'] = 'Cliquez pour voir les Death Knights';
-$phprlang['delete'] = 'Supprimer';
-$phprlang['description'] = 'Description';
-$phprlang['druid_icon'] = 'Cliquez pour voir les Druides';
-$phprlang['edit'] = 'Editer';
-$phprlang['edit_comment'] = 'Editer Commentaire';
-$phprlang['fire'] = 'Feu';
-$phprlang['frost'] = 'Givre';
-$phprlang['frozen_msg'] = 'Les inscriptions pour ce raid sont fermées.';
-$phprlang['group_name'] = 'Nom du groupe';
-$phprlang['group_description'] = 'Description du Groupe';
-$phprlang['guilds'] = 'Guildes';
-$phprlang['has_permission'] = 'Has Permission';
-$phprlang['hunter_icon'] = 'Cliquez pour voir les Chasseurs';
-$phprlang['in_queue'] = 'Placer le personnage en file d\'attente';
-$phprlang['last_login_date'] = 'Dernière connexion';
-$phprlang['last_login_time'] = 'Heure de la dernière connexion';
-$phprlang['locations'] = 'Lieux';
-$phprlang['logs'] = 'Journaux';
-$phprlang['lua'] = 'LUA and macro output';
-$phprlang['mage_icon'] = 'Cliquez pour voir les Mages';
-$phprlang['mark'] = 'Marquer en ancien raid';
-$phprlang['nature'] = 'Nature';
-$phprlang['new'] = 'Marquer en nouveau raid';
-$phprlang['not_signed_up'] = 'Cliquez ici pour vous inscrire au Raid';
-$phprlang['out_queue'] = 'Placer le joueur dans le raid';
-$phprlang['paladin_icon'] = 'Cliquez pour voir les Paladins';
-$phprlang['permissions'] = 'Droits';
-$phprlang['priest_icon'] = 'Cliquez pour voir les prètres';
-$phprlang['priv'] = 'Privilèges';
-$phprlang['profile'] = 'Personnages';
-$phprlang['raids'] = 'Raids';
-$phprlang['remove_group'] = 'Remove group from set';
-$phprlang['remove_user'] = 'Remove user from set';
-$phprlang['rogue_icon'] = 'Cliquez pour voir les Voleurs';
-$phprlang['shadow'] = 'Ombre';
-$phprlang['shaman_icon'] = 'Cliquez pour voir les Chamans';
-$phprlang['signed_up'] = 'You are signed up for this raid';
-$phprlang['signup_add'] = 'Add user to signups';
-$phprlang['signup_delete'] = 'Supprimer le joueur du raid (permanant)';
-$phprlang['users'] = 'Utilisateurs';
-$phprlang['warlock_icon'] = 'Cliquez pour voir les Démonistes';
-$phprlang['warrior_icon'] = 'Cliquez pour voir les Guerriers';
+'add' =>  'Ajouter',
+'announcements' =>  'Messages D\'accueil',
+'arcane' =>  'Arcanes',
+'calendar' =>  'Calendrier',
+'cancel' =>  'Annuler inscription',
+'cancel_msg' =>  'Vouz avez annulé votre inscription pour ce raid',
+'comments' =>  'Commentaires',
+'configuration' =>  'Configuration',
+'deathknight_icon' =>  'Cliquez pour voir les Death Knights',
+'delete' =>  'Supprimer',
+'description' =>  'Description',
+'druid_icon' =>  'Cliquez pour voir les Druides',
+'edit' =>  'Editer',
+'edit_comment' =>  'Editer Commentaire',
+'fire' =>  'Feu',
+'frost' =>  'Givre',
+'frozen_msg' =>  'Les inscriptions pour ce raid sont fermées.',
+'group_name' =>  'Nom du groupe',
+'group_description' =>  'Description du Groupe',
+'guilds' =>  'Guildes',
+'has_permission' =>  'Has Permission',
+'hunter_icon' =>  'Cliquez pour voir les Chasseurs',
+'in_queue' =>  'Placer le personnage en file d\'attente',
+'last_login_date' =>  'Dernière connexion',
+'last_login_time' =>  'Heure de la dernière connexion',
+'locations' =>  'Lieux',
+'logs' =>  'Journaux',
+'lua' =>  'LUA and macro output',
+'mage_icon' =>  'Cliquez pour voir les Mages',
+'mark' =>  'Marquer en ancien raid',
+'nature' =>  'Nature',
+'new' =>  'Marquer en nouveau raid',
+'not_signed_up' =>  'Cliquez ici pour vous inscrire au Raid',
+'out_queue' =>  'Placer le joueur dans le raid',
+'paladin_icon' =>  'Cliquez pour voir les Paladins',
+'permissions' =>  'Droits',
+'priest_icon' =>  'Cliquez pour voir les prètres',
+'priv' =>  'Privilèges',
+'profile' =>  'Personnages',
+'raids' =>  'Raids',
+'remove_group' =>  'Remove group from set',
+'remove_user' =>  'Remove user from set',
+'rogue_icon' =>  'Cliquez pour voir les Voleurs',
+'shadow' =>  'Ombre',
+'shaman_icon' =>  'Cliquez pour voir les Chamans',
+'signed_up' =>  'You are signed up for this raid',
+'signup_add' =>  'Add user to signups',
+'signup_delete' =>  'Supprimer le joueur du raid (permanant)',
+'users' =>  'Utilisateurs',
+'warlock_icon' =>  'Cliquez pour voir les Démonistes',
+'warrior_icon' =>  'Cliquez pour voir les Guerriers',
 
-?>
+));  ?>

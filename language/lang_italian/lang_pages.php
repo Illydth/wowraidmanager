@@ -29,253 +29,259 @@
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *
 ****************************************************************************/
+
+if (empty($phprlang) || !is_array($phprlang))
+	$phprlang = array();
+	
+$phprlang = array_merge($phprlang, array(
+
 // announcements
-$phprlang['announcements_header'] = 'Annunci';
-$phprlang['announcements_new_header'] = 'Crea un nuovo Annuncio';
-$phprlang['announcements_message_text'] = 'Testo';
-$phprlang['announcements_title_text'] = 'Titolo';
+'announcements_header' =>  'Annunci',
+'announcements_new_header' =>  'Crea un nuovo Annuncio',
+'announcements_message_text' =>  'Testo',
+'announcements_title_text' =>  'Titolo',
 
 // Calendar
-$phprlang['invites'] = 'Inviti';
-$phprlang['start'] = 'Inizio';
-$phprlang['key'] = 'Key:<br>White Border = Not Signed Up<br>Green Border = Signed Up & Drafted<br>Blue Border = Signed Up, Not Drafted (queued)<br>Red Border = Signup Cancelled<br><span class="priorDay">TEXT</span> dates are in the past.<br><span class="currentDay">TEXT</span> date is today.<br><span class="postDay">TEXT</span> dates are in the future.'; //New
-$phprlang['calendar_month_select_header'] = 'Seleziona mese ed anno da visualizzare';
+'invites' =>  'Inviti',
+'start' =>  'Inizio',
+'key' =>  'Key:<br>White Border = Not Signed Up<br>Green Border = Signed Up & Drafted<br>Blue Border = Signed Up, Not Drafted (queued)<br>Red Border = Signup Cancelled<br><span class="priorDay">TEXT</span> dates are in the past.<br><span class="currentDay">TEXT</span> date is today.<br><span class="postDay">TEXT</span> dates are in the future.', //New
+'calendar_month_select_header' =>  'Seleziona mese ed anno da visualizzare',
 
 // DKP View
-$phprlang['eqdkp_system_link'] = 'Link al sistema DKP';
+'eqdkp_system_link' =>  'Link al sistema DKP',
 
 // guilds
-$phprlang['guilds_header'] = 'Lista delle Gilde';
-$phprlang['guilds_new_header'] = 'Nuova Gilda';
-$phprlang['guilds_master'] = 'GuildMaster';
-$phprlang['guilds_name'] = 'Nome della Gilda';
-$phprlang['guilds_tag']	= 'Abbreviazione della Gilda';						
-$phprlang['guilds_description'] = 'Guild Description';
-$phprlang['guilds_server'] = 'Guild Server';
-$phprlang['guilds_faction'] = 'Guild Faction';
-$phprlang['guilds_armory_code'] = 'Armory Code for Guild';
-$phprlang['raid_force_header'] = 'Raid Force Listing'; //New
-$phprlang['raid_force_select_text'] = 'Select Raid Force: '; //New
-$phprlang['raid_force_name_box_text'] = 'Raid Force Name'; //New
-$phprlang['raid_force_guild_options_text'] = 'Guild'; //New
-$phprlang['raid_force_new_header'] = 'New Raid Force Link'; //New
-$phprlang['raid_force_name_missing'] = 'Raid Force Name must not be blank or NULL.'; //New
-$phprlang['raid_force_duplicate'] = 'Duplicate Raid Force Name/Guild Record.'; //New
-$phprlang['raid_force_guild_id_missing'] = 'Guild ID must not be blank or NULL'; //New
-$phprlang['armory_lang_US'] = 'US : http://us.battle.net/wow/ : English'; //New
-$phprlang['armory_lang_EU'] = 'EU : http://eu.battle.net/wow/ : English'; //New
-$phprlang['armory_lang_DE'] = 'DE : http://eu.battle.net/wow/ : German'; //New
-$phprlang['armory_lang_ES'] = 'ES : http://eu.battle.net/wow/ : Spanish'; //New
-$phprlang['armory_lang_FR'] = 'FR : http://eu.battle.net/wow/ : French'; //New
-$phprlang['armory_lang_KR'] = 'KR : http://kr.battle.net/wow/ : Korean'; //New
-$phprlang['armory_lang_TW'] = 'TW : http://tw.battle.net/wow/ : Taiwainese'; //New
-$phprlang['armory_lang_none'] = 'No Armory or Not Applicable'; //New
+'guilds_header' =>  'Lista delle Gilde',
+'guilds_new_header' =>  'Nuova Gilda',
+'guilds_master' =>  'GuildMaster',
+'guilds_name' =>  'Nome della Gilda',
+'guilds_tag'	=> 'Abbreviazione della Gilda',						
+'guilds_description' =>  'Guild Description',
+'guilds_server' =>  'Guild Server',
+'guilds_faction' =>  'Guild Faction',
+'guilds_armory_code' =>  'Armory Code for Guild',
+'raid_force_header' =>  'Raid Force Listing', //New
+'raid_force_select_text' =>  'Select Raid Force: ', //New
+'raid_force_name_box_text' =>  'Raid Force Name', //New
+'raid_force_guild_options_text' =>  'Guild', //New
+'raid_force_new_header' =>  'New Raid Force Link', //New
+'raid_force_name_missing' =>  'Raid Force Name must not be blank or NULL.', //New
+'raid_force_duplicate' =>  'Duplicate Raid Force Name/Guild Record.', //New
+'raid_force_guild_id_missing' =>  'Guild ID must not be blank or NULL', //New
+'armory_lang_US' =>  'US : http://us.battle.net/wow/ : English', //New
+'armory_lang_EU' =>  'EU : http://eu.battle.net/wow/ : English', //New
+'armory_lang_DE' =>  'DE : http://eu.battle.net/wow/ : German', //New
+'armory_lang_ES' =>  'ES : http://eu.battle.net/wow/ : Spanish', //New
+'armory_lang_FR' =>  'FR : http://eu.battle.net/wow/ : French', //New
+'armory_lang_KR' =>  'KR : http://kr.battle.net/wow/ : Korean', //New
+'armory_lang_TW' =>  'TW : http://tw.battle.net/wow/ : Taiwainese', //New
+'armory_lang_none' =>  'No Armory or Not Applicable', //New
 
 // locations
-$phprlang['locations_header'] = 'Istanze configurate';
-$phprlang['locations_max_lvl'] = 'Livello massimo';
-$phprlang['locations_min_lvl'] = 'Livello minimo';
-$phprlang['locations_limits_header'] = 'Limiti';
-$phprlang['locations_long'] = 'Nome esteso';
-$phprlang['locations_new'] = 'Configura una nuova Istanza';
-$phprlang['locations_raid_max'] = 'Numero massimo di PG';
-$phprlang['locations_short'] = 'Nome abbreviato';
-$phprlang['lock_template'] = 'Profilo Istanza non modificabile?';
-$phprlang['locations_ro_text'] = 'Read Only: Populated With WoW Official Name for Instance';
-$phprlang['locations_expansion_text'] = 'Expansion';
-$phprlang['locations_events_text'] = 'Event Name';
+'locations_header' =>  'Istanze configurate',
+'locations_max_lvl' =>  'Livello massimo',
+'locations_min_lvl' =>  'Livello minimo',
+'locations_limits_header' =>  'Limiti',
+'locations_long' =>  'Nome esteso',
+'locations_new' =>  'Configura una nuova Istanza',
+'locations_raid_max' =>  'Numero massimo di PG',
+'locations_short' =>  'Nome abbreviato',
+'lock_template' =>  'Profilo Istanza non modificabile?',
+'locations_ro_text' =>  'Read Only: Populated With WoW Official Name for Instance',
+'locations_expansion_text' =>  'Expansion',
+'locations_events_text' =>  'Event Name',
 
 // lua_output
-$phprlang['rim_download'] = 'Scarica RIM (Raid Information Manager)';
-$phprlang['phprv_download'] = 'Scarica phpRaidViewer';
-$phprlang['lua_header'] = 'Codice LUA/Macro';
-$phprlang['sort_name'] = 'Name';
-$phprlang['sort_date'] = 'Date';
-$phprlang['output_rim'] = 'RIM (Raid Invite Manager)';
-$phprlang['output_phprv'] = 'PHP Raid Viewer';
-$phprlang['sort_signups_text'] = 'Sort Signups By:';
-$phprlang['sort_queue_text'] = 'Sort Queue By:';
-$phprlang['output_format_text'] = 'Output Format:';
-$phprlang['options_header'] = 'Options';
-$phprlang['lua_output_header'] = 'Beginning LUA Output';
-$phprlang['lua_show_all_raids'] = 'Output all Open Raids';
-$phprlang['lua_failed_to_write'] = 'LUA file could not be created due to failure to write.</b><br/>' .
+'rim_download' =>  'Scarica RIM (Raid Information Manager)',
+'phprv_download' =>  'Scarica phpRaidViewer',
+'lua_header' =>  'Codice LUA/Macro',
+'sort_name' =>  'Name',
+'sort_date' =>  'Date',
+'output_rim' =>  'RIM (Raid Invite Manager)',
+'output_phprv' =>  'PHP Raid Viewer',
+'sort_signups_text' =>  'Sort Signups By:',
+'sort_queue_text' =>  'Sort Queue By:',
+'output_format_text' =>  'Output Format:',
+'options_header' =>  'Options',
+'lua_output_header' =>  'Beginning LUA Output',
+'lua_show_all_raids' =>  'Output all Open Raids',
+'lua_failed_to_write' =>  'LUA file could not be created due to failure to write.</b><br/>' .
 									'Please set logging level to display warnings (E_WARNING or better) ' .
 									'to see the issue.<br>' .
-									'Use this for copy+paste:<br>';
-$phprlang['lua_rim_write_success'] = '<b>LUA file created.</b><br>' . 
+									'Use this for copy+paste:<br>',
+'lua_rim_write_success' =>  '<b>LUA file created.</b><br>' . 
 									'Download <a href="cache/raid_lua/phpRaid_Data.lua">phpRaid_Data.lua</a> and save 
 									it to [wow-dir]\interface\addons\RIM\<br>' .
-									'or use this for copy+paste:<br>';
-$phprlang['lua_prv_write_success'] = '<b>LUA file created.</b><br>' . 
+									'or use this for copy+paste:<br>',
+'lua_prv_write_success' =>  '<b>LUA file created.</b><br>' . 
 									'Download <a href="cache/raid_lua/phpRaid_Data.lua">phpRaid_Data.lua</a> and save 
 									it to [wow-dir]\interface\addons\phpraidviewer\<br>' .
-									'or use this for copy+paste:<br>';
-$phprlang['lua_drafted'] = 'Drafted Users'; //New
-$phprlang['lua_queued'] = 'Queued Users'; //New
-$phprlang['lua_macro_header'] = 'Macro output listing...'; //New
-$phprlang['lua_macro_footer'] = '<br>Macro output listing complete.<br>Copy and paste the above to a macro and run in-game.'; //New
+									'or use this for copy+paste:<br>',
+'lua_drafted' =>  'Drafted Users', //New
+'lua_queued' =>  'Queued Users', //New
+'lua_macro_header' =>  'Macro output listing...', //New
+'lua_macro_footer' =>  '<br>Macro output listing complete.<br>Copy and paste the above to a macro and run in-game.', //New
 
 // permissions
-$phprlang['permissions_add'] = 'Aggiungi al Profilo Utente';
-$phprlang['permissions_announcements'] = 'Annunci';
-$phprlang['permissions_configuration'] = 'Configurazione';
-$phprlang['permissions_details_users_header'] = 'Permessi dettagliati';
-$phprlang['permissions_edit_header'] = 'Modifica Profilo Utente';
-$phprlang['permissions_description'] = 'Descrizione';
-$phprlang['permissions_details_header'] = 'Dettaglio dei Permessi';
-$phprlang['permissions_guilds'] = 'Gilde';
-$phprlang['permissions_header'] = 'Profili Utente';
-$phprlang['permissions_locations'] = 'Istanze';
-$phprlang['permissions_logs'] = 'Log';
-$phprlang['permissions_name'] = 'Nome';
-$phprlang['permissions_permissions'] = 'Profili Utente';
-$phprlang['permissions_profile'] = 'Personaggi';
-$phprlang['permissions_raids'] = 'Raid';
-$phprlang['permissions_new'] = 'Crea un nuovo Profilo Utente';
-$phprlang['permissions_users'] = 'Utenti';
-$phprlang['permissions_users_header'] = 'Utenti che utilizzano questo Profilo';
+'permissions_add' =>  'Aggiungi al Profilo Utente',
+'permissions_announcements' =>  'Annunci',
+'permissions_configuration' =>  'Configurazione',
+'permissions_details_users_header' =>  'Permessi dettagliati',
+'permissions_edit_header' =>  'Modifica Profilo Utente',
+'permissions_description' =>  'Descrizione',
+'permissions_details_header' =>  'Dettaglio dei Permessi',
+'permissions_guilds' =>  'Gilde',
+'permissions_header' =>  'Profili Utente',
+'permissions_locations' =>  'Istanze',
+'permissions_logs' =>  'Log',
+'permissions_name' =>  'Nome',
+'permissions_permissions' =>  'Profili Utente',
+'permissions_profile' =>  'Personaggi',
+'permissions_raids' =>  'Raid',
+'permissions_new' =>  'Crea un nuovo Profilo Utente',
+'permissions_users' =>  'Utenti',
+'permissions_users_header' =>  'Utenti che utilizzano questo Profilo',
 
 // profile
-$phprlang['profile_arcane'] = 'Resistenza Arcane';
-$phprlang['profile_class'] = 'Classe';
-$phprlang['profile_create_header'] = 'Non è possibile definire nuovi Personaggi';
-$phprlang['profile_create_msg'] = 'Non è possibile definire Personaggi fino a quando non viene inserita almeno una Gilda';
-$phprlang['profile_fire'] = 'Resistenza Fire';
-$phprlang['profile_frost'] = 'Resistenza Frost';
-$phprlang['profile_gender'] = 'Genere';
-$phprlang['profile_guild'] = 'Gilda';
-$phprlang['profile_role'] = 'Ruolo';
-$phprlang['profile_header'] = 'Personaggi';
-$phprlang['profile_level'] = 'Livello';
-$phprlang['profile_name'] = 'Nome';
-$phprlang['profile_nature'] = 'Resistenza Nature';
-$phprlang['profile_raid'] = 'Iscrizioni';
-$phprlang['profile_race'] = 'Razza';
-$phprlang['profile_shadow'] = 'Resistenza Shadow';
-$phprlang['iLvL'] = "iLvL (Equipped, Best)"; //New
-$phprlang['health'] = "Health"; //New
-$phprlang['mana'] = "Mana"; //New
+'profile_arcane' =>  'Resistenza Arcane',
+'profile_class' =>  'Classe',
+'profile_create_header' =>  'Non è possibile definire nuovi Personaggi',
+'profile_create_msg' =>  'Non è possibile definire Personaggi fino a quando non viene inserita almeno una Gilda',
+'profile_fire' =>  'Resistenza Fire',
+'profile_frost' =>  'Resistenza Frost',
+'profile_gender' =>  'Genere',
+'profile_guild' =>  'Gilda',
+'profile_role' =>  'Ruolo',
+'profile_header' =>  'Personaggi',
+'profile_level' =>  'Livello',
+'profile_name' =>  'Nome',
+'profile_nature' =>  'Resistenza Nature',
+'profile_raid' =>  'Iscrizioni',
+'profile_race' =>  'Razza',
+'profile_shadow' =>  'Resistenza Shadow',
+'iLvL' =>  "iLvL (Equipped, Best)", //New
+'health' =>  "Health", //New
+'mana' =>  "Mana", //New
 
 // raids
-$phprlang['raids_date'] = 'Data';
-$phprlang['raids_description'] = 'Descrizione';
-$phprlang['raids_dungeon'] = 'Istanza';
-$phprlang['raids_freeze'] = 'Anticipo chiusura delle iscrizioni (in ore)';
-$phprlang['raids_invite'] = 'Ora di invito';
-$phprlang['raids_limits'] = 'Limiti del Raid';
-$phprlang['raids_location'] = 'Istanze preconfigurate';
-$phprlang['raids_max'] = 'Numero massimo di PG';
-$phprlang['raids_max_lvl'] = 'Livello massimo';
-$phprlang['raids_min_lvl'] = 'Livello minimo';
-$phprlang['raids_old'] = 'Raid passati';
-$phprlang['raids_new'] = 'Raid in programma';
-$phprlang['raids_new_header'] = 'Nuovo Raid';
-$phprlang['raids_edit_header'] = 'Edit Raid'; //new
-$phprlang['raids_start'] = 'Ora di inizio';
-$phprlang['raids_eventtype_text'] = 'Tipo di evento';
-$phprlang['raids_mark_selected_raids_to_old'] = "all mark raids are closed and over";
+'raids_date' =>  'Data',
+'raids_description' =>  'Descrizione',
+'raids_dungeon' =>  'Istanza',
+'raids_freeze' =>  'Anticipo chiusura delle iscrizioni (in ore)',
+'raids_invite' =>  'Ora di invito',
+'raids_limits' =>  'Limiti del Raid',
+'raids_location' =>  'Istanze preconfigurate',
+'raids_max' =>  'Numero massimo di PG',
+'raids_max_lvl' =>  'Livello massimo',
+'raids_min_lvl' =>  'Livello minimo',
+'raids_old' =>  'Raid passati',
+'raids_new' =>  'Raid in programma',
+'raids_new_header' =>  'Nuovo Raid',
+'raids_edit_header' =>  'Edit Raid', //new
+'raids_start' =>  'Ora di inizio',
+'raids_eventtype_text' =>  'Tipo di evento',
+'raids_mark_selected_raids_to_old' =>  "all mark raids are closed and over",
 
 // event type
-$phprlang['event_type_raid'] = 'Raid (10/25 persone)';
-$phprlang['event_type_dungeon'] = 'Dungeon (5 persone)';
-$phprlang['event_type_pvp'] = 'Evento PvP';
-$phprlang['event_type_meeting'] = 'Incontro (online/offline)';
-$phprlang['event_type_other'] = 'Altro';
+'event_type_raid' =>  'Raid (10/25 persone)',
+'event_type_dungeon' =>  'Dungeon (5 persone)',
+'event_type_pvp' =>  'Evento PvP',
+'event_type_meeting' =>  'Incontro (online/offline)',
+'event_type_other' =>  'Altro',
 
 // expansions
-$phprlang['exp_generic_wow'] = 'Generic World of Warcraft';
-$phprlang['exp_burning_crusade'] = 'The Burning Crusade';
-$phprlang['exp_wrath_lich_king'] = 'Wrath of the Lich King';
-$phprlang['exp_cataclysm'] = 'Cataclysm';
+'exp_generic_wow' =>  'Generic World of Warcraft',
+'exp_burning_crusade' =>  'The Burning Crusade',
+'exp_wrath_lich_king' =>  'Wrath of the Lich King',
+'exp_cataclysm' =>  'Cataclysm',
 
 // roster
-$phprlang['roster_header'] = 'Roster di Gilda';
+'roster_header' =>  'Roster di Gilda',
 
 // registration
-$phprlang['register_complete_header'] = 'Registrazione effettuata con successo';
-$phprlang['register_complete_msg'] = 'Ora sei un Utente registrato. Potrebbe esser necessario attendere l\'abilitazione definitiva da parte di un Amministratore prima di poter utilizzare tutte le funzioni di WowRaidManager.';
-$phprlang['register_confirm'] = 'Le password non corrispondono.';
-$phprlang['register_confirm_text'] = 'Inserisci nuovamente la password';
-$phprlang['register_email_header'] = 'Registrazione a';
-$phprlang['register_email_empty'] = 'E\' necessario inserire un indirizzo e-mail';
-$phprlang['register_email_exists'] = 'L\'indirizzo e-mail specificato è già in uso';
-$phprlang['register_email_greeting'] = 'Benvenuto';
-$phprlang['register_email_subject'] = 'E-mail di conferma della registrazione. Non necessita di risposta.';
-$phprlang['register_email_text'] = 'Indirizzo e-mail';
-$phprlang['register_error'] = 'Errore in fase di registrazione';
-$phprlang['register_header'] = 'Registrazione Utente';
-$phprlang['register_pass_empty'] = 'E\' necessario inserire una password';
-$phprlang['register_password_text'] = 'Password';
-$phprlang['register_user_empty'] = 'E\' necessario inserire uno username';
-$phprlang['register_user_exists'] = 'Lo username specificato è già in uso';
-$phprlang['register_username_text'] = 'Username';
+'register_complete_header' =>  'Registrazione effettuata con successo',
+'register_complete_msg' =>  'Ora sei un Utente registrato. Potrebbe esser necessario attendere l\'abilitazione definitiva da parte di un Amministratore prima di poter utilizzare tutte le funzioni di WowRaidManager.',
+'register_confirm' =>  'Le password non corrispondono.',
+'register_confirm_text' =>  'Inserisci nuovamente la password',
+'register_email_header' =>  'Registrazione a',
+'register_email_empty' =>  'E\' necessario inserire un indirizzo e-mail',
+'register_email_exists' =>  'L\'indirizzo e-mail specificato è già in uso',
+'register_email_greeting' =>  'Benvenuto',
+'register_email_subject' =>  'E-mail di conferma della registrazione. Non necessita di risposta.',
+'register_email_text' =>  'Indirizzo e-mail',
+'register_error' =>  'Errore in fase di registrazione',
+'register_header' =>  'Registrazione Utente',
+'register_pass_empty' =>  'E\' necessario inserire una password',
+'register_password_text' =>  'Password',
+'register_user_empty' =>  'E\' necessario inserire uno username',
+'register_user_exists' =>  'Lo username specificato è già in uso',
+'register_username_text' =>  'Username',
 
 // users
-$phprlang['users_assign'] = 'Assegna';
-$phprlang['users_char_header'] = 'Personaggi degli Utenti';
-$phprlang['users_header'] = 'Utenti';
+'users_assign' =>  'Assegna',
+'users_char_header' =>  'Personaggi degli Utenti',
+'users_header' =>  'Utenti',
 
 // view
-$phprlang['view_approved'] = 'Iscrizioni confermate';
-$phprlang['view_cancel_header'] = 'Iscrizioni annullate';
-$phprlang['view_character'] = 'Personaggio';
-$phprlang['view_comments'] = 'Commenti';
-$phprlang['view_create'] = 'Definisci un Personaggio da iscrivere';
-$phprlang['view_date'] = 'Data';
-$phprlang['view_description_header'] = 'Descrizione del Raid';
-$phprlang['view_frozen'] = 'Le iscrizioni per questo Raid sono chiuse';
-$phprlang['view_information_header'] = 'Informazioni';
-$phprlang['view_invite'] = 'Ora di invito';
-$phprlang['view_location'] = 'Istanza';
-$phprlang['view_login'] = 'Accedi a WowRaidManager con i tuoi username e password per poterti iscrivere';
-$phprlang['view_new'] = 'Iscriviti a questo Raid';
-$phprlang['view_max'] = 'Numero massimo di PG';
-$phprlang['view_max_lvl'] = 'Livello massimo';
-$phprlang['view_min_lvl'] = 'Livello minimo';
-$phprlang['view_missing_signups_link_text'] = 'Visualizza gli Utenti che NON risultano iscritti a questo Raid';
-$phprlang['view_officer'] = 'Inserito da';
-$phprlang['view_ok'] = 'Iscrizioni aperte';
-$phprlang['view_queue'] = 'Tipo di iscrizione';
-$phprlang['view_queue_header'] = 'Iscrizioni in coda';
-$phprlang['view_queued'] = 'Iscrizioni in coda';
-$phprlang['view_raid_cancel_text'] = 'Iscrizioni annullate';
-$phprlang['view_signed'] = 'Già iscritto';
-$phprlang['view_signup'] = 'Stato delle iscrizioni';
-$phprlang['view_signup_queue'] = 'In coda (disponibile per il Raid)';
-$phprlang['view_signup_cancel'] = 'Annullata (non disponibile per il Raid)';
-$phprlang['view_signup_draft'] = 'Confermata (nella formazione del Raid)';
-$phprlang['view_start'] = 'Ora di inizio';
-$phprlang['view_statistics_header'] = 'Statistiche';
-$phprlang['view_teams_link_text'] = 'Crea ed assegna i Team per questo Raid';
-$phprlang['view_total'] = 'Iscrizioni totali';
-$phprlang['view_username'] = 'Utente';
-$phprlang['view_missing_signups_return_to_view']= 'Back to Raid View'; //New
+'view_approved' =>  'Iscrizioni confermate',
+'view_cancel_header' =>  'Iscrizioni annullate',
+'view_character' =>  'Personaggio',
+'view_comments' =>  'Commenti',
+'view_create' =>  'Definisci un Personaggio da iscrivere',
+'view_date' =>  'Data',
+'view_description_header' =>  'Descrizione del Raid',
+'view_frozen' =>  'Le iscrizioni per questo Raid sono chiuse',
+'view_information_header' =>  'Informazioni',
+'view_invite' =>  'Ora di invito',
+'view_location' =>  'Istanza',
+'view_login' =>  'Accedi a WowRaidManager con i tuoi username e password per poterti iscrivere',
+'view_new' =>  'Iscriviti a questo Raid',
+'view_max' =>  'Numero massimo di PG',
+'view_max_lvl' =>  'Livello massimo',
+'view_min_lvl' =>  'Livello minimo',
+'view_missing_signups_link_text' =>  'Visualizza gli Utenti che NON risultano iscritti a questo Raid',
+'view_officer' =>  'Inserito da',
+'view_ok' =>  'Iscrizioni aperte',
+'view_queue' =>  'Tipo di iscrizione',
+'view_queue_header' =>  'Iscrizioni in coda',
+'view_queued' =>  'Iscrizioni in coda',
+'view_raid_cancel_text' =>  'Iscrizioni annullate',
+'view_signed' =>  'Già iscritto',
+'view_signup' =>  'Stato delle iscrizioni',
+'view_signup_queue' =>  'In coda (disponibile per il Raid)',
+'view_signup_cancel' =>  'Annullata (non disponibile per il Raid)',
+'view_signup_draft' =>  'Confermata (nella formazione del Raid)',
+'view_start' =>  'Ora di inizio',
+'view_statistics_header' =>  'Statistiche',
+'view_teams_link_text' =>  'Crea ed assegna i Team per questo Raid',
+'view_total' =>  'Iscrizioni totali',
+'view_username' =>  'Utente',
+'view_missing_signups_return_to_view' =>  'Back to Raid View', //New
 
 // main page
-$phprlang['main_previous_raids'] = 'Eventi passati';
-$phprlang['main_upcoming_raids'] = 'Eventi in programma';
-$phprlang['signup'] = 'Iscriviti';
-$phprlang['rss_feed_text'] = 'Feed RSS delle iscrizioni ai Raid';
-$phprlang['guild_time_string'] = 'Orario di gilda';
-$phprlang['menu_header_text'] = 'Menù di WRM';
+'main_previous_raids' =>  'Eventi passati',
+'main_upcoming_raids' =>  'Eventi in programma',
+'signup' =>  'Iscriviti',
+'rss_feed_text' =>  'Feed RSS delle iscrizioni ai Raid',
+'guild_time_string' =>  'Orario di gilda',
+'menu_header_text' =>  'Menù di WRM',
 
 // teams
-$phprlang['team_new_header'] = 'Crea un nuovo Team';
-$phprlang['team_add_header'] = 'Aggiungi membri al Team';
-$phprlang['team_remove_header'] = 'Rimuovi membri dal Team';
-$phprlang['teams_raid_view_text'] = 'Torna alla visualizzazione del Raid';
-$phprlang['team_cur_teams_header'] = 'Team creati';
-$phprlang['team_page_header'] = 'Team';
+'team_new_header' =>  'Crea un nuovo Team',
+'team_add_header' =>  'Aggiungi membri al Team',
+'team_remove_header' =>  'Rimuovi membri dal Team',
+'teams_raid_view_text' =>  'Torna alla visualizzazione del Raid',
+'team_cur_teams_header' =>  'Team creati',
+'team_page_header' =>  'Team',
 
 // Boss Kill Tracking
-$phprlang['boss_kill_type_dungeon'] = 'Dungeon (5/10 Man)';
-$phprlang['boss_kill_type_25_man'] = '25 Man Raid';
-$phprlang['boss_kill_type_10_man'] = '10 Man Raid';
-$phprlang['boss_kill_type_40_man'] = '40 Man Raid';
-$phprlang['bosskill_header'] = 'Track Named (Boss) Accomplishments';
+'boss_kill_type_dungeon' =>  'Dungeon (5/10 Man)',
+'boss_kill_type_25_man' =>  '25 Man Raid',
+'boss_kill_type_10_man' =>  '10 Man Raid',
+'boss_kill_type_40_man' =>  '40 Man Raid',
+'bosskill_header' =>  'Track Named (Boss) Accomplishments',
 
 //Raids Archive
-$phprlang['raidsarchive_header'] = 'Raids Archive';
+'raidsarchive_header' =>  'Raids Archive',
 
-?>
+));  ?>

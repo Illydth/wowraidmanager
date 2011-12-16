@@ -28,272 +28,278 @@
 *
 ****************************************************************************/
 
+if (empty($phprlang) || !is_array($phprlang))
+	$phprlang = array();
+	
+$phprlang = array_merge($phprlang, array(
+
 // Menu Headers
-$phprlang['admin_menu_header'] = 'Admin Menu';
-$phprlang['gen_conf_menu_header'] = 'General Config';
-$phprlang['user_mgt_menu_header'] = 'User Management';
-$phprlang['table_conf_menu_header'] = 'Table Config';
-$phprlang['logs_menu_header'] = 'Logs';
+'admin_menu_header' =>  'Admin Meny',
+'gen_conf_menu_header' =>  'Generell Konfig',
+'user_mgt_menu_header' =>  'Användarhantering',
+'table_conf_menu_header' =>  'Tabell Konfig',
+'logs_menu_header' =>  'Loggar',
 
 // Admin Main Menu Links
-$phprlang['admin_site_link'] = '&raquo; Exit Admin';
-$phprlang['admin_main_link'] = '&raquo; Main';
-$phprlang['admin_logs_link'] = '&raquo; Logs';
-$phprlang['admin_rolecfg_link'] = '&raquo; Role Configuration';
-$phprlang['admin_datatablecfg_link'] = '&raquo; Manage Data Tables';
-$phprlang['admin_permissions'] = '&raquo; WRM Permission Groups';
-$phprlang['admin_signup_rights'] = '&raquo; Signup Activities';
-$phprlang['admin_raid_signupgroups'] = '&raquo; Raid Permission Groups';
-$phprlang['admin_user_settings'] = '&raquo; User Settings';
-$phprlang['admin_user_management'] = '&raquo; User Administration';
-$phprlang['admin_general_config'] = '&raquo; General Config';
-$phprlang['admin_general_rss_cfg'] = '&raquo; RSS konfiguration';
-$phprlang['admin_general_email_cfg'] = '&raquo; E-post konfiguration';
-$phprlang['admin_time_config'] = '&raquo; Time Settings';
-$phprlang['admin_raid_settings'] = '&raquo; Raid Settings';
-$phprlang['admin_external_config'] = '&raquo; External Systems';
-$phprlang['admin_game_settings'] = '&raquo; Game Settings';
-$phprlang['admin_roletalent_config'] = '&raquo; Link Class/Role/Talent';
-$phprlang['admin_style_conf'] = '&raquo; Template Config';
-$phprlang['admin_menubar_mgt_link'] = '&raquo; Menu Bar Settings';
-$phprlang['admin_general_lua_output_cfg'] = '&raquo; LUA Output Settings'; //New
+'admin_site_link' =>  '&raquo; Stäng Admin',
+'admin_main_link' =>  '&raquo; Hem',
+'admin_logs_link' =>  '&raquo; Loggar',
+'admin_rolecfg_link' =>  '&raquo; Roll Konfiguration',
+'admin_datatablecfg_link' =>  '&raquo; Hantera Datatabeller',
+'admin_permissions' =>  '&raquo; WRM Rättighetsgrupper',
+'admin_signup_rights' =>  '&raquo; Registrerings Aktivitet',
+'admin_raid_signupgroups' =>  '&raquo; Raid Rättighetsgrupper',
+'admin_user_settings' =>  '&raquo; Användarinställningar',
+'admin_user_management' =>  '&raquo; Användarhantering',
+'admin_general_config' =>  '&raquo; Allmänna Inställningar',
+'admin_general_rss_cfg' =>  '&raquo; RSS Konfiguration',
+'admin_general_email_cfg' =>  '&raquo; E-post Konfiguration',
+'admin_time_config' =>  '&raquo; Tidsinställningar',
+'admin_raid_settings' =>  '&raquo; Raid Inställningar',
+'admin_external_config' =>  '&raquo; Externa System',
+'admin_game_settings' =>  '&raquo; Spel Inställningar',
+'admin_roletalent_config' =>  '&raquo; Länk Klass/Roll/Talent',
+'admin_style_conf' =>  '&raquo; Tema Inställningar',
+'admin_menubar_mgt_link' =>  '&raquo; Meny Inställningar',
+'admin_general_lua_output_cfg' =>  '&raquo; LUA Output Inställningar', //New
 
 // Link from Main Site to Admin
-$phprlang['admin_section_link'] = 'Admin Section';
+'admin_section_link' =>  'Administration',
 
 // Text on the Main Index Page
-$phprlang['admin_index_header'] = 'WRM Administrative Section';
-$phprlang['admin_statistics_header'] = 'Statistics';
-$phprlang['wrm_statistics_header'] = 'WRM Statistics:';
-$phprlang['database_statistics_header'] = 'Database Statistics:';
-$phprlang['admin_version_stat_text'] = 'WRM Version:';
-$phprlang['statistic'] = 'Statistic';
-$phprlang['value'] = 'Value';
-$phprlang['db_name_text'] = 'Database Name:';
-$phprlang['db_host_text'] = 'Database HostName:';
-$phprlang['db_user_text'] = 'Database Username:';
-$phprlang['db_prefix_text'] = 'Database Table Prefix:';
-$phprlang['db_size_text'] = 'Database Size (WRM Tables Only):';
-$phprlang['php_version_text'] = 'PHP Version:';
-$phprlang['mysql_version_text'] = 'MySQL Version:';
-$phprlang['user_count_text'] = 'Number of Users:';
-$phprlang['wrm_db_ver_text'] = 'WRM Database Version:';
-$phprlang['recent_logins_header'] = 'Recent Logins:';
-$phprlang['recent_logins_explanation'] = 'These are the users who have used the WRM software within the last 5 minutes.';
-$phprlang['inactive_logins_header'] = 'Inactive Logins:';
-$phprlang['inactive_login_explanation'] = 'These are the last 10 most recent users to fall into the "inactive" 
-											category.<br>To see the full list of inactive users please see the 
-											"User Administration" link in the Admin Section.';
-$phprlang['logins_username_header'] = 'Username';
-$phprlang['logins_email_header'] = 'EMail';
-$phprlang['logins_priv_header'] = 'Privledge Group';
-$phprlang['logins_time_header'] = 'Last Login';
-$phprlang['kib'] =  'KiB';
-$phprlang['raid_stats_header'] = 'Raid Statistics:';
-$phprlang['raid_stats_explanation'] = 'Percentages are calculated as the total number of signed up users for the period<br>
-										(Queued + Drafted, NOT Cancelled) devided by total maximum raid attendees
-										for the period.';
-$phprlang['raid_active_count_header'] = 'Active Raids:';
-$phprlang['raid_total_count_header'] = 'Total Raids:';
-$phprlang['raid_week_percent_header'] = 'This Week\'s Attendance Percentage:';
-$phprlang['raid_30d_percent_header'] = 'Attendence Last 30 Days:';
-$phprlang['raid_3m_percent_header'] = 'Attendence Last 3 Months:';
-$phprlang['raid_6m_percent_header'] = 'Attendence Last 6 Months:';
-$phprlang['raid_1y_percent_header'] = 'Attendence Last 1 Year:';
-$phprlang['raid_life_percent_header'] = 'Lifetime Attendence Percentage:';
-$phprlang['logs_header'] = 'Recent Hack Logs:';
-$phprlang['logs_explanation'] = 'The 10 most recent "Hacking Attempts" identified by the system.';
-$phprlang['ip_header'] = 'IP Address';
-$phprlang['message_header'] = 'Message';
-$phprlang['timestamp_header'] = 'Date/Time';
-$phprlang['delete_board_cache_text'] = 'Delete cache files for the WRM Application.';
-$phprlang['delete_armory_cache_text'] = 'Delete WOW Armory Cache Information';
-$phprlang['delete_armory_log_text'] = 'Delete the WoW Armory Output Logs';
-$phprlang['delete_template_cache_text'] = 'Delete the WRM Application Template Cache Files.';
-$phprlang['actions_header'] = 'Board Cache/Log Actions:';
-$phprlang['actions_explanation'] = 'The buttons below purge the various cache and log files associated with WRM.';
-$phprlang['configuration_version_current'] = 'Du har nyaste versionen av WoW Raid Manager';
-$phprlang['configuration_version_info_header'] = 'Versions Information';
-$phprlang['configuration_version_outdated_header'] = 'WoW Raid Manager uppdatering tillgänglig!';
-$phprlang['configuration_version_outdated_message'] = 'Din version av WoW Raid Manager är gammal. Du rekommenderas starkt att uppdatera.<br>
+'admin_index_header' =>  'WRM Administrativa Sektionen',
+'admin_statistics_header' =>  'Statistik',
+'wrm_statistics_header' =>  'WRM Statistik:',
+'database_statistics_header' =>  'Databas Statistik:',
+'admin_version_stat_text' =>  'WRM Version:',
+'statistic' =>  'Statistik',
+'value' =>  'Värde',
+'db_name_text' =>  'Databas Namn:',
+'db_host_text' =>  'Databas Värdnamn:',
+'db_user_text' =>  'Databas Användarnamn:',
+'db_prefix_text' =>  'Databas Tabell Prefix:',
+'db_size_text' =>  'Databas Storlek (Endast WRM Tabeller):',
+'php_version_text' =>  'PHP Version:',
+'mysql_version_text' =>  'MySQL Version:',
+'user_count_text' =>  'Antal Användare:',
+'wrm_db_ver_text' =>  'WRM Databas Version:',
+'recent_logins_header' =>  'Senaste Logins:',
+'recent_logins_explanation' =>  'Dessa är de användare som har använt WRM under de senaste 5 minuterna.',
+'inactive_logins_header' =>  'Inaktiva Logins:',
+'inactive_login_explanation' =>  'Dessa är de senaste 10 senaste användare som hamnat i kategorin "inaktiv".
+                                                            <br> vill du se hela listan med inaktiva användare se "Användarhantering"-länken i Admin avsnitt.',
+
+'logins_username_header' =>  'Användarnamn',
+'logins_email_header' =>  'E-post',
+'logins_priv_header' =>  'Rättighetsgrupp',
+'logins_time_header' =>  'Senaste login',
+'kib' =>   'KiB',
+'raid_stats_header' =>  'Raid Statistik:',
+'raid_stats_explanation' =>  'Procentsatserna beräknas som det totala antalet uppskrivna användare för perioden<br>
+										(Tillgängliga + Uttagna, Ej "Ej tillgängliga") dividerat med den totala maximala raiddeltagare för perioden.',
+'raid_active_count_header' =>  'Aktiva Raids:',
+'raid_total_count_header' =>  'Totala Raids:',
+'raid_week_percent_header' =>  'Denna veckas närvaro i %:',
+'raid_30d_percent_header' =>  'Närvaro senaste 30 dagar:',
+'raid_3m_percent_header' =>  'Närvaro senaste 3 Månader:',
+'raid_6m_percent_header' =>  'Närvaro senaste 6 Månader:',
+'raid_1y_percent_header' =>  'Närvaro senaste 1 år:',
+'raid_life_percent_header' =>  'Livstids närvaro i %:',
+'logs_header' =>  'Senaste Intrångsförsök logg:',
+'logs_explanation' =>  'De 10 senaste försök som identifierats som "Intrångsförsök" identifierade av systemet.',
+'ip_header' =>  'IP Adress',
+'message_header' =>  'Meddelande',
+'timestamp_header' =>  'Datum/Tid',
+'delete_board_cache_text' =>  'Radera Cache filer för WRM.',
+'delete_armory_cache_text' =>  'Radera WOW Armory Cache Information',
+'delete_armory_log_text' =>  'Radera WoW Armory Output Loggar',
+'delete_template_cache_text' =>  'Radera WRM Applikations Tema Cache Filer.',
+'actions_header' =>  'WRM Cache/Logg Händelser:',
+'actions_explanation' =>  'Nedan knappar raderar cache eller logg filer assosierade med WRM.',
+'configuration_version_current' =>  'Du har senaste versionen av WoW Raid Manager',
+'configuration_version_info_header' =>  'Versions Information',
+'configuration_version_outdated_header' =>  'En ny WoW Raid Manager uppdatering finns tillgänglig!',
+'configuration_version_outdated_message' =>  'Din version av WoW Raid Manager är gammal. Du rekommenderas starkt att uppdatera.<br>
 													   Den senaste versionen är %s och du använder för närvarande version %s.<br>
-													   För att ladda ner, besök <a href="http://www.wowraidmanager.net">WoW Raid Manager</a>.';
+													   För att ladda ner, besök <a href="http://www.wowraidmanager.net">WoW Raid Manager</a>.',
 
 // Text on the "General Config" Page
-$phprlang['configuration_debug'] = 'Debug mode';
-$phprlang['configuration_disable'] = 'Avaktivera WoW Raid Manager';
-$phprlang['configuration_enable_five_man'] = 'Aktivera grupper<br><a href="../docs/enable_groups.htm" target="_blank">hjälp?</a>';
-$phprlang['configuration_language'] = 'Språk';
-$phprlang['configuration_records_per_page'] = 'Records Per Data Table Page';
-$phprlang['configuration_persistent_db'] = 'Create Persistant Database Connection?';
-$phprlang['general_configuration_header'] = 'General Settings';
-$phprlang['configuration_old_raids_index'] = 'Number of Old Raids to Show on the Index Page';
-$phprlang['auto_mark_raids_old'] = 'Auto Mark Raids Old (Hours)'; //New
+'configuration_debug' =>  'Debug-läge',
+'configuration_disable' =>  'Avaktivera WoW Raid Manager',
+'configuration_enable_five_man' =>  'Aktivera 5-manna grupper<br><a href="../docs/enable_groups.htm" target="_blank">hjälp?</a>',
+'configuration_language' =>  'Språk',
+'configuration_records_per_page' =>  'Poster per Datatabell sida',
+'configuration_persistent_db' =>  'Använd Ihållande databasanslutning (Persistent Database Connection?',
+'general_configuration_header' =>  'Generella Inställningar',
+'configuration_old_raids_index' =>  'Antal gamla raids att visa på startsidan',
+'auto_mark_raids_old' =>  'Automatiskt markera gamla raider (Timmar)', //New
 
-$phprlang['general_side_cfg_header'] = 'Side Config';
-$phprlang['configuration_site_name'] = 'Site Name';
-$phprlang['configuration_site_server'] = 'Site Server Name';
-$phprlang['configuration_site_description'] = 'Site Description';
+'general_side_cfg_header' =>  'Webbplatsinställningar',
+'configuration_site_name' =>  'Webbplatsens Namn',
+'configuration_site_server' =>  'Webbplatsens Servernamn',
+'configuration_site_description' =>  'Webbplatsens Beskrivning',
 
-$phprlang['configuration_admin_email'] = 'Admin e-post';
-$phprlang['configuration_email_header'] = 'E-post konfiguration';
-$phprlang['configuration_email_sig'] = 'E-post signatur';
+'configuration_admin_email' =>  'Admin e-post',
+'configuration_email_header' =>  'E-post konfiguration',
+'configuration_email_sig' =>  'E-post signatur',
 
-$phprlang['configuration_rss_header'] = 'RSS Configuration';
-$phprlang['configuration_rss_site'] = 'RSS: URL tilll WoW Raid Manager Installationen (Inget avslutande /)';
-$phprlang['configuration_rss_export'] = 'RSS: sida att exportera RSS feed till';
-$phprlang['configuration_rss_feed_amt'] = 'RSS: Antal raids som visas i feeden';
+'configuration_rss_header' =>  'RSS Konfiguration',
+'configuration_rss_site' =>  'RSS: URL tilll WoW Raid Manager Installationen (Inget avslutande /)',
+'configuration_rss_export' =>  'RSS: sida att exportera RSS feed till',
+'configuration_rss_feed_amt' =>  'RSS: Antal raids som visas i feeden',
 
 // Text on the "Style Config" Page
-$phprlang['style_menu_header'] = 'Style Config';
-$phprlang['configuration_template_cfg_header'] = 'Template Config';
-$phprlang['configuration_template_width_text'] = "Template Width";
-$phprlang['configuration_width_normal'] = "normal";
-$phprlang['configuration_width_expanded'] = "expanded";
-$phprlang['configuration_logo'] = 'Sökväg till logo bild';
-$phprlang['configuration_sitelink'] = '"Hem" länken pekar till';
-$phprlang['configuration_template'] = 'Mall';
-$phprlang['configuration_addon'] = 'Addon URL';
-$phprlang['configuration_show_addon'] = 'Visa addon länk';
-$phprlang['configuration_register_text'] = 'Registration URL';
+'style_menu_header' =>  'Layout Inställningar',
+'configuration_template_cfg_header' =>  'Tema Inställningar',
+'configuration_template_width_text' =>  "Temats Bredd",
+'configuration_width_normal' =>  "normal",
+'configuration_width_expanded' =>  "expanderad",
+'configuration_logo' =>  'Sökväg till logo bild',
+'configuration_sitelink' =>  '"Hem" länken pekar till',
+'configuration_template' =>  'Áktivt Tema',
+'configuration_addon' =>  'Addon URL',
+'configuration_show_addon' =>  'Visa addon länk',
+'configuration_register_text' =>  'Registrations URL',
 
 // Text on the "Time Config" Page
-$phprlang['configuration_ampm'] = 'Planera raids i 12h/24h format';
-$phprlang['configuration_date'] = 'Datum format<br><a href="http://www.php.net/date/" target="_blank">hjälp?</a>';
-$phprlang['configuration_dst_text'] = 'Ändra för Sommar/Vinter tid?';
-$phprlang['configuration_time'] = 'Tids format<br><a href="http://www.php.net/date/" target="_blank">hjälp?</a>';
-$phprlang['configuration_timezone_text'] = 'Tidszone';
-$phprlang['time_header'] = 'Time Configuration';
+'configuration_ampm' =>  'Planera raids i 12h/24h format',
+'configuration_date' =>  'Datumformat<br><a href="http://www.php.net/date/" target="_blank">hjälp?</a>',
+'configuration_dst_text' =>  'Ändra för Sommar/Vinter tid?',
+'configuration_time' =>  'Tidsformat<br><a href="http://www.php.net/date/" target="_blank">hjälp?</a>',
+'configuration_timezone_text' =>  'Tidszon',
+'time_header' =>  'Tidsinställningar',
 
 // Text on the "Game Settings" Page.
-$phprlang['configuration_game_header'] = 'Game Settings';
-$phprlang['configuration_game_select_addon'] = 'select Addon';
+'configuration_game_header' =>  'Spelkonfiguration',
+'configuration_game_select_addon' =>  'Välj Addon',
 
 // Text on the "Role Configuration" Page.
-$phprlang['configuration_role_header'] = 'Roll Konfigurering';
-$phprlang['addrole'] = 'Add Role';
-$phprlang['updaterole'] = 'Update Role';
-$phprlang['configuration_role_new_header'] = 'Add a New Role';
-$phprlang['configuration_role_edit_header']= 'Modify an Existing Role';
-$phprlang['role_error_exists'] = 'Role ID Already Exists, Chose Another.';
-$phprlang['role_error_role_name_blank'] = 'Role Name Cannot Be a Blank or Null Value.';
-$phprlang['role_error_role_config_blank'] = 'Role Config Text Cannot Be a Blank or Null Value.';
-$phprlang['role_error_role_id_blank'] = 'Role ID Cannot Be a Blank or Null Value.';
+'configuration_role_header' =>  'Roll Konfigurering',
+'addrole' =>  'Lägg till Roll',
+'updaterole' =>  'Updatera Roll',
+'configuration_role_new_header' =>  'Lägg till en ny Roll',
+'configuration_role_edit_header' =>  'Redigera en existerande Roll',
+'role_error_exists' =>  'Roll ID existerar, Välj en annan.',
+'role_error_role_name_blank' =>  'Rollnamn måste anges och kan ej vara tomt eller ett nollvärde.',
+'role_error_role_config_blank' =>  'Roll Konfig Text måste anges och kan ej vara tomt eller ett nollvärde.',
+'role_error_role_id_blank' =>  'Roll ID måste anges och kan ej vara tomt eller ett nollvärde.',
 
 // Text on the "Link Class/Role/Talent" Page.
-$phprlang['configuration_roletalent_header'] = 'Class/Role/Talent Links';
-$phprlang['configuration_roletalent_new_header'] = 'Add New Class/Role/Talent Link';
-$phprlang['configuration_roletalent_edit_header'] = 'Edit Class/Role/Talent Link';
-$phprlang['roletalent_duplicate_error'] = 'Duplicate Class/Role/Talent Link';
-$phprlang['roletalent_classid_blank_error'] = 'The Class ID Cannot be a Blank or Null Value.';
-$phprlang['roletalent_talenttree_blank_error'] = 'The Talent Tree Name Cannot be a Blank or Null Value';
-$phprlang['roletalent_displaytext_blank_error'] = 'The Display Text Value Cannot be Blank or Null.';
-$phprlang['roletalent_roleid_blank_error'] = 'The Role Name Cannot be a Blank or Null Value';
+'configuration_roletalent_header' =>  'Klass/Roll/Talangträds Länkar',
+'configuration_roletalent_new_header' =>  'Lägg till ny Klass/Roll/Talangträds länk',
+'configuration_roletalent_edit_header' =>  'Redigera Klass/Roll/Talangträds länk',
+'roletalent_duplicate_error' =>  'Duplicera Klass/Roll/Talangträds länk',
+'roletalent_classid_blank_error' =>  'Klass ID måste anges och kan ej vara tomt eller ett nollvärde.',
+'roletalent_talenttree_blank_error' =>  'Talangträdets namn måste anges och kan ej vara tomt eller ett nollvärde.',
+'roletalent_displaytext_blank_error' =>  'Visningstextens Värde måste anges och kan ej vara tomt eller ett nollvärde.',
+'roletalent_roleid_blank_error' =>  'Rollnamnet måste anges och kan ej vara tomt eller ett nollvärde',
 
 // Text on the "Data Table Config" Page.
-$phprlang['configuration_datatable_header'] = 'Modify Data Table Information';
-$phprlang['configuration_datatable_view_select_text'] = 'Select the View to Modify: ';
-$phprlang['configuration_datatable_edit_header'] = 'Change View Properties';
-$phprlang['configuration_datatable_column_name'] = 'Column Name';
-$phprlang['configuration_datatable_visible'] = 'Visible';
-$phprlang['configuration_datatable_position'] = 'Column Position';
-$phprlang['configuration_datatable_image_url'] = 'Image URL';
-$phprlang['configuration_datatable_default_sort'] = 'Sort on This Column'; 
+'configuration_datatable_header' =>  'Redigera Datatabell Information',
+'configuration_datatable_view_select_text' =>  'Välj vy för att redigera: ',
+'configuration_datatable_edit_header' =>  'Ändra egenskaper',
+'configuration_datatable_column_name' =>  'Kolumnamn',
+'configuration_datatable_visible' =>  'Synlig',
+'configuration_datatable_position' =>  'Kolumn possition',
+'configuration_datatable_image_url' =>  'Bild URL',
+'configuration_datatable_default_sort' =>  'Sortera efter denna kolumn', 
 
 // Text on the "User Administration" Page.
-$phpraid['configuration_users_modperm_header'] = 'Change Selected User(s) Permission Group';
-$phpraid['configuration_users_modperm_desc'] = 'To change the permission group for a user, do the
-												following: <br><ol><li>Select the checkboxes in the
-												table above next to the users whose permission group
-												you want to change.</li><li>Select the permission group
-												to change to from the dropdown box below</li><li>Click
-												the Submit button below.</li></ol><br>The permission
-												group for each user should update in the user list
-												table above to the selected permission group.';
-$phprlang['configuration_permission_cannot_modify'] = 'You have attempted to remove the "Admin" privledge group
-														from all of your users, this would leave you without an 
-														ability to administrate your system and is not allowed.<br><br>
-														Please add a user to the "Admin" Privledge group before
-														atempting to remove users from it.  There must be at least
-														one "Admin" privledged user.';
+'configuration_users_modperm_header' =>  'Ändra de markerade användares Rättighetsgrupp',
+'configuration_users_modperm_desc' =>  'För att ändra rättighetsgruppen för en användare gör följande:
+                                                                                                                <br><ol><li>Markera kryssrutan i ovan tabell för den
+                                                                                                                användares rättighetsgrupp du vill ändra på.</li>
+                                                                                                                <li>Markera den nya rättighetsgruppen att tilldela
+                                                                                                                användaren med från listrutan nedan</li>
+                                                                                                                <li>Klicka på knappen skicka nedan.</li></ol><br>
+                                                                                                                Rättighetsgruppen skall nu vara uppdaterade i
+                                                                                                                användarlistan ovan till den valda nya gruppen',
+'configuration_permission_cannot_modify' =>  'Du har försökt att radera rättighetsgruppen Admin
+														från alla dina användare, detta skulle betyda att du inte
+                                                                                                                kan administrera eller redigera ditt WRM system vilket
+                                                                                                                inte är tillåtet <br><br>
+                                                                                                                Vänligen uppdatera en användare med Admin rättigheter
+                                                                                                                innan du försöker att ta bort admins från gruppen.
+                                                                                                                Det måste alltid existera minimum en Admin.',
 
 // Text on the "External Systems" Page.
-$phprlang['configuration_armory_cache'] = 'Cache Armory Data To';
-$phprlang['configuration_external_links_header'] = 'Integrera med externa system';
-$phprlang['configuration_eqdkp_integration_text'] = 'Integrera med EqDKP<br><a href="../docs/eqdkp_link.htm" target="_blank">hjälp?</a>';
-$phprlang['configuration_eqdkp_link'] = 'URL till er EqDKP installation (Inget avslutande /)';
-$phprlang['configuration_roster_text'] = 'Integrera med WoW Roster';
-$phprlang['configuration_armory_enable'] = 'Aktivera Armory uppslagning';
-$phprlang['configuration_armory_cache_database'] = 'Database Table';
-$phprlang['configuration_armory_cache_files'] = 'Files on Disk';
-$phprlang['configuration_armory_cache_none'] = 'Do not Cache Armory Data';
-$phprlang['configuration_armory_link_text'] = 'Korrekt Armory länk för Server';
-$phprlang['configuration_armory_language_text'] = 'Språk kod för Armoryt';
-$phprlang['configuration_extsys_bridge_config_header'] = 'Bridge Config';
-$phprlang['configuration_extsys_norest'] = 'Inga Restriktioner';
-$phprlang['configuration_extsys_noaddus'] = 'Inga Ytterliggare AnvÃ€ndargrupper';
-$phprlang['configuration_extsys_group01'] = 'VÃ€lj grund gruppen/klassen som har tillgÃ¥ng attnyttja WRM';
-$phprlang['configuration_extsys_group02'] = 'Alla anvÃ€ndare utan denna grupp kommer inte atttillÃ¥tas logga in';
-$phprlang['configuration_extsys_group03'] = 'VÃ€nligen vÃ¶lj "Inga Restriktioner" hÃ€r om du vill att alla anvÃ€ndare oavsett grupp/klass skall kunna logga in och nyttja WRM';
-$phprlang['configuration_extsys_alt_group01'] = 'VÃ€lj en alternativ grupp/klass som kan nyttja WRM';
-$phprlang['configuration_extsys_alt_group02'] = 'Alla anvÃ€ndare i denna grupp kommer att tillÃ¥tas att logga in, oavsett om de Ã€r i ovanstÃ¥ende grupp/klass eller inte';
-$phprlang['configuration_extsys_group_text'] = 'Base User group';
-$phprlang['configuration_extsys_alt_group_text'] = 'Additional user group';
-$phprlang['configuration_armory_cache_timeout'] = 'Armory Cache Lifetime (In Hours)'; //New
-$phprlang['configuration_armory_cache_timeout_sup'] = 'After the Cache Lifetime expires, WRM will go back to the Armory to re-pull data.  The shorter the cache<br>' . 
-													' the "fresher" the data WRM will have in it\'s popup, but the slower WRM will run due to pulling data from<br>' . 
-													' the armory URL more often.  The longer the cache value, the less "fresh" Armory data but the faster<br>' . 
-													' WRM will run.'; //New
-
+'configuration_armory_cache' =>  'Cacha Armory Data Till',
+'configuration_external_links_header' =>  'Integrera med externa system',
+'configuration_eqdkp_integration_text' =>  'Integrera med EqDKP<br><a href="../docs/eqdkp_link.htm" target="_blank">hjälp?</a>',
+'configuration_eqdkp_link' =>  'URL till er EqDKP installation (Inget avslutande /)',
+'configuration_roster_text' =>  'Integrera med WoW Roster',
+'configuration_armory_enable' =>  'Aktivera Armory uppslagning',
+'configuration_armory_cache_database' =>  'Databas Tabell',
+'configuration_armory_cache_files' =>  'Filer på disk',
+'configuration_armory_cache_none' =>  'Cacha inte Armory Data',
+'configuration_armory_link_text' =>  'Korrekt Armory länk för er Server',
+'configuration_armory_language_text' =>  'Språk kod för Armoryt',
+'configuration_extsys_bridge_config_header' =>  'Bryggnings Inställningar',
+'configuration_extsys_norest' =>  'Inga Restriktioner',
+'configuration_extsys_noaddus' =>  'Inga Ytterliggare Användargrupper',
+'configuration_extsys_group01' =>  'Välj grundgruppen eller klassen som har tillgång attnyttja WRM',
+'configuration_extsys_group02' =>  'Alla användare utan denna grupp kommer inte att tillåtas att logga in',
+'configuration_extsys_group03' =>  'Vänligen välj "Inga Restriktioner" här om du vill att alla användare oavsett grupp/klass skall kunna logga in och utnyttja WRM',
+'configuration_extsys_alt_group01' =>  'Välj en alternativ grupp/klass som kan nyttja WRM',
+'configuration_extsys_alt_group02' =>  'Alla användare i denna grupp kommer att tillåtas att logga in, oavsett om de Är i ovanstående grupp/klass eller inte',
+'configuration_extsys_group_text' =>  'Grundanvändar grupp',
+'configuration_extsys_alt_group_text' =>  'YUtterligare användargrupp',
+'configuration_armory_cache_timeout' =>  'Armory Cache Livstid (I Timmar)', //New
+'configuration_armory_cache_timeout_sup' =>  'Efter Cache Lifetime löper ut, kommer WRM gå tillbaka till Armory för att hämta ny data.<br>
+                                                                                                        Ju kortare cachen är desto färskare data kommer WRM att ha i dess popup,
+                                                                                                        men desto långsammare kommer WRM att köra på grund av
+                                                                                                        att det drar data från Armoryts URL oftare.<br>
+                                                                                                        Ju längre cachen värde, desto mindre färska uppgifter
+                                                                                                        från Armory men desto snabbare kommer WRM att köras.<br>', //New
 // Text on the "User Settings" Page.
-$phprlang['configuration_multiple'] = 'Tillåt multipla bokningar från samma användare';
-$phprlang['configuration_anonymous'] = 'Tillåt anonym insyn';
-$phprlang['configuration_resop'] = 'Gör resistance valfritt';
+'configuration_multiple' =>  'Tillåt multipla registreringar från samma användare',
+'configuration_anonymous' =>  'Tillåt anonym insyn',
+'configuration_resop' =>  'Gör resistance valfritt',
 
 // Text on the "Signup Rights" Page.
-$phprlang['configuration_raid_signupgroups_header'] = 'Raid Permission Groups';
-$phprlang['configuration_cancel'] = 'Avbryt';
-$phprlang['configuration_cancel_def'] = 'Avbryt = Placera en användare bland avbokade';
-$phprlang['configuration_cancelled'] = 'Avbokad status';
-$phprlang['configuration_comments'] = 'Kommentarer';
-$phprlang['configuration_comments_def'] = 'Kommentarer = Tillåt användare att editera sina kommentarer';
-$phprlang['configuration_delete'] = 'Radera';
-$phprlang['configuration_delete_def'] = 'Radera = Ta bort användares bokning helt';
-$phprlang['configuration_draft_def'] = 'Uppflyttningt = Placera användaren i Raidet';
-$phprlang['configuration_draft'] = 'Uppflyttning';
-$phprlang['configuration_drafted'] = 'Uppflyttad (I Raidet)';
-$phprlang['configuration_on_queue'] = 'I kö';
-$phprlang['configuration_queue'] = 'Köa';
-$phprlang['configuration_queue_def'] = 'Köa = Placera en användare i bokningskön';
-$phprlang['configuration_signup_rights_header'] = 'Bokningsrättigheter';
-$phprlang['configuraiton_admin'] = 'Administratör';
-$phprlang['configuration_raidlead'] = 'Raid Ledare';
+'configuration_raid_signupgroups_header' =>  'Raid Rättighetsgrupper',
+'configuration_cancel' =>  'Avbryt',
+'configuration_cancel_def' =>  'Avbryt = Placera en användare som Ej Tillgänglig',
+'configuration_cancelled' =>  'Som Ej Tillgänglig',
+'configuration_comments' =>  'Kommentarer',
+'configuration_comments_def' =>  'Kommentarer = Tillåt användare att editera sina kommentarer',
+'configuration_delete' =>  'Radera',
+'configuration_delete_def' =>  'Radera = Ta bort användarens registrering helt',
+'configuration_draft_def' =>  'Uttagning = Placera användaren som uttagna',
+'configuration_draft' =>  'Uttagning',
+'configuration_drafted' =>  'Uttagen (I Raiden)',
+'configuration_on_queue' =>  'Som Tillgänglig',
+'configuration_queue' =>  'Köa',
+'configuration_queue_def' =>  'Köa = Placera en användare som Tillgänglig',
+'configuration_signup_rights_header' =>  'Registreringsrättigheter',
+'configuraiton_admin' =>  'Administratör',
+'configuration_raidlead' =>  'Raidledare',
 
 // Text on the "Raid Settings" Page.
-$phprlang['configuration_raid_settings_header'] = 'Raid Inställningar';
-$phprlang['configuration_raid_view_type_text'] = 'Select Raid View Type';
-$phprlang['configuration_raid_view_type_class'] = 'Display Raid View By Class';
-$phprlang['configuration_raid_view_type_role'] = 'Display Raid View By Role';
-$phprlang['configuration_role_limit_text'] = 'Tvinga Roll begränsningar för Raids';
-$phprlang['configuration_class_limit_text'] = 'Tvinga Klass begränsningar för Raids';
-$phprlang['configuration_class_as_min'] = 'Använd Klass begränsningar som minimum';
-$phprlang['configuration_freeze'] = 'Avaktivera frys kontroll';
-$phprlang['configuration_recurrance_enabled_text'] = 'Enable Recurring Raids System'; //New
-$phprlang['configuration_freeze_status_draft'] = 'Stop changes to Drafted Raiders During Freeze';  //NEW
-$phprlang['configuration_freeze_status_queue'] = 'Stop changes to Queued Raiders During Freeze';  //NEW
-$phprlang['configuration_freeze_status_cancel'] = 'Stop changes to Cancelled Raiders During Freeze';  //NEW
-$phprlang['configuration_description'] = 'Beskrivning';
-$phprlang['configuration_default'] = 'Standard Grupp';
-$phprlang['configuration_faction'] = 'Faktion';
-$phprlang['configuration_guild_header'] = 'Guild Konfiguration';
-$phprlang['configuration_guild_name'] = 'Namn';
-$phprlang['configuration_id'] = 'Visa ID i tabeller';
-$phprlang['configuration_server'] = 'Server';
-$phprlang['configuration_site_header'] = 'Site Konfiguration';
-$phprlang['configuration_user'] = 'Användare';
-$phprlang['configuration_user_rights_header'] = 'Användar Rättigheter';
+'configuration_raid_settings_header' =>  'Raid Inställningar',
+'configuration_raid_view_type_text' =>  'Välj Raid visningstyp',
+'configuration_raid_view_type_class' =>  'Visa Raids efter Klass',
+'configuration_raid_view_type_role' =>  'Visa Raids efter Roll',
+'configuration_role_limit_text' =>  'Tvinga Roll begränsningar för Raids',
+'configuration_class_limit_text' =>  'Tvinga Klass begränsningar för Raids',
+'configuration_class_as_min' =>  'Använd Klass begränsningar som minimum',
+'configuration_freeze' =>  'Avaktivera frys kontroll',
+'configuration_recurrance_enabled_text' =>  'Aktivera återkommande raider', //New
+'configuration_freeze_status_draft' =>  'Stoppa ändringar på Uttagna Raiders efter frysning av raid',  //NEW
+'configuration_freeze_status_queue' =>  'Stoppa ändringar på Tillgängliga Raiders efter frysning av raid',  //NEW
+'configuration_freeze_status_cancel' =>  'Stoppa ändringar på Ej Tillgängliga Raiders efter frysning av raid',  //NEW
+'configuration_description' =>  'Beskrivning',
+'configuration_default' =>  'Standard Grupp',
+'configuration_faction' =>  'Faktion',
+'configuration_guild_header' =>  'Guild Konfiguration',
+'configuration_guild_name' =>  'Namn',
+'configuration_id' =>  'Visa ID i tabeller',
+'configuration_server' =>  'Server',
+'configuration_site_header' =>  'Webbplats Konfiguration',
+'configuration_user' =>  'Användare',
+'configuration_user_rights_header' =>  'Användarrättigheter',
 
 // multiple use
-$phprlang['configuration_autoqueue'] = 'Förbjud bokning till uppflyttad status';
+'configuration_autoqueue' =>  'Förbjud uppskrivning som Uttagen',
 
-?>
+));  ?>

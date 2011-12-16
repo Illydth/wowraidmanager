@@ -260,12 +260,12 @@ if(($_GET['mode'] == 'view') or isset($_GET['raids_del']) or isset($_GET['mark_r
 		$raid_txt_info .= "<br>".$phprlang['invite_time'].":".$raid_invite_time;
 		$raid_txt_info .= "<br>".$phprlang['totals'].": ".$total.'/'.$data['max']  . ' (+' . $total2. ')';
 //		$raid_txt_info .=
-		//$ddrivetiptxt = $raid_txt_desc.'<br>'. $raid_txt_info."'";	
-		//$popupdesc = $data['description'];
+		//$ddrivetiptxt = $raid_txt_desc.'<br>'. $raid_txt_info."'";
+		$popupdesc = $data['description'].'<br>'. $raid_txt_info."'";
 		//$location = '<a href="view.php?mode=view&amp;raid_id='.$data['raid_id'].'" onMouseover="ddrivetip('.$ddrivetiptxt.');" onMouseout="hideddrivetip();">'.$data['location'].'</a>';	
 		$url = 'view.php?mode=view&amp;raid_id=' . $data['raid_id'];
 		//$location=create_comment_popup($phprlang['description'], $popupdesc, $url, $data['location']);
-		$location=cssToolTip($data['location'], $data['description'],'custom comment', $url, $phprlang['description']);
+		$location=cssToolTip($raids['location'], $popupdesc,'custom comment', $url, $phprlang['description']);
 		
 		// current raids
 		if($data['old'] == 0 && $data['recurrance']==0) {

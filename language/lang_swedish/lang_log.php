@@ -31,47 +31,52 @@
 *
 ****************************************************************************/
 
-// form variables
-$phprlang['log_create_text'] = 'skapade';
-$phprlang['log_date'] = 'datum';
-$phprlang['log_delete_text'] = 'raderade';
-$phprlang['log_hack_text'] = 'intrångsförsök';
-$phprlang['log_id'] = 'id';
-$phprlang['log_in'] = ' i ';
-$phprlang['log_order'] = ' sortera och visa';
-$phprlang['log_raid_text'] = 'raid aktivitet';
-$phprlang['log_sort_by'] = 'Sortera efter ';
-$phprlang['log_type'] = 'typ';
+if (empty($phprlang) || !is_array($phprlang))
+	$phprlang = array();
+	
+$phprlang = array_merge($phprlang, array(
 
-$phprlang['log_filter_show'] = 'Visa';
-$phprlang['log_filter_all'] = 'Alla';
-$phprlang['log_filter_2_months'] = 'Två månader';
-$phprlang['log_filter_1_month'] = 'En månad';
-$phprlang['log_filter_1_week'] = 'En vecka';
-$phprlang['log_filter_1_day'] = 'En dag';
+// form variables
+'log_create_text' =>  'skapade',
+'log_date' =>  'datum',
+'log_delete_text' =>  'raderade',
+'log_hack_text' =>  'intrångsförsök',
+'log_id' =>  'id',
+'log_in' =>  ' i ',
+'log_order' =>  ' sortera och visa',
+'log_raid_text' =>  'raid aktivitet',
+'log_sort_by' =>  'Sortera efter ',
+'log_type' =>  'typ',
+
+'log_filter_show' =>  'Visa',
+'log_filter_all' =>  'Alla',
+'log_filter_2_months' =>  'Två månader',
+'log_filter_1_month' =>  'En månad',
+'log_filter_1_week' =>  'En vecka',
+'log_filter_1_day' =>  'En dag',
 
 // cancellation
-$phprlang['log_cancel_message'] = '[ANVÄNDARE ANNULLERA]';
+'log_cancel_message' =>  '[ANVÄNDARE ANNULLERA]',
 
 // hack
-$phprlang['log_hack_header'] = 'Intrångsförsök upptäckt';
-$phprlang['log_hack_message'] = 'Ett intrångsförsök har upptäckts och sparats med följande detaljer<br><br>
+'log_hack_header' =>  'Intrångsförsök upptäckt',
+'log_hack_message' =>  'Ett intrångsförsök har upptäckts och sparats med följande detaljer<br><br>
 							<strong>Försök till intrång:</strong> %s<br>
 							<strong>Datum/Tid:</strong> %s<br>
 							<strong>Användar IP:</strong> %s<br><br>
-							En administratör har meddelats, och detta kan resultera i en bannlysning.';
+							En administratör har meddelats, och detta kan resultera i en bannlysning.',
 							
 // headers
-$phprlang['log_header'] = 'Logg utskrift';
-$phprlang['log_create_header'] = 'Skapelselogg';
-$phprlang['log_delete_header'] = 'Borttagingslogg';
-$phprlang['log_hack_header'] = 'Intrångsförsöksloggar';
-$phprlang['log_raid_header'] = 'Raid aktivitets logg';
-$phprlang['log_sort_header'] = 'Välj filter val';
+'log_header' =>  'Logg utskrift',
+'log_create_header' =>  'Skapelselogg',
+'log_delete_header' =>  'Borttagingslogg',
+'log_hack_header' =>  'Intrångsförsöksloggar',
+'log_raid_header' =>  'Raid aktivitets logg',
+'log_sort_header' =>  'Välj filter val',
 							
 // output text
-$phprlang['log_create'] = '%s - %s: Användare [<a href="users.php?mode=details&user_id=%s">%s</a> (%s)] SKAPAD %s med ID [%s] och NAME [%s]';
-$phprlang['log_delete'] = '%s - %s: Användare [<a href="users.php?mode=details&user_id=%s">%s</a> (%s)] RADERAD %s med NAME [%s]';
-$phprlang['log_hack'] = '%s - %s: Användare med IP [%s] FÖRSÖKTE göra intrång med [%s]';
-$phprlang['log_raid'] = '%s - %s: Användare [<a href="users.php?mode=details&user_id=%s">%s</a> (%s)] ändrade i RAID <a href="view.php?mode=view&raid_id=%s">%s %s</a> AV %s med KARAKTÄR %s - %s';
-?>
+'log_create' =>  '%s - %s: Användare [<a href="users.php?mode=details&user_id=%s">%s</a> (%s)] SKAPAD %s med ID [%s] och NAME [%s]',
+'log_delete' =>  '%s - %s: Användare [<a href="users.php?mode=details&user_id=%s">%s</a> (%s)] RADERAD %s med NAME [%s]',
+'log_hack' =>  '%s - %s: Användare med IP [%s] FÖRSÖKTE göra intrång med [%s]',
+'log_raid' =>  '%s - %s: Användare [<a href="users.php?mode=details&user_id=%s">%s</a> (%s)] ändrade i RAID <a href="view.php?mode=view&raid_id=%s">%s %s</a> AV %s med KARAKTÄR %s - %s',
+));  ?>
