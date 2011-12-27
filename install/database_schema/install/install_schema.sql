@@ -358,6 +358,16 @@ CREATE TABLE IF NOT EXISTS `wrm_raid_role_lmt` (
   PRIMARY KEY  (`raid_id`,`role_id`)
 );
 
+-- Resistance Table Creation
+DROP TABLE IF EXISTS `wrm_resistance`;
+CREATE TABLE IF NOT EXISTS `wrm_resistance` (
+  `resistance_name` varchar(25) NOT NULL,
+  `lang_index` varchar(100) NOT NULL,
+  `font_color` varchar(8) NOT NULL,
+  `image` varchar(100) NOT NULL,
+  PRIMARY KEY  (`role_id`)
+);
+
 -- Role Table Creation
 DROP TABLE IF EXISTS `wrm_roles`;
 CREATE TABLE IF NOT EXISTS `wrm_roles` (

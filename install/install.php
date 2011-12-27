@@ -211,8 +211,9 @@ if($step == "1")
 	// Cache Directory Verification
 	// Need to check both the Compile Directory as well as the Cache Directory.
 	$cache_dir_array = array();
-	$cache_dir_array[0] = '/cache/armory_cache';
-	$cache_dir_array[1] = '/cache/armory_log';
+	// The armory cache directories are no longer needed due to an updated armory ability.
+	//$cache_dir_array[0] = '/cache/armory_cache';
+	//$cache_dir_array[1] = '/cache/armory_log';
 	$cache_dir_array[2] = '/cache/raid_lua';
 	$cache_dir_array[3] = '/cache/smarty_cache';
 	$cache_dir_array[4] = '/cache/smarty_cache/admin';
