@@ -94,7 +94,7 @@ function db_password_change($profile_id, $dbusernewpassword)
 	 *********************************************************************/
 	//check: is profile_id in CMS DB
 	$sql = sprintf(	"SELECT ".$db_user_id.
-					" FROM " . $table_prefix . $db_table_user_name . 
+					" FROM `" . $table_prefix ."`". $db_table_user_name . 
 					" WHERE ".$db_user_id." = %s", quote_smart($profile_id)
 			);
 			
@@ -105,7 +105,7 @@ function db_password_change($profile_id, $dbusernewpassword)
 	}
 
 	// Profile ID Exists, Update CMS with new password.
-	$sql = sprintf(	"UPDATE " . $table_prefix . $db_table_user_name . 
+	$sql = sprintf(	"UPDATE `" . $table_prefix ."`". $db_table_user_name . 
 					" SET ".$db_user_password." = %s WHERE " . $db_user_id . " = %s", 
 					quote_smart($dbusernewpassword), quote_smart($profile_id)
 			);
@@ -130,7 +130,7 @@ function password_check($oldpassword, $profile_id, $encryptflag)
 	global $db_table_group_name, $auth_user_class, $auth_alt_user_class, $table_prefix, $db_raid, $phpraid_config;
 
 	$sql_passchk = sprintf(	"SELECT " . $db_user_password . 
-							" FROM " . $table_prefix . $db_table_user_name . 
+							" FROM `" . $table_prefix ."`". $db_table_user_name . 
 							" WHERE " . $db_user_id . " = %s", quote_smart($profile_id)
 					);
 	$result_passchk = $db_raid->sql_query($sql_passchk) or print_error($sql_passchk, $db_raid->sql_error(), 1);
