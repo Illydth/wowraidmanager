@@ -15,9 +15,9 @@ $bridge_setting_value = array(
 	// Column Name for the ID field for the Group the User belongs to.
 	'db_group_id' => "group_id",
 	// Column Name for the UserName field.
-	'db_user_name' => "username_clean",
+	'db_user_name' => "username",
 	//filter: for empty name, bots
-	'db_user_name_filter' => " WHERE user_email <> '' ORDER BY username_clean",
+	'db_user_name_filter' => " WHERE user_email <> '' ORDER BY username",
 	// Column Name for the User's E-Mail Address
 	'db_user_email' => "user_email",
 	// Column Name for the User's Password
