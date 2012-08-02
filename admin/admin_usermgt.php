@@ -100,9 +100,12 @@ if($mode == 'view')
 
 		$priv = '<a href="admin_permissions.php?mode=view">'.get_priv_name($data['priv']).'</a>';
 
-		$actions = '<a href="admin_usermgt.php?mode=remove_user&amp;n='.$data['username'].'&amp;user_id='.$data['profile_id'].'">
-					<img src="../templates/' . $phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0"
-					onMouseover="ddrivetip(\''. $phprlang['delete'] .'\');" onMouseout="hideddrivetip();" alt="delete icon"></a>';
+		$imgDelete = '<img src="../templates/'.$phpraid_config['template'].'/images/icons/icon_delete.gif" border="0" alt="delete" />';
+		$urlDelete = 'admin_usermgt.php?mode=remove_user&amp;n='.$data['username'].'&amp;user_id='.$data['profile_id'];
+		$actions = cssToolTip($imgDelete, $phprlang['delete'], 'smallIconText', $urlDelete);
+		//$actions = '<a href="admin_usermgt.php?mode=remove_user&amp;n='.$data['username'].'&amp;user_id='.$data['profile_id'].'">
+					//<img src="../templates/' . $phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0"
+					//onMouseover="ddrivetip(\''. $phprlang['delete'] .'\');" onMouseout="hideddrivetip();" alt="delete icon"></a>';
 		
 		$date = !($data['last_login_time'])?'':new_date('Y/m/d H:i:s',$data['last_login_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
 		$time = !($data['last_login_time'])?'':new_date('Y/m/d H:i:s',$data['last_login_time'],$phpraid_config['timezone'] + $phpraid_config['dst']);
@@ -232,6 +235,9 @@ else if($mode == 'details')
 	
 	while($data = $db_raid->sql_fetchrow($result, true))
 	{
+		$imgDelete = '<img src="../templates/'.$phpraid_config['template'].'/images/icons/icon_delete.gif" border="0" alt="delete" />';
+		$urlDelete = 'admin_usermgt.php?mode=remove_char&amp;n='.$data['name'].'&amp;char_id='.$data['char_id'].'&amp;user_id='.$data['profile_id'];
+		$buttons = cssToolTip($imgDelete, $phprlang['delete'], 'smallIconText', $urlDelete);
 		//$data['name'] = utf8_encode ( $data['name'] );
 		array_push($chars,
 			array(
@@ -249,8 +255,9 @@ else if($mode == 'details')
 				'Shadow'=>$data['shadow'],
 				'Pri_Spec'=>$data['pri_spec'],
 				'Sec_Spec'=>$data['sec_spec'],
-				'Buttons'=>'<a href="users.php?mode=remove_char&amp;n='.$data['name'].'&amp;char_id='.$data['char_id'].'&amp;user_id='.$data['profile_id'].'"><img src="../templates/' . $phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''. $phprlang['delete'] .'\');" onMouseout="hideddrivetip();" alt="delete icon"></a>')
-			);
+				'Buttons'=>$buttons,
+				//'<a href="admin_usermgt.php?mode=remove_char&amp;n='.$data['name'].'&amp;char_id='.$data['char_id'].'&amp;user_id='.$data['profile_id'].'"><img src="../templates/' . $phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''. $phprlang['delete'] .'\');" onMouseout="hideddrivetip();" alt="delete icon"></a>')
+			));
 	}
 
 	/**************************************************************

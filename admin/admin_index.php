@@ -541,11 +541,18 @@ else
 	/********************************************
 	 * 	Cache Actions Buttons
 	 ********************************************/
-	$delete_board_cache_button = '<a href="admin_index.php?mode=purge_board_cache"><img src="../templates/' . $phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['delete'].'\');" onMouseout="hideddrivetip();" alt="delete icon"></a>';
-	$delete_armory_cache_button = '<a href="admin_index.php?mode=purge_armory_cache"><img src="../templates/' . $phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['delete'].'\');" onMouseout="hideddrivetip();" alt="delete icon"></a>';
-	$delete_armory_log_button = '<a href="admin_index.php?mode=purge_armory_logs"><img src="../templates/' . $phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['delete'].'\');" onMouseout="hideddrivetip();" alt="delete icon"></a>';
-	$delete_template_cache_button = '<a href="admin_index.php?mode=purge_template_cache"><img src="../templates/' . $phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['delete'].'\');" onMouseout="hideddrivetip();" alt="delete icon"></a>';
-
+	//$delete_board_cache_button = '<a href="admin_index.php?mode=purge_board_cache"><img src="../templates/' . $phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['delete'].'\');" onMouseout="hideddrivetip();" alt="delete icon"></a>';	
+	$delete_board_cache_button = cssToolTip('<img src="../templates/'.$phpraid_config['template'].'/images/icons/icon_delete.gif" border="0" alt="delete icon" />', $phprlang['delete'], 'smallIconText', 'admin_index.php?mode=purge_board_cache');
+	
+	//$delete_armory_cache_button = '<a href="admin_index.php?mode=purge_armory_cache"><img src="../templates/' . $phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['delete'].'\');" onMouseout="hideddrivetip();" alt="delete icon"></a>';
+	$delete_armory_cache_button = cssToolTip('<img src="../templates/'.$phpraid_config['template'].'/images/icons/icon_delete.gif" border="0" alt="delete icon" />', $phprlang['delete'], 'smallIconText', 'admin_index.php?mode=purge_armory_cache');
+	
+	//$delete_armory_log_button = '<a href="admin_index.php?mode=purge_armory_logs"><img src="../templates/' . $phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['delete'].'\');" onMouseout="hideddrivetip();" alt="delete icon"></a>';
+	$delete_armory_log_button = cssToolTip('<img src="../templates/'.$phpraid_config['template'].'/images/icons/icon_delete.gif" border="0" alt="delete icon" />', $phprlang['delete'], 'smallIconText', 'admin_index.php?mode=purge_armory_logs');
+	
+	//$delete_template_cache_button = '<a href="admin_index.php?mode=purge_template_cache"><img src="../templates/' . $phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['delete'].'\');" onMouseout="hideddrivetip();" alt="delete icon"></a>';
+	$delete_template_cache_button = cssToolTip('<img src="../templates/'.$phpraid_config['template'].'/images/icons/icon_delete.gif" border="0" alt="delete icon" />', $phprlang['delete'], 'smallIconText', 'admin_index.php?mode=purge_template_cache');
+	
 	// Setup Data Ouptut and Display.
 	$wrmadminsmarty->assign('general_page_data',
 		array(

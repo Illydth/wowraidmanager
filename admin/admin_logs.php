@@ -276,6 +276,8 @@ else
 	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 
 	$raid = array();
+
+	$imgDelete = '<img src="../templates/'.$phpraid_config['template'].'/images/icons/icon_delete.gif" border="0" alt="delete" />';
 	
 	while($data = $db_raid->sql_fetchrow($result, true))
 	{
@@ -304,11 +306,15 @@ else
 
 	if($c_check == 'checked')
 	{
+		//$imgDelete = '<img src="templates/'.$phpraid_config['template'].'/images/icons/icon_delete.gif" border="0" alt="delete" />';
+		$urlDelete = 'admin_logs.php?mode=delete&amp;section=1';
+		//$delete_icon = cssToolTip($imgDelete, $phprlang['delete'], 'smallIconText', $urlDelete);
 		$create_output = '<div class="contentHeader">'.$phprlang['log_create_header'].'';
-		$create_output .= '&nbsp;&nbsp;<a href="admin_logs.php?mode=delete&amp;section=1"><img src="templates/' .
-					$phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['delete'].'\');"
-					onMouseout="hideddrivetip();" alt="delete icon"></a>
-					';
+		$create_output .= '&nbsp;&nbsp;'.cssToolTip($imgDelete, $phprlang['delete'], 'smallIconText', $urlDelete);
+		//<a href="admin_logs.php?mode=delete&amp;section=1"><img src="templates/' .
+					//$phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['delete'].'\');"
+					//onMouseout="hideddrivetip();" alt="delete icon"></a>
+					//$delete_icon;
 		$create_output .= '</div><br>';
 
 		foreach($create as $key=>$value)
@@ -320,11 +326,15 @@ else
 
 	if($d_check == 'checked')
 	{
+		//$imgDelete = '<img src="templates/'.$phpraid_config['template'].'/images/icons/icon_delete.gif" border="0" alt="delete" />';
+		$urlDelete = 'admin_logs.php?mode=delete&amp;section=2';
+		//$delete_icon = cssToolTip($imgDelete, $phprlang['delete'], 'smallIconText', $urlDelete);
 		$delete_output = '<div class="contentHeader">'.$phprlang['log_delete_header'].'';
-		$delete_output .= '&nbsp;&nbsp;<a href="admin_logs.php?mode=delete&amp;section=2"><img src="templates/' .
-					$phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['delete'].'\');"
-					onMouseout="hideddrivetip();" alt="delete icon"></a>
-					';
+		$delete_output  .= '&nbsp;&nbsp;'.cssToolTip($imgDelete, $phprlang['delete'], 'smallIconText', $urlDelete);
+				//<a href="admin_logs.php?mode=delete&amp;section=2"><img src="templates/' .
+					//$phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['delete'].'\');"
+					//onMouseout="hideddrivetip();" alt="delete icon"></a>
+					
 		$delete_output .= '</div><br>';
 		foreach($delete as $key=>$value)
 		{
@@ -335,11 +345,14 @@ else
 
 	if($h_check == 'checked')
 	{
+		//$imgDelete = '<img src="../templates/'.$phpraid_config['template'].'/images/icons/icon_delete.gif" border="0" alt="delete" />';
+		$urlDelete = 'admin_logs.php?mode=delete&amp;section=3';
 		$hack_output = '<div class="contentHeader">'.$phprlang['log_hack_header'].'';
-		$hack_output .= '&nbsp;&nbsp;<a href="admin_logs.php?mode=delete&amp;section=3"><img src="templates/' .
-					$phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['delete'].'\');"
-					onMouseout="hideddrivetip();" alt="delete icon"></a>
-					';
+		$hack_output .= '&nbsp;&nbsp;'.cssToolTip($imgDelete, $phprlang['delete'], 'smallIconText', $urlDelete);
+				//<a href="admin_logs.php?mode=delete&amp;section=3"><img src="templates/' .
+					//$phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['delete'].'\');"
+					//onMouseout="hideddrivetip();" alt="delete icon"></a>
+					//$delete_icon
 		$hack_output .= '</div><br>';
 
 		foreach($hack as $key=>$value)
@@ -352,11 +365,15 @@ else
 
 	if($r_check == 'checked')
 	{
+		//$imgDelete = '<img src="../templates/'.$phpraid_config['template'].'/images/icons/icon_delete.gif" border="0" alt="delete" />';
+		$urlDelete = 'admin_logs.php?mode=delete&amp;section=4';
+		//$delete_icon = cssToolTip($imgDelete, $phprlang['delete'], 'smallIconText', $urlDelete);
 		$raid_output = '<div class="contentHeader">'.$phprlang['log_raid_header'].'';
-		$raid_output .= '&nbsp;&nbsp;<a href="admin_logs.php?mode=delete&amp;section=4"><img src="templates/' .
-					$phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['delete'].'\');"
-					onMouseout="hideddrivetip();" alt="delete icon"></a>
-					';
+		$raid_output .= '&nbsp;&nbsp;'.cssToolTip($imgDelete, $phprlang['delete'], 'smallIconText', $urlDelete);
+					//<a href="admin_logs.php?mode=delete&amp;section=4"><img src="templates/' .
+					//$phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''.$phprlang['delete'].'\');"
+					//onMouseout="hideddrivetip();" alt="delete icon"></a>
+					//$delete_icon
 		$raid_output .= '</div><br>';
 
 		foreach($raid as $key=>$value)

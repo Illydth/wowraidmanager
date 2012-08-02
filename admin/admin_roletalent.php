@@ -86,14 +86,20 @@ if($_GET['mode'] != 'remove')
 
 	while($data = $db_raid->sql_fetchrow($result, true))
 	{
+		$imgDelete = '<img src="../templates/'.$phpraid_config['template'].'/images/icons/icon_delete.gif" border="0" alt="delete" />';
+		$urlDelete = 'admin_roletalent.php?mode=remove&amp;class_id='.$data['class_id'].'&amp;talent_tree_name='.$data['subclass'];
+		$delete = cssToolTip($imgDelete, $phprlang['delete'], 'smallIconText', $urlDelete);
+		$imgEdit = '<img src="../templates/'.$phpraid_config['template'].'/images/icons/icon_edit.gif" border="0" alt="edit" />';
+		$urlEdit= 'admin_roletalent.php?mode=edit&amp;class_id='.$data['class_id'].'&amp;talent_tree_name='.$data['subclass'];
+		$edit = cssToolTip($imgEdit, $phprlang['edit'], 'smallIconText', $urlEdit);
 		array_push($classrole,
 			array(
 				'Class' => $data['class_id'],
 				'Talent Tree' => $data['subclass'],
 				'Display Text' => $data['lang_index'],
 				'Role Name' => $data['role_name'],
-				'Buttons'=>'<a href="admin_roletalent.php?mode=remove&amp;class_id='.$data['class_id'].'&amp;talent_tree_name='.$data['subclass'].'"><img src="../templates/' . $phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''. $phprlang['delete'] .'\');" onMouseout="hideddrivetip();" alt="delete icon"></a>
-					 <a href="admin_roletalent.php?mode=edit&amp;class_id='.$data['class_id'].'&amp;talent_tree_name='.$data['subclass'].'"><img src="../templates/' . $phpraid_config['template'] . '/images/icons/icon_edit.gif" border="0" onMouseover="ddrivetip(\'' . $phprlang['edit'] .'\');" onMouseout="hideddrivetip();" alt="edit icon"></a>'				
+				'Buttons'=>$edit . $delete//'<a href="admin_roletalent.php?mode=remove&amp;class_id='.$data['class_id'].'&amp;talent_tree_name='.$data['subclass'].'"><img src="../templates/' . $phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''. $phprlang['delete'] .'\');" onMouseout="hideddrivetip();" alt="delete icon"></a>
+					 //<a href="admin_roletalent.php?mode=edit&amp;class_id='.$data['class_id'].'&amp;talent_tree_name='.$data['subclass'].'"><img src="../templates/' . $phpraid_config['template'] . '/images/icons/icon_edit.gif" border="0" onMouseover="ddrivetip(\'' . $phprlang['edit'] .'\');" onMouseout="hideddrivetip();" alt="edit icon"></a>'				
 			)
 		);
 	}

@@ -88,12 +88,18 @@ if($_GET['mode'] == 'view')
 	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	
 	while($data = $db_raid->sql_fetchrow($result, true)) {
-		$edit = '<a href="admin_permissions.php?mode=edit&amp;perm_id='.$data['permission_id'].'"><img src="../templates/' . $phpraid_config['template'] . 
-					'/images/icons/icon_edit.gif" border="0" onMouseover="ddrivetip(\'' . $phprlang['edit'] . '\');" onMouseout="hideddrivetip();" alt="edit icon"></a>';
+		//$edit = '<a href="admin_permissions.php?mode=edit&amp;perm_id='.$data['permission_id'].'"><img src="../templates/' . $phpraid_config['template'] . 
+					//'/images/icons/icon_edit.gif" border="0" onMouseover="ddrivetip(\'' . $phprlang['edit'] . '\');" onMouseout="hideddrivetip();" alt="edit icon"></a>';
+		$imgEdit = '<img src="../templates/'.$phpraid_config['template'].'/images/icons/icon_edit.gif" border="0" alt="edit" />';
+		$urlEdit = 'admin_permissions.php?mode=edit&amp;perm_id='.$data['permission_id'];
+		$edit = cssToolTip($imgEdit, $phprlang['edit'], 'smallIconText', $urlEdit);
 				
-		$delete = '<a href="admin_permissions.php?mode=delete&amp;perm_id='.$data['permission_id'].'"><img src="../templates/' . 
-					$phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\'' . $phprlang['delete'] . '\');" 
-					onMouseout="hideddrivetip();" alt="delete icon"></a>';
+		//$delete = '<a href="admin_permissions.php?mode=delete&amp;perm_id='.$data['permission_id'].'"><img src="../templates/' . 
+					//$phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\'' . $phprlang['delete'] . '\');" 
+					//onMouseout="hideddrivetip();" alt="delete icon"></a>';
+		$imgDelete = '<img src="../templates/'.$phpraid_config['template'].'/images/icons/icon_delete.gif" border="0" alt="delete" />';
+		$urlDelete = 'admin_permissions.php?mode=delete&amp;perm_id='.$data['permission_id'];
+		$delete = cssToolTip($imgDelete, $phprlang['delete'], 'smallIconText', $urlDelete);
 
 		// deny deletion/editing of super account
 		if($data['permission_id'] == 1) {
@@ -103,38 +109,45 @@ if($_GET['mode'] == 'view')
 		}
 		
 		if($data['announcements'] == 1)
-			$announcements = '<img src="../templates/' . $phpraid_config['template'] . '/images/icons/check_mark.gif" border="0" 
-							height="14" width="14" onMouseover="ddrivetip(\'' . $phprlang['has_permission'] . '\');" onMouseout="hideddrivetip();" alt="check mark">';
+			//$announcements = '<img src="../templates/' . $phpraid_config['template'] . '/images/icons/check_mark.gif" border="0" 
+						//height="14" width="14" onMouseover="ddrivetip(\'' . $phprlang['has_permission'] . '\');" onMouseout="hideddrivetip();" alt="check mark">';
+			$announcements = cssToolTip('<img src="../templates/'.$phpraid_config['template'].'/images/icons/check_mark.gif" border="0" height="14" width="14" alt="Has Permission" />', $phprlang['has_permission'], 'mediumIconText', '');
 		else
 			$announcements = '';
 			
+			
 		if($data['configuration'] == 1)
-			$phpraid_configuration = '<img src="../templates/' . $phpraid_config['template'] . '/images/icons/check_mark.gif" border="0" 
-							height="14" width="14" onMouseover="ddrivetip(\'' . $phprlang['has_permission'] . '\');" onMouseout="hideddrivetip();" alt="check mark">';
+			//$phpraid_configuration = '<img src="../templates/' . $phpraid_config['template'] . '/images/icons/check_mark.gif" border="0" 
+							//height="14" width="14" onMouseover="ddrivetip(\'' . $phprlang['has_permission'] . '\');" onMouseout="hideddrivetip();" alt="check mark">';
+			$phpraid_configuration = cssToolTip('<img src="../templates/'.$phpraid_config['template'].'/images/icons/check_mark.gif" border="0" height="14" width="14" alt="Has Permission" />', $phprlang['has_permission'], 'mediumIconText', '');
 		else
 			$phpraid_configuration = '';
 			
 		if($data['guilds'] == 1)
-			$guilds = '<img src="../templates/' . $phpraid_config['template'] . '/images/icons/check_mark.gif" border="0" 
-							height="14" width="14" onMouseover="ddrivetip(\'' . $phprlang['has_permission'] . '\');" onMouseout="hideddrivetip();" alt="check mark">';
+			//$guilds = '<img src="../templates/' . $phpraid_config['template'] . '/images/icons/check_mark.gif" border="0" 
+							//height="14" width="14" onMouseover="ddrivetip(\'' . $phprlang['has_permission'] . '\');" onMouseout="hideddrivetip();" alt="check mark">';
+			$guilds = cssToolTip('<img src="../templates/'.$phpraid_config['template'].'/images/icons/check_mark.gif" border="0" height="14" width="14" alt="Has Permission" />', $phprlang['has_permission'], 'mediumIconText', '');
 		else
 			$guilds = '';
 			
 		if($data['locations'] == 1)
-			$locations = '<img src="../templates/' . $phpraid_config['template'] . '/images/icons/check_mark.gif" border="0" 
-							height="14" width="14" onMouseover="ddrivetip(\'' . $phprlang['has_permission'] . '\');" onMouseout="hideddrivetip();" alt="check mark">';
+			//$locations = '<img src="../templates/' . $phpraid_config['template'] . '/images/icons/check_mark.gif" border="0" 
+							//height="14" width="14" onMouseover="ddrivetip(\'' . $phprlang['has_permission'] . '\');" onMouseout="hideddrivetip();" alt="check mark">';
+			$locations = cssToolTip('<img src="../templates/'.$phpraid_config['template'].'/images/icons/check_mark.gif" border="0" height="14" width="14" alt="Has Permission" />', $phprlang['has_permission'], 'mediumIconText', '');
 		else
 			$locations = '';
 			
 		if($data['profile'] == 1)
-			$profile = '<img src="../templates/' . $phpraid_config['template'] . '/images/icons/check_mark.gif" border="0" 
-							height="14" width="14" onMouseover="ddrivetip(\'' . $phprlang['has_permission'] . '\');" onMouseout="hideddrivetip();" alt="check mark">';
+			//$profile = '<img src="../templates/' . $phpraid_config['template'] . '/images/icons/check_mark.gif" border="0" 
+							//height="14" width="14" onMouseover="ddrivetip(\'' . $phprlang['has_permission'] . '\');" onMouseout="hideddrivetip();" alt="check mark">';
+			$profile = cssToolTip('<img src="../templates/'.$phpraid_config['template'].'/images/icons/check_mark.gif" border="0" height="14" width="14" alt="Has Permission" />', $phprlang['has_permission'], 'mediumIconText', '');
 		else
 			$profile = '';
 			
 		if($data['raids'] == 1)
-			$raids = '<img src="../templates/' . $phpraid_config['template'] . '/images/icons/check_mark.gif" border="0" 
-							height="14" width="14" onMouseover="ddrivetip(\'' . $phprlang['has_permission'] . '\');"  onMouseout="hideddrivetip();" alt="check mark">';
+			//$raids = '<img src="../templates/' . $phpraid_config['template'] . '/images/icons/check_mark.gif" border="0" 
+							//height="14" width="14" onMouseover="ddrivetip(\'' . $phprlang['has_permission'] . '\');"  onMouseout="hideddrivetip();" alt="check mark">';
+			$raids = cssToolTip('<img src="../templates/'.$phpraid_config['template'].'/images/icons/check_mark.gif" border="0" height="14" width="14" alt="Has Permission" />', $phprlang['has_permission'], 'mediumIconText', '');
 		else
 			$raids = '';
 			

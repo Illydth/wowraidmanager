@@ -83,14 +83,21 @@ if($_GET['mode'] != 'remove')
 
 	while($global_role = $db_raid->sql_fetchrow($result, true))
 	{
+		$imgDelete = '<img src="../templates/'.$phpraid_config['template'].'/images/icons/icon_delete.gif" border="0" alt="delete" />';
+		$urlDelete = 'admin_rolecfg.php?mode=remove&amp;roleid='.$global_role['role_id'];
+		$delete = cssToolTip($imgDelete, $phprlang['delete'], 'smallIconText', $urlDelete);
+		$imgEdit = '<img src="../templates/'.$phpraid_config['template'].'/images/icons/icon_edit.gif" border="0" alt="edit" />';
+		$urlEdit= 'admin_rolecfg.php?mode=edit&amp;roleid='.$global_role['role_id'];
+		$edit = cssToolTip($imgEdit, $phprlang['edit'], 'smallIconText', $urlEdit);
 		array_push($roles,
 			array(
 				'ID' => $global_role['role_id'],
 				'Role Name' => $global_role['role_name'],
 				'Config Text' => $global_role['lang_index'],
 				'Image' => $global_role['image'],
-				'Buttons'=>'<a href="admin_rolecfg.php?mode=remove&amp;roleid='.$global_role['role_id'].'"><img src="../templates/' . $phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''. $phprlang['delete'] .'\');" onMouseout="hideddrivetip();" alt="delete icon"></a>
-					 <a href="admin_rolecfg.php?mode=edit&amp;roleid='.$global_role['role_id'].'"><img src="../templates/' . $phpraid_config['template'] . '/images/icons/icon_edit.gif" border="0" onMouseover="ddrivetip(\'' . $phprlang['edit'] .'\');" onMouseout="hideddrivetip();" alt="edit icon"></a>'				
+				'Buttons'=>$edit . $delete//'<a href="admin_rolecfg.php?mode=remove&amp;roleid='.$global_role['role_id'].'"><img src="../templates/' . $phpraid_config['template'] . '/images/icons/icon_delete.gif" border="0" onMouseover="ddrivetip(\''. $phprlang['delete'] .'\');" onMouseout="hideddrivetip();" alt="delete icon"></a>
+					//<a href="admin_rolecfg.php?mode=edit&amp;roleid='.$global_role['role_id'].'"><img src="../templates/' . $phpraid_config['template'] . '/images/icons/icon_edit.gif" border="0" onMouseover="ddrivetip(\'' . $phprlang['edit'] .'\');" onMouseout="hideddrivetip();" alt="edit icon"></a>'				
+				
 			)
 		);
 	}
