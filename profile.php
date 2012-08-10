@@ -129,10 +129,10 @@ if($_GET['mode'] == 'view') {
 				'Level'=>$data['lvl'],
 				'Race'=>$race,
 				'Class'=>$class,
-				'Arcane'=>$data['arcane'],
-				'Fire'=>$data['fire'],
-				'Frost'=>$data['frost'],
-				'Nature'=>$data['nature'],
+				//'Arcane'=>$data['arcane'],
+				//'Fire'=>$data['fire'],
+				//'Frost'=>$data['frost'],
+				//'Nature'=>$data['nature'],
 				'Shadow'=>$data['shadow'],
 				'Pri_Spec'=>$pri_spec,
 				'Sec_Spec'=>$sec_spec,
@@ -319,6 +319,7 @@ if($_GET['mode'] == 'view') {
 		array(
 			'form_action' => $form_action,
 			'template_name'=>$phpraid_config['template'],
+			'gamepack_name' => $phpraid_config['gamepack_name'],
 			'character_header' => $phprlang['profile_header'],
 			'raid_header' => $phprlang['profile_raid'],
 			'sort_url_base' => $pageURL,
@@ -498,7 +499,7 @@ if (($_GET['mode'] == 'new') or ($_GET['mode'] == 'edit'))
 			$level = scrub_input($_POST['level']);
 		else
 			$level = 1;
-
+/*
 		if(isset($_POST['arcane']))
 			$arcane = scrub_input($_POST['arcane']);
 		else
@@ -522,7 +523,7 @@ if (($_GET['mode'] == 'new') or ($_GET['mode'] == 'edit'))
 		if(isset($_POST['shadow']))
 			$shadow = scrub_input($_POST['shadow']);
 		else
-			$shadow = 0;
+			$shadow = 0;*/
 			
 		if(isset($_POST['pri_spec']))
 			$pri_spec = scrub_input($_POST['pri_spec']);
@@ -570,7 +571,7 @@ if (($_GET['mode'] == 'new') or ($_GET['mode'] == 'edit'))
 		else
 			$level = $data['lvl'];
 
-		if(isset($_POST['arcane']))
+/*		if(isset($_POST['arcane']))
 			$arcane = scrub_input($_POST['arcane']);
 		else
 			$arcane = $data['arcane'];
@@ -593,7 +594,7 @@ if (($_GET['mode'] == 'new') or ($_GET['mode'] == 'edit'))
 		if(isset($_POST['shadow']))
 			$shadow = scrub_input($_POST['shadow']);
 		else
-			$shadow = $data['shadow'];
+			$shadow = $data['shadow'];*/
 			
 		if(isset($_POST['pri_spec']))
 			$pri_spec = scrub_input($_POST['pri_spec']);
@@ -761,11 +762,11 @@ if (($_GET['mode'] == 'new') or ($_GET['mode'] == 'edit'))
 			$guild = '<select name="guild" DISABLED><option></option></select>';
 			$pri_spec = '<select name="pri_spec" DISABLED><option></option></select>';
 			$sec_spec = '<select name="sec_spec" DISABLED><option></option></select>';
-			$arcane = '<select name="arcane" DISABLED><option></option></select>';
+/*			$arcane = '<select name="arcane" DISABLED><option></option></select>';
 			$fire = '<select name="fire" DISABLED><option></option></select>';
 			$frost = '<select name="frost" DISABLED><option></option></select>';
 			$nature = '<select name="nature" DISABLED><option></option></select>';
-			$shadow = '<select name="shadow" DISABLED><option></option></select>';
+			$shadow = '<select name="shadow" DISABLED><option></option></select>';*/
 		}
 		elseif (!isset($_GET['race'])) {
 			$class_output = '<select name="class" DISABLED><option></option></select>';
@@ -775,22 +776,22 @@ if (($_GET['mode'] == 'new') or ($_GET['mode'] == 'edit'))
 			$guild = '<select name="guild" DISABLED><option></option></select>';
 			$pri_spec = '<select name="pri_spec" DISABLED><option></option></select>';
 			$sec_spec = '<select name="sec_spec" DISABLED><option></option></select>';
-			$arcane = '<select name="arcane" DISABLED><option></option></select>';
+/*			$arcane = '<select name="arcane" DISABLED><option></option></select>';
 			$fire = '<select name="fire" DISABLED><option></option></select>';
 			$frost = '<select name="frost" DISABLED><option></option></select>';
 			$nature = '<select name="nature" DISABLED><option></option></select>';
-			$shadow = '<select name="shadow" DISABLED><option></option></select>';
+			$shadow = '<select name="shadow" DISABLED><option></option></select>';*/
 		} else {
 			$name = '<input type="text" name="name" class="post" value="' . $name . '" style="width:100px">';
 			$level = '<input name="level" type="text" class="post" size="2" value="' . $level . '" maxlength="2">';
 			$gender = '<select name="gender" class="form" id="gender" style="width:100px">' .$gender_options. '</select>';
 			$pri_spec = '<select name="pri_spec" class="form" id="role" style="width:140px">' .$pri_options. '</select>';
 			$sec_spec = '<select name="sec_spec" class="form" id="role" style="width:140px">' .$sec_options. '</select>';			
-			$arcane = '<input name="arcane" type="text" class="post" size="3" value="' . $arcane . '" maxlength="3">';
+/*			$arcane = '<input name="arcane" type="text" class="post" size="3" value="' . $arcane . '" maxlength="3">';
 			$fire =  '<input name="fire" type="text" class="post" size="3" value="' . $fire . '" maxlength="3">';
 			$frost =  '<input name="frost" type="text" class="post" size="3" value="' . $frost . '" maxlength="3">';
 			$nature =  '<input name="nature" type="text" class="post" size="3" value="' . $nature . '" maxlength="3">';
-			$shadow =  '<input name="shadow" type="text" class="post" size="3" value="' . $shadow . '" maxlength="3">';
+			$shadow =  '<input name="shadow" type="text" class="post" size="3" value="' . $shadow . '" maxlength="3">';*/
 		}
 
 		if($_GET['mode'] == 'new')
@@ -817,7 +818,7 @@ if (($_GET['mode'] == 'new') or ($_GET['mode'] == 'edit'))
 				'array_class' => $array_class,
 				'selected_class' => $selected_class,
 				'gender'=>$gender,
-				'arcane_text'=>$phprlang['profile_arcane'],
+/*				'arcane_text'=>$phprlang['profile_arcane'],
 				'fire_text'=>$phprlang['profile_fire'],
 				'frost_text'=>$phprlang['profile_frost'],
 				'nature_text'=>$phprlang['profile_nature'],
@@ -826,7 +827,7 @@ if (($_GET['mode'] == 'new') or ($_GET['mode'] == 'edit'))
 				'fire'=>$fire,
 				'frost'=>$frost,
 				'nature'=>$nature,
-				'shadow'=>$shadow,
+				'shadow'=>$shadow,*/
 				'guild_text' => $phprlang['profile_guild'],
 				'role_text' => $phprlang['profile_role'],
 				'pri_spec' => $pri_spec,

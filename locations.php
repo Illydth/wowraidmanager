@@ -180,6 +180,7 @@ if($_GET['mode'] == 'view')
 	$wrmsmarty->assign('header_data',
 		array(
 			'template_name'=>$phpraid_config['template'],
+			'gamepack_name' => $phpraid_config['gamepack_name'],				
 			'header' => $phprlang['locations_header'],
 			'sort_url_base' => $pageURL,
 			'sort_descending' => $sortDesc,

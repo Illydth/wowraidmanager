@@ -99,5 +99,28 @@ $phprlang = array_merge($phprlang, array(
 'unholy_melee' =>  "Unholy (Melee)",
 'notavailable' =>  "N/A",
 
+// tooltips
+'arcane' =>  'Arcane',
+'arcane_resistance_title' =>  'Arcane Resistance',
+'fire' =>  'Fire',
+'fire_resistance_title' =>  'Fire Resistance',
+'frost' =>  'Frost',
+'frost_resistance_title' =>  'Frost Resistance',
+'nature' =>  'Nature',
+'nature_resistance_title' =>  'Nature Resistance',
+'shadow' =>  'Shadow',
+'shadow_resistance_title' =>  'Shadow Resistance',
+		
+		
+'deathknight_icon' =>  'Click to see Death Knights',
+'druid_icon' =>  'Click to see druids',
+'hunter_icon' =>  'Click to see hunters',
+'mage_icon' =>  'Click to see mages',
+'paladin_icon' =>  'Click to see paladins',
+'priest_icon' =>  'Click to see priests',
+'rogue_icon' =>  'Click to see rogues',
+'shaman_icon' =>  'Click to see shamans',
+'warlock_icon' =>  'Click to see warlocks',
+'warrior_icon' =>  'Click to see warriors',
 ));
 ?>

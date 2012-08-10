@@ -98,4 +98,30 @@ $phprlang = array_merge($phprlang, array(
 'unholy_tank' =>  "Impie (Tank)",
 'unholy_melee' =>  "Impie (DPS)",
 'notavailable' =>  "N/A",
+		
+// tooltips
+'arcane' =>  'Arcanes',
+'arcane_resistance_title' =>  'Arcane Resistance',
+'fire' =>  'Feu',
+'fire_resistance_title' =>  'Fire Resistance',
+'frost' =>  'Givre',
+'frost_resistance_title' =>  'Frost Resistance',
+'nature' =>  'Nature',
+'nature_resistance_title' =>  'Nature Resistance',
+'shadow' =>  'Ombre',
+'shadow_resistance_title' =>  'Shadow Resistance',
+		
+'deathknight_icon' =>  'Cliquez pour voir les Death Knights',		
+'druid_icon' =>  'Cliquez pour voir les Druides',
+'hunter_icon' =>  'Cliquez pour voir les Chasseurs',
+'mage_icon' =>  'Cliquez pour voir les Mages',
+'paladin_icon' =>  'Cliquez pour voir les Paladins',
+'priest_icon' =>  'Cliquez pour voir les prètres',
+'rogue_icon' =>  'Cliquez pour voir les Voleurs',
+'shaman_icon' =>  'Cliquez pour voir les Chamans',
+'warlock_icon' =>  'Cliquez pour voir les Démonistes',
+'warrior_icon' =>  'Cliquez pour voir les Guerriers',
+		
+		
+		
 ));  ?>

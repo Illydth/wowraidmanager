@@ -223,6 +223,7 @@ if($mode == 'view')
 	$wrmsmarty->assign('remove_header_data',
 		array(
 			'template_name'=>$phpraid_config['template'],
+			'gamepack_name' => $phpraid_config['gamepack_name'],
 			'sort_url_base' => $pageURL,
 			'sort_descending' => $sortDesc,
 			'sort_text' => $phprlang['sort_text'],

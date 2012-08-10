@@ -117,11 +117,11 @@ while($data = $db_raid->sql_fetchrow($result, true)) {
 			'Class'=>$class,
 			'Pri_Spec'=>$pri_spec,
 			'Sec_Spec'=>$sec_spec,
-			'Arcane'=>$data['arcane'],
-			'Fire'=>$data['fire'],
-			'Frost'=>$data['frost'],
-			'Nature'=>$data['nature'],
-			'Shadow'=>$data['shadow'],
+			//'Arcane'=>$data['arcane'],
+			//'Fire'=>$data['fire'],
+			//'Frost'=>$data['frost'],
+			//'Nature'=>$data['nature'],
+			//'Shadow'=>$data['shadow'],
 			'Profile'=>'<a href="admin/admin_usermgt.php?mode=details&amp;user_id=' . $data['profile_id'] . '">' . $data_profdetail['username'] . '</a>'
 		)
 	);
@@ -167,7 +167,8 @@ $wrmsmarty->assign('column_name', $roster_headers);
 $wrmsmarty->assign('roster_record_counts', $roster_record_count_array);
 $wrmsmarty->assign('header_data',
 	array(
-		'template_name'=>$phpraid_config['template'],
+		'template_name' => $phpraid_config['template'],
+		'gamepack_name' => $phpraid_config['gamepack_name'],
 		'roster_header' => $phprlang['roster_header'],
 		'sort_url_base' => $pageURL,
 		'sort_descending' => $sortDesc,

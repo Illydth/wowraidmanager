@@ -364,8 +364,7 @@ CREATE TABLE IF NOT EXISTS `wrm_resistance` (
   `resistance_name` varchar(25) NOT NULL,
   `lang_index` varchar(100) NOT NULL,
   `font_color` varchar(8) NOT NULL,
-  `image` varchar(100) NOT NULL,
-  PRIMARY KEY  (`role_id`)
+  `image` varchar(100) NOT NULL
 );
 
 -- Role Table Creation

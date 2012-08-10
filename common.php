@@ -340,6 +340,7 @@ $wrm_global_races = array();
 $wrm_global_roles = array();
 $wrm_global_gender = array();
 $wrm_global_specs = array();
+$wrm_global_resistance = array();
 
 // Load the Specs Array
 $sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "class_role";
@@ -401,7 +402,19 @@ while($data = $db_raid->sql_fetchrow($result, true))
 	$wrm_global_gender[$x]['lang_index'] = $data['lang_index'];
 	$x++;
 }
-
+/*
+// Load the Resistance Array
+$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "resistance";
+$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
+$x = 0;
+while($data = $db_raid->sql_fetchrow($result, true))
+{
+	$wrm_global_resistance[$x]['resistance_name'] = $data['resistance_name'];
+	$wrm_global_resistance[$x]['lang_index'] = $data['lang_index'];
+	$wrm_global_resistance[$x]['font_color'] = $data['font_color'];
+	$wrm_global_resistance[$x]['image'] = $data['image'];
+	$x++;
+}*/
 /****************************************************
  * Maintenance Flag Disable Site
  ****************************************************/

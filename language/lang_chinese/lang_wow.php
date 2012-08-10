@@ -98,4 +98,28 @@ $phprlang = array_merge($phprlang, array(
 'unholy_tank' =>  "Unholy (Tank)",
 'unholy_melee' =>  "Unholy (Melee)",
 'notavailable' =>  "N/A",
+		
+// tooltips
+'arcane' =>  '祕法抗性',
+'arcane_resistance_title' =>  '祕法抗性',
+'fire' =>  '火焰抗性',
+'fire_resistance_title' =>  '火焰抗性',
+'frost' =>  '冰霜抗性',
+'frost_resistance_title' =>  '冰霜抗性',
+'nature' =>  '自然抗性',	
+'nature_resistance_title' =>  '自然抗性',
+'shadow' =>  '暗影抗性',
+'shadow_resistance_title' =>  '暗影抗性',
+		
+'deathknight_icon' =>  'Click to see Death Knights',
+'druid_icon' =>  '點擊這裡查看德魯伊',
+'hunter_icon' =>  '點擊這裡查看獵人',
+'mage_icon' =>  '點擊這裡查看法師',
+'paladin_icon' =>  '點擊這裡查看聖騎士',
+'priest_icon' =>  '點擊這裡查看牧師',
+'rogue_icon' =>  '點擊這裡查看盜賊',
+'shaman_icon' =>  '點擊這裡查看薩滿',
+'warlock_icon' =>  '點擊這裡查看術士',
+'warrior_icon' =>  '點擊這裡查看戰士',
+		
 ));  ?>

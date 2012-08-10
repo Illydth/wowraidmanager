@@ -1,6 +1,7 @@
 -- Class Data
+delete from wrm_classes;
 INSERT INTO `wrm_classes` VALUES (6, 'Death Knight', 'dk', 'deathknight', 'images/classes/deathknight_icon.gif');
-INSERT INTO `wrm_classes` VALUES (11, 'Druid', 'dr', 'druid', 'image/classes/druid_icon.gif');
+INSERT INTO `wrm_classes` VALUES (11, 'Druid', 'dr', 'druid', 'images/classes/druid_icon.gif');
 INSERT INTO `wrm_classes` VALUES (3, 'Hunter', 'hu', 'hunter', 'images/classes/hunter_icon.gif');
 INSERT INTO `wrm_classes` VALUES (8, 'Mage', 'ma', 'mage', 'images/classes/mage_icon.gif');
 INSERT INTO `wrm_classes` VALUES (2, 'Paladin', 'pa', 'paladin', 'images/classes/paladin_icon.gif');
@@ -10,143 +11,8 @@ INSERT INTO `wrm_classes` VALUES (7, 'Shaman', 'sh', 'shaman', 'images/classes/s
 INSERT INTO `wrm_classes` VALUES (9, 'Warlock', 'wk', 'warlock', 'images/classes/warlock_icon.gif');
 INSERT INTO `wrm_classes` VALUES (1, 'Warrior', 'wa', 'warrior', 'images/classes/warrior_icon.gif');
 
--- Race/Class Linking Data
-INSERT INTO `wrm_class_race` VALUES ('Draenei', 'Priest');
-INSERT INTO `wrm_class_race` VALUES ('Draenei', 'Warrior');
-INSERT INTO `wrm_class_race` VALUES ('Draenei', 'Hunter');
-INSERT INTO `wrm_class_race` VALUES ('Draenei', 'Mage');
-INSERT INTO `wrm_class_race` VALUES ('Draenei', 'Shaman');
-INSERT INTO `wrm_class_race` VALUES ('Draenei', 'Paladin');
-INSERT INTO `wrm_class_race` VALUES ('Draenei', 'Death Knight');
-INSERT INTO `wrm_class_race` VALUES ('Dwarf', 'Priest');
-INSERT INTO `wrm_class_race` VALUES ('Dwarf', 'Rogue');
-INSERT INTO `wrm_class_race` VALUES ('Dwarf', 'Warrior');
-INSERT INTO `wrm_class_race` VALUES ('Dwarf', 'Hunter');
-INSERT INTO `wrm_class_race` VALUES ('Dwarf', 'Paladin');
-INSERT INTO `wrm_class_race` VALUES ('Dwarf', 'Mage');
-INSERT INTO `wrm_class_race` VALUES ('Dwarf', 'Shaman');
-INSERT INTO `wrm_class_race` VALUES ('Dwarf', 'Death Knight');
-INSERT INTO `wrm_class_race` VALUES ('Dwarf', 'Warlock');
-INSERT INTO `wrm_class_race` VALUES ('Human', 'Priest');
-INSERT INTO `wrm_class_race` VALUES ('Human', 'Rogue');
-INSERT INTO `wrm_class_race` VALUES ('Human', 'Warrior');
-INSERT INTO `wrm_class_race` VALUES ('Human', 'Hunter');
-INSERT INTO `wrm_class_race` VALUES ('Human', 'Mage');
-INSERT INTO `wrm_class_race` VALUES ('Human', 'Warlock');
-INSERT INTO `wrm_class_race` VALUES ('Human', 'Paladin');
-INSERT INTO `wrm_class_race` VALUES ('Human', 'Death Knight');
-INSERT INTO `wrm_class_race` VALUES ('Gnome', 'Rogue');
-INSERT INTO `wrm_class_race` VALUES ('Gnome', 'Warrior');
-INSERT INTO `wrm_class_race` VALUES ('Gnome', 'Priest');
-INSERT INTO `wrm_class_race` VALUES ('Gnome', 'Mage');
-INSERT INTO `wrm_class_race` VALUES ('Gnome', 'Warlock');
-INSERT INTO `wrm_class_race` VALUES ('Gnome', 'Death Knight');
-INSERT INTO `wrm_class_race` VALUES ('Night Elf', 'Priest');
-INSERT INTO `wrm_class_race` VALUES ('Night Elf', 'Rogue');
-INSERT INTO `wrm_class_race` VALUES ('Night Elf', 'Warrior');
-INSERT INTO `wrm_class_race` VALUES ('Night Elf', 'Druid');
-INSERT INTO `wrm_class_race` VALUES ('Night Elf', 'Hunter');
-INSERT INTO `wrm_class_race` VALUES ('Night Elf', 'Mage');
-INSERT INTO `wrm_class_race` VALUES ('Night Elf', 'Death Knight');
-INSERT INTO `wrm_class_race` VALUES ('Worgen', 'Warrior');
-INSERT INTO `wrm_class_race` VALUES ('Worgen', 'Death Knight');
-INSERT INTO `wrm_class_race` VALUES ('Worgen', 'Warlock');
-INSERT INTO `wrm_class_race` VALUES ('Worgen', 'Rogue');
-INSERT INTO `wrm_class_race` VALUES ('Worgen', 'Hunter');
-INSERT INTO `wrm_class_race` VALUES ('Worgen', 'Druid');
-INSERT INTO `wrm_class_race` VALUES ('Worgen', 'Mage');
-INSERT INTO `wrm_class_race` VALUES ('Worgen', 'Priest');
-INSERT INTO `wrm_class_race` VALUES ('Blood Elf', 'Priest');
-INSERT INTO `wrm_class_race` VALUES ('Blood Elf', 'Rogue');
-INSERT INTO `wrm_class_race` VALUES ('Blood Elf', 'Mage');
-INSERT INTO `wrm_class_race` VALUES ('Blood Elf', 'Hunter');
-INSERT INTO `wrm_class_race` VALUES ('Blood Elf', 'Warlock');
-INSERT INTO `wrm_class_race` VALUES ('Blood Elf', 'Paladin');
-INSERT INTO `wrm_class_race` VALUES ('Blood Elf', 'Death Knight');
-INSERT INTO `wrm_class_race` VALUES ('Blood Elf', 'Warrior');
-INSERT INTO `wrm_class_race` VALUES ('Goblin', 'Warrior');
-INSERT INTO `wrm_class_race` VALUES ('Goblin', 'Rogue');
-INSERT INTO `wrm_class_race` VALUES ('Goblin', 'Shaman');
-INSERT INTO `wrm_class_race` VALUES ('Goblin', 'Mage');
-INSERT INTO `wrm_class_race` VALUES ('Goblin', 'Priest');
-INSERT INTO `wrm_class_race` VALUES ('Goblin', 'Warlock');
-INSERT INTO `wrm_class_race` VALUES ('Goblin', 'Hunter');
-INSERT INTO `wrm_class_race` VALUES ('Goblin', 'Death Knight');
-INSERT INTO `wrm_class_race` VALUES ('Orc', 'Rogue');
-INSERT INTO `wrm_class_race` VALUES ('Orc', 'Warrior');
-INSERT INTO `wrm_class_race` VALUES ('Orc', 'Hunter');
-INSERT INTO `wrm_class_race` VALUES ('Orc', 'Warlock');
-INSERT INTO `wrm_class_race` VALUES ('Orc', 'Shaman');
-INSERT INTO `wrm_class_race` VALUES ('Orc', 'Death Knight');
-INSERT INTO `wrm_class_race` VALUES ('Orc', 'Mage');
-INSERT INTO `wrm_class_race` VALUES ('Tauren', 'Warrior');
-INSERT INTO `wrm_class_race` VALUES ('Tauren', 'Druid');
-INSERT INTO `wrm_class_race` VALUES ('Tauren', 'Shaman');
-INSERT INTO `wrm_class_race` VALUES ('Tauren', 'Hunter');
-INSERT INTO `wrm_class_race` VALUES ('Tauren', 'Death Knight');
-INSERT INTO `wrm_class_race` VALUES ('Tauren', 'Paladin');
-INSERT INTO `wrm_class_race` VALUES ('Tauren', 'Priest');
-INSERT INTO `wrm_class_race` VALUES ('Troll', 'Priest');
-INSERT INTO `wrm_class_race` VALUES ('Troll', 'Rogue');
-INSERT INTO `wrm_class_race` VALUES ('Troll', 'Warrior');
-INSERT INTO `wrm_class_race` VALUES ('Troll', 'Mage');
-INSERT INTO `wrm_class_race` VALUES ('Troll', 'Hunter');
-INSERT INTO `wrm_class_race` VALUES ('Troll', 'Shaman');
-INSERT INTO `wrm_class_race` VALUES ('Troll', 'Death Knight');
-INSERT INTO `wrm_class_race` VALUES ('Troll', 'Warlock');
-INSERT INTO `wrm_class_race` VALUES ('Troll', 'Druid');
-INSERT INTO `wrm_class_race` VALUES ('Undead', 'Priest');
-INSERT INTO `wrm_class_race` VALUES ('Undead', 'Rogue');
-INSERT INTO `wrm_class_race` VALUES ('Undead', 'Warrior');
-INSERT INTO `wrm_class_race` VALUES ('Undead', 'Mage');
-INSERT INTO `wrm_class_race` VALUES ('Undead', 'Warlock');
-INSERT INTO `wrm_class_race` VALUES ('Undead', 'Death Knight');
-INSERT INTO `wrm_class_race` VALUES ('Undead', 'Hunter');
-
--- Class and Role Link Data
-INSERT INTO `wrm_class_role` VALUES ('Priest', 'Discipline', 'disc', 'role3');
-INSERT INTO `wrm_class_role` VALUES ('Priest', 'Holy', 'holy', 'role3');
-INSERT INTO `wrm_class_role` VALUES ('Priest', 'Shadow', 'shadow', 'role4');
-INSERT INTO `wrm_class_role` VALUES ('Rogue', 'Assassination', 'assassination', 'role2');
-INSERT INTO `wrm_class_role` VALUES ('Rogue', 'Combat', 'combat', 'role2');
-INSERT INTO `wrm_class_role` VALUES ('Rogue', 'Subtlety', 'subtlety', 'role2');
-INSERT INTO `wrm_class_role` VALUES ('Warrior', 'Arms', 'arms', 'role2');
-INSERT INTO `wrm_class_role` VALUES ('Warrior', 'Fury', 'fury', 'role2');
-INSERT INTO `wrm_class_role` VALUES ('Warrior', 'Protection', 'prot', 'role1');
-INSERT INTO `wrm_class_role` VALUES ('Mage', 'Arcane', 'arcane', 'role4');
-INSERT INTO `wrm_class_role` VALUES ('Mage', 'Fire', 'fire', 'role4');
-INSERT INTO `wrm_class_role` VALUES ('Mage', 'Frost', 'frost', 'role4');
-INSERT INTO `wrm_class_role` VALUES ('Druid', 'Balance', 'balance', 'role4');
-INSERT INTO `wrm_class_role` VALUES ('Druid', 'Feral (Cat)', 'cat', 'role2');
-INSERT INTO `wrm_class_role` VALUES ('Druid', 'Feral (Bear)', 'bear', 'role1');
-INSERT INTO `wrm_class_role` VALUES ('Druid', 'Restoration', 'resto', 'role3');
-INSERT INTO `wrm_class_role` VALUES ('Hunter', 'Beast Mastery', 'bm', 'role4');
-INSERT INTO `wrm_class_role` VALUES ('Hunter', 'Marksmanship', 'marks', 'role4');
-INSERT INTO `wrm_class_role` VALUES ('Hunter', 'Survival', 'survival', 'role4');
-INSERT INTO `wrm_class_role` VALUES ('Warlock', 'Affliction', 'affliction', 'role4');
-INSERT INTO `wrm_class_role` VALUES ('Warlock', 'Demonology', 'demon', 'role4');
-INSERT INTO `wrm_class_role` VALUES ('Warlock', 'Destruction', 'destro', 'role4');
-INSERT INTO `wrm_class_role` VALUES ('Shaman', 'Elemental', 'elemental', 'role4');
-INSERT INTO `wrm_class_role` VALUES ('Shaman', 'Enhancement', 'enhance', 'role2');
-INSERT INTO `wrm_class_role` VALUES ('Shaman', 'Restoration', 'resto', 'role3');
-INSERT INTO `wrm_class_role` VALUES ('Paladin', 'Holy', 'holy', 'role3');
-INSERT INTO `wrm_class_role` VALUES ('Paladin', 'Protection', 'prot', 'role1');
-INSERT INTO `wrm_class_role` VALUES ('Paladin', 'Retribution', 'ret', 'role2');
-INSERT INTO `wrm_class_role` VALUES ('Death Knight', 'Blood (Tank)', 'blood_tank', 'role1');
-INSERT INTO `wrm_class_role` VALUES ('Death Knight', 'Blood (Melee)', 'blood_melee', 'role2');
-INSERT INTO `wrm_class_role` VALUES ('Death Knight', 'Frost (Tank)', 'frost_tank', 'role1');
-INSERT INTO `wrm_class_role` VALUES ('Death Knight', 'Frost (Melee)', 'frost_melee', 'role2');
-INSERT INTO `wrm_class_role` VALUES ('Death Knight', 'Unholy (Tank)', 'unholy_tank', 'role1');
-INSERT INTO `wrm_class_role` VALUES ('Death Knight', 'Unholy (Melee)', 'unholy_melee', 'role2');
-
--- Expansion Table Data
-INSERT INTO `wrm_expansion` (`exp_id`, `exp_name`, `exp_lang_id`, `def`,`max_lvl`) VALUES
-(1, 'Generic', 'exp_generic_wow', 0,'60'),
-(2, 'BC', 'exp_burning_crusade', 0,'70'),
-(3, 'WotLK', 'exp_wrath_lich_king', 0,'80'),
-(4, 'Cataclysm', 'exp_cataclysm', 1,'85');
-
 -- Event Table Data
+delete from wrm_events;
 INSERT INTO `wrm_events` ( `zone_desc`, `max`, `exp_id`, `event_type_id`, `wow_name`, `icon_path`) VALUES
 ('Stormwind', 99, 1, 0, '', 'images/instances/Misc_Icons/LOC-Stormwind.jpg'),
 ('Thunder Bluff', 99, 1, 0, '', 'images/instances/Misc_Icons/LOC-Thunder-Bluff.jpg'),
@@ -332,27 +198,8 @@ INSERT INTO `wrm_events` ( `zone_desc`, `max`, `exp_id`, `event_type_id`, `wow_n
 ('Generic - 10 Man', 10, 4, 1, 'Generic Raid (10)', 'images/instances/Misc_Icons/GEN-Event.jpg'),
 ('Generic - 25 Man', 25, 4, 1, 'Generic Raid (25)', 'images/instances/Misc_Icons/GEN-Event.jpg');
 
--- Data for Faction Table
-INSERT INTO `wrm_faction` (`faction_name` , `lang_index`) VALUES 
-('Alliance', 'alliance'), 
-('Horde', 'horde'),
-('None', 'none');
-
--- Race Data
-INSERT INTO `wrm_races` VALUES ('Draenei', 'Alliance', 'draenei');
-INSERT INTO `wrm_races` VALUES ('Dwarf', 'Alliance', 'dwarf');
-INSERT INTO `wrm_races` VALUES ('Human', 'Alliance', 'human');
-INSERT INTO `wrm_races` VALUES ('Gnome', 'Alliance', 'gnome');
-INSERT INTO `wrm_races` VALUES ('Night Elf', 'Alliance', 'night_elf');
-INSERT INTO `wrm_races` VALUES ('Worgen', 'Alliance', 'worgen');
-INSERT INTO `wrm_races` VALUES ('Blood Elf', 'Horde', 'blood_elf');
-INSERT INTO `wrm_races` VALUES ('Goblin', 'Horde', 'goblin');
-INSERT INTO `wrm_races` VALUES ('Orc', 'Horde', 'orc');
-INSERT INTO `wrm_races` VALUES ('Tauren', 'Horde', 'tauren');
-INSERT INTO `wrm_races` VALUES ('Troll', 'Horde', 'troll');
-INSERT INTO `wrm_races` VALUES ('Undead', 'Horde', 'undead');
-
 -- Race/Gender Link Table Data
+delete from wrm_race_gender;
 INSERT INTO `wrm_race_gender` VALUES ('Draenei', 'Male', 'images/faces/dr_male.gif');
 INSERT INTO `wrm_race_gender` VALUES ('Draenei', 'Female', 'images/faces/dr_female.gif');
 INSERT INTO `wrm_race_gender` VALUES ('Dwarf', 'Male', 'images/faces/dw_male.gif');
@@ -379,8 +226,21 @@ INSERT INTO `wrm_race_gender` VALUES ('Undead', 'Male', 'images/faces/un_male.gi
 INSERT INTO `wrm_race_gender` VALUES ('Undead', 'Female', 'images/faces/un_female.gif');
 
 -- Resistance Data
+delete from wrm_resistance;
 INSERT INTO `wrm_resistance` ( `resistance_name`,`lang_index`,`font_color`,`image`) VALUES ('arcane','arcane','CCFFCC','images/resistances/arcane_resistance.gif');
 INSERT INTO `wrm_resistance` ( `resistance_name`,`lang_index`,`font_color`,`image`) VALUES ('fire','fire','FF0000','images/resistances/fire_resistance.gif');
 INSERT INTO `wrm_resistance` ( `resistance_name`,`lang_index`,`font_color`,`image`) VALUES ('frost','frost','0000FF','images/resistances/frost_resistance.gif');
 INSERT INTO `wrm_resistance` ( `resistance_name`,`lang_index`,`font_color`,`image`) VALUES ('nature','nature','009900','images/resistances/nature_resistance.gif');
 INSERT INTO `wrm_resistance` ( `resistance_name`,`lang_index`,`font_color`,`image`) VALUES ('shadow','shadow','663366','images/resistances/shadow_resistance.gif');
+
+-- Column Headers Data
+UPDATE `wrm_column_headers` SET img_url = '/images/resistances/arcane_resistance.gif' WHERE img_url = '/images/wow/resistances/arcane_resistance.gif';
+UPDATE `wrm_column_headers` SET img_url = '/images/resistances/fire_resistance.gif' WHERE img_url = '/images/wow/resistances/fire_resistance.gif';
+UPDATE `wrm_column_headers` SET img_url = '/images/resistances/frost_resistance.gif' WHERE img_url = '/images/wow/resistances/frost_resistance.gif';
+UPDATE `wrm_column_headers` SET img_url = '/images/resistances/nature_resistance.gif' WHERE img_url = '/images/wow/resistances/nature_resistance.gif';
+UPDATE `wrm_column_headers` SET img_url = '/images/resistances/shadow_resistance.gif' WHERE img_url = '/images/wow/resistances/shadow_resistance.gif';
+
+INSERT INTO `wrm_config` VALUES ('gamepack_name', 'wow');
+
+-- WRM Armory Cache
+INSERT INTO `wrm_version` VALUES ('4.3.0','Version 4.3.0 of WoW Raid Manager');

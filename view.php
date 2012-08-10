@@ -264,7 +264,7 @@ if($mode == 'view')
 						$result_race_gender = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 						$race_gender_data = $db_raid->sql_fetchrow($result_race_gender, true);
 						//$race = '<img src="templates/' . $phpraid_config['template'] . $race_gender_data['image'] . '" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang[$global_race['lang_index']].'\');" onMouseout="hideddrivetip();" alt="'.$phprlang[$global_race['lang_index']].' '.$phprlang[$global_gender['lang_index']].'">';
-						$img = '<img src="templates/'.$phpraid_config['template'].$race_gender_data['image'].'" height="18" width="18" border="0" alt="'.$phprlang[$global_race['lang_index']].' '.$phprlang[$global_gender['lang_index']].'" />';
+						$img = '<img src="gamepack/'.$phpraid_config['gamepack_name'].'/'.$race_gender_data['image'].'" height="18" width="18" border="0" alt="'.$phprlang[$global_race['lang_index']].' '.$phprlang[$global_gender['lang_index']].'" />';
 						$msg = $phprlang[$global_race['lang_index']].' '.$phprlang[$global_gender['lang_index']];
 						$race =cssToolTip($img, $msg, 'raceIconText', $url);
 					}					
@@ -332,11 +332,11 @@ if($mode == 'view')
 		else
 			$sec_spec = $sec_spec_role_name . ":" . $phprlang[$sec_spec_lang_index];
 				
-		$arcane = $data['arcane'];
-		$fire = $data['fire'];
-		$nature = $data['nature'];
-		$frost = $data['frost'];
-		$shadow = $data['shadow'];
+		//$arcane = $data['arcane'];
+		//$fire = $data['fire'];
+		//$nature = $data['nature'];
+		//$frost = $data['frost'];
+		//$shadow = $data['shadow'];
 
 		if ($phpraid_config['enable_armory'])
 			$name = get_armorychar($data['name'], $data['guild']);
@@ -363,13 +363,30 @@ if($mode == 'view')
 				if ($data['class'] == $global_class['class_id'])
 				{
 					//$class = ' <img src="templates/' . $phpraid_config['template'] . '/'. $global_class['image'] .'" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang[$global_class['lang_index']].'\');" onMouseout="hideddrivetip();" alt="'.$phprlang[$global_class['lang_index']].'">';
-					$img = '<img src="templates/' . $phpraid_config['template'] . '/'. $global_class['image'] .'" height="18" width="18" border="0" alt="'.$phprlang[$global_class['lang_index']].'" />';
+					$img = '<img src="gamepack/'.$phpraid_config['gamepack_name'].'/'. $global_class['image'] .'" height="18" width="18" border="0" alt="'.$phprlang[$global_class['lang_index']].'" />';
 					$class = cssToolTip($img, $phprlang[$global_class['lang_index']], 'classIconText', $url);
 					
 					array_push($class_info[$global_class['class_id']],
-						array('ID'=>$data['char_id'],'Arcane'=>$arcane,'Fire'=>$fire,'Nature'=>$nature,'Frost'=>$frost,'Shadow'=>$shadow,'Pri_Spec'=>$pri_spec,
-							  'Sec_Spec'=>$sec_spec,'Race'=>$race,'Class'=>$class,'Name'=>$name,'Comments'=>$comments,'Level'=>$data['lvl'],'Buttons'=>$actions,
-							  'Date'=>$date,'Time'=>$time,'Team Name'=>$team_name,'Guild'=>$guildname));
+						array(
+								'ID'=>$data['char_id'],
+								//'Arcane'=>$arcane,
+								//'Fire'=>$fire,
+								//'Nature'=>$nature,
+								//'Frost'=>$frost,
+								//'Shadow'=>$shadow,
+								'Pri_Spec'=>$pri_spec,
+							  	'Sec_Spec'=>$sec_spec,
+								'Race'=>$race,
+								'Class'=>$class,
+								'Name'=>$name,
+								'Comments'=>$comments,
+								'Level'=>$data['lvl'],
+								'Buttons'=>$actions,
+							  	'Date'=>$date,
+								'Time'=>$time,
+								'Team Name'=>$team_name,
+								'Guild'=>$guildname
+							));
 				}	
 			}
 		}
@@ -378,7 +395,7 @@ if($mode == 'view')
 			foreach ($wrm_global_classes as $global_class)
 			if ($data['class'] == $global_class['class_id']){
 				//$class = ' <img src="templates/' . $phpraid_config['template'] . '/'. $global_class['image'] .'" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang[$global_class['lang_index']].'\');" onMouseout="hideddrivetip();" alt="'.$phprlang[$global_class['lang_index']].'">';
-				$img = '<img src="templates/' . $phpraid_config['template'] . '/'. $global_class['image'] .'" height="18" width="18" border="0" alt="'.$phprlang[$global_class['lang_index']].'" />';
+				$img = '<img src="gamepack/'.$phpraid_config['gamepack_name'].'/' . $global_class['image'] .'" height="18" width="18" border="0" alt="'.$phprlang[$global_class['lang_index']].'" />';
 				$class =cssToolTip($img, $phprlang[$global_class['lang_index']], 'classIconText');
 				}
 			// Get Role attached to primary spec by looking up in class/role table.
@@ -389,9 +406,26 @@ if($mode == 'view')
 			foreach ($wrm_global_roles as $global_role)
 				if ($role_id == $global_role['role_id'])
 					array_push($role_info[$global_role['role_id']],
-						array('ID'=>$data['char_id'],'Arcane'=>$arcane,'Fire'=>$fire,'Nature'=>$nature,'Frost'=>$frost,'Shadow'=>$shadow,'Pri_Spec'=>$pri_spec,
-							  'Sec_Spec'=>$sec_spec,'Race'=>$race,'Class'=>$class,'Name'=>$name,'Comments'=>$comments,'Level'=>$data['lvl'],'Buttons'=>$actions,
-							  'Date'=>$date,'Time'=>$time,'Team Name'=>$team_name,'Guild'=>$guildname));
+						array(
+								'ID'=>$data['char_id'],
+								//'Arcane'=>$arcane,
+								//'Fire'=>$fire,
+								//'Nature'=>$nature,
+								//'Frost'=>$frost,
+								//'Shadow'=>$shadow,
+								'Pri_Spec'=>$pri_spec,
+							  	'Sec_Spec'=>$sec_spec,
+								'Race'=>$race,
+								'Class'=>$class,
+								'Name'=>$name,
+								'Comments'=>$comments,
+								'Level'=>$data['lvl'],
+								'Buttons'=>$actions,
+							  	'Date'=>$date,
+								'Time'=>$time,
+								'Team Name'=>$team_name,
+								'Guild'=>$guildname)
+							);
 		}
 	}
 
@@ -457,7 +491,7 @@ if($mode == 'view')
 		foreach ($wrm_global_classes as $global_class)
 			if ($data['class'] == $global_class['class_id']){
 				//$class = ' <img src="templates/' . $phpraid_config['template'] . '/'. $global_class['image'] .'" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang[$global_class['lang_index']].'\');" onMouseout="hideddrivetip();" alt="'.$phprlang[$global_class['lang_index']].'">';
-				$img = '<img src="templates/' . $phpraid_config['template'] . '/'. $global_class['image'] .'" height="18" width="18" border="0" alt="'.$phprlang[$global_class['lang_index']].'" />';
+				$img = '<img src="gamepack/'.$phpraid_config['gamepack_name'].'/'. $global_class['image'] .'" height="18" width="18" border="0" alt="'.$phprlang[$global_class['lang_index']].'" />';
 				$class =cssToolTip($img, $phprlang[$global_class['lang_index']], 'classIconText');
 				}
 		/**********************
@@ -605,7 +639,7 @@ if($mode == 'view')
 						$result_race_gender = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 						$race_gender_data = $db_raid->sql_fetchrow($result_race_gender, true);
 						//$race = '<img src="templates/' . $phpraid_config['template'] . $race_gender_data['image'] . '" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang[$global_race['lang_index']].'\');" onMouseout="hideddrivetip();" alt="'.$phprlang[$global_race['lang_index']].' '.$phprlang[$global_gender['lang_index']].'">';
-						$img = '<img src="templates/'.$phpraid_config['template'].$race_gender_data['image'].'" height="18" width="18" border="0" alt="'.$phprlang[$global_race['lang_index']].' '.$phprlang[$global_gender['lang_index']].'" />';
+						$img = '<img src="gamepack/'.$phpraid_config['gamepack_name'].'/'.$race_gender_data['image'].'" height="18" width="18" border="0" alt="'.$phprlang[$global_race['lang_index']].' '.$phprlang[$global_gender['lang_index']].'" />';
 						$msg = $phprlang[$global_race['lang_index']].' '.$phprlang[$global_gender['lang_index']];
 						$race =cssToolTip($img, $msg, 'raceIconText', $url);
 					}					
@@ -613,7 +647,7 @@ if($mode == 'view')
 		foreach ($wrm_global_classes as $global_class)
 			if ($data['class'] == $global_class['class_id']){
 				//$class = ' <img src="templates/' . $phpraid_config['template'] . '/'. $global_class['image'] .'" height="18" width="18" border="0" onMouseover="ddrivetip(\''.$phprlang[$global_class['lang_index']].'\');" onMouseout="hideddrivetip();" alt="'.$phprlang[$global_class['lang_index']].'">';
-				$img = '<img src="templates/' . $phpraid_config['template'] . '/'. $global_class['image'] .'" height="18" width="18" border="0" alt="'.$phprlang[$global_class['lang_index']].'" />';
+				$img = '<img src="gamepack/'.$phpraid_config['gamepack_name'].'/'. $global_class['image'] .'" height="18" width="18" border="0" alt="'.$phprlang[$global_class['lang_index']].'" />';
 				$class =cssToolTip($img, $phprlang[$global_class['lang_index']], 'classIconText');
 				}
 		/**********************
@@ -750,6 +784,7 @@ if($mode == 'view')
 			 ****************************************************************/
 			$header_data = array(
 							'template_name'=>$phpraid_config['template'],
+							'gamepack_name' => $phpraid_config['gamepack_name'],
 							'header'=>$phprlang[$global_class['lang_index']],
 							'sort_url_base' => $pageURL,
 							'sort_descending' => $sortDesc,
@@ -861,6 +896,7 @@ if($mode == 'view')
 	$wrmsmarty->assign('queue_header_data',
 		array(
 			'template_name'=>$phpraid_config['template'],
+			'gamepack_name' => $phpraid_config['gamepack_name'],
 			'raid_queue_header'=>$phprlang['view_queue_header'],
 			'sort_url_base' => $pageURL,
 			'sort_descending' => $sortDesc,
@@ -902,6 +938,7 @@ if($mode == 'view')
 	$wrmsmarty->assign('cancel_header_data',
 		array(
 			'template_name'=>$phpraid_config['template'],
+			'gamepack_name' => $phpraid_config['gamepack_name'],				
 			'raid_cancel_header'=>$phprlang['view_cancel_header'],
 			'sort_url_base' => $pageURL,
 			'sort_descending' => $sortDesc,
@@ -1025,7 +1062,7 @@ if($mode == 'view')
 	$class_icons = array();
 	foreach ($wrm_global_classes as $global_class){
 		//$class_icons[$global_class['class_id']] = '<a href="#'.$global_class['lang_index'].'" onMouseover="ddrivetip(\''.$phprlang[$global_class['lang_index']].'\');" onMouseout="hideddrivetip();"><img src="templates/'.$phpraid_config['template'].'/'.$global_class['image'].'" width="24" height="24" border="0" alt="'.$global_class['class_id'].'"></a>'; 
-		$img = '<img src="templates/'.$phpraid_config['template'].'/'.$global_class['image'].'" width="24" height="24" border="0" alt="'.$global_class['class_id'].'" />';
+		$img = '<img src="gamepack/'.$phpraid_config['gamepack_name'].'/'.$global_class['image'].'" width="24" height="24" border="0" alt="'.$global_class['class_id'].'" />';
 		$class_icons[$global_class['class_id']] = cssToolTip($img, $phprlang[$global_class['lang_index']], 'classIconText', '#');
 	}
 		

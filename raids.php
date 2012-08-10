@@ -389,6 +389,7 @@ if(($_GET['mode'] == 'view') or isset($_GET['raids_del']) or isset($_GET['mark_r
 	$wrmsmarty->assign('header_data',
 		array(
 			'template_name'=>$phpraid_config['template'],
+			'gamepack_name' => $phpraid_config['gamepack_name'],
 			'form_action'=> $form_action,
 			'form_action_raids_table' => $pageURL."&",
 			'button_addraid' => $phprlang['raids_new_header'],

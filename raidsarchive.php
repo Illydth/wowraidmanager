@@ -246,6 +246,7 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true)) {
 	$wrmsmarty->assign('header_data',
 		array(
 			'template_name'=>$phpraid_config['template'],
+			'gamepack_name' => $phpraid_config['gamepack_name'],				
 			'raidsarchive_header' => $phprlang['raidsarchive_header'],
 			//'new_raids_header' => $phprlang['raids_new'],
 			'sort_url_base' => $pageURL,

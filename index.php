@@ -300,6 +300,7 @@ $wrmsmarty->assign('prev_record_counts', $prev_record_count_array);
 $wrmsmarty->assign('header_data',
 	array(
 		'template_name'=>$phpraid_config['template'],
+		'gamepack_name' => $phpraid_config['gamepack_name'],			
 		'old_raids_header' => $phprlang['raids_old'],
 		'new_raids_header' => $phprlang['raids_new'],
 		'sort_url_base' => $pageURL,

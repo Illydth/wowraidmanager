@@ -97,4 +97,29 @@ $phprlang = array_merge($phprlang, array(
 'unholy_tank' =>  "Unholy (Tank)",
 'unholy_melee' =>  "Unholy (Melee)",
 'notavailable' =>  "N/A",
-));  ?>
+		
+// tooltips
+'arcane' =>  'Arcane',
+'arcane_resistance_title' =>  'Arcane Resistance',
+'fire' =>  'Fire',
+'fire_resistance_title' =>  'Fire Resistance',
+'frost' =>  'Frost',
+'frost_resistance_title' =>  'Frost Resistance',
+'nature' =>  'Nature',
+'nature_resistance_title' =>  'Nature Resistance',
+'shadow' =>  'Shadow',
+'shadow_resistance_title' =>  'Shadow Resistance',
+
+'deathknight_icon' =>  'Klicka för att se Death Knights',
+'druid_icon' =>  'Klicka för att se Druider',
+'hunter_icon' =>  'Klicka för att se Hunters',
+'mage_icon' =>  'Klicka för att se Mages',
+'paladin_icon' =>  'Klicka för att se Paladiner',
+'priest_icon' =>  'Klicka för att se Präster',
+'rogue_icon' =>  'Klicka för att se Rogues',
+'shaman_icon' =>  'Klicka för att se Shamans',
+'warlock_icon' =>  'Klicka för att se Warlocks',
+'warrior_icon' =>  'Klicka för att se Warriors',
+		
+));
+?>
