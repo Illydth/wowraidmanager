@@ -32,48 +32,19 @@
 // Set Page content type header:
 header('Content-Type: text/html; charset=utf-8');
 
+/*
 $priv_config=scrub_input($_SESSION['priv_configuration']);
 $logged_in=scrub_input($_SESSION['session_logged_in']);
 
-// time variables
-$guild_time = new_date($phpraid_config['time_format'],time(),$phpraid_config['timezone'] + $phpraid_config['dst']);
-$guild_date = new_date($phpraid_config['date_format'],time(),$phpraid_config['timezone'] + $phpraid_config['dst']);
 
-if(($phpraid_config['disable'] == '1') AND ($priv_config == 1))
-{
-	$site_disabled_warning = '
-					<br>
-					<div align="center">
-					<div class="errorHeader">'. $phprlang['disabled_header'] . '</div>
-					<div class="errorBody">' . $phprlang['disabled_message'] . '</div>
-					</div>
-					';
-}
 
-$wrmadminsmarty->assign('page_header_data', 
-		array(
-			'header_link' => $phpraid_config['header_link'],
-			'title_guild_name'=>$phpraid_config['site_name'],
-			'title_guild_server'=>$phpraid_config['site_server'],
-			'title_guild_description'=>$phpraid_config['site_description'],
-			'header_logo' => $phpraid_config['header_logo'],
-			'guild_time' => $guild_time,
-			'guild_date' => $guild_date,
-			'of_string'=>$phprlang['of'],
-			'rss_feed_string'=>$phprlang['rss_feed_text'],
-			'guild_time_string'=>$phprlang['guild_time_string'],
-			'menu_header_text'=>$phprlang['menu_header_text'],
-			'header_link'=>$phpraid_config['header_link'],
-			'site_disabled_warning' => $site_disabled_warning,
-	)
-);
 
 // setup link permissions
 require_once($phpraid_dir.'templates/' . $phpraid_config['template'] . '/admin/admin_theme_cfg.php');
 
-/**********************************************
+/ **********************************************
  *  Menu Section - Create the Left Side Menu
- **********************************************/
+ ********************************************** /
 $admin_site_link = '<a href="../index.php">' . $theme_admin_site_link . "</a>";
 $admin_main_link = '<a href="admin_index.php">' . $theme_admin_main_link . '</a>';
 $admin_generalcfg_link = '<a href="admin_generalcfg.php">' . $theme_admin_generalcfg_link . '</a>';
@@ -255,12 +226,41 @@ $wrmadminsmarty->assign('menus',
 		'logs_menu_header'=>$phprlang['logs_menu_header'],
 	)
 );
+*/
+
+/**************************************************************
+ * Show Page Header
+**************************************************************/
+$wrmtemplate->show_page_admin_header();
+
+/**************************************************************
+ * Show Menu
+**************************************************************/
+$wrmtemplate->wrm_show_admin_menus();
+
+/**************************************************************
+ * table stuff between menu and main output frame
+**************************************************************/
 $wrmadminsmarty->assign('admin_index_header', $phprlang['admin_index_header']);
+$wrmadminsmarty->display('admin_menu_mainfrm.html');
+
+/**************************************************************
+ * Show error_site_disable if they disable
+**************************************************************/
+if(($phpraid_config['disable'] == '1') AND ($priv_config == 1))
+{
+	$site_disabled_warning = '
+	<br>
+	<div align="center">
+	<div class="errorHeader">'. $phprlang['disabled_header'] . '</div>
+	<div class="errorBody">' . $phprlang['disabled_message'] . '</div>
+	</div>
+	';
+}
 
 // display any errors if they exist
 if(isset($errorMsg))
 {
-	$wrmadminsmarty->display('admin_header.html');
 	
 	if(isset($errorSpace) && $errorSpace == 1) {
 		$errorMsg .= '</div><br>';
@@ -282,5 +282,6 @@ if(isset($errorMsg))
 		exit;
 	}
 }
-$wrmadminsmarty->display('admin_header.html');
+
+
 ?>

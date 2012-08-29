@@ -37,10 +37,10 @@ require_once('./admin_common.php');
 define("PAGE_LVL","configuration");
 require_once("../includes/authentication.php");	
 
-isset($_GET['mode']) ? $mode = scrub_input($_GET['mode']) : $mode = '';
+isset($_GET['mode']) ? $mode = scrub_input($_GET['mode']) : $mode = 'view';
 
-if($mode == '')
-	log_hack();
+/*if($mode == '')
+	log_hack();*/
 
 if($mode == 'view')
 {

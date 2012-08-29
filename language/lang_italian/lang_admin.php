@@ -161,7 +161,14 @@ $phprlang = array_merge($phprlang, array(
 'configuration_addon' =>  'Sito ufficiale di WowRaidManager',
 'configuration_show_addon' =>  'Visualizza link a WRM',
 'configuration_register_text' =>  'Indirizzo di registrazione',
-
+'current_template_header_text' => 'current template',
+'current_template_name_text' => 'template name',
+'current_template_created_by_text' => 'created by',
+'current_template_version_nr_text' => 'version',
+'current_template_info_text' => 'info',
+'available_templates_text' => 'available templates',
+'active' => 'active',
+		
 // Text on the "Time Config" Page
 'configuration_ampm' =>  'Formato orario di creazione dei Raid',
 'configuration_date' =>  'Formato delle date<br><a href="http://www.php.net/date/" target="_blank">(Guida)</a>',

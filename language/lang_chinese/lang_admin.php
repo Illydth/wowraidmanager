@@ -163,7 +163,14 @@ $phprlang = array_merge($phprlang, array(
 'configuration_addon' =>  '插件鏈結位址',
 'configuration_show_addon' =>  '顯示插件連結',
 'configuration_register_text' =>  '登寄網址',
-
+'current_template_header_text' => 'current template',
+'current_template_name_text' => 'template name',
+'current_template_created_by_text' => 'created by',
+'current_template_version_nr_text' => 'version',
+'current_template_info_text' => 'info',
+'available_templates_text' => 'available templates',
+'active' => 'active',
+		
 
 // Text on the "Time Config" Page
 'configuration_ampm' =>  'Schedule Raids in 12h/24h format',

@@ -163,7 +163,13 @@ $phprlang = array_merge($phprlang, array(
 'configuration_addon' =>  'Addon URL',
 'configuration_show_addon' =>  'Addon-Link zeigen',
 'configuration_register_text' =>  'Registrierungs-URL',
-
+'current_template_header_text' => 'aktuelles Template',
+'current_template_name_text' => 'template Name',
+'current_template_created_by_text' => 'erstellt von',
+'current_template_version_nr_text' => 'Version',
+'current_template_info_text' => 'Beschreibung',
+'available_templates_text' => 'verfuegbare templates',
+'active' => 'ativiere',
 
 // Text on the "Time Config" Page
 'configuration_ampm' =>  '24-Stunden-Format verwenden',

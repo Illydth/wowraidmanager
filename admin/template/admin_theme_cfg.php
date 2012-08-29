@@ -29,27 +29,32 @@ $image_menubarmgt_link = "<img src=\"../templates/" . $phpraid_config['template'
 
 // no further editing necessary
 if($use_images == 0) {
-	$theme_admin_site_link = $phprlang['admin_site_link'];
+	$theme_admin_site_link = $phprlang[''];
 	$theme_admin_main_link = $phprlang['admin_main_link'];
-	$theme_admin_logs_link = $phprlang['admin_logs_link'];
-	$theme_admin_rolecfg_link = $phprlang['admin_rolecfg_link'];
-	$theme_admin_datatablecfg_link = $phprlang['admin_datatablecfg_link'];
-	$theme_admin_permissions_link = $phprlang['admin_permissions'];
+	$theme_admin_logs_link = $phprlang[''];
+	$theme_admin_rolecfg_link = $phprlang[''];
+	$theme_admin_datatablecfg_link = $phprlang[''];
+	$theme_admin_permissions_link = $phprlang[''];
 	$theme_admin_signuprights_link = $phprlang['admin_signup_rights'];
-	$theme_admin_usersettings_link = $phprlang['admin_user_settings'];
-	$theme_admin_usermgt_link = $phprlang['admin_user_management'];
-	$theme_admin_generalcfg_link = $phprlang['admin_general_config'];
-	$theme_admin_general_rss_cfg_link = $phprlang['admin_general_rss_cfg'];
-	$theme_admin_general_email_cfg_link = $phprlang['admin_general_email_cfg'];
-	$theme_admin_general_lua_output_cfg_link = $phprlang['admin_general_lua_output_cfg'];
-	$theme_admin_timecfg_link = $phprlang['admin_time_config'];
-	$theme_admin_raid_settings_link = $phprlang['admin_raid_settings'];
-	$theme_admin_externcfg_link = $phprlang['admin_external_config'];
-	$theme_admin_roletalent_link = $phprlang['admin_roletalent_config'];
-	$theme_admin_raid_signupgroups_link = $phprlang['admin_raid_signupgroups'];
-	$theme_admin_general_game_settings_link = $phprlang['admin_game_settings'];
-	$theme_admin_style_conf_link = $phprlang['admin_style_conf'];
-	$theme_admin_style_menubar_mgt_link = $phprlang['admin_menubar_mgt_link'];
+	$theme_admin_usersettings_link = $phprlang[''];
+	$theme_admin_usermgt_link = $phprlang[''];
+	
+	$theme_admin_generalcfg_link = $phprlang[''];
+	$theme_admin_general_rss_cfg_link = $phprlang[''];
+	$theme_admin_general_email_cfg_link = $phprlang[''];
+	$theme_admin_general_lua_output_cfg_link = $phprlang[''];
+	
+	$theme_admin_timecfg_link = $phprlang[''];
+	
+	$theme_admin_raid_settings_link = $phprlang[''];
+	$theme_admin_raid_signupgroups_link = $phprlang[''];
+	$theme_admin_externcfg_link = $phprlang[''];
+	$theme_admin_roletalent_link = $phprlang[''];
+	
+
+	$theme_admin_general_game_settings_link = $phprlang[''];
+	$theme_admin_style_conf_link = $phprlang[''];
+	$theme_admin_style_menubar_mgt_link = $phprlang[''];
 } else {
 	$theme_admin_site_link = $image_admin_site_link;
 	$theme_admin_main_link = $image_admin_main_link;

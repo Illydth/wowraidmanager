@@ -141,7 +141,9 @@ $wrmadminsmarty->assign('config_data',
 		'auto_mark_raids_old' => $auto_mark_raids_old,
 	
 		'side_cfg_header' => $phprlang['general_side_cfg_header'],
-	
+		'header_link_value' => $phpraid_config['header_link'],
+		'header_link_text' => $phprlang['configuration_sitelink'],
+			
 		'site_name_value' =>  $phpraid_config['site_name'],
 		'site_name_text' => $phprlang['configuration_site_name'],
 		'site_description_value' => $phpraid_config['site_description'],
@@ -193,7 +195,9 @@ if(isset($_POST['submit']))
 	$site_name = scrub_input($_POST['site_name']);
 	$site_description = scrub_input($_POST['site_desc']);
 	$site_server = scrub_input($_POST['site_server']);
-
+	
+	$h_link = scrub_input($_POST['header_link'], true);
+	
 	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'language';", quote_smart($lang));
 	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
@@ -219,6 +223,9 @@ if(isset($_POST['submit']))
 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'site_description';", quote_smart($site_description));
 	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'site_server';", quote_smart($site_server));
+	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
+	
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'header_link';", quote_smart($h_link));
 	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
 	
 	header("Location: ".$page_url);

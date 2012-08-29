@@ -26,7 +26,8 @@
 *    GNU General Public License for more details.
 *
 *    You should have received a copy of the GNU General Public License
-*    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*    along with this program.  I
+*    f not, see <http://www.gnu.org/licenses/>.
 *
 ****************************************************************************/
 
@@ -38,9 +39,8 @@ if (isset($phpraid_config['debug']) && $phpraid_config['debug'])
 	fclose($stdoutfptr);
 
 //
-// Parse and show the overall footer.
+// show the overall footer.
 //
-$wrmsmarty->assign('version',$version);
+$wrmtemplate->show_page_footer();
 
-$wrmsmarty->display('footer.html');
 ?>

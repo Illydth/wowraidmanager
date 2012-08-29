@@ -392,7 +392,7 @@ INSERT INTO `wrm_config` VALUES ('disable_freeze','0');
 INSERT INTO `wrm_config` VALUES ('dst','0');
 INSERT INTO `wrm_config` VALUES ('email_signature','Thanks');
 INSERT INTO `wrm_config` VALUES ('header_link','http://www.yourdomain.com/');
-INSERT INTO `wrm_config` VALUES ('header_logo','templates/default/images/logo_phpRaid.jpg');
+INSERT INTO `wrm_config` VALUES ('header_logo','logo_phpRaid.jpg');
 INSERT INTO `wrm_config` VALUES ('language','english');
 INSERT INTO `wrm_config` VALUES ('multiple_signups','0');
 INSERT INTO `wrm_config` VALUES ('phpraid_addon_link','http://www.wowraidmanager.net');

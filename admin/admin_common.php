@@ -66,6 +66,7 @@ require_once($phpraid_dir.'includes/functions_date.php');
 require_once($phpraid_dir.'includes/functions_logging.php');
 require_once($phpraid_dir.'includes/functions_tables.php');
 require_once($phpraid_dir.'includes/functions_users.php');
+require_once($phpraid_dir.'includes/class_template.php');
 require_once($phpraid_dir.'includes/ubb.php');
 require_once($phpraid_dir.'includes/wowarmory/simple_html_dom.php');
 require_once($phpraid_dir.'includes/wowarmory/scrapper.class.php');
@@ -114,7 +115,7 @@ define('SMARTY_DIR', $wrm_dir . '/includes/smarty/libs/');
 require(SMARTY_DIR . 'Smarty.class.php');
 
 $wrmadminsmarty = new Smarty();
-$wrmadminsmarty->template_dir = $wrm_dir . 'templates/' . $phpraid_config['template'] . '/admin/';
+$wrmadminsmarty->template_dir = $wrm_dir . 'admin/template/';
 $wrmadminsmarty->compile_dir  = $wrm_dir . 'cache/templates_c/admin/';
 $wrmadminsmarty->config_dir   = $wrm_dir . 'includes/smarty/configs/';
 $wrmadminsmarty->cache_dir    = $wrm_dir . 'cache/smarty_cache/admin/';
@@ -124,6 +125,10 @@ $wrmadminsmarty->compile_check = true;
 /* Turn on/off Smarty Template Debugging by commenting/uncommenting the lines below. */
 $wrmadminsmarty->debugging = false;
 //$wrmadminsmarty->debugging = true;
+
+
+//$wrmthemplate->set_loginbox_show_status($ShowLoginForm);
+//$wrmthemplate->set_BridgeSupportPWDChange_status($BridgeSupportPWDChange);
 
 /***************************************************
  * Load Language Files
@@ -148,6 +153,12 @@ else
 {
 	require_once($phpraid_dir."language/lang_{$phpraid_config['language']}/lang_main.php");
 }
+
+/***************************************************
+ * Set WRM Template
+***************************************************/
+$wrmtemplate = new wrm_template($db_raid,$phpraid_config,$phprlang, $phpraid_dir);
+$wrmtemplate->set_smarty($wrmadminsmarty);
 
 /***************************************************
  * Set Authentication Method and Load Auth Files

@@ -78,6 +78,7 @@ require_once($phpraid_dir.'includes/functions_date.php');
 require_once($phpraid_dir.'includes/functions_logging.php');
 require_once($phpraid_dir.'includes/functions_tables.php');
 require_once($phpraid_dir.'includes/functions_users.php');
+require_once($phpraid_dir.'includes/class_template.php');
 require_once($phpraid_dir.'includes/ubb.php');
 require_once($phpraid_dir.'includes/scheduler.php');
 require_once($phpraid_dir.'includes/wowarmory/simple_html_dom.php');
@@ -173,19 +174,6 @@ $wrmsmarty->compile_check = true;
 $wrmsmarty->debugging = false;
 //$wrmsmarty->debugging = true;
 
-//
-/**********************************************************
- * Load phpLib Template System (Deprecated)
- *      The phpLib Template System has now been removed.  
- *      4.0 fully migrates to the Smarty Template System
- *      and will no longer use phpLib.
- *      
- *      This section will be removed upon 4.0 release.
- **********************************************************/
-//require_once($phpraid_dir.'includes/template.php');
-//$page = &new wrmTemplate();
-//$page->set_root($phpraid_dir.'templates');
-
 /***************************************************
  * Load Language Files
  ***************************************************/
@@ -240,6 +228,14 @@ else
 //{
 //	$phprlang[$key] = htmlentities($value, ENT_QUOTES, "UTF-8", false);
 //}
+
+/***************************************************
+ * Set WRM Template
+ ***************************************************/
+$wrmtemplate = new wrm_template($db_raid,$phpraid_config,$phprlang, $phpraid_dir);
+$wrmtemplate->set_smarty($wrmsmarty);
+//$wrmthemplate->set_loginbox_show_status($ShowLoginForm);
+$wrmtemplate->set_BridgeSupportPWDChange_status($BridgeSupportPWDChange);
 
 /***************************************************
  * Set Authentication Method and Load Auth Files

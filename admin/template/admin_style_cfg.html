@@ -1,0 +1,40 @@
+{* Smarty Template *}
+<form action="{$config_data.form_action}" method="post" name="configure" id="configure">
+<div class="contentHeader">{$config_data.current_template_header_text}</div><br>
+<div class="contentBody">
+<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+	<tr>
+    	<td valign="top" class="forumline"> 
+           <table width="100%" border="0" cellspacing="1" cellpadding="3" class="dataOutline">
+		      <tr> 
+		        <td width="200" class="row1"><strong>{$config_data.current_template_name_text}</strong></td>
+		        <td class="row2"><h2>{$config_data.current_template_name_value}</h2></td>
+		      </tr>
+		      <tr> 
+		        <td width="200" class="row1"><strong>{$config_data.current_template_created_by_text}</strong></td>
+		        <td class="row2">{$config_data.current_template_created_by_value}</td>
+		      </tr>
+		      <tr> 
+		        <td width="200" class="row1"><strong>{$config_data.current_template_version_nr_text}</strong></td>
+		        <td class="row2">{$config_data.current_template_version_nr_value}</td>
+		      </tr>
+		      <tr> 
+		        <td width="200" class="row1"><strong>{$config_data.current_template_info_text}</strong></td>
+		        <td class="row2">{$config_data.current_template_info_value}</td>
+		      </tr>
+		      <tr> 
+		        <td width="200" class="row1"><strong>{$config_data.template_width_text}</strong></td>
+		        <td class="row2">
+		        	{html_options name=template_width options=$config_data.array_template_width selected=$config_data.selected_template_width}
+					<input type="submit" value="{$config_data.button_submit}" name="submit" class="mainoption">
+					<input type="reset" value="{$config_data.button_reset}" name="reset" class="liteoption">
+				</td>
+		      </tr>
+			</table>
+		</td>
+	</tr>
+</table>           
+<br>
+</div>
+{$config_data.html_table}
+</form>

@@ -162,7 +162,14 @@ $phprlang = array_merge($phprlang, array(
 'configuration_addon' =>  'Addon URL',
 'configuration_show_addon' =>  'Show addon link',
 'configuration_register_text' =>  'Registration URL',
-
+'current_template_header_text' => 'current template',
+'current_template_name_text' => 'template name',
+'current_template_created_by_text' => 'created by',
+'current_template_version_nr_text' => 'version',
+'current_template_info_text' => 'info',
+'available_templates_text' => 'available templates',
+'active' => 'active',
+		
 // Text on the "Time Config" Page
 'configuration_ampm' =>  'Schedule Raids in 12h/24h format',
 'configuration_date' =>  'Date format<br><a href="http://www.php.net/date/" target="_blank">help?</a>',

@@ -31,6 +31,11 @@
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *
 ****************************************************************************/
+/*
+ * updated: 
+ * version 4.3 ( Aug 29, 2012 carsten hoelbing)
+ * increase usability (more option, show all available template in a list)
+ */
 
 // commons
 define("IN_PHPRAID", true);	
@@ -44,32 +49,18 @@ define("PAGE_LVL","configuration");
 require_once("../includes/authentication.php");	
 
 $page_url = "admin_style_cfg.php";
+$html_table = '';
+$table_pos = 0;
 
-/* 
- * Data for Index Page
- */
-	
+$template_setting = $wrmtemplate->load_current_template_settings();
+$available_template_setting = $wrmtemplate->load_all_template_settings();
 
-// TEMPLATE CHECK
-// and now let's check templates
-$dir = '../templates';
-$dh = opendir($dir);
-while(false != ($filename = readdir($dh))) {
-	$files[] = $filename;
-}
-
-sort($files);
-array_shift($files);
-array_shift($files);
-
-$array_template_type = array();
-$selected_template_type = "";
-
-include_once ("../templates/".$phpraid_config['template']."/theme_cfg.php");
 $selected_template_width = $phpraid_config['template_body_width'];
-if (isset($template_width))
+if ( (isset($template_setting['width_normal'])) AND (isset($template_setting['width_expanded'])) )
 {
-	$array_template_width = $template_width;
+	$array_template_width = array();
+	$array_template_width[$phprlang['configuration_width_normal']] = $template_setting['width_normal'];
+	$array_template_width[$phprlang['configuration_width_expanded']] = $template_setting['width_expanded'];
 }
 else 
 {
@@ -77,15 +68,60 @@ else
 	$array_template_width["n/a"] = "N/A";
 }
 
-foreach($files as $key=>$value)
+if ( count($available_template_setting) > 0)
 {
-	if($phpraid_config['template'] == $value)
-		$selected_template_type = $value;
+	$html_table .= '<div class="contentHeader">'.$phprlang['available_templates_text'].'</div>';
+	$html_table .= '<br>';
+	$html_table .= '<div class="contentBody">';
+	$html_table .= '<table border = "0" width="100%">';
+	foreach($available_template_setting as $template_setting_all )
+	{
+		if ($table_pos == 0) $html_table .= '	<tr>';
 
-	$array_template_type[$value] = $value;
+	$html_table .= '	<td width="33%">';
+	$html_table .= '	<table class ="table_admin_templeallview">';
+	$html_table .= '	  <tr>';
+	$html_table .= '	    <th class="tablerow_Header_big">'.$phprlang['current_template_name_text'].'</th>';
+	$html_table .= '	  </tr>';
+	$html_table .= '	  <tr>';
+	$html_table .= '	    <td class="row3">'.$template_setting_all['template_name'].'</td>';
+	$html_table .= '	  </tr>';
+	$html_table .= '	  <tr>';
+	$html_table .= '	    <th class="tablerow_Header_big">'.$phprlang['current_template_created_by_text'].'</th>';
+	$html_table .= '	  </tr>';
+	$html_table .= '	  <tr>';
+	$html_table .= '	    <td class="row3">'.$template_setting_all['template_author'].'</td>';
+	$html_table .= '	  </tr>';
+	$html_table .= '	  <tr>';
+	$html_table .= '	    <th class="tablerow_Header_big">'.$phprlang['current_template_version_nr_text'].'</th>';
+	$html_table .= '	  </tr>';
+	$html_table .= '	  <tr>';
+	$html_table .= '	    <td class="row3">'.$template_setting_all['template_version'].'</td>';
+	$html_table .= '	  </tr>';
+	$html_table .= '	  <tr>';
+	$html_table .= '	  <tr>';
+	$html_table .= '	    <th class="tablerow_Header_big">'.$phprlang['current_template_info_text'].'</th>';
+	$html_table .= '	  </tr>';
+	$html_table .= '	  <tr>';
+	$html_table .= '	    <td class="row3">'.$template_setting_all['template_description'].'</td>';
+	$html_table .= '	  </tr>';
+	$html_table .= '	  <tr>';
+	$html_table .= '	    <td class="tablerow_Header_big"><a href="'.$page_url.'?mode=active&template_name='.$template_setting_all['template_name'].'">'.$phprlang['active'].'</a></td>';
+	$html_table .= '	  </tr>';
+	$html_table .= '	  </table>';
+	$html_table .= '	  </td>';
+	$table_pos++;
+
+	if ($table_pos == 3) 
+	{
+		$html_table .= '	</tr>';
+		$table_pos = 0;
+	}
+
+	}
+	$html_table .= '</table>';
 }
 
-//END TEMPLATE CHECK
 
 $wrmadminsmarty->assign('config_data',
 	array(
@@ -93,41 +129,43 @@ $wrmadminsmarty->assign('config_data',
 		'general_header' => $phprlang['general_configuration_header'],
 		'template_cfg_header' => $phprlang['configuration_template_cfg_header'],
 
-
-		'header_logo_path_value' => $phpraid_config['header_logo'],
-		'header_logo_path_text' => $phprlang['configuration_logo'],
-		'header_link_value' => $phpraid_config['header_link'],
-		'header_link_text' => $phprlang['configuration_sitelink'],
-	
-		'template_text' => $phprlang['configuration_template'],
-		'array_template_type' => $array_template_type,
-		'selected_template_type' => $selected_template_type,
-	
+		'current_template_header_text' => $phprlang['current_template_header_text'],
+			
+		'current_template_name_text' => $phprlang['current_template_name_text'],
+		'current_template_name_value' => $template_setting['template_name'],
+		'current_template_created_by_text' => $phprlang['current_template_created_by_text'],
+		'current_template_created_by_value' => $template_setting['template_author'],
+		'current_template_version_nr_text' => $phprlang['current_template_version_nr_text'],
+		'current_template_version_nr_value' => $template_setting['template_version'],
+		'current_template_info_text' => $phprlang['current_template_info_text'],
+		'current_template_info_value' => $template_setting['template_description'],
+			
 		'template_width_text' => $phprlang['configuration_template_width_text'],
 		'array_template_width' => $array_template_width,
 		'selected_template_width' => $selected_template_width,	
 	
 		'button_submit' => $phprlang['submit'],
-		'button_reset' => $phprlang['reset']
+		'button_reset' => $phprlang['reset'],
+		'html_table' => $html_table
 	)
 );
 
 if(isset($_POST['submit']))
 {
-
-	$h_logo = scrub_input($_POST['header_logo'], true);
-	$h_link = scrub_input($_POST['header_link'], true);
-
-	$t_type = scrub_input(DEUBB($_POST['template']));
 	$template_width = scrub_input(DEUBB($_POST['template_width']));
 
 	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'template_body_width';", quote_smart($template_width));
 	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
-	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'header_logo';", quote_smart($h_logo));
-	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
-	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'header_link';", quote_smart($h_link));
-	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
-	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'template';", quote_smart($t_type));
+
+
+	header("Location: ".$page_url);
+}
+
+if (isset($_GET['mode']) AND ($_GET['mode'] == 'active') AND isset($_GET['template_name']))
+{	
+	$template_name = scrub_input(DEUBB($_GET['template_name']));
+
+	$sql=sprintf("UPDATE `".$phpraid_config['db_prefix']."config` SET `config_value` = %s WHERE `config_name`= 'template';", quote_smart($template_name));
 	$db_raid->sql_query($sql) or print_error($sql,$db_raid->sql_error(),1);
 	
 	header("Location: ".$page_url);

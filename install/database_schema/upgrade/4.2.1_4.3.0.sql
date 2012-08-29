@@ -242,5 +242,7 @@ UPDATE `wrm_column_headers` SET img_url = '/images/resistances/shadow_resistance
 
 INSERT INTO `wrm_config` VALUES ('gamepack_name', 'wow');
 
+UPDATE `wrm_config` SET config_value = 'logo_phpRaid.jpg',config_name = 'header_logo' WHERE config_name = 'header_logo';
+
 -- WRM Armory Cache
 INSERT INTO `wrm_version` VALUES ('4.3.0','Version 4.3.0 of WoW Raid Manager');
