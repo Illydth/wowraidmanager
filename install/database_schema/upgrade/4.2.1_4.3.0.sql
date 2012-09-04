@@ -240,9 +240,43 @@ UPDATE `wrm_column_headers` SET img_url = '/images/resistances/frost_resistance.
 UPDATE `wrm_column_headers` SET img_url = '/images/resistances/nature_resistance.gif' WHERE img_url = '/images/wow/resistances/nature_resistance.gif';
 UPDATE `wrm_column_headers` SET img_url = '/images/resistances/shadow_resistance.gif' WHERE img_url = '/images/wow/resistances/shadow_resistance.gif';
 
-INSERT INTO `wrm_config` VALUES ('gamepack_name', 'wow');
 
-UPDATE `wrm_config` SET config_value = 'logo_phpRaid.jpg',config_name = 'header_logo' WHERE config_name = 'header_logo';
+
+-- Gamepack Table Creation
+DROP TABLE IF EXISTS `wrm_gamepack`;
+CREATE TABLE `wrm_gamepack` (
+  `gamepack_id` TINYINT( 2 ) NOT NULL AUTO_INCREMENT,
+  `gamepack_name` VARCHAR( 50 ) NOT NULL,
+ PRIMARY KEY  (`gamepack_id`)
+) ;
+
+INSERT INTO `wrm_gamepack` ( `gamepack_name`) VALUES ('wow');
+
+ALTER TABLE `wrm_announcements` ADD `gamepack_id` TINYINT( 2 ) default 0;
+ALTER TABLE `wrm_boss_kill_type` ADD `gamepack_id` TINYINT( 2 ) default 0;
+ALTER TABLE `wrm_chars` ADD `gamepack_id` TINYINT( 2 ) default 0;
+ALTER TABLE `wrm_classes` ADD `gamepack_id` TINYINT( 2 ) default 0;
+ALTER TABLE `wrm_class_race` ADD `gamepack_id` TINYINT( 2 ) default 0;
+ALTER TABLE `wrm_class_role` ADD `gamepack_id` TINYINT( 2 ) default 0;
+ALTER TABLE `wrm_events` ADD `gamepack_id` TINYINT( 2 ) default 0;
+ALTER TABLE `wrm_event_type` ADD `gamepack_id` TINYINT( 2 ) default 0;
+ALTER TABLE `wrm_expansion` ADD `gamepack_id` TINYINT( 2 ) default 0;
+ALTER TABLE `wrm_faction` ADD `gamepack_id` TINYINT( 2 ) default 0;
+ALTER TABLE `wrm_gender` ADD `gamepack_id` TINYINT( 2 ) default 0;
+ALTER TABLE `wrm_guilds` ADD `gamepack_id` TINYINT( 2 ) default 0;
+ALTER TABLE `wrm_locations` ADD `gamepack_id` TINYINT( 2 ) default 0;
+ALTER TABLE `wrm_loc_class_lmt` ADD `gamepack_id` TINYINT( 2 ) default 0;
+ALTER TABLE `wrm_loc_role_lmt` ADD `gamepack_id` TINYINT( 2 ) default 0;
+ALTER TABLE `wrm_raids` ADD `gamepack_id` TINYINT( 2 ) default 0;
+ALTER TABLE `wrm_raid_class_lmt` ADD `gamepack_id` TINYINT( 2 ) default 0;
+ALTER TABLE `wrm_raid_force` ADD `gamepack_id` TINYINT( 2 ) default 0;
+ALTER TABLE `wrm_raid_role_lmt` ADD `gamepack_id` TINYINT( 2 ) default 0;
+ALTER TABLE `wrm_races` ADD `gamepack_id` TINYINT( 2 ) default 0;
+ALTER TABLE `wrm_resistance` ADD `gamepack_id` TINYINT( 2 ) default 0;
+ALTER TABLE `wrm_roles` ADD `gamepack_id` TINYINT( 2 ) default 0;
+ALTER TABLE `wrm_teams` ADD `gamepack_id` TINYINT( 2 ) default 0;
+
+INSERT INTO `wrm_config` VALUES ('gamepack_id', '0');
 
 -- WRM Armory Cache
 INSERT INTO `wrm_version` VALUES ('4.3.0','Version 4.3.0 of WoW Raid Manager');

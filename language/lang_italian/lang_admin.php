@@ -168,7 +168,17 @@ $phprlang = array_merge($phprlang, array(
 'current_template_info_text' => 'info',
 'available_templates_text' => 'available templates',
 'active' => 'active',
-		
+
+// Text on the "Gamepack Config" Page
+'gamepack_menu_header' => 'Gamepack',
+'admin_gamepack_config' =>  '&raquo; Config',
+'current_gamepack_header_text' => 'current Gamepack',
+'current_gamepack_name_text' => 'Name',
+'current_gamepack_created_by_text' => 'created by',
+'current_gamepack_version_nr_text' => 'version',
+'current_gamepack_info_text' => 'info',
+'available_gamepack_text' => 'available gamepack',
+
 // Text on the "Time Config" Page
 'configuration_ampm' =>  'Formato orario di creazione dei Raid',
 'configuration_date' =>  'Formato delle date<br><a href="http://www.php.net/date/" target="_blank">(Guida)</a>',

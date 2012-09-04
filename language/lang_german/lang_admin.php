@@ -171,6 +171,16 @@ $phprlang = array_merge($phprlang, array(
 'available_templates_text' => 'verfuegbare templates',
 'active' => 'ativiere',
 
+// Text on the "Gamepack Config" Page
+'gamepack_menu_header' => 'Gamepack',
+'admin_gamepack_config' =>  '&raquo; Config',
+'current_gamepack_header_text' => 'aktuelles Gamepack',
+'current_gamepack_name_text' => 'Name',
+'current_gamepack_created_by_text' => 'erstellt von',
+'current_gamepack_version_nr_text' => 'Version',
+'current_gamepack_info_text' => 'Beschreibung',
+'available_gamepack_text' => 'verfuegbare Gamepack',
+		
 // Text on the "Time Config" Page
 'configuration_ampm' =>  '24-Stunden-Format verwenden',
 'configuration_date' =>  'Datumsformat<br><a href="http://de.php.net/date/" target="_blank">Hilfe?</a>',

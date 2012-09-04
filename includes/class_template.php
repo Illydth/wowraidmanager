@@ -41,6 +41,7 @@ class wrm_template
 	private $wrm_lang;
 	private $wrmsmarty;
 	private $template_setting;
+	private $gamepack_setting;
 	
 	private $loginbox_show_status;
 	private $BridgeSupportPWDChange_status;
@@ -54,9 +55,11 @@ class wrm_template
 		$this->wrm_config = $wrm_config;
 		$this->wrm_lang = $wrm_lang;
 		
+		// Set default values
 		$this->loginbox_show_status = TRUE;
 		$this->BridgeSupportPWDChange_status = FALSE;
 		$this->template_setting =  array();
+		$this->gamepack_setting =  array();
 	}
 	
 	public function set_smarty($smarty_value)
@@ -129,6 +132,69 @@ class wrm_template
 		return true;
 	}
 	
+	/**
+	 * GAMEPACK SECTION
+	 */
+	
+	public function load_current_gamepack_settings()
+	{
+		$directory = '../gamepack/'.$this->wrm_config['gamepack_name'];
+		if ($this->validate_gamepack_settings($directory) == true)
+		{
+			include $directory.'/gamepack_cfg.php';
+				
+			$this->gamepack_setting = $gamepack_setting;
+			return $this->gamepack_setting;
+		}
+		else
+			return false;
+	}
+	
+	public function load_all_gamepack_settings()
+	{
+		$all_available_gamepack = array();
+		$all_directorys = array();
+		$directory = '';
+	
+		// TEMPLATE CHECK
+		// and now let's check templates
+		$dir = '../gamepack';
+		$dh = opendir($dir);
+		while(false != ($directory = readdir($dh))) {
+			$all_directorys[] = $directory;
+		}
+	
+		sort($all_directorys);
+		array_shift($all_directorys);
+		array_shift($all_directorys);
+	
+		foreach($all_directorys as $directory )
+		{
+			$full_directory = '../gamepack/'.$directory;
+			if (($this->validate_template_settings($full_directory) == true)
+					AND ($directory != $this->wrm_config['gamepack_name'])
+			)
+			{
+				include $full_directory."/gamepack_cfg.php";
+				$gamepack_setting['directory'] = $directory;
+				$all_available_gamepack[$directory] = $gamepack_setting;
+	
+			}
+		}
+	
+		return $all_available_gamepack;
+	}
+	
+	private function validate_gamepack_settings($filename)
+	{
+		if (!file_exists($filename)) return FALSE;
+	
+		return true;
+	}
+	
+	/**
+	 * HTML - Header 
+	 */
 	/*
 	 * default: create (html header) settings
 	*/
@@ -534,8 +600,7 @@ class wrm_template
 	*  ADMIN : Menu Section - Create the Left Side Menu
 	*****************************************************/
 	private function wrm_load_admin_menu()
-	{
-	
+	{		
 		// *** MAIN MENU CONFIG ITEMS ***
 		$array_wrm_menu = array();
 		
@@ -603,13 +668,8 @@ class wrm_template
 				'images' =>'',
 				'show_status' => TRUE
 		);
+
 		$array_wrm_menu[1][6] = array(
-				'href' => 'admin_general_game_settings.php',
-				'url_text' => $this->wrm_lang['admin_game_settings'],
-				'images' =>'',
-				'show_status' => TRUE
-		);
-		$array_wrm_menu[1][7] = array(
 				'href' => 'admin_general_lua_output_cfg.php',
 				'url_text' => $this->wrm_lang['admin_general_lua_output_cfg'],
 				'images' =>'',
@@ -636,32 +696,63 @@ class wrm_template
 				'show_status' => TRUE
 		);
 		
-		// *** User Management Menu Items ***
+		// *** Gamepack Menu Items ***
 		$array_wrm_menu[3]['div_class_menuHeader'] = 'menuHeader';
-		$array_wrm_menu[3]['div_class_menuHeader_text'] = $this->wrm_lang['user_mgt_menu_header'];
+		$array_wrm_menu[3]['div_class_menuHeader_text'] = $this->wrm_lang['gamepack_menu_header'];
 		$array_wrm_menu[3]['div_class'] = 'navContainer';
 		$array_wrm_menu[3]['ul_class'] = 'navList';
 		
 		//
 		$array_wrm_menu[3][0] = array(
+				'href' => 'admin_gamepack_cfg.php',
+				'url_text' => $this->wrm_lang['admin_gamepack_config'],
+				'images' =>'',
+				'show_status' => TRUE
+		);
+		$array_wrm_menu[3][1] = array(
+				'href' => 'admin_general_game_settings.php',
+				'url_text' => $this->wrm_lang['admin_game_settings'],
+				'images' =>'',
+				'show_status' => TRUE
+		);
+		$array_wrm_menu[3][2] = array(
+				'href' => 'admin_rolecfg.php',
+				'url_text' => $this->wrm_lang['admin_rolecfg_link'],
+				'images' =>'',
+				'show_status' => TRUE
+		);
+		$array_wrm_menu[3][3] = array(
+				'href' => 'admin_roletalent.php',
+				'url_text' => $this->wrm_lang['admin_roletalent_config'],
+				'images' =>'',
+				'show_status' => TRUE
+		);
+		// *** User Management Menu Items ***
+		$array_wrm_menu[4]['div_class_menuHeader'] = 'menuHeader';
+		$array_wrm_menu[4]['div_class_menuHeader_text'] = $this->wrm_lang['user_mgt_menu_header'];
+		$array_wrm_menu[4]['div_class'] = 'navContainer';
+		$array_wrm_menu[4]['ul_class'] = 'navList';
+		
+		//
+		$array_wrm_menu[4][0] = array(
 				'href' => 'admin_usermgt.php',
 				'url_text' => $this->wrm_lang['admin_user_management'],
 				'images' =>'',
 				'show_status' => TRUE
 		);
-		$array_wrm_menu[3][1] = array(
+		$array_wrm_menu[4][1] = array(
 				'href' => 'admin_permissions.php',
 				'url_text' => $this->wrm_lang['admin_permissions'],
 				'images' =>'',
 				'show_status' => TRUE
 		);
-		$array_wrm_menu[3][3] = array(
+		$array_wrm_menu[4][3] = array(
 				'href' => 'admin_raid_signupgroups.php',
 				'url_text' => $this->wrm_lang['admin_raid_signupgroups'],
 				'images' =>'',
 				'show_status' => TRUE
 		);
-		$array_wrm_menu[3][4] = array(
+		$array_wrm_menu[4][4] = array(
 				'href' => 'admin_usersettings.php',
 				'url_text' => $this->wrm_lang['admin_user_settings'],
 				'images' =>'',
@@ -669,39 +760,27 @@ class wrm_template
 		);
 		
 		// *** Table Configuration Menu Items ***
-		$array_wrm_menu[4]['div_class_menuHeader'] = 'menuHeader';
-		$array_wrm_menu[4]['div_class_menuHeader_text'] = $this->wrm_lang['table_conf_menu_header'];
-		$array_wrm_menu[4]['div_class'] = 'navContainer';
-		$array_wrm_menu[4]['ul_class'] = 'navList';
-		
-		//
-		$array_wrm_menu[4][0] = array(
-				'href' => 'admin_datatablecfg.php',
-				'url_text' => $this->wrm_lang['admin_datatablecfg_link'],
-				'images' =>'',
-				'show_status' => TRUE
-		);
-		$array_wrm_menu[4][1] = array(
-				'href' => 'admin_rolecfg.php',
-				'url_text' => $this->wrm_lang['admin_rolecfg_link'],
-				'images' =>'',
-				'show_status' => TRUE
-		);
-		$array_wrm_menu[4][3] = array(
-				'href' => 'admin_roletalent.php',
-				'url_text' => $this->wrm_lang['admin_roletalent_config'],
-				'images' =>'',
-				'show_status' => TRUE
-		);
-		
-		// *** Log Menu Items ***
 		$array_wrm_menu[5]['div_class_menuHeader'] = 'menuHeader';
-		$array_wrm_menu[5]['div_class_menuHeader_text'] = $this->wrm_lang['logs_menu_header'];
+		$array_wrm_menu[5]['div_class_menuHeader_text'] = $this->wrm_lang['table_conf_menu_header'];
 		$array_wrm_menu[5]['div_class'] = 'navContainer';
 		$array_wrm_menu[5]['ul_class'] = 'navList';
 		
 		//
 		$array_wrm_menu[5][0] = array(
+				'href' => 'admin_datatablecfg.php',
+				'url_text' => $this->wrm_lang['admin_datatablecfg_link'],
+				'images' =>'',
+				'show_status' => TRUE
+		);
+		
+		// *** Log Menu Items ***
+		$array_wrm_menu[6]['div_class_menuHeader'] = 'menuHeader';
+		$array_wrm_menu[6]['div_class_menuHeader_text'] = $this->wrm_lang['logs_menu_header'];
+		$array_wrm_menu[6]['div_class'] = 'navContainer';
+		$array_wrm_menu[6]['ul_class'] = 'navList';
+		
+		//
+		$array_wrm_menu[6][0] = array(
 				'href' => 'admin_logs.php',
 				'url_text' => $this->wrm_lang['admin_logs_link'],
 				'images' =>'',

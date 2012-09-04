@@ -92,6 +92,7 @@ $sql = "(SELECT * from " . $phpraid_config['db_prefix'] . "raids " .
 		"(SELECT * FROM " . $phpraid_config['db_prefix'] . "raids " . 
 		"WHERE `recurrance` = 0 " .
 		"AND `old` = 1 " .
+		"AND `gamepack_id` = ".$phpraid_config['gamepack_id']." " .
 		"ORDER BY `raid_id` DESC " .
 		"LIMIT " . $phpraid_config['num_old_raids_index'] . ")";
 $raids_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
@@ -182,7 +183,12 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true)) {
 	// Get Class Limits and set Colored Counts
 	$raid_class_array = array();
 	$class_color_count = array();
-	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raid_class_lmt WHERE raid_id = %s", quote_smart($raids['raid_id']));
+	$sql = sprintf("SELECT * ".
+					" FROM " . $phpraid_config['db_prefix'] . "raid_class_lmt".
+					" WHERE raid_id = %s" .
+					" AND `gamepack_id` = ".$phpraid_config['gamepack_id'],
+					quote_smart($raids['raid_id'])
+			);
 	$result_raid_class = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	while($raid_class_data = $db_raid->sql_fetchrow($result_raid_class, true))
 	{
@@ -195,11 +201,21 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true)) {
 	// Get Role Limits and set Colored Counts
 	$raid_role_array = array();
 	$role_color_count = array();
-	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raid_role_lmt WHERE raid_id = %s", quote_smart($raids['raid_id']));
+	$sql = sprintf("SELECT * ".
+					" FROM " . $phpraid_config['db_prefix'] . "raid_role_lmt ".
+					" WHERE raid_id = %s".
+					" AND `gamepack_id` = ".$phpraid_config['gamepack_id'],
+					quote_smart($raids['raid_id'])
+			);
 	$result_raid_role = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	while($raid_role_data = $db_raid->sql_fetchrow($result_raid_role, true))
 	{
-		$sql2 = sprintf("SELECT role_name FROM " . $phpraid_config['db_prefix'] . "roles WHERE role_id = %s", quote_smart($raid_role_data['role_id']));
+		$sql2 = sprintf("SELECT role_name ".
+						" FROM " . $phpraid_config['db_prefix'] . "roles ".
+						" WHERE role_id = %s".
+						" AND `gamepack_id` = ".$phpraid_config['gamepack_id'],
+						quote_smart($raid_role_data['role_id'])
+				);
 		$result_role_name = $db_raid->sql_query($sql2) or print_error($sql2, $db_raid->sql_error(), 1);
 		$role_name = $db_raid->sql_fetchrow($result_role_name, true);
 		
@@ -208,7 +224,12 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true)) {
 	}
 	
 	// Get Raid Force Name from Raid Force ID
-	$sql = sprintf("SELECT raid_force_name FROM " . $phpraid_config['db_prefix'] . "raid_force WHERE raid_force_id = %s", quote_smart($raids['raid_force_id']));
+	$sql = sprintf("SELECT raid_force_name ".
+					" FROM " . $phpraid_config['db_prefix'] . "raid_force ".
+					" WHERE raid_force_id = %s".
+					" AND `gamepack_id` = ".$phpraid_config['gamepack_id'],
+					quote_smart($raids['raid_force_id'])
+			);
 	$result_raid_force_name = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	$raid_force_name_data = $db_raid->sql_fetchrow($result_raid_force_name, true);
 	
@@ -313,7 +334,9 @@ $wrmsmarty->assign('header_data',
 // get announcements
 $announcements = array();
 $announcement_header=$phprlang['announcements_header'];
-$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "announcements";
+$sql = "SELECT * ". 
+		" FROM " . $phpraid_config['db_prefix'] . "announcements".
+		" WHERE `gamepack_id` = ".$phpraid_config['gamepack_id'].";";
 $result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 if($db_raid->sql_numrows($result) > 0)
 {

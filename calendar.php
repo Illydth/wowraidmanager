@@ -186,8 +186,12 @@ $raidStartMonth = mktime("0", "0", "0", $in_month, "1", $in_year);
 $lastDayPassedMonth = date("t", $timestamp);
 $raidEndMonth = mktime("23", "59", "59", $in_month, $lastDayPassedMonth, $in_year);
 
-$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "raids WHERE start_time >= '" . $raidStartMonth . "' AND start_time <= '" . $raidEndMonth . "'AND recurrance = 0 ORDER BY start_time";
-
+$sql = "SELECT * ".
+		" FROM " . $phpraid_config['db_prefix'] . "raids ".
+		" WHERE start_time >= '" . $raidStartMonth . "' ".
+		" AND start_time <= '" . $raidEndMonth . "' ".
+		" AND recurrance = 0 ORDER BY start_time";
+		" AND `gamepack_id` = ".$phpraid_config['gamepack_id'].";";
 $raids_result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 while($raids = $db_raid->sql_fetchrow($raids_result, true)) 
 {
@@ -199,7 +203,11 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true))
 	$issignedup = "";
 
 	// Get a list of all the signups for this raid for the current profile.
-	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "signups WHERE raid_id=%s AND profile_id=%s", quote_smart($raids['raid_id']), quote_smart($uid)); 
+	$sql = sprintf("SELECT * ".
+					" FROM " . $phpraid_config['db_prefix'] . "signups ".
+					" WHERE raid_id = %s ".
+					" AND profile_id = %s;",
+					quote_smart($raids['raid_id']), quote_smart($uid)); 
 	$resultz = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	
 	// If the profile is signed up check to see whether it should be marked for Drafted or Queued/Cancelled
@@ -231,7 +239,11 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true))
 		$issignedup = 'nomark';
 		
 	// Get the Raid Icon for the Raid Event
-	$sql = sprintf("SELECT icon_path FROM " . $phpraid_config['db_prefix'] . "events WHERE event_id=%s", quote_smart($raids['event_id']));
+	$sql = sprintf("SELECT icon_path ".
+					" FROM " . $phpraid_config['db_prefix'] . "events ".
+					" WHERE event_id = %s".
+					" AND `gamepack_id` = ".$phpraid_config['gamepack_id'].";",
+			 		quote_smart($raids['event_id']));
 	$event_results = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	$raid_icon_results = $db_raid->sql_fetchrow($event_results, true);
 	$raid_icon = $raid_icon_results['icon_path'];
@@ -272,10 +284,10 @@ EOT;
 	//$img = '<img src="templates/'.$phpraid_config['template'].'/'.$raid_icon.'" onMouseout="hideddrivetip();" onMouseover="ddrivetip('.$ddrivetiptext.');" alt="'.$raids['location'].'">';
 	if ($issignedup == "nomark")
 		//$img = '<img src="templates/'.$phpraid_config['template'].'/'.$raid_icon.'" onMouseout="hideddrivetip();" onMouseover="ddrivetip('.$ddrivetiptext.');" alt="'.$raids['location'].'" class="'.$issignedup.'">';
-		$img = '<img src="templates/'.$phpraid_config['template'].'/'.$raid_icon.'" alt="'.$raids['location'].'" class="'.$issignedup.'">';
+		$img = '<img src="gamepack/'.$phpraid_config['gamepack_name'].'/'.$raid_icon.'" alt="'.$raids['location'].'" class="'.$issignedup.'">';
 	else
 		//$img = '<img BORDER="3" src="templates/'.$phpraid_config['template'].'/'.$raid_icon.'" onMouseout="hideddrivetip();" onMouseover="ddrivetip('.$ddrivetiptext.');" alt="'.$raids['location'].'" class="'.$issignedup.'">';
-		$img = '<img BORDER="3" src="templates/'.$phpraid_config['template'].'/'.$raid_icon.'" alt="'.$raids['location'].'" class="'.$issignedup.'">';
+		$img = '<img BORDER="3" src="gamepack/'.$phpraid_config['gamepack_name'].'/'.$raid_icon.'" alt="'.$raids['location'].'" class="'.$issignedup.'">';
 		//$font = $issignedup;
 	$location = cssToolTip($img, $msg, 'custom calendar', $url, $raid_name);
 	
@@ -375,7 +387,9 @@ $wrmsmarty->assign('calendar_data',
 // get announcements
 $announcements = array();
 $announcement_header=$phprlang['announcements_header'];
-$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "announcements";
+$sql = "SELECT * ". 
+		" FROM " . $phpraid_config['db_prefix'] . "announcements".
+		" WHERE `gamepack_id` = ".$phpraid_config['gamepack_id'].";";
 $result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 if($db_raid->sql_numrows($result) > 0)
 {

@@ -188,16 +188,6 @@ $include_list .= ":" . ini_get('include_path');
 ini_set('include_path', $include_list); 
 ini_set('safe_mode', 'off');
 
-// Include Language Files.
-// if(!is_file($phpraid_dir."language/lang_{$phpraid_config['language']}/lang_main.php"))
-// {
-	// die("The language file <i>" . $phpraid_config['language'] . "</i> could not be found!");
-	// $db_raid->sql_close();
-// }
-// else
-// {
-	// require_once($phpraid_dir."language/lang_{$phpraid_config['language']}/lang_main.php");
-// }
 
 //Load English, then load system setting
 if(!is_file($phpraid_dir."language/lang_english/lang_main.php"))
@@ -222,12 +212,28 @@ else
    }
 }
 
-
-
-//foreach($phprlang as $key => $value)
-//{
-//	$phprlang[$key] = htmlentities($value, ENT_QUOTES, "UTF-8", false);
-//}
+//Load English first
+if(!is_file($phpraid_dir."gamepack/" . $phpraid_config['gamepack_name'] . "/language/lang_english.php"))
+{
+	die("The language file <i>" . $phpraid_config['language'] . "</i> could not be found!");
+	$db_raid->sql_close();
+}
+else
+{
+	require_once($phpraid_dir."gamepack/" . $phpraid_config['gamepack_name'] . "/language/lang_english.php");
+	if ($phpraid_config['language'] != 'enlgish')
+	{
+		if(!is_file($phpraid_dir."gamepack/" . $phpraid_config['gamepack_name'] . "/language/lang_".$phpraid_config['language'].".php"))
+		{
+			die("The language file <i>" . $phpraid_config['language'] . "</i> could not be found!");
+			$db_raid->sql_close();
+		}
+		else
+		{
+			require_once($phpraid_dir."gamepack/" . $phpraid_config['gamepack_name'] . "/language/lang_".$phpraid_config['language'].".php");
+		}
+	}
+}
 
 /***************************************************
  * Set WRM Template
@@ -339,7 +345,9 @@ $wrm_global_specs = array();
 $wrm_global_resistance = array();
 
 // Load the Specs Array
-$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "class_role";
+$sql = "SELECT * ".
+		" FROM " . $phpraid_config['db_prefix'] . "class_role".
+		" WHERE `gamepack_id` = ".$phpraid_config['gamepack_id'].";";
 $result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 $x = 0;
 while($data = $db_raid->sql_fetchrow($result, true))
@@ -350,7 +358,9 @@ while($data = $db_raid->sql_fetchrow($result, true))
 }
 
 // Load the Classes Array
-$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "classes";
+$sql = "SELECT * ".
+		" FROM " . $phpraid_config['db_prefix'] . "classes".
+		" WHERE `gamepack_id` = ".$phpraid_config['gamepack_id'].";";
 $result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 $x = 0;
 while($data = $db_raid->sql_fetchrow($result, true))
@@ -364,7 +374,9 @@ while($data = $db_raid->sql_fetchrow($result, true))
 }
 
 // Load the Races Array
-$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "races";
+$sql = "SELECT * ".
+		" FROM " . $phpraid_config['db_prefix'] . "races".
+		" WHERE `gamepack_id` = ".$phpraid_config['gamepack_id'].";";
 $result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 $x = 0;			
 while($data = $db_raid->sql_fetchrow($result, true))
@@ -376,7 +388,9 @@ while($data = $db_raid->sql_fetchrow($result, true))
 }
 
 // Load the Roles Array
-$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "roles";
+$sql = "SELECT * ".
+		" FROM " . $phpraid_config['db_prefix'] . "roles".
+		" WHERE `gamepack_id` = ".$phpraid_config['gamepack_id'].";";
 $result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 $x = 0;			
 while($data = $db_raid->sql_fetchrow($result, true))
@@ -389,7 +403,9 @@ while($data = $db_raid->sql_fetchrow($result, true))
 }
 
 // Load the Gender Array
-$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "gender";
+$sql = "SELECT * ".
+		" FROM " . $phpraid_config['db_prefix'] . "gender".
+		" WHERE `gamepack_id` = ".$phpraid_config['gamepack_id'].";";
 $result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 $x = 0;			
 while($data = $db_raid->sql_fetchrow($result, true))

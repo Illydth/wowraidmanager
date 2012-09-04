@@ -1,12 +1,15 @@
 <?php
 /***************************************************************************
- *                                index.php
+ *                             raidsarchive.php
  *                            -------------------
- *   begin                : Saturday, Jan 16, 2005
- *   copyright            : (C) 2007-2008 Douglas Wagner
- *   email                : douglasw@wagnerweb.org
+ *	 Dev                  : Carsten Hölbing
+ *	 email                : carsten@hoelbing.net
  *
- *   $Id: index.php,v 2.00 2008/03/04 17:15:50 psotfx Exp $
+ *   -- WoW Raid Manager --
+ *   copyright            : (C) 2007-2009 Douglas Wagner
+ *   email                : douglasw0@yahoo.com
+ *   www				  : http://www.wowraidmanager.net
+ *
  *
  ***************************************************************************/
 
@@ -81,7 +84,11 @@ $count2 = array();
 $raid_loop_cur = 0;
 $raid_loop_prev = 0;
 
-$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "raids WHERE old = 1 ORDER BY start_time DESC";
+$sql = "SELECT * ".
+		" FROM " . $phpraid_config['db_prefix'] . "raids ".
+		" WHERE old = 1 ".
+		" AND `gamepack_id` = ".$phpraid_config['gamepack_id']." ".
+		" ORDER BY start_time DESC";
 $raids_result = $db_raid->sql_query($sql) or $no_old = TRUE;
 
 while($raids = $db_raid->sql_fetchrow($raids_result, true)) {
@@ -157,7 +164,11 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true)) {
 	// Get Class Limits and set Colored Counts
 	$raid_class_array = array();
 	$class_color_count = array();
-	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raid_class_lmt WHERE raid_id = %s", quote_smart($raids['raid_id']));
+	$sql = sprintf("SELECT * ".
+					" FROM " . $phpraid_config['db_prefix'] . "raid_class_lmt ".
+					" WHERE raid_id = %s", 
+					quote_smart($raids['raid_id'])
+			);
 	$result_raid_class = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	while($raid_class_data = $db_raid->sql_fetchrow($result_raid_class, true))
 	{
@@ -170,11 +181,17 @@ while($raids = $db_raid->sql_fetchrow($raids_result, true)) {
 	// Get Role Limits and set Colored Counts
 	$raid_role_array = array();
 	$role_color_count = array();
-	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raid_role_lmt WHERE raid_id = %s", quote_smart($raids['raid_id']));
+	$sql = sprintf("SELECT * ".
+					" FROM " . $phpraid_config['db_prefix'] . "raid_role_lmt ".
+					" WHERE raid_id = %s", quote_smart($raids['raid_id']));
 	$result_raid_role = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	while($raid_role_data = $db_raid->sql_fetchrow($result_raid_role, true))
 	{
-		$sql2 = sprintf("SELECT role_name FROM " . $phpraid_config['db_prefix'] . "roles WHERE role_id = %s", quote_smart($raid_role_data['role_id']));
+		$sql2 = sprintf("SELECT role_name ".
+						" FROM " . $phpraid_config['db_prefix'] . "roles ".
+						" WHERE role_id = %s", 
+						quote_smart($raid_role_data['role_id'])
+				);
 		$result_role_name = $db_raid->sql_query($sql2) or print_error($sql2, $db_raid->sql_error(), 1);
 		$role_name = $db_raid->sql_fetchrow($result_role_name, true);
 		

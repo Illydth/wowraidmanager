@@ -377,6 +377,9 @@ UPDATE `wrm_column_headers` SET `default_sort` = '1' WHERE `view_name`='role1' A
 UPDATE `wrm_column_headers` SET `default_sort` = '1' WHERE `view_name`='classroletalent1' AND `column_name` = 'Class' LIMIT 1 ;
 UPDATE `wrm_column_headers` SET `default_sort` = '1' WHERE `view_name`='missingprofile1' AND `column_name` = 'ID' LIMIT 1 ;
 
+-- Gamepack Data
+INSERT INTO `wrm_gamepack` ( `gamepack_name`) VALUES ('wow');
+
 -- Config Table Data
 INSERT INTO `wrm_config` VALUES ('site_name', 'WRM');
 INSERT INTO `wrm_config` VALUES ('site_description', 'WRM');
@@ -392,7 +395,6 @@ INSERT INTO `wrm_config` VALUES ('disable_freeze','0');
 INSERT INTO `wrm_config` VALUES ('dst','0');
 INSERT INTO `wrm_config` VALUES ('email_signature','Thanks');
 INSERT INTO `wrm_config` VALUES ('header_link','http://www.yourdomain.com/');
-INSERT INTO `wrm_config` VALUES ('header_logo','logo_phpRaid.jpg');
 INSERT INTO `wrm_config` VALUES ('language','english');
 INSERT INTO `wrm_config` VALUES ('multiple_signups','0');
 INSERT INTO `wrm_config` VALUES ('phpraid_addon_link','http://www.wowraidmanager.net');
@@ -435,7 +437,7 @@ INSERT INTO `wrm_config` VALUES ('freeze_status_draft', '0');
 INSERT INTO `wrm_config` VALUES ('freeze_status_queue', '0');
 INSERT INTO `wrm_config` VALUES ('freeze_status_cancel', '0');
 INSERT INTO `wrm_config` VALUES ('debug', '0');
-INSERT INTO `wrm_config` VALUES ('gamepack_name', 'wow');
+INSERT INTO `wrm_config` VALUES ('gamepack_id', '0');
 
 -- Event Type Table Data
 INSERT INTO `wrm_event_type` (`event_type_id`, `event_type_name`, `event_type_lang_id`, `def`) VALUES

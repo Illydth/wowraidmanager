@@ -1,3 +1,11 @@
+-- Gamepack Table Creation
+DROP TABLE IF EXISTS `wrm_gamepack`;
+CREATE TABLE `wrm_gamepack` (
+  `gamepack_id` TINYINT( 2 ) NOT NULL AUTO_INCREMENT,
+  `gamepack_name` VARCHAR( 50 ) NOT NULL,
+ PRIMARY KEY  (`gamepack_id`)
+) ;
+
 -- Announcements Table Creation
 DROP TABLE IF EXISTS `wrm_announcements`;
 CREATE TABLE  `wrm_announcements` (
@@ -6,6 +14,7 @@ CREATE TABLE  `wrm_announcements` (
   `message` text NOT NULL,
   `timestamp` varchar(255) NOT NULL default '',
   `posted_by` varchar(255) NOT NULL default '',
+  `gamepack_id` TINYINT( 2 ) NOT NULL default 0,
   PRIMARY KEY  (`announcements_id`)
 ) ;
 
@@ -26,13 +35,14 @@ UNIQUE KEY `name` (`name`)
 -- Boss Kill Type Table Creation
 DROP TABLE IF EXISTS `wrm_boss_kill_type`;
 CREATE TABLE `wrm_boss_kill_type` (
-`boss_kill_type_id` TINYINT( 2 ) NOT NULL AUTO_INCREMENT,
-`boss_kill_type_name` VARCHAR( 50 ) NOT NULL ,
-`boss_kill_type_lang_id` VARCHAR( 50 ) NOT NULL ,
-`event_type_id` INT( 10 ) NOT NULL,
-`max` VARCHAR( 2 ) NOT NULL,
-`def` TINYINT( 1 ) NOT NULL,
- PRIMARY KEY  (`boss_kill_type_id`)
+  `boss_kill_type_id` TINYINT( 2 ) NOT NULL AUTO_INCREMENT,
+  `boss_kill_type_name` VARCHAR( 50 ) NOT NULL ,
+  `boss_kill_type_lang_id` VARCHAR( 50 ) NOT NULL ,
+  `event_type_id` INT( 10 ) NOT NULL,
+  `max` VARCHAR( 2 ) NOT NULL,
+  `def` TINYINT( 1 ) NOT NULL,
+  `gamepack_id` TINYINT( 2 ) NOT NULL default 0,
+  PRIMARY KEY  (`boss_kill_type_id`)
 ) ;
 
 -- Character Table Creation
@@ -52,7 +62,8 @@ CREATE TABLE  `wrm_chars` (
   `nature` int(5) NOT NULL default '0',
   `shadow` int(5) NOT NULL default '0',
   `pri_spec` varchar(255) NOT NULL default '',
-  `sec_spec` varchar(255) default '',  
+  `sec_spec` varchar(255) default '',
+  `gamepack_id` TINYINT( 2 ) NOT NULL default 0,
   PRIMARY KEY  (`char_id`)
 ) ;
 
@@ -64,14 +75,16 @@ CREATE TABLE `wrm_classes` (
   `class_code` varchar(2) NOT NULL,
   `lang_index` varchar(100) NOT NULL,
   `image` varchar(100) NOT NULL,
+  `gamepack_id` TINYINT( 2 ) NOT NULL default 0,
   PRIMARY KEY  (`class_index`)
 );
 
 -- Race/Class Link Table Creation
 DROP TABLE IF EXISTS `wrm_class_race`;
 CREATE TABLE `wrm_class_race` (
-`race_id` VARCHAR( 100 ) NOT NULL ,
-`class_id` VARCHAR( 100 ) NOT NULL ,
+  `race_id` VARCHAR( 100 ) NOT NULL ,
+  `class_id` VARCHAR( 100 ) NOT NULL ,
+  `gamepack_id` TINYINT( 2 ) NOT NULL default 0,
 PRIMARY KEY ( `race_id` , `class_id` )
 );
 
@@ -84,6 +97,7 @@ CREATE TABLE `wrm_class_role` (
   `subclass` varchar(100) NOT NULL,
   `lang_index` varchar(100) NOT NULL,
   `role_id` varchar(10) NOT NULL,
+  `gamepack_id` TINYINT( 2 ) NOT NULL default 0,
   PRIMARY KEY  (`class_id`,`subclass`)
 );
 
@@ -120,6 +134,7 @@ CREATE TABLE `wrm_events` (
   `event_type_id` tinyint(2) NOT NULL,
   `wow_name` varchar(50) NOT NULL,
   `icon_path` varchar(100) NOT NULL,
+  `gamepack_id` TINYINT( 2 ) NOT NULL default 0,
   PRIMARY KEY  (`event_id`)
 ) ;
 
@@ -142,14 +157,16 @@ CREATE TABLE `wrm_expansion` (
   `exp_lang_id` varchar(50) NOT NULL,
   `def` tinyint(1) NOT NULL,
   `max_lvl` tinyint(2) NOT NULL DEFAULT '60',
+  `gamepack_id` TINYINT( 2 ) NOT NULL default 0,
   PRIMARY KEY  (`exp_id`)
 ) ;
 
 -- Faction Table Creation
 DROP TABLE IF EXISTS `wrm_faction`;
 CREATE TABLE `wrm_faction` (
-`faction_name` VARCHAR( 255 ) NOT NULL ,
-`lang_index` VARCHAR( 255 ) NOT NULL ,
+  `faction_name` VARCHAR( 255 ) NOT NULL ,
+  `lang_index` VARCHAR( 255 ) NOT NULL ,
+  `gamepack_id` TINYINT( 2 ) NOT NULL default 0,
 PRIMARY KEY ( `faction_name` )
 ) ;
 
@@ -158,6 +175,7 @@ DROP TABLE IF EXISTS `wrm_gender`;
 CREATE TABLE `wrm_gender` (
   `gender_id` varchar(10) NOT NULL,
   `lang_index` varchar(100) NOT NULL,
+  `gamepack_id` TINYINT( 2 ) NOT NULL default 0,
   PRIMARY KEY  (`gender_id`)
 );
 
@@ -173,6 +191,7 @@ CREATE TABLE `wrm_guilds` (
   `guild_faction` VARCHAR(50) NOT NULL default 'None',
   `guild_armory_link` VARCHAR(255),
   `guild_armory_code` VARCHAR(4),
+  `gamepack_id` TINYINT( 2 ) NOT NULL default 0,
   PRIMARY KEY  (`guild_id`)
 ) ;
 
@@ -189,6 +208,7 @@ CREATE TABLE `wrm_locations` (
   `event_type` tinyint(2) NOT NULL default '1',
   `event_id` int(10) NOT NULL default '119',
   `raid_force_name` varchar(100) NOT NULL default 'All',
+  `gamepack_id` TINYINT( 2 ) NOT NULL default 0,
   PRIMARY KEY  (`location_id`),
   KEY `raid_force_name` (`raid_force_name`)
 ) ;
@@ -201,6 +221,7 @@ CREATE TABLE `wrm_loc_class_lmt` (
   `location_id` int(10) NOT NULL,
   `class_id` varchar(100) NOT NULL,
   `lmt` int(2) NOT NULL,
+  `gamepack_id` TINYINT( 2 ) NOT NULL default 0,
   PRIMARY KEY  (`location_id`,`class_id`)
 );
 
@@ -210,6 +231,7 @@ CREATE TABLE `wrm_loc_role_lmt` (
   `location_id` int(10) NOT NULL,
   `role_id` varchar(10) NOT NULL,
   `lmt` int(2) NOT NULL,
+  `gamepack_id` TINYINT( 2 ) NOT NULL default 0,
   PRIMARY KEY  (`location_id`,`role_id`)
 );
 
@@ -258,6 +280,7 @@ CREATE TABLE `wrm_logs_raid` (
   `ip` varchar(45) NOT NULL default '',
   `timestamp` varchar(45) NOT NULL default '',
   `type` varchar(45) NOT NULL default '',
+  `gamepack_id` TINYINT( 2 ) NOT NULL default 0,
   PRIMARY KEY  (`log_id`)
 ) ;
 
@@ -294,6 +317,7 @@ CREATE TABLE `wrm_races` (
   `race_id` varchar(100) NOT NULL,
   `faction` varchar(100) NOT NULL,
   `lang_index` varchar(100) NOT NULL,
+  `gamepack_id` TINYINT( 2 ) NOT NULL default 0,
   PRIMARY KEY  (`race_id`)
 );
 
@@ -303,6 +327,7 @@ CREATE TABLE `wrm_race_gender` (
   `race_id` varchar(100) NOT NULL,
   `gender_id` varchar(10) NOT NULL,
   `image` varchar(100) NOT NULL,
+  `gamepack_id` TINYINT( 2 ) NOT NULL default 0,
   PRIMARY KEY  (`race_id`,`gender_id`)
 );
 
@@ -326,6 +351,7 @@ CREATE TABLE `wrm_raids` (
   `recurrance` TINYINT(1) NOT NULL DEFAULT '0',
   `rec_interval` VARCHAR(15) DEFAULT NULL,
   `num_recur` TINYINT(2) NOT NULL DEFAULT '0',
+  `gamepack_id` TINYINT( 2 ) NOT NULL default 0,
   PRIMARY KEY  (`raid_id`),
   KEY `raid_force_name` (`raid_force_name`)
   );
@@ -336,15 +362,17 @@ CREATE TABLE `wrm_raid_class_lmt` (
   `raid_id` int(10) NOT NULL,
   `class_id` varchar(100) NOT NULL,
   `lmt` int(2) NOT NULL,
+  `gamepack_id` TINYINT( 2 ) NOT NULL default 0,
   PRIMARY KEY  (`raid_id`,`class_id`)
 );
 
 -- Raid Force Table
 DROP TABLE IF EXISTS `wrm_raid_force`;
 CREATE TABLE `wrm_raid_force` (
-`raid_force_id` INT( 10 ) NOT NULL AUTO_INCREMENT,
-`raid_force_name` VARCHAR( 100 ) NOT NULL,
-`guild_id` INT( 10 ) NOT NULL ,
+  `raid_force_id` INT( 10 ) NOT NULL AUTO_INCREMENT,
+  `raid_force_name` VARCHAR( 100 ) NOT NULL,
+  `guild_id` INT( 10 ) NOT NULL ,
+  `gamepack_id` TINYINT( 2 ) NOT NULL default 0,
 PRIMARY KEY ( `raid_force_name`, `guild_id` ),
 UNIQUE ( `raid_force_id` )
 );
@@ -355,6 +383,7 @@ CREATE TABLE IF NOT EXISTS `wrm_raid_role_lmt` (
   `raid_id` int(10) NOT NULL,
   `role_id` varchar(10) NOT NULL,
   `lmt` int(2) NOT NULL,
+  `gamepack_id` TINYINT( 2 ) NOT NULL default 0,
   PRIMARY KEY  (`raid_id`,`role_id`)
 );
 
@@ -364,7 +393,8 @@ CREATE TABLE IF NOT EXISTS `wrm_resistance` (
   `resistance_name` varchar(25) NOT NULL,
   `lang_index` varchar(100) NOT NULL,
   `font_color` varchar(8) NOT NULL,
-  `image` varchar(100) NOT NULL
+  `image` varchar(100) NOT NULL,
+  `gamepack_id` TINYINT( 2 ) NOT NULL default 0
 );
 
 -- Role Table Creation
@@ -374,6 +404,7 @@ CREATE TABLE IF NOT EXISTS `wrm_roles` (
   `role_name` varchar(100) NOT NULL,
   `lang_index` varchar(100) NOT NULL,
   `image` varchar(100) NOT NULL,
+  `gamepack_id` TINYINT( 2 ) NOT NULL default 0,
   PRIMARY KEY  (`role_id`)
 );
 
@@ -399,14 +430,15 @@ CREATE TABLE `wrm_teams` (
   `raid_id` int(10) NOT NULL default '0',
   `team_name` varchar(255) NOT NULL default '',
   `char_id` int(10) NOT NULL default '0',
+  `gamepack_id` TINYINT( 2 ) NOT NULL default 0,
   PRIMARY KEY  (`team_id`)
 ) ;
 
 -- Version Table Creation
 DROP TABLE IF EXISTS `wrm_version`;
 CREATE TABLE `wrm_version` (
-`version_number` VARCHAR( 20 ) NOT NULL ,
-`version_desc` VARCHAR( 255 ) NOT NULL ,
+  `version_number` VARCHAR( 20 ) NOT NULL ,
+  `version_desc` VARCHAR( 255 ) NOT NULL ,
 PRIMARY KEY ( `version_number` )
 ) ;
 

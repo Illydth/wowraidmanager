@@ -75,7 +75,9 @@ $announcement_header = $phprlang['announcements_header'];
 if($_GET['mode'] == 'view')
 {
 	$announcements = array();
-	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "announcements";
+	$sql = "SELECT * ".
+			" FROM " . $phpraid_config['db_prefix'] . "announcements".
+			" WHERE `gamepack_id` = ".$phpraid_config['gamepack_id'].";";
 	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	while($data = $db_raid->sql_fetchrow($result, true))
 	{
@@ -215,8 +217,8 @@ elseif(($_GET['mode'] == 'new' || $_GET['mode'] = 'edit') && isset($_POST['submi
 	$posted_by = $_SESSION['username'];
 	if($_GET['mode'] == 'new')
 	{
-		$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "announcements (`title`,`message`,`timestamp`,`posted_by`)
-		VALUES (%s,%s,%s,%s)", quote_smart($title),quote_smart($message),quote_smart($timestamp),quote_smart($posted_by));
+		$sql = sprintf("INSERT INTO " . $phpraid_config['db_prefix'] . "announcements (`title`,`message`,`timestamp`,`posted_by`,`gamepack_id`)
+		VALUES (%s,%s,%s,%s,%s)", quote_smart($title),quote_smart($message),quote_smart($timestamp),quote_smart($posted_by),quote_smart($phpraid_config['gamepack_id']));
 	
 		$db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 

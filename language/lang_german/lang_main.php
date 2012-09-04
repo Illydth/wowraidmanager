@@ -37,9 +37,6 @@ require_once('lang_log.php');
 // page specific language file
 require_once('lang_pages.php');
 
-// world of warcraft language file
-require_once('lang_wow.php');
-
 // admin section language file
 require_once('lang_admin.php');
 

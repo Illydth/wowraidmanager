@@ -74,7 +74,9 @@ $pageURL = 'guilds.php?mode=view&';
 if($_GET['mode'] == 'view' || $_GET['mode'] == 'update' || $_GET['mode'] == 'select' || $_GET['mode'] == 'force_edit') {
 	$guild = array();
 	
-	$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "guilds";
+	$sql = "SELECT * ".
+			" FROM " . $phpraid_config['db_prefix'] . "guilds".
+			" WHERE `gamepack_id` = ".$phpraid_config['gamepack_id'].";";
 	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(),1);
 	while($data = $db_raid->sql_fetchrow($result, true)) {
 		
@@ -158,7 +160,9 @@ if($_GET['mode'] == 'view' || $_GET['mode'] == 'update' || $_GET['mode'] == 'sel
 		$raid_force_name = scrub_input($_GET['raid_force_drop_name']);
 	
 	// Fill in the Class Dropdown
-	$sql = "SELECT DISTINCT raid_force_name FROM " . $phpraid_config['db_prefix'] . "raid_force";
+	$sql = "SELECT DISTINCT raid_force_name ".
+			" FROM " . $phpraid_config['db_prefix'] . "raid_force".
+			" WHERE `gamepack_id` = ".$phpraid_config['gamepack_id'].";";
 	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);			
 	while($raid_force_data = $db_raid->sql_fetchrow($result, true))
 	{
@@ -270,7 +274,12 @@ if($_GET['mode'] == 'view' || $_GET['mode'] == 'update' || $_GET['mode'] == 'sel
 	$raid_force_name = scrub_input($_POST['raid_force_name']);
 	$guild_id = scrub_input($_POST['guild_id']);
 	
-	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raid_force WHERE raid_force_name = %s AND guild_id = %s", quote_smart($raid_force_name), quote_smart($guild_id));
+	$sql = sprintf("SELECT * ".
+					" FROM " . $phpraid_config['db_prefix'] . "raid_force ".
+					" WHERE raid_force_name = %s ".
+					" AND guild_id = %s".
+					" AND `gamepack_id` = ".$phpraid_config['gamepack_id'].";", 
+					quote_smart($raid_force_name), quote_smart($guild_id));
 	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(),1);
 	$numrows = $db_raid->sql_numrows($result);
 
@@ -404,7 +413,12 @@ if($_GET['mode'] == 'select' || $_GET['mode'] == 'force_edit') {
 	$raid_force = array();
 	
 	$raid_force_name = scrub_input($_GET['raid_force_drop_name']);
-	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raid_force WHERE raid_force_name = %s", quote_smart($raid_force_name));
+	$sql = sprintf("SELECT * ".
+					" FROM " . $phpraid_config['db_prefix'] . "raid_force ".
+					" WHERE raid_force_name = %s".
+					" AND `gamepack_id` = ".$phpraid_config['gamepack_id'].";", 
+					quote_smart($raid_force_name)
+			);
 	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(),1);
 	while($data = $db_raid->sql_fetchrow($result, true)) 
 	{	
@@ -498,7 +512,9 @@ if($_GET['mode'] != 'delete' && $_GET['mode'] != 'force_delete') {
 		$raid_force_name = '<input name="raid_force_name" type="text" id="raid_force_name" class="post">';
 
 		$guild_options = '<select name="guild_id">';
-		$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "guilds";
+		$sql = "SELECT * ".
+				" FROM " . $phpraid_config['db_prefix'] . "guilds".
+				" WHERE `gamepack_id` = ".$phpraid_config['gamepack_id'].";";
 		$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);			
 		while($guild_data = $db_raid->sql_fetchrow($result, true))
 			$guild_options .= "<option value=\"" . $guild_data['guild_id'] . "\">" . $guild_data['guild_name']."</option>";
@@ -506,7 +522,9 @@ if($_GET['mode'] != 'delete' && $_GET['mode'] != 'force_delete') {
 		
 		// now the faction
 		$faction = '<select name="faction" class="post">';
-		$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "faction";
+		$sql = "SELECT * ".
+				" FROM " . $phpraid_config['db_prefix'] . "faction".
+				" WHERE `gamepack_id` = ".$phpraid_config['gamepack_id'].";";
 		$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);			
 		while($faction_data = $db_raid->sql_fetchrow($result, true))
 		{
@@ -535,7 +553,12 @@ if($_GET['mode'] != 'delete' && $_GET['mode'] != 'force_delete') {
 		$id = scrub_input($_GET['id'], false);
 		$rf_id = scrub_input($_GET['rf_id'], false);
 		
-		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "guilds WHERE guild_id=%s",quote_smart($id));
+		$sql = sprintf("SELECT * ".
+						" FROM " . $phpraid_config['db_prefix'] . "guilds ".
+						" WHERE guild_id = %s".
+						" AND `gamepack_id` = ".$phpraid_config['gamepack_id'].";",
+						quote_smart($id)
+				);
 		$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 		$data = $db_raid->sql_fetchrow($result, true);
 		
@@ -548,7 +571,11 @@ if($_GET['mode'] != 'delete' && $_GET['mode'] != 'force_delete') {
 		$server = '<input name="server" type="text" id="server" value="' . $data['guild_server'] . '" class="post">';
 
 		// Raid Force Boxes
-		$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raid_force WHERE raid_force_id=%s",quote_smart($rf_id));
+		$sql = sprintf("SELECT * ".
+						" FROM " . $phpraid_config['db_prefix'] . "raid_force ".
+						" WHERE raid_force_id = %s".
+						" AND `gamepack_id` = ".$phpraid_config['gamepack_id'].";",
+						quote_smart($rf_id));
 		$rf_result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
 		$rf_data = $db_raid->sql_fetchrow($rf_result, true);
 		
@@ -557,7 +584,9 @@ if($_GET['mode'] != 'delete' && $_GET['mode'] != 'force_delete') {
 		$raid_force_name = '<input name="raid_force_name" type="text" id="raid_force_name" class="post" value="'.$rf_data['raid_force_name'].'">';
 
 		$guild_options = '<select name="guild_id">';
-		$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "guilds";
+		$sql = "SELECT * ".
+				" FROM " . $phpraid_config['db_prefix'] . "guilds".
+				" WHERE `gamepack_id` = ".$phpraid_config['gamepack_id'].";";
 		$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);			
 		while($guild_data = $db_raid->sql_fetchrow($result, true))
 		{
@@ -570,7 +599,9 @@ if($_GET['mode'] != 'delete' && $_GET['mode'] != 'force_delete') {
 		
 		// now the faction
 		$faction = '<select name="faction" class="post">';
-		$sql = "SELECT * FROM " . $phpraid_config['db_prefix'] . "faction";
+		$sql = "SELECT * ".
+				" FROM " . $phpraid_config['db_prefix'] . "faction".
+				" WHERE `gamepack_id` = ".$phpraid_config['gamepack_id'].";";
 		$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);			
 		while($faction_data = $db_raid->sql_fetchrow($result, true))
 		{

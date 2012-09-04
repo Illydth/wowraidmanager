@@ -94,7 +94,11 @@ require_once('includes/signup_flow.php');
 
 // Determine Advanced Profile Permisions to this Raid - Note: "user" doesn't need to be checked, it's
 //	 a default permission that will be checked within the signup flow.
-$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id=%s", quote_smart($raid_id));
+$sql = sprintf("SELECT * ".
+				" FROM " . $phpraid_config['db_prefix'] . "raids ".
+				" WHERE raid_id = %s", 
+				quote_smart($raid_id)
+		);
 $result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 $data = $db_raid->sql_fetchrow($result, true);
 //$data['name'] = utf8_encode ( $data['name'] );
@@ -110,7 +114,8 @@ $wrm_db_table_user_name = "profile";
 //database
 $sql = sprintf(	"SELECT ". $wrm_db_user_name .
 				" FROM " . $wrm_table_prefix . $wrm_db_table_user_name . 
-				" WHERE profile_id = %s", quote_smart($profile_id)
+				" WHERE profile_id = %s", 
+				quote_smart($profile_id)
 			);
 $result_tmp = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 $data_tmp = $db_raid->sql_fetchrow($result_tmp, true);
@@ -135,7 +140,12 @@ if($mode == 'view')
 {
 	//
 	// Obtain data for the raid
-	$sql = sprintf("SELECT * FROM " . $phpraid_config['db_prefix'] . "raids WHERE raid_id=%s", quote_smart($raid_id));
+	$sql = sprintf("SELECT * ".
+					" FROM " . $phpraid_config['db_prefix'] . "raids ".
+					" WHERE raid_id = %s".
+					" AND `gamepack_id` = ".$phpraid_config['gamepack_id'].";",
+					quote_smart($raid_id)
+			);
 	$result = $db_raid->sql_query($sql) or print_error($sql, $db_raid->sql_error(), 1);
 	$data = $db_raid->sql_fetchrow($result, true);
 	//$data['name'] = utf8_encode ( $data['name'] );
