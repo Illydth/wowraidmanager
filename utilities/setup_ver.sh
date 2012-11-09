@@ -1,5 +1,5 @@
 #!/bin/bash
 
-cd /opt/TC/SCM/WRM/wowraidmanager
-sudo chown -R dwagner.www-data *
+cd /opt/SCM/WRM/wowraidmanager
+sudo chown -R dwagneradm.www-data *
 chmod -R g+w *
